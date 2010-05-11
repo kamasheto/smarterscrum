@@ -1,0 +1,100 @@
+#{extends 'main.html'/}
+
+#{set title:'Play Game' /}
+#{set 'crumbs'}
+<li><a href="/">Home</a></li>
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${game.component.project.id}">${game.component.project.name}</a></li>
+<li><a href="/components/${game.component.id}">${game.component.name}</a></li>
+#{/set}
+
+#{set 'moreLinks'}
+<a href="#" onclick="window.open('/chatsystem/viewroom?id=${game.chatroom.id}', 'Chatroom','width=620,height=520');return false;">Join Chatroom</a>
+#{/set}
+<div id="game">
+	#{list rounds}
+	<h3><a href="#">Story ${game.stories.indexOf(_.round.story) + 1}/${game.stories.size()}, Round: ${_.round.roundNo}</a></h3>
+	<div>
+		<div>${_.round.story.description.nl2br()}</div>
+		<div class="tiny_info">Tasks are: #{list _.round.story.storiesTask, as:'__'}${__.description}, #{/list}#{else}No Tasks are defined yet for this story.#{/else}</div>
+		#{if _.round == round}<div>Round Progress: <ul id="round_progress"></ul></div>#{/if}
+		#{else}
+			<ul>
+			#{list _, as:'__'}
+				<li>${__.user.name} ${__.estimate}</li>
+			#{/list}
+			</ul>
+		#{/else}
+		<div id="main_form" #{if _.round != round } style ="display:none;"#{/if} ><form onsubmit="make_estimate($('#estimate :selected').val()); return false;" style="display:inline;"><select id="estimate"><option value="0.5">0.5</option><option value="1">1</option><option value="2">2</option>
+		<option value="3">3</option>
+		<option value="5">5</option>
+		<option value="8">8</option>
+		<option value="13">13</option>
+		<option value="20">20</option>
+		<option value="40">40</option>
+		<option value="60">60</option>
+		<option value="80">80</option>
+		<option value="100">100</option></select> <input type="submit" value="Estimate"></form>
+		#{if game.getModerator() == controllers.Security.getConnected()}
+		or <form method="POST" action="/games/nextround?gameId=${game.id}&playAgain=false&estimate=0" style="display:inline;"><input type="submit" value="Skip story" /></form>
+		#{/if}</div>
+		<div id="extra_form" style="display:none;">
+			<form method="POST" action="/games/nextround?gameId=${game.id}&playAgain=true" style="display:inline;"><input type="submit" value="Play Again"></form> or  
+			<form method="POST" onsubmit="return next_round();" style="display:inline;"><input type="text" id="round_estimate" /> <input type="submit" value="Next Story"></form>
+		</div>
+	</div>
+	#{/list}
+</div>
+
+<script type="text/javascript">
+var next_round = function() {
+	window.location = '/games/nextround?gameId=${game.id}&playAgain=false&estimate='+$('#round_estimate').val();
+	return false;
+}
+var make_estimate = function(est) {
+	$.post('/games/estimate?roundId=${game.getRound().id}&estimate='+est,function(data){
+		$('#main_form').hide();
+	});
+}
+var connect = function(){
+	$.post("/games/connect?gameId=${game.id}&roundId=${round.id}", function(data){
+		var options = data.split(",");
+		if (options[0] == "1") {
+			$('#main_form').hide();
+			//alert('All players voted. Waiting for mod to take decision.');
+			// show the round info
+			roundInfo = options[4].split("||");
+			str = '';
+			$(roundInfo).each(function() {
+				ue = this.split("|");
+				str += '<div><label>'+ue[0]+'</label>'+ue[1]+'</div>';
+			});
+			//$('#round_response').html('<div>Votes for players:</div>' + str);
+			// end showing round info
+			/****** Button *******/
+			if(options[1] == "1")
+			{
+				$('#extra_form').show();
+			}
+		}
+		if (options.length > 5) {
+			var ests = options[5].split("|");
+			str ='';
+			for (i=0; i<ests.length;i=i+1)
+			{
+				str+='<li>'+ests[i]+'</li>';
+			}
+			$('#round_progress').html(str);
+		}
+		if (options[2] == "1") {
+			location.reload();
+		}
+		setTimeout('connect();', 2000);
+	});
+}
+$(function(){
+	$('#game').accordion({autoHeight:false});
+	connect();
+	
+});
+</script>

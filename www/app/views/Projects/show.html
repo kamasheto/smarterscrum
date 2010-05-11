@@ -1,0 +1,598 @@
+#{extends 'CRUD/layout.html' /}
+
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${object.id}">${object.name}</a></li>
+#{/set}
+
+
+
+
+<div id="crudShow" class="${type.name}">
+<script type="text/javascript">
+
+$(function(){
+	$("#accordion").accordion({ header: "h3" });
+	
+	});
+	
+function showLoader(id,select){
+var element=document.getElementById(id);
+var loader=document.getElementById(select);
+loader.style.position="absolute";
+loader.style.top=element.style.top;
+element.disabled=true;
+
+loader.style.visibility="visible";
+}
+function hideLoader(id,select){
+var element=document.getElementById(id);
+var loader=document.getElementById(select);
+
+element.disabled=false;
+
+loader.style.visibility="hidden";
+
+
+}
+function getInSprint(){
+var i=document.getElementById('meetingTypesList').selectedIndex;
+var param=document.getElementById('meetingTypesList').options[i].text;
+var n=&{object.id};
+$.post('@{isMeetingTypeAssociatedToSprint()}',{id:n,meetingType:param},function (flag){
+if(flag){
+document.getElementById('inSprintLbl').innerHTML="The ("+param+") Meeting Type is Associated To Sprints.";
+
+}
+else{
+document.getElementById('inSprintLbl').innerHTML="The ("+param+") Meeting Type is Not Associated To Sprints.";
+}
+},'json')
+
+
+}
+
+function addMeeting(){
+showLoader('addMB','loaderMB');
+var n=&{object.id};
+var m=document.getElementById('meetingText').value;
+var x=document.getElementById('assocSprint').checked;
+
+if(m==""){
+alert("You Must Enter a Meeting Type.");
+hideLoader('addMB','loaderMB');
+return;
+}
+$.post('@{addMeetingType()}',{id:n,meetingType:m,inSprint:x},function (flag){
+
+if(flag){
+var select=document.getElementById('meetingTypesList');
+var optn = document.createElement("OPTION");
+optn.text = m;
+optn.value = m;
+select.options.add(optn);
+
+}
+else{
+alert("Meeting Type couldn't be added.");
+}
+
+
+hideLoader('addMB','loaderMB');
+},'json')
+}
+
+
+
+function getSelectedItem(select){
+var i;
+for(i=select.options.length-1;i>=0;i--)
+{
+if(select.options[i].selected)
+break;
+}
+return i;
+}
+
+function removeMeeting(){
+showLoader('removeMB','loaderMB');
+var n=&{object.id};
+var select=document.getElementById('meetingTypesList');
+var i=getSelectedItem(select);
+if(i <0){
+hideLoader('removeMB','loaderMB');
+return;
+}
+var m=select.options[i].innerHTML;
+if(m=="")
+{
+hideLoader('removeMB','loaderMB');
+return;
+}
+var conf=confirm("Are you sure you want to delete this type?");
+
+if(conf){
+$.post('@{removeMeetingType()}',{id:n,meetingType:m},function (flag){
+
+if(flag){
+select.remove(i);
+}
+else{
+alert("Meeting Type was not Removed.");
+}
+},'json')
+}
+hideLoader('removeMB','loaderMB');
+}
+
+
+function removeTask(){
+showLoader('removeTSK','loaderTSK');
+
+var select=document.getElementById('taskTypesList');
+var i=getSelectedItem(select);
+
+if(i<0){
+hideLoader('removeTSK','loaderTSK');
+return;
+}
+var m=select.options[i].value;
+var conf=confirm("Are you sure you want to delete this type?");
+if(conf){
+$.post('@{removeTaskType()}',{taskID:m},function (flag){
+
+if(flag){
+select.remove(i);
+
+}
+else{
+alert("Task Type was not Removed.");
+}
+
+},'json')
+}
+hideLoader('removeTSK','loaderTSK');
+}
+
+function removeTaskStatus(){
+showLoader('removeTST','loaderTST');
+var n=&{object.id};
+var select=document.getElementById('taskStatusesList');
+var i=getSelectedItem(select);
+if(i<0){
+hideLoader('removeTST','loaderTST');
+return;
+}
+var m=select.options[i].value;
+var conf=confirm("Are you sure you want to delete this type?");
+if(conf){
+$.post('@{removeTaskStatus()}',{statusID:m},function (flag){
+
+if(flag){
+select.remove(i);
+
+}
+else{
+alert("Task Status was not Removed.");
+}
+
+},'json')
+}
+hideLoader('removeTST','loaderTST');
+}
+
+
+
+function addTask(){
+showLoader('addTSK','loaderTSK');
+var n=&{object.id};
+var m=document.getElementById('taskText').value;
+if(m==""){
+
+alert("You Must Enter a Task Type.");
+hideLoader('addTSK','loaderTSK');
+return;
+}
+$.post('@{addTaskType()}',{id:n,taskType:m},function (id){
+
+if(id){
+var select=document.getElementById('taskTypesList');
+var optn = document.createElement("OPTION");
+optn.text = m;
+optn.value = id;
+select.options.add(optn);
+
+}
+else{
+alert("Task Type couldn't be added.");
+}
+
+hideLoader('addTSK','loaderTSK');
+},'json')
+}
+
+
+function addTaskStatus(){
+showLoader('addTST','loaderTST');
+var n=&{object.id};
+var m=document.getElementById('taskTSText').value;
+if(m==""){
+
+alert("You Must Enter a Valid Task Status Type.");
+hideLoader('addTST','loaderTST');
+return;
+}
+$.post('@{addTaskStatus()}',{id:n,taskStatus:m},function (id){
+
+if(id){
+var select=document.getElementById('taskStatusesList');
+var optn = document.createElement("OPTION");
+optn.text = m;
+optn.value = id;
+select.options.add(optn);
+
+}
+else{
+alert("Task Type couldn't be added.");
+}
+
+hideLoader('addTST','loaderTST');
+},'json')
+}
+
+
+
+function addStory(){
+showLoader('addST','loaderST');
+var n=&{object.id};
+var m=document.getElementById('storyText').value;
+var x=document.getElementById('priorityText').value;
+if(m=="" || !is_int(x)){
+
+alert("You Must Enter a Valid Priority Title and an Integer Priority Value.");
+hideLoader('addST','loaderST');
+return;
+}
+
+$.post('@{addStoryType()}',{id:n,storyType:m,unit:x},function (id){
+
+if(id) {
+var select=document.getElementById('storiesTypesList');
+var optn = document.createElement("OPTION");
+optn.text = x+": "+m;
+optn.value= id;
+
+select.options.add(optn);
+
+}
+else{
+alert("Story Type couldn't be added.");
+}
+
+hideLoader('addST','loaderST');
+},'json')
+}
+
+
+function removeStory(){
+showLoader('removeST','loaderST');
+var n=&{object.id};
+var select=document.getElementById('storiesTypesList');
+var i=getSelectedItem(select);
+if(i<0){
+hideLoader('removeST','loaderST');
+return;
+}
+var m=select.options[i].value;
+
+var conf=confirm("Are you sure you want to delete this type?");
+if(conf){
+$.post('@{removeStoryType()}',{priorityID:m},function (flag){
+if(flag){
+select.remove(i);
+
+}
+else{
+alert("Story Type was not Removed.");
+}
+
+},'json')
+}
+hideLoader('removeST','loaderST');
+}
+
+
+function changeAutoRS(){
+var n=&{object.id};
+var m=document.getElementById('checkBoxAutoRS').value;
+
+$.post('@{changeAutoRescheduleStatus()}',{id:n,autoReschedule:m},function (flag){
+var conf=confirm("Are you sure you want to change the status of Auto-Rescheduling?");
+if(flag && conf){
+
+}
+else{
+alert("Could not Commit Action! Please Try again.");
+}
+},'json')
+}
+
+function is_int(value){
+  if((parseFloat(value) == parseInt(value)) && !isNaN(parseInt(value))){
+      return true;
+ } else {
+      return false;
+ } 
+}
+
+function setSprintDuration(){
+showLoader('addSP','loaderSP');
+var i=document.getElementById('sprintDropDown').selectedIndex;
+
+var param=document.getElementById('sprintDropDown').options[i].text;
+
+var n=&{object.id};
+var m=document.getElementById('durationText').value;
+var d=parseInt(m);
+var dn=d;
+
+if((!is_int(m)) || d<=0){
+
+alert("The duration entered is invalid. Please enter a valid Integer Duration.");
+hideLoader('addSP','loaderSP');
+return;
+}
+else if(m){
+
+switch (param){
+
+case "Months":
+dn=d*30;
+break;
+
+case "Weeks":
+dn=d*7;
+break;
+default:
+
+
+}
+}
+
+$.post('@{setDefaultSprintDuartion()}',{id:n,duration:dn},function (flag){
+
+if(flag){
+document.getElementById('durationLabel').innerHTML=dn;
+
+}
+else{
+alert("Duration Coudln't be Set.");
+}
+hideLoader('addSP','loaderSP');
+},'json');
+
+}
+
+function setEffortUnit(){
+showLoader('addES','loaderES');
+var i=document.getElementById('estimationDown').selectedIndex;
+
+var param=document.getElementById('estimationDown').options[i].text;
+
+var n=&{object.id};
+
+$.post('@{setEffortEstimationUnit()}',{id:n,unit:param},function (flag){
+if(flag){
+alert("You Have set the Effort Estimation Unit to :"+param);
+document.getElementById('estimationLabel').innerHTML=param;
+}
+},'json')
+hideLoader('addES','loaderES');
+
+}
+
+
+</script>
+	
+	<h2 id="crudShowTitle">Edit "&{object.name}" Defaults and Settings 	
+	</h2>
+	
+	#{form @deleteProject(object.id)}
+			<input style="margin-align:left" onclick ="return confirm('Are you sure you want to delete this project${object.hasRunningSprints()?', there are running sprints':''}?')"  style="margin-left:800px" type="submit" value="&{'crud.delete', type.modelName}" />
+		
+	#{/form} 
+	
+	<h5 id="description style="length:200px"><u>Description:</u> <br> &{object.description}  </h5>
+	
+	<div class="objectForm">
+	#{form action:@save(object.id), enctype:'multipart/form-data'}
+
+<div id="accordion">
+
+<div id="sd" class="sprintsDuration">
+	<h3>
+		Default Sprint Duration:
+		</h3>
+		<p><b> Current Default Sprint Duration : <label id="durationLabel" style="color:red">&{object.sprintDuration}</label> Days.</b> 
+		<br><br>
+		Setting default sprint duration will be used when an end date for the sprint date is not specified upon creation.
+		<br><br>
+		<input id="durationText" type="text"  value="" "size="10" /> in
+	<select id="sprintDropDown" name="sprintDropDown">
+		<option value="Days">Days</option>
+		<option value="Months">Months</option>
+		<option value="Weeks">Weeks</option>
+		</select>
+		
+		<br>
+	<input id="addSP"type="button" name="add" value="Set" onclick="setSprintDuration()" />
+	<img id="loaderSP"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
+	</p>
+		</div>
+		
+	<div class="meetingTypes">
+	<h3>
+		Default Meeting Types:
+		</h3>
+	<ul >
+	<small> <b><label id=" " style="color:red" >Click On a Meeting Type to view Sprint Association </small></b></label>
+		<p><u><b>Meeting Type:</b></u>  <b><label id="inSprintLbl"> </label></b></p> 
+<select name="drop1" id="meetingTypesList" style="width:200px" size="10" multiple="multiple" onclick="getInSprint()">
+#{list items:object.meetingsTypes, as:'meetingType'}
+	
+	<option value="1">${meetingType}</option>
+		
+	
+#{/list}
+	</select>
+	<br>
+	
+	<input id="meetingText" class="" type="text" name="object.name" value="" "size="27" /> 
+	<br>
+	<INPUT id="assocSprint"TYPE=CHECKBOX NAME="assocSprint"  onclick=""   > 	Associate New Type To End Of Sprint
+	<input id="addMB"type="button" name="add" value="Add" onclick="addMeeting()" />
+	<input id="removeMB" type="button" name="add" value="Remove" onclick="removeMeeting()"/>
+	
+	<img id="loaderMB"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
+	</div>
+	
+	
+	
+	
+	<div class="taskTypes">
+	<h3>
+		Default Task Types:
+		</h3>
+	
+	<ul >
+<select name="drop1" id="taskTypesList" style="width:200px" size="10" multiple="multiple">
+#{list items:object.taskTypes, as:'taskType'}
+	#{if taskType.deleted==false}
+	<option value=${taskType.id}>${taskType.name}</option>
+		#{/if}
+	
+#{/list}
+	</select>
+	<br>
+	<input id="taskText" class="" type="text" name="object.name" value="" "size="27" /> 
+	<br>
+	<input id="addTSK" type="button" name="add" value="Add" onclick="addTask()" />
+	<input id="removeTSK" type="button" name="add" value="Remove" onclick="removeTask()"/>
+	
+	<img id="loaderTSK"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
+	</div>
+	
+	<div class="taskStatus">
+	<h3>
+		Default Task Statuses:
+		</h3>
+	
+	<ul >
+<select name="drop1" id="taskStatusesList" style="width:200px" size="10" multiple="multiple">
+#{list items:object.taskStatuses, as:'taskStatus'}
+	#{if taskStatus.deleted==false}
+	<option value=${taskStatus.id}>${taskStatus.name}</option>
+		#{/if}
+	
+#{/list}
+	</select>
+	<br>
+	<input id="taskTSText" class="" type="text" name="object.name" value="" "size="27" /> 
+	<br>
+	<input id="addTST" type="button" name="add" value="Add" onclick="addTaskStatus()" />
+	<input id="removeTST" type="button" name="add" value="Remove" onclick="removeTaskStatus()"/>
+	
+	<img id="loaderTST"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
+	
+	</div>
+	
+		
+	<div class="storyPriorities">
+	<h3>
+		Edit Story Priorities:
+		</h3>
+			<ul >
+<select name="drop1" id="storiesTypesList" style="width:200px" size="10" multiple="multiple">
+#{list items:object.priorities, as:'storiesPriority'}
+		
+		#{if storiesPriority.deleted==false}
+		<option value="${storiesPriority.id}">${storiesPriority.priority} : ${storiesPriority.title}</option>
+		#{/if}
+		
+	
+		
+	
+#{/list}
+	</select>
+	<br>
+	Priority Title:&nbsp;<input id="storyText" class="" type="text" name="object.name" value="" "size="15" />
+	<br>
+	Priority Value:<input id="priorityText" class="" type="text" name="" value="" "size="15" />
+	<br>
+	<input id="addST" type="button" name="add" value="Add" onclick="addStory()" />
+	<input id="removeST" type="button" name="add" value="Remove" onclick="removeStory()"/>
+	
+		<img id="loaderST"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
+		</div>
+		
+		<div class="meetingReSchedule">
+	<h3>
+		Edit Meeting Rescheduling Policies:
+		</h3>
+		
+		
+		<p>
+		This Feature allows the application to reschedule meeting for the " &{object.name} " project automatically when the sprint date
+		changes. To turn on feature check the box below.
+		<br>
+		<br>
+		 <INPUT id="checkBoxAutoRS"TYPE=CHECKBOX NAME="autoReschedule"  onclick="changeAutoRS()"  ${object.autoReschedule ? 'checked': ''} >Auto Meeting Reschedule</p>
+		</div>
+		
+		
+				<div class="meetingReSchedule">
+	<h3>
+		Edit Effort Estimation Points Unit:
+		
+		
+		</h3>
+	<p><b> Current Effort  Estimation Unit : <label id="estimationLabel" style="color:red">
+	
+		#{if object.effortEstimationUnit==0}
+				Hours
+		#{/if}
+		#{if object.effortEstimationUnit!=0}
+				Points
+		#{/if}
+	
+	
+	 </label> Days.</b> 
+		<br><br>
+		You can Set the Effort Estimation Unit either in Hours or Points.
+		<br><br>
+	<select id="estimationDown" name="estimationDropDown">
+		<option value="Hours">Hours</option>
+		<option value="Points">Points</option>
+		</select>
+		
+		<br>
+	<input id="addES"type="button" name="add" value="Set" onclick="setEffortUnit()" />
+	<img id="loaderES"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
+	</p>
+
+		</div>
+	
+	
+	<br>
+		
+		
+		
+	#{/form}
+	
+	
+	
+	
+	
+
+
+</div>

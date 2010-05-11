@@ -1,0 +1,74 @@
+#{extends 'main.html' /}
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
+<li><a href="/sprints/showsprints?projectId=${project.id}">${project.name} Sprints</a>
+
+#{/set}
+
+<html>
+<head>
+<script type="text/javascript">
+function isBefore(date){
+	var now=new Date();
+	var other=new Date(date);
+	if(now<other){
+	return  true;
+		}
+	else{
+	return false;
+		}
+}
+
+</script>
+</head>
+<body>
+<h1> ${project.name} Sprints</h1>
+<ul id="sprints">
+#{if (sprints.size()==0)}
+There are No Sprints.<br/>
+#{/if}
+#{list items:sprints, as:'sprint'}
+<li id="sprint_${sprint.id}" >
+<a href="#" onclick="showStuff('span_${sprint.id}');">Sprint ${sprint.sprintNumber}</a>
+#{if (sprint.id!=runningSprint)}
+<script type="text/javascript">
+
+	if(isBefore('${sprint.format(sprint.startDate)}')==true){
+	document.write('Upcoming Sprint');
+	document.write('<a href="@{projectshow(sprint.id,sprint.project.id)}">     Edit</a>');
+		}
+	else{
+	document.write('Past Sprint');
+		}
+</script>
+#{/if}
+#{if (sprint.id==runningSprint) }
+Sprint is Currently Running
+#{/if}
+<span id="span_${sprint.id}"  style="display: none; background-color:gray;padding:10px;
+border:5px outset gray;
+margin:10px;">
+Start Date: ${sprint.format(sprint.startDate)}<br/>
+End Date: ${sprint.format(sprint.endDate)}<br/>
+<a href="@{showsprint(sprint.id,sprint.project.id)}">More Info</a>
+</span>
+</li>
+
+
+#{/list}
+</ul>
+#{set 'moreLinks'}
+<a href="@{projectblank(projectId)}">Create sprint</a>
+#{/set}
+<script type="text/javascript">
+	function showStuff(id) {
+		if(document.getElementById(id).style.display == 'block')
+			document.getElementById(id).style.display = 'none';
+		else
+			document.getElementById(id).style.display = 'block';	
+	}
+</script>
+
+</body>
+</html>

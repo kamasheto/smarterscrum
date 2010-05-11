@@ -1,0 +1,55 @@
+#{extends 'main.html'/}
+#{set title:'Assign Story to Sprint'/}
+<h1> Assign Story to Sprint </h1>
+
+<div>
+
+please select the Story you want:
+
+<select id="StoryID">
+			#{list items:stories ,as :'story'}
+			#{if story.deleted == false}
+		      <option value="${story.id}">${story.description}</option>
+			#{/if}
+			#{/list}		
+</select>
+
+</div>
+
+
+<div>
+please select the Sprint you want:
+<select id="SprintID">
+      #{list items:sprints, as:'sprint'}
+      #{if sprint.deleted==false}
+     <option value="${sprint.id}">Sprint ${sprint.sprintNumber} , Starting time :${sprint.startDate}</option>
+     #{/if}
+     #{/list}
+     </select>
+ </div>
+ <div>
+<button onclick="assign($('#StoryID :selected').val(), $('#SprintID :selected').val())">Save</button>
+
+</div>
+
+<script type="text/javascript">
+
+function assign(SID,SPID)
+{
+	var stID  = SID;
+	var spID = SPID;
+
+	
+	$.post('@{assignStoryToSprint()}',
+			{storyID:stID,
+		     sprintID:spID},
+			function(message)
+			{
+				alert(message);
+				 window.location.reload();
+			});
+}
+
+
+</script>
+ 

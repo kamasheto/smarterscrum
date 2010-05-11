@@ -1,0 +1,30 @@
+
+#{selenium 'Test Displaying Review Log'}
+
+//Author Hossam Amer
+//Showing Review Log
+    
+	clearSession()
+    open('/')
+    assertTextPresent('Email')
+    type('username', 'me@sakr.me')
+    type('password', 'test')
+    clickAndWait('signin')
+  
+open('/reviewlog/')
+assertTextPresent('Display Meetings' Review Log')
+assertTextPresent('Add a review Log')
+click('showMeetings')
+open('/reviewlog/index?projectID=1')
+
+open('/reviewlog/')
+assertTextPresent('Display Meetings' Review Log')
+assertTextPresent('Add a review Log')
+
+open('/reviewlog/showmeetings?projectID=1')
+open('/reviewlog/showmeetingsnoreviewlog?projectID=1')
+
+//typeAndWait('1','i edited in place')
+//assertText('1', 'i edited in place')
+
+#{/selenium}

@@ -1,0 +1,19 @@
+#{extends 'main.html'/}
+#{set title:'Play Game' /}
+#{set 'crumbs'}
+<li><a href="/">Home</a></li>
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${component.project.id}">${component.project.name}</a></li>
+<li><a href="/components/${component.id}">${component.name}</a></li>
+
+
+#{/set}
+
+<h2> Join an Estimation Game</h2>
+
+#{ifnot finalGames} There are no Games being played now!! #{/ifnot}
+<ul>
+#{list finalGames}
+<li><a href="/games/playgame?gameId=${_.id}">Join ${moderators.get(finalGames.indexOf(_)).name}'s Game</a></li>
+#{/list}
+</ul>

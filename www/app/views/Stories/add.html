@@ -1,0 +1,47 @@
+#{extends 'main.html' /}
+#{set title:'Add story' /}
+
+<script type = "text/javascript">
+
+function add()
+{
+	<!-- Get the entered values by using their id (jQuery) -->
+	var desc = $('#story_desc').val();
+	var success = $('#success_scenario').val();
+	var faili = $('#failure_scenario').val();
+	var notes2 = $('#notes').val();
+	var priority1 = $('#priority').val();
+	
+	<!-- Call my add method -->
+	$.post('@{addStory()}', 
+			{des:desc, succ:success,fail:faili, priority:priority1, notes:notes2}, 
+			function(data){
+			alert(data);});
+	
+}
+
+</script>
+
+<h1>Add Story</h1>
+<form name="f1">
+<p>Story Description</p>
+<input type = "text" id="story_desc"><br>
+
+<p>Story Success Scenarios</p>
+<textarea id="success_scenario"></textarea><br>
+
+<p>Story Failure Scenarios</p>
+<textarea id="failure_scenario"></textarea><br>
+
+<p>Story's Notes</p>
+<textarea id="notes"></textarea><br>
+
+<p>Story's Priority</p>
+<select id="priority">
+<option value="0">Low</option>
+<option value="1">Medium</option>
+<option value="2">High</option>
+</select><br>
+
+</form>
+<button onclick="add()">Add Story</button>

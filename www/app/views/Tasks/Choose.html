@@ -1,0 +1,14 @@
+#{extends 'main.html' /}
+#{set title:'Choose an option'/}
+
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${Proj_id}">${name}</a></li>
+
+#{/set}
+
+<br>
+<a href="@{Tasks.ViewImpediment(Proj_id)}"> View Impediment Tasks</a>
+<br/>
+<a href="@{Tasks.UpdateStatus(Proj_id)}"> Update Tasks </a>
+

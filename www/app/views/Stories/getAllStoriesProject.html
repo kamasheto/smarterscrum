@@ -1,0 +1,8 @@
+<div>
+<h3> Project Stories </h3>
+#{list items:stories, as:'story'}
+<div> <a href="#"  >  Story: ${story.description}</a> </div>
+<div> ${story.description} <input type="radio"    name="group" value=${story.id} /><br /> 
+help
+#{/list}
+</div>

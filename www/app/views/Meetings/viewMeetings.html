@@ -1,0 +1,90 @@
+#{extends 'main.html' /}
+#{set title: projectName+ '\'s Meetings '/}
+
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${id}">${projectName}</a></li>
+
+#{/set}
+
+#{set 'moreLinks'}
+
+<a  href="/MeetingAttendances/viewInvites?projectID=${id}" name="check">Check my invitations</a>
+
+<br>
+<br>
+#{secure.check 'canAddMeeting' }
+<a href="/admin/projects/${id}/meetings/new"> new meeting </a>
+#{/secure.check}
+
+
+#{/set}
+
+<h2> ${projectName}'s Meetings </h2>
+
+
+<h5> Upcoming meetings and Events </h5>
+
+#{if upcomingIsEmpty}
+There are no Upcoming meetings and events
+#{/if}
+
+#{if !upcomingIsEmpty}
+<ul id="upcoming" >
+#{list items:upcoming, as:'meeting'}
+   #{if !meeting.deleted}
+	<li id="meeting_${meeting.name}" >
+		<span id= "meeting_${meeting.name}">
+			<a href="/meetings/${meeting.id}">${meeting.name}</a>
+			&nbsp;&nbsp;&nbsp; <span class="formatTime">${meeting.startTime}</span>
+				#{secure.check 'canEditMeeting'}
+			<input type="button" value="Edit" onclick="window.location='/admin/meetings/${meeting.id}'" />
+				#{/secure.check}
+			#{if !meeting.status} <label style="color:red; font-style: italic;"> canceled </label>  #{/if}
+		    <br>
+		</span>  
+	</li>
+	#{/if} 
+#{/list}
+</ul>
+#{/if}
+
+
+<h5> Past meetings and Events </h5>
+ 
+#{if pastIsEmpty}
+There are no Past meetings and events
+#{/if} 
+
+#{if !pastIsEmpty}
+
+<ul id="past" >
+
+#{list items:past, as:'meeting'}
+   #{if !meeting.deleted}
+	<li id="meeting_${meeting.name}" >
+		<span id= "meeting_${meeting.name}">
+			<a href="/meetings/${meeting.id}">${meeting.name}</a>
+			 &nbsp;&nbsp;&nbsp; <span class="formatTime">${meeting.startTime}</span>
+			 #{if !meeting.status} <label style="color:red; font-style: italic;"> canceled </label> #{/if}
+		     <br>
+			</span>  
+		
+		
+		
+	</li> 
+	#{/if} 
+#{/list}
+</ul>
+
+#{/if}
+
+<br>
+<br>
+<br>
+
+
+
+
+
+

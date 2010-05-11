@@ -1,0 +1,47 @@
+#{extends 'main.html' /}
+#{set title:'Change Column Name' /}
+<html>
+<head>
+<script type = "text/javascript">
+/*function changeName()
+{
+	
+	var c_name = $('#c_name').val();
+			
+	$.post('@{changeColumnName()}', 
+			{id: ${cell.id},name:c_name}, 
+			function(data){
+			alert(data);});
+	
+}*/
+function changeName(cell_id)
+{
+
+var c_name = $('#c_name').val();
+
+$.post('@{changeColumnName()}',
+{id: cell_id,name:c_name},
+function(data)
+{
+alert(data);
+}
+)
+;
+
+}
+
+
+</script>
+</head>
+<body>
+<div>Change column name:</div>
+
+<p>Column New Name</p>
+<input type = "text" id="c_name"><br>
+
+</form>
+<input type="button" onclick="changeName(cell_id)" value="Save" />
+
+
+</body>
+</html>

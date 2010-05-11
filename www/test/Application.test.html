@@ -1,0 +1,18 @@
+*{ You can use plain selenium command using the selenium tag }*
+
+#{selenium}
+    // Open the home page, and check that no error occured
+    open('/')
+    waitForPageToLoad(1000)
+    assertNotTitle('Application error')
+#{/selenium}
+
+
+//@Author: Dina Helal
+//this is used to test story 16
+#{selenium}
+    open('/boards/loadboard?sprintID=1')
+    click('1')
+	typeAndWait('1','newstatus')
+    assertText('1', 'newstatus') 
+#{/selenium}

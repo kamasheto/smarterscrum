@@ -1,0 +1,22 @@
+
+ <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script> 
+<div id="${taskId}">
+<h2>Task Types</h2>
+#{list items:types, as:'type'}
+<a href="#" onclick="set_type( ${type.id},${taskId},${userId})"> ${type.name} </a><br/>
+#{/list}
+</div>
+
+<script type="text/javascript">
+function set_type(tyId,tskId,usrId)
+{
+	$.post('@{editTaskType()}',
+			{id:tskId, typeId:tyId, userId:usrId},
+			function()
+			{
+				window.opener.location.reload();
+				window.close();
+				});
+	return true;
+}
+</script>

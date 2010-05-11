@@ -1,0 +1,42 @@
+#{set title:'Choose Dependent Stories' /}
+ <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
+ 
+<div >
+<h2>Project Stories</h2>
+#{list items:storys, as:'story'}
+<input type="checkbox" id="${story.id}" value="${story.id}"> ${story.description}<br/>
+#{/list}
+<a id="custom" onclick="choose_stories(${sIds},${id})" href="#">Set Stories</a>
+</div>
+
+<script type="text/javascript">
+function choose_stories(storys,storyId)
+{
+
+	
+	var i;
+	var list= [];
+	var s;
+	for(i=0; i<storys.length; i++)
+	{
+		s=storys[i];
+		var id='#'+s;
+		if($(id).is(':checked')==true)
+			list.push(s);
+		
+		}
+	
+	$.post('@{fromIdtoStory()}',
+			{storyId:storyId, idList:list},
+			function()
+			{
+				window.opener.location.reload();
+				window.close();
+
+				});
+
+	
+	
+	return true;
+}
+</script>

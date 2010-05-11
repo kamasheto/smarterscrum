@@ -1,0 +1,257 @@
+#{extends 'main.html' /}
+#{set title:'Home page' /}
+
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${meeting.project.id}">${meeting.project.name}</a></li>
+<li><a href ="/projects/${meeting.project.id}/meetings">Meetings</a></li>
+<li><a href ="/meetings/${meeting.id}">${meeting.name}</a></li>
+#{/set}
+
+<style type="text/css">
+.bold {
+	font-weight:bold;
+}
+</style>
+<script type="text/javascript"> 
+	$(function() {
+		$("#accordion").accordion({ autoHeight:false
+		});
+	});
+	</script> 
+	
+<script type="text/javascript">
+<!-- hossam sharaf's part-->
+	function toggletask(tid){
+	$.post('/meetings/toggletask',{meetingID:${meeting.id},taskID:tid}, function(data) {
+			if(data=='true'){
+				$('#' + tid).removeClass('bold')	
+			}
+			else
+			{
+				$('#' + tid).addClass('bold')
+			}
+	})
+	}
+	<!-- end hossam sharaf's part-->
+	
+	/*
+	 * invite user function that calls the controller to invite user
+	 * @Author Amr Hany 
+	 */
+	function invite_user(mid,uid)
+	{
+		$.post('@{inviteUser()}',{meetingID:mid,userID:uid},
+		function(){
+			$('#' + uid + '_invite').hide();
+			$('#' + uid + '_invited').show();
+		}
+		)
+	}
+	/*
+	 * invite all function that calls the controller to invite all users in the project.
+	 * @author Amr Hany
+	 */
+	function invite_all(mid)
+	{
+		var confirmation= confirm("Invite all members ?")
+		if (confirmation) {
+			$.post("@{inviteAllMembers()}", {
+				meetingID: mid
+			}, function(){
+				window.location.reload();
+			})
+			return true;
+			
+		}
+	}
+	
+	/*
+	 * invite component function that calls the controller to invite given component
+	 * @Author Amr Hany 
+	 */
+	function invite_component(mid,cid)
+	{
+		$.post('@{inviteComponent()}',{meetingID:mid,componentID:cid},
+		function(){
+			window.location.reload();
+		}
+		)
+		return true;
+	}
+</script>
+
+<div id="accordion"> 
+	<h3><a>Meeting Attendees</a></h3> 
+	<!-- amr_hany part-->
+	<div >
+	Please select the users you wish to invite in the meeting :
+	<br/>
+	<br/>
+		&nbsp;&nbsp; <a href="#" onclick="invite_all(${meeting.id});">Invite all project members</a>
+	<br/>
+	<br/>
+	<ul>
+	#{list items:meeting.project.users, as:'user'}
+		#{if !user.deleted }
+			<li>
+				<a id= "user_${user.id}_href" href="@{Show.user(user.id)}">${user.name} #{if user.equals(currentUser) }  (myself) #{/if}</a>&nbsp;&nbsp;
+				#{if user.meetingStatus(meeting.id).equals("notInvited")}
+				#{if meeting.startTime>(new Date().getTime()) }
+				<span id="${user.id}_invite">	<a  href="#" name ="test_user_${user.name}" onClick ="invite_user(${meeting.id},${user.id})"style=" font-style: italic; font-size :85%; ">invite</a></span>
+				<span id="${user.id}_invited" style="display: none; font-style: italic; font-size :85%; color : blue;">invited</span>
+				#{/if}
+				#{/if}
+				#{if user.meetingStatus(meeting.id).equals("waiting")}
+				#{if meeting.startTime>(new Date().getTime() )}
+				<span id="${user.id}_onLoadInvited" style=" font-style: italic; font-size :85%;color : blue; "> invited</span>
+				#{/if}
+				#{else}
+				<span id="${user.id}_onLoadInvited" style=" font-style: italic; font-size :85%;color : blue; "> did not reply</span>
+				#{/else}
+				#{/if}
+				#{if user.meetingStatus(meeting.id).equals("confirmed")}
+				<span id="${user.id}_confirmed" style=" font-style: italic; font-size :85%;color:green; "> confirmed</span>
+				#{/if}
+				#{if user.meetingStatus(meeting.id).equals("declined")}
+				<span id="${user.id}_declined" style=" font-style: italic; font-size :85%;color:red; ">declined</span>
+				#{/if}
+				
+			</li> 
+		#{/if}
+	#{/list}
+	</ul>
+	</div> 
+	<!-- end amr_hany part-->
+	
+	<!-- minazaki -->
+	<h3><a>Associated Artifacts</a></h3> 
+	<div>
+	<script type="text/javascript">
+function addArtifacts(){
+var obj=document.getElementById('artifacts');
+var selectedArray=new Array();
+var artifacts=new Array();
+var count=0;
+for (i=0; i<obj.options.length; i++) {
+    if (obj.options[i].selected) {
+      selectedArray[count] = obj.options[i];
+      artifacts[count]=obj.options[i].value;
+      count++;
+    }
+  }
+
+var other=document.getElementById('meetingartifacts');
+var temp=other.options.length;
+
+for(i=0;i<selectedArray.length;i++) {
+other.options[temp]=selectedArray[i];
+add(artifacts[i]);
+temp++;
+}
+}
+function removeArtifacts(){
+	var obj=document.getElementById('meetingartifacts');
+	var selectedArray=new Array();
+	var artifacts=new Array();
+	var count=0;
+	for (i=0; i<obj.options.length; i++) {
+	    if (obj.options[i].selected) {
+	      selectedArray[count] = obj.options[i];
+	      artifacts[count]=obj.options[i].value;
+	      count++;
+	    }
+	  }
+
+	var other=document.getElementById('artifacts');
+	var temp=other.options.length;
+	for(i=0;i<selectedArray.length;i++) {
+	other.options[temp]=selectedArray[i];
+	remove(artifacts[i]);
+	temp++;
+	}
+	}
+function add(input){
+	var send=input;
+	$.post('@{addArtifact()}',{id:${meeting.id},artifact:send},function(){});
+}
+function remove(input){
+	var send=input;
+	$.post('@{removeArtifact()}',{id:${meeting.id},artifact:send},function(){});
+}
+</script>
+	
+<select id="artifacts" multiple="yes" style="width: 300px;">
+		#{list items:artifacts, as:'artifact'}
+	<option>${artifact.description}</option>
+#{/list}
+ <input type="button" value="Add" onclick="addArtifacts()"></input>
+ <input type="button" value="Remove" onclick="removeArtifacts()"></input>
+</select>
+	
+	<select id="meetingartifacts" multiple="yes" style="width: 300px;">
+	#{list items:meeting.artifacts, as:'artifact'}
+	<option>${artifact.description}</option>
+#{/list}
+	</select>"
+	</div>
+	
+	<!--end of minazaki part -->
+	 
+	<!-- hossam sharaf's part-->
+	<h3><a>Associated Tasks</a></h3> 
+	<div> 
+	#{if meeting.project.tasks.size() >0}
+	<div class="tiny_info">Associated tasks are in bold</div>
+	#{/if}
+	#{else}
+	<div>There are no tasks at the moment</div>
+	#{/else}
+	<ul>
+		#{list items:meeting.project.tasks, as:'task'}
+	<li id=${task.id} class="${ meeting.tasks.contains(task) ? 'bold' : '' }">
+		<a href='javascript:toggletask(${task.id})'>${task.description}</a> 
+	</li> 
+#{/list}
+<!-- end hossam sharaf's part-->
+</ul>
+	</div> 
+	<h3><a>Associated Components</a></h3>
+	<!-- Amr Hany Part-->
+	<div> 
+		#{list items:meeting.project.components, as:'component'}
+		#{if !component.deleted}
+			<li>
+				<a href="/components/${component.id}">${component.name}</a> &nbsp;&nbsp;
+				#{if component.meetingStatus(meeting.id).equals("notInvited")}
+				#{if meeting.startTime>(new Date().getTime()) }
+				<span id="${component.id}_invite_c">	<a  href="#" name="test_component_${component.id}"onClick ="invite_component(${meeting.id},${component.id})"style=" font-style: italic; font-size :85%; ">invite</a></span>
+				<span id="${component.id}_invited_c" style="display: none; font-style: italic; font-size :85%;color : blue; "> invited</span>
+				#{/if}
+				#{/if}
+				#{if component.meetingStatus(meeting.id).equals("waiting")}
+				#{if meeting.startTime>(new Date().getTime()) }
+				<span id="${component.id}_onLoadInvited_c" style=" font-style: italic; font-size :85%;color : blue; "> invited</span>
+				#{/if}
+				#{else}
+				<span id="${component.id}_onLoadInvited_c" style=" font-style: italic; font-size :85%;color : blue; "> some did not reply</span>
+				#{/else}
+				#{/if}
+				#{if component.meetingStatus(meeting.id).equals("allInvited")}
+				<span id="${component.id}_onLoadInvited_c" style=" font-style: italic; font-size :85%; "> invited</span>
+				#{/if}
+				#{if component.meetingStatus(meeting.id).equals("confirmed")}
+				<span id="${component.id}_confirmed_c" style=" font-style: italic; font-size :85%;color:green; "> confirmed</span>
+				#{/if}
+				#{if component.meetingStatus(meeting.id).equals("declined")}
+				<span id="${component.id}_declined_c" style=" font-style: italic; font-size :85%;color:red; "> declined</span>
+				#{/if}
+			</li> 
+		#{/if}
+		#{/list}
+	</div> 
+	<!--end Amr Hany Part-->
+</div> 
+<br/>
+&nbsp; <a href="/meetings/${meeting.id}"> Back to ${meeting.name}</a>
+  

@@ -1,0 +1,13 @@
+//@author Hadeer Younis
+//@category C4S15
+#{selenium}
+		open("/sprintbacklog?id=1&projectId=1&componentID=1#");
+		click("//tr[@id='task_1']/td[1]/a/img");
+		waitForPageToLoad("30000");
+		click("link=Task Change Log");
+		click("link=Task Change Log Stats");
+		click("link=Task Effort Stats");
+		click("link=Task Information");
+    	assertNotTitle('Application error')
+		assertEquals("Task Report", getTitle());
+#{/selenium}

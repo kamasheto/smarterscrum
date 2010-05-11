@@ -1,0 +1,442 @@
+#{extends 'main.html' /}
+#{set title:'Component Task Board' /}
+#{set 'moreStyles'}
+<style type="text/css">
+	.drag{position: relative;}
+	.shadowed {
+  -moz-box-shadow: 2px 2px 3px #969696;
+  -webkit-box-shadow: 2px 2px 3px #969696;
+}
+</style>
+#{/set}
+#{set 'moreScripts'}
+<script  type="text/javascript" src="@{'/public/javascripts/dragtable.js/'}" ></script>
+<script  type="text/javascript" src="@{'/public/javascripts/jeditable.js/'}"  ></script>
+<script  type="text/javascript" src="@{'/public/javascripts/drag.js/'}"  ></script>
+#{/set}
+#{set 'onLoad'}REDIPS.drag.init()#{/set}
+<script type="text/javascript" charset="utf-8"> 
+
+var selectedUser = 0;
+var col_from = -1;
+var col_to = -1;
+//Author Amr Abdelwahab A script used to toogle the board
+$(document).ready(function(){
+		$('.component').click(function(){
+			$('#'+this.id).toggle();
+			original = '#'+this.id;
+			$('#'+this.id+"_hidden").toggle();
+			$('#'+this.id+'_hidden').click(function(){
+			var splittedC 	= this.id.split("_");
+			var i= splittedC[0];
+			originalC = '#'+i;
+				$(originalC).show();
+				$(this).hide();
+			});
+		});
+		$('.ctask').click(function(){
+			$('#'+this.id+"_T").hide();
+			
+			
+			$('#'+this.id+"_hidden").show();
+			$('.showtask').click(function(){
+			var splittedT 	= this.id.split("_");
+			var j= splittedT[0];
+			
+			originalT = '#'+j+"_T";
+				$(originalT).show();
+				$(this).hide();
+			});
+		});
+		$('.cstory').click(function(){
+			$('#'+this.id+"_S").hide();
+			
+			
+			$('#'+this.id+"_hidden").show();
+			$('.showstory').click(function(){
+		
+			var splittedS	= this.id.split("_");
+			var k= splittedS[0];
+		
+			originalS = '#'+k+"_S";
+				$(originalS).show();
+					$(this).hide();
+				
+			});
+		});
+	$('#board').click(function(event){
+   event.preventDefault();
+   $('table').toggle(400);
+ });
+ $('#form').click(function(event){
+   event.preventDefault();
+   $('form').toggle(400);
+ });
+ 
+ $('.select').click(function(){
+ 	
+		$('.hides').css('display','none');
+		$('.editDES').css('display','none');
+		var split 	= this.id.split("_");
+		var i= split[0];
+	
+		$('.shows_'+i).css('display','block');	
+		$('.noedit').css('display','none');	
+		
+		$('.noedit').css('display','inline-block');	
+		$('.noeditdesc_'+i).css('display','none');	
+		$('.editdesc_'+i).css('display','inline-block');	
+		
+		
+		});    
+    
+});
+
+function popUp(URL) 
+{
+day = new Date();
+id = day.getTime();
+eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=200,height=400,left = 583,top = 184');");
+}
+
+
+/**
+ * @Author: Dine Helal
+ * This function is used to edit column names & tasks in place
+ */
+$(function() {
+	
+	
+ $('.editDES').editable(
+    	    function(value)
+    	    {
+    	        var taskId 	= parseInt($('#lolid').closest("div").attr("id"));
+    	       
+    	        $.post('@{Tasks.editTaskDesc()}',
+    	            {id:taskId, desc:value});
+
+        	    return(value);
+    	        
+    	    },
+    	    {    
+    	        indicator : 'Saving...',
+    	    });
+
+
+$('.editCOL').editable(
+    	    function(value)
+    	    {
+    	        var colId 	= parseInt($('#lolid').closest("span").attr("id"));
+    	       
+    	        $.post('@{Columns.editColumnName}',
+    	            {id:colId, name:value , userId:selectedUser});
+
+        	    return(value);
+    	        
+    	    },
+    	    {    
+    	        indicator : 'Saving...',
+    	    });
+});
+$(function(){
+		$('div.tiptipize').tipTip({delay:0});
+	});
+
+   </script>
+
+<h1>Component Task Board</h1>
+<ul id="data" id="columnsOfBoard" >
+
+
+<table border="0"></table>
+#{set 'moreLinks'}
+<a href="" id="form">Swap Columns Settings</a>	
+<br>
+<br>	
+
+<a href="/admin/projects/${p.id}/meetings/new?object.infrontBoard=true">Create Board Meeting<a />
+<br>
+<br>	
+
+<a href="@{Snapshots.index(s.id,c.name)}" >View snapshots</a><br>
+<br>	
+	<a href="javascript:take_snap();">Take Snapshot</a>
+	#{/set}
+	<a href="" id="board">Toggle Board</a>
+		<div id="drag">
+<table id="mainBoard" class="draggable"  border="1">
+				<tr>	
+					<td>Headers</td>
+				#{list items:columnsOfBoard, as:'col'}
+						<td id="${columnsOfBoard.id} "> 	
+					<a id="${col.sequence}_c" onclick = "swapCol(id)" style="color:#FFFFFF">swap</a> <br/>
+					<a href="#" onclick="$('.${col.name}').toggle();">
+					<span style="list:none;padding:1px 1px 1px 1px;display:inline-block" class="ui-state-default ui-corner-all">
+					<span style="display:inline-block !important"class="ui-icon ui-icon-transferthick-e-w"></span>
+			
+					</span>
+					</a>
+						
+					<div style="display:inline-block" class="${col.name}">			
+			
+					<span style="display:inline-block; width:3cm"id="${col.id}" title="Edit the column name?" class="editCOL ccolumn" >${col.name}</span>
+					</div></td>
+					#{/list}
+					
+				</tr>
+#{list items:data, as:'component'}
+				<tr id="com-${component.id}_hidden" style="display:none;" >
+				<td>Click here to toggle
+				</td>
+				#{list items:columnsOfBoard, as:'col'}
+				<td>
+				</td>
+				#{/list}
+				</tr>
+		
+		
+					<tr id="com-${component.id}" style="height:100px">
+											<td id="com-${component.id}" class="component">
+											
+											${component.title}</td>
+						#{list items:component, as:'col'}
+						
+						<td >
+							#{list items:col, as:'task'}
+														<p >
+								<div class="${task.taskStatus.column.name}"  id="${task.taskStatus.column.id}_col" style="border:hidden">
+								<div id="tas-${task.id}_" class="drag">
+								<a id="tas-${task.id}_hidden" style="display:none; font-size:large;" class="showtask">+</a>	
+								
+								<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed  tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 15px" id="tas-${task.id}_T">
+									  
+								<p>
+								<a id="tas-${task.id}" style="font-size:x-large;" border=0px class="ctask">-</a>
+								<div style="font-family: 'Lucida Handwriting' !important;" border=0px align="center">T ${task.id}</div>
+								
+								#{secure.check 'canChangeTaskDescreption'}
+								 <span style="display:none"> ${flag2=true}</span>
+								#{/secure.check}
+								
+								#{if flag2 || controllers.Security.getConnected().equals(task.assignee)}
+								<div style="font-family: 'Lucida Handwriting' !important;"id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}">${task.description}</div>	
+								#{/if}
+								#{else}
+								<div style="font-family: 'Lucida Handwriting' !important;"id="${task.id}_des" class="noedit2 noeditdesc_${task.assignee.id}" border=0px>${task.description}</div>	
+								#{/else}
+								<div style="font-family: 'Lucida Handwriting' !important; display:none "id="${task.id}_des" class="noedit noeditdesc_${task.assignee.id}" border=0px>${task.description}</div>	
+								
+								#{secure.check 'canChangeReviewer'}
+								 <span style="display:none"> ${flag4=true}</span>
+								#{/secure.check}
+								#{if flag4}
+								
+								<a id="rev" class="hides"  HREF="javascript:popUp('@{Tasks.chooseRev(task.id,component.id)}')">
+								<span class="ui-icon ui-icon-person"></span></a>
+								<div  style="font-family: 'Lucida Handwriting' !important;">
+								Reviewer: 
+								${task.reviewer}</div>
+								<div id="${task.id}_rev"></div>
+								#{/if}
+								
+								
+								#{else}
+								<div  style="font-family: 'Lucida Handwriting' !important;">
+								Reviewer: 
+								${task.reviewer}</div>
+								<div id="${task.id}_rev"></div>
+								
+								#{/else}
+								
+								#{secure.check 'canChangeTaskType'}
+								 <span style="display:none"> ${flag5=true}</span>
+								#{/secure.check}
+								
+								
+								#{if flag5 || controllers.Security.getConnected().equals(task.assignee)}
+								
+								<A id="usr" class="hides shows_${task.assignee.id}" HREF="javascript:popUp('@{Tasks.chooseType(task.id)}')">
+								<span class="ui-icon ui-icon-person"></span></A>
+								<div style="font-family: 'Lucida Handwriting' !important;">
+								Type: 
+								${task.taskType.name}</div>
+								<div id="${task.id}_type"></div>
+								#{/if}
+								#{else}
+								<div style="font-family: 'Lucida Handwriting' !important;">
+								Type: 
+								${task.taskType.name}</div>
+								
+								#{/else}
+								</p>
+								</div>
+								</div>
+								</div>
+								</p>
+							#{/list}
+						</td>
+						#{/list}
+					</tr>
+				#{/list}
+			</table>
+		</div>
+<!-- all bellow 
+	author: joseph hajj
+ -->
+ <br>
+	
+	<form>
+	<textarea id="from"></textarea>
+	<textarea id="to"></textarea>
+	<input type="button" onclick="swapValues()" value="swap" />
+</form>
+
+#{list items:total,as:'meeting'}
+<a href="/meetings/${meeting.id}"><b>Meeting:${meeting.name}</b></a><br/>
+<br/>
+#{list items:u , as:'user'}
+<a id=${user.id} href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a><br />	
+#{/list}
+<a href="javascript:take_componentmeetingsnapshot(${meeting.id});"><b>Attach snapshot</b><a/>	
+#{/list}
+<br/>
+
+
+
+<div id="myLayer"></div>
+
+<br /><br />
+<a href="/admin/projects/${p.id}/meetings/new?object.infrontBoard=true"><b>Create Board Meeting<b/><a /><br />
+
+	
+ <script type="text/javascript">
+ function select_user(id, str) {
+	 selectedUser = id;
+	 $('#myLayer').html(str+' is editing the Board now ').effect('highlight',{}, 1000).fadeOut();
+ }
+ 	/**
+	 * swapping with clicking instead of drag and drop.
+	 * 
+	 * @author: 
+	 *	 		Joseph Hajj
+	 * 
+	 */
+function swapCol(TheID)
+	{
+		var data = TheID.split("_");
+		var id = data[0];
+		var temp;
+		var table = document.getElementById("mainBoard");
+		if(col_from==-1)
+		{
+			
+			col_from=id;
+			col_from++;
+			var rowCount = table.rows.length;
+			for(var i=1; i<rowCount; i++)
+			{
+			table.rows[i].cells[col_from].style.backgroundColor = '#CCFFFF';
+			}
+			col_from--;
+			
+		}
+		else if (col_from==id)
+		{
+			
+			var rowCount = table.rows.length;
+			col_from++;
+			for(var i=1; i<rowCount; i++)
+			{
+			table.rows[i].cells[col_from].style.backgroundColor = '#FFFFFF';
+			}
+			col_from=-1;
+		}
+		else if (col_to==-1)
+		{
+			col_to=id;
+			col_from++;
+			col_to++;
+
+			var rowCount = table.rows.length;
+			for(var i=1; i<rowCount; i++)
+			{
+			table.rows[i].cells[col_from].style.backgroundColor = '#FFFFFF';
+			}
+			
+			for(var i=0; i<rowCount; i++)
+			{
+				temp = table.rows[i].cells[col_from].innerHTML;
+				table.rows[i].cells[col_from].innerHTML = table.rows[i].cells[col_to].innerHTML;
+				table.rows[i].cells[col_to].innerHTML = temp ;
+			}
+			col_to--;
+			col_from--;
+
+			$.post('/Columns/changeColumnPosition2' ,			
+					{id:gup('sprintID'),pos1:col_from, pos2:col_to,user_id : selectedUser},
+					function()
+					{
+						location.reload();
+						});
+			col_from = col_from + "_c";
+			col_to = col_to + "_c";
+			var col1 = document.getElementById(col_from);
+			var col2 = document.getElementById(col_to);
+			if(col_to>col_from)
+			{
+				col1.id=col_to;
+				col2.id=col_from;
+			}
+			else
+			{
+				col2.id=col_from;
+				col1.id=col_to;
+			}
+			
+			
+			col_from=-1;
+			col_to=-1;
+			
+		}
+		else
+		{
+			
+			col_from=id;
+			col_to=-1;
+
+			
+		}
+		
+		
+	}
+		
+	/**
+	 * swapping with settings instead of drag and drop.
+	 * 
+	 * @author: 
+	 *	 		Joseph Hajj
+	 * 
+	 */
+	function swapValues() {
+		var table = document.getElementById("mainBoard");
+		var from = document.getElementById("from").value;
+		var to = document.getElementById("to").value;
+		var rowCount = table.rows.length;
+		for(var i=0; i<rowCount; i++)
+		{
+			temp = table.rows[i].cells[from].innerHTML;
+			table.rows[i].cells[from].innerHTML = table.rows[i].cells[to].innerHTML;
+			table.rows[i].cells[to].innerHTML = temp ;
+		}
+		$.post('/Columns/changeColumnPosition2' ,{id:gup('sprintID'),pos1:from-1, pos2:to-1});
+		}
+		function take_snap() {
+		$.post('@{snapshots.takecomponentsnapshot()}', {sprintID:${s.id},componentID:${c.id}} ,function(){alert('Saved!')});
+	}
+	function take_componentmeetingsnapshot(id) {
+		$.post('/snapshots/takecomponentmeetingsnapshot', {sprintID:${s.id},componentID:${c.id},meetingID:id}, function(){alert('Saved!')});
+	}
+	$(function(){
+		$('div.tiptipize').tipTip({delay:0});
+	})
+</script>

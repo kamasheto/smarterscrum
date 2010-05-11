@@ -1,0 +1,46 @@
+#{extends 'main.html' /}
+#{set title:'Add members' /}
+
+<h2> Assign Users to ${comp.name} </h1>
+
+#{if users.isEmpty()}
+<br/>
+<b><font color="red"> There are no available free developers in ${pro.name} to add them to ${comp.name} !</font>
+<br/>
+<br/>
+if you want to invite new developers to ${pro.name} to be able to add them <a href="/show/users"><font color = "blue"><u>Click Here</u></font></a> !
+</b>
+<br/> 
+#{/if}
+
+#{if !users.isEmpty()}
+<h3> please choose users to add from this list: </h3>
+<ul id= "Users">
+#{list items:users, as:'puser'}
+	<li>${puser.name} 
+	&nbsp;&nbsp;
+	<a onclick="assign_users(${puser.id} , ${comp.id});" href="#"> Add</a>
+	</li>
+#{/list}
+
+</ul>
+#{/if}
+<br/>
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${pro.id}">${pro.name}</a></li>
+<li><a href="/components/${comp.id}">${comp.name}</a></li>
+#{/set}
+
+<script type="text/javascript">
+
+function assign_users(uid , cid)
+{
+	$.post('@{chooseUsers()}' ,
+		    {id:cid , UId:uid}, 
+		    function(){
+			window.location.reload();
+		    })
+		}
+
+</script>

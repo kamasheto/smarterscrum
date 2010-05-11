@@ -1,0 +1,167 @@
+#{extends 'main.html' /}
+#{set title:'Showing project: '+project.name /}
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
+#{/set}
+
+#{if flash.success}
+<p class="success">&{flash.success}</p>
+#{/if}
+<h2>${project.name}</h2><div class="you">
+
+${project.description?.nl2br()}
+        <div class="notch">
+        </div></div>
+<a href="#" onclick="$('#roles').toggle()">Project Roles</a>
+<div id="roles" class="roles" style="display:none;width:300px">
+	#{list items:project.roles, as:'role'}
+		<div style="float:left;width:200px;">${role.name}</div>
+		<div style="float:left;">
+		<form style="display:inline;" action="/projecttasks/requestrole?id=${role.id}" method="post"><input type="submit" value="request" ${requestedRoles.contains(role)?'disabled':''} /></form>
+		</div>	
+<br  style="clear:both;"  />
+	#{/list}
+</div>
+
+
+<br/>
+<a href="@{Projects.getProjectMembers(project.id)}"> Project Members </a><br/>
+
+<a href="tasks?id=${project.id}">Project Tasks</a>
+<!-- adding component's link by Amr Hany -->
+<br/>
+<a href="/projects/${project.id}/components">Project Components</a>
+
+<!-- adding sprints' link by minazaki -->
+<br/>
+<a href="@{Sprints.showsprints(project.id)}" >Project Sprints</a>
+
+<!-- adding meetings link @author ghadafakhry -->
+<br/>
+<a href="/projects/${project.id}/meetings">Project Meetings</a>
+
+<!-- adding meetings link @author ahmedKhaled7 -->
+<br/>
+<a href="/productbacklog/${project.id}/0">Project Product Backlog</a>
+
+<!--  adding impediment tasks @author emad abdelrahman -->
+<br/>
+<a href="@{Tasks.Choose(project.id)}"> Project's Impediment Tasks</a>
+
+<!-- adding product role's link by Heba Elsherif -->
+<br/>
+<a href="/projects/${project.id}/productroles">Project Product Roles</a>
+
+
+<!--  Stories : Galal Aly -->
+<br /><a href="@{Storys.listStoriesInProject(project.id)}">Project Stories</a>
+<!--  End Of Stories -->
+
+
+
+#{secure.check 'canViewRoom' }
+<!--CHAT SYSTEM START-->
+
+#{set 'onLoad'} signIn(${project.chatroom.id}) #{/set} 
+#{set 'onUnLoad'} signOut(${project.chatroom.id}) #{/set} 
+<div id="threadHead"></div>
+<div id="thread">
+	<script type="text/html" id="message_tmpl">
+
+<strong class="title"><%= message.author%></strong> 
+		<div class="<%= message.author == '${connectedUser.name}' ? 'you border-callout' : 'them border-callout' %><%= message.author == 'notice' ? 'notice' : '' %>">
+			<%= message.message.replace('\n', '<br/>') %>
+		<%= message.author == 'notice' ? '' : '<b class="notch"></b>' %></div>
+	</script>
+	</div>
+
+
+<div id="newMessage">	
+	<textarea id="message" name="message" style="width:500px;"></textarea>
+	<input type="button" value="send" id="send"/>
+</div>
+
+
+
+<script type="text/javascript">
+	$('#send').click(function(e) {
+		var message = $('#message').val();
+		$('#message').val('');
+		$.post('@{ChatSystem.addMessage()}', {message: message , id:${project.chatroom.id}}); 
+		$('#message').focus(); 
+    });
+	// Retrieve new messages
+	var getMessages = function() {
+		$.getJSON('/ChatSystem/newMessages',{id:${project.chatroom.id}}, function(messages) {
+			$(messages).each(function() {
+				display(this);
+			});
+			setTimeout('getMessages();', 500);
+		});
+	}	
+	$(function() {
+		getMessages();
+	});
+	
+	// Display a message
+	var display = function(message) {
+		$('#thread').append(tmpl('message_tmpl', {message: message}));
+		var obj = document.getElementById('thread');
+		obj.scrollTop = obj.scrollHeight;
+	}
+	
+	function signIn(id)
+	{
+		$.post('/ChatSystem/enterChat',{id:id});
+	}
+	
+	function signOut(id)
+	{
+		$.post('/ChatSystem/leaveChat',{id:id});
+	}
+	
+</script>
+
+
+
+<!--CHAT SYSTEM End-->
+#{/secure.check }
+
+#{set 'moreLinks'}
+
+				<!--@author ahmedkhaled7 C4S12/c4S4/c4s5   -->
+			<a href="@{ImpedimentTasks.index(project.id)}">Report impediment</a><br/><br/>
+<a href="/show/roles?id=${project.id}">Manage Roles</a><br />
+<br/>
+<a href="@{Storys.listStoriesandSprints(project.id)}"> Assign Story to Sprint </a><br/><br/>
+<!-- adding a check requests link @author moataz_mekki -->
+#{secure.check 'canManageRequests'}
+<a href="/projects/requestrespond?id=${project.id}"> Check Role Requests</a><br /><br/>
+<!-- adding a check project deletion requests link
+@author Amr Tj.Wallas
+@Task C1S14 -->
+<a href="/projects/deletionRequestRespond?id=${project.id}"> Check Deletion Requests</a><br /><br/>
+#{/secure.check}
+
+<br/><br/>
+
+
+<!-- project notification profile @ author moataz_mekki-->
+#{secure.check 'canEditProjectNotificationProfile'}
+<a href = "/projects/managenotificationprofile?projectId=${project.id}"> Edit Project Notifications </a>
+#{/secure.check}
+#{/set}
+
+#{set 'moreControls'}
+<!-- adding a manage notifications link for each user to manage his notification 
+profile related to this project
+@author Amr Tj.Wallas 
+@Task C1S33 -->
+#{secure.check 'canEditUserNotificationProfile'}
+<p><a href = "/users/managenotificationprofile?id=${project.id}"> Manage My Notifications for this Project </a><br />
+</p>#{/secure.check}
+<p>#{secure.check 'canEditUserNotificationProfile'}
+<a href="/Projects/requestdeleted?id=${project.id}" onclick="return confirm('Are you sure you want to be deleted from this project???')"> Request Deletion</a><br/>
+#{/secure.check}</p>
+#{/set}

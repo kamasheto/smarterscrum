@@ -1,0 +1,38 @@
+#{extends 'main.html' /}
+#{set title:projectName+' components' /}
+
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${id}">${projectName}</a></li>
+<li><a href ="/projects/${id}/components"> Components</a></li>
+#{/set}
+
+#{if flash.success}
+<p class="success">&{flash.success}</p>
+#{/if}
+
+<h2> ${projectName}'s Components </h2>
+
+<ul id="components" >
+#{list items:components, as:'component'}
+	<li id="component_${component.name}" >
+		<span id= "component_${component.name}">
+			<a href="/components/${component.id}">${component.name}</a>
+			</span>  		
+	</li> 
+#{/list}
+</ul>
+
+#{secure.check 'canAddComponent' }
+#{if !inSprint}
+<a href="/admin/projects/${id}/components/new"> add a new component </a>
+#{/if}
+
+#{if inSprint}
+Unfortunatily , you can not add a new component during a sprint.
+#{/if}
+
+#{/secure.check}
+
+<br/>
+

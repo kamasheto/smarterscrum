@@ -1,0 +1,434 @@
+#{extends 'main.html' /} #{set title:'Sprint Backlog' /} 
+#{set 'moreScripts'}
+
+
+<script language="javascript" type="text/javascript"
+	src="@{'/public/javascripts/jeditable-mod.js'}"></script>
+
+<script type="text/javascript">
+function popUp(URL) 
+{
+day = new Date();
+id = day.getTime();
+eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=200,height=400,left = 583,top = 184');");
+}
+$(function() 
+{
+	/**
+	 * This function enables the inplace editing for the effort point for a day.
+	 * they have the class, enterEfforts
+	 *
+	 * @author Hadeer Younis
+	 * @category C4S1
+	 * @see	   inplace-editing, popups
+	 */
+		
+    $('.enterEffort').editable(
+    function(value)
+    {
+        var theId 		= $('#lolid').closest("td").attr("id");
+        var splitted 	= theId.split("_");
+        var dayId 		= parseInt(splitted[0])-1;
+        var taskId 		= parseInt(splitted[1]);
+        var max			= parseInt(splitted[2]);
+    	var points 		= parseInt(value);
+    	if(points>max)
+    	{
+    		alert('Please enter a number between 0 & '+max);
+    		return;
+    	}
+    	else if(isNaN(points))
+    	{
+    		alert('Please enter a number!');
+    		return;
+    	}
+    	else
+    	{	
+    		$.post('@{Tasks.enterEffort()}',
+    				{id:taskId,effort:points,day:dayId});     
+        	
+        	return(value);
+    	}      
+    },
+    {    
+        indicator : 'Saving...',
+    });
+    /**
+     * The following functions enables the inplace editing for description, type, reviewer, points, assignee of a task.
+     * everyone with their class.
+     *
+     *
+     * @author Menna Ghoneim
+     * @category C4S6
+     * @see	   inplace-editing, popups
+     */
+        
+    $('.editDES').editable(
+    	    function(value)
+    	    {
+    	        var taskId 	= parseInt($('#lolid').closest("td").attr("id"));
+    	       
+    	        $.post('@{Tasks.editTaskDesc()}',
+    	            {id:taskId, desc:value});
+
+        	    return(value);
+    	        
+    	    },
+    	    {    
+    	        indicator : 'Saving...',
+    	        tooltip   : 'Click to edit...'
+    	    });
+    
+    
+    $('.editPOINTS').editable(
+    	    function(value)
+    	    {
+    	        var taskId 		= parseInt($('#lolid').closest("td").attr("id"));
+    	        
+    	    	if(isNaN(value))
+    	    	{
+    	    		alert('Please enter a number!');
+    	    		return;
+    	    	}
+    	    	else
+    	    	{	
+        	    	var newPoint = parseInt(value);
+    	    		$.post('@{Tasks.editTaskEstimation()}',
+    	    				{id:taskId,estimation:newPoint});     
+    	        	return(value);  
+    	    	}      
+    	    },
+    	    {    
+    	        indicator : 'Saving...',
+    	        tooltip   : 'Click to edit...'
+    	    });
+
+    
+    
+
+ 
+ });
+
+</script>
+
+#{/set}
+
+
+
+
+<!--
+@author menna_ghoneim
+	Looping on the list of tasks rendered to this page and putting the attributes of each 
+	task (description, assignee name, total estimation points, and points per day) 
+	in the table, in addition to an option to edit if the user is a scrum master  and the 
+	sprint is not in progress 
+-->
+ <br/>
+ 
+
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${projectId}">${pName}</a></li>
+<li><a href="/sprints/showsprints?projectId=${projectId}">Sprints</a></li>
+<li><a href="@{Sprints.showsprint(id,projectId)}" >Sprint ${sNum}</a></li>
+<li><a href="@{SprintBacklog.index(componentID,id)}">Sprint backlog</a></li>
+#{/set}
+
+
+<div id="sprintID">
+#{ifnot taskOfStory}
+#{if incomp}
+The component has no tasks yet.
+#{/if}
+#{else}
+You are not a user in this component, you cannot view their tasks.
+#{/else}
+#{/ifnot} 
+#{else}
+
+<h2>Sprint Backlog</h2>
+
+	#{set 'moreLinks'}
+	<div class="clear"></div>
+				<!--@author ahmedkhaled7 C4S12/c4S4/c4s5   -->
+			<a onclick="$('#checklist').toggle()" href="#">Customize columns</a><br/>
+			<!--@author Hadeer Younis C4 S8-->
+			<a title="Take a look at the chart?" href="@{SprintBacklog.showGraph(id,componentID)}"> Show Burn Down Chart </a><br/>
+			<!--@author Hossam Amer C4 S10, S11  -->
+			<a title="Take a look at the Review Log?"href="@{ReviewLog.index(projectId, componentID, id)}">View the Review Log</a>
+	#{/set}
+	    	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+	<strong>NOTE: </strong>to view the task report click on the <img src="@{'public/images/note.png'}"/> next to the corresponding task. 
+	<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
+
+<!--@author ahmedkhaled7 c4S4/c4s5  
+check boxes for choosing the columns to be hidden -->
+
+<div id="checklist" style="display:none"><br>
+	
+	<input type="checkbox" id="option1" value="description"> Description
+	<input type="checkbox" id="option2" value="type"> Type<br/>
+	<input type="checkbox" id="option3" value="assignee" > Assignee
+	<input type="checkbox" id="option4" value="reviewer" > Reviewer<br/>
+	<input type="checkbox" id="option5" value="total points"> Total points
+	<input type="checkbox" id="option6" value="efforts"> Efforts<br/>
+	
+	<a id="custom" onclick="customize_columns(); $('#checklist').toggle()" href="#">hide</a>
+</div>
+
+
+
+
+
+#{list items:taskOfStory, as:'storyTask'}
+
+<h3><a href="#" title="hide me? show me?"
+	onclick="$('#stroy_${storyTask.get(0).taskStory.id}').toggle();">
+Story ${storyTask.get(0).taskStory.id} :
+${storyTask.get(0).taskStory.description}</a></h3>
+<div style="margin-left: 10px;"
+	id="stroy_${storyTask.get(0).taskStory.id}">
+
+<table>
+
+	<thead>
+
+		<td>ID</td>
+		<td id="desHead">Description</td>
+		<td id="typeHead">Type</td>
+		<td id="statusHead">Status</td>
+		<td id="assigneeHead">Assignee</td>
+		<td id="reviewerHead">Reviewer</td>
+		<td id="pointsHead">Total Points</td>
+		#{list items:daysHeader, as:'day'}
+		<td class="enterEffortHead">Day ${day}</td>
+		#{/list}
+	</thead>
+
+	#{list items:storyTask, as:'task'}
+
+	<tr id="task_${task.id}">
+
+		<td><a
+			style="width: 20px; position: relative; left: -30px; padding: 10px 10px 10px 10px;"
+			title="view the task reports?" href="@{Tasks.getReport(task.id)}"><img
+			src="@{'public/images/note.png'}" /></a> </span>${task.id}</td>
+
+          #{secure.check 'canEditSprintBacklog'}
+          <span style="display:none"> ${flag=true}</span>
+          #{/secure.check}
+        
+         #{ifnot user.id==task.assignee.id || flag}
+
+          #{ifnot task.description}
+          <td>No Description stated</td>
+          #{/ifnot}
+          #{else}
+          <td>${task.description}</td>
+          #{/else}
+          
+          #{ifnot task.taskType}
+          <td>No Type stated</td>
+          #{/ifnot}
+          #{else}
+          <td>${task.taskType.name}</td>
+          #{/else}
+          
+           #{ifnot task.taskStatus}
+          <td>No Status stated</td>
+          #{/ifnot}
+          #{else}
+          <td>${task.taskStatus.name}</td>
+          #{/else}
+        
+          #{ifnot task.assignee}
+          <td>No assignee stated</td>
+          #{/ifnot}
+          #{else}
+          <td>${task.assignee.name}</td>
+          #{/else}
+        
+         #{ifnot task.reviewer}
+          <td>No reviewer stated</td>
+          #{/ifnot}
+          #{else}
+          <td>${task.reviewer.name}</td>
+          #{/else}
+        
+         #{ifnot task.estimationPoints}
+          <td>No points</td>
+          #{/ifnot}
+          #{else}
+          <td>${task.estimationPoints}</td>
+          #{/else}
+        
+        <!--@author Hadeer Younis C4 S8-->
+        #{list items:daysHeader, as:'day'}
+		<td style="text-align: center"
+			id="${day}_${task.id}_${task.estimationPoints}" >
+		#{if task.getEffortPerDay(day-1)==-1.0}<br />
+		#{/if} #{else} ${task.getEffortPerDay(day-1)} #{/else}</td>
+		#{/list}
+	
+        
+         #{/ifnot}
+      
+            
+      
+         #{else}
+		#{ifnot task.description}
+		<td><a href="@{Tasks.getReport(task.id)}"><span
+			id="${task.id}" class="editDES">No description stated
+		</span></a></td>
+		#{/ifnot} #{else}
+		<td class="editDES" title="edit the description?" id="${task.id}"
+			class="editDES">${task.description}</td>
+		#{/else} 
+		
+		#{ifnot task.taskType}
+		<td id="${task.id}" class="editTYPE">
+		#{secure.check 'canChangeTaskType'}
+		<A title="Enter a task type??"HREF="javascript:popUp('@{Tasks.chooseTaskType(task.id)}')">	
+		<span class="ui-icon ui-icon-plusthick" style="display:inline-block;margin-left:1px;"></span></A>
+	    #{/secure.check}
+		No type chosen
+		</td>
+		#{/ifnot} 
+		#{else}
+		<td id="${task.id}" title="edit the task type?" class="editTYPE">
+		#{secure.check 'canChangeTaskType'}
+		<A title="Change the task type??" HREF="javascript:popUp('@{Tasks.chooseTaskType(task.id)}')">
+		<span class="ui-icon ui-icon-pencil" style="display:inline-block;margin-left:1px;"></span></A>
+		#{/secure.check}
+		${task.taskType.name}</td>
+		#{/else} 
+		
+		#{ifnot task.taskStatus}
+		<td id="${task.id}" class="editStatus">
+		<A title="Add the task Status??"HREF="javascript:popUp('@{Tasks.chooseTaskStatus(task.id)}')">
+		<span style="display:inline-block;margin-left:1px;" class="ui-icon ui-icon-plusthick"></span></A>
+		No status chosen
+		</td>
+		#{/ifnot}
+		 #{else}
+		<td id="${task.id}" title="edit the task type?" class="editStatus">
+		<A title="edit the task status??"HREF="javascript:popUp('@{Tasks.chooseTaskStatus(task.id)}')">
+		<span style="display:inline-block"><span class="ui-icon ui-icon-pencil" style="display:inline-block;margin-left:1px;"></span></A>
+		${task.taskStatus.name}</span></td>
+		#{/else}
+		
+		 #{ifnot task.assignee}
+		<td id="${task.id}_assigneee" class="editASSI"><A title="Choose an assignee?"HREF="javascript:popUp('@{Tasks.chooseTaskAssiRev(task.id,0)}')">
+		<span class="ui-icon ui-icon-person" style="display:inline-block;margin-left:1px;"></span></A>
+		Choose assignee</td>
+		#{/ifnot}
+		 #{else}
+		<td id="${task.id}_assigneee" class="editASSI"><A  title="change assignee?" HREF="javascript:popUp('@{Tasks.chooseTaskAssiRev(task.id,0)}')">
+		<span class="ui-icon ui-icon-person" style="display:inline-block;margin-left:1px;"></span></a>
+		${task.assignee.name}
+		</td>
+		#{/else} 
+		
+		#{ifnot task.reviewer}
+		<td id="${task.id}" class="editREV"><A title="Add a reviewer?"HREF="javascript:popUp('@{Tasks.chooseTaskAssiRev(task.id,1)}')">
+		<span class="ui-icon ui-icon-person" style="display:inline-block;margin-left:1px;"></span></a>
+		No reviewer chosen</td>
+		#{/ifnot} 
+		#{else}
+		<td id="${task.id}" title="Change the reviewer?" class="editREV"><A HREF="javascript:popUp('@{Tasks.chooseTaskAssiRev(task.id,1)}')">
+		<span class="ui-icon ui-icon-person" style="display:inline-block;margin-left:1px;"></span></a>
+		${task.reviewer.name}</td>
+		#{/else} 
+		
+		#{ifnot task.estimationPoints}
+		<td id="${task.id}" class="editPOINTS">No points 
+		</td>
+		#{/ifnot}
+		 #{else}
+		<td id="${task.id}" title="edit the estimationpoints?"
+			class="editPOINTS" style="text-align: center">${task.estimationPoints}</td>
+		#{/else}
+
+		<!--@author Hadeer Younis C4 S8-->
+		#{list items:daysHeader, as:'day'}
+		<td style="text-align: center"
+			id="${day}_${task.id}_${task.estimationPoints}" class="enterEffort">
+		#{if task.getEffortPerDay(day-1)==-1.0}
+		#{/if} #{else} ${task.getEffortPerDay(day-1)} #{/else}</td>
+		#{/list}
+		#{/else}
+	</tr>
+
+	#{/list}
+</table>
+</div>
+<br />
+#{/list}
+ #{/else} 
+ 
+ <script type="text/javascript">
+/**
+ * This function checks which check boxes are checked 
+ so i can hide the columns coresponding to them and 
+ show the rest
+ *
+ * @author ahmedkhaled7
+ * @category C4S4/C4S5
+ * @see	   hide and show columns
+ */
+function customize_columns()
+{
+	//alert($('#option1').is(':checked'));
+
+	if($('#option1').is(':checked')==true)	
+		{$('.editDES').css('display','none');
+		$('#desHead').css('display','none');
+		}
+	else{$('.editDES').css('display','table-cell');
+	$('#desHead').css('display','table-cell');
+		}
+
+	if($('#option2').is(':checked')==true)	
+	{$('.editTYPE').css('display','none');
+	$('#typeHead').css('display','none');
+	}
+else{$('.editTYPE').css('display','table-cell');
+$('#typeHead').css('display','table-cell');
+	}
+
+	if($('#option3').is(':checked')==true)	
+	{$('.editASSI').css('display','none');
+	$('#assigneeHead').css('display','none');
+	}
+else{$('.editASSI').css('display','table-cell');
+$('#assigneeHead').css('display','table-cell');
+	}
+
+	if($('#option4').is(':checked')==true)	
+	{$('.editREV').css('display','none');
+	$('#desHead').css('display','none');
+	}
+else{$('.editREV').css('display','table-cell');
+$('#reviewerHead').css('display','table-cell');
+	}
+
+	if($('#option5').is(':checked')==true)	
+	{$('.editPOINTS').css('display','none');
+	$('#pointsHead').css('display','none');
+	}
+else{$('.editPOINTS').css('display','table-cell');
+$('pointsHead').css('display','table-cell');
+	}
+
+if($('#option6').is(':checked')==true)	
+{$('.enterEffort').css('display','none');
+$('.enterEffortHead').css('display','none');
+}
+else{$('.enterEffort').css('display','table-cell');
+$('.enterEffortHead').css('display','table-cell');
+}
+}
+//$('#checklist').toggle();
+
+</script>

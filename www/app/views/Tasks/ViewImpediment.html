@@ -1,0 +1,56 @@
+#{extends 'main.html' /}
+#{set title:'Showing Impediment Tasks'/}
+#{set 'moreScripts'}
+<script language="javascript" type="text/javascript" src="@{'/public/javascripts/sorttable.js'}"></script>
+#{/set}
+
+
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${Proj_id}">${name} </a></li>
+<li><a href="/tasks/choose?Proj_id=${Proj_id}">Criteria</a></li>
+#{/set}
+
+#{if SprintsInProject.size()==0}
+There are no sprints in this project
+#{/if} 
+#{else}
+#{list items:ints, as:'i'}
+
+
+
+<h1> Sprint ${SprintsInProject.get(i).sprintNumber} </h1>
+	#{if Tasks[i].size()!=0}
+	<table class="sortable" border="3">
+	<th>ID</th>
+		<th>Description</th>
+		<th>Status</th>
+		<th>Dependent On</th>
+</tr>
+
+
+
+#{list items:Tasks[i], as:'task'}
+<tr><td>${task.id}</td>
+			<td>${task.description} </td>
+		 	<td>${task.taskStatus.name} </td>
+		 	<td style="text-align:left !important">
+		 	
+		 #{list items:task.dependentTasks, as:'itd'}
+		 	<a href="@{Tasks.getReport(itd.id)}"> ${itd.id}</a>: ${itd.description}
+		 	 <br>
+		 	#{/list}
+		 	</td>
+</tr>
+#{/list}
+</table>
+#{/if}
+#{else}
+
+ There are no impediment tasks in that sprint
+
+#{/else}
+#{/list}
+
+#{/else}
+

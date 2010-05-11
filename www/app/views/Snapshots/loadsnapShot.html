@@ -1,0 +1,56 @@
+#{extends 'main.html' /}
+#{set title:'Snapshot' /}
+
+<ul id="data" id="Columnsofsnapshot" >
+<h1>Snapshot</h1>
+		<table>
+				<thead>	
+					<td style="border:1px solid #333"><b>Headers</b></td>
+					#{list items:Columnsofsnapshot, as:'col'}
+					<td style="border:1px solid #333"> 		<div ><b>${col}</b></div></td>
+					#{/list}
+				</thead>
+				#{list items:data, as:'component'}
+				
+				#{list items:cols, as:'col'}
+				<td style="border:1px solid #333">
+				
+				</td>
+				#{/list}
+				</tr>
+		
+					<tr  >
+											<td style="border:1px solid #333"><b>
+											
+											${component.title}</b></td>
+						#{list items:component, as:'col'}
+						
+						<td style="border:1px solid #333">
+						 
+						
+							#{list items:col, as:'task'}
+								
+							<p>
+								
+							
+									
+								
+								
+								
+								
+								
+								<div style="border: 1px dotted black;" align="center">${task}</div>
+								
+								
+							
+								
+								</p>
+							#{/list}
+						</td>
+						#{/list}
+					</tr>
+				#{/list}
+			</table>
+
+
+	

@@ -1,0 +1,58 @@
+#{extends 'CRUD/layout.html' /}
+
+<div id="crudShow" class="${type.name}">
+	
+	<h2 id="crudShowTitle">Edit Product Role</h2>
+	
+	<div class="objectForm">
+	#{form action:@save(object.id), enctype:'multipart/form-data'}
+		#{crud.form fields:['name','description']}
+		#{crud.custom 'name'}
+		<label for="object_name"> Name </label> 
+		<input id="object_name" class="" type="text" name="object.name" value="${object.name}" size="50" /> 
+		<span class="crudHelp"  style="color:red"> * </span> 
+		#{/crud.custom}
+		#{crud.custom 'description'}
+		<label for="object_description"> Description </label> 
+		<textarea id="object_description" cols="48" rows="5" class="" name="object.description" size="100" >${object.description}</textarea>  
+		#{/crud.custom}
+		#{/crud.form}
+		<p class="crudButtons">
+		#{if editable}
+		#{secure.check 'canEditProductRole' }
+			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+		#{/secure.check}
+		#{/if}
+		
+		#{if !(editable)}
+		<p style="color:red"> This Product role is included in some stories which are included in a current sprint, there for it cannot be edited. </p>
+		#{/if}
+		</p>
+	#{/form}
+	</div>
+	
+	#{if deletable}
+    #{secure.check 'canDeleteProductRole' }
+	#{form @delete(object.id)}
+		<p class="crudDelete">
+			<input type="submit" value="&{'crud.delete', type.modelName}" onclick="deleteProductRole()" />
+		</p>
+	#{/form}
+	#{/secure.check}
+	#{/if}
+	
+	#{if !(deletable)}
+	    <br/>
+		<p style="color:red"> *This Product role is included in some stories, there for it cannot be deleted. </p>
+	#{/if}
+	<p style="color:red" size=""> <small>* Required Fields</small></p>
+	<a href="/productroles/${object.id}">Back to ${object.name}</a>
+</div>
+
+<script type="text/javascript">
+function deleteProductRole()
+{
+alert('Are you sure you want to delete this product role?');
+}
+</script>

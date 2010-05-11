@@ -1,0 +1,9 @@
+Project(c4s1p):
+    name: c4s1Proj
+    description: mydescriptionofatestproj
+
+Sprint(c4s1s):
+    sprintNumber: 1
+    startDate: 2010-04-01
+    endDate: 2010-04-05
+    Project: c4s1

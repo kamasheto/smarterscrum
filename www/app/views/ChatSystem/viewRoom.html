@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<!--CHAT SYSTEM START-->
+
+	<head>
+		 <title>Chat System :showing room</title>
+		<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jquery-ui-1.8.custom.css'}"> 
+        #{get 'moreStyles' /}
+        <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="@{'public/javascripts/jquery-ui-1.8.custom.min.js'}"> </script>
+        <script src="@{'/public/javascripts/date.js'}" type="text/javascript" charset="utf-8"></script>
+       	<script src="@{'/public/javascripts/more.js'}" type="text/javascript"charset="utf-8"></script>
+		<script type="text/javascript" src="/public/javascripts/jquery.gritter.min.js"></script>
+        #{get 'moreScripts' /}
+</head>
+<body onload=" signIn(${room.id}) " onunload=" signOut(${room.id}) "> 
+<div id="threadHead"></div>
+<div id="thread">
+	<script type="text/html" id="message_tmpl">
+<strong class="title"><%= message.author%></strong> 
+		<div class="<%= message.author == '${currentUser.name}' ? 'you border-callout' : 'them border-callout' %><%= message.author == 'notice' ? 'notice' : '' %>">
+			<%= message.message.replace('\n', '<br/>') %>
+		<%= message.author == 'notice' ? '' : '<b class="notch"></b>' %></div>
+	</script>
+	</div>
+
+
+<div id="newMessage">	
+	<textarea id="message" name="message"></textarea>
+	<input type="button" value="send" id="send"/>
+</div>
+
+
+
+<script type="text/javascript">
+
+	$('#send').click(function(e) {
+		var message = $('#message').val();
+		$('#message').val('');
+		$.post('@{ChatSystem.addMessage()}', {message: message , id:${room.id}});
+		$('#message').focus(); 
+    });
+
+	// Retrieve new messages
+	var getMessages = function() {
+		$.getJSON('/ChatSystem/newMessages',{id:${room.id}}, function(messages) {
+			$(messages).each(function() {
+				display(this);
+			});
+			setTimeout('getMessages();', 1000);
+		});
+	}	
+	$(function() {
+		getMessages();
+	});
+	
+	// Display a message
+	var display = function(message) {
+		$('#thread').append(tmpl('message_tmpl', {message: message}));
+		var obj = document.getElementById('thread');
+		obj.scrollTop = obj.scrollHeight;
+	}
+	
+	function signIn(id)
+	{
+		$.post('/ChatSystem/enterChat',{id:id});
+	}
+	
+	function signOut(id)
+	{
+		$.post('/ChatSystem/leaveChat',{id:id});
+	}
+	
+</script>
+</body>
+<!--CHAT SYSTEM End-->
+</html>

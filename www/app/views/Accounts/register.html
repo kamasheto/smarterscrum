@@ -1,0 +1,46 @@
+<!--Author: Amr Tj.Wallas-->
+<!--Task: C1S24-->
+#{extends 'Secure/layout.html' /}
+#{set title:'Registr New Account' /}
+#{set 'moreScripts'}
+<script type="text/javascript">
+	// Useless but there for further tweaking if necessary.
+	User = new Object();
+	
+</script>
+#{/set}
+<div id="login">
+	<!--The Registration form element-->
+	<form name = "register" action = "@{addUser()}" method="post">
+		<!--Show an error from the controller if any-->
+		#{ifErrors}
+		<p class="error left">
+		    #{errors}
+		    	${error}<br />
+		    #{/errors}
+		    </p>
+		#{/ifErrors}
+		#{if flash.error}
+			<p class="error left">&{flash.error}</p>
+		#{/if}
+		<p class="form-field">
+			<label>Username</label>
+			<input type="text" name="name" id="firstname" value="${flash.name}" onblur = "User.name = firstname.value"/>
+		</p>
+		<p class="form-field">
+			<label>Email</label>
+			<input type="text" name="email" id="email" value="${flash.email}" onblur = "User.email = email.value"/>
+		</p>
+		<p class="form-field">
+			<label>Password</label>
+			<input type="password" name="password" id="password" onblur = "User.pass = password.value" />
+		</p>
+		<p class="form-field">
+			<label>Confirm Password</label>
+			<input type="password" name="confirmPass" id="confirmPass"  />
+		</p>
+		<p id="signin-field">
+			<input type = "submit" value = "Register" /> or <a href="/secure/login">Login</a>
+		</p>
+	</form> 
+</div>

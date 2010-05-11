@@ -1,0 +1,14 @@
+//@author Hadeer Younis
+//@category C4S1
+#{selenium}
+	open("/sprintbacklog?id=1&componentID=1");
+	assertEquals("Sprint Backlog", selenium.getTitle());
+	click("13_2_10.0");
+	type("lolid", "3");
+	click("12_2_10.0");
+	type("lolid", "d");
+	assertEquals("Please enter a number!", selenium.getAlert());
+	type("lolid", "100000");
+	assertEquals("Please enter a number between 0 & 10", selenium.getAlert());
+	type("lolid", "1");
+#{/selenium}

@@ -1,0 +1,16 @@
+#{extends 'main.html' /}
+#{set title:'Manage roles for: '+project.name /}
+
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
+#{/set}
+
+#{set 'moreLinks'}
+<a href="/admin/roles/new?id=${project.id}">Create new role</a>
+#{/set}
+<ul>
+#{list project.roles}
+	<li><a href="/admin/roles/${_.id}">${_.name}</a></li>
+#{/list}
+</ul>

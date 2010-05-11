@@ -1,0 +1,282 @@
+#{extends 'main.html' /} #{set title:'product backlog' /}
+#{set 'crumbs'}
+
+<script type="text/javascript">
+
+</script>
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
+<li><a href="/productbacklog/${project.id}/${isComp}">Product Backlog</a></li>
+#{/set}
+<div>
+#{ifnot running}
+#{set 'moreScripts'}
+<script language="javascript" type="text/javascript" src="@{'/public/javascripts/jeditable-mod.js'}"></script>
+
+<script type="text/javascript">
+function popUp(URL) 
+{
+day = new Date();
+id = day.getTime();
+eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=200,height=400,left = 583,top = 184');");
+}
+
+$(function() 
+{
+    $('.editDES').editable(
+    	    function(value,settings)
+    	       {
+    	    	 var storyId 	= parseInt($('#lolid').closest("td").attr("id"));
+      	       
+     	        $.post('@{Storys.editDes()}',
+     	            {id:storyId, desc:value});
+
+         	    return(value);      
+    	    },
+    	    {    
+    	        indicator : 'Saving...',
+    	        tooltip   : 'Click to edit...'
+    	    });
+    $('.editSsenario').editable(
+    	    function(value,settings)
+    	       {
+    	        
+    	    	 var storyId 	= parseInt($('#lolid').closest("td").attr("id"));
+      	       
+     	        $.post('@{Storys.editSuccess()}',
+     	            {id:storyId, succ:value});
+
+         	    return(value);       
+    	    },
+    	    {    
+    	        indicator : 'Saving...',
+    	        tooltip   : 'Click to edit...'
+    	    });
+    $('.editFsenario').editable(
+    	    function(value,settings)
+    	       {
+    	    	 var storyId 	= parseInt($('#lolid').closest("td").attr("id"));
+      	       
+     	        $.post('@{Storys.editFailure()}',
+     	            {id:storyId, fail:value});
+
+         	    return(value);      
+    	    },
+    	    {    
+    	        indicator : 'Saving...',
+    	        tooltip   : 'Click to edit...'
+    	    });
+
+    $('.editPRIORITY').editable(
+    	    function(value,settings)
+    	       {
+    	    	 var storyId 	= parseInt($('#lolid').closest("td").attr("id"));
+      	        var p = parseInt(value);
+      	      if(isNaN(p))
+          	{
+          		alert('Please enter a number!');
+          		return;
+          	}
+          	else
+          	{
+      	        
+     	        $.post('@{Storys.editPriority()}',
+     	            {id:storyId, p:p});
+     	       return(value);  
+          	} 
+      	        
+
+         	        
+    	    },
+    	    {    
+    	        indicator : 'Saving...',
+    	        tooltip   : 'Click to edit...'
+    	    });
+
+    
+ });
+</script>
+#{/set}
+#{/ifnot}
+</div>
+<!-- @author ahmedkhaled7 C4 S2,S3
+ Creating a table , then Looping on the list of stories rendered to this page
+ and putting the attributes of each story(id,description , dependent stories, successSenario
+  , failureSenario) on different rows and each attribute in a cell  -->
+
+	
+
+<div id="stories">
+#{ifnot stories} 	
+#{if inproj}
+The project has no stories yet.
+#{/if}
+#{else}
+You are not a user in this project, you cannot view theirstories.
+#{/else}
+#{/ifnot}
+#{else}
+<h1>Product Backlog</h1>
+
+#{set 'moreLinks'}
+	<a title="Take a look at the charts?" href="@{ProductBacklogs.showGraph(project.id,componentId,isComp)}">View the Burndown Chart </a><br/> 
+<a onclick="$('#checklist').toggle()" href="#">Customize columns</a><br/>
+#{/set}
+
+<!--@author ahmedkhaled7 c4S2 
+check boxes for choosing the columns to be hidden -->
+<div id="checklist" style="display:none"><br>
+	
+	<input type="checkbox" id="option1" value="description"> Description
+	<input type="checkbox" id="option2" value="priority"> Priority<br/>
+	<input type="checkbox" id="option3" value="success demos"> Success Demos
+	<input type="checkbox" id="option4" value="failure demos"> Failure Demos<br/>
+	
+	<a id="custom" onclick="customize_columns();$('#checklist').toggle()" href="#">hide</a>
+	</div>
+
+<!-- @author ahmedkhaled7 C4 S2,S3
+ Creating a table , then Looping on the list of stories rendered to this page
+ and putting the attributes of each story(id,description ,priority, dependent stories
+ , successSenarios , failureSenarios) on different rows and each attribute in a cell  -->
+<h3>Stories</h3>
+<table id="project_stories">
+
+	<thead>
+	<td>ID</td>
+	<td id="desHead"> Description</td>
+	<td id="prioHead">Priority</td>
+	<td> Dependent Stories</td>
+	<td id="succHead"> Success Demos</td>
+	<td id="failHead"> Failure Demos</td>
+	</thead>
+ 
+  #{list items:stories, as:'story'}
+	<tr id="story_${story.id}">
+		
+	
+		<td>${story.id}</td>
+		<td id=${story.id} class="editDES">${story.description}</td>
+		<td id=${story.id} class="editPRIORITY">${story.priority}</td>
+		
+		
+		 #{ifnot story.dependentStories}
+		 <td id=${story.id} class="editDStories">
+		 <A HREF="javascript:popUp('@{Storys.chooseDependentStories(story.id)}')">
+		<span title="Edit the dependent stories??"class="ui-icon ui-icon-plusthick" style="display:inline-block"></span></A>
+		 No dependent stories</td>
+		 #{/ifnot}
+	    
+	    #{else}
+		<td id=${story.id} class="editDStories">   
+	    <A HREF="javascript:popUp('@{Storys.chooseDependentStories(story.id)}')">
+		<span title="Edit the dependent stories??"class="ui-icon ui-icon-pencil" style="display:inline-block;margin-left:1px;"></span></A>
+		
+		#{list items:story.dependentStories, as:'dependentStory'}
+                     ${dependentStory.id},
+                      #{/list}
+         
+          </td>
+          #{/else}        
+				
+	<!-- 	
+		<td  id=${story.id} class="editSsenario"><ul>
+		#{list items:story.succussSenario, as:'scenario'}
+		 <li>${scenario}</li>
+		#{/list}</ul></td>
+				
+		<td  id=${story.id} class="editFsenario"> 
+		#{list items:story.failureSenario, as:'scenario'}
+		 <li>${scenario}</li>
+		#{/list} </td>
+		 -->
+		#{ifnot story.succussSenario} 
+		<td>
+		  No success scenarios
+		  </td>
+		  #{/ifnot}
+		 	
+		 	#{else}
+		 	<td  id="${story.id}" class="editSsenario">
+		
+		 ${story.succussSenario.nl2br()}
+		</td>
+			#{/else}	
+			
+			#{ifnot story.failureSenario} 
+		<td>
+		  No failure scenarios
+		 </td>
+		 #{/ifnot}
+		
+		#{else}
+		<td  id="${story.id}" class="editFsenario">
+		 ${story.failureSenario}
+		</td>		
+		#{/else}
+
+	</tr>
+
+
+
+	#{/list}
+	
+	</table>
+	
+	#{/else}
+	</div>
+
+	
+	
+
+
+<script type="text/javascript">
+/**
+ * This function checks which check boxes are checked 
+ so i can hide the columns coresponding to them and 
+ show the rest
+ *
+ * @author ahmedkhaled7
+ * @category C4S2
+ * @see	   hide and show columns
+ */
+function customize_columns()
+{
+	
+	if($('#option1').is(':checked')==true)	
+	{$('.editDES').css('display','none');
+	$('#desHead').css('display','none');
+	}
+else{$('.editDES').css('display','table-cell');
+$('#desHead').css('display','table-cell');
+	}
+
+	if($('#option2').is(':checked')==true)	
+	{$('.editPRIORITY').css('display','none');
+	$('#prioHead').css('display','none');
+	}
+else{$('.editPRIORITY').css('display','table-cell');
+$('#prioHead').css('display','table-cell');
+	}
+
+	if($('#option3').is(':checked')==true)	
+{$('.editSsenario').css('display','none');
+$('#succHead').css('display','none');
+}
+else{$('.editSsenario').css('display','table-cell');
+$('#succHead').css('display','table-cell');
+}
+
+if($('#option4').is(':checked')==true)	
+{$('.editFsenario').css('display','none');
+$('#failHead').css('display','none');
+}
+else{$('.editFsenario').css('display','table-cell');
+$('#failHead').css('display','table-cell');
+}
+}
+</script>
+
+<!--  number 5 is just a dummy, in the show graph --> 
+
+

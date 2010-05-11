@@ -1,0 +1,84 @@
+#{extends 'main.html' /}
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${proj.id}">${proj.name}</a></li>
+<li><a href="/sprints/showsprints?projectId=${proj.id}">${proj.name} Sprints</a>
+<li><a href="/sprints/showsprint?id=${sprint.id}&projectId={proj.id}">Sprint ${sprint.sprintNumber}</a>
+
+#{/set}
+ 
+#{set 'moreScripts'}
+<script type="text/javascript">
+function isBefore(date){
+	var now=new Date();
+	var other=new Date(date);
+	if(now<other){
+	return  true;
+		}
+	else{
+	return false;
+		}
+}</script>
+#{/set}
+
+
+<h1>Sprint ${sprint.id}</h1>
+#{if (!running)}
+<script type="text/javascript">
+
+	if(isBefore('${sprint.format(sprint.startDate)}')==true){
+	document.write('<a id="button"href="@{projectshow(sprint.id,sprint.project.id)}">Edit</a>');
+		}
+	else{
+	document.write('<div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all"> <p><span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> <strong>This is a past sprint. You cannot edit it.</strong></p></div>');
+		}
+</script>
+#{/if} 
+#{if (running)} 
+<div style="margin-top: 20px; padding: 0pt 0.7em;" class="ui-state-highlight ui-corner-all"> 
+					<p><span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+					<strong>The sprint is currently running</strong></p>
+				</div>
+
+#{/if}<br/><br/>
+<strong>Status:</strong>
+<script type="text/javascript">
+if(isBefore('${sprint.format(sprint.startDate)}')==true){
+	document.write('Upcoming Sprint');
+		}
+	else{
+	document.write('Past Sprint');
+		}
+</script>
+<br/>
+<strong>Sprint Number:</strong> ${sprint.sprintNumber}
+<br />
+<strong>Project:</strong> ${proj.name}
+<br />
+<strong>Start Date: </strong>${sprint.format(sprint.startDate)}
+<br />
+<strong>End Date:</strong> ${sprint.format(sprint.endDate)}
+<br />
+
+<h5>
+Sprint Component Backlogs</h5>
+#{list items:sprint.project.components, as:'component'}
+<a title="Look @ ${component.name}'s sprint backlog?" href="@{SprintBacklog.index(component.id,sprint.id)}">${component.name}</a>
+<br/>
+<br/>
+#{/list}
+<h5>
+Task Boards</h5>
+
+<a title="Tak a look @ the full task board?" href="/boards/loadboard?sprintID=${sprint.id}">View Sprint ${sprint.id} Task Board</a>
+<br/>
+<br/>
+#{list items:sprint.project.components, as:'component'}
+<a title="Look @ ${component.name}'s sprint ${sprint.id} Task Board?"href="/boards/loadComponentBoard?sprintID=${sprint.id}&componentID=${component.id}">View ${component.name} Sprint ${sprint.id}</a>
+<br/>
+<br/>
+#{/list}
+
+<body>
+
+</body>

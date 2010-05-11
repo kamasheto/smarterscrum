@@ -1,0 +1,26 @@
+#{extends 'main.html' /}
+#{set title:'Table' /}
+
+#{if cols_display}
+		<table id="mainBoard">
+			
+			<tr>
+				<td> Headers </td>
+			#{list items:cols_display, as:'col'}
+				<td> ${col.columnRowName} </td>
+			#{/list}
+			</tr>
+			
+			
+		</table>
+#{/if}
+
+add new component: <input type="text" id="new_component"> 
+<input type="button" value="add" onclick="show_component()" id="sComponent">
+<div id="headers"> </div>
+<input type="button" disabled="true" value="submit component" onclick="add_component()" id="addComponent">
+
+<script type="text/javascript">
+	
+
+</script>

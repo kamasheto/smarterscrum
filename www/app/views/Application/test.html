@@ -1,0 +1,13 @@
+#{extends 'main.html' /}
+#{set title:'Test DatePicker' /}
+
+<input type="text" id="thing" />
+
+<script type="text/javascript">
+$('#thing').datepicker({  
+	changeMonth: true,
+	changeYear: true,
+    showTime: true,
+	dateFormat: '@'
+ }); 
+	</script>

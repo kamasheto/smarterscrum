@@ -1,0 +1,63 @@
+#{extends 'main.html' /}
+#{set title:'Request Editing a story' /}
+
+<script type="text/javascript">
+
+function sendRequest()
+{
+	var descr = $('#story_desc').val();
+	var suc = $('#success_scenario').val();
+	var failu = $('#failure_scenario').val();
+	var notes2 = $('#notes').val();
+	var priority2 = $('#priority').val();
+	var did = $('#id').val();
+	
+	$.post('@{sendRequest()}',
+			{id:did, des:descr, succ:suc, fail:failu, priority:priority2, notes:notes2},
+			function(message)
+			{
+				alert(message);
+			});
+}
+
+function send_delete_request()
+{
+	var did = $('#id').val();
+	var story = $('#story_desc').val();
+	
+	$.post('@{sendDeleteRequest()}',
+			{id:did, s:story},
+			function(message)
+			{
+				alert(message);
+			});
+}
+
+</script>
+
+<h1>Request Editing a story</h1>
+<i>When you request editing a story, an email will be sent to the project owner to approve changes or deny them. You will not be notified by the changes.</i>
+<form name="f1">
+<p>Story Description</p>
+<input type = "text" id="story_desc" value="${story.description}"><br>
+
+<p>Story Success Scenarios</p>
+<textarea id="success_scenario">${story.succussSenario}</textarea><br>
+
+<p>Story Failure Scenarios</p>
+<textarea id="failure_scenario">${story.failureSenario}</textarea><br>
+
+<p>Story's Notes</p>
+<textarea id="notes">${story.notes}</textarea><br>
+
+<p>Story's Priority</p>
+<select id="priority">
+<option value="0" #{if story.priority == 0} selected#{/if}>Low</option>
+<option value="1" #{if story.priority == 1} selected#{/if}>Medium</option>
+<option value="2" #{if story.priority == 2} selected#{/if}>High</option>
+</select><br>
+<input id="id" type = "hidden" value="${story.id}">
+</form>
+<button onclick="sendRequest()">Request Changes</button>
+<b>Or you can just request deleting the entire story</b>
+<button onclick="send_delete_request()">Request Delete</button>

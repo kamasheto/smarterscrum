@@ -1,0 +1,95 @@
+#{extends 'main.html' /}
+#{set title:'Showing profile: '+user.name /}
+#{set 'crumbs'}
+<li><a href="/show/users">Users</a></li>
+<li><a href="/show/user?id=${user.id}">${user.name}</a></li>
+#{/set}
+#{set 'moreLinks'}
+<a href="@{Requestreviewers.ListTypesOfReviewers()}">Request To Be A Reviewer in a Project</a>
+<div><a href="@{Requestreviewers.respond()}">respond for the requested users to be reviewers in a project</a></div>
+#{/set}
+#{if flash.success}
+<p class="success">&{flash.success}</p>
+#{/if}
+<h2>${user.name}</h2>
+
+<div id="accordion">
+	<h4><a>Projects</a></h4>
+	<div>
+		<div class="tiny_info">Click a project to toggle the components this user is member of</div>
+		#{list items:user.projects, as:'project'}
+			<div><a href="javascript:;" onclick="$('#project_components_${project.id}').toggle()">${project.name}</a></div>
+			<ol id="project_components_${project.id}" style="display:none;">
+			#{set has:false /}
+			#{list items:project.components, as:'component'}
+				#{if user.components.contains(component)}
+					<li>${component.name}</li>
+					#{set has:true /}
+				#{/if}
+			#{/list}
+			#{ifnot has}
+				--
+			#{/ifnot}
+			</ol>
+		#{/list}
+	</div>
+	<h4><a>Options</a></h4>
+	<div>
+	<a href="#" onclick="$('#roles').toggle()">Invite user to a project</a><br />
+		<div id="roles" style="display:none;" class="">
+			<input type="text" id="project_search" onkeyup="search_projects();" style="width:200px;opacity:0.5;" value="Start typing project name..." onfocus="if($(this).val()==$(this)[0].defaultValue) {$(this).css({opacity:1}); $(this).val('');}" onblur="if($(this).val()==''){$(this).val($(this)[0].defaultValue); $(this).css('opacity', 0.5);}" /> <img id="loading" style="display:none;" src="@{'/public/images/ajax-loader.gif'}" />
+			<div id="search_results" class="roles" style="display:none;"></div>
+		</div>
+		<br style="clear:both;" />
+		#{secure.check 'canEditProfile'}<a href="/accounts/profile?id=${user.id}">Edit profile</a>#{secure.check 'systemAdmin'} &bull; <a href="/admin/users/${user.id}">(ACP) Edit Profile</a>#{/secure.check}<br />#{/secure.check}
+		#{if user == me}<a href="/requestDeletion">Request to be deleted from the system</a>#{/if}
+		#{secure.check 'systemAdmin'}
+		<div class="clear"></div>
+		<a href="@{Users.del(user.id)}">Delete</a>
+		#{/secure.check}
+	</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#accordion").accordion({ autoHeight:false } );
+})
+searching = null;
+function search_projects() {
+	if (!$('#project_search').val()) return;
+	$('#loading').show();
+	if (searching) {
+		searching.abort();
+	}
+	searching = $.post( '/ajax/projects?invite=true&query=' + $('#project_search').val(),
+			function(data) {
+				str = '';
+				$.each(data, function(id, item) {
+					str += '<div style="height:150%;clear:both;">' + 
+								'<div style="float:left;width:50px;">'+item.name+'</div>' + 
+								'<div style="float:left;">' + 
+								'<span id="project_'+item.id+'_roles"><a href="#" id="invite_lnk_'+item.id+'" onclick="load_roles('+item.id+');">Invite</a></span>' + 
+								'</div>' + 
+							'</div>';
+				} );
+				$('#search_results').html(str).slideDown();
+				$('#loading').hide();
+			});
+}
+function load_roles( project_id ) {
+	$.post('/projecttasks/getroles?id='+project_id, function(data){
+		str = '<select id="role_'+project_id+'">';
+		$.each(data, function(id, item){
+			str += '<option value='+item.id+'>'+item.name+'</option>';
+		});
+		str += '</select> <a href="#" onclick="send_invite('+project_id+');">Send Invite!</a>';
+		$('#project_'+project_id+'_roles').html( str );
+	});	
+}
+
+function send_invite( project_id ) {
+	$.post('/invites/sendinvite?id=' + $('#role_'+project_id).val() + '&userId=${user.id}', function(data){
+		$('#project_'+project_id+'_roles').html(' &minus; Invitation sent!');
+		$('#invite_lnk_'+project_id).show();
+	});
+}
+</script>

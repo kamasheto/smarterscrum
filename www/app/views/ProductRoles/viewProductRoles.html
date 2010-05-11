@@ -1,0 +1,38 @@
+#{extends 'CRUD/layout.html' /}
+#{extends 'main.html' /}
+#{set title: projectName+ '\'s ProductRoles '/}
+
+#{if flash.success}
+<p class="success" style="color:gray">&{flash.success}</p>
+#{/if}
+
+
+<p class="crudDelete">
+<h2> ${projectName}'s Product Roles </h2>
+<ul id="productRoles" >
+#{if !(noProductRoles)}
+#{list items:productRoles, as:'productRole'}
+   #{if !productRole.deleted}
+	<li id="productRole_${productRole.name}" >
+		<span id= "productRole_${productRole.name}">
+			<a href="/productroles/${productRole.id}">${productRole.name}</a> 
+		    <br>
+		</span>  
+	</li>
+    #{/if} 
+#{/list}
+#{/if}
+
+#{if noProductRoles}
+   <p style="color:gray"> This project has no Product roles. </p>
+#{/if}
+</ul>
+</p>
+
+
+#{secure.check 'canAddProductRole' }
+<a href="/admin/projects/${id}/productroles/new"> Add a new Product Role. </a>
+#{/secure.check}
+
+<br/>
+<a href="/show/project?id=${id}">Back to ${projectName}</a>

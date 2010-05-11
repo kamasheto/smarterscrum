@@ -1,0 +1,52 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+# This module route should stay the FIRST route
+GET		/admin/?			Application.adminIndexPage
+*      	/admin              module:crud
+# Add BELOW
+
+GET		/admin/projects/{id}/components/new				Components.blank
+GET		/components/{id}								Application.viewComponent
+GET		/projects/{id}/components						Application.viewComponents
+
+
+
+GET     /admin/projects/{id}/meetings/new         		Meetings.blank
+GET		/meetings/toggletask							Meetings.toggleTask
+GET     /meetings/{id}                           Meetings.viewMeeting
+GET     /projects/{id}/meetings                  Meetings.viewMeetings
+GET     /projects/requestrole              				Requests.RequestRole
+GET     /projects/meetings/associations    				Meetings.associations
+GET     /projects/{projectID}/meetings                  Meetings.deleteMeeting
+GET		/projects/requestrespond						Requests.requestRespond
+GET		/projects/deletionRequestRespond				Requests.deletionRequestRespond
+GET		/components/{id}/assignusers					Users.assignUsers
+GET     /sprintbacklog							        SprintBacklog.index
+GET     /tasks/EditTaskAPI/{TaskID}                     Tasks.EditTaskAPI
+GET     /productbacklog/{id}/{isComp}          	        ProductBacklogs.index
+GET		/accounts/profile								Application.profile
+GET     /tasks/chooseTaskAssiRev/{taskId}               Tasks.chooseTaskAssiRev
+GET     /projects/{id}/productroles                     ProductRoles.viewProductRoles
+GET     /productroles/{id}                              ProductRoles.viewProductRole
+GET     /admin/projects/{id}/productroles/new           ProductRoles.blank
+
+GET     /tasks/edit/{id}				         		Tasks.show
+POST	/accounts/editProfile							Application.editProfile
+
+# Home page
+GET     /                                       	Application.index
+# RegistrationForm
+GET     /register								   	Accounts.register
+
+# DeletionRequest
+GET		/requestDeletion							Accounts.requestDeletion
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/                                	staticDir:public
+
+# Catch all
+*       /{controller}/{action}                  {controller}.{action}
+*		/{controller}/?							{controller}.index
+
+

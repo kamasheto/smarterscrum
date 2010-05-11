@@ -1,0 +1,23 @@
+#{extends 'main.html' /}
+#{set title:'snapshot List' /}
+<h2>Snapshots List</h2>
+
+<ul>
+<table>
+		<thead>		
+		
+		<td ><b>Snapshot</b></td>
+		<td><b>Captured By</b></td>
+		<td><b>Date</b></td>
+				</thead>
+#{list items:snapshots, as:'snapshot'}
+		<tr>
+	<td>	
+<li><a href="@{Snapshots.loadsnapShot(snapshot.id)} ">Snapshot ${snapshot.id}</a></li>
+		</td>
+		<td>${snapshot.user.name}</td>
+		<td>${snapshot.date}</td>
+		</tr>
+#{/list}
+</table>
+</ul>

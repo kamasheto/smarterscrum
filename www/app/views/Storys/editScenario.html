@@ -1,0 +1,180 @@
+#{extends 'main.html' /}
+#{set title:'Edit Demo Entries' /}
+
+<table border="1">
+<tr>
+<td valign="top">
+
+ <div id="succssesDiv">
+            <h3> Succsses Scenarios </h3>    
+            #{list items:succsses, as:'Scenario'}
+           
+              <TEXTAREA NAME="succssesName1" id="succsses${Scenario_index}"  ROWS="4" COLS="60">${Scenario}</TEXTAREA>
+              <br id="brs{Scenario_index}"/> 
+             <input type="button"  value="delete the scenario above" id="bs${Scenario_index}"  onclick="removeSuccsses(${Scenario_index});"/> 
+             <br id="br2s${Scenario_index}"/> 
+               
+            #{/list}
+          
+        
+       
+       
+        </div>
+ <div><input type="button" id="add" value="Add new scenario" onclick="addSuccsses();" /> </div>
+</td>
+
+<td valign="top">
+ <div id="failureDiv">
+            <h3> Failure Scenarios </h3>
+                  
+            #{list items:failure, as:'Scenario'}
+           
+              <TEXTAREA NAME="failureName1" id="failure${Scenario_index}"  ROWS="4" COLS="60">${Scenario}</TEXTAREA>
+              <br id="brf{Scenario_index}" /> 
+             <input type="button"  value="delete the scinario above" id="bf${Scenario_index}"   onclick="removeFailure(${Scenario_index});"/> 
+             <br id="br2f${Scenario_index}"/> 
+               
+            #{/list}
+          
+        </div>
+ <div><input type="button" id="add"  value="Add new scinario" onclick="addFailure();" /> </div>
+
+        
+
+</td>
+</tr>
+</table>
+<input type="hidden" value="${succssesNum}" id="succssesNum" />
+<input type="hidden" value="${succssesNum}" id="succssesId" />
+
+<input type="hidden" value=${failureNum} id="failureNum" />
+  <input type="button" id="save" value="Save Scinarios" onclick="save();" /> 
+
+<script type="text/javascript">
+
+
+function save()
+{
+	var confirmation=confirm("Do you want to save the new Scinarios?");
+	if(confirmation)
+	{
+	var succsses=$("textarea[name='succssesName1']");
+	
+	var ss="";
+	for(var i=0; i< succsses.length;i++)
+	{
+		ss=ss+succsses[i].value +"\n";
+	}
+	
+	 $.post('@{Storys.saveSuccsses()}',
+	  		  {id:${storyId},s:ss},
+	  		  function(){});
+
+	
+		var failure=$("[name='failureName1']");
+		
+	var ff="";
+	for(var i=0; i< failure.length;i++)
+	{
+		ff=ff+failure[i].value +"\n";
+	}
+	
+	 $.post('@{Storys.saveFailure()}',
+	  		  {id:${storyId},f:ff},
+	  		  function(){});
+	}
+	  		  }
+
+function addSuccsses() {
+	
+	
+	  var ni = document.getElementById("succssesDiv");
+	  
+	  var newdiv = document.createElement('TEXTAREA');
+	  var num= ( $('#succssesNum').val()-1)+2;
+	  var id= ( $('#succssesId').val()-1)+2;
+	  
+	  var columns=60;
+	  newdiv.setAttribute('cols',columns);
+	  newdiv.setAttribute('id',"succsses"+num);
+	  newdiv.setAttribute('name','succssesName1');
+	  newdiv.setAttribute('rows',4);
+	  
+	  var br=document.createElement('br');
+	  br.setAttribute('id',"br2s"+num);
+	  var br1=document.createElement('br');
+	  br1.setAttribute('id',"brs"+num);
+	  
+	  ni.appendChild(newdiv);
+	  ni.appendChild(br);
+	  
+	  var newbutton =document.createElement('button');
+	  newbutton.setAttribute('onclick',"removeSuccsses("+num+");");
+	  newbutton.innerHTML ='Delete the scenario above';
+	  newbutton.setAttribute('id','bs'+num);
+	  ni.appendChild(newbutton);
+	  ni.appendChild(br1);
+
+	  var succssesNum= document.getElementById("succssesNum");
+	  succssesNum.setAttribute('value',num);
+	  var succssesid= document.getElementById("succssesId");
+	  succssesId.setAttribute('value',id)
+	}
+
+function removeSuccsses( id) {
+	
+	
+	 var d=document.getElementById("succssesDiv");
+	  $('#succsses'+id).remove();
+	  $('#bs'+id).remove();
+		 $('#br2s'+id).remove();
+	  $('#brs'+id).remove();
+	  
+	  
+		 
+	}
+
+function addFailure() {
+	
+	  var ni = document.getElementById("failureDiv");
+	
+	  var newdiv = document.createElement('TEXTAREA');
+	  var num= ( $('#failureNum').val()-1)+2;
+	  var columns=60;
+	  newdiv.setAttribute('cols',columns);
+	  newdiv.setAttribute('id',"failure"+num);
+	  newdiv.setAttribute('name','failureName1');
+	  newdiv.setAttribute('rows',4);
+	  
+	  var br=document.createElement('br');
+	  br.setAttribute('id',"br2f"+num);
+	  var br1=document.createElement('br');
+	  br1.setAttribute('id',"brf"+num);
+	  
+	  ni.appendChild(newdiv);
+	  ni.appendChild(br);
+	 
+	  var newbutton =document.createElement('button');
+	  newbutton.setAttribute('onclick',"removeFailure("+num+");");
+	  newbutton.innerHTML ='Delete the scenario above';
+	  newbutton.setAttribute('id','bf'+num);
+	  
+	  ni.appendChild(newbutton);
+	  ni.appendChild(br1);
+			  
+	  var failureNum= document.getElementById("failureNum");
+	  failureNum.setAttribute('value',num);
+
+	}
+function removeFailure( id) {
+	
+	
+	 var d=document.getElementById("failureDiv");
+	 
+	 $('#bf'+id).remove();
+	 $('#brf'+id).remove();
+	 $('#br2f'+id).remove();
+	  $('#failure'+id).remove();
+	  
+	}
+</script>

@@ -1,0 +1,12 @@
+//@Author: Dina Helal
+//this is used to test story 16
+//you have to be looged in as admin to be able to edit
+
+#{selenium}
+    open('/boards/loadboard?sprintID=1')
+    click('1')
+	type('1','newstatus')
+	pause('5000')
+	open('/boards/loadboard?sprintID=1')
+	assertText('1', 'newstatus') 
+#{/selenium}

@@ -1,0 +1,25 @@
+#{extends 'main.html' /}
+#{set title:'RoleRequest' /}
+
+<ul id= "proles">
+#{list items:roles, as:'ro'}
+	<li> <a href="#">${ro.name}</a>
+	<a onclick="request_role(${ro.id}, ${user_id});" href="#">request</a>
+	</li>
+	
+#{/list}
+
+</ul>
+<br/>
+
+
+<script type="text/javascript">
+function request_role( id, id2 )
+{
+	$.post('@{roleRequest()}' ,
+		    {roleId:id , userId:id2} ,
+		    function(){
+		    $('#ro_'+id).remove();
+		    })
+		}
+		</script>

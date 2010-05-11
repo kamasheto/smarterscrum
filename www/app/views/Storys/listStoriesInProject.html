@@ -1,0 +1,85 @@
+#{extends 'CRUD/layout.html' /}
+#{set 'moreScripts'}
+	<script src="@{'/public/javascripts/jquery.pops.js'}" type="text/javascript" charset="utf-8"></script>
+#{/set}
+#{set 'moreStyles'}
+<style type="text/css" media="screen">
+			.popup {background:#FFF; border:1px solid #333; padding:1px;}
+			.popup-header {height:24px; padding:7px; background-color: #339900; repeat-x;}
+			.popup-header h3 {margin:0; padding:0; font-size:18px; float:left;}
+			.popup-header .close-link {float:right; font-size:11px;}
+			.popup-body {padding:10px;}
+</style>
+#{/set}
+<h2>Stories</h2>
+<div id="accordion">				
+#{list items:project.components, as:'component'}
+	<div id="component_${component.id}">
+	<h3><a>${component.name}</a></h3>
+	<ul>
+	%{
+   		count=0;
+	}%
+	
+	${component.componentStories.size() ?'': 'No Stories were added to this component.'}
+	#{list items:component.componentStories, as:'story'}
+	#{ifnot story.deleted == true}
+		<li> - <a href="#" onclick="viewHide(${story.id},${component.id}, ${count})">${story.description}</a></li>
+		<div id="story_${story.id}" #{if storyId} #{ifnot storyId == story.id} style="display:none" #{/ifnot} #{/if} #{ifnot storyId}style="display:none"#{/ifnot}>
+			<a href="#" onclick="openAjaxPopup('@{Storys.show(story.id)}')"><img src="@{'/public/images/edit_story.gif'}" title="edit"></a>
+			<a href="@{Tasks.blank(component.id,story.id)}"><img src="@{'/public/images/add_task.gif'}" title="add task"></a>
+			<a href="@{Storys.editScenario(story.id)}"><img src="@{'/public/images/editSce.gif'}" title="Edit Scenarios"></a>
+			#{if story.storiesTask}
+			<ul>
+				#{list items:story.storiesTask, as:'task'}
+					<li><a href="@{Tasks.show(task.id)}">${task.description}</a></li>
+				#{/list}
+			</ul>
+			#{/if}
+		</div>
+		%{
+  count = count+1;
+}%
+	#{/ifnot}	
+	#{/list}
+	</ul>
+	</div>
+	
+#{/list}
+</div>					
+	
+	#{secure.check 'canAddStory' }
+		<a href="@{blank(project.id)}"><img src="@{'/public/images/new_story.gif'}"></a>
+	#{/secure.check}
+<script type = "text/javascript">
+
+function openAjaxPopup(address) {
+	$.openPopupLayer({
+		name: "editForm",
+		width: 800,
+		url: address
+	});
+
+	$.setupJMPopups({
+		screenLockerBackground: "#000000",
+		screenLockerOpacity: "0.7"
+	});
+}
+$(function(){
+	$("#accordion").accordion({ header: "h3", autoHeight: false #{if cId} #{ifnot cId == 0},active:${cId-1}#{/ifnot}#{/if} });
+	
+	});
+
+function viewHide(id,cid,ind)
+{
+	$('#story_'+id).slideToggle();
+	$('#component_'+cid+' div').each(function(index) {
+		if(index!=(ind))
+			{
+				$(this).slideUp();
+			}
+		
+	  });
+	
+}
+</script>

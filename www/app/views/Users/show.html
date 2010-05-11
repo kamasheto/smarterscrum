@@ -1,0 +1,30 @@
+#{extends 'CRUD/layout.html' /}
+
+<div id="crudShow" class="${type.name}">
+	
+	<h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
+	
+	<div class="objectForm">
+	#{form action:@save(object.id), enctype:'multipart/form-data'}
+		#{crud.form fields:['name', 'email', 'pwdHash', 'avatar', 'isAdmin', 'deleted', 'projects', 'isActivated', 'activationHash']}
+			#{crud.custom 'pwdHash'}
+ 	<label for="object_pwdHash">pwdRaw</label> 
+	<input id="object_pwdHash" class="" type="hidden" name="object.pwdHash" value="${object.pwdHash}" size="50" /> 
+	<input id="object_pwdRaw" class="" type="text" value="" size="50" onkeyup="md5($('#object_pwdRaw').val(), '#object_pwdHash');" /> 
+	<span class="crudHelp">Required.</span>
+			#{/crud.custom}
+		#{/crud.form}
+		<p class="crudButtons">
+			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+		</p>
+	#{/form}
+	</div>
+	
+	#{form @del(object.id)}
+		<p class="crudDelete">
+			<input type="submit" value="&{'crud.delete', type.modelName}" />
+		</p>
+	#{/form}
+
+</div>
