@@ -12,7 +12,7 @@ import models.User;
 import play.mvc.Controller;
 import play.mvc.With;
 
-@With(Secure.class)
+@With (Secure.class)
 public class ProductBacklogs extends Controller {
 	/**
 	 * Gets the list of stories in the project or the component that has the id
@@ -51,12 +51,13 @@ public class ProductBacklogs extends Controller {
 					stories.add(story);
 				}
 			}
-			for (int i = 0; i < user.roles.size(); i++) {
-				if (user.roles.get(i).project.equals(project)) {
-					inproj = user.roles.get(i).canEditBacklog;
-					break;
-				}
-			}
+			// for (int i = 0; i < user.roles.size(); i++) {
+			// if (user.roles.get(i).project.equals(project)) {
+			// inproj = user.roles.get(i).canEditBacklog;
+			// break;
+			// }
+			// }
+			inproj = user.in(project).can("editBacklog");
 			if (!(project.users.contains(user) || inproj)) {
 				stories = null;
 				inproj = false;
@@ -82,12 +83,13 @@ public class ProductBacklogs extends Controller {
 				if (currentDate >= sprintStart && currentDate <= sprintEnd)
 					running = true;
 			}
-			for (int i = 0; i < user.roles.size(); i++) {
-				if (user.roles.get(i).project.equals(project)) {
-					inproj = user.roles.get(i).canEditBacklog;
-					break;
-				}
-			}
+			// for (int i = 0; i < user.roles.size(); i++) {
+			// if (user.roles.get(i).project.equals(project)) {
+			// inproj = user.roles.get(i).canEditBacklog;
+			// break;
+			// }
+			// }
+			inproj = user.in(project).can("editBacklog");
 			if (!(user.components.contains(component) || inproj)) {
 				stories = null;
 				inproj = false;
@@ -125,8 +127,7 @@ public class ProductBacklogs extends Controller {
 				canSee = true;
 		} else {
 			Component comp = Component.findById(isComp);
-			if (Security.getConnected().projects.contains(temp)
-					&& comp.componentUsers.contains(Security.getConnected()))
+			if (Security.getConnected().projects.contains(temp) && comp.componentUsers.contains(Security.getConnected()))
 				canSee = true;
 
 		}

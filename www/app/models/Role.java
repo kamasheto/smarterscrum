@@ -16,163 +16,24 @@ import play.db.jpa.Model;
  */
 @Entity
 public class Role extends Model {
-	/**
-	 * Role name
-	 */
 	public String name;
 
-	/**
-	 * *..1 rel with project
-	 */
 	@ManyToOne
 	public Project project;
 
-	public boolean canManageRoles; // id => Project
-	public boolean canCreateRole; // id => Project
-	public boolean canEditRoles; // id => Role
-	public boolean canDeleteRole; // id => Role
-
-	public boolean canEditProject;
-	public boolean canEditBacklog;
-	public boolean canEditProjectNotificationProfile; // Moataz_Mekki
-	public boolean canEditUserNotificationProfile; // Tj.Wallas_
-	/*
-	 * Component permissions
-	 */
-	public boolean canAddComponent;
-	public boolean canEditComponent;
-	public boolean canDeleteComponent;
-
-	/*
-	 * Sprint permissions
-	 */
-	public boolean canAddSprint;
-	public boolean canEditSprint;
-	public boolean canEditSprintBacklog;
-	/*
-	 * Meeting permissions
-	 */
-	public boolean canAddMeeting;
-	public boolean canEditMeeting;
-	public boolean canDeleteMeeting;
-
-	/*
-	 * Story permissions
-	 */
-	public boolean canAddStory;
-	public boolean canEditStory;
-	public boolean canDeleteStory;
-
-	/*
-	 * Task permessions
-	 */
-
-	public boolean canChangeEstimations;
-	public boolean canChangeTaskType;
-	public boolean canChangeTaskStatus;
-	public boolean canChangeTaskDescreption;
-	public boolean canChangeReviewer;
-	public boolean canChangeAssignee;
-	public boolean canChangeAssigneeInSprint;
-
-	public boolean canInvite;
-	public boolean canManageRequests;
-
-	public boolean canEditColumn;
-	/*
-	 * choose task assignee ,reviewer,reporter permession
-	 */
-	public boolean canGetcomponentMembers;
-	public boolean CanChooseAssignee;
-	public boolean CanChooseReporter;
-	public boolean CanChoooseReviewer;
-
-	/*
-	 * Other permissions
-	 */
-	public boolean canAddProductRole;
-	public boolean canEditProductRole;
-	public boolean canDeleteProductRole;
-
-	public boolean canRequest;
-	public boolean canSetDependentStories;
-	public boolean canEditColumnsPositions;
-	public boolean canassignStorytoSprint;
-
-	public boolean canrespond;
-	public boolean canaccept;
-
-	public boolean canRenameColumns;
-	public boolean canAddReviewLog;// Hossam Amer
-
-	public boolean canAddTask; // Component ID .. U will need to check that the
-	// user is a member of the given component
-
-	public boolean canModifyTask; // Task ID ..
-
-	public boolean canChangeStatus; // Task ID ..
-
-	public boolean canAddTaskStatus; // Project ID ..
-
-	public boolean canEditTaskStatus; // TaskStatus ID ..
-
-	public boolean canAddTaskType; // Project ID ..
-
-	public boolean canEditTaskType; // TaskStatus ID ..
-
-	public boolean canViewReviewLog; // id => project id
-
-	public boolean canStartGame;
-	public boolean canViewChat; // id-->project ID
-	// ---------------------------------------------------
-	// TODO mahmoudsakr: add new flags BELOW this comment
-	// ---------------------------------------------------
-
-	// ---------------------------------------------------
-	// TODO mahmoudsakr: add new flags BELOW this comment
-	// ---------------------------------------------------
-
-	/**
-	 * 
-	 public boolean canAssociateTaskToMeeting; public boolean
-	 * canReportImpediment; public boolean canStartGame;
-	 */
-	public boolean canAssociateTaskToMeeting;
-	public boolean canReportImpediment;
-	// ---------------------------------------------------
-	// TODO mahmoudsakr: add new flags ABOVE this comment
-	// ---------------------------------------------------
-
-	/**
-	 * *..* rel with users
-	 */
 	@ManyToMany (mappedBy = "roles")
 	public List<User> users;
 
-	/**
-	 * deleted flag
-	 */
 	public boolean deleted;
 
-	/**
-	 * semi-full constructor
-	 * 
-	 * @param name
-	 *            Role name
-	 */
+	@ManyToMany
+	public List<Permission> permissions;
+
 	public Role (String name) {
 		this();
 		this.name = name;
 	}
 
-	/**
-	 * Full constructor
-	 * 
-	 * @param string
-	 *            role name
-	 * @param project2
-	 *            project this role belongs to
-	 */
 	public Role (String string, Project project2) {
 		this();
 		this.name = string;
@@ -181,6 +42,7 @@ public class Role extends Model {
 
 	public Role () {
 		users = new ArrayList<User>();
+		permissions = new ArrayList<Permission>();
 	}
 
 	/**
@@ -205,30 +67,49 @@ public class Role extends Model {
 		return name;
 	}
 
+	public boolean can(String action) {
+		if (action.toLowerCase().startsWith("can")) {
+			action = action.substring(3);
+		}
+		for (Permission perm : permissions) {
+			if (perm.name.equalsIgnoreCase(action)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void init(String string) {
+		String[] perms = null;
+		if (string.equalsIgnoreCase("projectOwner")) {
+			perms = new String[] { "editProject" };
+		} else if (string.equalsIgnoreCase("projectAdmin")) {
+			perms = new String[] { "editProject" };
+		} else if (string.equalsIgnoreCase("scrumMaster")) {
+			perms = new String[] { "editProject" };
+		} else if (string.equalsIgnoreCase("developer")) {
+			perms = new String[] {};
+		}
+
+		// finally add the permissions
+		for (String perm : perms) {
+			Permission permission = Permission.find("byName", perm).first();
+			permissions.add(permission);
+		}
+
+		save();
+	}
+
 	/**
 	 * Object with basic outline of role for use with search
 	 * 
 	 * @author mahmoudsakr
 	 */
 	public static class Object {
-		/**
-		 * role id
-		 */
 		long id;
 
-		/**
-		 * role name
-		 */
 		String name;
 
-		/**
-		 * full constructor
-		 * 
-		 * @param id
-		 *            role id
-		 * @param name
-		 *            role name
-		 */
 		public Object (long id, String name) {
 			this.id = id;
 			this.name = name;

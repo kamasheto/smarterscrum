@@ -22,7 +22,7 @@ import play.mvc.With;
  * @author Menna Ghoneim
  */
 
-@With(Secure.class)
+@With (Secure.class)
 // @Check("systemAdmin")
 public class SprintBacklog extends Controller {
 
@@ -57,14 +57,14 @@ public class SprintBacklog extends Controller {
 		}
 
 		List<Task> tasks = null;
-		for (int i = 0; i < user.roles.size(); i++) {
-			if (user.roles.get(i).project.equals(project)) {
-				incomp = user.roles.get(i).canEditSprintBacklog;
-				break;
-			}
-		}
-		if (componentID != 0 && id != 0
-				&& (user.components.contains(component) || incomp)) {
+		// for (int i = 0; i < user.roles.size(); i++) {
+		// if (user.roles.get(i).project.equals(project)) {
+		// incomp = user.roles.get(i).canEditSprintBacklog;
+		// break;
+		// }
+		// }
+		incomp = user.in(project).can("editSprintBacklog");
+		if (componentID != 0 && id != 0 && (user.components.contains(component) || incomp)) {
 			tasks = component.returnComponentSprintTasks(sprint);
 			incomp = true;
 
@@ -104,8 +104,7 @@ public class SprintBacklog extends Controller {
 		String pName = project.name;
 		String sNum = sprint.sprintNumber;
 
-		render(taskOfStory, flag, user, id, daysHeader, projectId, incomp,
-				pName, sNum, componentID);
+		render(taskOfStory, flag, user, id, daysHeader, projectId, incomp, pName, sNum, componentID);
 
 	}
 
@@ -123,24 +122,19 @@ public class SprintBacklog extends Controller {
 	public static void showGraph(long id, long componentID) {
 		boolean canSee = false;
 
-		Sprint temp = Sprint.findById( id );
-		String Data = temp.fetchData( componentID );
-		if( Security.getConnected().isAdmin )
-		{
+		Sprint temp = Sprint.findById(id);
+		String Data = temp.fetchData(componentID);
+		if (Security.getConnected().isAdmin) {
 			canSee = true;
-		}
-		else if( componentID == -1 )
-		{
-			if( Security.getConnected().projects.contains( temp.project ) )
+		} else if (componentID == -1) {
+			if (Security.getConnected().projects.contains(temp.project))
 				canSee = true;
-		}
-		else
-		{
-			Component comp = Component.findById( componentID );
-			if( Security.getConnected().projects.contains( temp ) && comp.componentUsers.contains( Security.getConnected() ) )
+		} else {
+			Component comp = Component.findById(componentID);
+			if (Security.getConnected().projects.contains(temp) && comp.componentUsers.contains(Security.getConnected()))
 				canSee = true;
 
 		}
-		render( Data, temp, componentID, canSee );
+		render(Data, temp, componentID, canSee);
 	}
 }

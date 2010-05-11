@@ -221,7 +221,7 @@ public class User extends Model {
 	 * @param project
 	 * @return oring of all permissions of all roles
 	 */
-	public Role getPermission(Project project) {
+	public Role in(Project project) {
 		List<Role> rs = this.roles;
 		List<Role> temp = new LinkedList<Role>();
 		for (Role r : rs) {
@@ -231,40 +231,49 @@ public class User extends Model {
 		}
 		Role result = new Role(null);
 
-		for (int i = 0; i < temp.size(); i++) {
-			result.canEditColumnsPositions |= temp.get(i).canEditColumnsPositions;
-			result.canSetDependentStories |= temp.get(i).canSetDependentStories;
-			result.canRequest |= temp.get(i).canRequest;
-			result.canAddProductRole |= temp.get(i).canAddProductRole;
-			result.canEditBacklog |= temp.get(i).canEditBacklog;
-			result.canEditSprint |= temp.get(i).canEditSprint;
-			result.canAddSprint |= temp.get(i).canAddSprint;
-			result.CanChoooseReviewer |= temp.get(i).CanChoooseReviewer;
-			result.CanChooseReporter |= temp.get(i).CanChooseReporter;
-			result.CanChooseAssignee |= temp.get(i).CanChooseAssignee;
-			result.canGetcomponentMembers |= temp.get(i).canGetcomponentMembers;
-			result.canDeleteStory |= temp.get(i).canDeleteStory;
-			result.canEditStory |= temp.get(i).canEditStory;
-			result.canAddStory |= temp.get(i).canAddStory;
-			result.canEditColumn |= temp.get(i).canEditColumn;
-			result.canAddComponent |= temp.get(i).canAddComponent;
-			result.canEditComponent |= temp.get(i).canEditComponent;
-			result.canDeleteComponent |= temp.get(i).canDeleteComponent;
-			result.canAddMeeting |= temp.get(i).canAddMeeting;
-			result.canEditMeeting |= temp.get(i).canEditMeeting;
-			result.canDeleteMeeting |= temp.get(i).canDeleteMeeting;
-			result.canInvite |= temp.get(i).canInvite;
-			result.canManageRequests |= temp.get(i).canManageRequests;
-			result.canEditSprintBacklog |= temp.get(i).canEditSprintBacklog;
-			result.canEditProjectNotificationProfile |= temp.get(i).canEditProjectNotificationProfile;
-			result.canEditUserNotificationProfile |= temp.get(i).canEditUserNotificationProfile;
-			result.canRenameColumns |= temp.get(i).canRenameColumns;
-			result.canEditProject |= temp.get(i).canEditProject;
-			result.canManageRoles |= temp.get(i).canManageRoles;
-			result.canCreateRole |= temp.get(i).canCreateRole;
-			result.canEditRoles |= temp.get(i).canEditRoles;
-			result.canDeleteRole |= temp.get(i).canDeleteRole;
-			result.canAddReviewLog |= temp.get(i).canAddReviewLog;
+		// for (int i = 0; i < temp.size(); i++) {
+		for (Role r : temp) {
+			for (Permission permission : r.permissions) {
+				result.permissions.add(permission);
+			}
+			// result.canEditColumnsPositions |=
+			// temp.get(i).canEditColumnsPositions;
+			// result.canSetDependentStories |=
+			// temp.get(i).canSetDependentStories;
+			// result.canRequest |= temp.get(i).canRequest;
+			// result.canAddProductRole |= temp.get(i).canAddProductRole;
+			// result.canEditBacklog |= temp.get(i).canEditBacklog;
+			// result.canEditSprint |= temp.get(i).canEditSprint;
+			// result.canAddSprint |= temp.get(i).canAddSprint;
+			// result.CanChoooseReviewer |= temp.get(i).CanChoooseReviewer;
+			// result.CanChooseReporter |= temp.get(i).CanChooseReporter;
+			// result.CanChooseAssignee |= temp.get(i).CanChooseAssignee;
+			// result.canGetcomponentMembers |=
+			// temp.get(i).canGetcomponentMembers;
+			// result.canDeleteStory |= temp.get(i).canDeleteStory;
+			// result.canEditStory |= temp.get(i).canEditStory;
+			// result.canAddStory |= temp.get(i).canAddStory;
+			// result.canEditColumn |= temp.get(i).canEditColumn;
+			// result.canAddComponent |= temp.get(i).canAddComponent;
+			// result.canEditComponent |= temp.get(i).canEditComponent;
+			// result.canDeleteComponent |= temp.get(i).canDeleteComponent;
+			// result.canAddMeeting |= temp.get(i).canAddMeeting;
+			// result.canEditMeeting |= temp.get(i).canEditMeeting;
+			// result.canDeleteMeeting |= temp.get(i).canDeleteMeeting;
+			// result.canInvite |= temp.get(i).canInvite;
+			// result.canManageRequests |= temp.get(i).canManageRequests;
+			// result.canEditSprintBacklog |= temp.get(i).canEditSprintBacklog;
+			// result.canEditProjectNotificationProfile |=
+			// temp.get(i).canEditProjectNotificationProfile;
+			// result.canEditUserNotificationProfile |=
+			// temp.get(i).canEditUserNotificationProfile;
+			// result.canRenameColumns |= temp.get(i).canRenameColumns;
+			// result.canEditProject |= temp.get(i).canEditProject;
+			// result.canManageRoles |= temp.get(i).canManageRoles;
+			// result.canCreateRole |= temp.get(i).canCreateRole;
+			// result.canEditRoles |= temp.get(i).canEditRoles;
+			// result.canDeleteRole |= temp.get(i).canDeleteRole;
+			// result.canAddReviewLog |= temp.get(i).canAddReviewLog;
 			/*
 			 * result.canDOSOMETHING |= temp.get( i ).canDOSOMETHING;
 			 * result.canDOSOMETHING |= temp.get( i ).canDOSOMETHING;
@@ -317,10 +326,12 @@ public class User extends Model {
 		long lastClick;
 
 		boolean isAdmin;
+
 		public Object (long id, String username) {
 			this.id = id;
 			this.name = username;
 		}
+
 		public Object (long id, String username, long lastClick, boolean isAdmin) {
 			this(id, username);
 			this.lastClick = lastClick;

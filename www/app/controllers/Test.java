@@ -1,9 +1,8 @@
 package controllers;
 
-import models.Project;
-import models.Task;
+import models.Role;
 
-@CRUD.For (Task.class)
+@CRUD.For (Role.class)
 public class Test extends CRUD {
 
 }

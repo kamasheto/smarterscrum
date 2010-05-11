@@ -99,68 +99,90 @@ public class Security extends Secure.Security {
 			id = 0;
 		}
 
+		Project project = null;
 		if (profile.equals("loggedIn")) {
 			return true;
 		} else if (profile.equals("canAddComponent")) {
-			Project project = Project.findById(id);
-			return user.getPermission(project).canAddComponent;
+			project = Project.findById(id);
+			// return user.getPermission(project).canAddComponent;
 		} else if (profile.equals("canEditComponent")) {
 			Component component = Component.findById(id);
-			return user.getPermission(component.project).canEditComponent;
+			project = component.project;
+			// return user.getPermission(component.project).canEditComponent;
 		} else if (profile.equals("canDeleteComponent")) {
 			Component component = Component.findById(id);
-			return user.getPermission(component.project).canDeleteComponent;
+			project = component.project;
+			// return user.getPermission(component.project).canDeleteComponent;
 		} else if (profile.equals("canAddMeeting")) {
 			Sprint sprint = Sprint.findById(id);
-			return user.getPermission(sprint.project).canAddMeeting;
+			project = sprint.project;
+			// return user.getPermission(sprint.project).canAddMeeting;
 		} else if (profile.equals("canEditMeeting")) {
 			Meeting meeting = Meeting.findById(id);
-			return user.getPermission(meeting.project).canEditMeeting;
+			project = meeting.project;
+			// return user.getPermission(meeting.project).canEditMeeting;
 		} else if (profile.equals("canDeleteMeeting")) {
 			Meeting meeting = Meeting.findById(id);
-			return user.getPermission(meeting.project).canDeleteMeeting;
+			project = meeting.project;
+			// return user.getPermission(meeting.project).canDeleteMeeting;
 		} else if (profile.equals("canInvite")) {
 			Role role = Role.findById(id);
-			return user.getPermission(role.project).canInvite;
+			project = role.project;
+			// return user.getPermission(role.project).canInvite;
 		} else if (profile.equals("canManageRequests")) {
-			Project project = Project.findById(id);
-			return user.getPermission(project).canManageRequests;
+			project = Project.findById(id);
+			// return user.getPermission(project).canManageRequests;
 		} else if (profile.equals("canEditColumn")) {
 			Column col = Column.findById(id);
-			return user.getPermission(col.board.project).canEditColumn;
+			project = col.board.project;
+			// return user.getPermission(col.board.project).canEditColumn;
 		} else if (profile.equals("canEditStory")) {
 			Story s = Story.findById(id);
-			return user.getPermission(s.componentID.project).canEditStory;
+			project = s.componentID.project;
+			// return user.getPermission(s.componentID.project).canEditStory;
 		} else if (profile.equals("canDeleteStory")) {
 			Story s = Story.findById(id);
-			return user.getPermission(s.componentID.project).canDeleteStory;
+			project = s.componentID.project;
+			// return user.getPermission(s.componentID.project).canDeleteStory;
 		} else if (profile.equals("canGetcomponentMembers")) {
 			Component c = Component.findById(id);
-			return user.getPermission(c.project).canGetcomponentMembers;
+			project = c.project;
+			// return user.getPermission(c.project).canGetcomponentMembers;
 		} else if (profile.equals("CanChooseAssignee")) {
 			// TODO ambiguous
 			Task t = Task.findById(id);
-			return user.getPermission(t.taskStory.componentID.project).CanChooseAssignee;
+			project = t.taskStory.componentID.project;
+			// return
+			// user.getPermission(t.taskStory.componentID.project).CanChooseAssignee;
 		} else if (profile.equals("CanChooseReporter")) {
 			Task t = Task.findById(id);
-			return user.getPermission(t.taskStory.componentID.project).CanChooseReporter;
+			project = t.taskStory.componentID.project;
+			// return
+			// user.getPermission(t.taskStory.componentID.project).CanChooseReporter;
 		} else if (profile.equals("CanChoooseReviewer")) {
 			Task t = Task.findById(id);
-			return user.getPermission(t.taskStory.componentID.project).CanChoooseReviewer;
+			project = t.taskStory.componentID.project;
+			// return
+			// user.getPermission(t.taskStory.componentID.project).CanChoooseReviewer;
 		} else if (profile.equals("canAddSprint")) {
 			// TODO set to projectId, fix to id!
-			Project p = Project.findById(Long.parseLong(params.get("projectId")));
-			return user.getPermission(p).canAddSprint;
+			project = Project.findById(Long.parseLong(params.get("projectId")));
+
+			// return user.getPermission(p).canAddSprint;
 		} else if (profile.equals("canEditSprint")) {
 			Sprint s = Sprint.findById(id);
-			return user.getPermission(s.project).canEditSprint;
+			project = s.project;
+			// return user.getPermission(s.project).canEditSprint;
 
 		} else if (profile.equals("canEditBacklog")) {
-			Project project = Project.findById(id);
-			return user.getPermission(project).canEditBacklog;
+			project = Project.findById(id);
+
+			// return user.getPermission(project).canEditBacklog;
 		} else if (profile.equals("canEditSprintBacklog")) {
 			Sprint sprint = Sprint.findById(id);
-			return user.getPermission(sprint.project).canEditSprintBacklog;
+			project = sprint.project;
+
+			// return user.getPermission(sprint.project).canEditSprintBacklog;
 		} else if (profile.equals("canAddStory")) {
 			// TODO ambiguous id
 		} else if (profile.equals("canAddProductRole")) {
@@ -169,42 +191,50 @@ public class Security extends Secure.Security {
 			// return user.getPermission(p).canAddProductRole;
 		} else if (profile.equals("canRequest")) {
 			Story s = Story.findById(id);
-			return user.getPermission(s.componentID.project).canRequest;
+			project = s.componentID.project;
+			// return user.getPermission(s.componentID.project).canRequest;
 		} else if (profile.equals("canSetDependentStories")) {
 			Story s = Story.findById(Long.parseLong(params.get("storyId")));
-			return user.getPermission(s.componentID.project).canSetDependentStories;
+			project = s.componentID.project;
+			// return
+			// user.getPermission(s.componentID.project).canSetDependentStories;
 		} else if (profile.equals("canEditColumnsPositions")) {
 			Sprint c = Sprint.findById(id);
-			return user.getPermission(c.project).canEditColumnsPositions;
+			project = c.project;
+			// return user.getPermission(c.project).canEditColumnsPositions;
 		} else if (profile.equals("canEditProfile")) {
 			return id > 0 ? id == getConnected().id : true;
 		} else if (profile.equals("canEditProjectNotificationProfile")) {
-			Project p = Project.findById(id);
-			return user.getPermission(p).canEditProjectNotificationProfile;
+			project = Project.findById(id);
+			// return user.getPermission(p).canEditProjectNotificationProfile;
 		} else if (profile.equals("canEditUserNotificationProfile")) {
-			Project p = Project.findById(id);
-			return user.getPermission(p).canEditUserNotificationProfile;
+			project = Project.findById(id);
+			// return user.getPermission(p).canEditUserNotificationProfile;
 		} else if (profile.equals("canRenameColumns")) {
 			Column col = Column.findById(id);
-			return user.getPermission(col.board.project).canRenameColumns;
+			project = col.board.project;
+			// return user.getPermission(col.board.project).canRenameColumns;
 		} else if (profile.equals("canEditProject")) {
-			Project p = Project.findById(id);
-			return user.getPermission(p).canEditProject;
+			project = Project.findById(id);
+
+			// return user.getPermission(p).canEditProject;
 		} else if (profile.equals("canManageRoles")) {
-			Project p = Project.findById(id);
-			return user.getPermission(p).canManageRoles;
+			project = Project.findById(id);
+			// return user.getPermission(p).canManageRoles;
 		} else if (profile.equals("canCreateRole")) {
-			Project p = Project.findById(id);
-			return user.getPermission(p).canCreateRole;
+			project = Project.findById(id);
+			// return user.getPermission(p).canCreateRole;
 		} else if (profile.equals("canEditRoles")) {
 			Role p = Role.findById(id);
-			return user.getPermission(p.project).canEditRoles;
+			project = p.project;
+			// return user.getPermission(p.project).canEditRoles;
 		} else if (profile.equals("canDeleteRole")) {
 			Role p = Role.findById(id);
-			return user.getPermission(p.project).canDeleteRole;
+			project = p.project;
+			// return user.getPermission(p.project).canDeleteRole;
 		} else if (profile.equals("canAddReviewLog")) {
-			Project p = Project.findById(Long.parseLong(params.get("projectID")));
-			return user.getPermission(p).canAddReviewLog;
+			project = Project.findById(Long.parseLong(params.get("projectID")));
+			// return user.getPermission(p).canAddReviewLog;
 		} else if (profile.equals("CanSetStatusToClosed") || profile.equals("CanSetStatusToVerified") || profile.equals("CanSetStatusToReopened")) {
 			Task t = Task.findById(Long.parseLong(params.get("id")));
 			if (t.assignee.equals(user)) {
@@ -226,40 +256,52 @@ public class Security extends Secure.Security {
 			return user.components.contains(c);
 		} else if (profile.equals("canModifyTask")) {
 			Task g = Task.findById(id);
-			return user.getPermission(g.taskStory.componentID.project).canModifyTask;
+			project = g.taskStory.componentID.project;
+			// return
+			// user.getPermission(g.taskStory.componentID.project).canModifyTask;
 		} else if (profile.equals("canChangeStatus")) {
 			Task g = Task.findById(id);
-			return user.getPermission(g.taskStory.componentID.project).canChangeStatus;
+			project = g.taskStory.componentID.project;
+			// return
+			// user.getPermission(g.taskStory.componentID.project).canChangeStatus;
 		} else if (profile.equals("canAddTaskStatus")) {
-			Project g = Project.findById(id);
-			return user.getPermission(g).canAddTaskStatus;
+			project = Project.findById(id);
+			// return user.getPermission(g).canAddTaskStatus;
 		} else if (profile.equals("canEditTaskStatus")) {
 			TaskStatus g = TaskStatus.findById(id);
-			return user.getPermission(g.project).canEditTaskStatus;
+			project = g.project;
+			// return user.getPermission(g.project).canEditTaskStatus;
 		} else if (profile.equals("canAddTaskType")) {
-			Project g = Project.findById(id);
-			return user.getPermission(g).canAddTaskType;
+			project = Project.findById(id);
+			// return user.getPermission(g).canAddTaskType;
 		} else if (profile.equals("canEditTaskType")) {
 			TaskStatus g = TaskStatus.findById(id);
-			return user.getPermission(g.project).canEditTaskType;
+			project = g.project;
+			// return user.getPermission(g.project).canEditTaskType;
 		} else if (profile.equals("canViewReviewLog")) {
-			Project g = Project.findById(id);
-			return user.getPermission(g).canViewReviewLog;
+			project = Project.findById(id);
+			// return user.getPermission(g).canViewReviewLog;
 		} else if (profile.equals("canViewChat")) {
-			Project g = Project.findById(id);
-			return user.getPermission(g).canViewChat;
+			project = Project.findById(id);
+			// return user.getPermission(g).canViewChat;
 		} else if (profile.equals("canStartGame")) {
 			Component c = Component.findById(Long.parseLong(params.get("cId")));
-			return user.getPermission(c.project).canStartGame;
+			project = c.project;
+			// return user.getPermission(c.project).canStartGame;
 		}
 
+		if (project == null) {
+			return false;
+		}
+
+		return user.in(project).can(profile);
 		// just a default return thingie
-		boolean def = false;
+		// boolean def = false;
 
 		// and just for the record
 		// System.out.println("Returning " + def +
 		// " from controllers.Security: Did not match any profile for: " +
 		// profile);
-		return def;
+		// return def;
 	}
 }

@@ -52,7 +52,7 @@ public class Games extends Controller {
 			// story.games.add(game);
 			// story.save();
 			//			
-			if (!user.getPermission(story.componentID.project).canStartGame && !user.isAdmin) {
+			if (!user.in(story.componentID.project).can("startGame") && !user.isAdmin) {
 				forbidden();
 			}
 			game.stories.add(story);
