@@ -556,3 +556,12 @@ span.isAdmin {
 #game h3 a {
 	font-size: 18px;
 }
+a.permission {
+	display:block;
+	padding:2px;
+	border-radius:6px;	
+}
+.selected {
+	background:#444;
+	color:white;
+}

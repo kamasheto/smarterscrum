@@ -16,6 +16,18 @@
 		#{crud.form}
 			#{crud.custom 'users'}#{/crud.custom}
 			#{crud.custom 'project'}#{/crud.custom}
+			#{crud.custom 'deleted'}#{/crud.custom}
+			#{crud.custom 'permissions'}
+				<label for="object_permissions"> 
+					Permissions
+				</label> 
+				<div style="float:left;">
+				#{list models.Permission.findAll()}
+					<a href="javascript:;" id="perm_${_.name}" class="permission ${object.permissions.contains(_)?'selected':''}">${_.description}</a>
+				#{/list}
+				</div>
+				<br style="clear:both;"/>
+			#{/crud.custom}
 		#{/crud.form}
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />

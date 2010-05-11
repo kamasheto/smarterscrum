@@ -314,35 +314,26 @@ public class Project extends Model {
 		// chat room added by amr hany
 		chatroom = new ChatRoom().save();
 
-		// b.project = this;
-		// this.board = b;
-		// b.save();
-		// this.save();
-
 		Role role;
 
-		// Create a project owner
-		role = new Role("Project Owner", this);
-		role.canEditUserNotificationProfile = true;
-		role.save();
+		// a project owner
+		role = new Role("Project Owner", this).save();
+		role.init("projectOwner");
 		roles.add(role);
 
-		// create project admin
-		role = new Role("Project Admin", this);
-		role.canChangeStatus = role.canModifyTask = role.canAddTask = role.canAddTaskStatus = role.canChangeReviewer = role.canChangeAssignee = role.canChangeTaskDescreption = role.canChangeTaskType = role.canChangeTaskStatus = role.canChangeEstimations = role.canAddTaskType = role.canEditTaskStatus = role.canEditTaskType = role.canEditRoles = role.canDeleteRole = role.canManageRoles = role.canCreateRole = role.canAddComponent = role.canAddMeeting = role.canAddProductRole = role.canEditProductRole = role.canDeleteProductRole = role.canAddStory = role.canEditStory = role.canDeleteStory = role.canEditColumnsPositions = role.canRenameColumns = role.canEditProjectNotificationProfile = role.canEditUserNotificationProfile = role.canManageRequests = true;
-		role.save();
+		// project admin
+		role = new Role("Project Admin", this).save();
+		role.init("projectAdmin");
 		roles.add(role);
 
-		// and a scrum master
-		role = new Role("Scrum Master", this);
-		role.canChangeStatus = role.canModifyTask = role.canAddTask = role.canAddTaskStatus = role.canChangeReviewer = role.canChangeAssignee = role.canChangeTaskDescreption = role.canChangeTaskType = role.canChangeTaskStatus = role.canChangeEstimations = role.canAddTaskType = role.canEditTaskStatus = role.canEditTaskType = role.canaccept = role.canrespond = role.canAddReviewLog = role.canSetDependentStories = role.canEditBacklog = role.canEditSprintBacklog = role.canEditColumnsPositions = role.canAddStory = role.canEditStory = role.canDeleteStory = role.canRenameColumns = role.canEditProjectNotificationProfile = role.canEditUserNotificationProfile = role.canManageRequests = true;
-		role.save();
+		// a scrum master
+		role = new Role("Scrum Master", this).save();
+		role.init("scrumMaster");
 		roles.add(role);
 
 		// also, a regular developer :)
-		role = new Role("Developer", this);
-		role.canEditUserNotificationProfile = true;
-		role.save();
+		role = new Role("Developer", this).save();
+		role.init("developer");
 		roles.add(role);
 
 		// automatically create a project notification profile once the project

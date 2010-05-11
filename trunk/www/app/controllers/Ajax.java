@@ -25,7 +25,7 @@ public class Ajax extends Controller {
 				myProjects = Project.find("byNameLike", "%" + query + "%").fetch();
 			else
 				for (Project project : me.projects) {
-					if (project.name.contains(query) && me.getPermission(project).canInvite)
+					if (project.name.contains(query) && me.in(project).can("invite"))
 						myProjects.add(project);
 				}
 			List<Project.Object> result = new LinkedList<Project.Object>();

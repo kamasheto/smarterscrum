@@ -1,6 +1,5 @@
 package controllers;
 
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,7 +61,7 @@ public class Show extends Controller {
 			myProjects = Project.findAll();
 		else
 			for (Project project : me.projects) {
-				if (me.getPermission(project).canInvite)
+				if (me.in(project).can("invite"))
 					myProjects.add(project);
 			}
 		render(user, myProjects, me);
@@ -76,21 +75,21 @@ public class Show extends Controller {
 			requestedRoles.add(request.role);
 		}
 		User connectedUser = Security.getConnected();
-		render( project, requestedRoles, connectedUser );
+		render(project, requestedRoles, connectedUser);
 	}
+
 	public static void tasks(long id) {
 		Project project = Project.findById(id);
-		List<Task> tasks=new ArrayList<Task>() ;
+		List<Task> tasks = new ArrayList<Task>();
 		List<models.Component> components = project.components;
-		for(models.Component C : components){
-			for(Story S : C.componentStories){
+		for (models.Component C : components) {
+			for (Story S : C.componentStories) {
 				List<Task> tasks2 = Task.find("byTaskStoryAndDeleted", S, false).fetch();
 				tasks.addAll(tasks2);
 			}
-			
-			
+
 		}
-		
+
 		render(project, tasks);
 	}
 }
