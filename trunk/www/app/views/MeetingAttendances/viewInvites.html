@@ -1,0 +1,51 @@
+#{extends 'main.html' /}
+#{set title:'Meetings invites for '+currentUser /}
+
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${currentProject.id}">${currentProject.name}</a></li>
+<li><a href ="/projects/${currentProject.id}/meetings">Meetings</a></li>
+
+#{/set}
+
+<h3> Invites For ${currentUser.name}</h3>
+
+#{if meetings.size>0 }
+<p> Please select a meeting from below :</p>
+
+<select id="selector">
+	#{list items:meetings ,as:'meeting'}
+	<option value="${meeting.meetingHash}">${meeting.meeting.name}</option>
+	#{/list}
+</select>
+<button name="confirm" onClick="confirm_attendance();">confirm</button> &nbsp; &nbsp;
+<button onClick="decline_attendance();">decline </button>
+#{/if}
+
+#{else}
+currently there are no invitations for you...
+#{/else}
+<br/>
+<a href="/projects/${currentProject.id}/meetings">back to ${currentProject.name} meetings</a>
+
+<script type="text/javascript">
+	
+	function confirm_attendance()
+	{
+		var con= confirm("confirm attendance to meeting ?")
+		if(con)
+		{
+			window.location="/meetingattendances/confirm?meetingHash="+$('#selector').val();
+		}
+	}
+	
+	function decline_attendance()
+	{
+		var con=confirm("decline attendance to meeting?");
+		if(con)
+		{
+			window.location="/meetingattendances/decline?meetingHash="+$('#selector').val();	
+		}
+	}
+
+</script>

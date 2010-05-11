@@ -1,0 +1,9 @@
+#{extends 'main.html' /}
+#{set title:'Boards List' /}
+
+<p>Click on a board's name to view its page</p>
+<ul style="list-style:none;">
+#{list items:boards, as:'board'}
+	<li><a href="/show/board?id=${board.id}">${board.name}</a></li>
+#{/list}
+</ul>

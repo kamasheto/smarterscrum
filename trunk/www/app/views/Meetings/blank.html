@@ -1,0 +1,192 @@
+#{extends 'CRUD/layout.html' /}
+
+   
+  <script type="text/javascript"> 
+$(function() {
+	$('#object_startTime').datepicker({  
+		changeMonth: true,
+		changeYear: true,
+	    showTime: true,
+		dateFormat: '@'
+	 });
+	$('#object_endTime').datepicker({  
+		changeMonth: true,
+		changeYear: true,
+	    showTime: true,
+		dateFormat: '@'
+	 });
+});
+
+function showStuff(id) {
+	if(document.getElementById(id).style.display == 'block'){
+		document.getElementById(id).style.display = 'none';
+		var o=document.getElementById('object_sprint');
+		o.value='none';
+				}
+	else{
+		document.getElementById(id).style.display = 'block';
+	}
+	}
+	function showtypes(){
+		
+		if(document.getElementById('object_sprint').value!='none'){
+			document.getElementById('types').style.display='block';
+			}
+		else{
+			document.getElementById('types').style.display='none';
+			}
+		}
+	</script>
+   
+
+<div id="crudBlank" class="${type.name}">
+	
+	<h2 id="crudBlankTitle">&{'crud.blank.title', type.modelName}</h2>
+	
+	<div class="objectForm">
+	#{form action:@create(), enctype:'multipart/form-data'}
+		
+		#{crud.form}
+		
+		    #{crud.custom 'name'}
+<div class="crudField">  
+	<label for="object_name"> Name</label> <br>
+	<input id="object_name" class="" type="text" name="object.name" value="" size="50" /> 
+	<span class="crudHelp" style="color:red">*</span>
+</div> 
+           #{/crud.custom}
+		    
+		    
+		    #{crud.custom 'description'}
+<div class="crudField"> 
+ 	<br><label for="object_description"> Description </label> <br></br>
+	<TextArea id="object_description" class="" type="text" name="object.description" rows ="5" value="" cols="52" /> </TextArea>	
+    <span class="crudHelp" style="color:red"> *</span> 	
+</div> 
+		    #{/crud.custom}
+		    
+				    
+		    
+		    #{crud.custom 'location'}
+<div class="crudField"> 
+	<br><label for="object_location"> Location</label> <br> </br>
+	<input id="object_location" class="" type="text" name="object.location" value="" size="50" /> 
+    <span class="crudHelp" style="color:red"> *</span> <br></br>
+</div> 	    
+		    #{/crud.custom}
+		    
+		    
+	       #{crud.custom 'startTime'}	    
+<div class="crudField"> 
+	<br><label for="object_startTime"> Start time  </label><br> 
+	<input id="object_startTime" class="" type="text" name="object.startTime" value="" size="50" /> 
+    
+    <span class="crudHelp" style="color:red">  * </span> 	
+ </div>
+           #{/crud.custom}
+		
+		   
+		   #{crud.custom "endTime"}	
+		  
+ <div class="crudField"> 	
+
+	<br><label for="object_endTime"> End Time </label> <br>
+	<input id="object_endTime" class="" type="text" name="object.endTime" value="" size="50" /> 
+	
+	<span class="crudHelp" style="color:red">*</span>
+</div> 		   
+		   #{/crud.custom}
+		   
+		
+			#{crud.custom 'project'}			
+	<input type="hidden" id="object_project" name="object.project@id" value="${currentProject.id}" >
+			#{/crud.custom}
+			
+		#{crud.custom 'sprint'}
+		<div class="crudField">  
+			<label for="object_sprint">Associate to Sprint</label>
+			<input type="checkbox" onclick="showStuff('span'); showtypes();">
+			<span id="span" style="display: none;">
+			<select id="object_sprint" name="object.sprintid" onchange="showtypes()" >
+			<option  value="none">None</option>
+			#{list items:sprints, as:'sprint'}
+				<option   value="${sprint.id}">Sprint ${sprint.sprintNumber}</option>
+					#{/list}
+					</select>
+					</span>
+    <span class="crudHelp"></span>
+</div>
+		#{/crud.custom}
+	        
+	        #{crud.custom 'creator'}
+	        
+	        <input type="hidden" id="object_creator" name="object.creator@id" value="${creator.id}" >
+	        #{/crud.custom}
+	         
+
+             
+		    #{crud.custom 'type'}
+<div class="crudField">  
+   <span id="types" style="display:none;">
+			<label for="object_type">Type of Meeting</label>
+					<select id="object_type" name="object.type">
+					#{list items:types, as:'meetingtype'}
+					<option  value="${meetingtype}">${meetingtype}</option>
+					#{/list}
+					</select>
+					</span>
+            #{/crud.custom}
+	         	
+	
+			#{crud.custom 'artifacts'}
+			#{/crud.custom}
+			
+			#{crud.custom 'tasks'}
+			#{/crud.custom}
+			
+			#{crud.custom 'components'}
+			#{/crud.custom}
+			
+			#{crud.custom 'users'}
+			#{/crud.custom}
+			
+			#{crud.custom 'deleted'}
+			#{/crud.custom}
+			
+			#{crud.custom 'isReviewLog'}
+			#{/crud.custom}
+			#{crud.custom 'snapshot'}
+			#{/crud.custom}
+			#{crud.custom 'status'}
+			<input type="hidden" id="object_status" name="object.status" value="true" >
+			
+			#{/crud.custom}
+			#{/crud.form }
+		
+		
+		 <br> <br> </br> 
+		
+		 
+		
+		 <p style="color:red" size=""> <small> * Required Fields </small> </p> 
+		
+		<br> <br>
+		
+		<p class="crudButtons">
+			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" />
+		</p>
+	#{/form}
+	</div>
+
+</div>
+ 
+		     
+		     
+		     
+			     
+		     
+		     
+		     
+     

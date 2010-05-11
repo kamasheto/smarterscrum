@@ -1,0 +1,37 @@
+#{set title:'Choose Types' /}
+ <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
+ 
+<div id="${taskId}">
+<h2>Task Types</h2>
+#{list items:types, as:'type'}
+<a href="#" onclick="set_type(${type.id},${taskId},${user.id})"> ${type.name} </a><br/>
+#{/list}
+</div>
+
+<script type="text/javascript">
+function set_type(typeId,taskId,userId)
+{
+	
+	
+	$.post('@{editTaskTypeJSON()}',
+			{id:taskId, typeId:typeId, userId:userId},
+			function(data)
+			{
+				
+				if(data== 0)
+				{
+					alert('You choose an unvalid type, please choose another one');
+					}
+				else
+				{
+				window.opener.location.reload();
+				window.close();
+				}
+				
+				});
+
+	
+	
+	return true;
+}
+</script>

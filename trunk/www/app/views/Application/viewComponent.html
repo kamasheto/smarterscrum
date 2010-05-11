@@ -1,0 +1,90 @@
+#{extends 'main.html' /}
+#{set title:component.name /}
+#{set 'moreLinks'}
+	<a href="/requests/requestdeleted?id=${component.id}" onclick="return confirm('Are you sure you want to be deleted from Component??')"> Request Deletion</a>
+	<br/><br/>
+	<a href="/components/${component.id}/assignusers"> Assign developers </a>
+	<br/><br/>
+	<a href="/admin/components/${component.id}"> Edit Component</a>
+	<br/><br/>
+	<a href="@{ProductBacklogs.index(component.id,1)}"> Component Backlog</a>
+	<br/><br/>
+	<a href="/admin/tasks/new?id=${component.id}">Add Task to a Component Story</a>
+	#{secure.check 'canStartGame' }
+	<br/><br/>
+	<a href="/games/choosestories?cId=${component.id}">Start an estimation Game</a>
+	<br/><br/>
+	<a href="/games/choosegame?cId=${component.id}">Join an estimation Game</a>
+	#{/secure.check}
+#{/set}
+
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${component.project.id}">${component.project.name}</a></li>
+<li><a href ="/projects/${component.project.id}/components">Components</a></li>
+<li><a href ="/components/${component.id}">${component.name}</a></li>
+#{/set}
+
+#{if flash.success}
+<p class="success">&{flash.success}</p>
+#{/if}
+
+<h1>${component.name}</h1>
+
+<br/><br/>
+
+<h3> Description :</h3>
+
+ ${component.description}
+
+<br/><br/>
+
+<h3>Component's Users :</h3>
+
+<ul >
+#{if component.componentUsers.size()>0 }
+#{list items:component.componentUsers, as:'user'}
+	#{if !user.deleted }
+	<li>
+		<a href="@{Show.user(user.id)}">${user.name}</a>
+	</li> 
+	#{/if}
+#{/list}
+#{/if}
+#{else}
+&nbsp; There are no users assigned to ${component.name} YET !!!
+#{/else}
+
+
+<br/><br/>
+#{secure.check 'canDeleteComponent' }
+#{if !inSprint}
+<a href="#" onclick=" delete_component(${component.id});"  >Delete this Component</a>
+#{/if}
+
+#{if inSprint}
+Unfortunatily , you can not delete this component during a sprint.
+#{/if}
+#{/secure.check}
+
+
+
+
+
+<script type="text/javascript">
+function delete_component(cid)
+{
+	var confirmation= confirm("Delete Component ?")
+	if (confirmation) {
+		$.post('@{deleteComponent()}', {
+			id: cid
+		}, function(){
+			window.location = "/projects/${component.project.id}/components"
+		});
+	}
+	return true
+	;
+	
+	
+}
+</script>

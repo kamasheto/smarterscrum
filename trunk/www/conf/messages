@@ -1,0 +1,39 @@
+# You can specialize this file for each language.
+# For exemple, for french create a messages.fr file
+#
+validation.required=%s is required
+name = Name
+user = User
+email = Email address
+confirmPass = Password Confirmation
+action_type = Action
+resource_type = Resource
+resource_id = ResourceID
+project = Project
+date = Date
+notify = Notifyable
+pwdRaw = Password
+avatar = Avatar URL
+projects = Projects
+object.name= name
+object.descritpion= description
+setMeeting = Some One sets a meeting.
+setSprint = Some one sets a Sprint.
+addRole = A new Role has been added.
+addProductRole = someone adds a product role
+editProductRole = someone edits a product role
+deleteProductRole = someone deletes a product role
+canAddComponent=Can add components
+canEditComponent=Can edit components
+canDeleteComponent=Can delete components
+canManageRoles=Can manage roles
+canCreateRole=Can create roles
+canEditRoles=Can edit roles
+canDeleteRole=Can delete roles
+swapColumns = some one swaps the Columns of the task board
+editColumnPosition = some one edits a column position in the task board.
+renameColumn = some one renames a column in the task board
+reportImpediment = some one reports an impediment
+onCreateComponent = a new component has been created
+onEditComponent = some one edits a component
+onDeleteComponent = some one deletes a component

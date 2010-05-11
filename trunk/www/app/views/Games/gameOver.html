@@ -1,0 +1,33 @@
+#{extends 'main.html'/}
+#{set title:'Game Summary' /}
+#{set 'crumbs'}
+<li><a href="/">Home</a></li>
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${component.project.id}">${component.project.name}</a></li>
+<li><a href="/components/${component.id}">${component.name}</a></li>
+#{/set}
+
+<h2>Game's Summary</h2>
+<table border="1">
+#{list stories}
+	<tr><td>${_.description.nl2br()} <font color="green">(Story estimate = ${_.estimate})</font></td>
+	<td WIDTH=200>
+	<ul>
+	#{list items : rounds, as: 'roundTricks'}
+		
+		
+		#{if _ == roundTricks.round.story}<li>Round ${roundTricks.round.roundNo}: </li>
+		
+			<ul>
+			#{list roundTricks, as:'__'}
+				<li>${__.user.name} ${__.estimate}</li>
+			#{/list}
+			</ul>
+		#{/if}
+		#{/list}
+	</ul>
+	</td>
+	</tr>
+	#{/list}
+	
+	</table>

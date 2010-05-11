@@ -1,0 +1,82 @@
+<!--  Test : Adding a story -->
+#{selenium}
+
+		open("/secure/login")
+		assertNotTitle('Application error')
+		type("username", "me@sakr.me")
+		type("password", "test")
+		click("signin")
+		assertNotTitle('Application error')
+		waitForPageToLoad("30000")
+		click("link=Admin Panel")
+		assertNotTitle('Application error')
+		waitForPageToLoad("30000")
+		click("link=Manage Stories")
+		waitForPageToLoad("30000")
+		type("object_description", "description of a story")
+		type("object_succussSenario", "scenario 1")
+		type("object_failureSenario", "failure scenario 1")
+		type("object_notes", "aywa this is notes")
+		addSelection("object_dependentStories", "label=I should be able to create new project.")
+		click("_save")
+		waitForPageToLoad("30000")
+		assertNotTitle('Application error')
+		assertTextPresent('The Story has been created')
+		assertTextPresent('description of a story')
+#{/selenium}
+
+<!--  Test : Editing a story -->
+#{selenium}
+
+		open("/secure/login")
+		assertNotTitle('Application error')
+		type("username", "me@sakr.me")
+		type("password", "test")
+		click("signin")
+		assertNotTitle('Application error')
+		waitForPageToLoad("30000")
+		click("link=Admin Panel")
+		assertNotTitle('Application error')
+		waitForPageToLoad("30000")
+		click("link=Manage Stories")
+		assertNotTitle('Application error')
+		waitForPageToLoad("30000")
+		click("link=I should be able to create something.")
+		type("object_description", "I should be able to create something. aywaaaa")
+		type("object_succussSenario", "creation of a new projectis ok ya Raaaab")
+		click("object_failureSenario")
+		type("object_failureSenario", "creation of a new project is not ok ya mosahel")
+		click("object_notes")
+		type("object_notes", "Create a method obaaaaa")
+		addSelection("object_dependentStories", "label=I should be able to create new whatever.")
+		click("_save")
+		waitForPageToLoad("30000")
+		assertNotTitle('Application error')
+		assertTextPresent('The Story has been saved')
+		assertTextPresent('I should be able to create something. aywaaaa')
+#{/selenium}
+
+<!--  Test : Deleting a story -->
+#{selenium}
+
+		open("/secure/login")
+		assertNotTitle('Application error')
+		type("username", "me@sakr.me")
+		type("password", "test")
+		click("signin")
+		waitForPageToLoad("30000")
+		assertNotTitle('Application error')
+		click("link=Admin Panel")
+		waitForPageToLoad("30000")
+		assertNotTitle('Application error')
+		click("link=Manage Stories")
+		waitForPageToLoad("30000")
+		assertNotTitle('Application error')
+		click("link=description of a story")
+		click("//input[@value='Delete Story']")
+		assertTrue(getConfirmation().matches("^Are you sure you want to delete this story[\\s\\S] This action can not be undone\\.$"))
+		waitForPageToLoad("30000")
+		assertNotTitle('Application error')
+		assertTextPresent('The Story has been deleted')
+		
+#{/selenium}

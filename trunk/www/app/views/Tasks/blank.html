@@ -1,0 +1,160 @@
+<!--This page is to override the Crud.blank of the Tasks, I specified some attributes to appear
+	while creation.
+	Author: Monayri
+-->
+
+
+#{extends 'CRUD/layout.html' /}
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${component.project.id}">${component.project.name}</a></li>
+<li><a href="/show/tasks?id=${component.project.id}">Tasks</a></li>
+<li><a href="">New Task</a></li>
+#{/set}
+
+<div id="crudBlank" class="${type.name}">
+
+	<h2 id="crudBlankTitle">&{'crud.blank.title', type.modelName}</h2>
+	<font color="Red">${message}</font>	
+	<div class="objectForm">
+	#{form action:@create(), enctype:'multipart/form-data'}
+	#{crud.form fields:[ 'taskStory', 'description', 'taskType', 'taskStatus', 'estimationPoints', 'assignee', 
+	  'reviewer', 'dependentTasks','taskSprint' ]}
+	  		#{crud.custom 'taskStory'}
+	  		
+			<label for="object_taskStory">Story</label>
+					<select id="Story" name="object.taskStory@id"
+					 onChange = "change_dependency2();">
+								#{list items:stories ,as :'Story'}
+									
+									<option value="${Story.id}"#{if Story == taskStory} selected#{/if}>${Story.description}</option>	
+								#{/list}		
+					</select>
+		    <span class="crudHelp"><font color="Red">*</font></span>
+		    
+		    
+			#{/crud.custom}
+		
+			#{crud.custom 'description'}
+			<p> 
+ 			<label for="object_description">Description</label> 
+			<textarea id="object_description" cols="48" rows="5" class="" name="object.description"></textarea> 
+			<span class="crudHelp" ><font color="Red">*</font>Max length is 300.</span> 
+ 			</p> 
+			#{/crud.custom}
+			
+			#{crud.custom 'taskStatus'}
+			<p>
+			<label for="task_type">Status</label>
+			<select id="object_taskStatus" name="object.taskStatus@id">
+								#{list items:statuses ,as :'Status'}
+									<option value="${Status.id}">${Status.name}</option>
+								#{/list}		
+			</select>
+			</p>
+			#{/crud.custom }
+		
+			#{crud.custom 'taskType'}
+			<p>
+			<label for="task_type">Type</label> 
+			<select id="object_taskType" name="object.taskType@id" >
+								#{list items:types ,as :'Type'}
+									<option value="${Type.id}">${Type.name}</option>
+								#{/list}		
+			</select>
+			</p>
+			#{/crud.custom }
+	
+			#{crud.custom 'estimationPoints'}
+			<p> 
+			<label for="object_estimationPoints">Estimation Points</label> 
+			<input id="object_estimationPoints" type="text" name="object.estimationPoints" 
+			value="" size="5"  /> 
+			<span class="crudHelp"><font color="Red">*</font>Numeric.</span> 
+ 			</p> 
+			#{/crud.custom }
+				
+			#{crud.custom 'assignee'}
+			<p>
+			<label for="object_assignee">Assignee</label>
+			<select id="object_assignee" name="object.assignee@id" >
+					#{list items:users ,as :'User'}
+					<option value="${User.id}">${User.name}</option>
+					#{/list}		
+					</select>
+		    <span class="crudHelp"><font color="Red">*</font></span>
+			</p>
+			#{/crud.custom}
+		
+			#{crud.custom 'reviewer'}
+			<label for="object_reviewer">Reviewer</label>
+			<select id="object_reviewer" name="object.reviewer@id" >
+				#{list items:users ,as :'User'}
+				<option value="${User.id}">${User.name}</option>
+				#{/list}		
+			</select>
+		    <span class="crudHelp"><font color="Red">*</font></span>
+			<ul id = "reviewers">
+			#{list items:reviewers ,as :'Review'}
+				<li><font color="green">${Review.user} is the reviewer of ${Review.types.name}</font></li>
+				#{/list}
+			</ul>
+		    
+			#{/crud.custom}
+			
+			#{crud.custom 'taskSprint'}
+			<p>
+			<label for="object_taskSprint">Sprint</label>  
+			<select id="object_taskSprint" name="object.taskSprint@id" >
+					<option value="">(None)</option>
+					#{list items:sprints ,as :'sprint'}
+					<option value="${sprint.id}">Sprint${sprint.sprintNumber}</option>
+					#{/list}		
+					</select>
+			</p>
+			#{/crud.custom }
+			
+			#{crud.custom 'dependentTasks'}
+			
+			<p>
+			<label for="object_dependentTasks"> Dependent Tasks</label> 
+			<input type="hidden" name="object.dependentTasks@id" value="" /> 
+			<select id="object_dependentTasks" name="object.dependentTasks@id" multiple="yes"> 
+									#{list items:tasks ,as :'Task'}
+									<option value="${Task.id}">${Task.description}</option>
+									#{/list}
+			</select> 
+			</p>
+			
+			#{/crud.custom }
+			#{/crud.form }
+		<p class="crudButtons">
+			<input id = "save" type="submit" name="_save" value="&{'crud.save', type.modelName}" />
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" />
+		</p>
+	#{/form}
+	</div>
+
+</div>
+#{set 'moreScripts'}
+<script type="text/javascript">
+
+function change_dependency2(){
+	    	
+		    var value = $('#Story').val(); 
+		    $.post('@{dependencies}', {id:value}, function(data){
+				str = ''
+				$.each(data, function(id, item){
+					str += '<option value='+item.id+'>'+item.description+'</option>';
+				});
+				$('#object_dependentTasks').html( str );
+				console.log("hello2");
+			}); 
+		    
+			}
+	
+
+
+</script>
+#{/set}

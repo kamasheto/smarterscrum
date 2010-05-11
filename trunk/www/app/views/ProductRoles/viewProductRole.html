@@ -1,0 +1,69 @@
+#{extends 'main.html' /}
+#{set title:productRole.name /}
+
+#{if flash.success}
+<p class="success" style="color:gray">&{flash.success}</p>
+#{/if}
+
+<h1>${productRole.name}</h1>
+
+<h3> Description :</h3> 
+ ${productRole.description}<br/><br/>
+
+<h3> Project :</h3> 
+${productRole.project}<br/><br/>
+
+<h3> Stories including ${productRole.name}:</h3> 
+<ul >
+#{if !(noStories)}
+#{list items:productRole.stories, as:'story'}
+	#{if !story.deleted }
+	<li>
+		${story.description}
+	</li> 
+	#{/if}
+#{/list}
+#{/if}
+
+#{if noStories}
+   <p style="color:gray"> This product role is not included in any stories. </p>
+#{/if}
+</ul>
+<br/><br/>
+#{if editable}
+#{secure.check 'canEditProductRole' }
+<input type="button" value="Edit" onclick="window.location='/admin/productroles/${productRole.id}'" />
+#{/secure.check}
+#{/if}
+
+#{if !(editable)}
+   <p style="color:red"> *This Product role is included in some stories which are included in a current sprint, there for it cannot be edited. </p>
+#{/if}
+
+#{if deletable}
+#{secure.check 'canDeleteProductRole' }
+<input type="button" value="Delete" onclick="deleteProductRole()"/>
+#{/secure.check}
+#{/if}
+
+#{if !(deletable)}
+  <br/>
+  <p style="color:red"> *This Product role is included in some stories, there for it cannot be deleted. </p>
+#{/if}
+<br/>
+<a href="/projects/${productRole.project.id}/productroles">Back to ${productRole.project.name} product roles</a>
+
+<script type="text/javascript">
+function deleteProductRole()
+{
+   	 var id= ${productRole.id};
+    $.post('@{deleteProductRole()}',{id:id},
+    		function(){
+			makeAlert('Deletion Confirmation','Are you sure you want to delete this product role?');
+            window.location="/projects/${productRole.project.id}/productroles"
+            });
+	return false;
+}
+</script>
+
+

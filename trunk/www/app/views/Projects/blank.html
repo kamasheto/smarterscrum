@@ -1,0 +1,146 @@
+#{extends 'Application/adminIndex.html' /}
+#{set title:'Admin Control Panel' /}
+
+#{set 'moreStyles'}
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/project.css'}" />
+
+#{/set}
+ 
+<div id="crudBlank" class="${type.name}">
+
+<script type="text/javascript">
+
+
+function checkAvailability(){
+
+var n = document.getElementById('object_name').value;
+$.post('@{checkAvailability()}',{name:n},function (flag) {
+if(n){
+if(flag){
+document.getElementById("isAvailable").innerHTML = "("+n+") is Available.";
+document.getElementById("isAvailable").setAttribute("style","color:green");
+}
+else{
+document.getElementById("isAvailable").innerHTML = "("+n+") is Unavailable.";
+document.getElementById("isAvailable").setAttribute("style","color:red");
+}
+}
+else{
+document.getElementById("isAvailable").innerHTML = "Please Enter a Valid Name.";
+document.getElementById("isAvailable").setAttribute("style","color:red");
+}
+var div=document.getElementById("er");
+div.style.display="none";
+
+},'json')
+
+}
+
+function toggleHelp(){
+var div=document.getElementById("help");
+if(div.style.visibility=="hidden"){
+div.style.visibility="visible"; 
+var y=document.getElementById("y");
+y.style.position = "absolute";
+y.style.top="250px";
+}
+else{
+div.style.visibility="hidden"; 
+var y=document.getElementById("y");
+y.style.position = "absolute";
+y.style.top="200px";
+} 
+document.getElementById("er").style.position="absolute";
+document.getElementById("er").style.top="550px";
+
+}
+
+
+</script>
+
+	<body onload="defualt()">
+	<div style="display:block">
+		<div style="display:inline; float:left">
+			<h2 id="crudBlankTitle" > Create a New Project </h2>
+		</div>
+		<div style="display:inline; float:left;padding-top:50px;padding-left:10px">
+			<a href="#"onclick="$('#help').toggle()"><u><small>Help></small></u></a>
+		</div>
+	</div><br style="clear:both"></br>
+<div id="help" style="padding: 10px 10px 10px 10px;display:none;" class="ui-state-highlight ui-corner-all"> 
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+To Create a Project , You Must Enter a name and a description. Make sure that the name is available.
+Once you click on the 'Create Project' button   Your request will be sent and you will be notified upon approval.
+</div>
+	<p><small>* Required Fields</small>	</p>
+	<div id="y" class="objectForm">
+	
+		#{if flash.error}
+			<p id="er" class="error">
+				&{flash.error}
+			</p>
+		#{/if}
+		#{if flash.success}
+			<p class="success">
+				&{flash.success}
+			</p>
+		#{/if}
+	
+	#{form action:@create(), enctype:'multipart/form-data'}
+		
+		
+		
+		<div class="crudField"> 
+ 
+	
+	
+						<label for="object_name"> 
+		Name:  
+	</label> 
+
+	
+	<input id="object_name" class="" type="text" name="object.name" value="" size="50" /> 
+					
+		
+    <span class="crudHelp" style="color:red"> 
+        
+							*
+						<br/><br/>
+			<input type="button" name="_available" value="Check Availability" onclick="checkAvailability()" />
+			<b><label id="isAvailable" name="isAvailable" value=""></label>
+			</b>
+			    </span> 
+
+	
+</div> 
+  <br>
+ 
+	
+<div class="crudField"> 
+ 
+	
+	
+						<label for="object_description"> 
+		Description:  <br>
+	</label> 
+	
+	<TextArea id="object_description" class="" type="text" name="object.description" cols="53" rows="5" value="" /></TextArea>
+	
+    <span class="crudHelp" style="color:red">
+    * 
+   </span> 
+ 
+	
+</div> 
+		<p class="crudButtons">
+			<input type="submit" name="_save" value="Create Project"  onclick=""/>
+			
+		</p>
+		
+	#{/form}
+
+	</div>
+
+</div>
+</body>
+	

@@ -1,0 +1,109 @@
+#{extends 'main.html' /}
+#{set title:'Project Burndown Chart' /}
+
+#{ifnot canSee}
+<div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all"> 
+					<p><span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
+					<strong>Alert:</strong> You are prohibited from seeing this page!!!!</p>
+				</div>
+#{/ifnot}
+#{else}
+
+
+#{set 'onLoad'}${Data};
+ #{list items:SprintsInProject, as:'sprint'}
+$('#sprint_${sprint.id}').toggle();
+
+#{/list}
+#{/set}
+
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${temp.id}">${pName}</a></li>
+<li><a href="/productbacklog/${temp.id}/${c}">Product Backlog</a></li>
+
+<li><a href="/productbacklogs/showgraph?id=${temp.id}&isComp=${isComp}$c=${c}">Product Backlog Burndown Chart</a></li>
+#{/set}
+#{set 'moreScripts'}
+    
+    <link rel="stylesheet" type="text/css" href="@{'/public/stylesheets/jquery.jqplot.css'}" />
+    <script language="javascript" type="text/javascript" src="@{'/public/javascripts/jquery.jqplot.js'}"></script>
+    <script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.logAxisRenderer.js'}"></script>
+    <script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.canvasTextRenderer.js'}"></script>
+    <script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.canvasAxisLabelRenderer.js'}"></script>
+    <script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.canvasAxisTickRenderer.js'}"></script>
+    <script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.dateAxisRenderer.js'}"></script>
+    <script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.categoryAxisRenderer.js'}"></script>
+    <script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.barRenderer.js'}"></script>
+    <script language="javascript" type="text/javascript" src="@{'/public/javascripts/generateFunction.js'}"></script>
+     		<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.cursor.js'}"></script>
+    <script type="text/javascript">
+function isBefore(date){
+	var now=new Date();
+	var other=new Date(date);
+	if(now<other){
+	return  true;
+		}
+	else{
+	return false;
+		}
+}</script>
+    <style type="text/css">
+    .hide
+    {
+    display:none;}
+    </style>
+    #{/set}
+    	    	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+	<strong>NOTE: </strong>To zoom in on a graph, simply click and drag and let go. To zoom out just double click the graph!
+	<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
+    
+<div id="project">    
+    <h2>Project Burndown Chart</h2>
+
+    <div class="jqplot" id="c_FULL" style="height:100%;height:700px;"></div>
+</div>  
+       
+    
+       
+         #{list items:SprintsInProject, as:'sprint'} 
+
+  
+         <div id="sprint_${sprint.id}">
+             <h2>Sprint ${sprint.id} Burndown Chart</h2>
+        <div class="jqplot" id="c_${sprint.id}" style="width:100%;height:700px;"></div>
+        </div>
+                <script type="text/javascript">
+
+if(isBefore('${sprint.format(sprint.startDate)}')==true){
+	$('#sprint_${sprint.id}').css('display','none');
+		}
+
+</script>    
+
+        #{/list}
+
+   
+       #{set 'moreLinks'}
+       
+                  <a href="#" onclick="$('#project').toggle();">View project chart</a><br/><br/>
+    
+         #{list items:SprintsInProject, as:'sprint'}
+   
+           <a id="${sprint.id}_9"href="#" onclick="$('#sprint_${sprint.id}').toggle();">View sprint ${sprint.id} chart<br/><br/></a>
+
+                    <script type="text/javascript">
+
+if(isBefore('${sprint.format(sprint.startDate)}')==true){
+	$('#${sprint.id}_9').css('display','none');
+		}
+
+</script>  
+        #{/list}
+       
+        #{/set}
+         
+    <!--  Application.index() is just temporary  -->
+    <!--  please do not delete -->
+    #{/else}

@@ -1,0 +1,103 @@
+#{extends 'main.html' /}
+#{set title:'Tasks To Update'/}
+#{set 'moreScripts'}
+<script language="javascript" type="text/javascript" src="@{'/public/javascripts/sorttable.js'}"></script>
+<script type="text/javascript" charset="utf-8"></script>
+#{/set}
+
+
+
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${Proj_id}">${name} </a></li>
+<li><a href="/tasks/choose?Proj_id=${Proj_id}">Criteria</a></li>
+#{/set}
+
+#{if SprintsInProject.size()==0}
+There are no sprints in this project
+#{/if}
+
+#{else}
+#{list items:ints, as:'i'} 
+
+
+<h1> Sprint ${SprintsInProject.get(i).sprintNumber}</h1>
+	#{if Tasks[i].size==0}
+		There are no Tasks in this sprint
+		<br>
+		<br>
+		<br>
+		#{/if}
+	
+	#{else}
+	<table class="sortable" border="3">
+		<th>Description</th>
+		<th>Current Status</th>
+		<th>Choose Status </th>
+		
+		</tr>
+
+		#{list items:Tasks[i], as:'task'}
+		
+		
+		
+		<tr>
+			<td>${task.description} </td>
+		 	<td>${task.taskStatus.name}</td> 
+		 
+		 	<td><FORM NAME="${task.id}">
+					<SELECT NAME="list">
+                		<OPTION Value="c5" selected="selected"> Choose status		
+                		#{list items:TaskStat, as:'Stat'}
+                		<Option Value= "${Stat.id}"> ${Stat.name}
+                		#{/list}
+					</SELECT>
+				</FORM> 
+			</td>
+			</tr>
+		
+		#{/list}
+		
+		</table>
+		#{/else}
+#{/list}
+
+#{/else}
+
+
+<button onClick="cc()">Submit</button>
+
+<script>
+
+
+
+function cc()
+{
+var k=0;
+ var x=document.getElementsByTagName("form");
+
+ for (var i=0;i<x.length;i++)
+ {
+	 
+ 	 if(x[i].list.value!="c5")
+ 	 {
+      var k = x[i].name;
+      var n = x[i].list.value;
+	  $.post('@{Tasks.Upd_task()}',{taskId:k,type:n},function(){alert("All tasks chosen has been updated")});
+		
+		
+			
+			
+ 	 }
+ 	
+ window.location.reload();
+ }
+ 
+
+ 	
+}
+
+</script>
+
+
+

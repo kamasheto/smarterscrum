@@ -1,0 +1,89 @@
+#{extends 'CRUD/layout.html' /}
+#{set 'crumbs'}
+<li><a href="/sprints/projectblank?projectId=${projectId}">New Sprint</a>
+#{/set}
+<head>
+<script type="text/javascript" src="@{'public/javascripts/calendar_db.js'}"></script>
+<link rel="stylesheet" href="@{'public/stylesheets/calendar.css'}">
+</head>
+
+<div id="crudBlank" class="${type.name}">
+	
+	<h2 id="crudBlankTitle">&{'crud.blank.title', type.modelName}</h2>
+	
+	<div class="objectForm">
+	#{form action:@projectcreate(projectId), enctype:'multipart/form-data'}
+		#{crud.form}
+		#{crud.custom 'startDate'}	
+	
+				
+
+<label for="object_startDate">startDate</label>
+	
+	<input id="object_startDate" class="" type="text" name="object.startDate" value="" size="10" />		
+ 
+ 	<script type="text/javascript">
+ 	var o_cal =new tcal ({
+		// input name
+		'controlname': 'object_startDate'
+		
+	},{'weekdays':["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],'months':['January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December'],'imgpath': '/public/stylesheets/img/'});
+	o_cal.a_tpl.weekstart = 1;
+	
+	</script>
+
+<span class="crudHelp">YYYY-MM-DD</span>
+
+
+			
+		#{/crud.custom }
+					#{crud.custom 'endDate'}	
+	
+				
+
+<label for="object_endDate">endDate</label>
+	
+	<input id="object_endDate" class="" type="text" name="object.endDate" value="" size="10" />		
+ 
+ 	<script type="text/javascript">
+ 	var o_cal =new tcal ({
+		// input name
+		'controlname': 'object_endDate'
+		
+	},{'weekdays':["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],'months':['January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December'],'imgpath': '/public/stylesheets/img/'});
+	o_cal.a_tpl.weekstart = 1;
+	
+	</script>
+
+<span class="crudHelp">YYYY-MM-DD</span>
+
+
+			
+		#{/crud.custom }
+		
+			#{crud.custom 'deleted'}
+			#{/crud.custom }
+			#{crud.custom 'sprintNumber'}
+			#{/crud.custom }
+			#{crud.custom 'project'}
+			<input type="hidden" id="object_project" name="object.project@id" value="${projectId}" >
+			#{/crud.custom}
+			
+		#{crud.custom 'meetings'}
+		#{/crud.custom}
+		#{crud.custom 'tasks'}
+		#{/crud.custom}
+		#{crud.custom 'days'}
+		#{/crud.custom}
+	
+		#{/crud.form}
+		<p class="crudButtons">
+			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" />
+	<a  href="@{showsprints(projectId)}"/>Cancel and go Back to Sprints Page</a>			
+		</p>
+	#{/form}
+	</div>
+
+</div>

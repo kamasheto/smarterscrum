@@ -1,0 +1,52 @@
+#{extends 'CRUD/layout.html' /}
+
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${attendance.meeting.project.id}">${attendance.meeting.project.name}</a></li>
+<li><a href="/projects/${attendance.meeting.project.id}/meetings"> Meetings and Events</a> </li>
+<li><a href="/meetings/${attendance.meeting.id}"> ${attendance.meeting.name}</a></li>
+
+#{/set}
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Confirmation</title>
+</head>
+<body>
+
+
+#{ if isUser}
+
+#{if notYet}
+
+#{if !setbefore}
+<div>
+You have confirmed the invitations to the ${attendance.meeting.name} meeting !
+</div>
+#{/if}
+
+#{if setbefore}
+You've set your meeting status before
+#{/if}
+
+#{/if}
+
+#{if !notYet}
+
+Unfortunately the meeting is over.
+#{/if}
+
+#{/if}
+
+#{if !isUser}
+
+You are not Allowed to to view this page
+#{/if}
+
+
+
+</body>
+</html>

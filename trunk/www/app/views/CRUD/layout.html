@@ -1,0 +1,15 @@
+#{extends 'Application/adminIndex.html' /}
+#{set title:'Admin Control Panel' /}
+
+		#{if flash.success}
+			<div class="crudFlash flashSuccess">
+				${flash.success}
+			</div>
+		#{/if}
+		#{if flash.error || error}
+			<div class="crudFlash flashError">
+				${error ?: flash.error}
+			</div>
+		#{/if}
+		
+			#{doLayout /}

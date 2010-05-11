@@ -1,0 +1,20 @@
+#{selenium 'Test adding Artifacts'}
+ 
+ 	//Author minazaki
+    // Try to log in
+    clearSession()
+    open('/')
+  
+    type('username', 'me@sakr.me')
+    type('password', 'test')
+    clickAndWait('signin')
+ open('/projects/1/meetings')
+	assertTextPresent('e-bay's Meetings')
+	open('/projects/meetings/associations?id=2')
+	click('link=Associated Artifacts')
+	addSelection(artifacts,label=meetingNotes2)
+	click(//input[@value='Add'])
+	open('/meetings/2')
+	click('link=Associated Artifacts')
+	verifyTextPresent('meetingNotes2')
+	#{/selenium}

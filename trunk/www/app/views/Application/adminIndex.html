@@ -1,0 +1,24 @@
+#{extends 'main.html' /}
+
+#{secure.check 'systemAdmin'}
+#{set 'moreLinks'}
+<a href="/admin/users">Manage Users</a><br />
+<a href="/admin/projects">Manage Projects</a><br />
+<div class="clear"></div>
+
+<a href="/admin/boards">Manage Boards</a><br />
+<a href="/admin/columns">Manage Columns</a><br />
+<a href="/admin/historyboards">Manage History Boards</a><br />
+
+<div class="clear"></div>
+<a href="/admin/meetingattendances">Manage Attendance</a>
+<div class="clear"></div>
+
+<a href="/admin/storys">Manage Stories</a><br />
+<a href="/admin/tasks">Manage Tasks</a><br />
+<div class="clear"></div>
+<a href="/admin/requests">Manage Requests</a><br />
+<a href="/admin/logs">Manage Logs</a><br />
+#{/set}
+#{/secure.check}
+#{doLayout /}

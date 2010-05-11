@@ -1,0 +1,228 @@
+#{extends 'main.html' /}
+#{set title:'Review Log' /}
+
+#{set 'moreScripts'}
+
+<!--@author: Hossam Amer
+used to show and edit the meetings that do have a review log-->
+
+<script language="javascript" type="text/javascript" src="@{'/public/javascripts/jeditable-mod.js'}"></script>
+
+<script type="text/javascript">
+
+ $(function()
+ {      
+    $('.editDES').editable(
+    	    function(value)
+    	    {
+    	        var noteId 	= parseInt($('#lolid').closest("td").attr("id"));
+				
+				$.post('@{ReviewLog.editNote()}',
+    	    	       {id:noteId, des: value, meetingID:1}
+					  );
+			   
+        	    return(value);
+    	        
+    	    },
+    	    {    
+    	        indicator : 'Saving...',
+    	        tooltip   : 'Click to edit...'
+    	    });
+			
+			 $('.editTaskDES').editable(
+    	    function(value)
+    	    {
+    	        var taskId 	= parseInt($('#lolid').closest("td").attr("id"));
+    	       
+    	        $.post('@{Tasks.editTaskDesc()}',
+    	            {id:taskId, desc:value});
+
+        	    return(value);
+    	        
+    	    },
+    	    {    
+    	        indicator : 'Saving...',
+    	        tooltip   : 'Click to edit...'
+    	    });
+
+
+
+
+$(document).ready(function() {
+    $("#accor").accordion(
+	{
+		autoHeight: false,
+		alwaysOpen: false,
+		active: false,
+		event: 'mouseover',
+		navigation: true
+		
+	});
+  });
+  });
+
+</script>
+
+#{/set}
+
+<!--@author Hossam Amer
+Shows the list of meetings  for the scrum master-->
+
+#{if pExist}
+	<h2> ${p.name} Meetings:</h2>
+#{/if}
+
+#{else}
+	<h2> Project Meetings:</h2>
+#{/else}
+
+<br>
+
+#{if directLink}
+<h3>Access Denied, You should select a Project first</h3>
+#{/if}
+
+#{else}
+
+#{ifnot reviewMeetings}
+	
+	<h3>There are no meetings available to be displayed.</h3>
+		
+#{/ifnot}
+
+#{else}
+
+<div id= "accor" >
+#{list items:reviewMeetings, as:'meeting'}
+
+<h6><a>${meeting.name}</a></h6>
+
+<div>
+	<h3>The Artifact(s), Attendee(s), and Task(s) for ${meeting.name} of type ${meeting.type} are:</h3>
+		
+		#{ifnot meeting.hasNotes()}
+			<h3>There are no notes for the ${meeting.name} Meeting</h3>
+		#{/ifnot}
+		
+		#{else}
+		<h3> Notes associated with ${meeting.name} Meeting:</h3> <br>
+		<table border = "1">
+			<tbody>
+				<thead>
+					<td>Note Description</td>
+				</thead>
+				
+					#{list items:meeting.getArtifactOfTypeNotes(), as:'note'}
+						
+					#{if note.checkType()}			
+					<tr>
+									
+							<td #{secure.check 'canEditNoteReviewLog'} title="edit the description?"  id="${note.id}" class="editDES"#{/secure.check}>
+							${note.description}
+						   </td>
+						   									
+					</tr>
+								
+					#{/if}		
+						
+					#{/list}
+			</tbody>
+			</table>
+				
+		#{/else}
+
+<br>
+
+		#{ifnot meeting.tasks}
+		<h6>There are no tasks for the ${meeting.name} Meeting</h6>
+		#{/ifnot}
+		
+		#{else}
+	<h3> Tasks associated with ${meeting.name} Meeting:</h3> <br>	
+	<table border = "1">
+	<tbody>
+		<thead>
+			<td>Task Description</td>
+		</thead>
+			#{list items:meeting.tasks, as:'task'}		
+				<tr>				
+						<td #{secure.check 'canChangeTaskDescreption'} title="edit the description?"  id="${task.id}" class="editTaskDES"#{/secure.check}>
+							${task.description}
+						</td>																		
+				</tr>					
+				
+			#{/list}
+	</tbody>
+	</table>
+	#{/else}	
+<br>
+	
+		#{ifnot meeting.hasAttendees()}
+			<h6>There are no attendees for the ${meeting.name} Meeting</h6>
+		#{/ifnot}		
+	#{else}
+	<h3> Attending Developers in ${meeting.name} Meeting:</h3> <br>
+	
+	<table border = "1">
+	<tbody>
+		<thead>
+			<td>User Name</td>
+		</thead>
+		
+			#{list items:meeting.users, as:'user'}
+				
+				#{if user.checkConfirmed()}											
+					<tr>
+						
+						<td>
+							${user.user.name}
+						</td>
+						
+						
+					</tr>
+				#{/if}										
+			#{/list}
+</tbody>
+</table>
+
+#{/else}
+</div>	
+#{/list}
+</div>
+
+#{set 'moreLinks'}
+	#{list items:reviewMeetings, as:'meeting'}
+			<a href="@{Meetings.viewMeeting(meeting.id) }">${meeting.name}</a>
+			<br>
+	#{/list}
+#{/set}
+
+<br></br>
+<!--<a href="@{ReviewLog.index(projectID)}"><b>Back</b></a>!-->
+#{/else}
+#{/else}
+
+#{set 'crumbs'}
+
+	<li><a href = "@{Show.projects()}"> Projects</a></li>
+	
+	#{if pExist}
+		<li><a href="@{Show.project (projectID)}">${p.name}</a></li>
+		<li><a href="@{Sprints.showsprints(projectID)}}">Sprints</a></li>
+		#{if sExist}
+			<li><a href="@{Sprints.showsprint(sid,projectID)}">Sprint ${sid}</a></li>
+		#{/if}
+	#{/if}
+	
+	#{if cExist}
+		<li><a href="@{SprintBacklog.index(cid, sid)}">${c.name} sprint backlog</a></li>
+	#{/if}
+		<li><a href="@{ReviewLog.index(projectID, cid, sid)}">Review Log</a></li>
+		
+		#{if pExist}
+			<li><a href="@{ReviewLog.showMeetings(projectID, cid, sid)}" name = "showMeetings" >${p.name}'s meetings that have a Review Log</a></li>
+		#{/if}
+		#{else}
+			<li><a href="@{ReviewLog.showMeetings(projectID, cid, sid)}" name = "showMeetings" >Display the Review Log</a></li>
+		#{/else}
+#{/set}

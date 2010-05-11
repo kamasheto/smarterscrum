@@ -1,0 +1,26 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+<ul>
+#{list items:atendees, as:'attendance'}
+	<li id="meetingattendance_${attendance.id}" >
+		<!--<input type="checkbox" ${attendance.status ? 'checked':''} onClick="set_attendance(${attendance.id} );" /> <img src="${attendance.user.avatar}" />}--> 
+	<input type = "checkbox" ${attendance.status ? 'checked':''} onClick="set_attendance(${attendance.id} );" /> <img src="${attendance.user.avatar}" />
+	</li> 
+#{/list}
+</ul>
+<a id="Set_Attendance" href="#" >SUBMIT  ATTENDANCE</a> 
+
+<script type="text/javascript">
+
+function set_attendance( id )
+  {
+  	alert(id);
+	$.post( '@{setAttendance()}' , {id: id}  );
+	alert("asmaa");
+		
+  }
+
+
+</script>
+ 

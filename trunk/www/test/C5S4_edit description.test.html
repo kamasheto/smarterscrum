@@ -1,0 +1,12 @@
+//@Author: Dina Helal
+//this is used to test story 4
+//you have to be looged in as admin or have permisiion to be able to edit
+
+#{selenium}
+    open('/boards/loadboard?sprintID=1')
+    click('1_des')
+	type('1_des','newdesc')
+	pause('5000')
+	open('/boards/loadboard?sprintID=1')
+	assertText('1_des', 'newdesc') 
+#{/selenium}

@@ -1,0 +1,32 @@
+#{extends 'Secure/layout.html' /}
+#{set title:'Login' /}
+
+<div id="login">
+	<form method="post" action="@{authenticate()}">
+		#{if flash.error}
+			<p class="error">
+				&{flash.error}
+			</p>
+		#{/if}
+		#{if flash.success}
+			<p class="success">
+				&{flash.success}
+			</p>
+		#{/if}
+		<p id="username-field">
+			<label for="username">Email</label>
+			<input type="text" name="username" id="" />
+		</p>
+		<p id="password-field">
+			<label for="password">Password</label>
+			<input type="password" name="password" id="" />
+		</p>
+		<p id="remember-field">
+			<input type="checkbox" name="remember" value="true" />
+			<label style="margin-left: 253px;margin-right:-150px" for="remember">Remember me</label>
+		</p>
+		<p id="signin-field">
+			<input type="submit" id="signin" value="Login" /> or <a href="@{Accounts.register}">Register</a>
+		</p>
+	</form>
+</div>

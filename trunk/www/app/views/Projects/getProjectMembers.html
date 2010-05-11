@@ -1,0 +1,28 @@
+#{extends 'main.html' /}
+#{set title:'Project Members' /}
+
+<h1> ${pro.name}'s Members </h1>
+#{if users.isEmpty()}
+<br/>
+<b><font color="red" >Currently There are no members in ${pro.name} !! </font>
+<br/>
+<br/>
+if you want to invite developers to ${pro.name}   <a href="/show/users"><font color = "blue"><u>Click Here</u></font></a> !
+</b>
+<br/> 
+#{/if}
+#{if !users.isEmpty()}
+<ul id= "prequests">
+#{list items:users, as:'useer'}
+	<li id="us_${useer.id}">
+	<a href="/show/user?id=${useer.id}"> ${useer.name} </a>
+	</li>
+#{/list}
+
+</ul>
+#{/if}
+<br/>
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${pro.id}">${pro.name}</a></li>
+#{/set}

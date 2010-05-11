@@ -1,0 +1,650 @@
+# All passwords are: test
+      
+
+Project(project1):
+    name:       e-bay
+
+Project(project2):
+    name:       yahoo
+
+Project(project3):
+    name:       scrum!
+
+
+Board(board1):
+    name:    Hello World
+    project:  project1
+            
+Board(board2):
+    name:    Hello World
+        
+Board(board3):
+    name:    Hello World
+             
+Board(board4):
+    name:    Hello World         
+
+Column(col):
+    sequence:   0
+    name:       New
+    board:      board1
+    
+Column(col1):
+    sequence:   1
+    name:       Started
+    board:      board1
+    
+Column(col2):
+    sequence:   2
+    name:       Fixed
+    board:      board1
+    
+Column(col3):
+    sequence:   3
+    name:       Reopened
+    board:      board1
+    
+Column(col4):
+    sequence:   4
+    name:       Resolved
+    board:      board1
+    
+Column(col5):
+    sequence:   5
+    name:       Verified
+    board:      board1
+      
+Column(col6):
+    sequence:   6
+    name:       Closed
+    board:      board1
+    
+Column(col-2):
+    sequence:   0
+    name:       New
+    board:      board2
+Column(col1-2):
+    sequence:   1
+    name:       Started
+    board:      board2
+    
+Column(col2-2):
+    sequence:   2
+    name:       Fixed
+    board:      board2
+        
+Column(col3-2):
+    sequence:   3
+    name:       Reopened
+    board:      board2
+Column(col4-2):
+    sequence:   4
+    name:       Resolved
+    board:      board2
+        
+Column(col5-2):
+    sequence:   5
+    name:       Verified
+    board:      board2
+          
+Column(col6-2):
+    sequence:   6
+    name:       Closed
+    board:      board2
+    
+Column(col-3):
+    sequence:   0
+    name:       New
+    board:      board3
+        
+Column(col1-3):
+    sequence:   1
+    name:       Started
+    board:      board3
+        
+Column(col2-3):
+    sequence:   2
+    name:       Fixed
+    board:      board3
+        
+Column(col3-3):
+    sequence:   3
+    name:       Reopened
+    board:      board3
+    
+Column(col4-3):
+    sequence:   4
+    name:       Resolved
+    board:      board3
+        
+Column(col5-3):
+    sequence:   5
+    name:       Verified
+    board:      board3
+              
+Column(col6-3):
+    sequence:   6
+    name:       Closed 
+    board:      board3
+Column(col-4):
+    sequence:   0
+    name:       New
+    board:      board4
+        
+Column(col1-4):
+    sequence:   1
+    name:       Started
+    board:      board4
+        
+Column(col2-4):
+    sequence:   2
+    name:       Fixed
+    board:      board4
+        
+Column(col3-4):
+    sequence:   3
+    name:       Reopened
+    board:      board4
+    
+Column(col4-4):
+    sequence:   4
+    name:       Resolved
+    board:      board4
+        
+Column(col5-4):
+    sequence:   5
+    name:       Verified
+    board:      board4
+              
+Column(col6-4):
+    sequence:   6
+    name:       Closed        
+    board:      board4
+   
+
+
+Role(role1):
+    name:       Project Admin
+    project:    project1
+
+Role(role2):
+    name:       Scrum Master
+    project:    project1
+
+Role(role3):
+    name:       Developer
+    project:    project1
+    
+TaskStatus(t0):
+    name:      New
+    project:   project1
+    column:    col
+    
+TaskStatus(t1):
+    name:      New
+    project:   project1
+    column:    col1
+    
+TaskStatus(t2):
+    name:      New
+    project:   project1
+    column:    col2
+    
+TaskStatus(t3):
+    name:      New
+    project:   project1
+    column:    col3
+    
+TaskStatus(t4):
+    name:      New
+    project:   project1
+    column:    col4
+                          
+TaskStatus(t5):
+    name:      New
+    project:   project1
+    column:    col5
+    
+TaskStatus(t6):
+    name:      New
+    project:   project1
+    column:    col6
+        
+Sprint(sprint1):
+      sprintNumber:  1
+      startDate:     2010-04-01
+      endDate:       2010-04-14
+      project:       project1  
+
+Sprint(sprint2):
+      sprintNumber:  2
+      startDate:     2010-05-01
+      endDate:       2010-05-15
+      project:       project1
+
+                             
+Artifact(art1):
+    type:       Notes
+    description: meetingNotes1
+    
+Artifact(art2):
+    type:       Notes
+    description: meetingNotes2
+    
+Artifact(art3):
+    type:       Notes
+    description: meetingNotes3
+    
+
+Meeting(meeting1):
+     name:           ERD
+     description:    to discuss the ERD of the company
+     startTime:          1272659378484
+     endTime:            1272659378488
+     location:       C3-303
+     type:           General
+     isReviewLog:    false
+     project:        project1
+     infrontBoard:   true
+    
+Meeting(meeting2):
+     name:          Opening Ceremony
+     description:   To welcome the new developers and announce the start of the project
+     startTime:         1275775200000
+     endTime:           1275778800000
+     location:      C1.0
+     type:          General
+     isReviewLog:   false
+     project:       project1
+     
+     
+Meeting(meeting3):
+     name:          Sprint 1 Review
+     description:   to review the stories and tasks that where included in the sprint
+     startTime:         1275868800000
+     endTime:           1275879600000
+     location:      C3-303
+     type:          Sprint Review
+     isReviewLog:   true
+     project:       project1
+     sprint:        sprint1
+     artifacts:     
+                    - art1
+                    - art2
+                    - art3 
+Meeting(meeting4):
+     name:          Opening Ceremony
+     description:   To welcome the new developers and announce the start of the project
+     startTime:         1275620400000
+     endTime:           1275631200000
+     location:      C1.0
+     type:          Sprint Review
+     isReviewLog:   false
+     project:       project1
+
+     
+Component(c1):
+         name:      Users and Roles
+         description: Manage different roles and permission in the project
+         project:   project1
+         componentMeetings: 
+                              - meeting1
+         board: board3
+         
+Component(c2):
+           name:    Projects and Events
+           description : Manage the project events,sprints and components
+           project:  project1
+           board:    board4
+
+Component(c3):
+           name:    Projects and Events
+           description : Manage the project events,sprints and components
+           project:  project2
+
+Component(c4):
+           name:    Projects and Events
+           description : Manage the project events,sprints and components
+           project:  project3
+           
+User(mahmoudsakr):
+    name:       root
+    email:      me@sakr.me
+    pwdHash:    098f6bcd4621d373cade4e832627b4f6
+    isAdmin:    true
+    isActivated: true
+    projects:   
+                - project1
+                - project2
+    roles:
+                - role1
+                - role2
+    components:
+                - c1
+                - c2 
+                 
+           
+User(saher):
+    name:       saher
+    email:      saher@gmail.com
+    pwdHash:    098f6bcd4621d373cade4e832627b4f6
+    isActivated: true
+    projects:
+                - project1
+                - project2
+    roles:
+                - role3
+    components:
+                - c1 
+
+User(mahmoudsakr):
+    name:       root
+    email:      me@sakr.me
+    pwdHash:    098f6bcd4621d373cade4e832627b4f6
+    isAdmin:    true
+    isActivated: true
+    projects:   
+                - project1
+                - project2
+    roles:
+                - role1
+                - role2
+    components:
+                - c1
+                - c2 
+                 
+           
+User(newuser):
+    name:       newuser
+    email:      new@gmail.com
+    pwdHash:    098f6bcd4621d373cade4e832627b4f6
+    isActivated: true
+    projects:
+                - project1
+                - project2
+    roles:
+                - role3
+    components:
+                - c1 
+
+User(anotheruser):
+    name:       anotheruser
+    email:      another@gmail.com
+    pwdHash:    098f6bcd4621d373cade4e832627b4f6
+    isActivated: true
+    projects:
+                - project1
+    roles:
+                - role3
+    components:
+                - c2
+
+        
+                
+MeetingAttendance(mm1):
+    status:   confirmed
+    user:     mahmoudsakr
+    meeting:  meeting1
+
+MeetingAttendance(mm2):
+    status:   confirmed
+    user:     mahmoudsakr
+    meeting:  meeting3
+    
+
+MeetingAttendance(mm3):
+    status:   confirmed
+    user:     saher
+    meeting:  meeting3
+    
+
+ProductRole(pr1):
+    name:        Scrum Master
+    description: The Scrum Master
+    project:     project1
+
+Story(s1):
+    componentID: c1
+    description: I should be able to create new whatever.
+    succussSenario: creation of a new whatever is ok
+    failureSenario: creation of a new whatever is not ok
+    priority:    0
+    notes:       Create a method
+    done:        false
+    productRole: pr1
+    addedBy:     mahmoudsakr
+
+Story(s2):
+    componentID: c1
+    description: I should be able to create new project.
+    succussSenario: creation of a new projectis ok
+    failureSenario: creation of a new project is not ok
+    priority:    2
+    notes:       Create a method
+    done:        false
+    productRole: pr1
+    addedBy:     mahmoudsakr
+
+Story(s3):
+    componentID: c2
+    description: I should be able to create something.
+    succussSenario: creation of a new projectis ok
+    failureSenario: creation of a new project is not ok
+    priority:    2
+    notes:       Create a method
+    done:        false
+    productRole: pr1
+    addedBy:     mahmoudsakr
+
+Task(t1):
+    description: Create a method blaBla()
+    type:        documentation
+    estimationPoints: 13
+    estimationPointsPerDay:
+                - 13.0
+                - 12.0
+                - 11.0
+                - 10.0
+                - 9.0
+                - 8.0
+                - 7.0
+                - 6.0
+                - 5.0           
+                - 4.0
+                - 3.0
+                - 2.0
+                - 1.0
+    taskStory:   s1
+    userTask:    mahmoudsakr
+    meeting:
+               - meeting3
+    status:     1
+    assignee:   saher
+    reporter:   mahmoudsakr
+    reviewer:   mahmoudsakr
+    taskSprint: sprint1
+    taskStatus: t0
+
+Task(t2):
+    description: Create a method blaBlaToBla()
+    type:        "documentation"
+    estimationPoints: 10
+    estimationPointsPerDay:
+                - 13.0
+                - 12.0
+                - 11.0
+                - 10.0
+                - 9.0
+                - 8.0
+                - 7.0
+                - 6.0
+                - 5.0           
+                - 4.0
+    taskStory:   s2
+    userTask:    mahmoudsakr
+    meeting:
+               - meeting3
+    status:     1
+    assignee:   saher
+    reporter:   mahmoudsakr
+    reviewer:   mahmoudsakr
+    taskSprint: sprint1
+    taskStatus: t1
+
+Task(t3):
+    description: another task
+    type:        "documentation"
+    estimationPoints: 10
+    estimationPointsPerDay:
+                - 13.0
+                - 12.0
+                - 11.0
+                - 10.0
+                - 9.0
+                - 8.0
+                - 7.0
+                - 6.0
+                - 5.0           
+                - 4.0
+    taskStory:   s3
+    userTask:    mahmoudsakr
+    meeting:
+               - meeting3
+    status:     1
+    assignee:   saher
+    reporter:   mahmoudsakr
+    reviewer:   mahmoudsakr
+    taskSprint: sprint1
+    taskStatus: t1
+
+Log(log1):
+    user: mahmoudsakr
+    action_type: TEST
+    resource_type: TEST
+    resource_id: t1
+    project: project1
+    date: 2010-12-22
+    deleted: false
+    
+Log(log2):
+    user: mahmoudsakr
+    action_type: TEST
+    resource_type: TEST
+    resource_id: t1
+    project: project1
+    date: 2010-12-11
+    deleted: true
+    
+Log(log3):
+    user: mahmoudsakr
+    action_type: TEST
+    resource_type: TEST
+    resource_id: t1
+    project: project1
+    date: 2010-12-06
+    deleted: false    
+
+Log(log4):
+    user: mahmoudsakr
+    action_type: TEST
+    resource_type: TEST
+    resource_id: 0
+    project: project2
+    date: 2010-12-06
+    deleted: false
+
+Log(log5):
+    user: mahmoudsakr
+    action_type: TEST
+    resource_type: TEST
+    resource_id: 0
+    project: project1
+    date: 2010-12-11
+    deleted: false
+    
+Log(log6):
+    user: mahmoudsakr
+    action_type: TEST
+    resource_type: TEST
+    resource_id: 0
+    project: project1
+    date: 2010-12-22
+    deleted: false
+    
+Log(log7):
+    user: mahmoudsakr
+    action_type: TEST
+    resource_type: TEST
+    resource_id: 0
+    project: project2
+    date: 2010-12-22
+    deleted: false
+    
+Log(log8):
+    user: mahmoudsakr
+    action_type: TEST
+    resource_type: TEST
+    resource_id: 0
+    project: project2
+    date: 2010-12-22
+    deleted: false
+    
+Log(log9):
+    user: mahmoudsakr
+    action_type: TEST
+    resource_type: TEST
+    resource_id: 0
+    project: project1
+    date: 2010-12-11
+    deleted: false
+    
+Log(log10):
+    user: mahmoudsakr
+    action_type: TEST
+    resource_type: TEST
+    resource_id: 0
+    project: project1
+    date: 2010-12-11
+    deleted: false
+    
+Log(log11):
+    user: mahmoudsakr
+    action_type: TEST
+    resource_type: TEST
+    resource_id: 0
+    project: project2
+    date: 2010-12-06
+    deleted: false
+    
+Log(log12):
+    user: mahmoudsakr
+    action_type: TEST
+    resource_type: TEST
+    resource_id: 0
+    project: project1
+    date: 2010-12-22
+    deleted: false
+    
+UserNotificationProfile(userNotProf1):
+    user: mahmoudsakr
+    project: project1
+    
+UserNotificationProfile(userNotProf2):
+    user: saher
+    project: project2
+ProjectNotificationProfile(proj):
+    project: project1
+ProjectNotificationProfile(proj2):
+    project: project2
+    
+Request(delRequest1):
+    user: mahmoudsakr
+    project: project1
+    hash: 12345678
+    isDeletion: true
+    
+Request(delRequest2):
+    user: mahmoudsakr
+    project: project1
+    hash: 11111111
+    isDeletion: true

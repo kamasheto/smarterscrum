@@ -1,0 +1,46 @@
+#{extends 'main.html' /}
+#{set title:'Role Requests' /}
+
+<h1> Role Requests  for ${pro.name}</h1>
+#{if requests.isEmpty()}
+<br/>
+<b><font color = "red">There are No New Requests in ${pro.name}</font></b>
+<br/> 
+#{/if}
+#{if !requests.isEmpty()}
+<ul id= "prequests">
+#{list items:requests, as:'req'}
+	<li id="req_${req.id}">${req.user.name} has  requested to be ${req.role.name}
+	<a onclick="request_accept(${req.id}, '${req.hash}');" href="#">Accept  </a> &bull; 
+	<a onclick="request_ignore(${req.id}, '${req.hash}');" href="#">Decline  </a>
+	</li>
+	
+
+#{/list}
+
+</ul>
+#{/if}
+<br/>
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${pro.id}">${pro.name}</a></li>
+#{/set}
+<script type="text/javascript">
+
+function request_accept( id, hash )
+{
+	$.post('@{requestAccept()}' ,
+		    {hash:hash, id:id} ,
+		    function(){
+		    $('#req_'+id).remove();
+		    })
+		}
+function request_ignore( id, hash)
+{
+	$.post('@{requestIgnore()}' ,
+		    {hash:hash} ,
+		    function(){
+		    $('#req_'+id).remove();
+		    })
+		}
+</script>

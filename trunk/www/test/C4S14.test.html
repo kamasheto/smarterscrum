@@ -1,0 +1,18 @@
+//@author Emad Abdelrahman
+//@category C4S14
+#{selenium}
+		selenium.click("link=View Projects");
+		selenium.waitForPageToLoad("30000");
+		selenium.click("link=Smartsoft");
+		selenium.waitForPageToLoad("30000");
+		selenium.click("link=Project's Impediment Tasks");
+		selenium.waitForPageToLoad("30000");
+		selenium.click("link=Update Tasks");
+		selenium.waitForPageToLoad("30000");
+		selenium.select("list", "label=Resolved");
+		selenium.click("//button[@onclick='cc()']");
+		assertEquals("in cc()", selenium.getAlert());
+		assertEquals("emad", selenium.getAlert());
+#{/selenium}
+selenium.open("/");
+		

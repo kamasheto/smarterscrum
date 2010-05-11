@@ -1,0 +1,80 @@
+#{extends 'main.html' /}
+#{set title:'Set Board' /}
+
+<!--this part prompt for the number of columns and intialize all bottoms and fiels -->
+number of Columns: <input type="text" id="columns"> 
+<input type="button" value="click me!" onclick="headernames_in()" id="names_in">
+<div id="headers"> </div>
+<input type="button" disabled="true" value="create table" onclick="storeHeaders()" id="createBoard">
+<table id="board"> </div>
+
+<script type="text/javascript">
+
+
+// this part get the data from the test field and start putting 
+//it in an array to send it to the controller to store the data in the DB 
+	names_in = document.getElementById("names_in");
+	names_in.disabled = false;
+
+//this function just takes the numbers of columns needed and generate as the number 
+//test fields in order to get the names for the other one
+function headernames_in() {
+
+	headers = document.getElementById("headers");
+	colCount = document.getElementById("columns");
+	
+	for(var i = 0; i<colCount.value; i++) {
+		headers.innerHTML += "<textarea rows='1' cols='20' style='resize: none;'></textarea>";
+	}
+	
+	
+	createBoard = document.getElementById("createBoard");
+	createBoard.disabled = false;
+	names_in = document.getElementById("names_in");
+	names_in.disabled = true;
+	
+}
+function storeHeaders(){
+
+	//table = document.getElementById("table");
+	headers = document.getElementsByTagName("textarea");
+	rowCount = document.getElementById("rows");
+	colCount = document.getElementById("columns");
+	var columns = new Array();
+	
+	for(var i=0; i<headers.length; i++) 
+	{
+		if(headers[i].value != "") 
+		{
+			if(i<colCount) {
+				columns[i] = headers[i].value;
+			}
+		}
+		else
+		{
+			alert("Please make sure you enter all the required fields.");
+			break;
+		}
+
+		if (i==headers.length-1)
+		{
+			$.post
+			(
+				'/Columns/enterColRow' , 
+				{cols:columns , id:project_id}
+				//,
+				//function(){
+				//	/ColumnRowDimensions/createBoard
+				//}
+				
+			);
+				
+		}
+	}
+
+	
+}
+
+
+
+</script>

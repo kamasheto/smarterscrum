@@ -1,0 +1,71 @@
+#{extends 'main.html' /}
+#{set title:'assign task to users' /}
+
+<form name="yarab" >
+
+<div>
+<input type="submit" name ="try" onclick="return task()" /> 
+
+ Enter taskID<input id="box" type= text /> 
+
+
+</div>
+
+<div id="user_response"></div>
+<button onclick="return setAssignee()">set Assignee</button>
+<button onclick="return setReporter()">set repoter</button>
+<button onclick="return setReviwer()">set reviewer</button>
+<div id="user_response1"></div>
+
+
+
+ </form>
+ <script type="text/javascript">
+ 
+	    function task()
+	   {
+	   var m= $('#box').val();
+	    $.post('@{Tasks.getAllMembersComponent()}',
+	  		  {taskId:m},
+	  		  function(data){$('#user_response').html(data);});
+		  return false;
+	  		 }
+
+	    function setAssignee()
+	    {
+	    	rad_val = $("input[name='group']:checked").val();
+		   	 var m= $('#box').val();
+			   	
+		    var c=Number(rad_val);
+		    $.post('@{Tasks.setAssignee()}',{userId:c,taskId:m},
+		    		function(data){alert(data);});
+			return false;
+	    }
+
+	    function setReporter()
+	    {
+	   	rad_val = $("input[name='group']:checked").val();
+	   	 var m= $('#box').val();
+		   	
+	    var c=Number(rad_val);
+	    $.post('@{Tasks.setReporter()}',{userId:c,taskId:m},
+	    		function(data){alert(data);});
+		return false;
+		}
+
+
+	    function setReviwer()
+	    {
+
+	    	rad_val = $("input[name='group']:checked").val();
+		   	 var m= $('#box').val();
+			   	
+		    var c=Number(rad_val);
+		    $.post('@{Tasks.setReviewer()}',{userId:c,taskId:m},
+		    		function(data){alert(data);});
+			return false;
+	   }
+ </script>
+
+
+

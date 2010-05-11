@@ -1,0 +1,38 @@
+#{extends 'CRUD/layout.html' /}
+
+<div id="crudBlank" class="${type.name}">
+	
+	<h2 id="crudBlankTitle">Add Product Role</h2>
+	
+	<div class="objectForm">
+	#{form action:@create(), enctype:'multipart/form-data'}
+		#{crud.form fields:['name','description','project']}
+		#{crud.custom 'name'} 
+		<label for="object_name"> Name </label> 
+		<br/>
+		<input id="object_name" class="" type="text" name="object.name" value="" size="50" /> 
+		<span class="crudHelp" style="color:red"> * </span> 
+		#{/crud.custom}
+		
+		#{crud.custom 'description'}
+		<label for="object_description"> Description </label> 
+		<br/>
+		<textarea id="object_description" cols="48" rows="5" class="" name="object.description"></textarea> 
+		#{/crud.custom}
+		
+		#{crud.custom 'project'}			
+	    <input type="hidden" id="object_project" name="object.project@id" value="${project.id}" >
+		#{/crud.custom}
+		#{/crud.form}
+
+		<p class="crudButtons">
+			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" />
+		</p>
+	#{/form}
+	<p style="color:red" size=""> <small>* Required Fields.</small></p>
+	</div>
+	<a href="/projects/${project.id}/productroles">Back to ${project.name} product roles</a>
+
+</div>

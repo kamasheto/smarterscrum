@@ -1,0 +1,47 @@
+#{extends 'main.html' /}
+#{set title:'Set Dependent Stories' /}
+
+<form name="view">
+<h1>Set Dependent Stories</h1>
+
+
+<div>
+<p>Story ID</p>
+<input type = "text" id="storyId"><br>
+<input type="submit" name ="try" onclick="return story()" /> 
+</div>
+
+<div id="stories_list"></div>
+<div>
+<button onclick="setDependentStories()">Set Dependent Story</button>
+</div>
+<div id="stories_list2"></div>
+</form>
+
+
+<script type = "text/javascript">
+function story()
+{
+var storyId= $('#storyId').val();
+ $.post('@{Stories.getAllStoriesProject()}',
+		  {storyId:storyId},
+		  function(data){$('#stories_list').html(data);});
+}
+
+function #{extends 'main.html' /}
+#{set title:'Add product role' /}
+
+function setDependentStories()
+{
+
+    rad_val = $("input[name='group']:checked").val();
+	var storyId = $('#storyId').val();
+	var dependetStoryId  = Number(rad_val);
+	$.post('@{setDependentStories2()}', 
+			{storyId:storyId, dependetStoryId:dependetStoryId}, 
+			function(data){
+			alert(data);});
+}
+
+
+</script>

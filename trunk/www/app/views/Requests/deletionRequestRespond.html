@@ -1,0 +1,42 @@
+#{extends 'main.html' /}
+#{set title:'DeletionRequestRespond' /}
+
+#{if requests.isEmpty()}
+<br/>
+<b><font color = "red">There are No New Deletion Requests in this project</font></b>
+<br/> 
+#{/if}
+
+#{else}
+<ul id= "prequests">
+#{list items:requests, as:'req'}
+	<li id="req_${req.id}"><a href="/show/user?id=${req.user.id}">${req.user.name}</a> has  requested to be deleted from the project.
+	<a onclick="request_accept(${req.id}, '${req.hash}');" href="#">Accept  </a> &bull; 
+	<a onclick="request_ignore(${req.id}, '${req.hash}');" href="#">Decline  </a>
+	</li>
+	
+
+#{/list}
+#{/else}
+</ul>
+<br/>
+<a href="/show/project?id=${id}">Back to Project</a>
+<script type="text/javascript">
+
+function request_accept( id, hash )
+{
+	$.post('@{deletionRequestAccept()}' ,
+		    {hash:hash} ,
+		    function(){
+		    $('#req_'+id).remove();
+		    })
+		}
+function request_ignore( id, hash)
+{
+	$.post('@{requestIgnore()}' ,
+		    {hash:hash} ,
+		    function(){
+		    $('#req_'+id).remove();
+		    })
+		}
+</script>

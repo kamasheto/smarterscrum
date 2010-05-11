@@ -1,0 +1,58 @@
+#{extends 'main.html'/}
+#{set title:'List Types'/}
+<h1> respond to the requests </h1>
+<form onsubmit="return false">
+<div>
+			#{list items:requests ,as :'request'}
+			<div>  <h6> User : ${request.user.name}</h6> </div>
+	
+			<div>reviewer to Component : ${request.component.name}</div>
+			   <option id="${request.id}">For Task Type : ${request.types.name}</option>
+		
+			 
+        <button id="button1" onclick="Accept(${request.id})">Accept</button>
+	  <button id="button2" onclick="javascript:Reject(${request.id})">Reject</button>
+	     
+			#{/list}	
+</div>
+</form>
+
+<script type="text/javascript">
+function Accept(typeID)
+{
+
+	$.post('@{accept()}',
+			{requestID:typeID
+		},
+			function(message)
+			{
+				alert(message);
+				$('#button1').hide();
+				$('#button2').hide();
+				 window.location.reload();
+				
+			});
+}
+
+
+</script>
+<script type="text/javascript">
+function Reject(typeID)
+{
+
+	
+	
+	$.post('@{reject()}',
+			{requestID:typeID
+		},
+			function(message)
+			{
+				alert(message);
+				$('#button2').hide();
+				$('#button1').hide();
+				 window.location.reload();
+			});
+}
+
+
+</script>

@@ -1,0 +1,22 @@
+#{extends 'main.html' /}
+#{set title:'Tasks List' /}
+
+
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
+<li><a href="/show/tasks">Tasks</a></li>
+#{/set}
+
+#{if flash.success}
+<p class="success">&{flash.success}</p>
+#{/if}
+<h2>Tasks List</h2>
+<p>Click on a Task's description to view its page</p>
+<ul>
+#{list items:tasks, as:'Task'}
+<li><a href="/tasks/getreport?id=${Task.id}">${Task.description} : ${Task.taskStory.description}</a></li>
+#{/list}
+
+
+</ul>

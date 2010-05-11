@@ -1,0 +1,10 @@
+//@Author: Dina Helal
+//this is used to test story 16
+
+#{selenium}
+    open('/boards/loadboard?sprintID=1')
+    click('1_des')
+	typeAndWait('1_des','newdesc')
+	open('/boards/loadboard?sprintID=1')
+	assertText('1_des', 'newdesc') 
+#{/selenium}

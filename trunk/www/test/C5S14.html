@@ -1,0 +1,10 @@
+//@Author:asmaak89
+// this is JUNIt test for story C5-S14
+
+#{selenium}
+    open('/boards/loadboard?sprintID=1')
+    click('Creat Board Meeting')
+
+	open('/admin/projects/${p.id}/meetings/new')
+	assertText('name', 'Description') 
+#{/selenium}

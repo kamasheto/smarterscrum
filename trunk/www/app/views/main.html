@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <title>#{get 'title' /}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/main.css'}">
+       	<link rel="stylesheet" type="text/css" media="screen"href="@{'/public/stylesheets/tipTip.css'}">
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jquery-ui-1.8.custom.css'}">
+		<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/BreadCrumb.css'}">
+		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/jquery.gritter.css">
+		<link rel="shortcut icon" href="@{'public/images/favicon.ico'}" type="image/x-icon"> 
+        #{get 'moreStyles' /}
+        
+        <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="@{'public/javascripts/jquery-ui-1.8.custom.min.js'}"> </script>
+		<script type="text/javascript" src="@{'public/javascripts/timepicker.js'}"> </script>
+		<script type="text/javascript" src="@{'public/javascripts/jquery.jBreadCrumb.1.1.js'}"> </script>
+        <script src="@{'/public/javascripts/date.js'}" type="text/javascript" charset="utf-8"></script>
+       	<script src="@{'/public/javascripts/jquery.tipTip.js'}" type="text/javascript"charset="utf-8"></script>
+       	<script src="@{'/public/javascripts/md5.js'}" type="text/javascript"charset="utf-8"></script>
+       	<script src="@{'/public/javascripts/more.js'}" type="text/javascript"charset="utf-8"></script>
+		<script type="text/javascript" src="/public/javascripts/jquery.gritter.min.js"></script>
+        #{get 'moreScripts' /}
+        
+        <script type="text/javascript">
+       		$(function(){
+
+       		
+       			$("#breadCrumb").jBreadCrumb();
+       			$('.formatDate').each(function(){
+					$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );
+				});
+       			$('.formatTime').each(function(){
+					$(this).html( formatDate( new Date(Number($(this).html())), 'd MMM, yyyy hh:mma') );
+				});
+   			    $("a").tipTip({delay:0});
+   			    $("td").tipTip({delay:0});
+   			    $("span").tipTip({delay:0});
+   			    $("button").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
+   			    $("a button").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
+
+   			    $("input[type='submit']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
+   			    $("input[type='button']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
+   			    $("input[type='ok']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
+   			    $("input[type='add']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
+   			    $("input[type='send']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
+
+   			    $('div.crudField').each(function(){
+						if ($(this).html().trim() == '') {
+							$(this).remove();
+						}
+   	   			    });
+	   			    #{secure.check 'loggedIn'}
+		 			getNotifications();
+					ping();
+	   			    #{/secure.check}
+       		});
+        </script>
+    </head>
+    <body onload="#{get 'onLoad' /}" onunload="#{get 'onUnLoad'/}">
+    
+    
+    <div style="postion:relative;top:0px;left:0px;z-index:9;display:inline-block;margin-bottom:-80px;float;left">
+    
+	    	<a href="/" title="Because we are the smartest"><img src="@{'public/images/tag.png'}" height="150px"/></a>
+    </div>
+    <!-- $('#THELOADER').css('display','none');
+    	<div id="THELOADER"style="z-index:22;top:0px;left:0px;position:fixed;width:100%;height:100%;background-color:rgba(0,0,0,0.4)">
+	    	<div style="text-align:center; padding-top:15%">
+	    	<img src="@{'public/images/ajax-loader.gif'}"/>
+	    	</div>
+    	</div> -->
+    	<div class="navMAIN" style="margin-top:-30px; margin-bottom:50px">
+			<a class="leftMAIN"href="/" title="Go back home?">Home</a>
+			#{secure.check 'systemAdmin'}
+				<a class="middleMAIN"href="/admin/projects" title="View the admin panel" href="/admin/projects" style="color:#E5A1A5;">Admin Panel</a>
+				#{/secure.check}
+				#{secure.check 'loggedIn'}
+				<a class="middleMAIN"style="width:120px !important" title="Want to see your projects?"href="@{Projects.myProjects()}">My Projects</a>
+				#{/secure.check}
+			<a class="middleMAIN"href="@{Show.users}" title="show users?">View Users</a>
+			<a class="rightMAIN" href="@{Show.projects}" title="view all projects?">View Projects</a>
+		</div>
+		#{secure.check 'loggedIn'}
+		
+    	<br style="clear:both;" />
+	    	<div id="breadCrumb" class="breadCrumb module">
+		    	<ul>
+		        	<li><a href="/">Home</a></li>
+		        	#{get 'crumbs' /}
+	           </ul>
+	    	</div>
+    	<br style="clear:both;" />
+		#{/secure.check}
+    	<br style="clear:both;" />
+    	
+    	#{secure.check 'loggedIn'}
+    	<div id="left_menu">
+    	 <div class="inner" style="float:left">
+			<div class="smartBarContent">
+				<div class="smartBarHeader">Tools</div>
+				#{get 'moreLinks' /}
+			</div>
+			<div class="smartBarContent">
+				<div class="smartBarHeader">My Controls</div>
+				You are logged in as ${controllers.Security.getConnected().name}. 
+				<p><a href="/show/user?id=${controllers.Security.getConnected().id}"> View my Profile</a></p>
+				
+				<p>#{get 'moreControls'/}</p>
+				<a href="/sessions/logout" title="Logout from the system">Logout</a>
+
+			</div>
+			<div class="smartBarContent">
+				<div class="smartBarHeader">Online Users</div>
+				<div id="onlineUsers"></div>
+			</div>
+		</div>
+		</div>
+		
+		<div id="THECONTENT">
+    	#{/secure.check}
+		        #{doLayout /}
+		#{secure.check 'loggedIn'}
+		</div>
+		<br style="clear:both;" />
+		#{/secure.check}
+		<div style="text-align:center;font-size:9px; padding:10px; display:block;color:#666;">all rights reserved  &copy; smartsoft, 2010<br />made with <span style="font-size:10px;color:#F33A78">♥</span> (lots and lots of it)</div>
+		<script type="text/javascript">
+		var getNotifications = function() {
+				$.getJSON('/notificationtasks/getlatestnews',
+					function(data) {
+						$(data).each(function(){
+							$.gritter.add({
+								title: this.header,
+								text: this.body,
+								image: this.importance > 0 ? '/public/images/tick.png' : this.importance < 0 ? '/public/images/cross.png' : '/public/images/error.png',
+								sticky: false,
+								time: ''
+							});
+							return true;
+						});
+					setTimeout('getNotifications();', 1000);
+					});
+				}
+var ping = function() {
+				$.getJSON('/sessions/ping',
+					function(data) {
+						str = '';
+						$(data).each(function() {
+							// users?
+							if (this.isAdmin) {
+								this.name = '<span class="isAdmin">' + this.name + '</span>';
+							}
+							str += '<a href="/show/user?id='+this.id+'">' + this.name + '</a>, ';
+						});
+						
+						$('#onlineUsers').html(str.substring(0,str.length-2));
+						setTimeout('ping()', 1000*30);
+					});
+				}
+
+			 $.extend($.gritter.options, { 
+				fade_in_speed: 50, // how fast notifications fade in (string or int)
+				fade_out_speed: 300, // how fast the notices fade out
+				time: 5000 // hang on the screen for...
+			});
+			</script>
+    </body>
+</html>

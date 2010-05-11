@@ -1,0 +1,71 @@
+#{extends 'CRUD/layout.html' /}
+
+<div id="crudShow" class="${type.name}">
+	
+	<h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
+	
+	<div class="objectForm">
+	#{form action:@save(object.id), enctype:'multipart/form-data'}
+		#{crud.form fields:['name','description']}
+			
+			#{crud.custom 'name'}
+			<label for="object_name">
+			Name
+			</label>
+			<br/>
+			<input id="object_name" class="" type="text" name="object.name" value="${object.name}" size="50" />
+			<span class="crudHelp" style="color:red">*</span>
+			#{/crud.custom}
+			
+			#{crud.custom 'description'}
+			<br/>
+			<label for="object_description">
+			Description
+			</label>
+			<br/>
+			<textarea id="object_description" cols="48" rows="5" class="" name="object.description">${object.description}</textarea>
+   			<span class="crudHelp" style="color:red">* </span>
+
+			#{/crud.custom}
+		
+		#{/crud.form }
+		<input type="hidden" id="object_project" name="object.project@id" value="${object.project.id}" >
+		
+		<br/>
+			<small style="color:red"> * Required Fields </small>
+		<p class="crudButtons">
+			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+		</p>
+	#{/form}
+	</div>
+	
+	#{secure.check 'canDeleteComponent'}
+	#{if ! object.project.inSprint(new Date()) }
+
+		<p class="crudDelete">
+			<input type="submit" onclick="delete_component(${object.id})"value="&{'crud.delete', type.modelName}" />
+		</p>
+	
+	#{/if}
+	#{/secure.check}
+
+</div>
+
+<script type="text/javascript">
+function delete_component(cid)
+{
+	var confirmation= confirm("Delete Component ?")
+	if (confirmation) {
+		$.post('@{delete()}', {
+			id: cid
+		}, function(){
+			window.location = "/projects/${object.project.id}/components"
+		});
+	}
+	return true
+	;
+	
+	
+}
+</script>

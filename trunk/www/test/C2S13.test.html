@@ -1,0 +1,19 @@
+*{ You can use plain selenium command using the selenium tag }*
+
+#{selenium}
+    // Open the home page, and check that no error occured
+    open('/')
+    waitForPageToLoad(1000)
+    assertNotTitle('Application error')
+#{/selenium}
+
+
+//@Author: Dina Helal
+//this is used to test story 16
+#{selenium}
+    open('/projects/1/meetings') 
+    open('/meetings/1')
+    click('deleteMeeting')
+    getConfirmation()
+    open('/project/1/meetings')
+#{/selenium}

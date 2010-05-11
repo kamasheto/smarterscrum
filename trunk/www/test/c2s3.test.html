@@ -1,0 +1,21 @@
+*{ You can use plain selenium command using the selenium tag }*
+
+#{selenium}
+    // Open the home page, and check that no error occured
+    open('/')
+    waitForPageToLoad(1000)
+    assertNotTitle('Application error')
+#{/selenium}
+
+
+
+#{selenium}
+ open('admin/projects/1')
+ assertTextPresent('14 Days')
+ type('durationText','12')
+ click('addSP')
+  open('admin/projects/1')
+ assertTextPresent('12 Days')
+ 
+   
+#{/selenium}

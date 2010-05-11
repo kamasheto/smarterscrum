@@ -1,0 +1,37 @@
+#{extends 'main.html' /}
+#{set title:'Users List' /}
+#{set 'crumbs'}
+<li><a href="/show/users">Users</a></li>
+#{/set}
+<h2>User List</h2>
+<p>Type to filter: <input type="text" id="search_term" onkeyup="search_users();" /> <img id="loading" style="display:none;" src="@{'/public/images/ajax-loader.gif'}" /></p>
+<p>Click on a name to view his/her profile</p>
+<div id="results" class="dark">
+#{list items:users, as:'user'}
+<a href="/show/user?id=${user.id}">${user.name}</a><br/>
+#{/list}
+<center>#{if page>0}<a href="/show/users?page=${page-1}">Previous</a>#{/if} &bull; #{if page+1<=total/20}<a href="/show/users?page=${page+1}">Next</a>#{/if} </center>
+</div>
+<script type="text/javascript">
+searching = null;
+function search_users() {
+	$('#loading').show();
+	if (searching) {
+		searching.abort();
+	}
+	searching = $.post('/ajax/users?query='+$('#search_term').val(),
+			function(data) {
+				str = '';
+				if (data.length) {
+					$.each(data, function(id,item) {
+						str += '<a href="/show/user?id='+item.id+'">'+item.name+'</a><br/>';
+					});
+				} else {
+					str = '<a>Did not match any users</a>';
+				}
+				$('#results').html(str);
+				$('#loading').hide();
+			});
+}
+
+</script>

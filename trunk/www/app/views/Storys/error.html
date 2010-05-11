@@ -1,0 +1,13 @@
+<div class="popup">
+	<div class="popup-header">
+		 <h3>Oops!</h3>
+	</div>
+	<br><b>Sorry, An error occured .. Possible reasons are</b><br>
+	<i><font color="red">The actual reason is in red</font></i>
+	<ul>
+		#{if components == false}<font color="red">#{/if}
+		<li>There are no components in the project</li>#{if components == false}</font>#{/if}
+		#{if priorities == false}<font color="red">#{/if}<li>There are no priorities in the project</li>#{if priorities == false}</font>#{/if}
+		#{if roles == false}<font color="red">#{/if}<li>There are no product roles in the project</li>#{if roles == false}</font>#{/if}
+	</ul>
+</div>

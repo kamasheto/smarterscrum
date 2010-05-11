@@ -1,0 +1,32 @@
+#{extends 'CRUD/layout.html' /}
+#{set 'crumbs'}
+<li><a href="/show/projects/">Projects</a></li>
+<li><a href="/show/project?id=${object.project.id}">${object.project.name}</a></li>
+#{/set}
+<div id="crudShow" class="${type.name}">
+	<h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
+	<div class="objectForm">
+	#{form action:@save(object.id), enctype:'multipart/form-data'}
+		<a href="javascript:check_all_perms();">Check all</a>, <a href="javascript:uncheck_all_perms();">uncheck all</a> or
+		import permissions from: <select id="inherit" onchange="import_permissions($('#inherit :selected').val());"><option value=0></option>
+			#{list object.project.roles}
+				<option value="${_.id}">${_.name}</option>
+			#{/list}
+		</select> <img id="loading" style="display:none;" src="/public/images/ajax-loader.gif" />
+		#{crud.form}
+			#{crud.custom 'users'}#{/crud.custom}
+			#{crud.custom 'project'}#{/crud.custom}
+		#{/crud.form}
+		<p class="crudButtons">
+			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+		</p>
+	#{/form}
+	</div>
+	#{form @delete(object.id)}
+		<p class="crudDelete">
+			<input type="submit" value="&{'crud.delete', type.modelName}" onclick="return confirm('Are you sure you want to delete this role');" />
+		</p>
+	#{/form}
+</div>
+<pre id="pre"></pre>

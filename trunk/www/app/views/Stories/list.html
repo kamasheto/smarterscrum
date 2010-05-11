@@ -1,0 +1,4 @@
+ #{extends 'main.html' /}
+ #{list items:stories, as:'story'}
+ - ${story.description}, <a href="@{edit(story.id)}">e</a>, <a href="@{deleteStory(story.id)}">x</a><br>
+ #{/list}

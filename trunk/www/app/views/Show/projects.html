@@ -1,0 +1,43 @@
+#{extends 'main.html' /}
+#{set title:'Project List' /}
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+#{/set}
+
+#{if flash.success}
+<p class="success">&{flash.success}</p>
+#{/if}
+<h2>Project List</h2>
+    	    	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+	<strong>NOTE: </strong>Click on a project's name to view its page<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
+<p>Type to filter: <input type="text" id="search_term" onkeyup="search_users();" /> <img id="loading" style="display:none;" src="@{'/public/images/ajax-loader.gif'}" /></p>
+<div id="results" class="dark">
+#{list items:projects, as:'project'}
+<a title="Goto ${project.name}'s homepage?"href="/show/project?id=${project.id}">${project.name}</a><br />
+#{/list}
+<center>#{if page>0}<a href="/show/projects?page=${page-1}">Previous</a>#{/if} &bull; #{if page+1<=total/20}<a href="/show/projects?page=${page+1}">Next</a>#{/if} </center>
+</div>
+<script type="text/javascript">
+searching = null;
+function search_users() {
+	$('#loading').show();
+	if (searching) {
+		searching.abort();
+	}
+	searching = $.post('/ajax/projects?query='+$('#search_term').val(),
+			function(data) {
+				str = '';
+				if (data.length) {
+					$.each(data, function(id,item) {
+						str += '<a href="/show/project?id='+item.id+'">'+item.name+'</a><br/>';
+					});
+				} else {
+					str = '<a>Did not match any projects</a>';
+				}
+				$('#results').html(str);
+				$('#loading').hide();
+			});
+}
+
+</script>

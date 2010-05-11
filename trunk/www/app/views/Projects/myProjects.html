@@ -1,0 +1,24 @@
+#{extends 'main.html' /}
+#{set title:'My Projects' /}
+
+<h1> My Projects </h1>
+#{if projects.isEmpty()}
+<br/>
+<b><font color="red">You are not currently involved in a project</font>
+<br/>
+if you want to request to join a project <a href="/show/projects"><font color = "blue"><u>Click Here</u></font></a> !
+</b>
+<br/> 
+#{/if}
+#{if !projects.isEmpty()}
+<ul id= "prequests">
+#{list items:projects, as:'pro'}
+#{ifnot pro.deleted}
+	<li id="us_${pro.id}">
+	<a href="/show/project?id=${pro.id}"> ${pro.name} </a>
+	</li>
+#{/ifnot}
+#{/list}
+
+</ul>
+#{/if}

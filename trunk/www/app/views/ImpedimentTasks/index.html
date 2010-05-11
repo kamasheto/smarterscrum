@@ -1,0 +1,40 @@
+#{extends 'main.html' /} #{set title:'Report impediment' /}
+<h2>Report new Impediment:</h2>
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
+<li><a href="@{ImpedimentTasks.index(project.id)}">Report Impediment</a></li>
+#{/set}
+<div id="THESAVE">
+
+<form action="@{ImpedimentTasks.save()}" onsubmit="return report_impediment(${project.id});">
+	
+	Description <br /><textarea id="desc"></textarea><br />
+	<input type="submit" value="Save" />
+</form>
+</div>
+
+<!-- 
+@author ahmedkhaled7 C4 S12
+	sending the description and the project id to the controller
+	@param id 
+			this is the id of the story he chose to report
+-->
+<script type="text/javascript">
+function report_impediment(id)
+{
+	//var temp_description = prompt('Enter description');
+	//if( temp_description == null ) return;
+	$.post('@{ImpedimentTasks.save()}',
+		   {description:  $('#desc').val(), projectId : id},
+		   function(data)
+		   {var n =1;
+			   window.location="/impedimenttasks/selectdependenttasks?itaskId="+data+"&projectId="+id;
+		   }
+	);// end of .post	   
+	return false;
+}// end of function
+
+
+
+</script>

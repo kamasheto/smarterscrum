@@ -1,0 +1,48 @@
+#{extends 'main.html'/}
+#{set title:'List Types'/}
+<h1> Request to be reviewer </h1>
+<form onsubmit="return false">
+<div>
+    #{list items :projects, as:'project'}
+      #{if project.deleted == false}
+     <h5> ${project.name} </h5>
+      <div>
+      you want to be reviewer of:
+			<select id="TypeID">
+			#{list items:project.taskTypes ,as :'task'}
+			#{if task.deleted == false}
+		      <option value="${task.id}">${task.name}</option>
+			#{/if}
+			#{/list}		
+			</select>
+      #{/if}
+    
+      <button id="buttonID" onclick="javascript:rrequest($('#TypeID :selected').val(), ${project.id})">Request</button>
+      
+      #{/list}
+      
+      </div>
+      </div>
+
+</form>
+
+<script type="text/javascript">
+function rrequest(Type, PID)
+{  
+	var TID  = Type;
+	
+	$.post('@{requestToBeReviewer()}',
+			{ID:TID,
+		      Pid:PID
+		},
+			function(message)
+			{
+				alert(message);
+				$('#buttonID').hide();
+				 window.location.reload();
+			});
+}
+
+
+</script>
+ 

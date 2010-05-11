@@ -1,0 +1,36 @@
+<!--Author: Amr Tj.Wallas-->
+<!--Task: C1S23-->
+#{extends 'Secure/layout.html' /}
+#{set title:'Delete Me' /}
+
+<div id="login">
+	<h1>Deletion Request</h1>
+	
+	<!--The Registration form element-->
+	<form name = "delete" action = "@{deletionRequest()}" method="post">
+		<!--Show an error from the controller if any-->
+		#{ifErrors}
+		<p class="error left">
+		    #{errors}
+		    	${error}<br />
+		    #{/errors}
+		    </p>
+		#{/ifErrors}
+		#{if flash.error}
+			<p class="error left">&{flash.error}</p>
+		#{/if}
+		<!--Show success messages from the controller if any-->
+		#{if flash.success}
+			<p class="success">&{flash.success}</p>
+		#{/if}
+		<p class="form-field">
+			<label>Username</label>
+			<input type="text" name="userName" id="firstname" value="${flash.userName}"/>
+		</p>
+		
+		<p id="submission-field" align="center">
+			<input type = "submit" value = "Submit" /> 
+		</p>
+	</form> 
+	
+</div>
