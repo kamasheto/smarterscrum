@@ -22,91 +22,6 @@ import play.mvc.With;
  */
 @With (Secure.class)
 public class Application extends Controller {
-
-	public static void test() {
-		// // User u1 = new User("hello", "email@email.com", "test").save();
-		// // // u1.save();
-		// // Project p1 = new Project("smartsoft",
-		// // "my proejct description").save();
-		// // p1.init();
-		// // System.out.println("Printing project: " + p1.board);
-		// //
-		// // u1.projects.add(p1);
-		// //
-		// // Component c1 = new Component();
-		// // c1.name = "Component 1";
-		// // c1.description = "Hello world";
-		// // c1.project = p1;
-		// // c1.save();
-		// //
-		// // u1.components.add(c1);
-		// //
-		// // u1.save();
-		// // // p1.users.add(u1);
-		// // // u1.save();
-		// // // p1.save();
-		// // System.out.println("Start debugging");
-		// // System.out.println("Printing users");
-		// // for (User u : User.<User> findAll()) {
-		// // System.out.println(u);
-		// // }
-		// //
-		// // System.out.println("Printing projects");
-		// // for (Project p : Project.<Project> findAll()) {
-		// // // System.out.println(p);
-		// // // System.out.println(p.taskStatuses);
-		// // // System.out.println(p.taskStatuses.size());
-		// // // System.out.println(TaskStatus.findAll());
-		// // // System.out.println(TaskStatus.findAll().size());
-		// // // System.out.println(p.taskTypes);
-		// // System.out.println(p.components);
-		// // }
-		// //
-		// // TaskStatus s1 = null;
-		// // System.out.println("Printing tasks statuses>>");
-		// // for (TaskStatus s : TaskStatus.find("byProject", p1).<TaskStatus>
-		// // fetch()) {
-		// // s1 = s;
-		// // System.out.println(s);
-		// // System.out.println(s.project);
-		// // Project amr = s.project;
-		// // for (TaskStatus t : amr.taskStatuses)
-		// // System.out.println("Amr: " + t);
-		// // }
-		//
-		Project.deleteAll();
-		Project h = new Project("Smartsoft", "Hehe").save();
-		//
-		// // System.out.println()
-		// // Project h = Project.findById(2L);
-		// h.init();
-		// h.save();
-		// int i = 0;
-		// System.out.println(h + " " + (++i));
-		// System.out.println(h.board + " " + (++i));
-		// System.out.println(h.taskStatuses + " " + (++i));
-		// System.out.println(h.taskTypes + " " + (++i));
-		// System.out.println(h.meetingsTypes + " " + (++i));
-		// System.out.println(h.meetings + " " + (++i));
-		// System.out.println(h.meetingsTypesInSprint + " " + (++i));
-		// System.out.println(h.roles + " " + (++i));
-		// //
-		// //
-		// System.out.println("Printting the inverse task statuses>>>>>>>>>: ");
-		// // for (Project s : Project.find("byTaskStatus", s1).<Project>
-		// fetch())
-		// // {
-		// // System.out.println(s);
-		// // System.out.println(s.taskStatuses);
-		// // }
-		//
-		// System.out.println("Printing components");
-		// for (Component c : Component.<Component> findAll()) {
-		// System.out.println(c);
-		// }
-		//
-	}
-
 	public static String hash(String str) {
 		String res = "";
 		try {
@@ -133,23 +48,12 @@ public class Application extends Controller {
 	}
 
 	public static String randomHash(int length) {
-		return hash(System.currentTimeMillis() + "").substring(0, length);
+		return hash(System.currentTimeMillis() * Math.random() + "").substring(0, length);
 	}
 
 	public static void index() {
-		// System.out.println(hash("test"));
-
-		// Mail.send(null, "me@sakr.me", "Test", Router.getFullUrl("Ajax.users")
-		// + "?query=test");
 		render();
 	}
-
-	// FetchData Method in Sprint
-	// Copied and paste it
-	/**
-	 * it's called whenever the user presses on the button in ButtonToView.html
-	 * So that the GRAPH is generated in the Show.html
-	 */
 
 	/**
 	 * View components controller which takes a projectID as an ID and returns
