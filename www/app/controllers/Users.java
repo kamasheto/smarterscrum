@@ -22,9 +22,8 @@ import play.mvc.With;
  * @author Amr Tj.Wallas
  * @version 685
  */
-@With( Secure.class )
-public class Users extends CRUD
-{
+@With (Secure.class)
+public class Users extends CRUD {
 	/*
 	 * public static boolean[] userExists(User user) { boolean [] toBeReturned =
 	 * new boolean [] {false,false}; for(User currentUser :
@@ -45,41 +44,37 @@ public class Users extends CRUD
 	 *            component id when the actions are done
 	 */
 
-	@Check( "canEditComponent" )
-	public static void assignUsers( long id )
-	{
-		Component comp = Component.findById( id );
+	@Check ("canEditComponent")
+	public static void assignUsers(long id) {
+		Component comp = Component.findById(id);
 		Project pro = comp.project;
 		List<User> users = getFreeUsers(pro);
-		render( users, comp , pro );
+		render(users, comp, pro);
 	}
-	
+
 	/**
 	 * it's a helper method
+	 * 
 	 * @author Moataz_Mekki
 	 * @param p
-	 * 			the project that we need to get the developers in it
-	 * @return
-	 * 			it returns a list of the developers that are not assigned in any
-	 * 			component yet.
+	 *            the project that we need to get the developers in it
+	 * @return it returns a list of the developers that are not assigned in any
+	 *         component yet.
 	 */
-	public static List<User> getFreeUsers(Project p)
-	{
+	public static List<User> getFreeUsers(Project p) {
 		List<User> users = p.users;
 		List<Component> comp = p.components;
 		ArrayList<User> res = new ArrayList<User>();
-		for(int i = 0 ; i<users.size() ; i++)
-		{
+		for (int i = 0; i < users.size(); i++) {
 			User tmp = users.get(i);
-			for(int j = 0 ; j<comp.size() ; j++)
-			{
+			for (int j = 0; j < comp.size(); j++) {
 				Component com = comp.get(j);
-				if(com.componentUsers.contains(tmp))
+				if (com.componentUsers.contains(tmp))
 					break;
-				else if(j==comp.size()-1)
+				else if (j == comp.size() - 1)
 					res.add(tmp);
 			}
-			
+
 		}
 		return res;
 	}
@@ -95,17 +90,16 @@ public class Users extends CRUD
 	 *            the relation between the user & the component to make sure
 	 *            that this user is assigned to that component
 	 */
-	@Check( "canAssignUserToComponent" )
-	public static void chooseUsers( long id, long UId )
-	{
-		User myUser = User.findById( UId );
-		Component myComponent = Component.findById( id );
-		myUser.components.add( myComponent );
+	@Check ("canAssignUserToComponent")
+	public static void chooseUsers(long id, long UId) {
+		User myUser = User.findById(UId);
+		Component myComponent = Component.findById(id);
+		myUser.components.add(myComponent);
 		myComponent.componentUsers.add(myUser);
 		Date d = new Date();
 		User user = User.find("byEmail", Security.connected()).first();
 		Logs.addLog(user, "assignUser", "User", UId, myComponent.project, d);
-		Notifications.notifyUsers(myUser, "Assigned to a component", "You were assigned to the component "+myComponent.name+" in the project "+myComponent.project.name, (byte)0);
+		Notifications.notifyUsers(myUser, "Assigned to a component", "You were assigned to the component " + myComponent.name + " in the project " + myComponent.project.name, (byte) 0);
 		myUser.save();
 	}
 
@@ -116,22 +110,24 @@ public class Users extends CRUD
 	 * @param id
 	 *            user id
 	 */
-	@Check( "systemAdmin" )
-	public static void del( long id )
-	{
-		User user = User.findById( id );
+	@Check ("systemAdmin")
+	public static void del(long id) {
+		User user = User.findById(id);
 		user.deleted = true;
 		user.save();
-		redirect( "/show/users" );
+		redirect("/show/users");
 		// redirect( flash.get( "url" ) );
 	}
+
 	/**
-	 * This method fetches and renders the corresponding UserNotificationProfile  
-	 * when a user clicks the manage notifications link corresponding to a certain 
-	 * project.
+	 * This method fetches and renders the corresponding UserNotificationProfile
+	 * when a user clicks the manage notifications link corresponding to a
+	 * certain project.
+	 * 
 	 * @author Amr Tj.Wallas
 	 * @param id
-	 *         The id of that project the user wants to manage his notifications in.
+	 *            The id of that project the user wants to manage his
+	 *            notifications in.
 	 * @throws ClassNotFoundException
 	 * @see {@link models.UserNotificationProfile}
 	 * @see {@link views/Users/manageNotificationProfile.html}
@@ -139,33 +135,34 @@ public class Users extends CRUD
 	 * @Task C1S33
 	 */
 	@Check ("canEditUserNotificationProfile")
-	public static void manageNotificationProfile(long id) throws ClassNotFoundException
-	{
-		Project currentProject = Project.findById( id );
+	public static void manageNotificationProfile(long id) throws ClassNotFoundException {
+		Project currentProject = Project.findById(id);
 		User currentUser = Security.getConnected();
-		UserNotificationProfile currentNotificationProfile = UserNotificationProfile.find( "user = "+ currentUser.id + " and project = " +currentProject.id ).first();
-		ObjectType type = ObjectType.get( UserNotificationProfiles.class );
-        notFoundIfNull(type);
-        if (currentNotificationProfile == null)
-			error( "Could not find a notification profile for this user in this project" );
-		else{
+		UserNotificationProfile currentNotificationProfile = UserNotificationProfile.find("user = " + currentUser.id + " and project = " + currentProject.id).first();
+		ObjectType type = ObjectType.get(UserNotificationProfiles.class);
+		notFoundIfNull(type);
+		if (currentNotificationProfile == null)
+			error("Could not find a notification profile for this user in this project");
+		else {
 			JPASupport object = type.findById(currentNotificationProfile.id);
-			try{
-				
-				render (currentNotificationProfile,type,object);
+			try {
+
+				render(currentNotificationProfile, type, object);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/show.html", type, object);
 			}
-		catch (TemplateNotFoundException e) {
-            render("CRUD/show.html", type, object);
-        }
 		}
 	}
+
 	/**
-	 * This method saves any modifications made by the user in a given 
-	 * UserNotificationProfile in the UI Side to the database. And renders a success
-	 * message. 
+	 * This method saves any modifications made by the user in a given
+	 * UserNotificationProfile in the UI Side to the database. And renders a
+	 * success message.
+	 * 
 	 * @author Amr Tj.Wallas
 	 * @param id
-	 *         The id of that project the user is managing his notifications in.
+	 *            The id of that project the user is managing his notifications
+	 *            in.
 	 * @throws Exception
 	 * @see {@link models.UserNotificationProfile}
 	 * @see {@link views/Users/manageNotificationProfile.html}
@@ -173,24 +170,24 @@ public class Users extends CRUD
 	 * @Task C1S33
 	 */
 	public static void saveNotificationProfile(String id) throws Exception {
-	        ObjectType type = ObjectType.get(UserNotificationProfiles.class);
-	        notFoundIfNull(type);
-	        JPASupport object = type.findById(id);
-	        validation.valid(object.edit("object", params));
-	        if (validation.hasErrors()) {
-	            renderArgs.put("error", Messages.get("crud.hasErrors"));
-	            try {
-	                render(request.controller.replace(".", "/") + "/show.html", type, object);
-	            } catch (TemplateNotFoundException e) {
-	                render("CRUD/show.html", type, object);
-	            }
-	        }
-	        object.save();
-	        flash.success("You Notificaton Profile modifications have been saved");
-	        if (params.get("_save") != null) {
-	            redirect("http://localhost:9000/users/managenotificationprofile?projectId="+id);
-	        }
-	        redirect(request.controller + ".show", object.getEntityId());
-	    }
-	
+		ObjectType type = ObjectType.get(UserNotificationProfiles.class);
+		notFoundIfNull(type);
+		JPASupport object = type.findById(id);
+		validation.valid(object.edit("object", params));
+		if (validation.hasErrors()) {
+			renderArgs.put("error", Messages.get("crud.hasErrors"));
+			try {
+				render(request.controller.replace(".", "/") + "/show.html", type, object);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/show.html", type, object);
+			}
+		}
+		object.save();
+		flash.success("You Notificaton Profile modifications have been saved");
+		if (params.get("_save") != null) {
+			redirect("http://localhost:9000/users/managenotificationprofile?projectId=" + id);
+		}
+		redirect(request.controller + ".show", object.getEntityId());
+	}
+
 }

@@ -35,7 +35,7 @@ public class Story extends Model {
 
 	@Lob
 	public String failureSenario;
-	
+
 	@Required
 	public int priority;
 
@@ -130,8 +130,7 @@ public class Story extends Model {
 	 * Checks whether a story is in a sprint
 	 * 
 	 * @author Gallal Aly
-	 * @return 
-	 * 		 whether the story is in a running sprint
+	 * @return whether the story is in a running sprint
 	 */
 	public boolean inSprint() {
 		Date now = Calendar.getInstance().getTime();
@@ -144,13 +143,13 @@ public class Story extends Model {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Checks whether this story depends on another
+	 * 
 	 * @author Galal Aly
 	 * @param s
 	 *            The story to check.
-	 *   
 	 * @return Whether this one depends on s
 	 */
 	public int dependsOn(Story s) {
@@ -159,7 +158,7 @@ public class Story extends Model {
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Whether any story depends on this one
 	 * 

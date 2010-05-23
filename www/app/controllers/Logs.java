@@ -25,9 +25,8 @@ import play.mvc.With;
  * @Task C1S1
  * @Task C1S3
  */
-@With( Secure.class )
-public class Logs extends CRUD
-{
+@With (Secure.class)
+public class Logs extends CRUD {
 	/**
 	 * New method by mahmoudsakr
 	 * 
@@ -41,6 +40,7 @@ public class Logs extends CRUD
 		addLog(Security.getConnected(), action_type, resource_type, resource_id, project, new Date());
 		return true;
 	}
+
 	/**
 	 * This method simply takes the required parameters for a log record in the
 	 * database creates a new log and then saves it into the database
@@ -58,48 +58,47 @@ public class Logs extends CRUD
 	 *            The project that user is performing the action in.
 	 * @param date
 	 *            Current date/time of action.
-	 * @return <code>true</code> if the log entry was successfully saved. 
+	 * @return <code>true</code> if the log entry was successfully saved.
 	 * @see models.Log
 	 * @Task C1S1
 	 */
-	public static boolean addLog( User user, String action_type, String resource_type, long resource_id, Project project, Date date )
-	{
+	public static boolean addLog(User user, String action_type, String resource_type, long resource_id, Project project, Date date) {
 
-		Log newLog = new Log( user, action_type, resource_type, resource_id, project, date ); 
-																									 
+		Log newLog = new Log(user, action_type, resource_type, resource_id, project, date);
+
 		newLog.save(); /* Save That Log Entry */
-		
+
 		return true;
-		
+
 	}
+
 	/**
-	 * This method fetches next 5 logs from the Database and renders them ordered by 
-	 * date in descending (Pagination Factor = 5 logs per page for Testing)
+	 * This method fetches next 5 logs from the Database and renders them
+	 * ordered by date in descending (Pagination Factor = 5 logs per page for
+	 * Testing)
+	 * 
 	 * @author Amr Tj.Wallas
 	 * @param page
-	 *        The current logs page number at the view
-	 * @override Method "list()" in Crud/Controllers/CRUD.java 
+	 *            The current logs page number at the view
+	 * @override Method "list()" in Crud/Controllers/CRUD.java
 	 * @see views/Logs/list.html
 	 * @Task C1S3
 	 */
-	@Check("systemAdmin")
-	public static void list(int page,String filter)
-	{
-		int index = page*25;
+	@Check ("systemAdmin")
+	public static void list(int page, String filter) {
+		int index = page * 25;
 		List<Log> logs = null;
-		//List<ObjectField> fields = ObjectType.get( Logs.class ).getFields();
-		if (filter != null && filter.contains( "'" ))
-		{
-			flash.error( "ILLEGAL CHARACTER !!");
+		// List<ObjectField> fields = ObjectType.get( Logs.class ).getFields();
+		if (filter != null && filter.contains("'")) {
+			flash.error("ILLEGAL CHARACTER !!");
 			filter = null;
-			logs = Log.find("order by date desc").from( index ).fetch( 25 );
-			render(logs,page);
-		}
-		else if(filter != null)
-			logs = Log.find("user.name like '%"+filter+"%' or "+"action_type like '%"+filter+"%' or "+"resource_type like '%"+filter+"%' or "+"project.name like '%"+filter+"%' or "+"date like '%"+filter+"%' order by date desc").from(index).fetch(25);
+			logs = Log.find("order by date desc").from(index).fetch(25);
+			render(logs, page);
+		} else if (filter != null)
+			logs = Log.find("user.name like '%" + filter + "%' or " + "action_type like '%" + filter + "%' or " + "resource_type like '%" + filter + "%' or " + "project.name like '%" + filter + "%' or " + "date like '%" + filter + "%' order by date desc").from(index).fetch(25);
 		else
-			logs = Log.find("order by date desc").from( index ).fetch( 25 );
-		render(logs,page,filter);
+			logs = Log.find("order by date desc").from(index).fetch(25);
+		render(logs, page, filter);
 	}
-		
+
 }

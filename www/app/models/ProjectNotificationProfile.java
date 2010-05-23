@@ -11,11 +11,10 @@ import play.db.jpa.Model;
  */
 
 @Entity
-public class ProjectNotificationProfile extends Model
-{
+public class ProjectNotificationProfile extends Model {
 	@OneToOne
 	public Project project;
-	
+
 	public boolean setMeeting;
 	public boolean setSprint;
 	public boolean addRole;
@@ -36,8 +35,7 @@ public class ProjectNotificationProfile extends Model
 	 * @param project
 	 *            : the project that this notification profile belongs to
 	 */
-	public ProjectNotificationProfile( @Required Project project )
-	{
+	public ProjectNotificationProfile (@Required Project project) {
 		this.project = project;
 		setMeeting = true;
 		setSprint = true;
@@ -61,33 +59,32 @@ public class ProjectNotificationProfile extends Model
 	 *            : the string that describes the action
 	 * @return: returns the boolean variable related to the action
 	 */
-	public boolean checkAction( String action )
-	{
-		if( action.equalsIgnoreCase( "setMeeting" ) )
+	public boolean checkAction(String action) {
+		if (action.equalsIgnoreCase("setMeeting"))
 			return setMeeting;
-		else if( action.equalsIgnoreCase( "setSprint" ) )
+		else if (action.equalsIgnoreCase("setSprint"))
 			return setSprint;
-		else if( action.equalsIgnoreCase( "addRole" ) )
+		else if (action.equalsIgnoreCase("addRole"))
 			return addRole;
-		else if( action.equalsIgnoreCase( "addProductRole" ) )
+		else if (action.equalsIgnoreCase("addProductRole"))
 			return addProductRole;
-		else if( action.equalsIgnoreCase( "editProductRole" ) )
+		else if (action.equalsIgnoreCase("editProductRole"))
 			return editProductRole;
-		else if( action.equalsIgnoreCase( "deleteProductRole" ) )
+		else if (action.equalsIgnoreCase("deleteProductRole"))
 			return deleteProductRole;
-		else if( action.equalsIgnoreCase( "swapColumns" ) )
+		else if (action.equalsIgnoreCase("swapColumns"))
 			return swapColumns;
-		else if( action.equalsIgnoreCase( "renameColumn" ) )
+		else if (action.equalsIgnoreCase("renameColumn"))
 			return renameColumn;
-		else if( action.equalsIgnoreCase( "editColumnPosition" ) )
+		else if (action.equalsIgnoreCase("editColumnPosition"))
 			return editColumnPosition;
-		else if( action.equalsIgnoreCase( "reportImpediment" ) )
+		else if (action.equalsIgnoreCase("reportImpediment"))
 			return reportImpediment;
-		else if(action.equalsIgnoreCase("onCreateComponent"))
+		else if (action.equalsIgnoreCase("onCreateComponent"))
 			return onCreateComponent;
-		else if(action.equalsIgnoreCase("onEditComponent"))
+		else if (action.equalsIgnoreCase("onEditComponent"))
 			return onEditComponent;
-		else if(action.equalsIgnoreCase("onDeleteComponent"))
+		else if (action.equalsIgnoreCase("onDeleteComponent"))
 			return onDeleteComponent;
 		else
 			return false;

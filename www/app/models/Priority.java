@@ -8,28 +8,23 @@ import play.db.jpa.Model;
 @Entity
 public class Priority extends Model implements Comparable {
 
-	
 	public String title;
 	public int priority;
 	public boolean deleted = false;
-	
-	//Relation with Project many to One
+
+	// Relation with Project many to One
 	@ManyToOne
 	public Project project;
-	
-	//@Override
+
+	// @Override
 	public int compareTo(Object o) {
 		// TODO Auto-generated method stub
 		Priority mine = (Priority) o;
-		if(this.priority>mine.priority)
-		{
+		if (this.priority > mine.priority) {
 			return 1;
-		}
-		else if(this.priority<mine.priority)
-		{
+		} else if (this.priority < mine.priority) {
 			return -1;
-		}
-		else
+		} else
 			return 0;
 	}
 

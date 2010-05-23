@@ -25,7 +25,7 @@ public class Component extends Model {
 
 	@Lob
 	@Required
-	@MaxSize(10000)
+	@MaxSize (10000)
 	public String description;
 
 	// deletion marker
@@ -37,22 +37,22 @@ public class Component extends Model {
 	public Project project;
 
 	// Relation with User Entity
-	@ManyToMany(mappedBy = "components", cascade = CascadeType.ALL)
+	@ManyToMany (mappedBy = "components", cascade = CascadeType.ALL)
 	public List<User> componentUsers;
 
 	// Relation with Story Entity
-	@OneToMany(mappedBy = "componentID", cascade = CascadeType.ALL)
+	@OneToMany (mappedBy = "componentID", cascade = CascadeType.ALL)
 	public List<Story> componentStories;
 
 	// Relation with Meeting Entity
-	@ManyToMany(mappedBy = "components", cascade = CascadeType.ALL)
+	@ManyToMany (mappedBy = "components", cascade = CascadeType.ALL)
 	public List<Meeting> componentMeetings;
 
 	// Relation with Board Entity
-	@OneToOne(mappedBy = "component")
+	@OneToOne (mappedBy = "component")
 	public Board componentBoard;
 
-	public Component() {
+	public Component () {
 		componentUsers = new ArrayList<User>();
 		componentStories = new ArrayList<Story>();
 		componentMeetings = new ArrayList<Meeting>();
@@ -82,7 +82,7 @@ public class Component extends Model {
 	 * @return : List of tasks in this sprint of this component
 	 */
 
-	@SuppressWarnings("null")
+	@SuppressWarnings ("null")
 	public List<Task> returnComponentSprintTasks(Sprint s) {
 
 		List<Story> stories = this.componentStories;
@@ -223,7 +223,7 @@ public class Component extends Model {
 		long id;
 		String title;
 
-		public ComponentRowh(long id, String title) {
+		public ComponentRowh (long id, String title) {
 			this.id = id;
 			this.title = title;
 		}
@@ -233,7 +233,7 @@ public class Component extends Model {
 		long id;
 		String title;
 
-		public ComponentRow(long id, String title) {
+		public ComponentRow (long id, String title) {
 			this.id = id;
 			this.title = title;
 		}

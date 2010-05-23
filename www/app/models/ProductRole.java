@@ -62,8 +62,8 @@ public class ProductRole extends Model {
 	 **/
 	public static boolean hasUniqueName(String name, long projectId) {
 		Project project = Project.findById(projectId);
-		for (int i = 0; i <project.productRoles.size(); i++) {
-			if (project.productRoles.get(i).name.equals(name)&&!project.productRoles.get(i).deleted) {
+		for (int i = 0; i < project.productRoles.size(); i++) {
+			if (project.productRoles.get(i).name.equals(name) && !project.productRoles.get(i).deleted) {
 				return false;
 			}
 		}

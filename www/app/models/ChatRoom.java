@@ -14,16 +14,14 @@ import play.db.jpa.Model;
  * @author Amr Hany
  */
 @Entity
-public class ChatRoom extends Model
-{
+public class ChatRoom extends Model {
 
 	public boolean deleted;
 
-	@OneToMany( mappedBy = "room" )
+	@OneToMany (mappedBy = "room")
 	public List<Message> chats;
 
-	public ChatRoom()
-	{
+	public ChatRoom () {
 		chats = new ArrayList<Message>();
 	}
 

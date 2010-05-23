@@ -23,9 +23,10 @@ import models.Component.ComponentRowh;
 
 public class Snapshots extends Controller {
 	/**
-	 * Takes the sprint ID and load the same things needed to load the board then start 
-	 * changing the dynamic variables like tasks into strings including names then save
-	 * everything in a new snapshot
+	 * Takes the sprint ID and load the same things needed to load the board
+	 * then start changing the dynamic variables like tasks into strings
+	 * including names then save everything in a new snapshot
+	 * 
 	 * @author Amr Abdelwahab
 	 * @param sprintID
 	 */
@@ -33,7 +34,7 @@ public class Snapshots extends Controller {
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
 		Board b = p.board;
-		User user=Security.getConnected();
+		User user = Security.getConnected();
 		List<Component> components = p.getComponents();
 
 		ArrayList<ComponentRowh> data = new ArrayList<ComponentRowh>();
@@ -43,7 +44,7 @@ public class Snapshots extends Controller {
 			Columnsofsnapshot.add(null);
 			Columnsofsnapshot.set(i, columns.get(i).name);
 		}
-		
+
 		int smallest;
 		Column temp;
 		for (int i = 0; i < columns.size(); i++) {
@@ -61,15 +62,13 @@ public class Snapshots extends Controller {
 			Columnsofsnapshot.set(smallest, columns.get(i).name);
 			Columnsofsnapshot.set(i, temp.name);
 		}
-		
+
 		for (int i = 0; i < components.size(); i++)// for each component get
 		// the tasks
 		{
 			data.add(null);
-			data.set(i, new ComponentRowh(components.get(i).id, components
-					.get(i).name));
+			data.set(i, new ComponentRowh(components.get(i).id, components.get(i).name));
 			List<Task> tasks = components.get(i).returnComponentTasks(s);
-			
 
 			for (int j = 0; j < columns.size(); j++) {
 				data.get(i).add(null);
@@ -77,40 +76,43 @@ public class Snapshots extends Controller {
 			}
 
 			for (Task task : tasks) {
-				data.get(i).get(columns.indexOf(task.taskStatus.column)).add(
-						"("+task.taskStory.description+")"+"T"+task.id+"-"+task.description+"-"+task.assignee.name);
-						
+				data.get(i).get(columns.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
 
 			}
 		}
-String type="board";
+		String type = "board";
 		Snapshot snap = new Snapshot();
-		snap.user=user;
-		snap.type=type;
-		snap.board=b;
-		snap.sprint=s;
+		snap.user = user;
+		snap.type = type;
+		snap.board = b;
+		snap.sprint = s;
 		snap.data = data;
 		snap.Columnsofsnapshot = Columnsofsnapshot;
 		snap.save();
 		Calendar cal = new GregorianCalendar();
-		Logs.addLog( user, "Took", "Snapshot", snap.id, p, cal.getTime()  );
+		Logs.addLog(user, "Took", "Snapshot", snap.id, p, cal.getTime());
 
 	}
+
 	/**
-	 * Takes the sprint ID and load the same things needed to load the board then start 
-	 * changing the dynamic variables like tasks into strings including names then save
-	 * everything in a new snapshot and then associate it to a meeting
+	 * Takes the sprint ID and load the same things needed to load the board
+	 * then start changing the dynamic variables like tasks into strings
+	 * including names then save everything in a new snapshot and then associate
+	 * it to a meeting
+	 * 
 	 * @author Amr Abdelwahab
-	 * @param sprintID the sprint the board related to
-	 * @param meetingID the id of the meeting the snapshot shall be associated to
+	 * @param sprintID
+	 *            the sprint the board related to
+	 * @param meetingID
+	 *            the id of the meeting the snapshot shall be associated to
 	 */
-	public static void TakeMeetingSnapshot(long sprintID,long id) {
-		Meeting M=Meeting.findById(id);
+	public static void TakeMeetingSnapshot(long sprintID, long id) {
+		Meeting M = Meeting.findById(id);
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
 		Board b = p.board;
-		
-		User user=Security.getConnected();
+
+		User user = Security.getConnected();
 		List<Component> components = p.getComponents();
 
 		ArrayList<ComponentRowh> data = new ArrayList<ComponentRowh>();
@@ -120,7 +122,7 @@ String type="board";
 			Columnsofsnapshot.add(null);
 			Columnsofsnapshot.set(i, columns.get(i).name);
 		}
-		
+
 		int smallest;
 		Column temp;
 		for (int i = 0; i < columns.size(); i++) {
@@ -137,16 +139,14 @@ String type="board";
 			columns.set(i, temp);
 			Columnsofsnapshot.set(smallest, columns.get(i).name);
 			Columnsofsnapshot.set(i, temp.name);
-}
-		
+		}
+
 		for (int i = 0; i < components.size(); i++)// for each component get
 		// the tasks
 		{
 			data.add(null);
-			data.set(i, new ComponentRowh(components.get(i).id, components
-					.get(i).name));
+			data.set(i, new ComponentRowh(components.get(i).id, components.get(i).name));
 			List<Task> tasks = components.get(i).returnComponentTasks(s);
-			
 
 			for (int j = 0; j < columns.size(); j++) {
 				data.get(i).add(null);
@@ -154,28 +154,28 @@ String type="board";
 			}
 
 			for (Task task : tasks) {
-				data.get(i).get(columns.indexOf(task.taskStatus.column)).add(
-						"("+task.taskStory.description+")"+"T"+task.id+"-"+task.description+"-"+task.assignee.name);
-						
+				data.get(i).get(columns.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+
 			}
 		}
 
 		Snapshot snap = new Snapshot();
-		snap.user=user;
-		snap.type="Meeting";
-		snap.board=b;
-		snap.sprint=s;
+		snap.user = user;
+		snap.type = "Meeting";
+		snap.board = b;
+		snap.sprint = s;
 		snap.data = data;
 		snap.Columnsofsnapshot = Columnsofsnapshot;
 		snap.save();
-		M.snapshot=snap;
+		M.snapshot = snap;
 		M.save();
 		Calendar cal = new GregorianCalendar();
-		Logs.addLog( user, "Attached a snapshot", "Meeting", M.id, p, cal.getTime()  );
+		Logs.addLog(user, "Attached a snapshot", "Meeting", M.id, p, cal.getTime());
 	}
 
 	/**
 	 * Renders the data needed to load the snapshot
+	 * 
 	 * @author Amr Abdelwahab
 	 * @param id
 	 */
@@ -187,35 +187,43 @@ String type="board";
 		render(Columnsofsnapshot, data);
 
 	}
+
 	/**
 	 * Renders a list of the snapshots now sorted by date
-	 * @author Amr Abdelwahab
-	 *@param id the id of the sprint
-	 *@param type the string that filters the list of board according to its type
-	 *
-	 */
-	public static void index(long id,String type) {
-		
-			List<Snapshot> snapshots = Snapshot.find("sprint.id = ? and type = ? ",id,type).fetch();
-			render(snapshots);
-			
-	}
-	/**
-	 * Takes the sprint ID and the component id and load the same things needed to load the board then start 
-	 * changing the dynamic variables like tasks into strings including names then save
-	 * everything in a new snapshot and then associate it to a meeting
-	 * @author Amr Abdelwahab
-	 * @param sprintID the sprint the board related to
-	 * @param componentID the id of the component the snapshot is taken for its board
 	 * 
+	 * @author Amr Abdelwahab
+	 *@param id
+	 *            the id of the sprint
+	 *@param type
+	 *            the string that filters the list of board according to its
+	 *            type
 	 */
-	public static void TakeComponentSnapshot(long sprintID,long componentID) {
+	public static void index(long id, String type) {
+
+		List<Snapshot> snapshots = Snapshot.find("sprint.id = ? and type = ? ", id, type).fetch();
+		render(snapshots);
+
+	}
+
+	/**
+	 * Takes the sprint ID and the component id and load the same things needed
+	 * to load the board then start changing the dynamic variables like tasks
+	 * into strings including names then save everything in a new snapshot and
+	 * then associate it to a meeting
+	 * 
+	 * @author Amr Abdelwahab
+	 * @param sprintID
+	 *            the sprint the board related to
+	 * @param componentID
+	 *            the id of the component the snapshot is taken for its board
+	 */
+	public static void TakeComponentSnapshot(long sprintID, long componentID) {
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
 		Board b = p.board;
 
-		Component c = Component.findById( componentID );
-		List<User> users=c.getUsers();
+		Component c = Component.findById(componentID);
+		List<User> users = c.getUsers();
 		ArrayList<ComponentRowh> data = new ArrayList<ComponentRowh>();
 		List<Column> columns = b.columns;
 		ArrayList<String> Columnsofsnapshot = new ArrayList<String>();
@@ -223,7 +231,7 @@ String type="board";
 			Columnsofsnapshot.add(null);
 			Columnsofsnapshot.set(i, columns.get(i).name);
 		}
-		
+
 		int smallest;
 		Column temp;
 		for (int i = 0; i < columns.size(); i++) {
@@ -241,15 +249,13 @@ String type="board";
 			Columnsofsnapshot.set(smallest, columns.get(i).name);
 			Columnsofsnapshot.set(i, temp.name);
 		}
-		
+
 		for (int i = 0; i < users.size(); i++)// for each component get
 		// the tasks
 		{
 			data.add(null);
-			data.set(i, new ComponentRowh(users.get(i).id, users
-					.get(i).name));
-			List<Task> tasks = users.get(i).returnUserTasks( s, componentID );
-			
+			data.set(i, new ComponentRowh(users.get(i).id, users.get(i).name));
+			List<Task> tasks = users.get(i).returnUserTasks(s, componentID);
 
 			for (int j = 0; j < columns.size(); j++) {
 				data.get(i).add(null);
@@ -257,40 +263,45 @@ String type="board";
 			}
 
 			for (Task task : tasks) {
-				data.get(i).get(columns.indexOf(task.taskStatus.column)).add(
-						"("+task.taskStory.description+")"+"T"+task.id+"-"+task.description+"-"+task.assignee.name);
-									}
+				data.get(i).get(columns.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+			}
 		}
-		User user=Security.getConnected();
-	
+		User user = Security.getConnected();
+
 		Snapshot snap = new Snapshot();
-		snap.user=user;
-		snap.type=c.name;
-		snap.board=b;
-		snap.sprint=s;
+		snap.user = user;
+		snap.type = c.name;
+		snap.board = b;
+		snap.sprint = s;
 		snap.data = data;
 		snap.Columnsofsnapshot = Columnsofsnapshot;
 		snap.save();
 		Calendar cal = new GregorianCalendar();
-		Logs.addLog( user, "Took", "Snapshot", snap.id, p, cal.getTime()  );
+		Logs.addLog(user, "Took", "Snapshot", snap.id, p, cal.getTime());
 	}
+
 	/**
-	 * Takes the sprint ID and load the same things needed to load the board then start 
-	 * changing the dynamic variables like tasks into strings including names then save
-	 * everything in a new snapshot and then associate it to a meeting
+	 * Takes the sprint ID and load the same things needed to load the board
+	 * then start changing the dynamic variables like tasks into strings
+	 * including names then save everything in a new snapshot and then associate
+	 * it to a meeting
+	 * 
 	 * @author Amr Abdelwahab
-	 * @param sprintID the sprint the board related to
-	 * @param componentID the id of the component the snapshot is taken for its board
-	 * @param meetingID the id of the meeting the snapshot shall be associated to
+	 * @param sprintID
+	 *            the sprint the board related to
+	 * @param componentID
+	 *            the id of the component the snapshot is taken for its board
+	 * @param meetingID
+	 *            the id of the meeting the snapshot shall be associated to
 	 */
-	public static void TakeComponentMeetingsnapshot(long sprintID,long componentID,long meetingID) {
-		Meeting M=Meeting.findById(meetingID);
+	public static void TakeComponentMeetingsnapshot(long sprintID, long componentID, long meetingID) {
+		Meeting M = Meeting.findById(meetingID);
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
 		Board b = p.board;
 
-		Component c = Component.findById( componentID );
-		List<User> users=c.getUsers();
+		Component c = Component.findById(componentID);
+		List<User> users = c.getUsers();
 		ArrayList<ComponentRowh> data = new ArrayList<ComponentRowh>();
 		List<Column> columns = b.columns;
 		ArrayList<String> Columnsofsnapshot = new ArrayList<String>();
@@ -298,7 +309,7 @@ String type="board";
 			Columnsofsnapshot.add(null);
 			Columnsofsnapshot.set(i, columns.get(i).name);
 		}
-		
+
 		int smallest;
 		Column temp;
 		for (int i = 0; i < columns.size(); i++) {
@@ -316,15 +327,13 @@ String type="board";
 			Columnsofsnapshot.set(smallest, columns.get(i).name);
 			Columnsofsnapshot.set(i, temp.name);
 		}
-		
+
 		for (int i = 0; i < users.size(); i++)// for each component get
 		// the tasks
 		{
 			data.add(null);
-			data.set(i, new ComponentRowh(users.get(i).id, users
-					.get(i).name));
-			List<Task> tasks = users.get(i).returnUserTasks( s, componentID );
-			
+			data.set(i, new ComponentRowh(users.get(i).id, users.get(i).name));
+			List<Task> tasks = users.get(i).returnUserTasks(s, componentID);
 
 			for (int j = 0; j < columns.size(); j++) {
 				data.get(i).add(null);
@@ -332,24 +341,23 @@ String type="board";
 			}
 
 			for (Task task : tasks) {
-				data.get(i).get(columns.indexOf(task.taskStatus.column)).add(
-						"("+task.taskStory.description+")"+"T"+task.id+"-"+task.description+"-"+task.assignee.name);
-								}
+				data.get(i).get(columns.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+			}
 		}
-		User user=Security.getConnected();
-	
+		User user = Security.getConnected();
+
 		Snapshot snap = new Snapshot();
-		snap.user=user;
-		snap.type="meeting";
-		snap.board=b;
-		snap.sprint=s;
+		snap.user = user;
+		snap.type = "meeting";
+		snap.board = b;
+		snap.sprint = s;
 		snap.data = data;
 		snap.Columnsofsnapshot = Columnsofsnapshot;
 		snap.save();
-		M.snapshot=snap;
+		M.snapshot = snap;
 		M.save();
 		Calendar cal = new GregorianCalendar();
-		Logs.addLog( user, "Attached a snapshot", "Meeting", M.id, p, cal.getTime()  );
+		Logs.addLog(user, "Attached a snapshot", "Meeting", M.id, p, cal.getTime());
 	}
 
 }

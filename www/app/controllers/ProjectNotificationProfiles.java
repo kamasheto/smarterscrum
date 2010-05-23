@@ -1,6 +1,7 @@
 package controllers;
+
 import models.ProjectNotificationProfile;
 
-public class ProjectNotificationProfiles extends CRUD{
+public class ProjectNotificationProfiles extends CRUD {
 
 }

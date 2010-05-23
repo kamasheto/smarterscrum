@@ -18,9 +18,9 @@ import play.db.jpa.Model;
 
 @Entity
 public class Snapshot extends Model {
-@ManyToOne	
-public User user;
-public String type;
+	@ManyToOne
+	public User user;
+	public String type;
 	public Date date;
 	@ManyToOne
 	public Sprint sprint;
@@ -30,10 +30,9 @@ public String type;
 	@Required
 	public ArrayList<ComponentRowh> data;
 	@Required
-	
 	public ArrayList<String> Columnsofsnapshot;
-	
-	public Snapshot() {
+
+	public Snapshot () {
 		date = new Date();
 	}
 }

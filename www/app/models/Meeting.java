@@ -17,8 +17,7 @@ import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
-public class Meeting extends Model
-{
+public class Meeting extends Model {
 	@Required
 	public String name;
 	@Lob
@@ -56,7 +55,7 @@ public class Meeting extends Model
 	// mapping done in component Model
 	public List<Component> components;
 
-	@OneToMany( mappedBy = "meeting", cascade = CascadeType.ALL )
+	@OneToMany (mappedBy = "meeting", cascade = CascadeType.ALL)
 	public List<MeetingAttendance> users;
 
 	public boolean infrontBoard;
@@ -80,8 +79,7 @@ public class Meeting extends Model
 	 * @param creator
 	 */
 
-	public Meeting( String name, User creator, String description, long end, long start, String location, String type, Project project, Sprint sprint )
-	{
+	public Meeting (String name, User creator, String description, long end, long start, String location, String type, Project project, Sprint sprint) {
 		this.name = name;
 		this.description = description;
 		this.startTime = start;
@@ -106,8 +104,7 @@ public class Meeting extends Model
 	 * @return String
 	 */
 
-	public String toString()
-	{
+	public String toString() {
 		return this.name;
 	}
 
@@ -119,27 +116,23 @@ public class Meeting extends Model
 
 	// the next 4 methods are not included in this sprint (I added them by
 	// mistake) ghadafakhry
-	public Meeting addArtifact( Artifact artifact )
-	{
-		this.artifacts.add( artifact );
+	public Meeting addArtifact(Artifact artifact) {
+		this.artifacts.add(artifact);
 		return this;
 	}
 
-	public Meeting addTask( Task task )
-	{
-		this.tasks.add( task );
+	public Meeting addTask(Task task) {
+		this.tasks.add(task);
 		return this;
 	}
 
-	public Meeting addUser( MeetingAttendance user )
-	{
-		this.users.add( user );
+	public Meeting addUser(MeetingAttendance user) {
+		this.users.add(user);
 		return this;
 	}
 
-	public Meeting addComponent( Component component )
-	{
-		this.components.add( component );
+	public Meeting addComponent(Component component) {
+		this.components.add(component);
 		return this;
 	}
 
@@ -148,8 +141,7 @@ public class Meeting extends Model
 	 * 
 	 * @return a list of artifacts of a given meeting
 	 */
-	public List<Artifact> getMeetingArtifacts()
-	{
+	public List<Artifact> getMeetingArtifacts() {
 		return this.artifacts;
 	}
 
@@ -160,8 +152,7 @@ public class Meeting extends Model
 	 * @return a list of tasks of a given meeting
 	 */
 
-	public List<Task> getMeetingSprintReviewTasks()
-	{
+	public List<Task> getMeetingSprintReviewTasks() {
 		return this.tasks;
 	}
 
@@ -172,8 +163,7 @@ public class Meeting extends Model
 	 * @author Hossam Amer
 	 */
 
-	public List<MeetingAttendance> getReviewMeetingAttendingUsers()
-	{
+	public List<MeetingAttendance> getReviewMeetingAttendingUsers() {
 		return this.users;
 	}
 
@@ -183,10 +173,9 @@ public class Meeting extends Model
 	 * @return the status if there are notes in the given artifacts
 	 * @author Hossam Amer
 	 */
-	public boolean hasNotes()
-	{
-		for( int i = 0; i < this.artifacts.size(); i++ )
-			if( this.artifacts.get( i ).type.equals( "Notes" ) && !this.artifacts.get( i ).deleted )
+	public boolean hasNotes() {
+		for (int i = 0; i < this.artifacts.size(); i++)
+			if (this.artifacts.get(i).type.equals("Notes") && !this.artifacts.get(i).deleted)
 				return true;
 
 		return false;
@@ -199,10 +188,9 @@ public class Meeting extends Model
 	 * @author Hossam Amer
 	 */
 
-	public boolean hasAttendees()
-	{
-		for( int i = 0; i < this.users.size(); i++ )
-			if( this.users.get( i ).status.equals( "confirmed" ) && !this.users.get( i ).deleted )
+	public boolean hasAttendees() {
+		for (int i = 0; i < this.users.size(); i++)
+			if (this.users.get(i).status.equals("confirmed") && !this.users.get(i).deleted)
 				return true;
 
 		return false;
@@ -215,21 +203,18 @@ public class Meeting extends Model
 	 * @author Hossam Amer
 	 */
 
-	public List<Artifact> getArtifactOfTypeNotes()
-	{
+	public List<Artifact> getArtifactOfTypeNotes() {
 		List<Artifact> tmpArtifactList = new ArrayList<Artifact>();
 
-		try
-		{
-			for( int i = 0; i < this.artifacts.size(); i++ )
-				if( this.artifacts.get( i ).type.equals( "Notes" ) && !this.artifacts.get( i ).deleted )
-					tmpArtifactList.add( this.artifacts.get( i ) );
+		try {
+			for (int i = 0; i < this.artifacts.size(); i++)
+				if (this.artifacts.get(i).type.equals("Notes") && !this.artifacts.get(i).deleted)
+					tmpArtifactList.add(this.artifacts.get(i));
 
 			return tmpArtifactList;
 		}
 
-		catch( NullPointerException e )
-		{
+		catch (NullPointerException e) {
 			return null;
 		}
 

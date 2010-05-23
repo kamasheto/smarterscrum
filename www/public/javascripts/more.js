@@ -1,26 +1,29 @@
 function import_permissions(role_id) {
-	$('#loading').show();
-	$.post('/roles/getpermissions?id='+role_id,
-		function(data) {
-			$.each(data, function(index, item) {
-				if (index == 'name') return;
-				$('#object_'+index).attr('checked', item);
-			})
-			$('#loading').hide();
-		});
+	if (role_id > 0)
+	{
+		$('#loading').show();
+		$.post('/roles/getpermissions?id='+role_id,
+			function(data) {
+				$('select#object_permissions option').each(function() {
+					$(this).attr('selected', false);
+				});
+				$.each(data.permissions, function(index, item) {
+					$('option[value="'+item.id+'"]').attr('selected', true);
+				})
+				$('#loading').hide();
+			});
+	}
 }
 
 function check_all_perms() {
-	$('input[type="checkbox"]').each(function(){
-		if (this.id == 'object_deleted') return;
-		$(this).attr('checked', true);
+	$('select#object_permissions option').each(function(){
+		$(this).attr('selected', true);
 	});
 }
 
 function uncheck_all_perms() {
-	$('input[type="checkbox"]').each(function(){
-		if (this.id == 'object_deleted') return;
-		$(this).removeAttr('checked');
+	$('select#object_permissions option').each(function(){
+		$(this).attr('selected', false);
 	});
 }
 

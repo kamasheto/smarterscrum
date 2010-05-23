@@ -18,6 +18,8 @@ import play.db.jpa.Model;
 public class Role extends Model {
 	public String name;
 
+	public boolean systemAdminRole;
+
 	@ManyToOne
 	public Project project;
 
@@ -68,6 +70,9 @@ public class Role extends Model {
 	}
 
 	public boolean can(String action) {
+		if (systemAdminRole) {
+			return true;
+		}
 		if (action.toLowerCase().startsWith("can")) {
 			action = action.substring(3);
 		}

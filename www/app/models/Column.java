@@ -7,8 +7,7 @@ import javax.persistence.OneToOne;
 import play.db.jpa.Model;
 
 @Entity
-public class Column extends Model
-{
+public class Column extends Model {
 
 	@ManyToOne
 	public Board board;
@@ -29,17 +28,16 @@ public class Column extends Model
 	// public double startDimension;
 	// public double endDimension;
 
-	@OneToOne( mappedBy = "column" )
+	@OneToOne (mappedBy = "column")
 	public TaskStatus taskStatus;
 
 	public boolean deleted;
 
-	public Column( String name, Board board )
-	{
+	public Column (String name, Board board) {
 		this.name = name;
 		this.board = board;
 		this.sequence = board.columns.size();
-		board.columns.add( this );
+		board.columns.add(this);
 
 	}
 	// public String toString()

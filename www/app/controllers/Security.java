@@ -40,7 +40,6 @@ public class Security extends Secure.Security {
 			try {
 				Secure.login();
 			} catch (Throwable e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -49,19 +48,31 @@ public class Security extends Secure.Security {
 	}
 
 	/**
+	 * checks whether the boolean variable gives the user access to view the
+	 * page or not
+	 * 
+	 * @param can
+	 *            if false, user gets an access denied page
+	 */
+	public static void check(boolean can) {
+		if (!can) {
+			forbidden();
+		}
+	}
+
+	/**
 	 * Checks whether the connected user has permission to perform a given
 	 * action or not. Actions are checked against all roles this user has in a
 	 * given project. To access the current project, one must use the "id" param
 	 * to refer to a model that could link back to the required project.
 	 * <p>
-	 * Example, canAddComponent naturally refers to
+	 * Example, addComponent naturally refers to
 	 * "Adding a component to a project", hence "id" should have the value of
 	 * the projectId.
 	 * <p>
-	 * Example, canEditComponent refers to "Editing a component", hence "id"
-	 * should have the value of the componentId needed to be edited. From there,
-	 * the method checks whether this user has permission in that project or
-	 * not.
+	 * Example, editComponent refers to "Editing a component", hence "id" should
+	 * have the value of the componentId needed to be edited. From there, the
+	 * method checks whether this user has permission in that project or not.
 	 * 
 	 * @param profile
 	 *            string value of attribute, just to make things easier
@@ -84,8 +95,6 @@ public class Security extends Secure.Security {
 		}
 
 		if (user.isAdmin) {
-			// he.. cans.. does.. ay 7aga X(
-			// System.out.println("System admin " + profile);
 			return true;
 		} else if (profile.equals("systemAdmin")) {
 			return false;
@@ -295,13 +304,5 @@ public class Security extends Secure.Security {
 		}
 
 		return user.in(project).can(profile);
-		// just a default return thingie
-		// boolean def = false;
-
-		// and just for the record
-		// System.out.println("Returning " + def +
-		// " from controllers.Security: Did not match any profile for: " +
-		// profile);
-		// return def;
 	}
 }
