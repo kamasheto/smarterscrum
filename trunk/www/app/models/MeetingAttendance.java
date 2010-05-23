@@ -7,8 +7,7 @@ import play.db.jpa.Model;
 import controllers.Application;
 
 @Entity
-public class MeetingAttendance extends Model
-{
+public class MeetingAttendance extends Model {
 
 	// Relation with user model
 	@ManyToOne
@@ -30,8 +29,7 @@ public class MeetingAttendance extends Model
 	// Meeting hash
 	public String meetingHash;
 
-	public MeetingAttendance( User user, Meeting meeting )
-	{
+	public MeetingAttendance (User user, Meeting meeting) {
 		this.user = user;
 		this.meeting = meeting;
 		this.status = "waiting";
@@ -45,8 +43,7 @@ public class MeetingAttendance extends Model
 	 * @author Hossam Amer
 	 * @return true if it is confirmed and false otherwise
 	 */
-	public boolean checkConfirmed()
-	{
-		return this.status.equals( "confirmed" ) ? true : false;
+	public boolean checkConfirmed() {
+		return this.status.equals("confirmed") ? true : false;
 	}
 }

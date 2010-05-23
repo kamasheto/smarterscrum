@@ -11,7 +11,7 @@ import models.Task;
 import play.mvc.Controller;
 import play.mvc.With;
 
-@With(Secure.class)
+@With (Secure.class)
 // @Check("systemAdmin")
 public class ImpedimentTasks extends Controller {
 	/**
@@ -113,8 +113,7 @@ public class ImpedimentTasks extends Controller {
 
 		Sprint s = Sprint.findById(j.taskSprint.id);
 		Project project = impedimentTask.taskSprint.project;
-		Notifications.notifyUsers(project, "Impediment reported",
-				impedimentTask.description, "reportImpediment", (byte) -1);
+		Notifications.notifyUsers(project, "Impediment reported", impedimentTask.description, "reportImpediment", (byte) -1);
 
 		Logs.addLog(project, "added", "Task", impedimentTask.id);
 

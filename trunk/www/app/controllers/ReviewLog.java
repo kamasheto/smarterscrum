@@ -14,9 +14,8 @@ import models.User;
 import play.mvc.Controller;
 import play.mvc.With;
 
-@With( Secure.class )
-public class ReviewLog extends Controller
-{
+@With (Secure.class)
+public class ReviewLog extends Controller {
 	/**
 	 * ReviewLog is the class for manipulating and viewing the review log which
 	 * contains various information about the sprint review meetings as its'
@@ -50,18 +49,17 @@ public class ReviewLog extends Controller
 	 *            the id of a given sprint
 	 */
 
-	public static void index( long projectID, long cid, long sid )
-	{
+	public static void index(long projectID, long cid, long sid) {
 
-		Component c = Component.findById( cid );
-		Project p = Project.findById( projectID );
-		Sprint s = Sprint.findById( sid );
+		Component c = Component.findById(cid);
+		Project p = Project.findById(projectID);
+		Sprint s = Sprint.findById(sid);
 
 		boolean sExist = (sid == 0) ? false : true;
 		boolean cExist = (cid == 0) ? false : true;
 		boolean pExist = (projectID == 0) ? false : true;
 
-		render( projectID, cid, sid, c, p, s, sExist, cExist, pExist );
+		render(projectID, cid, sid, c, p, s, sExist, cExist, pExist);
 	}
 
 	/**
@@ -83,27 +81,26 @@ public class ReviewLog extends Controller
 	 *            the id of a given sprint
 	 */
 
-	public static void showMeetings( long projectID, long cid, long sid )
-	{
+	public static void showMeetings(long projectID, long cid, long sid) {
 		boolean empty = false;
 		boolean directLink = false;
 		boolean sExist = (sid == 0) ? false : true;
 		boolean cExist = (cid == 0) ? false : true;
 		boolean pExist = (projectID == 0) ? false : true;
 
-		Component c = Component.findById( cid );
-		Project p = Project.findById( projectID );
-		Sprint s = Sprint.findById( sid );
+		Component c = Component.findById(cid);
+		Project p = Project.findById(projectID);
+		Sprint s = Sprint.findById(sid);
 
-		List<Meeting> reviewMeetings = Meeting.find( "project.id=" + projectID + " and isReviewLog=true and deleted=false" ).fetch();
+		List<Meeting> reviewMeetings = Meeting.find("project.id=" + projectID + " and isReviewLog=true and deleted=false").fetch();
 
-		if( reviewMeetings.isEmpty() )
+		if (reviewMeetings.isEmpty())
 			empty = true;
 
-		if( projectID == 0 )
+		if (projectID == 0)
 			directLink = true;
 
-		render( reviewMeetings, empty, directLink, projectID, cid, sid, c, p, s, sExist, cExist, pExist );
+		render(reviewMeetings, empty, directLink, projectID, cid, sid, c, p, s, sExist, cExist, pExist);
 	}
 
 	/**
@@ -117,12 +114,10 @@ public class ReviewLog extends Controller
 	 *            the id of a given meeting
 	 */
 
-	@Check( "canEditNoteReviewLog" )
-	public static boolean editNote( long id, String des, long meetingID )
-	{
-		try
-		{
-			Artifact note = Artifact.findById( id );
+	@Check ("canEditNoteReviewLog")
+	public static boolean editNote(long id, String des, long meetingID) {
+		try {
+			Artifact note = Artifact.findById(id);
 			note.description = des;
 			note.save();
 
@@ -137,12 +132,11 @@ public class ReviewLog extends Controller
 			 * (byte) 1 );
 			 */
 
-			Notifications.notifyUsers( getAttendanceConfirmed( meetingID ), header, body, (byte) 1 );
-			Logs.addLog( userWhoChanged, body, "Note", id, note.meetingsArtifacts.get( 0 ).project, new Date() );
+			Notifications.notifyUsers(getAttendanceConfirmed(meetingID), header, body, (byte) 1);
+			Logs.addLog(userWhoChanged, body, "Note", id, note.meetingsArtifacts.get(0).project, new Date());
 		}
 
-		catch( Exception e )
-		{
+		catch (Exception e) {
 			render();
 		}
 
@@ -158,14 +152,13 @@ public class ReviewLog extends Controller
 	 * @return a list of all users attended the given meeting
 	 */
 
-	private static List<User> getAttendanceConfirmed( long meetingID )
-	{
-		Meeting tmp = Meeting.findById( meetingID );
+	private static List<User> getAttendanceConfirmed(long meetingID) {
+		Meeting tmp = Meeting.findById(meetingID);
 		List<User> out = new ArrayList<User>();
 
-		for( MeetingAttendance mA : tmp.users )
-			if( mA.status.equals( "confirmed" ) )
-				out.add( mA.user );
+		for (MeetingAttendance mA : tmp.users)
+			if (mA.status.equals("confirmed"))
+				out.add(mA.user);
 
 		return out;
 	}
@@ -183,26 +176,25 @@ public class ReviewLog extends Controller
 	 *            the id of a given sprint
 	 */
 
-	@Check( "canAddReviewLog" )
-	public static void showMeetingsNoReviewLog( long projectID, long cid, long sid )
-	{
+	@Check ("canAddReviewLog")
+	public static void showMeetingsNoReviewLog(long projectID, long cid, long sid) {
 		boolean directLink = false;
 		boolean sExist = (sid == 0) ? false : true;
 		boolean cExist = (cid == 0) ? false : true;
 		boolean pExist = (projectID == 0) ? false : true;
 
-		Component c = Component.findById( cid );
-		Project p = Project.findById( projectID );
-		Sprint s = Sprint.findById( sid );
+		Component c = Component.findById(cid);
+		Project p = Project.findById(projectID);
+		Sprint s = Sprint.findById(sid);
 
-		List<Meeting> reviewMeetings = Meeting.find( "project.id=" + projectID + " and isReviewLog=false and deleted=false" ).fetch();
+		List<Meeting> reviewMeetings = Meeting.find("project.id=" + projectID + " and isReviewLog=false and deleted=false").fetch();
 
-		if( projectID == 0 )
+		if (projectID == 0)
 			directLink = true;
 
 		int size = reviewMeetings.size();
 
-		render( reviewMeetings, directLink, projectID, cid, sid, c, p, s, sExist, cExist, pExist, size );
+		render(reviewMeetings, directLink, projectID, cid, sid, c, p, s, sExist, cExist, pExist, size);
 
 	}
 
@@ -214,11 +206,10 @@ public class ReviewLog extends Controller
 	 *            the id of a given meeting that do not have a review log
 	 */
 
-	@Check( "canAddReviewLog" )
-	public static void changeReviewLogStatus( long id )
-	{
-		Meeting meeting = Meeting.findById( id );
-		render( meeting );
+	@Check ("canAddReviewLog")
+	public static void changeReviewLogStatus(long id) {
+		Meeting meeting = Meeting.findById(id);
+		render(meeting);
 	}
 
 	/**
@@ -237,30 +228,27 @@ public class ReviewLog extends Controller
 	 *            the importance of the notification
 	 */
 
-	@Check( "canAddReviewLog" )
-	public static void changeReviewLogStatusDone( long id, boolean hasReview, long projectID, boolean importance )
-	{
-		try
-		{
+	@Check ("canAddReviewLog")
+	public static void changeReviewLogStatusDone(long id, boolean hasReview, long projectID, boolean importance) {
+		try {
 
-			Meeting tmp = Meeting.findById( id );
+			Meeting tmp = Meeting.findById(id);
 			tmp.isReviewLog = hasReview;
 			tmp.save();
 
 			User userWhoChanged = Security.getConnected();
-			String header = "Meeting " + id + " in " + Project.findById( projectID ) + " has the review log status changed by " + userWhoChanged.name;
-			String body = "Meeting " + id + " in " + Project.findById( projectID ) + '\n' + "The new review log status of " + tmp.name + " is:  " + hasReview + ".";
+			String header = "Meeting " + id + " in " + Project.findById(projectID) + " has the review log status changed by " + userWhoChanged.name;
+			String body = "Meeting " + id + " in " + Project.findById(projectID) + '\n' + "The new review log status of " + tmp.name + " is:  " + hasReview + ".";
 
-			Notifications.notifyUsers( getUsersFromMeetingAttendaceInACertainMeeting( tmp ), header, body, (byte) (importance ? 1 : -1) );
-			Logs.addLog( userWhoChanged, body, "Meeting", id, tmp.project, new Date() );
+			Notifications.notifyUsers(getUsersFromMeetingAttendaceInACertainMeeting(tmp), header, body, (byte) (importance ? 1 : -1));
+			Logs.addLog(userWhoChanged, body, "Meeting", id, tmp.project, new Date());
 
-			render( tmp );
+			render(tmp);
 		}
 
-		catch( Exception e )
-		{
+		catch (Exception e) {
 			e.printStackTrace();
-			render( Meeting.findById( id ) );
+			render(Meeting.findById(id));
 		}
 	}
 
@@ -270,10 +258,9 @@ public class ReviewLog extends Controller
 	 * @param projectID
 	 *            the id of a given project
 	 */
-	@Check( "canAddReviewLog" )
-	public static void changeReviewLogStatusConfirm( long projectID )
-	{
-		render( projectID );
+	@Check ("canAddReviewLog")
+	public static void changeReviewLogStatusConfirm(long projectID) {
+		render(projectID);
 	}
 
 	/**
@@ -283,14 +270,13 @@ public class ReviewLog extends Controller
 	 *            a given meeting
 	 */
 
-	private static List<User> getUsersFromMeetingAttendaceInACertainMeeting( Meeting tmp )
-	{
+	private static List<User> getUsersFromMeetingAttendaceInACertainMeeting(Meeting tmp) {
 		List<User> out = new ArrayList<User>();
 		List<MeetingAttendance> mA = tmp.users;
 
-		for( int i = 0; i < mA.size(); i++ )
-			if( !mA.get( i ).user.deleted && mA.get( i ).status.equals( "confirmed" ) )
-				out.add( mA.get( i ).user );
+		for (int i = 0; i < mA.size(); i++)
+			if (!mA.get(i).user.deleted && mA.get(i).status.equals("confirmed"))
+				out.add(mA.get(i).user);
 
 		return out;
 	}

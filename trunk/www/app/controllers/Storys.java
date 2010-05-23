@@ -18,7 +18,7 @@ import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 import play.mvc.With;
 
-@With(Secure.class)
+@With (Secure.class)
 public class Storys extends CRUD {
 	/**
 	 * Override the default CRUD blank method to get the stories in a project,
@@ -27,25 +27,23 @@ public class Storys extends CRUD {
 	 * 
 	 * @param id
 	 *            Project id to create the story into.
-	 * 
 	 * @author Galal Aly
-	 * 
 	 * @return void
 	 **/
-	@Check("canAddStory")
+	@Check ("canAddStory")
 	public static void blank(long id) {
-		boolean roles,components,priorities = true;
+		boolean roles, components, priorities = true;
 		roles = components = priorities;
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
-		//Whether everything is ok to create the story
-		boolean ok=true;
+		// Whether everything is ok to create the story
+		boolean ok = true;
 		// We will add the story to a project .. We need to get that project
 		Project project = Project.findById(id);
-		if(project == null) ok=false;
-		if(project.productRoles == null)
-		{
-			ok=false;
+		if (project == null)
+			ok = false;
+		if (project.productRoles == null) {
+			ok = false;
 			roles = false;
 		}
 		// We can set the dependent stories .. We need to get a list of stories
@@ -59,12 +57,11 @@ public class Storys extends CRUD {
 				stories.add(story);
 			}
 		}
-		if(project.priorities == null || project.priorities.isEmpty()) 
-		{
-			ok=false;
+		if (project.priorities == null || project.priorities.isEmpty()) {
+			ok = false;
 			priorities = false;
 		}
-		if(!ok)
+		if (!ok)
 			render("Storys/error.html", priorities, components, roles);
 		// Sort the priorities according to their priority
 		Collections.sort(project.priorities);
@@ -83,36 +80,33 @@ public class Storys extends CRUD {
 	 * 
 	 * @param id
 	 *            Story id to be edited
-	 * 
 	 * @author Galal Aly
-	 * 
 	 * @return void
 	 **/
-	@Check("canEditStory")
+	@Check ("canEditStory")
 	public static void show(String id) {
-		boolean roles,components,priorities = true;
+		boolean roles, components, priorities = true;
 		roles = components = priorities;
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
 		// We added the story to a project .. We need to get that project
 		Story temp = (Story) object;
-		//Whether everything is ok to edit the story
-		boolean ok=true;
+		// Whether everything is ok to edit the story
+		boolean ok = true;
 		Project project = temp.componentID.project;
-		if(project == null) ok=false;
-		if(project.productRoles == null)
-		{
-			ok=false;
+		if (project == null)
+			ok = false;
+		if (project.productRoles == null) {
+			ok = false;
 			roles = false;
 		}
 		// We can set the dependent stories .. We need to get a list of stories
 		// in a project to list them so that we can set the dependency
 		ArrayList<Story> stories = new ArrayList<Story>();
 		// For each component in a project
-		if(project.components == null) 
-		{
-			ok=false;
+		if (project.components == null) {
+			ok = false;
 			components = false;
 		}
 		for (Component component : project.components) {
@@ -124,21 +118,20 @@ public class Storys extends CRUD {
 		}
 		// Sort the priorities according to their priority (how priorities are
 		// compared is specified in the model Priority.java)
-		if(project.priorities == null || project.priorities.isEmpty()) 
-		{
-			ok=false;
+		if (project.priorities == null || project.priorities.isEmpty()) {
+			ok = false;
 			priorities = false;
 		}
 		Collections.sort(project.priorities);
-		
-		if(!ok)
+
+		if (!ok)
 			render("Storys/error.html", priorities, components, roles);
-		
+
 		// Is the story editable?!
 		boolean editable = !(temp.inSprint());
 
 		String message = "This can not be deleted";
-		boolean editable2=true;
+		boolean editable2 = true;
 		if (editable) {
 			if (temp.hasDependency()) {
 				editable = false;
@@ -148,7 +141,7 @@ public class Storys extends CRUD {
 			}
 		}
 		try {
-			render(type, object, stories, project, editable,editable2, message);
+			render(type, object, stories, project, editable, editable2, message);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -162,12 +155,10 @@ public class Storys extends CRUD {
 	 * 
 	 * @param id
 	 *            Story id to be deleted
-	 * 
 	 * @author Galal Aly
-	 * 
 	 * @return void
 	 **/
-	@Check("canDeleteStory")
+	@Check ("canDeleteStory")
 	public static void delete(String id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -199,18 +190,15 @@ public class Storys extends CRUD {
 			// Now mark my story as deleted
 			story.deleted = true;
 			story.save();
-			Logs.addLog(story.addedBy, "Delete", "Story", story.id, project,
-					new GregorianCalendar().getTime());
-			Notifications.notifyUsers(story.componentID.getUsers(), story.componentID.project.name+": Story Edited", "A Story \""+story.description+"\" was deleted in the component "+story.componentID.name+" in the project "+story.componentID.project.name, (byte)0);
+			Logs.addLog(story.addedBy, "Delete", "Story", story.id, project, new GregorianCalendar().getTime());
+			Notifications.notifyUsers(story.componentID.getUsers(), story.componentID.project.name + ": Story Edited", "A Story \"" + story.description + "\" was deleted in the component " + story.componentID.name + " in the project " + story.componentID.project.name, (byte) 0);
 		} catch (Exception e) {
 			System.out.println(e);
-			flash.error(Messages.get("crud.delete.error", type.modelName,
-					object.getEntityId()));
+			flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
 			redirect(request.controller + ".show", object.getEntityId());
 		}
-		flash.success(Messages.get("crud.deleted", type.modelName, object
-				.getEntityId()));
-		listStoriesInProject(story.componentID.project.id,0);
+		flash.success(Messages.get("crud.deleted", type.modelName, object.getEntityId()));
+		listStoriesInProject(story.componentID.project.id, 0);
 	}
 
 	/**
@@ -219,11 +207,10 @@ public class Storys extends CRUD {
 	 * just listing everything and save the new story in the database.
 	 * 
 	 * @author Galal Aly
-	 * 
 	 * @return void
 	 **/
-	@SuppressWarnings("deprecation")
-	@Check("canAddStory")
+	@SuppressWarnings ("deprecation")
+	@Check ("canAddStory")
 	public static void create() throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -248,8 +235,7 @@ public class Storys extends CRUD {
 		if (validation.hasErrors()) {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
 			try {
-				render(request.controller.replace(".", "/") + "/blank.html",
-						type, stories, project);
+				render(request.controller.replace(".", "/") + "/blank.html", type, stories, project);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/blank.html", type);
 			}
@@ -257,12 +243,11 @@ public class Storys extends CRUD {
 		Story toBeSaved = (Story) object;
 		toBeSaved.addedBy = User.find("byEmail", Security.connected()).first();
 		object.save();
-		Logs.addLog( toBeSaved.addedBy, "Create", "Story", storyObj.id , project, new GregorianCalendar().getTime());
-		Notifications.notifyUsers(storyObj.componentID.getUsers(), storyObj.componentID.project.name+": Story Created", "A Story was created in the component "+storyObj.componentID.name+" in the project "+storyObj.componentID.project.name, (byte)0);
-		flash.success(Messages.get("crud.created", type.modelName, object
-				.getEntityId()));
+		Logs.addLog(toBeSaved.addedBy, "Create", "Story", storyObj.id, project, new GregorianCalendar().getTime());
+		Notifications.notifyUsers(storyObj.componentID.getUsers(), storyObj.componentID.project.name + ": Story Created", "A Story was created in the component " + storyObj.componentID.name + " in the project " + storyObj.componentID.project.name, (byte) 0);
+		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			listStoriesInProject(project.id,0);
+			listStoriesInProject(project.id, 0);
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			redirect(request.controller + ".blank");
@@ -278,12 +263,10 @@ public class Storys extends CRUD {
 	 * 
 	 * @param id
 	 *            Project id to create the story into.
-	 * 
 	 * @author Galal Aly
-	 * 
 	 * @return void
 	 **/
-	@Check("canEditStory")
+	@Check ("canEditStory")
 	public static void save(String id) throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -308,8 +291,7 @@ public class Storys extends CRUD {
 		if (validation.hasErrors()) {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
 			try {
-				render(request.controller.replace(".", "/") + "/show.html",
-						type, object, project, stories);
+				render(request.controller.replace(".", "/") + "/show.html", type, object, project, stories);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/show.html", type, object);
 			}
@@ -318,10 +300,9 @@ public class Storys extends CRUD {
 		/**********
 		 * Log and notification
 		 */
-		Logs.addLog( storyObj.addedBy, "Edit", "Story", storyObj.id , project, new GregorianCalendar().getTime());
-		Notifications.notifyUsers(storyObj.componentID.getUsers(), storyObj.componentID.project.name+": Story Edited", "A Story was edited in the component "+storyObj.componentID.name+" in the project "+storyObj.componentID.project.name, (byte)0);
-		flash.success(Messages.get("crud.saved", type.modelName, object
-				.getEntityId()));
+		Logs.addLog(storyObj.addedBy, "Edit", "Story", storyObj.id, project, new GregorianCalendar().getTime());
+		Notifications.notifyUsers(storyObj.componentID.getUsers(), storyObj.componentID.project.name + ": Story Edited", "A Story was edited in the component " + storyObj.componentID.name + " in the project " + storyObj.componentID.project.name, (byte) 0);
+		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
 			listStoriesInProject(project.id, 0);
 		}
@@ -335,9 +316,7 @@ public class Storys extends CRUD {
 	 *            Story id to be edited
 	 * @param desc
 	 *            The new description
-	 * 
 	 * @author Galal Aly
-	 * 
 	 * @return void
 	 **/
 	public static void editDes(long id, String desc) {
@@ -353,9 +332,7 @@ public class Storys extends CRUD {
 	 *            Story id to be edited
 	 * @param succ
 	 *            The new success scenario
-	 * 
 	 * @author Galal Aly
-	 * 
 	 * @return void
 	 **/
 
@@ -372,9 +349,7 @@ public class Storys extends CRUD {
 	 *            Story id to be edited
 	 * @param fail
 	 *            The new failure scenarios
-	 * 
 	 * @author Galal Aly
-	 * 
 	 * @return void
 	 **/
 
@@ -391,9 +366,7 @@ public class Storys extends CRUD {
 	 *            Story id to be edited
 	 * @param notes
 	 *            The new notes
-	 * 
 	 * @author Galal Aly
-	 * 
 	 * @return void
 	 **/
 
@@ -410,9 +383,7 @@ public class Storys extends CRUD {
 	 *            Story id to be edited
 	 * @param c
 	 *            The new component
-	 * 
 	 * @author Galal Aly
-	 * 
 	 * @return void
 	 **/
 
@@ -429,9 +400,7 @@ public class Storys extends CRUD {
 	 *            Story id to be edited
 	 * @param desc
 	 *            The new priority
-	 * 
 	 * @author Galal Aly
-	 * 
 	 * @return void
 	 **/
 
@@ -450,18 +419,14 @@ public class Storys extends CRUD {
 	 *            The input story to be added or removed
 	 * @param remove
 	 *            Whether to remove or add the story (false add)
-	 * 
 	 * @author Galal Aly
-	 * 
 	 * @return void
 	 **/
 
-	public static void addRemoveDependentStories(long storyId,
-			Story toBeAddedOrRemoved, boolean remove) {
+	public static void addRemoveDependentStories(long storyId, Story toBeAddedOrRemoved, boolean remove) {
 		Story s = Story.findById(storyId);
 		if (remove) {
-			s.dependentStories.remove(s.dependentStories
-					.indexOf(toBeAddedOrRemoved));
+			s.dependentStories.remove(s.dependentStories.indexOf(toBeAddedOrRemoved));
 		} else {
 			s.dependentStories.add(toBeAddedOrRemoved);
 		}
@@ -474,14 +439,11 @@ public class Storys extends CRUD {
 	 *            Story id to be edited
 	 * @param newList
 	 *            The new list of dependent Stories
-	 * 
 	 * @author Galal Aly
-	 * 
 	 * @return void
 	 **/
 
-	public static boolean editDependentStories(long storyId,
-			ArrayList<Story> newList) {
+	public static boolean editDependentStories(long storyId, ArrayList<Story> newList) {
 		Story s = Story.findById(storyId);
 		s.dependentStories = newList;
 		s.save();
@@ -512,12 +474,10 @@ public class Storys extends CRUD {
 	}
 
 	/**
-	 * @author menna_ghoneim
-	 * 
-	 *         Renders a give story id to a page to choose the dependent stories
+	 * @author menna_ghoneim Renders a give story id to a page to choose the
+	 *         dependent stories
 	 * @param id
 	 *            the story to be edited
-	 * 
 	 */
 	public static void chooseDependentStories(long id) {
 		Story s = Story.findById(id);
@@ -550,45 +510,38 @@ public class Storys extends CRUD {
 	 * @sprint 2
 	 */
 
-	
-	@Check("canassignStorytoSprint")
+	@Check ("canassignStorytoSprint")
 	public static void listStoriesandSprints(long PID) {
-	Date todayDate = new GregorianCalendar().getTime();
-	Project project=Project.findById(PID);
-	
-	ArrayList<Story> stories=new ArrayList<Story>();
-	List<Component> components=project.components;
+		Date todayDate = new GregorianCalendar().getTime();
+		Project project = Project.findById(PID);
 
-	for(int i=0;i<components.size();i++)
-	{
-	  for(int j=0;j<components.get(i).componentStories.size();j++)
-	  {
-		stories.add(components.get(i).componentStories.get(j));  
-	  }
-	}
-	
-    List<Sprint> sprints =project.sprints;
-    if(stories!=null){
-	for (int i = 0; i < sprints.size(); i++) 
-	{
-		if (sprints.get(i).deleted == true) {
-			sprints.remove(i);
-	}
-		if (sprints.get(i).startDate.before(todayDate))
-		{
-			sprints.remove(i);
-		}
-    }
-	for(int i=0;i<components.size();i++)
-	{
-		for(int j=0;j<components.get(i).componentStories.size();j++)
-		{
-			stories.add(components.get(i).componentStories.get(j));
-		}
-	}
+		ArrayList<Story> stories = new ArrayList<Story>();
+		List<Component> components = project.components;
 
-	render(stories, sprints);
-	}
+		for (int i = 0; i < components.size(); i++) {
+			for (int j = 0; j < components.get(i).componentStories.size(); j++) {
+				stories.add(components.get(i).componentStories.get(j));
+			}
+		}
+
+		List<Sprint> sprints = project.sprints;
+		if (stories != null) {
+			for (int i = 0; i < sprints.size(); i++) {
+				if (sprints.get(i).deleted == true) {
+					sprints.remove(i);
+				}
+				if (sprints.get(i).startDate.before(todayDate)) {
+					sprints.remove(i);
+				}
+			}
+			for (int i = 0; i < components.size(); i++) {
+				for (int j = 0; j < components.get(i).componentStories.size(); j++) {
+					stories.add(components.get(i).componentStories.get(j));
+				}
+			}
+
+			render(stories, sprints);
+		}
 	}
 
 	/**
@@ -608,202 +561,162 @@ public class Storys extends CRUD {
 		Story story = Story.findById(storyID);
 		Sprint sprint = Sprint.findById(sprintID);
 
-		if (story == null)
-		{
+		if (story == null) {
 			message = "invalid story ID";
 
-		}
-		else
-		{  if(story.storiesTask==null)
-			{
-			message="no tasks  inside this story";
-			}
-			else
-			{
-				if (sprint == null)
-				{
+		} else {
+			if (story.storiesTask == null) {
+				message = "no tasks  inside this story";
+			} else {
+				if (sprint == null) {
 					message = "invalid sprint ID";
-				} 
-				else
-				{
-					if(!story.storiesTask.isEmpty())
-					{
-					if(story.storiesTask.get(0).taskSprint!=null)
-					{
-						message="story is already assignend to a sprint";
-					}
-					else
-					{
-						for(int i=0;i<story.storiesTask.size();i++)
-						{	   
-	                   
+				} else {
+					if (!story.storiesTask.isEmpty()) {
+						if (story.storiesTask.get(0).taskSprint != null) {
+							message = "story is already assignend to a sprint";
+						} else {
+							for (int i = 0; i < story.storiesTask.size(); i++) {
+
 								story.storiesTask.get(i).taskSprint.equals(sprint);
 								story.storiesTask.get(i).save();
 								story.storiesTask.get(i).taskSprint.save();
-	
+
+							}
+							for (int i = 0; i < story.storiesTask.size(); i++) {
+								sprint.tasks.add(story.storiesTask.get(i));
+								sprint.tasks.get(i).save();
+							}
+							message = "story is assigned to the sprint";
+
 						}
-						for(int i=0;i<story.storiesTask.size();i++)
-						{
-							sprint.tasks.add(story.storiesTask.get(i));
-							sprint.tasks.get(i).save();
-						}
-						 message="story is assigned to the sprint";
-						
+					} else {
+						message = "this story contains no tasks ";
 					}
-					}
-					else
-					{
-						message="this story contains no tasks ";
-					}
-					
-					
-					
-					
+
 				}
 			}
-	
+
 		}
-		byte p=1;
-		Notifications.notifyUsers(sprint.project,"", "the following story had been assigned to that sprint ", "", p);
-        Logs.addLog(sprint.project,"", "the following story had been assigned to that sprint ",sprintID);	
-		
+		byte p = 1;
+		Notifications.notifyUsers(sprint.project, "", "the following story had been assigned to that sprint ", "", p);
+		Logs.addLog(sprint.project, "", "the following story had been assigned to that sprint ", sprintID);
+
 		story.save();
 		sprint.save();
 		renderText(message);
 	}
-	
+
 	/**
 	 * gets the succsses and failure scianrios of the given story
 	 * 
-	 * @author Moumen Mohamed
-	 * story=C3S16
+	 * @author Moumen Mohamed story=C3S16
 	 * @param id
-	 *
 	 *            the id of the story edited
-	 * @return void     
+	 * @return void
 	 */
-	@Check("canEditStory")
-	public static void editScenario(long id)
-	{
-		
-		
-		Story story1=Story.findById(id);
-		ArrayList<String> succsses= new ArrayList();
-		ArrayList<String> failure= new ArrayList();
-		
-		if(story1.succussSenario!=null)
-		{
-			String []s=story1.succussSenario.split("\n");
-			for(int i=0;i<s.length;i++)
-			{
+	@Check ("canEditStory")
+	public static void editScenario(long id) {
+
+		Story story1 = Story.findById(id);
+		ArrayList<String> succsses = new ArrayList();
+		ArrayList<String> failure = new ArrayList();
+
+		if (story1.succussSenario != null) {
+			String[] s = story1.succussSenario.split("\n");
+			for (int i = 0; i < s.length; i++) {
 				succsses.add(s[i]);
 			}
 		}
-		if(story1.failureSenario!=null)
-		{
-			String []f=story1.failureSenario.split("\n");
-			for(int i=0;i<f.length;i++)
-			{
+		if (story1.failureSenario != null) {
+			String[] f = story1.failureSenario.split("\n");
+			for (int i = 0; i < f.length; i++) {
 				failure.add(f[i]);
 			}
 		}
-		
-		if(story1.succussSenario==null)
+
+		if (story1.succussSenario == null)
 			succsses.add("");
-		if(story1.failureSenario==null)
+		if (story1.failureSenario == null)
 			failure.add("");
-		
-		 int succssesNum=succsses.size();
-		 int failureNum=failure.size();
-		 long storyId=id;
-		render(succsses,failure,succssesNum,failureNum,storyId);
+
+		int succssesNum = succsses.size();
+		int failureNum = failure.size();
+		long storyId = id;
+		render(succsses, failure, succssesNum, failureNum, storyId);
 
 	}
-	
+
 	/**
 	 * saves the succsses scinario of the given story
 	 * 
-	 * @author Moumen Mohamed
-	 * story=C3S16
+	 * @author Moumen Mohamed story=C3S16
 	 * @param id
-	 *
 	 *            the id of the story edited
-	 * @param  f
-	 * 			   the string of new succsses scenarios           
+	 * @param f
+	 *            the string of new succsses scenarios
 	 * @return void
 	 */
-	public static void saveSuccsses(long id,String s)
-	{
-		Story story1=Story.findById(id);
-		story1.succussSenario=s;
+	public static void saveSuccsses(long id, String s) {
+		Story story1 = Story.findById(id);
+		story1.succussSenario = s;
 		story1.save();
 		System.out.println("succsses is entered");
 
 	}
+
 	/**
 	 * saves the failure scinario of the given story
 	 * 
-	 * @author Moumen Mohamed
-	 * story=C3S16
+	 * @author Moumen Mohamed story=C3S16
 	 * @param id
-	 *
 	 *            the id of the story edited
-	 * @param  f
-	 * 			   the string of new failure scenarios           
+	 * @param f
+	 *            the string of new failure scenarios
 	 * @return void
 	 */
-	public static void saveFailure(long id,String f)
-	{
-		Story story1=Story.findById(id);
-		story1.failureSenario=f;
+	public static void saveFailure(long id, String f) {
+		Story story1 = Story.findById(id);
+		story1.failureSenario = f;
 		story1.save();
 		System.out.println("failure is entered");
 
 	}
-	
-	public static void listStoriesInProject(long projectId, long storyId)
-	{
+
+	public static void listStoriesInProject(long projectId, long storyId) {
 		long cId = 0;
 		Story myStory = Story.findById(storyId);
-		if(myStory!=null)
+		if (myStory != null)
 			cId = myStory.componentID.id;
-		boolean ok=true;
-		boolean noStories=true;
-		String message="";
+		boolean ok = true;
+		boolean noStories = true;
+		String message = "";
 		Project project = Project.findById(projectId);
-		if(project == null)
-		{
-			ok=false;
-			message +="<li>No project found with this id</li>";
+		if (project == null) {
+			ok = false;
+			message += "<li>No project found with this id</li>";
 		}
 		// For each component in a project
-		if(project.components == null)
-		{
+		if (project.components == null) {
 			ok = false;
-			message+="<li>No components in this project and therefore, hopefully, no stories</li>";
-		}
-		else
-		{
-			//Check that there is at least one story in the project
+			message += "<li>No components in this project and therefore, hopefully, no stories</li>";
+		} else {
+			// Check that there is at least one story in the project
 			for (Component component : project.components) {
-				if(component.componentStories == null || component.componentStories.isEmpty()) continue;
-				else{
+				if (component.componentStories == null || component.componentStories.isEmpty())
+					continue;
+				else {
 					noStories = false;
 					break;
 				}
 			}
 		}
-		if(noStories)
-		{
-			ok=false;
-			message+="<li>No Stories in this project</li>";
+		if (noStories) {
+			ok = false;
+			message += "<li>No Stories in this project</li>";
 		}
-		if(!ok)
-		{
+		if (!ok) {
 			render(ok, message);
-		}
-		else
-		{
+		} else {
 			render(project, storyId, cId);
 		}
 	}

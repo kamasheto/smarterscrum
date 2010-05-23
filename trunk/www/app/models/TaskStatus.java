@@ -14,11 +14,10 @@ import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
-public class TaskStatus extends Model
-{
+public class TaskStatus extends Model {
 
 	@Required
-	@MaxSize( 100 )
+	@MaxSize (100)
 	public String name;
 
 	@ManyToOne
@@ -26,17 +25,16 @@ public class TaskStatus extends Model
 
 	public boolean deleted;
 
-	@OneToMany( mappedBy = "taskStatus", cascade = CascadeType.ALL )
+	@OneToMany (mappedBy = "taskStatus", cascade = CascadeType.ALL)
 	public List<Task> Tasks;
 
 	@OneToOne
 	public Column column;
 
-	public void init()
-	{
+	public void init() {
 		// Project p = this.project;
 		// Board b = p.board;
-		column = new Column( name, project.board ).save();
+		column = new Column(name, project.board).save();
 		// col.board = project.board;
 		// column = new Column().save();
 		// System.out.println("Assigning board now: " + project.board);
@@ -49,10 +47,8 @@ public class TaskStatus extends Model
 		// this.save();
 	}
 
-	public TaskStatus()
-	{
+	public TaskStatus () {
 		Tasks = new ArrayList<Task>();
 	}
-	
 
 }

@@ -558,10 +558,18 @@ span.isAdmin {
 }
 a.permission {
 	display:block;
-	padding:2px;
+	padding:3px;
+	margin:3px;
 	border-radius:6px;	
 }
 .selected {
 	background:#444;
 	color:white;
+	width:100%;
+}
+select#object_permissions {
+	/*
+	width:400px;
+	*/
+	height:500px;
 }

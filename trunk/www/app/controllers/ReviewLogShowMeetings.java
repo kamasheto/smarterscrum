@@ -24,16 +24,14 @@ import play.mvc.With;
  * @since 1.0
  */
 
-@With( Secure.class )
-public class ReviewLogShowMeetings extends Controller
-{
+@With (Secure.class)
+public class ReviewLogShowMeetings extends Controller {
 
 	/**
 	 * Renders the list of meetings to be used by the views.
 	 */
 
-	public static void index()
-	{
+	public static void index() {
 		/*
 		 * Meeting a = new Meeting( "M1", "Ihab Amer" ); Meeting b = new
 		 * Meeting( "M2", "HA" ); Meeting c = new Meeting( "M3", "Nora Ahmed" );
@@ -42,8 +40,8 @@ public class ReviewLogShowMeetings extends Controller
 		 * List<Meeting> reviewMeetings = Arrays.asList( rA );
 		 */
 
-		List<Meeting> reviewMeetings = Meeting.find( "order by id asc" ).fetch();
-		render( reviewMeetings );
+		List<Meeting> reviewMeetings = Meeting.find("order by id asc").fetch();
+		render(reviewMeetings);
 	}
 
 	/**
@@ -54,16 +52,14 @@ public class ReviewLogShowMeetings extends Controller
 	 *            the id of the selected meeting.
 	 */
 
-	public static void view_meeting( long id )
-	{
-		Meeting x = Meeting.findById( id );
+	public static void view_meeting(long id) {
+		Meeting x = Meeting.findById(id);
 		List<MeetingAttendance> users = x.users;
 		List<Task> tasks = x.tasks;
-		render( x, users, tasks );
+		render(x, users, tasks);
 	}
 
-	public static void editReviewLog()
-	{
+	public static void editReviewLog() {
 		;
 	}
 }

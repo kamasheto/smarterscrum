@@ -17,23 +17,21 @@ import play.db.jpa.Model;
  */
 
 @Entity
-public class Artifact extends Model
-{
+public class Artifact extends Model {
 	@Required
 	public String type;
 
 	@Lob
 	@Required
-	@MaxSize( 300 )
+	@MaxSize (300)
 	public String description;
 
-	@ManyToMany( mappedBy = "artifacts" )
+	@ManyToMany (mappedBy = "artifacts")
 	public List<Meeting> meetingsArtifacts;
 
 	public boolean deleted;
 
-	public Artifact()
-	{
+	public Artifact () {
 		meetingsArtifacts = new ArrayList<Meeting>();
 	}
 
@@ -48,8 +46,7 @@ public class Artifact extends Model
 	 *            the status of the artifact either deleted or not
 	 */
 
-	public Artifact( String type, String des )
-	{
+	public Artifact (String type, String des) {
 		this();
 		this.type = type;
 		this.description = des;
@@ -61,8 +58,7 @@ public class Artifact extends Model
 	 * Removes the artifact from the database by changing its status
 	 */
 
-	public void remove()
-	{
+	public void remove() {
 		this.deleted = true;
 	}
 
@@ -81,21 +77,17 @@ public class Artifact extends Model
 	 * @author Hossam Amer
 	 */
 
-	public List<Artifact> getArtifacts( long projectID )
-	{
+	public List<Artifact> getArtifacts(long projectID) {
 		List<Artifact> artifactsOfCertainProject = new ArrayList<Artifact>();
-		Project projectTmp = Project.findById( projectID );
+		Project projectTmp = Project.findById(projectID);
 		List<Meeting> allMeetings = this.meetingsArtifacts;
 
-		for( Meeting tmp : allMeetings )
-		{
-			if( tmp.project == projectTmp )
-			{
+		for (Meeting tmp : allMeetings) {
+			if (tmp.project == projectTmp) {
 				List<Artifact> artifactsOfTmp = tmp.artifacts;
 
-				for( Artifact a : artifactsOfTmp )
-				{
-					artifactsOfCertainProject.add( a );
+				for (Artifact a : artifactsOfTmp) {
+					artifactsOfCertainProject.add(a);
 				}
 			}
 		}
@@ -109,8 +101,7 @@ public class Artifact extends Model
 	 * @author Hossam Amer
 	 * @return true if it is of type notes and false otherwise
 	 */
-	public boolean checkType()
-	{
-		return this.type.equals( "Notes" ) ? true : false;
+	public boolean checkType() {
+		return this.type.equals("Notes") ? true : false;
 	}
 }

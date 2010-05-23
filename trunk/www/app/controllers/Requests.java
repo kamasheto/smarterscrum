@@ -107,7 +107,7 @@ public class Requests extends CRUD {
 		if (currentRequest == null)
 			Secure.login();
 		UserNotificationProfile currentProfile = UserNotificationProfile.find("user =  " + currentRequest.user.id + " and project = " + currentRequest.project.id).first();
-		if(currentProfile != null)
+		if (currentProfile != null)
 			currentProfile.delete();
 		List<Role> projectRoles = Role.find("project", currentRequest.project).fetch();
 

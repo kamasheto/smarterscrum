@@ -19,13 +19,12 @@ import models.User;
 import models.Component.ComponentRow;
 import play.mvc.With;
 
-@With( Secure.class )
-public class Boards extends CRUD
-{
+@With (Secure.class)
+public class Boards extends CRUD {
 	/**
-	 * Renders the data and the columnsOfBoard to be used by the views. this method is
-	 * used to fill the 2D array attribute in the board with the data that
-	 * should be represented in each column of the project board
+	 * Renders the data and the columnsOfBoard to be used by the views. this
+	 * method is used to fill the 2D array attribute in the board with the data
+	 * that should be represented in each column of the project board
 	 * (components and their tasks and stories for a specific sprint)
 	 * 
 	 * @author Hadeer_Diwan
@@ -33,29 +32,25 @@ public class Boards extends CRUD
 	 *            the sprint id
 	 */
 
-	public static void loadBoard( long sprintID )
-	{
-		Sprint s = Sprint.findById( sprintID );
+	public static void loadBoard(long sprintID) {
+		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
 		Board b = p.board;
 		List<Component> components = p.getComponents();
 		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>();
 		List<Column> columnsOfBoard = b.columns;
-		columnsOfBoard = orderColumns( columnsOfBoard );
-		for( int i = 0; i < components.size(); i++ )
-		{
-			data.add( null );
-			data.set( i, new ComponentRow( components.get( i ).id, components.get( i ).name ) );
-			List<Task> tasks = components.get( i ).returnComponentTasks( s );
+		columnsOfBoard = orderColumns(columnsOfBoard);
+		for (int i = 0; i < components.size(); i++) {
+			data.add(null);
+			data.set(i, new ComponentRow(components.get(i).id, components.get(i).name));
+			List<Task> tasks = components.get(i).returnComponentTasks(s);
 
-			for( int j = 0; j < columnsOfBoard.size(); j++ )
-			{
-				data.get( i ).add( null );
-				data.get( i ).set( j, new ArrayList<Task>() );
+			for (int j = 0; j < columnsOfBoard.size(); j++) {
+				data.get(i).add(null);
+				data.get(i).set(j, new ArrayList<Task>());
 			}
-			for( Task task : tasks )
-			{
-				data.get( i ).get( columnsOfBoard.indexOf( task.taskStatus.column ) ).add( task );
+			for (Task task : tasks) {
+				data.get(i).get(columnsOfBoard.indexOf(task.taskStatus.column)).add(task);
 			}
 		}
 
@@ -69,41 +64,32 @@ public class Boards extends CRUD
 		 *            this list of Users in views-Boards- loadBoard.html
 		 */
 
-		
-		
- 
-
 		LinkedList<Meeting> total = new LinkedList<Meeting>();
 
-	//	ArrayList<MeetingUsers> u = new ArrayList<MeetingUsers>();
-		for( Meeting m : p.meetings )
-		{
+		// ArrayList<MeetingUsers> u = new ArrayList<MeetingUsers>();
+		for (Meeting m : p.meetings) {
 			long now = new Date().getTime();
-			if( m.startTime < now && m.endTime > now )
-			{
-				total.add( m );
+			if (m.startTime < now && m.endTime > now) {
+				total.add(m);
 			}
-    	}
-		
+		}
+
 		ArrayList<ArrayList<User>> u = new ArrayList<ArrayList<User>>();
-		for( int i = 0; i < total.size(); i++ )
-		{
-			Meeting m = Meeting.findById( total.get( i ).id );
+		for (int i = 0; i < total.size(); i++) {
+			Meeting m = Meeting.findById(total.get(i).id);
 
 			u.add(new MeetingUsers(m));
-			for (MeetingAttendance k : m.users) 
-			{
-				if (k.status.equals("confirmed")) 
-				{
+			for (MeetingAttendance k : m.users) {
+				if (k.status.equals("confirmed")) {
 					u.get(i).add(k.user);
 				}
 
 			}
-			
-		}
-		render( data, columnsOfBoard,u,b,s,p,total);
 
-			}
+		}
+		render(data, columnsOfBoard, u, b, s, p, total);
+
+	}
 
 	/**
 	 * order any list of columns and return the ordered list.
@@ -112,110 +98,97 @@ public class Boards extends CRUD
 	 * @param cols
 	 */
 
-
-	public static List<Column> orderColumns( List<Column> cols )
-	{
+	public static List<Column> orderColumns(List<Column> cols) {
 		int smallest;
 		Column temp;
-		for( int i = 0; i < cols.size(); i++ )
-		{
+		for (int i = 0; i < cols.size(); i++) {
 			smallest = i;
-			for( int j = i + 1; j < cols.size(); j++ )
-			{
-				if( cols.get( smallest ).sequence > cols.get( j ).sequence )
-				{
+			for (int j = i + 1; j < cols.size(); j++) {
+				if (cols.get(smallest).sequence > cols.get(j).sequence) {
 					smallest = j;
 
 				}
 
 			}
-			temp = cols.get( smallest );
-			cols.set( smallest, cols.get( i ) );
-			cols.set( i, temp );
+			temp = cols.get(smallest);
+			cols.set(smallest, cols.get(i));
+			cols.set(i, temp);
 		}
 		return cols;
 	}
+
 	/**
 	 * Renders the data and the cols to be used by the views. this method is
 	 * used to fill the 2D array attribute in the board with the data that
-	 * should be represented in each column of the component board
-	 * (users and their tasks and stories for a specific sprint)
+	 * should be represented in each column of the component board (users and
+	 * their tasks and stories for a specific sprint)
 	 * 
 	 * @author Hadeer_Diwan
 	 * @param sprintID
 	 *            the sprint id
 	 * @param componentID
-	 *             the component id
+	 *            the component id
 	 */
-	public static void loadComponentBoard( long sprintID, long componentID )
-	{
-		Sprint s = Sprint.findById( sprintID );
+	public static void loadComponentBoard(long sprintID, long componentID) {
+		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
 		Board b = p.board;
 
-		Component c = Component.findById( componentID );
+		Component c = Component.findById(componentID);
 		List<User> users = c.getUsers();
-        ArrayList<User>u=new ArrayList<User>(); 
+		ArrayList<User> u = new ArrayList<User>();
 		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>();
 		List<Column> columnsOfBoard = b.columns;
-		columnsOfBoard = orderColumns( columnsOfBoard );
-		for( int i = 0; i < users.size(); i++ )
-		{
-			data.add( null );
-			data.set( i, new ComponentRow( users.get( i ).id, users.get( i ).name ) );
-			List<Task> tasks = users.get( i ).returnUserTasks( s, componentID );
+		columnsOfBoard = orderColumns(columnsOfBoard);
+		for (int i = 0; i < users.size(); i++) {
+			data.add(null);
+			data.set(i, new ComponentRow(users.get(i).id, users.get(i).name));
+			List<Task> tasks = users.get(i).returnUserTasks(s, componentID);
 
-			for( int j = 0; j < columnsOfBoard.size(); j++ )
-			{
-				data.get( i ).add( null );
-				data.get( i ).set( j, new ArrayList<Task>() );
+			for (int j = 0; j < columnsOfBoard.size(); j++) {
+				data.get(i).add(null);
+				data.get(i).set(j, new ArrayList<Task>());
 			}
 
-			for( Task task : tasks )
-			{
-				data.get( i ).get( columnsOfBoard.indexOf( task.taskStatus.column ) ).add( task );
+			for (Task task : tasks) {
+				data.get(i).get(columnsOfBoard.indexOf(task.taskStatus.column)).add(task);
 			}
-		
+
 		}
 
-		
-		
-		
 		/**
-		 * next lines indicates how current Component meeting is held infront of each component 
-		 * board . as it user Component c and it's list of Users to search for which meeting 
-		 * running now and which User have status Confirmed.
-		 * @param    
-		 *    Component c (Used thought code lines), List of componentMeetings,
-		 *    List of Users for this Component . 
+		 * next lines indicates how current Component meeting is held infront of
+		 * each component board . as it user Component c and it's list of Users
+		 * to search for which meeting running now and which User have status
+		 * Confirmed.
+		 * 
+		 * @param Component
+		 *            c (Used thought code lines), List of componentMeetings,
+		 *            List of Users for this Component .
 		 * @author asmaak89
 		 */
-		
-		
-		
-		 LinkedList<Meeting> total = new LinkedList<Meeting>();
-		 
-			
-             for (Meeting m : c.componentMeetings) {
-				long now = new Date().getTime();
-				if( m.startTime < now && m.endTime > now ) {
-					
-					total.add(m);
-				
+
+		LinkedList<Meeting> total = new LinkedList<Meeting>();
+
+		for (Meeting m : c.componentMeetings) {
+			long now = new Date().getTime();
+			if (m.startTime < now && m.endTime > now) {
+
+				total.add(m);
+
+			}
+		}
+		for (int i = 0; i < total.size(); i++) {
+			Meeting m = Meeting.findById(total.get(i).id);
+
+			for (MeetingAttendance k : m.users) {
+				if (k.status.equals("confirmed")) {
+					u.add(k.user);
 				}
 			}
-			for (int i = 0; i < total.size(); i++) {
-				Meeting m = Meeting.findById(total.get(i).id);
-				
-				for (MeetingAttendance k : m.users) {
-						if (k.status.equals("confirmed")) {
-							u.add(k.user);
-						}
-					}
-		
+
 		}
 
-
-		render( data,columnsOfBoard,u,s,c,p,total);
+		render(data, columnsOfBoard, u, s, c, p, total);
 	}
 }

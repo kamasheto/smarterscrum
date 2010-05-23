@@ -27,7 +27,7 @@ public class Task extends Model {
 
 	@Required
 	@Lob
-	@MaxSize(300)
+	@MaxSize (300)
 	public String description;
 
 	public boolean deleted;
@@ -46,7 +46,7 @@ public class Task extends Model {
 	@ManyToOne
 	public User userTask;
 
-	@ManyToMany(mappedBy = "tasks")
+	@ManyToMany (mappedBy = "tasks")
 	public List<Meeting> meeting;
 
 	@Required
@@ -90,10 +90,10 @@ public class Task extends Model {
 	 * @return The number of effort points for this task in a specific day.
 	 */
 	public double getEffortPerDay(int dayId) {
-		if(estimationPointsPerDay.size()==0)
+		if (estimationPointsPerDay.size() == 0)
 			return estimationPoints;
 		if (dayId >= estimationPointsPerDay.size())
-			return estimationPointsPerDay.get(estimationPointsPerDay.size()-1);
+			return estimationPointsPerDay.get(estimationPointsPerDay.size() - 1);
 		return estimationPointsPerDay.get(dayId);
 	}
 
@@ -115,8 +115,7 @@ public class Task extends Model {
 				estimationPointsPerDay.add(effort);
 		}
 		if (estimationPointsPerDay.size() <= day) {
-			double temp = estimationPointsPerDay.get(estimationPointsPerDay
-					.size() - 1);
+			double temp = estimationPointsPerDay.get(estimationPointsPerDay.size() - 1);
 			for (int i = estimationPointsPerDay.size() - 1; i < day; i++) {
 				estimationPointsPerDay.add(temp);
 			}
@@ -124,14 +123,13 @@ public class Task extends Model {
 		estimationPointsPerDay.set(day, effort);
 	}
 
-	public Task() {
+	public Task () {
 		meeting = new ArrayList<Meeting>();
 		dependentTasks = new ArrayList<Task>();
 		this.estimationPointsPerDay = new ArrayList<Double>(1);
 	}
 
-	public Task(String des, boolean deleted, String type,
-			double estimationPoints, int status) {
+	public Task (String des, boolean deleted, String type, double estimationPoints, int status) {
 		this();
 		this.description = des;
 		this.deleted = false;
@@ -142,20 +140,18 @@ public class Task extends Model {
 		this.status = status;
 		this.save();
 	}
-	
 
-	public Task(String des, Project project) {
+	public Task (String des, Project project) {
 		this();
 		this.description = des;
 		this.deleted = false;
 
 		this.taskType = new TaskType();
 		this.taskType.name = "Impediment";
-this.taskType.save();
+		this.taskType.save();
 		this.taskType.project = project;
 
-
-		this.dependentTasks=new ArrayList<Task>();
+		this.dependentTasks = new ArrayList<Task>();
 		this.taskStatus = new TaskStatus();
 
 		this.estimationPointsPerDay = new ArrayList<Double>(1);
@@ -245,7 +241,7 @@ this.taskType.save();
 
 		String description;
 
-		public Object(long id, String description) {
+		public Object (long id, String description) {
 			this.id = id;
 			this.description = description;
 		}

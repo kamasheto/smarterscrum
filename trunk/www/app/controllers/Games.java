@@ -52,7 +52,7 @@ public class Games extends Controller {
 			// story.games.add(game);
 			// story.save();
 			//			
-			if (!user.in(story.componentID.project).can("startGame") && !user.isAdmin) {
+			if (!user.in(story.componentID.project).can("startGame")) {
 				forbidden();
 			}
 			game.stories.add(story);
@@ -157,16 +157,11 @@ public class Games extends Controller {
 	 *            round id
 	 */
 	public static void connect(long gameId, long roundId) {
-		// System.out.println("-------- START");
-		// System.out.println("Galaal");
 		Game game = Game.findById(gameId);
 		User user = Security.getConnected();
 		Round current = Round.findById(roundId);
-		// System.out.println(round);
 		GameSession session = GameSession.find("byUserAndGame", user, game).first();
-		// System.out.println(rounds.size() + " " + rounds.get(0));
 		if (session == null) {
-			// System.out.println("Galaaaaal");
 			session = new GameSession().save();
 			session.started = new Date().getTime();
 			session.user = user;
@@ -175,52 +170,24 @@ public class Games extends Controller {
 		session.lastClick = new Date().getTime();
 		session.save();
 
-		// if (round.isDone()) {
-		// System.out.println("here");
-		// Round newround = new Round().save();
-		// newround.game = game;
-		// newround.story = game.currentStory;
-		// newround.save();
-		//
-		// System.out.println(newround);
-		// }
-		// System.out.println(game.getRound());
 		String response = "0";
-		String roundInfo = "";
+		String roundInfo = "null";
 		if (game.getRound() != null && game.getRound().isDone()) {
 			response = "1";
 			roundInfo = game.getRound().info();
 		}
-		// if (response.equals("0"))
-		// suspend("2s");
 
-		int isModerator = 0;
-		if (response.equals("1")) {
-			if (game.getModerator() == user)
-				isModerator = 1;
-		}
+		int isModerator = response.equals("1") && game.getModerator() == user ? 1 : 0;
 
-		int rightRound = 0;
-		if (current != game.getRound()) {
-			rightRound = 1;
-		}
-		// remember to keep the order of the strings responded in order
-		// 3ashan matbawazosh sho3`l ba3d
-		// isModerator is at index 1
-		if (roundInfo.length() < 1) {
-			roundInfo = "null";
-		}
+		int rightRound = current == game.getRound() ? 0 : 1;
+
 		response += "," + isModerator + "," + rightRound + "," + game.getRound().id + "," + roundInfo + ",";
 
 		Round round = game.getRound();
 		List<Trick> tricks = Trick.find("byRound", round).fetch();
-		// String response = "";
 		boolean roundDone = round.isDone();
 		for (int i = 0; i < tricks.size(); i++) {
 			response += tricks.get(i).user.name + " " + (roundDone ? tricks.get(i).estimate + "" : "done") + "|";
-			// if (tricks.size() - 1 != i) {
-			// } else
-			// response += tricks.get(i).estimate;
 		}
 		response = response.substring(0, response.length() - 1);
 

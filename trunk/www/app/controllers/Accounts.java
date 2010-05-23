@@ -16,8 +16,7 @@ import play.mvc.With;
  * @Task C1S23
  * @Task C1S24
  */
-public class Accounts extends Controller
-{
+public class Accounts extends Controller {
 	/**
 	 * This method simply takes the required parameters of a User record ,
 	 * creates that user object and saves it into the database after checking
@@ -42,41 +41,30 @@ public class Accounts extends Controller
 	 * @see views.Accounts.register
 	 * @Task C1S24
 	 */
-	public static void addUser( @Required String name, @Required @Email String email, @Required String password, @Required String confirmPass )
-	{
-		if( validation.hasErrors() )
-		{
+	public static void addUser(@Required String name, @Required @Email String email, @Required String password, @Required String confirmPass) {
+		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
 			register();
-		}
-		else if(!password.equals( confirmPass ))
-		{
-			flash.error( "Your passwords do not match" );
+		} else if (!password.equals(confirmPass)) {
+			flash.error("Your passwords do not match");
 			validation.keep();
 			register();
-		}
-		else
-		{
-			try
-			{
-				User user = new User( name, email, password );
+		} else {
+			try {
+				User user = new User(name, email, password);
 				// System.out.println( user );
 				user.save();
 				// render( user.name, user.email, password );
 				String subject = "Your SmartSoft account activation";
-				String body = "Dear "+name+ ", We are glad to have you as a registered user. Please click the following link to activate your account: "+"http://localhost:9000/accounts/doActivation?hash="+user.activationHash; 
-				Mail.send("se.smartsoft@gmail.com", user.email, subject, body);			
-				flash.success( "You have been registered. An Activation link has been sent to your Email Address" );
+				String body = "Dear " + name + ", We are glad to have you as a registered user. Please click the following link to activate your account: " + "http://localhost:9000/accounts/doActivation?hash=" + user.activationHash;
+				Mail.send("se.smartsoft@gmail.com", user.email, subject, body);
+				flash.success("You have been registered. An Activation link has been sent to your Email Address");
 				Secure.login();
-			}
-			catch( PersistenceException e )
-			{
-				flash.error( "Oops, that user already exists!" + "\t" + "Please choose another user name and/or email." );
+			} catch (PersistenceException e) {
+				flash.error("Oops, that user already exists!" + "\t" + "Please choose another user name and/or email.");
 				register();
-			}
-			catch( Throwable e )
-			{
+			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 
@@ -90,8 +78,7 @@ public class Accounts extends Controller
 	 * @see views.Accounts.register
 	 * @Task C1S24
 	 */
-	public static void register()
-	{
+	public static void register() {
 		render();
 	}
 
@@ -102,12 +89,10 @@ public class Accounts extends Controller
 	 * @see views.Accounts.requestDeletion
 	 * @Task C1S23
 	 */
-	public static void requestDeletion()
-	{
-		if(!Security.isConnected())
-		{
-			Security.error( "You are not registered, Please login if you haven't done so" );
-			
+	public static void requestDeletion() {
+		if (!Security.isConnected()) {
+			Security.error("You are not registered, Please login if you haven't done so");
+
 		}
 		render();
 	}
@@ -127,59 +112,51 @@ public class Accounts extends Controller
 	 * @Task C1S23
 	 */
 
-	
-	public static void deletionRequest( @Required String userName )
-	{
-		
-		if( validation.hasErrors() )
-		{
+	public static void deletionRequest(@Required String userName) {
+
+		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
 			requestDeletion();
-		}
-		else
-		{
-			User userFound = User.find( "name", userName ).first();
-			if( userFound == null )
-				flash.error( "Oops, please enter your user name to verify that you wanna be deleted!" );
-			else
-			{
-				if(!userFound.email.equals( Security.connected()))
-					flash.error( "Oops, please verify that you want to be deleted by entering your user name" );
-				else{
-				userFound.pendingDeletion = true;
-				userFound.save();
-				flash.success( "your deletion request has been successfully sent!" );
+		} else {
+			User userFound = User.find("name", userName).first();
+			if (userFound == null)
+				flash.error("Oops, please enter your user name to verify that you wanna be deleted!");
+			else {
+				if (!userFound.email.equals(Security.connected()))
+					flash.error("Oops, please verify that you want to be deleted by entering your user name");
+				else {
+					userFound.pendingDeletion = true;
+					userFound.save();
+					flash.success("your deletion request has been successfully sent!");
 				}
 			}
 			requestDeletion();
 		}
 	}
-	
+
 	/**
-	 * This method activates a user with an activation hash "hash" when that user
-	 * clicks the activation link sent to him.
+	 * This method activates a user with an activation hash "hash" when that
+	 * user clicks the activation link sent to him.
+	 * 
 	 * @param hash
-	 *       The Activation hash value of that user.
+	 *            The Activation hash value of that user.
 	 * @throws Throwable
-	 *       Any exception that might happen during the login process is thrown here
-	 *       as well.
+	 *             Any exception that might happen during the login process is
+	 *             thrown here as well.
 	 * @see models.User
 	 * @since Sprint2.
 	 * @Task C1S30
 	 */
-	public static void doActivation(String hash) throws Throwable
-	{
-		User currentUser = User.find( "activationHash", hash ).first();
-		if(currentUser != null && !currentUser.isActivated)
-		{	
+	public static void doActivation(String hash) throws Throwable {
+		User currentUser = User.find("activationHash", hash).first();
+		if (currentUser != null && !currentUser.isActivated) {
 			currentUser.isActivated = true;
 			currentUser.save();
-			flash.success( "Thank you , your Account has been Activated! . Login Below" );
-		}
-		else
-			flash.error( "This activation link is not valid or has expired. Activation Failed!" );
+			flash.success("Thank you , your Account has been Activated! . Login Below");
+		} else
+			flash.error("This activation link is not valid or has expired. Activation Failed!");
 		Secure.login();
 	}
-	
+
 }

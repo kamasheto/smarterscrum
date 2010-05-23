@@ -17,7 +17,7 @@ public class Roles extends CRUD {
 	@Check ("canManageRoles")
 	public static void getPermissions(long id) {
 		if (id == 0)
-			return;
+			renderJSON(new Object());
 		Role r = Role.findById(id);
 		r.project = null;
 		renderJSON(r);

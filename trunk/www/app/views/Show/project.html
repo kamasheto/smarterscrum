@@ -130,10 +130,10 @@ ${project.description?.nl2br()}
 
 #{set 'moreLinks'}
 
-				<!--@author ahmedkhaled7 C4S12/c4S4/c4s5   -->
-			<a href="@{ImpedimentTasks.index(project.id)}">Report impediment</a><br/><br/>
-<a href="/show/roles?id=${project.id}">Manage Roles</a><br />
-<br/>
+<!--@author ahmedkhaled7 C4S12/c4S4/c4s5   -->
+<a href="@{ImpedimentTasks.index(project.id)}">Report impediment</a><br/><br />
+#{secure.check 'canManageRoles'}<a href="/show/roles?id=${project.id}">Manage Roles</a><br /><br/>#{/secure.check}
+
 <a href="@{Storys.listStoriesandSprints(project.id)}"> Assign Story to Sprint </a><br/><br/>
 <!-- adding a check requests link @author moataz_mekki -->
 #{secure.check 'canManageRequests'}
@@ -143,9 +143,6 @@ ${project.description?.nl2br()}
 @Task C1S14 -->
 <a href="/projects/deletionRequestRespond?id=${project.id}"> Check Deletion Requests</a><br /><br/>
 #{/secure.check}
-
-<br/><br/>
-
 
 <!-- project notification profile @ author moataz_mekki-->
 #{secure.check 'canEditProjectNotificationProfile'}

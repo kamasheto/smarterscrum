@@ -617,7 +617,7 @@ public class Tasks extends CRUD {
 		}
 		User user1 = User.findById(userId);
 		Project currentProject = task1.taskStory.componentID.project;
-		boolean permession = user1.isAdmin || user1.in(currentProject).can("changeTaskDescreption");
+		boolean permession = user1.in(currentProject).can("changeTaskDescreption");
 
 		if (task1.reviewer.id != userId && task1.assignee.id != userId) {
 			if (!permession)
@@ -663,7 +663,7 @@ public class Tasks extends CRUD {
 			return false;
 
 		Project currentProject = task1.taskStory.componentID.project;
-		boolean permession = user1.isAdmin || user1.in(currentProject).can("changeTaskType");
+		boolean permession = user1.in(currentProject).can("changeTaskType");
 
 		if (task1.reviewer.id != userId && task1.assignee.id != userId) {
 			if (!permession)
@@ -714,7 +714,7 @@ public class Tasks extends CRUD {
 			renderJSON(zero);
 
 		Project currentProject = task1.taskStory.componentID.project;
-		boolean permession = user1.isAdmin || user1.in(currentProject).can("changeTaskType");
+		boolean permession = user1.in(currentProject).can("changeTaskType");
 
 		if (task1.reviewer.id != userId && task1.assignee.id != userId) {
 			if (!permession)
@@ -843,7 +843,7 @@ public class Tasks extends CRUD {
 			return false;
 
 		Project currentProject = task1.taskStory.componentID.project;
-		boolean permession = user1.isAdmin || user1.in(currentProject).can("changeTaskStatus");
+		boolean permession = user1.in(currentProject).can("changeTaskStatus");
 
 		if (task1.reviewer.id != userId && task1.assignee.id != userId) {
 			if (!permession)
@@ -924,7 +924,7 @@ public class Tasks extends CRUD {
 			renderJSON(zero);
 
 		Project currentProject = task1.taskStory.componentID.project;
-		boolean permession = user1.isAdmin || user1.in(currentProject).can("changeTaskStatus");
+		boolean permession = user1.in(currentProject).can("changeTaskStatus");
 
 		if (task1.reviewer.id != userId && task1.assignee.id != userId) {
 			if (!permession)
@@ -1141,7 +1141,7 @@ public class Tasks extends CRUD {
 			return false;
 
 		Project currentProject = task1.taskStory.componentID.project;
-		boolean permession = user1.isAdmin || user1.in(currentProject).can("changeAssignee");
+		boolean permession = user1.in(currentProject).can("changeAssignee");
 
 		if (!permession)
 			return false;
@@ -1264,7 +1264,7 @@ public class Tasks extends CRUD {
 			return false;
 
 		Project currentProject = task1.taskStory.componentID.project;
-		boolean permession = user1.isAdmin || user1.in(currentProject).can("changeReviewer");
+		boolean permession = user1.in(currentProject).can("changeReviewer");
 
 		if (!permession)
 			return false;
@@ -1519,7 +1519,6 @@ public class Tasks extends CRUD {
 		List<TaskStatus> states = task.taskSprint.project.taskStatuses;
 		User user = Security.getConnected();
 		render(taskId, states, user);
-
 	}
 
 	public static void eee(long ngo) {

@@ -14,7 +14,7 @@
 <h2>${user.name}</h2>
 
 <div id="accordion">
-	<h4><a>Projects</a></h4>
+	<h6><a>Projects</a></h6>
 	<div>
 		<div class="tiny_info">Click a project to toggle the components this user is member of</div>
 		#{list items:user.projects, as:'project'}
@@ -23,17 +23,15 @@
 			#{set has:false /}
 			#{list items:project.components, as:'component'}
 				#{if user.components.contains(component)}
-					<li>${component.name}</li>
 					#{set has:true /}
+					<li>${component.name}</li>
 				#{/if}
 			#{/list}
-			#{ifnot has}
-				--
-			#{/ifnot}
+			#{ifnot has}--#{/ifnot}
 			</ol>
 		#{/list}
 	</div>
-	<h4><a>Options</a></h4>
+	<h6><a>Options</a></h6>
 	<div>
 	<a href="#" onclick="$('#roles').toggle()">Invite user to a project</a><br />
 		<div id="roles" style="display:none;" class="">

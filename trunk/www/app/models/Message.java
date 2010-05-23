@@ -15,8 +15,7 @@ import play.db.jpa.Model;
  * @author Amr Hany
  */
 @Entity
-public class Message extends Model
-{
+public class Message extends Model {
 
 	public boolean deleted;
 
@@ -30,8 +29,7 @@ public class Message extends Model
 	@ManyToOne
 	public ChatRoom room;
 
-	public Message( String authr, String mssage, ChatRoom r )
-	{
+	public Message (String authr, String mssage, ChatRoom r) {
 		this.room = r;
 		this.author = authr;
 		this.message = mssage;

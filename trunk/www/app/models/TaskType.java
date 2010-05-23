@@ -29,12 +29,10 @@ public class TaskType extends Model {
 	@OneToMany (mappedBy = "taskType", cascade = CascadeType.ALL)
 	public List<Task> Tasks;
 
-	String hexColor="#"+Integer.toHexString(new Color(new Random().nextInt(50)+180,new Random().nextInt(50)+180,new Random().nextInt(50)+180).getRGB() & 0xFFFFFF);
+	String hexColor = "#" + Integer.toHexString(new Color(new Random().nextInt(50) + 180, new Random().nextInt(50) + 180, new Random().nextInt(50) + 180).getRGB() & 0xFFFFFF);
+
 	public TaskType () {
 		Tasks = new ArrayList<Task>();
 	}
-	
-	
-	
 
 }
