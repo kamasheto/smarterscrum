@@ -97,7 +97,6 @@ public class Story extends SmartModel {
 
 	public Story (String des, String succ, String fail, int priority, String notes, long userId) {
 		String dependentStoriesIds = "";
-		System.out.println("oba");
 		addedBy = User.findById(userId);
 		this.description = des;
 		this.succussSenario = succ;
