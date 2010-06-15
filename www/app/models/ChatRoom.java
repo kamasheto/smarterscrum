@@ -6,15 +6,13 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
-import play.db.jpa.Model;
-
 /**
  * Chat room Model ,done to make chatroom to each project
  * 
  * @author Amr Hany
  */
 @Entity
-public class ChatRoom extends Model {
+public class ChatRoom extends SmartModel {
 
 	public boolean deleted;
 

@@ -12,7 +12,7 @@ import models.UserNotificationProfile;
 import play.mvc.With;
 
 @With (Secure.class)
-public class Requests extends CRUD {
+public class Requests extends SmartCRUD {
 	/**
 	 * belongs to s15
 	 * <p>

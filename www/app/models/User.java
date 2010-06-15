@@ -13,7 +13,6 @@ import javax.persistence.OneToMany;
 import play.data.validation.Email;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
-import play.db.jpa.Model;
 import controllers.Application;
 
 /**
@@ -22,7 +21,7 @@ import controllers.Application;
  * @version 670
  */
 @Entity
-public class User extends Model {
+public class User extends SmartModel {
 	/**
 	 * username
 	 */

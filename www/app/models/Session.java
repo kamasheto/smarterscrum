@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
-import play.db.jpa.Model;
 import controllers.Security;
 
 /**
@@ -14,7 +13,7 @@ import controllers.Security;
  * @author mahmoudsakr
  */
 @Entity
-public class Session extends Model {
+public class Session extends SmartModel {
 	@OneToOne
 	public User user;
 

@@ -5,10 +5,7 @@ import javax.persistence.PersistenceException;
 import models.User;
 import play.data.validation.Email;
 import play.data.validation.Required;
-import play.libs.Crypto;
 import play.libs.Mail;
-import play.mvc.Controller;
-import play.mvc.With;
 
 /**
  * @author amr_osman
@@ -16,7 +13,7 @@ import play.mvc.With;
  * @Task C1S23
  * @Task C1S24
  */
-public class Accounts extends Controller {
+public class Accounts extends SmartController {
 	/**
 	 * This method simply takes the required parameters of a User record ,
 	 * creates that user object and saves it into the database after checking

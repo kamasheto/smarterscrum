@@ -5,13 +5,11 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import play.db.jpa.Model;
-
 /**
  * @author Moataz_Mekki
  */
 @Entity
-public class Notification extends Model {
+public class Notification extends SmartModel {
 
 	@ManyToOne
 	public User user;

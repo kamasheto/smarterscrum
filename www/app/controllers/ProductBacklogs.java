@@ -9,11 +9,10 @@ import models.Project;
 import models.Sprint;
 import models.Story;
 import models.User;
-import play.mvc.Controller;
 import play.mvc.With;
 
 @With (Secure.class)
-public class ProductBacklogs extends Controller {
+public class ProductBacklogs extends SmartController {
 	/**
 	 * Gets the list of stories in the project or the component that has the id
 	 * sent from the project or component page , and renders this list with the

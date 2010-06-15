@@ -8,10 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import play.db.jpa.Model;
-
 @Entity
-public class Game extends Model {
+public class Game extends SmartModel {
 	//	
 	// @OneToMany
 	// public List<Round> rounds;

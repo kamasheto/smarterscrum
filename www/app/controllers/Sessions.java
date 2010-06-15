@@ -5,7 +5,6 @@ import java.util.List;
 
 import models.Session;
 import models.User;
-import play.mvc.Controller;
 import play.mvc.With;
 
 /**
@@ -14,7 +13,7 @@ import play.mvc.With;
  * @author mahmoudsakr
  */
 @With (Secure.class)
-public class Sessions extends Controller {
+public class Sessions extends SmartController {
 	/**
 	 * pings the server, updates the session of the current user
 	 */

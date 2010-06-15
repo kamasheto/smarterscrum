@@ -4,14 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 import play.data.validation.Required;
-import play.db.jpa.Model;
 
 /**
  * @author moataz_mekki
  */
 
 @Entity
-public class ProjectNotificationProfile extends Model {
+public class ProjectNotificationProfile extends SmartModel {
 	@OneToOne
 	public Project project;
 

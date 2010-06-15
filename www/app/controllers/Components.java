@@ -10,7 +10,7 @@ import play.i18n.Messages;
 import play.mvc.With;
 
 @With (Secure.class)
-public class Components extends CRUD {
+public class Components extends SmartCRUD {
 	/**
 	 * This method Overrides the CRUD.blank() method that is executed on adding
 	 * a new component, Because the project ID is needed in order to allow the

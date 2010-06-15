@@ -1,8 +1,9 @@
 package models;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+
 import play.data.validation.Required;
-import play.db.jpa.Model;
 
 /**
  * This class represents the UserNotificationProfile Entity in the Database and
@@ -13,7 +14,7 @@ import play.db.jpa.Model;
  * @Task C1S33
  */
 @Entity
-public class UserNotificationProfile extends Model {
+public class UserNotificationProfile extends SmartModel {
 	@ManyToOne
 	public User user;
 	@ManyToOne

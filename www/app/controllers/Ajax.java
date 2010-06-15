@@ -5,9 +5,8 @@ import java.util.List;
 
 import models.Project;
 import models.User;
-import play.mvc.Controller;
 
-public class Ajax extends Controller {
+public class Ajax extends SmartController {
 	/**
 	 * renderJSON projects that match the query search term, and based on the
 	 * boolean flag chosen to select from

@@ -13,7 +13,7 @@ import play.mvc.With;
  * @author mahmoudsakr
  */
 @With (Secure.class)
-public class Roles extends CRUD {
+public class Roles extends SmartCRUD {
 	@Check ("canManageRoles")
 	public static void getPermissions(long id) {
 		if (id == 0)

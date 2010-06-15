@@ -3,7 +3,6 @@ package models;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import play.db.jpa.Model;
 import controllers.Application;
 
 /**
@@ -16,7 +15,7 @@ import controllers.Application;
  * @Task C1S14
  */
 @Entity
-public class Request extends Model {
+public class Request extends SmartModel {
 	@ManyToOne
 	public User user;
 

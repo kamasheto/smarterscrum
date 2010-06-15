@@ -1,43 +1,17 @@
 package controllers;
 
-import play.*;
-import play.mvc.*;
-import java.util.*;
-import models.ProductRole;
-import models.Project;
-import models.Story;
-import models.Role;
-import models.User;
-import play.libs.Mail;
-import play.db.jpa.JPASupport;
-import play.exceptions.TemplateNotFoundException;
-import play.i18n.Messages;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.List;
 
-import models.Component;
+import models.ProductRole;
 import models.Project;
-import models.Story;
-import models.Task;
-import models.User;
-import play.db.jpa.JPASupport;
-import play.exceptions.TemplateNotFoundException;
-import play.i18n.Messages;
-import play.mvc.With;
-import java.util.Date;
-import models.Component;
-import models.Project;
-import models.Request;
-import models.User;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 import play.mvc.With;
 
 @With (Secure.class)
-public class ProductRoles extends CRUD {
+public class ProductRoles extends SmartCRUD {
 	/**
 	 * Renders a list of the product roles that exists in a certain project, the
 	 * considered project id and it's name to the project's product roles view.

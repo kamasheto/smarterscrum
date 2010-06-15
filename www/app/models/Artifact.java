@@ -9,7 +9,6 @@ import javax.persistence.ManyToMany;
 
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
-import play.db.jpa.Model;
 
 /**
  * @author menna_ghoneim
@@ -17,7 +16,7 @@ import play.db.jpa.Model;
  */
 
 @Entity
-public class Artifact extends Model {
+public class Artifact extends SmartModel {
 	@Required
 	public String type;
 

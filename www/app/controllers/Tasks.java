@@ -25,7 +25,7 @@ import play.i18n.Messages;
 import play.mvc.With;
 
 @With (Secure.class)
-public class Tasks extends CRUD {
+public class Tasks extends SmartCRUD {
 
 	public static void add() {
 		render();

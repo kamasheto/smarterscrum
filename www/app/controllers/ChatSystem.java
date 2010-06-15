@@ -5,9 +5,8 @@ import java.util.List;
 import models.ChatRoom;
 import models.Message;
 import models.User;
-import play.mvc.Controller;
 
-public class ChatSystem extends Controller {
+public class ChatSystem extends SmartController {
 
 	/**
 	 * Add message method that adds a new message being sent to the system in

@@ -5,7 +5,6 @@ import java.util.List;
 import models.Meeting;
 import models.MeetingAttendance;
 import models.Task;
-import play.mvc.Controller;
 import play.mvc.With;
 
 /**
@@ -25,7 +24,7 @@ import play.mvc.With;
  */
 
 @With (Secure.class)
-public class ReviewLogShowMeetings extends Controller {
+public class ReviewLogShowMeetings extends SmartController {
 
 	/**
 	 * Renders the list of meetings to be used by the views.

@@ -8,12 +8,11 @@ import models.Project;
 import models.Sprint;
 import models.Story;
 import models.Task;
-import play.mvc.Controller;
 import play.mvc.With;
 
 @With (Secure.class)
 // @Check("systemAdmin")
-public class ImpedimentTasks extends Controller {
+public class ImpedimentTasks extends SmartController {
 	/**
 	 * @author ahmedkhaled7 C4 S12 Rendering the project to the index page in
 	 *         the Impediment task view

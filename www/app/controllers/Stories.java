@@ -2,23 +2,18 @@ package controllers;
 
 // import java.awt.Component;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
+
 import models.Component;
-import models.Task;
-import models.Sprint;
 import models.Project;
 import models.Story;
+import models.Task;
 import models.User;
 import play.libs.Mail;
-import play.mvc.Controller;
 import play.mvc.With;
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 @With (Secure.class)
-public class Stories extends Controller {
+public class Stories extends SmartController {
 
 	/**
 	 * Views the add story form.

@@ -4,15 +4,13 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import models.Project;
-import models.TaskStatus;
 import models.TaskType;
 import models.User;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
-import controllers.CRUD.ObjectType;
 
-public class TaskTypes extends CRUD {
+public class TaskTypes extends SmartCRUD {
 	public static void blank(long id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		Project project = Project.findById(id);

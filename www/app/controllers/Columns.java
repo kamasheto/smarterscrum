@@ -15,7 +15,7 @@ import play.i18n.Messages;
 import play.mvc.With;
 
 @With (Secure.class)
-public class Columns extends CRUD {
+public class Columns extends SmartCRUD {
 	@Check ("canEditColumn")
 	/**
 	 * this method is used by CRUD when we want to edit items in this class

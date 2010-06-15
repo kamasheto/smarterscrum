@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import others.MeetingUsers;
-
 import models.Board;
 import models.Column;
 import models.Component;
@@ -17,10 +15,11 @@ import models.Sprint;
 import models.Task;
 import models.User;
 import models.Component.ComponentRow;
+import others.MeetingUsers;
 import play.mvc.With;
 
 @With (Secure.class)
-public class Boards extends CRUD {
+public class Boards extends SmartCRUD {
 	/**
 	 * Renders the data and the columnsOfBoard to be used by the views. this
 	 * method is used to fill the 2D array attribute in the board with the data

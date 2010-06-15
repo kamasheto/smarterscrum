@@ -13,10 +13,9 @@ import javax.persistence.OneToOne;
 
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
-import play.db.jpa.Model;
 
 @Entity
-public class Component extends Model {
+public class Component extends SmartModel {
 	/*
 	 * Component Entity : consists of name,description up till now
 	 */

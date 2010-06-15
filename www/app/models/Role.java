@@ -7,15 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import play.db.jpa.Model;
-
 /**
  * Role model
  * 
  * @author mahmoudsakr
  */
 @Entity
-public class Role extends Model {
+public class Role extends SmartModel {
 	public String name;
 
 	public boolean systemAdminRole;

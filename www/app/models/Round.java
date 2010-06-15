@@ -6,10 +6,8 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import play.db.jpa.Model;
-
 @Entity
-public class Round extends Model {
+public class Round extends SmartModel {
 
 	int roundNo;
 
