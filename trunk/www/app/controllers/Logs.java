@@ -3,18 +3,9 @@ package controllers;
 import java.util.Date;
 import java.util.List;
 
-import controllers.CRUD.ObjectType;
-import controllers.CRUD.ObjectType.ObjectField;
-
-import models.Board;
 import models.Log;
 import models.Project;
-import models.Sprint;
-import models.Task;
 import models.User;
-import play.db.jpa.JPASupport;
-import play.exceptions.TemplateNotFoundException;
-import play.libs.Mail;
 import play.mvc.With;
 
 /**
@@ -26,7 +17,7 @@ import play.mvc.With;
  * @Task C1S3
  */
 @With (Secure.class)
-public class Logs extends CRUD {
+public class Logs extends SmartCRUD {
 	/**
 	 * New method by mahmoudsakr
 	 * 

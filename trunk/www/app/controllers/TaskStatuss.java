@@ -9,9 +9,8 @@ import models.User;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
-import controllers.CRUD.ObjectType;
 
-public class TaskStatuss extends CRUD {
+public class TaskStatuss extends SmartCRUD {
 	public static void blank(long id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		Project project = Project.findById(id);

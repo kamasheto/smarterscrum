@@ -3,7 +3,6 @@ package models;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import play.db.jpa.Model;
 import controllers.Application;
 
 /**
@@ -12,7 +11,7 @@ import controllers.Application;
  * @author mahmoudsakr
  */
 @Entity
-public class Invite extends Model {
+public class Invite extends SmartModel {
 	/**
 	 * *..1 relation with users
 	 */

@@ -12,7 +12,6 @@ import play.data.validation.Email;
 import play.data.validation.Required;
 import play.data.validation.Validation;
 import play.libs.Mail;
-import play.mvc.Controller;
 import play.mvc.With;
 
 /**
@@ -21,7 +20,7 @@ import play.mvc.With;
  * @author mahmoudsakr
  */
 @With (Secure.class)
-public class Application extends Controller {
+public class Application extends SmartController {
 	public static String hash(String str) {
 		String res = "";
 		try {

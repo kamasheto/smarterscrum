@@ -14,10 +14,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import play.data.validation.Required;
-import play.db.jpa.Model;
 
 @Entity
-public class Meeting extends Model {
+public class Meeting extends SmartModel {
 	@Required
 	public String name;
 	@Lob

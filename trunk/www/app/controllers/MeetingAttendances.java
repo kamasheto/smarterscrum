@@ -10,7 +10,7 @@ import models.User;
 import play.mvc.With;
 
 @With (Secure.class)
-public class MeetingAttendances extends CRUD {
+public class MeetingAttendances extends SmartCRUD {
 
 	/**
 	 * this method takes meetingHash as a parameter and set the status of the

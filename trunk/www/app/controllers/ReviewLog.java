@@ -11,11 +11,10 @@ import models.MeetingAttendance;
 import models.Project;
 import models.Sprint;
 import models.User;
-import play.mvc.Controller;
 import play.mvc.With;
 
 @With (Secure.class)
-public class ReviewLog extends Controller {
+public class ReviewLog extends SmartController {
 	/**
 	 * ReviewLog is the class for manipulating and viewing the review log which
 	 * contains various information about the sprint review meetings as its'

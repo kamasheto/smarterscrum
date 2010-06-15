@@ -4,11 +4,10 @@ import java.util.List;
 
 import models.Notification;
 import models.User;
-import play.mvc.Controller;
 import play.mvc.With;
 
 @With (Secure.class)
-public class NotificationTasks extends Controller {
+public class NotificationTasks extends SmartController {
 
 	public static void getLatestNews() {
 		User myUser = Security.getConnected();

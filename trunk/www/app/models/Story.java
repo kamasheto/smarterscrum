@@ -13,11 +13,9 @@ import javax.persistence.OneToMany;
 
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
-import play.db.jpa.Model;
-import play.mvc.Http.Request;
 
 @Entity
-public class Story extends Model {
+public class Story extends SmartModel {
 
 	private static final long serialVersionUID = 1L;
 

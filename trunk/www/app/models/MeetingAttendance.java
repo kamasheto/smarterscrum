@@ -3,11 +3,10 @@ package models;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import play.db.jpa.Model;
 import controllers.Application;
 
 @Entity
-public class MeetingAttendance extends Model {
+public class MeetingAttendance extends SmartModel {
 
 	// Relation with user model
 	@ManyToOne

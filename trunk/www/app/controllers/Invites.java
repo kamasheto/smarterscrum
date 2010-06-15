@@ -3,7 +3,6 @@ package controllers;
 import models.Invite;
 import models.Role;
 import models.User;
-import play.mvc.Controller;
 import play.mvc.Router;
 import play.mvc.With;
 
@@ -17,7 +16,7 @@ import play.mvc.With;
  * @author mahmoudsakr
  */
 @With (Secure.class)
-public class Invites extends Controller {
+public class Invites extends SmartController {
 	/**
 	 * Creates invite and sends email to user with links to accept/decline
 	 * 

@@ -14,7 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import play.data.validation.Required;
-import play.db.jpa.Model;
 
 /**
  * @author Kash
@@ -23,7 +22,7 @@ import play.db.jpa.Model;
  * @author Kash
  */
 @Entity
-public class Project extends Model {
+public class Project extends SmartModel {
 	@Column (unique = true)
 	@Required
 	public String name;

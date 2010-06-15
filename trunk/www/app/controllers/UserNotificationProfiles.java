@@ -1,6 +1,6 @@
 package controllers;
 
-import models.UserNotificationProfile;
+import play.mvc.With;
 
 /**
  * This Controller class doesn't do anything and is just needed by CRUD for a
@@ -11,6 +11,7 @@ import models.UserNotificationProfile;
  * @since Sprint2.
  * @Task C1S33
  */
-public class UserNotificationProfiles extends CRUD {
+@With (Secure.class)
+public class UserNotificationProfiles extends SmartCRUD {
 
 }

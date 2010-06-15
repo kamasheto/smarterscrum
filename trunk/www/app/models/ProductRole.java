@@ -11,10 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import play.data.validation.Required;
-import play.db.jpa.Model;
 
 @Entity
-public class ProductRole extends Model {
+public class ProductRole extends SmartModel {
 	public boolean deleted;
 	@Required
 	public String name;

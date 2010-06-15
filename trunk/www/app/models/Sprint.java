@@ -13,10 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import play.data.validation.Required;
-import play.db.jpa.Model;
 
 @Entity
-public class Sprint extends Model {
+public class Sprint extends SmartModel {
 
 	public String sprintNumber;
 

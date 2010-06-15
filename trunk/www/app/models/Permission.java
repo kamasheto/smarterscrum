@@ -2,10 +2,8 @@ package models;
 
 import javax.persistence.Entity;
 
-import play.db.jpa.Model;
-
 @Entity
-public class Permission extends Model {
+public class Permission extends SmartModel {
 
 	public String name;
 

@@ -3,15 +3,13 @@ package models;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import play.db.jpa.Model;
-
 /*
  * The class Request Reviewer in which the user can request to be reviewer and
  * the Scrum master can respond to that request
  * @author hoksha
  */
 @Entity
-public class Requestreviewer extends Model {
+public class Requestreviewer extends SmartModel {
 	private static final long serialVersionUID = 1L;
 	/*
 	 * the user request

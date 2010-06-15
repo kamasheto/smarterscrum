@@ -1,5 +1,8 @@
 package controllers;
 
-public class Prioritys extends CRUD {
+import play.mvc.With;
+
+@With (Secure.class)
+public class Prioritys extends SmartCRUD {
 
 }

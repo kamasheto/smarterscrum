@@ -7,7 +7,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import models.Component;
-import models.Notification;
 import models.Project;
 import models.Sprint;
 import models.Story;
@@ -19,7 +18,7 @@ import play.i18n.Messages;
 import play.mvc.With;
 
 @With (Secure.class)
-public class Storys extends CRUD {
+public class Storys extends SmartCRUD {
 	/**
 	 * Override the default CRUD blank method to get the stories in a project,
 	 * the project's components and the project priorities sorted instead of

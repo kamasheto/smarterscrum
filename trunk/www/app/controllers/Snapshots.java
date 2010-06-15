@@ -2,17 +2,12 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-
-import play.mvc.Controller;
-import play.mvc.With;
 
 import models.Board;
 import models.Column;
 import models.Component;
-
 import models.Meeting;
 import models.Project;
 import models.Snapshot;
@@ -21,7 +16,7 @@ import models.Task;
 import models.User;
 import models.Component.ComponentRowh;
 
-public class Snapshots extends Controller {
+public class Snapshots extends SmartController {
 	/**
 	 * Takes the sprint ID and load the same things needed to load the board
 	 * then start changing the dynamic variables like tasks into strings

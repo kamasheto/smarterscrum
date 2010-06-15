@@ -1,7 +1,8 @@
 package controllers;
 
-import models.ProjectNotificationProfile;
+import play.mvc.With;
 
-public class ProjectNotificationProfiles extends CRUD {
+@With (Secure.class)
+public class ProjectNotificationProfiles extends SmartCRUD {
 
 }

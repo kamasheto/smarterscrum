@@ -1,12 +1,8 @@
 package controllers;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-
-import controllers.CRUD.ObjectType;
 
 import models.Component;
 import models.Project;
@@ -23,7 +19,7 @@ import play.mvc.With;
  * @version 685
  */
 @With (Secure.class)
-public class Users extends CRUD {
+public class Users extends SmartCRUD {
 	/*
 	 * public static boolean[] userExists(User user) { boolean [] toBeReturned =
 	 * new boolean [] {false,false}; for(User currentUser :

@@ -104,8 +104,8 @@
 			</div>
 			<div class="smartBarContent">
 				<div class="smartBarHeader">My Controls</div>
-				You are logged in as ${controllers.Security.getConnected().name}. 
-				<p><a href="/show/user?id=${controllers.Security.getConnected().id}"> View my Profile</a></p>
+				You are logged in as ${connected.name}. 
+				<p><a href="/show/user?id=${connected.id}"> View my Profile</a></p>
 				
 				<p>#{get 'moreControls'/}</p>
 				<a href="/sessions/logout" title="Logout from the system">Logout</a>

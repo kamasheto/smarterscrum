@@ -11,10 +11,9 @@ import javax.persistence.OneToOne;
 
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
-import play.db.jpa.Model;
 
 @Entity
-public class TaskStatus extends Model {
+public class TaskStatus extends SmartModel {
 
 	@Required
 	@MaxSize (100)

@@ -7,7 +7,6 @@ import models.Project;
 import models.Request;
 import models.Role;
 import models.User;
-import play.mvc.Controller;
 import play.mvc.With;
 
 /**
@@ -16,7 +15,7 @@ import play.mvc.With;
  * @author mahmoudsakr
  */
 @With (Secure.class)
-public class ProjectTasks extends Controller {
+public class ProjectTasks extends SmartController {
 	/**
 	 * Connected user requests role
 	 * 

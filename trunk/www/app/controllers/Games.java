@@ -12,7 +12,6 @@ import models.Story;
 import models.Trick;
 import models.User;
 import others.RoundTricks;
-import play.mvc.Controller;
 import play.mvc.With;
 
 /**
@@ -21,7 +20,7 @@ import play.mvc.With;
  * @author mahmoudsakr
  */
 @With (Secure.class)
-public class Games extends Controller {
+public class Games extends SmartController {
 
 	/**
 	 * Shows a list of stories assigned to this component to choose from (to

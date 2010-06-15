@@ -7,10 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import play.db.jpa.Model;
-
 @Entity
-public class Board extends Model {
+public class Board extends SmartModel {
 
 	// public ArrayList<ArrayList<ArrayList<String>>> data;
 	@OneToMany (mappedBy = "board")

@@ -3,21 +3,13 @@ package controllers;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import models.Component;
-import models.Log;
-import models.Notification;
-import models.Requestreviewer;
-import models.Task;
-import models.Sprint;
+
 import models.Project;
-import models.Story;
+import models.Requestreviewer;
 import models.TaskType;
 import models.User;
-import models.Story;
-import play.data.validation.Required;
-import play.mvc.Controller;
 
-public class Requestreviewers extends Controller {
+public class Requestreviewers extends SmartController {
 	/**
 	 * Views the requestToBeReviewer form in where the user will choose the task
 	 * he wants

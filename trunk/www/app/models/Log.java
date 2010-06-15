@@ -1,13 +1,11 @@
 package models;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 import play.data.validation.Required;
-import play.db.jpa.Model;
 
 /**
  * This class represents The Log Entity in the database and defines it's
@@ -19,7 +17,7 @@ import play.db.jpa.Model;
  * @Task C1S3
  */
 @Entity
-public class Log extends Model {
+public class Log extends SmartModel {
 
 	@ManyToOne
 	@Required

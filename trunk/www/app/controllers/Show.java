@@ -11,11 +11,10 @@ import models.Role;
 import models.Story;
 import models.Task;
 import models.User;
-import play.mvc.Controller;
 import play.mvc.With;
 
 @With (Secure.class)
-public class Show extends Controller {
+public class Show extends SmartController {
 
 	@Check ("canManageRoles")
 	public static void roles(long id) {

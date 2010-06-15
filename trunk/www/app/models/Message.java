@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
-import play.db.jpa.Model;
-
 /**
  * Message Entity, Used to save messages in the DB in order to show them in the
  * chat System
@@ -15,7 +13,7 @@ import play.db.jpa.Model;
  * @author Amr Hany
  */
 @Entity
-public class Message extends Model {
+public class Message extends SmartModel {
 
 	public boolean deleted;
 

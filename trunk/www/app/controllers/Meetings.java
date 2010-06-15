@@ -23,7 +23,7 @@ import play.mvc.With;
  */
 @With (Secure.class)
 // @Check( "admin" ) will be un-done in late stages
-public class Meetings extends CRUD {
+public class Meetings extends SmartCRUD {
 	/**
 	 * This method Overrides the CRUD.blank() method that is executed on adding
 	 * a new meeting, Because the project ID is needed in order to allow the

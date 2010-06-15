@@ -17,7 +17,7 @@ import play.mvc.With;
 
 @With (Secure.class)
 // @Check ("systemAdmin")
-public class Projects extends CRUD {
+public class Projects extends SmartCRUD {
 	/**
 	 * overriden to init roles by default from CRUD
 	 * 

@@ -3,13 +3,9 @@ package controllers;
 /*
  * @author minazai
  */
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-
-import controllers.CRUD.ObjectType;
 
 import models.Meeting;
 import models.Project;
@@ -18,11 +14,10 @@ import models.User;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
-import play.mvc.Controller;
 import play.mvc.With;
 
 @With (Secure.class)
-public class Sprints extends CRUD {
+public class Sprints extends SmartCRUD {
 	/**
 	 * to render the showsprints page with the sprints and the projectId
 	 * 
