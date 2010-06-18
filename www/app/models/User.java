@@ -291,4 +291,11 @@ public class User extends SmartModel {
 
 	}
 
+	public String getDisplayName(Project project) {
+		/*
+		 * Just for the time being
+		 */
+		return name;
+	}
+
 }
