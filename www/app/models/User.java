@@ -291,11 +291,15 @@ public class User extends SmartModel {
 
 	}
 
+	/**
+	 * Returns a styled display name of the user per project
+	 * 
+	 * @author mahmoudsakr
+	 * @param project
+	 * @return
+	 */
 	public String getDisplayName(Project project) {
-		/*
-		 * Just for the time being
-		 */
-		return name;
+		return projects.contains(project) ? name : "<span class='userNotInProject'>" + name + "</span>;";
 	}
 
 }

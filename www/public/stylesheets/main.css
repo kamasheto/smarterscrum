@@ -573,3 +573,7 @@ select#object_permissions {
 	*/
 	height:500px;
 }
+
+.userNotInProject {
+	color:#aaaaaa;
+}
