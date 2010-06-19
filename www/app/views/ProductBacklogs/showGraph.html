@@ -1,11 +1,18 @@
 #{extends 'main.html' /}
 #{set title:'Project Burndown Chart' /}
 
-#{ifnot canSee}
+#{if !connected.projects.contains(temp) || (!connected.components.contains(myComponent) && componentId!=0)}
 <div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all"> 
 					<p><span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
 					<strong>Alert:</strong> You are prohibited from seeing this page!!!!</p>
 				</div>
+#{/if}
+#{else}
+#{if connected.components.contains(myComponent) || componentId==0}
+#{ifnot Data}
+<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+	<strong>NOTE: </strong>There isn't enough data to display</div>
 #{/ifnot}
 #{else}
 
@@ -20,9 +27,9 @@ $('#sprint_${sprint.id}').toggle();
 #{set 'crumbs'}
 <li><a href="/show/projects">Projects</a></li>
 <li><a href="/show/project?id=${temp.id}">${pName}</a></li>
-<li><a href="/productbacklog/${temp.id}/${c}">Product Backlog</a></li>
+<li><a href="/productbacklog/${temp.id}/${componentId}">Product Backlog</a></li>
 
-<li><a href="/productbacklogs/showgraph?id=${temp.id}&isComp=${isComp}$c=${c}">Product Backlog Burndown Chart</a></li>
+<li><a href="/productbacklogs/showgraph?id=${temp.id}&componentId=${componentId}">Product Backlog Burndown Chart</a></li>
 #{/set}
 #{set 'moreScripts'}
     
@@ -62,7 +69,7 @@ function isBefore(date){
 <div id="project">    
     <h2>Project Burndown Chart</h2>
 
-    <div class="jqplot" id="c_FULL" style="height:100%;height:700px;"></div>
+    <div class="jqplot" id="c_FULL" style="width:100%;height:300px;"></div>
 </div>  
        
     
@@ -72,7 +79,7 @@ function isBefore(date){
   
          <div id="sprint_${sprint.id}">
              <h2>Sprint ${sprint.id} Burndown Chart</h2>
-        <div class="jqplot" id="c_${sprint.id}" style="width:100%;height:700px;"></div>
+        <div class="jqplot" id="c_${sprint.id}" style="width:100%;height:300px;"></div>
         </div>
                 <script type="text/javascript">
 
@@ -104,6 +111,6 @@ if(isBefore('${sprint.format(sprint.startDate)}')==true){
        
         #{/set}
          
-    <!--  Application.index() is just temporary  -->
-    <!--  please do not delete -->
+    #{/else}
+    #{/if}
     #{/else}
