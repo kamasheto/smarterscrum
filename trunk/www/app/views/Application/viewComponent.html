@@ -5,8 +5,10 @@
 	<br/><br/>
 	<a href="/components/${component.id}/assignusers"> Assign developers </a>
 	<br/><br/>
+	#{if connected.in(component.project).can('editComponent')}
 	<a href="/admin/components/${component.id}"> Edit Component</a>
 	<br/><br/>
+	#{/if}
 	<a href="@{ProductBacklogs.index(component.id,1)}"> Component Backlog</a>
 	<br/><br/>
 	<a href="/admin/tasks/new?id=${component.id}">Add Task to a Component Story</a>
@@ -57,7 +59,7 @@
 
 
 <br/><br/>
-#{secure.check 'canDeleteComponent' }
+#{if connected.in(component.project).can('deleteComponent')}
 #{if !inSprint}
 <a href="#" onclick=" delete_component(${component.id});"  >Delete this Component</a>
 #{/if}
@@ -65,7 +67,7 @@
 #{if inSprint}
 Unfortunatily , you can not delete this component during a sprint.
 #{/if}
-#{/secure.check}
+#{/if}
 
 
 
