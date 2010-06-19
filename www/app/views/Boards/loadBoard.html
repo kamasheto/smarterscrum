@@ -238,9 +238,11 @@ $(function(){
 						#{list items:component, as:'col'}
 						<td >
 							#{list items:col, as:'task'}
+								
 								<p >
-								<div class="${task.taskStatus.column.name}">
 								<div id="task-${task.id}_T" class="drag">
+								<div class="${task.taskStatus.column.name}">
+								
 								
 								<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};" border=0px id="${task.id}_small">
 								<a id="task-${task.id}" style="font-size:x-large;" border=0px class="ctask">-</a>
@@ -250,7 +252,7 @@ $(function(){
 								<span style="display:inline-block; width:3cm "  title="Edit task info?" >edit info..</span>
 								</a>
 								
-								</div>
+								
 								</div>
 								</div>
 								<a id="task-${task.id}_hidden" style="display:none; font-size:large;" class="showtask">+</a>
