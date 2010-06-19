@@ -191,6 +191,9 @@ $(function(){
 					<a id="${col.sequence}_c" onclick = "swapCol(id)" style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Swap with another column?" class="ui-state-default ui-corner-all col_${col.id}">
 					<span style="display:inline-block !important"class="ui-icon ui-icon-transferthick-e-w col_${col.id}"></span>
 					</span></a>
+<a ><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Drag the column Anywhere" >
+					<span style="display:inline-block" class="ui-icon ui-icon-arrow-4"></span>
+					</span></a>
 					#{/if}
 					
 					#{else}
@@ -315,7 +318,7 @@ $(function(){
 								#{if flag5 || controllers.Security.getConnected().equals(task.assignee)}
 								
 								<a id="usr" class="hides shows_${task.assignee.id}" HREF="javascript:popUp('@{Tasks.chooseType(task.id)}')">
-								<span  title="Edit type?" class="ui-icon ui-icon-arrow-1-ne"></span></a>
+								<span  title="Edit type?" class="ui-icon ui-icon-bookmark"></span></a>
 								<div>
 								Type:${task.taskType.name}</div>
 								<div id="${task.id}_type"></div>
