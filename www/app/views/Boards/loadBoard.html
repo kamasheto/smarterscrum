@@ -173,9 +173,19 @@ $(function(){
 <a href="@{Snapshots.index(s.id,'board')}" >View snapshots</a><br>
 <br>	
 	<a href="javascript:take_snapshot();">Take Snapshot</a>
+	<br>
+	<form>
+	<textarea id="from"></textarea>
+	<textarea id="to"></textarea>
+	<input type="button" onclick="swapValues()" value="swap" />
+</form>
+
+
+</br>
 	#{/set}
 	<a href="" id="board">Toggle Board</a>
 		<div id="drag">
+
 		<table id="mainBoard" class="draggable"  border="1">
 				<tr>	
 					<td>Headers</td>
@@ -236,7 +246,7 @@ $(function(){
 								<a id="task-${task.id}" style="font-size:x-large;" border=0px class="ctask">-</a>
 								T ${task.id} ${task.description}
 								
-								<a class="SmallSticky" id="${task.id}"  >
+								<a class="SmallSticky"  style="cursor: pointer !important" id="${task.id}"  >
 								<span style="display:inline-block; width:3cm "  title="Edit task info?" >edit info..</span>
 								</a>
 								
@@ -347,17 +357,9 @@ $(function(){
 <!-- all bellow 
 	author: joseph hajj
  -->
-	<br>
-	<form>
-	<textarea id="from"></textarea>
-	<textarea id="to"></textarea>
-	<input type="button" onclick="swapValues()" value="swap" />
-</form>
-
-
 
 <!-- asmaak89 Part-->
-<br /><br />
+<br />
 	
 #{list items:u, as:'users'}
 <a href ="/meetings/${users.meeting.id}"> <b>Meeting:${users.meeting.name}</b></a>	<br />
