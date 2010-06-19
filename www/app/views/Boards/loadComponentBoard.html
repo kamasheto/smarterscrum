@@ -219,6 +219,7 @@ $(function(){
 						<td >
 							#{list items:col, as:'task'}
 							<p >
+								<div class="${task.taskStatus.column.name}">
 								<div id="tas-${task.id}_" class="drag">
 								<div style="background-color:${task.taskType.hexColor}; class="shadowed tiptipize" border=0,1px id="${task.id}_small">S ${task.taskStory.id}
 								${task.description}
@@ -227,9 +228,10 @@ $(function(){
 								</br>
 								</div>
 								</div>
+								</div>
 								</p>
 														<p >
-								<div class="${task.taskStatus.column.name}"  id="${task.id}Large" style="display:none;">
+								<div   id="${task.id}Large" style="display:none;">
 								<div id="tas-${task.id}_">
 								<a id="tas-${task.id}_hidden" style="display:none; font-size:large;" class="showtask">+</a>	
 								
