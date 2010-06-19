@@ -21,9 +21,10 @@ import play.mvc.With;
  * @author Menna Ghoneim
  */
 
-@With (Secure.class)
+@With( Secure.class )
 // @Check("systemAdmin")
-public class SprintBacklog extends SmartController {
+public class SprintBacklog extends SmartController
+{
 
 	/**
 	 * Renders to the sprint backlog view with the list of list of tasks in a
@@ -39,19 +40,21 @@ public class SprintBacklog extends SmartController {
 	 *            the id of a given project
 	 */
 
-	public static void index(long componentID, long id) {
+	public static void index( long componentID, long id )
+	{
 
 		User user = Security.getConnected();
-		Sprint sprint = Sprint.findById(id);
+		Sprint sprint = Sprint.findById( id );
 		boolean incomp = user.isAdmin;
 
-		Component component = Component.findById(componentID);
-		ArrayList daysHeader = new ArrayList(sprint.getDuration());
+		Component component = Component.findById( componentID );
+		ArrayList daysHeader = new ArrayList( sprint.getDuration() );
 
 		long projectId = component.project.id;
-		Project project = Project.findById(projectId);
-		for (int i = 0; i < sprint.getDuration(); i++) {
-			daysHeader.add((i + 1));
+		Project project = Project.findById( projectId );
+		for( int i = 0; i < sprint.getDuration(); i++ )
+		{
+			daysHeader.add( (i + 1) );
 
 		}
 
@@ -62,37 +65,46 @@ public class SprintBacklog extends SmartController {
 		// break;
 		// }
 		// }
-		incomp = user.in(project).can("editSprintBacklog");
-		if (componentID != 0 && id != 0 && (user.components.contains(component) || incomp)) {
-			tasks = component.returnComponentSprintTasks(sprint);
+		incomp = user.in( project ).can( "editSprintBacklog" );
+		if( componentID != 0 && id != 0 && (user.components.contains( component ) || incomp) )
+		{
+			tasks = component.returnComponentSprintTasks( sprint );
 			incomp = true;
 
 		}
 		List<List<Task>> taskOfStory = null;
-		if (tasks != null) {
+		if( tasks != null )
+		{
 			taskOfStory = new ArrayList<List<Task>>();
 
 			Task t;
-			for (int i = 0; i < tasks.size(); i++) {
-				t = tasks.get(i);
+			for( int i = 0; i < tasks.size(); i++ )
+			{
+				t = tasks.get( i );
 				List<Task> storyTask;
-				if (taskOfStory.isEmpty()) {
+				if( taskOfStory.isEmpty() )
+				{
 					storyTask = new ArrayList<Task>();
-					storyTask.add(t);
-					taskOfStory.add(storyTask);
-				} else {
+					storyTask.add( t );
+					taskOfStory.add( storyTask );
+				}
+				else
+				{
 					int j;
-					for (j = 0; j < taskOfStory.size(); j++) {
-						storyTask = taskOfStory.get(j);
-						if (storyTask.get(0).taskStory == t.taskStory) {
-							storyTask.add(t);
+					for( j = 0; j < taskOfStory.size(); j++ )
+					{
+						storyTask = taskOfStory.get( j );
+						if( storyTask.get( 0 ).taskStory == t.taskStory )
+						{
+							storyTask.add( t );
 							break;
 						}
 					}
-					if (j == taskOfStory.size()) {
+					if( j == taskOfStory.size() )
+					{
 						storyTask = new ArrayList<Task>();
-						storyTask.add(t);
-						taskOfStory.add(storyTask);
+						storyTask.add( t );
+						taskOfStory.add( storyTask );
 
 					}
 				}
@@ -103,14 +115,15 @@ public class SprintBacklog extends SmartController {
 		String pName = project.name;
 		String sNum = sprint.sprintNumber;
 
-		render(taskOfStory, flag, user, id, daysHeader, projectId, incomp, pName, sNum, componentID);
+		render( taskOfStory, flag, user, id, daysHeader, projectId, incomp, pName, sNum, componentID );
 
 	}
 
 	/**
-	 * @author eabdelrahman it's called whenever the user presses on the button
-	 *         in ButtonToView.html So that the GRAPH is generated in the
-	 *         Show.html
+	 * Renders the burndown chart for a certain sprint and or certain component.
+	 * 
+	 * @author eabdelrahman
+	 * @author Hadeer Younis
 	 * @param Sprint
 	 *            id
 	 * @param cid
@@ -118,22 +131,29 @@ public class SprintBacklog extends SmartController {
 	 * @return String containing the data of the sprint to draw the burn down
 	 *         chart
 	 */
-	public static void showGraph(long id, long componentID) {
+	public static void showGraph( long id, long componentID )
+	{
 		boolean canSee = false;
 
-		Sprint temp = Sprint.findById(id);
-		String Data = temp.fetchData(componentID);
-		if (Security.getConnected().isAdmin) {
+		Sprint temp = Sprint.findById( id );
+		String Data = temp.fetchData( componentID );
+		if( Security.getConnected().isAdmin )
+		{
 			canSee = true;
-		} else if (componentID == -1) {
-			if (Security.getConnected().projects.contains(temp.project))
-				canSee = true;
-		} else {
-			Component comp = Component.findById(componentID);
-			if (Security.getConnected().projects.contains(temp) && comp.componentUsers.contains(Security.getConnected()))
-				canSee = true;
-
 		}
-		render(Data, temp, componentID, canSee);
+		if( componentID == 0 )
+		{
+			if( Security.getConnected().projects.contains( temp.project ) )
+				canSee = true;
+		}
+		else
+		{
+			Component comp = Component.findById( componentID );
+			if( Security.getConnected().projects.contains( temp.project ) && Security.getConnected().components.contains( comp ) )
+				canSee = true;
+		}
+		if( Data.contains( "NONE" ))
+			Data = null;
+		render( Data, temp, componentID, canSee );
 	}
 }

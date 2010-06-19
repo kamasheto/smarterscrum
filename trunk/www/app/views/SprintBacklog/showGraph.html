@@ -17,12 +17,18 @@
 
 
 #{set title:'Sprint Burndown Chart' /}
+#{ifnot Data}
+	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+	<strong>NOTE: </strong>There isn't enough data to draw up a chart.
+</div>
+#{/ifnot}
+#{else}
+
 #{set 'onLoad'}javascript:GenerateGraph(${Data},'chart1');#{/set}
  #{set 'moreScripts'}
 	<link rel="stylesheet" type="text/css" href="@{'/public/stylesheets/jquery.jqplot.css'}"/>
-
-	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/jquery-1.4.min.js'}"></script>
-	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/jquery.jqplot.js'}"></script>
+<script language="javascript" type="text/javascript" src="@{'/public/javascripts/jquery.jqplot.js'}"></script>
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.logAxisRenderer.js'}"></script>
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.canvasTextRenderer.js'}"></script>
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.canvasAxisLabelRenderer.js'}"></script>
@@ -39,9 +45,7 @@
 	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
 	<strong>NOTE: </strong>To zoom in on a graph, simply click and drag and let go. To zoom out just double click the graph!
 	<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
-	<div class="jqplot" id="chart1" style="height:500px; width:100%"></div>
+	<div class="jqplot" id="chart1" style="height:300px; width:100%"></div>
 
-	
-	<!--  Application.index() is just temporary  -->
-	<!--  please do not delete -->
+	#{/else}
 	#{/else}
