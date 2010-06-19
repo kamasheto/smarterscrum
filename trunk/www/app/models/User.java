@@ -296,7 +296,8 @@ public class User extends SmartModel {
 	 * 
 	 * @author mahmoudsakr
 	 * @param project
-	 * @return
+	 *            project to display name in
+	 * @return String of dimmed username
 	 */
 	public String getDisplayName(Project project) {
 		return projects.contains(project) ? name : "<span class='userNotInProject'>" + name + "</span>";
