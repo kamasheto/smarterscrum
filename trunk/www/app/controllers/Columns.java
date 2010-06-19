@@ -93,7 +93,7 @@ public class Columns extends SmartCRUD {
 		Column c1 = Column.find("bySequenceAndBoard", pos1 - 1, b).first();
 		Column c2 = Column.find("bySequenceAndBoard", pos2 - 1, b).first();
 		Logs.addLog(u, "edit", "Column Position", c1.id, p, cal.getTime());
-		String message = u.name + " has changed the position of " + c1.name + "from " + c1.sequence + "to " + c2.sequence;
+		String message = u.name + " has changed the position of " + c1.name + " from " + c1.sequence + " to " + c2.sequence;
 		Notifications.notifyUsers(p, "Edit Column Position", message, "editColumnPosition", (byte) 0);
 		int x = c2.sequence;
 		if (c1.sequence < c2.sequence) {
@@ -148,7 +148,7 @@ public class Columns extends SmartCRUD {
 		Calendar cal = new GregorianCalendar();
 		User user = User.findById(user_id);
 		Logs.addLog(user, "edit", "Column Position", c1.id, p, cal.getTime());
-		String message = user.name + " has swapped the position of " + c1.name + "with" + c2.name;
+		String message = user.name + " has swapped the position of column " + c1.name + "with" + c2.name;
 		Notifications.notifyUsers(p, "swapped Column Position", message, "Column Position", (byte) 0);
 	}
 
@@ -209,7 +209,7 @@ public class Columns extends SmartCRUD {
 		Calendar cal = new GregorianCalendar();
 		User u = User.findById(userId);
 		Logs.addLog(u, "rename", "Column Name", c.id, c.board.project, cal.getTime());
-		String message = u.name + " has renamed column " + oldname + "to " + c.name;
+		String message = u.name + " has renamed column " + oldname + " to " + c.name;
 		Notifications.notifyUsers(c.board.project, "Rename Column", message, "renameColumn", (byte) 0);
 		return true;
 	}
