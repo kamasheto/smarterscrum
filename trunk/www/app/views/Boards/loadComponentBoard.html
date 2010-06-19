@@ -176,6 +176,13 @@ $(function(){
 <a href="@{Snapshots.index(s.id,c.name)}" >View snapshots</a><br>
 <br>	
 	<a href="javascript:take_snap();">Take Snapshot</a>
+	 <br>
+	
+	<form style="display:none;">
+	<textarea id="from"></textarea>
+	<textarea id="to"></textarea>
+	<input type="button" onclick="swapValues()" value="swap" />
+</form></br>
 	#{/set}
 	<a href="" id="board">Toggle Board</a>
 		<div id="drag">
@@ -320,13 +327,7 @@ $(function(){
 <!-- all bellow 
 	author: joseph hajj
  -->
- <br>
-	
-	<form>
-	<textarea id="from"></textarea>
-	<textarea id="to"></textarea>
-	<input type="button" onclick="swapValues()" value="swap" />
-</form>
+
 
 #{list items:total,as:'meeting'}
 <a href="/meetings/${meeting.id}"><b>Meeting:${meeting.name}</b></a><br/>
