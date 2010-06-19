@@ -44,10 +44,11 @@ public class Security extends Secure.Security {
 	 * @param can
 	 *            if false, user gets an access denied page
 	 */
-	public static void check(boolean can) {
+	public static boolean check(boolean can) {
 		if (!can) {
 			forbidden();
 		}
+		return false;
 	}
 
 	// /**
