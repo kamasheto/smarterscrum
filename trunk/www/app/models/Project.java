@@ -374,6 +374,12 @@ public class Project extends SmartModel {
 		t5.name = "Other";
 		t5.save();
 		taskTypes.add(t5);
+		
+		TaskType t6 = new TaskType();
+		t6.project = this;
+		t6.name = "Impediment";
+		t6.save();
+		taskTypes.add(t6);
 
 		TaskStatus s1 = new TaskStatus();
 		s1.project = this;
