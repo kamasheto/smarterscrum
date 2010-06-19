@@ -10,6 +10,7 @@ import models.Story;
 import models.Task;
 import models.TaskStatus;
 import models.TaskType;
+import models.User;
 import play.mvc.With;
 
 @With( Secure.class )
@@ -30,7 +31,6 @@ public class ImpedimentTasks extends SmartController
 		render( project );
 	}
 
-	// ///////
 	/**
 	 * Sending the description entered by the user and the project we are in ,
 	 * to the Task constructor for the impediment task to be created. Rendering
@@ -154,6 +154,20 @@ public class ImpedimentTasks extends SmartController
 	public static void viewImpedimentLog( long Proj_id )
 	{
 		Project proj = Project.findById( Proj_id );
+		Boolean canEdit = false;
+		if( Security.getConnected().isAdmin )
+			canEdit = true;
+		else
+		{
+			for( int i = 0; i < proj.roles.size(); i++ )
+			{
+				if( proj.roles.get( i ).name.equalsIgnoreCase( "Scrum Master" ) )
+					if( proj.roles.get( i ).users.contains( Security.getConnected() ) )
+						canEdit = true;
+
+			}
+		}
+
 		List<Task> tasks = null;
 		for( int i = 0; i < proj.taskTypes.size(); i++ )
 		{
@@ -164,7 +178,7 @@ public class ImpedimentTasks extends SmartController
 		String name = proj.name;
 
 		List<TaskStatus> TaskStat = proj.taskStatuses;
-		render( tasks, TaskStat, name, Proj_id );
+		render( tasks, TaskStat, proj, canEdit );
 	}
 
 	/**
@@ -189,6 +203,16 @@ public class ImpedimentTasks extends SmartController
 		}
 		t.taskStatus = newType;
 		t.save();
+		Sprint s = Sprint.findById( t.taskSprint.id );
+		ArrayList<User> users = new ArrayList<User>( 2 );
+		for( int i = 0; i < proj.roles.size(); i++ )
+		{
+			if( proj.roles.get( i ).name.equalsIgnoreCase( "Scrum Master" ) )
+				users = (ArrayList<User>) proj.roles.get( i ).users;
+		}
+		users.add( t.reporter );
+		Notifications.notifyUsers( users, "Impediment reported", "The status of the impediment task " + taskId + "has been changed to" + type, (byte) -1 );
+		Logs.addLog( proj, "updated", "Task", t.id );
 	}
 
 }
