@@ -227,28 +227,32 @@ $(function(){
 							#{list items:col, as:'task'}
 								<p >
 								<div class="${task.taskStatus.column.name}">
-								<div id="tas-${task.id}_" class="drag">
+								<div id="task-${task.id}_T" class="drag">
 								
-								<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};" border=0px id="${task.id}_small">T ${task.id} ${task.description}
+								<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};" border=0px id="${task.id}_small">
+								<a id="task-${task.id}" style="font-size:x-large;" border=0px class="ctask">-</a>
+								T ${task.id} ${task.description}
 								
 								<a class="SmallSticky" id="${task.id}"  >
 								<span style="display:inline-block; width:3cm "  title="Edit task info?" >edit info..</span>
 								</a>
+								
 								</div>
 								</div>
 								</div>
+								<a id="task-${task.id}_hidden" style="display:none; font-size:large;" class="showtask">+</a>
 								</p>
 								<p >
 								<div style="display:none;"  id="${task.id}Large" style="border:hidden">
 								<div id="tas-${task.id}_" >
-								<a id="tas-${task.id}_hidden" style="display:none; font-size:large;" class="showtask">+</a>	
+									
 								
 								
 								<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 15px" border=0px id="tas-${task.id}_T">
 								
 								
 								<p>
-								<a id="tas-${task.id}" style="font-size:x-large;" border=0px class="ctask">-</a>
+								
 								<div  border=0px align="center">T ${task.id}</div>
 								#{secure.check 'canChangeTaskDescreption'}
 								<span style="display:none"> ${flag2=true}</span>
@@ -311,7 +315,7 @@ $(function(){
 								#{if flag5 || controllers.Security.getConnected().equals(task.assignee)}
 								
 								<a id="usr" class="hides shows_${task.assignee.id}" HREF="javascript:popUp('@{Tasks.chooseType(task.id)}')">
-								<span  title="Edit type?" class="ui-icon ui-icon-person"></span></a>
+								<span  title="Edit type?" class="ui-icon ui-icon-arrow-1-ne"></span></a>
 								<div>
 								Type:${task.taskType.name}</div>
 								<div id="${task.id}_type"></div>
