@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title: name + '\'s Impediment Log'/}
+#{set title: proj.name + '\'s Impediment Log'/}
 #{set 'moreScripts'}
 <script type="text/javascript">
 function changeStatus(id,statID)
@@ -10,12 +10,24 @@ function changeStatus(id,statID)
 #{/set}
 #{set 'crumbs'}
 <li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${Proj_id}">${name} </a></li>
-<li><a href="/tasks/choose?Proj_id=${Proj_id}">Impediment Tasks</a></li>
+<li><a href="/show/project?id=${proj.id}">${proj.name} </a></li>
+<li><a href="/tasks/choose?Proj_id=${proj.id}">Impediment Tasks</a></li>
 #{/set}
+#{ifnot connected.projects.contains(proj)}
 
+
+<div style="padding: 10px;" class="ui-state-error ui-corner-all">
+     <span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span>
+     <strong>Alert:</strong> You are prohibited to see this page.
+</div>
+#{/ifnot}
+#{else}
 #{ifnot tasks}
-There are no sprints in this project
+<div style="padding: 10px" class="ui-state-highlight ui-corner-all">
+    <span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+    <strong>NOTE: </strong>There are no sprints in this project
+</div>
+
 #{/ifnot}
 
 #{else}
@@ -40,7 +52,9 @@ There are no sprints in this project
 			<td>${task.description}</td>
 			<td>${task.reporter.getDisplayName()}</td>
 		 
-		 	<td><form>
+		 	<td>
+		 	#{if canEdit || connected.id==task.reporter.id}
+		 	<form>
 					<select id="t_${task.id}"name="list" onchange="changeStatus(${task.id},$('#t_${task.id} option:selected').text());">
                 		#{list items:TaskStat, as:'stat'}
                 		#{if stat.name==task.taskStatus.name}
@@ -52,6 +66,10 @@ There are no sprints in this project
                 		#{/list}
 					</select>
 				</form> 
+			#{/if}
+			#{else}
+			${task.taskStatus.name}
+			#{/else}
 			</td>
 			</tr>
 		
@@ -59,5 +77,5 @@ There are no sprints in this project
 		</tbody>
 		</table>
 		#{/else}
-
+#{/else}
 
