@@ -23,7 +23,7 @@
 #{/list}
 </ul>
 
-#{secure.check 'canAddComponent' }
+#{if connected.in(currentProject).can('addComponent')}
 #{if !inSprint}
 <a href="/admin/projects/${id}/components/new"> add a new component </a>
 #{/if}
@@ -32,7 +32,7 @@
 Unfortunatily , you can not add a new component during a sprint.
 #{/if}
 
-#{/secure.check}
+#{/if}
 
 <br/>
 

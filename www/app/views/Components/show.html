@@ -40,7 +40,7 @@
 	#{/form}
 	</div>
 	
-	#{secure.check 'canDeleteComponent'}
+	#{if connected.in(object.project).can('deleteComponent')}
 	#{if ! object.project.inSprint(new Date()) }
 
 		<p class="crudDelete">
@@ -48,7 +48,7 @@
 		</p>
 	
 	#{/if}
-	#{/secure.check}
+	#{/if}
 
 </div>
 

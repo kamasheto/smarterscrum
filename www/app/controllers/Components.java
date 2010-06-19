@@ -144,26 +144,31 @@ public class Components extends SmartCRUD
 	 * @param id
 	 */
 
-	@Check( "canDeleteComponent" )
-	public static void delete( String id )
+	// @Check( "canDeleteComponent" )
+	public static void delete( long id )
 	{
 		ObjectType type = ObjectType.get( getControllerClass() );
 		notFoundIfNull( type );
 		JPASupport object = type.findById( id );
 		Component component = (Component) object;
-		try
+		if( Security.getConnected().in( component.project ).can( "deleteComponent" ) )
 		{
-			component.deleteComponent();
-			Logs.addLog( Security.getConnected(), "Delete", "Component", component.id, component.project, new Date( System.currentTimeMillis() ) );
-			Notifications.notifyUsers( component.project, "Component", "Component " + component.name + " was deleted", "onDeleteComponent", (byte) -1 );
+			try
+			{
+				component.deleteComponent();
+				Logs.addLog( Security.getConnected(), "Delete", "Component", component.id, component.project, new Date( System.currentTimeMillis() ) );
+				Notifications.notifyUsers( component.project, "Component", "Component " + component.name + " was deleted", "onDeleteComponent", (byte) -1 );
+			}
+			catch( Exception e )
+			{
+				flash.error( Messages.get( "crud.delete.error", type.modelName, object.getEntityId() ) );
+				redirect( request.controller + ".show", object.getEntityId() );
+			}
+			flash.success( Messages.get( "crud.deleted", type.modelName, object.getEntityId() ) );
+			redirect( "/projects/" + component.project.id + "/components" );
 		}
-		catch( Exception e )
-		{
-			flash.error( Messages.get( "crud.delete.error", type.modelName, object.getEntityId() ) );
-			redirect( request.controller + ".show", object.getEntityId() );
-		}
-		flash.success( Messages.get( "crud.deleted", type.modelName, object.getEntityId() ) );
-		redirect( "/projects/" + component.project.id + "/components" );
+		else
+			forbidden();
 	}
 
 	/**
@@ -174,20 +179,26 @@ public class Components extends SmartCRUD
 	 * @param id
 	 */
 
-	@Check( "canEditComponent" )
-	public static void show( String id )
+	// @Check( "canEditComponent" )
+	public static void show( long id )
 	{
-		ObjectType type = ObjectType.get( getControllerClass() );
-		notFoundIfNull( type );
-		JPASupport object = type.findById( id );
-		try
+		Component c = Component.findById( id );
+		if( Security.getConnected().in( c.project ).can( "editComponent" ) )
 		{
-			render( type, object );
+			ObjectType type = ObjectType.get( getControllerClass() );
+			notFoundIfNull( type );
+			JPASupport object = type.findById( id );
+			try
+			{
+				render( type, object );
+			}
+			catch( TemplateNotFoundException e )
+			{
+				render( "CRUD/show.html", type, object );
+			}
 		}
-		catch( TemplateNotFoundException e )
-		{
-			render( "CRUD/show.html", type, object );
-		}
+		else
+			forbidden();
 	}
 
 }
