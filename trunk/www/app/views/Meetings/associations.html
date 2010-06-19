@@ -233,12 +233,10 @@ function remove(input){
 				#{if meeting.startTime>(new Date().getTime()) }
 				<span id="${component.id}_onLoadInvited_c" style=" font-style: italic; font-size :85%;color : blue; "> invited</span>
 				#{/if}
-				#{else}
-				<span id="${component.id}_onLoadInvited_c" style=" font-style: italic; font-size :85%;color : blue; "> some did not reply</span>
-				#{/else}
+				
 				#{/if}
-				#{if component.meetingStatus(meeting.id).equals("allInvited")}
-				<span id="${component.id}_onLoadInvited_c" style=" font-style: italic; font-size :85%; "> invited</span>
+				#{if component.meetingStatus(meeting.id).equals("allInivited")}
+				<span id="${component.id}_onLoadInvited_c" style=" font-style: italic; font-size :85%; "> some did not reply</span>
 				#{/if}
 				#{if component.meetingStatus(meeting.id).equals("confirmed")}
 				<span id="${component.id}_confirmed_c" style=" font-style: italic; font-size :85%;color:green; "> confirmed</span>
