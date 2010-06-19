@@ -1,0 +1,63 @@
+#{extends 'main.html' /}
+#{set title: name + '\'s Impediment Log'/}
+#{set 'moreScripts'}
+<script type="text/javascript">
+function changeStatus(id,statID)
+{
+	  $.post('@{ImpedimentTasks.changeStatus()}',{taskId:id,type:statID},function(){alert(statID)});
+}
+</script>
+#{/set}
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${Proj_id}">${name} </a></li>
+<li><a href="/tasks/choose?Proj_id=${Proj_id}">Impediment Tasks</a></li>
+#{/set}
+
+#{ifnot tasks}
+There are no sprints in this project
+#{/ifnot}
+
+#{else}
+
+
+
+<h1> Impediment Tasks</h1>
+	<table class="sortable" >
+	<thead>
+	<tr>
+		<th>ID</th>
+		<th>Description</th>
+		<th>Reporter</th>
+		<th>Status</th>
+		
+		</tr>
+</thead>
+<tbody>
+		#{list items:tasks, as:'task'}
+		<tr>
+			<td>${task.id} </td>
+			<td>${task.description}</td>
+			<td>${task.reporter.getDisplayName()}</td>
+		 
+		 	<td><form>
+					<select id="t_${task.id}"name="list" onchange="changeStatus(${task.id},$('#t_${task.id} option:selected').text());">
+                		#{list items:TaskStat, as:'stat'}
+                		#{if stat.name==task.taskStatus.name}
+                		<option selected="selected" value="${stat.id}">${stat.name}</option>
+                		#{/if}
+                		#{else}
+                		<option value="${stat.id}">${stat.name}</option>
+                		#{/else}
+                		#{/list}
+					</select>
+				</form> 
+			</td>
+			</tr>
+		
+		#{/list}
+		</tbody>
+		</table>
+		#{/else}
+
+
