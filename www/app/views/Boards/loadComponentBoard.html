@@ -34,6 +34,21 @@ $(document).ready(function(){
 				$(this).hide();
 			});
 		});
+		$('.SmallSticky').click(function(){
+				
+			$('#'+this.id+"_small").hide();
+		$('#'+this.id+"_HiddenSticky").show();
+			$('#'+this.id+"Large").toggle();
+			$('#'+this.id+'_HiddenSticky').click(function(){
+			var splittedST 	= this.id.split("_");
+			var F= splittedST[0];
+			originalST = '#'+F;
+	$('#'+F+"_small").show();
+				$(originalST+"Large").hide();
+				$(this).hide();
+				location.reload();
+			});
+		});
 		$('.ctask').click(function(){
 			$('#'+this.id+"_T").hide();
 			
@@ -203,9 +218,17 @@ $(function(){
 						
 						<td >
 							#{list items:col, as:'task'}
-														<p >
-								<div class="${task.taskStatus.column.name}"  id="${task.taskStatus.column.id}_col" style="border:hidden">
+							<p >
 								<div id="tas-${task.id}_" class="drag">
+								<div style="background-color:${task.taskType.hexColor}; class="shadowed tiptipize" border=0,1px id="${task.id}_small">S ${task.taskStory.id}
+								${task.description}
+								<a  class="SmallSticky" id="${task.id}"  >edit info.. </a>
+								</div>
+								</div>
+								</p>
+														<p >
+								<div class="${task.taskStatus.column.name}"  id="${task.id}Large" style="display:none;">
+								<div id="tas-${task.id}_">
 								<a id="tas-${task.id}_hidden" style="display:none; font-size:large;" class="showtask">+</a>	
 								
 								<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed  tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 15px" id="tas-${task.id}_T">
@@ -268,11 +291,14 @@ $(function(){
 								${task.taskType.name}</div>
 								
 								#{/else}
+								
 								</p>
+								<a   id="${task.id}_HiddenSticky" >Done</a>
 								</div>
 								</div>
 								</div>
 								</p>
+								
 							#{/list}
 						</td>
 						#{/list}
