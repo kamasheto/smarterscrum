@@ -191,7 +191,9 @@ $(function(){
 			
 					</span>
 					</a>
-						
+						<a ><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Drag the column Anywhere" >
+					<span style="display:inline-block" class="ui-icon ui-icon-arrow-4"></span>
+					</span></a>
 					<div style="display:inline-block" class="${col.name}">			
 			
 					<span style="display:inline-block; width:3cm"id="${col.id}" title="Edit the column name?" class="editCOL ccolumn" >${col.name}</span>
@@ -220,25 +222,30 @@ $(function(){
 							#{list items:col, as:'task'}
 							<p >
 								<div class="${task.taskStatus.column.name}">
-								<div id="tas-${task.id}_" class="drag">
-								<div style="background-color:${task.taskType.hexColor}; class="shadowed tiptipize" border=0,1px id="${task.id}_small">S ${task.taskStory.id}
-								${task.description}
-								<br>
-								<a  class="SmallSticky" id="${task.id}"  >edit info.. </a>
-								</br>
+								<div id="task-${task.id}_T" class="drag">
+								
+								<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};" border=0px id="${task.id}_small">
+								<a id="task-${task.id}" style="font-size:x-large;" border=0px class="ctask">-</a>
+								T ${task.id} ${task.description}
+								
+								<a class="SmallSticky" id="${task.id}"  >
+								<span style="display:inline-block; width:3cm "  title="Edit task info?" >edit info..</span>
+								</a>
+								
 								</div>
 								</div>
 								</div>
+								<a id="task-${task.id}_hidden" style="display:none; font-size:large;" class="showtask">+</a>
 								</p>
 														<p >
 								<div   id="${task.id}Large" style="display:none;">
 								<div id="tas-${task.id}_">
-								<a id="tas-${task.id}_hidden" style="display:none; font-size:large;" class="showtask">+</a>	
+								
 								
 								<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed  tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 15px" id="tas-${task.id}_T">
 									  
 								<p>
-								<a id="tas-${task.id}" style="font-size:x-large;" border=0px class="ctask">-</a>
+								
 								<div style="font-family: 'Lucida Handwriting' !important;" border=0px align="center">T ${task.id}</div>
 								
 								#{secure.check 'canChangeTaskDescreption'}
@@ -283,7 +290,7 @@ $(function(){
 								#{if flag5 || controllers.Security.getConnected().equals(task.assignee)}
 								
 								<A id="usr" class="hides shows_${task.assignee.id}" HREF="javascript:popUp('@{Tasks.chooseType(task.id)}')">
-								<span class="ui-icon ui-icon-person"></span></A>
+								<span class="ui-icon ui-icon-bookmark"></span></A>
 								<div style="font-family: 'Lucida Handwriting' !important;">
 								Type: 
 								${task.taskType.name}</div>
