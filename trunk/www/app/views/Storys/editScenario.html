@@ -31,13 +31,13 @@
            
               <TEXTAREA NAME="failureName1" id="failure${Scenario_index}"  ROWS="4" COLS="60">${Scenario}</TEXTAREA>
               <br id="brf{Scenario_index}" /> 
-             <input type="button"  value="delete the scinario above" id="bf${Scenario_index}"   onclick="removeFailure(${Scenario_index});"/> 
+             <input type="button"  value="delete the scenario above" id="bf${Scenario_index}"   onclick="removeFailure(${Scenario_index});"/> 
              <br id="br2f${Scenario_index}"/> 
                
             #{/list}
           
         </div>
- <div><input type="button" id="add"  value="Add new scinario" onclick="addFailure();" /> </div>
+ <div><input type="button" id="add"  value="Add new scenario" onclick="addFailure();" /> </div>
 
         
 
@@ -48,14 +48,14 @@
 <input type="hidden" value="${succssesNum}" id="succssesId" />
 
 <input type="hidden" value=${failureNum} id="failureNum" />
-  <input type="button" id="save" value="Save Scinarios" onclick="save();" /> 
+  <input type="button" id="save" value="Save Scenarios" onclick="save();" /> 
 
 <script type="text/javascript">
 
 
 function save()
 {
-	var confirmation=confirm("Do you want to save the new Scinarios?");
+	var confirmation=confirm("Do you want to save the new Scenarios?");
 	if(confirmation)
 	{
 	var succsses=$("textarea[name='succssesName1']");
@@ -83,6 +83,7 @@ function save()
 	  		  {id:${storyId},f:ff},
 	  		  function(){});
 	}
+	window.location="http://localhost:9000/admin/storys/${storyId}";
 	  		  }
 
 function addSuccsses() {
