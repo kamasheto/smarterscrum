@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Project;
 import models.User;
 
 /**
@@ -43,12 +44,25 @@ public class Security extends Secure.Security {
 	 * 
 	 * @param can
 	 *            if false, user gets an access denied page
+	 * @return false
 	 */
 	public static boolean check(boolean can) {
 		if (!can) {
 			forbidden();
 		}
 		return false;
+	}
+
+	/**
+	 * checks whether the connected user could perform the action specified by
+	 * permission in the given project
+	 * 
+	 * @param project
+	 * @param permission
+	 * @return false
+	 */
+	public static boolean check(Project project, String permission) {
+		return check(getConnected().in(project).can(permission));
 	}
 
 	// /**

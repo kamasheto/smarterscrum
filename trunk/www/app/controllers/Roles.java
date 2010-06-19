@@ -14,16 +14,16 @@ import play.mvc.With;
  */
 @With (Secure.class)
 public class Roles extends SmartCRUD {
-	@Check ("canManageRoles")
 	public static void getPermissions(long id) {
 		if (id == 0)
 			renderJSON(new Object());
 		Role r = Role.findById(id);
+		Security.check(Security.getConnected().in(r.project).can("manageRoles"));
 		r.project = null;
 		renderJSON(r);
 	}
 
-	@Check ("canEditRoles")
+	// @Check ("canEditRoles")
 	public static void show(String id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
