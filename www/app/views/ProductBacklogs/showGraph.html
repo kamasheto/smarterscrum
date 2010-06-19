@@ -9,6 +9,13 @@
 #{/if}
 #{else}
 #{if connected.components.contains(myComponent) || componentId==0}
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${temp.id}">${pName}</a></li>
+<li><a href="/productbacklog/${temp.id}/${componentId}">Product Backlog</a></li>
+
+<li><a href="/productbacklogs/showgraph?id=${temp.id}&componentId=${componentId}">Product Backlog Burndown Chart</a></li>
+#{/set}
 #{ifnot Data}
 <div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
 	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
@@ -24,13 +31,7 @@ $('#sprint_${sprint.id}').toggle();
 #{/list}
 #{/set}
 
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${temp.id}">${pName}</a></li>
-<li><a href="/productbacklog/${temp.id}/${componentId}">Product Backlog</a></li>
 
-<li><a href="/productbacklogs/showgraph?id=${temp.id}&componentId=${componentId}">Product Backlog Burndown Chart</a></li>
-#{/set}
 #{set 'moreScripts'}
     
     <link rel="stylesheet" type="text/css" href="@{'/public/stylesheets/jquery.jqplot.css'}" />
