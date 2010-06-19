@@ -502,7 +502,9 @@ public class Tasks extends SmartCRUD {
 		boolean canSee = true;
 		if (!Security.getConnected().projects.contains(theTask.taskType.project))
 			canSee = false;
-		render(canSee, minDate, temp, lastModified, empty, efforts, changes, numberOfModifications, theTask, maxDate);
+		
+		Project myProject = theTask.taskType.project;
+		render(myProject,canSee, minDate, temp, lastModified, empty, efforts, changes, numberOfModifications, theTask, maxDate);
 	}
 
 	// A method that updates the Task's Status.

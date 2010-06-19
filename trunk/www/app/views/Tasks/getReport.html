@@ -151,11 +151,11 @@ graph(${efforts});graphed(${changes});$('#accordion').accordion({autoHeight: fal
 <!--
 @author Hadeer Younis
 -->
-#{secure.check 'canModifyTask' }
+#{if connected.in(myProject).can('editTask')}
 #{set 'moreLinks'}
 <a href="edit/${theTask.id}">Edit Task</a></h3>
 #{/set}
-#{/secure.check}
+#{/if}
 	<h2>Task : ${theTask.id}</h2>
 	#{if empty}
 		There isn't any change logs associated with this task.
@@ -171,22 +171,22 @@ graph(${efforts});graphed(${changes});$('#accordion').accordion({autoHeight: fal
     <h3><a href="#">Task Information</a></h3>
 
     <div>
-        	This task has been changed ${numberOfModifications} time, it was last changed on ${lastModified} by ${temp.get(temp.size()-1).user.name}
+        	This task has been changed ${numberOfModifications} time, it was last changed on ${lastModified} by ${temp.get(temp.size()-1).user.getDisplayName(myProject)}
 		<br/><br/>
     #{if theTask.assignee}
-    Assigned to  : <a title="Go to ${theTask.assignee}'s page?"href="@{Show.user(theTask.assignee.id)}">${theTask.assignee}</a><br/>
+    Assigned to  : <a title="Go to ${theTask.assignee}'s page?"href="@{Show.user(theTask.assignee.id)}">${theTask.assignee.getDisplayName(myProject)}</a><br/>
     #{/if}
     #{else}
     Assigned to  : no one<br/>
     #{/else}
     #{if theTask.reporter}
-    Reported by  : <a title="Go to ${theTask.reporter}'s page?"href="@{Show.user(theTask.reporter.id)}">${theTask.reporter}</a><br/>
+    Reported by  : <a title="Go to ${theTask.reporter}'s page?"href="@{Show.user(theTask.reporter.id)}">${theTask.reporter.getDisplayName(myProject)}</a><br/>
 	#{/if}
     #{else}
     Reported by  : no one<br/>
     #{/else}
 	#{if theTask.reviewer}
-	Reviewed by  : <a title="Go to ${theTask.reviewer}'s page?"href="@{Show.user(theTask.reviewer.id)}">${theTask.reviewer}</a>
+	Reviewed by  : <a title="Go to ${theTask.reviewer}'s page?"href="@{Show.user(theTask.reviewer.id)}">${theTask.reviewer.getDisplayName(myProject)}</a>
 	#{/if}
     #{else}
     Reviewed by  : no one<br/>
