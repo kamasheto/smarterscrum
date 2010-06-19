@@ -299,7 +299,7 @@ public class User extends SmartModel {
 	 * @return
 	 */
 	public String getDisplayName(Project project) {
-		return projects.contains(project) ? name : "<span class='userNotInProject'>" + name + "</span>;";
+		return projects.contains(project) ? name : "<span class='userNotInProject'>" + name + "</span>";
 	}
 
 }
