@@ -49,6 +49,8 @@ public class Invites extends SmartController {
 		notFoundIfNull(invite);
 		if (what) {
 			invite.role.users.add(invite.user);
+			invite.user.projects.add(invite.role.project);
+			invite.user.save();
 			invite.role.save();
 		}
 		Logs.addLog(invite.role.project, "accepted invite to " + invite.role.name, "Invite", invite.id);
