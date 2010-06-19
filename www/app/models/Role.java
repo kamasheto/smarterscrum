@@ -67,13 +67,21 @@ public class Role extends SmartModel {
 		return name;
 	}
 
+	/**
+	 * Whether this role can perform this action or not (used in series with
+	 * user.in(Project))
+	 * 
+	 * @param action
+	 *            string of action to check against
+	 * @return true if role could, false otherwise
+	 */
 	public boolean can(String action) {
 		if (systemAdminRole) {
 			return true;
 		}
-		if (action.toLowerCase().startsWith("can")) {
-			action = action.substring(3);
-		}
+		// if (action.toLowerCase().startsWith("can")) {
+		// action = action.substring(3);
+		// }
 		for (Permission perm : permissions) {
 			if (perm.name.equalsIgnoreCase(action)) {
 				return true;
@@ -82,6 +90,11 @@ public class Role extends SmartModel {
 		return false;
 	}
 
+	/**
+	 * Whether this role can perform any action or not
+	 * 
+	 * @return whether this role belongs to a system admin
+	 */
 	public boolean can() {
 		return systemAdminRole;
 	}

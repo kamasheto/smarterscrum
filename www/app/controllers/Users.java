@@ -1,5 +1,7 @@
 package controllers;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -106,8 +108,8 @@ public class Users extends SmartCRUD {
 	 * @param id
 	 *            user id
 	 */
-	@Check ("systemAdmin")
 	public static void del(long id) {
+		Security.check(Security.getConnected().isAdmin);
 		User user = User.findById(id);
 		user.deleted = true;
 		user.save();
@@ -186,4 +188,100 @@ public class Users extends SmartCRUD {
 		redirect(request.controller + ".show", object.getEntityId());
 	}
 
+	public static void show(String id) {
+		Security.check(Security.getConnected().isAdmin);
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		JPASupport object = type.findById(id);
+		try {
+			render(type, object);
+		} catch (TemplateNotFoundException e) {
+			render("CRUD/show.html", type, object);
+		}
+	}
+
+	public static void save(String id) throws Exception {
+		Security.check(Security.getConnected().isAdmin);
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		JPASupport object = type.findById(id);
+		object = object.edit("object", params);
+		// Look if we need to deserialize
+		for (ObjectType.ObjectField field : type.getFields()) {
+			if (field.type.equals("serializedText") && params.get("object." + field.name) != null) {
+				Field f = object.getClass().getDeclaredField(field.name);
+				f.set(object, CRUD.collectionDeserializer(params.get("object." + field.name), (Class) ((ParameterizedType) f.getGenericType()).getActualTypeArguments()[0]));
+			}
+		}
+
+		validation.valid(object);
+		if (validation.hasErrors()) {
+			renderArgs.put("error", Messages.get("crud.hasErrors"));
+			try {
+				render(request.controller.replace(".", "/") + "/show.html", type, object);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/show.html", type, object);
+			}
+		}
+		object.save();
+		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
+		if (params.get("_save") != null) {
+			redirect(request.controller + ".list");
+		}
+		redirect(request.controller + ".show", object.getEntityId());
+	}
+
+	public static void blank() {
+		Security.check(Security.getConnected().isAdmin);
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		try {
+			render(type);
+		} catch (TemplateNotFoundException e) {
+			render("CRUD/blank.html", type);
+		}
+	}
+
+	public static void create() throws Exception {
+		Security.check(Security.getConnected().isAdmin);
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		JPASupport object = type.entityClass.newInstance();
+		validation.valid(object.edit("object", params));
+		if (validation.hasErrors()) {
+			renderArgs.put("error", Messages.get("crud.hasErrors"));
+			try {
+				render(request.controller.replace(".", "/") + "/blank.html", type);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/blank.html", type);
+			}
+		}
+		((User) object).isActivated = true;
+		object.save();
+		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
+		if (params.get("_save") != null) {
+			redirect(request.controller + ".list");
+		}
+		if (params.get("_saveAndAddAnother") != null) {
+			redirect(request.controller + ".blank");
+		}
+		redirect(request.controller + ".show", object.getEntityId());
+	}
+
+	public static void list(int page, String search, String searchFields, String orderBy, String order) {
+		Security.check(Security.getConnected().isAdmin);
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		if (page < 1) {
+			page = 1;
+		}
+		List<JPASupport> objects = type.findPage(page, search, searchFields, orderBy, order, (String) request.args.get("where"));
+		Long count = type.count(search, searchFields, (String) request.args.get("where"));
+		Long totalCount = type.count(null, null, (String) request.args.get("where"));
+		try {
+			render(type, objects, count, totalCount, page, orderBy, order);
+		} catch (TemplateNotFoundException e) {
+			render("CRUD/list.html", type, objects, count, totalCount, page, orderBy, order);
+		}
+	}
 }

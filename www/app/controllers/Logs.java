@@ -75,8 +75,8 @@ public class Logs extends SmartCRUD {
 	 * @see views/Logs/list.html
 	 * @Task C1S3
 	 */
-	@Check ("systemAdmin")
 	public static void list(int page, String filter) {
+		Security.check(Security.getConnected().isAdmin);
 		int index = page * 25;
 		List<Log> logs = null;
 		// List<ObjectField> fields = ObjectType.get( Logs.class ).getFields();
@@ -92,4 +92,23 @@ public class Logs extends SmartCRUD {
 		render(logs, page, filter);
 	}
 
+	public static void show(String id) {
+		list(0, null);
+	}
+
+	public static void save(String id) {
+		list(0, null);
+	}
+
+	public static void blank() {
+		list(0, null);
+	}
+
+	public static void create() {
+		list(0, null);
+	}
+
+	public static void delete(String id) {
+		list(0, null);
+	}
 }
