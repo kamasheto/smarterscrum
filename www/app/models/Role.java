@@ -82,6 +82,10 @@ public class Role extends SmartModel {
 		return false;
 	}
 
+	public boolean can() {
+		return systemAdminRole;
+	}
+
 	public void init(String string) {
 		String[] perms = null;
 		if (string.equalsIgnoreCase("projectOwner")) {
