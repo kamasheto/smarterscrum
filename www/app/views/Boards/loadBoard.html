@@ -127,7 +127,7 @@ $(function() {
 $('.editDES').editable(
     	    function(value)
     	    {
-    	        var taskId 	= parseInt($('#lolid').closest("div").attr("id"));
+    	        var taskId 	= parseInt($('#lolid').closest("span").attr("id"));
     	       
     	        $.post('@{Tasks.editTaskDesc()}',
     	            {id:taskId, userId:selectedUser, desc:value});
@@ -185,30 +185,21 @@ $(function(){
         	#{/secure.check}
 				#{if flag}
 					<td id="${columnsOfBoard.id} "> 	
-					<a id="${col.sequence}_c" onclick = "swapCol(id)" style="color:#FFFFFF">swap</a> <br/>
-					<a href="#" onclick="$('.${col.name}').toggle();">
-					<span style="list:none;padding:1px 1px 1px 1px;display:inline-block" class="ui-state-default ui-corner-all">
-					<span style="display:inline-block !important"class="ui-icon ui-icon-transferthick-e-w"></span>
-			
-					</span>
-					</a>	
-					<div style="display:inline-block" class="${col.name}">			
-					<span style="display:inline-block; width:3cm"id="${col.id}" title="Edit the column name?" class="editCOL ccolumn" >${col.name}</span>
-					</div></td>
+					<div style="display:inline-block" class="${col.name} col_${col.id}">			
+					<span style="font-size:small; text-align:center; display:inline-block; width:3cm "id="${col.id}" title="Edit the column name?" class="editCOL ccolumn col_${col.id}" >${col.name}</span>
+					</div>
+					<a id="${col.sequence}_c" onclick = "swapCol(id)" style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Swap with another column?" class="ui-state-default ui-corner-all col_${col.id}">
+					<span style="display:inline-block !important"class="ui-icon ui-icon-transferthick-e-w col_${col.id}"></span>
+					</span></a>
 					#{/if}
 					
 					#{else}
 					<td id="${columnsOfBoard.id} "> 	
-					<a id="${col.sequence}_c" onclick = "swapCol(id)" style="color:#FFFFFF">swap</a> <br/>
-					<a href="#" onclick="$('.${col.name}').toggle();">
-					<span style="list:none;padding:1px 1px 1px 1px;display:inline-block" class="ui-state-default ui-corner-all">
-					<span style="display:inline-block !important"class="ui-icon ui-icon-transferthick-e-w"></span>
-			
-					</span>
-					</a>	
-					<div style="display:inline-block" class="${col.name}">			
-					${col.name}
-					</div></td>
+					<div style="display:inline-block" class="${col.name}">${col.name}</div>
+					<a id="${col.sequence}_c" onclick = "swapCol(id)" style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Swap with another column?" class="ui-state-default ui-corner-all col_${col.id}">
+					<span style="display:inline-block !important"class="ui-icon ui-icon-transferthick-e-w col_${col.id}"></span>
+					</span></a>
+					</td>
 			
 					#{/else}
 					
@@ -236,11 +227,12 @@ $(function(){
 							#{list items:col, as:'task'}
 								<p >
 								<div id="tas-${task.id}_" class="drag">
-								<div style="background-color:${task.taskType.hexColor}; class="shadowed tiptipize" border=0,1px id="${task.id}_small">S ${task.taskStory.id}
-								${task.description}
-								<br>
-								<a  class="SmallSticky" id="${task.id}"  >edit info.. </a>
-								</br>
+								
+								<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};" border=0px id="${task.id}_small">T ${task.id} ${task.description}
+								
+								<a class="SmallSticky" id="${task.id}"  >
+								<span style="display:inline-block; width:3cm "  title="Edit task info?" >edit info..</span>
+								</a>
 								</div>
 								</div>
 								</p>
@@ -248,7 +240,11 @@ $(function(){
 								<div style="display:none;" class="${task.taskStatus.column.name}"  id="${task.id}Large" style="border:hidden">
 								<div id="tas-${task.id}_" >
 								<a id="tas-${task.id}_hidden" style="display:none; font-size:large;" class="showtask">+</a>	
+								
+								
 								<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 15px" border=0px id="tas-${task.id}_T">
+								
+								
 								<p>
 								<a id="tas-${task.id}" style="font-size:x-large;" border=0px class="ctask">-</a>
 								<div  border=0px align="center">T ${task.id}</div>
@@ -257,12 +253,15 @@ $(function(){
 								#{/secure.check}
 								
 								#{if flag2 || controllers.Security.getConnected().equals(task.assignee)}
-								<div style="font-family: 'Lucida Handwriting' !important;" id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}">${task.description}</div>	
+								<div style=" id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}">
+								<span style="id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}"  title="Edit description?" >${task.description}</span>
+								</div>	
 								#{/if}
 								#{else}
-								<div style="font-family: 'Lucida Handwriting' !important;" id="${task.id}_des" class="noedit2 noeditdesc_${task.assignee.id}" border=0px>${task.description}</div>	
+								<div style="display:none" id="${task.id}_des" border=0px class="noedit2 noeditdesc_${task.assignee.id}">
+								<span style="display:none" id="${task.id}_des" border=0px class="noedit2 noeditdesc_${task.assignee.id}"  title="Edit description?" >${task.description}</span>
+								</div>	
 								#{/else}
-								<div style="font-family: 'Lucida Handwriting' !important; display:none "id="${task.id}_des" class="noedit noeditdesc_${task.assignee.id}" border=0px>${task.description}</div>	
 								
 								
 								
@@ -272,16 +271,14 @@ $(function(){
 								
 								#{if flag3}
 								<A class="hides" id="usr" HREF="javascript:popUp('@{Tasks.chooseTaskAssi(task.id,component.id)}')">
-								<span class="ui-icon ui-icon-person"></span></A>
-								<div style="font-family: 'Lucida Handwriting' !important;" >
-								Assignee: 
-								${task.assignee}</div><div id="${task.id}_assigneee"></div>	
+								<span title="Change Assignee?" class="ui-icon ui-icon-person"></span></A>
+								<div>
+								Assignee:${task.assignee}</div><div id="${task.id}_assigneee"></div>	
 								#{/if}
 								
 								#{else}
-								<div style="font-family: 'Lucida Handwriting' !important;">
-								Assignee: 
-								${task.assignee}</div><div id="${task.id}_assigneee"></div>	
+								<div>
+								Assignee:${task.assignee}</div><div id="${task.id}_assigneee"></div>	
 								#{/else}
 								
 								#{secure.check 'canChangeReviewer'}
@@ -290,18 +287,16 @@ $(function(){
 								#{if flag4}
 								
 								<a id="rev" class="hides"  HREF="javascript:popUp('@{Tasks.chooseRev(task.id,component.id)}')">
-								<span class="ui-icon ui-icon-person"></span></a>
-								<div  style="font-family: 'Lucida Handwriting' !important;" >
-								Reviewer: 
-								${task.reviewer}</div>
+								<span  title="Change Reviewer?" class="ui-icon ui-icon-person"></span></a>
+								<div>
+								Reviewer:${task.reviewer}</div>
 								<div id="${task.id}_rev"></div>
 								#{/if}
 								
 								
 								#{else}
-								<div style="font-family: 'Lucida Handwriting' !important;"  >
-								Reviewer: 
-								${task.reviewer}</div>
+								<div>
+								Reviewer:${task.reviewer}</div>
 								<div id="${task.id}_rev"></div>
 								
 								#{/else}
@@ -313,21 +308,21 @@ $(function(){
 								
 								#{if flag5 || controllers.Security.getConnected().equals(task.assignee)}
 								
-								<A id="usr" class="hides shows_${task.assignee.id}" HREF="javascript:popUp('@{Tasks.chooseType(task.id)}')">
-								<span class="ui-icon ui-icon-person"></span></A>
-								<div style="font-family: 'Lucida Handwriting' !important;" >
-								Type: 
-								${task.taskType.name}</div>
+								<a id="usr" class="hides shows_${task.assignee.id}" HREF="javascript:popUp('@{Tasks.chooseType(task.id)}')">
+								<span  title="Edit type?" class="ui-icon ui-icon-person"></span></a>
+								<div>
+								Type:${task.taskType.name}</div>
 								<div id="${task.id}_type"></div>
 								#{/if}
 								#{else}
-								<div style="font-family: 'Lucida Handwriting' !important;">
-								Type: 
-								${task.taskType.name}</div>
+								<div>
+								Type:${task.taskType.name}</div>
 								
 								#{/else}
 								</p>
-								<a   id="${task.id}_HiddenSticky" >Done</a>
+								<a id="${task.id}_HiddenSticky" >
+								<span style="text-align:right; display:inline-block; width:3cm "  title="Done Editing?" >Done</span>
+								</a>
 								</div>
 								</div>
 								</div>
@@ -500,4 +495,5 @@ $(function(){
 	}
 	
 </script>
+
 
