@@ -9,8 +9,9 @@ import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 import play.mvc.With;
 
-@With (Secure.class)
-public class Components extends SmartCRUD {
+@With( Secure.class )
+public class Components extends SmartCRUD
+{
 	/**
 	 * This method Overrides the CRUD.blank() method that is executed on adding
 	 * a new component, Because the project ID is needed in order to allow the
@@ -20,17 +21,26 @@ public class Components extends SmartCRUD {
 	 * @param projectID
 	 */
 
-	@Check ("canAddComponent")
-	public static void blank(long id) {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		Project currentProject = Project.findById(id);
-		try {
+	// @Check ("canAddComponent")
+	public static void blank( long id )
+	{
+		ObjectType type = ObjectType.get( getControllerClass() );
+		notFoundIfNull( type );
+		Project currentProject = Project.findById( id );
+		if( Security.getConnected().in( currentProject ).can( "addComponent" ) )
+		{
+			try
+			{
 
-			render(type, currentProject);
-		} catch (TemplateNotFoundException e) {
-			render("CRUD/blank.html", type);
+				render( type, currentProject );
+			}
+			catch( TemplateNotFoundException e )
+			{
+				render( "CRUD/blank.html", type );
+			}
 		}
+		else
+			forbidden();
 	}
 
 	/**
@@ -43,11 +53,12 @@ public class Components extends SmartCRUD {
 	 * @author Amr Hany
 	 * @throws Exception
 	 */
-	public static void create() throws Exception {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
+	public static void create() throws Exception
+	{
+		ObjectType type = ObjectType.get( getControllerClass() );
+		notFoundIfNull( type );
 		JPASupport object = type.entityClass.newInstance();
-		validation.valid(object.edit("object", params));
+		validation.valid( object.edit( "object", params ) );
 
 		// Here is the only difference,, in order to make validation
 		// redirect to the same page without giving error and with the
@@ -55,27 +66,33 @@ public class Components extends SmartCRUD {
 		Component temp = (Component) object;
 		Project currentProject = temp.project;
 
-		if (validation.hasErrors()) {
-			renderArgs.put("error", Messages.get("crud.hasErrors"));
-			try {
+		if( validation.hasErrors() )
+		{
+			renderArgs.put( "error", Messages.get( "crud.hasErrors" ) );
+			try
+			{
 
-				render("Components/blank.html", type, currentProject);
-			} catch (TemplateNotFoundException e) {
-				render("CRUD/blank.html", type);
+				render( "Components/blank.html", type, currentProject );
+			}
+			catch( TemplateNotFoundException e )
+			{
+				render( "CRUD/blank.html", type );
 			}
 		}
 		object.save();
 		temp.init();
-		Logs.addLog(Security.getConnected(), "Create", "Component", temp.id, currentProject, new Date(System.currentTimeMillis()));
-		Notifications.notifyUsers(temp.project, "Component", "Component " + temp.name + " was created ", "onCreateComponent", (byte) 1);
-		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
-		if (params.get("_save") != null) {
-			redirect("/projects/" + currentProject.id + "/components");
+		Logs.addLog( Security.getConnected(), "Create", "Component", temp.id, currentProject, new Date( System.currentTimeMillis() ) );
+		Notifications.notifyUsers( temp.project, "Component", "Component " + temp.name + " was created ", "onCreateComponent", (byte) 1 );
+		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
+		if( params.get( "_save" ) != null )
+		{
+			redirect( "/projects/" + currentProject.id + "/components" );
 		}
-		if (params.get("_saveAndAddAnother") != null) {
-			redirect("/admin/projects/" + currentProject.id + "/components/new");
+		if( params.get( "_saveAndAddAnother" ) != null )
+		{
+			redirect( "/admin/projects/" + currentProject.id + "/components/new" );
 		}
-		redirect(request.controller + ".show", object.getEntityId());
+		redirect( request.controller + ".show", object.getEntityId() );
 	}
 
 	/**
@@ -87,28 +104,34 @@ public class Components extends SmartCRUD {
 	 * @author Amr Hany
 	 * @throws Exception
 	 */
-	public static void save(String id) throws Exception {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		JPASupport object = type.findById(id);
-		validation.valid(object.edit("object", params));
-		if (validation.hasErrors()) {
-			renderArgs.put("error", Messages.get("crud.hasErrors"));
-			try {
-				render(request.controller.replace(".", "/") + "/show.html", type, object);
-			} catch (TemplateNotFoundException e) {
-				render("CRUD/show.html", type, object);
+	public static void save( String id ) throws Exception
+	{
+		ObjectType type = ObjectType.get( getControllerClass() );
+		notFoundIfNull( type );
+		JPASupport object = type.findById( id );
+		validation.valid( object.edit( "object", params ) );
+		if( validation.hasErrors() )
+		{
+			renderArgs.put( "error", Messages.get( "crud.hasErrors" ) );
+			try
+			{
+				render( request.controller.replace( ".", "/" ) + "/show.html", type, object );
+			}
+			catch( TemplateNotFoundException e )
+			{
+				render( "CRUD/show.html", type, object );
 			}
 		}
 		object.save();
 		Component temp = (Component) object;
-		Notifications.notifyUsers(temp.project, "Component", "Component " + temp.name + " was edited", "onEditComponent", (byte) 0);
-		Logs.addLog(Security.getConnected(), "Edit", "Component", temp.id, temp.project, new Date(System.currentTimeMillis()));
-		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
-		if (params.get("_save") != null) {
-			redirect("/components/" + id);
+		Notifications.notifyUsers( temp.project, "Component", "Component " + temp.name + " was edited", "onEditComponent", (byte) 0 );
+		Logs.addLog( Security.getConnected(), "Edit", "Component", temp.id, temp.project, new Date( System.currentTimeMillis() ) );
+		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
+		if( params.get( "_save" ) != null )
+		{
+			redirect( "/components/" + id );
 		}
-		redirect(request.controller + ".show", object.getEntityId());
+		redirect( request.controller + ".show", object.getEntityId() );
 	}
 
 	/**
@@ -121,22 +144,26 @@ public class Components extends SmartCRUD {
 	 * @param id
 	 */
 
-	@Check ("canDeleteComponent")
-	public static void delete(String id) {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		JPASupport object = type.findById(id);
+	@Check( "canDeleteComponent" )
+	public static void delete( String id )
+	{
+		ObjectType type = ObjectType.get( getControllerClass() );
+		notFoundIfNull( type );
+		JPASupport object = type.findById( id );
 		Component component = (Component) object;
-		try {
+		try
+		{
 			component.deleteComponent();
-			Logs.addLog(Security.getConnected(), "Delete", "Component", component.id, component.project, new Date(System.currentTimeMillis()));
-			Notifications.notifyUsers(component.project, "Component", "Component " + component.name + " was deleted", "onDeleteComponent", (byte) -1);
-		} catch (Exception e) {
-			flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
-			redirect(request.controller + ".show", object.getEntityId());
+			Logs.addLog( Security.getConnected(), "Delete", "Component", component.id, component.project, new Date( System.currentTimeMillis() ) );
+			Notifications.notifyUsers( component.project, "Component", "Component " + component.name + " was deleted", "onDeleteComponent", (byte) -1 );
 		}
-		flash.success(Messages.get("crud.deleted", type.modelName, object.getEntityId()));
-		redirect("/projects/" + component.project.id + "/components");
+		catch( Exception e )
+		{
+			flash.error( Messages.get( "crud.delete.error", type.modelName, object.getEntityId() ) );
+			redirect( request.controller + ".show", object.getEntityId() );
+		}
+		flash.success( Messages.get( "crud.deleted", type.modelName, object.getEntityId() ) );
+		redirect( "/projects/" + component.project.id + "/components" );
 	}
 
 	/**
@@ -147,15 +174,19 @@ public class Components extends SmartCRUD {
 	 * @param id
 	 */
 
-	@Check ("canEditComponent")
-	public static void show(String id) {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		JPASupport object = type.findById(id);
-		try {
-			render(type, object);
-		} catch (TemplateNotFoundException e) {
-			render("CRUD/show.html", type, object);
+	@Check( "canEditComponent" )
+	public static void show( String id )
+	{
+		ObjectType type = ObjectType.get( getControllerClass() );
+		notFoundIfNull( type );
+		JPASupport object = type.findById( id );
+		try
+		{
+			render( type, object );
+		}
+		catch( TemplateNotFoundException e )
+		{
+			render( "CRUD/show.html", type, object );
 		}
 	}
 
