@@ -9,7 +9,7 @@ public class Column extends SmartModel {
 
 	@ManyToOne
 	public Board board;
-
+	public boolean onBoard;
 	// @OneToMany( mappedBy = "Status_on_Board" )
 	// public List<Task> task;
 
@@ -35,6 +35,13 @@ public class Column extends SmartModel {
 		this.name = name;
 		this.board = board;
 		this.sequence = board.columns.size();
+		if(this.name.equalsIgnoreCase( "new" )||this.name.equalsIgnoreCase( "verified" )||this.name.equalsIgnoreCase( "closed" ))
+		{
+			
+			this.onBoard=true;
+		}
+		else
+		this.onBoard=false;	
 		board.columns.add(this);
 
 	}
