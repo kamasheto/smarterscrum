@@ -112,14 +112,14 @@ $(function()
 The project has no stories yet.
 #{/if}
 #{else}
-You are not a user in this project, you cannot view theirstories.
+You are not a user in this project, you cannot view their stories.
 #{/else}
 #{/ifnot}
 #{else}
 <h1>Product Backlog</h1>
 
 #{set 'moreLinks'}
-	<a title="Take a look at the charts?" href="@{ProductBacklogs.showGraph(project.id,componentId,isComp)}">View the Burndown Chart </a><br/> 
+	<a title="Take a look at the charts?" href="@{ProductBacklogs.showGraph(project.id,isComp)}">View the Burndown Chart </a><br/> 
 <a onclick="$('#checklist').toggle()" href="#">Customize columns</a><br/>
 #{/set}
 
