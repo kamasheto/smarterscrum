@@ -1,6 +1,16 @@
 #{extends 'main.html' /}
 #{set title: proj.name + '\'s Impediment Log'/}
+#{set 'moreStyles'}
+<style type="text/css">
+thead
+{
+cursor:move;
+}
+</style>
+#{/set}
 #{set 'moreScripts'}
+<script  type="text/javascript" src="@{'/public/javascripts/dragtablenorm.js/'}" ></script>
+<script  type="text/javascript" src="@{'/public/javascripts/sorttable.js/'}" ></script>
 <script type="text/javascript">
 function changeStatus(id,statID)
 {
@@ -35,13 +45,14 @@ function changeStatus(id,statID)
 
 
 <h1> Impediment Tasks</h1>
-	<table class="sortable" >
+<div id="drag">
+	<table class="draggable sortable" >
 	<thead>
 	<tr>
-		<th>ID</th>
-		<th>Description</th>
-		<th>Reporter</th>
-		<th>Status</th>
+		<td>ID</td>
+		<td>Description</td>
+		<td>Reporter</td>
+		<td>Status</td>
 		
 		</tr>
 </thead>
@@ -71,11 +82,12 @@ function changeStatus(id,statID)
 			${task.taskStatus.name}
 			#{/else}
 			</td>
-			</tr>
-		
+			
+		</tr>
 		#{/list}
 		</tbody>
 		</table>
 		#{/else}
 #{/else}
 
+</div>
