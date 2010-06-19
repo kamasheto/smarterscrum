@@ -18,16 +18,16 @@ public class Roles extends SmartCRUD {
 		if (id == 0)
 			renderJSON(new Object());
 		Role r = Role.findById(id);
-		Security.check(Security.getConnected().in(r.project).can("manageRoles"));
+		Security.check(r.project, "manageRoles");
 		r.project = null;
 		renderJSON(r);
 	}
 
-	// @Check ("canEditRoles")
 	public static void show(String id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
+		Security.check(((Role) object).project, "editRoles");
 		try {
 			render(type, object);
 		} catch (TemplateNotFoundException e) {
