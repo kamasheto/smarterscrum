@@ -15,7 +15,7 @@ if you want to invite developers to ${pro.name}   <a href="/show/users"><font co
 <ul id= "prequests">
 #{list items:users, as:'useer'}
 	<li id="us_${useer.id}">
-	<a href="/show/user?id=${useer.id}"> ${useer.getDisplayName().raw(pro)} </a>
+	<a href="/show/user?id=${useer.id}"> ${useer.getDisplayName(pro).raw()} </a>
 	</li>
 #{/list}
 
