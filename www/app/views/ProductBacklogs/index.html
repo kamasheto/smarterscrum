@@ -6,6 +6,10 @@
 </script>
 <li><a href="/show/projects">Projects</a></li>
 <li><a href="/show/project?id=${project.id}">${project.name}</a></li>
+#{if isComp}
+<li><a href="/projects/${project.id}/components">Components</a></li>
+<li><a href="/components/${compId}">${name}</a></li>
+#{/if}
 <li><a href="/productbacklog/${project.id}/${isComp}">Product Backlog</a></li>
 #{/set}
 <div>
@@ -124,7 +128,14 @@ You are not a user in this project, you cannot view their stories.
 #{/else}
 #{/ifnot}
 #{else}
-<h1>Product Backlog</h1>
+
+<h1> 
+${name}
+#{if isComp}
+Component
+#{/if}
+Backlog
+</h1>
 
 #{set 'moreLinks'}
 	<a title="Take a look at the charts?" href="@{ProductBacklogs.showGraph(project.id,isComp)}">View the Burndown Chart </a><br/> 

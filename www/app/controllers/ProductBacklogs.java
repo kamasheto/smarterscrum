@@ -10,10 +10,11 @@ import models.Sprint;
 import models.Story;
 import models.User;
 import play.mvc.With;
+import controllers.Secure;
+import controllers.SmartController;
 
-@With( Secure.class )
-public class ProductBacklogs extends SmartController
-{
+@With(Secure.class)
+public class ProductBacklogs extends SmartController {
 	/**
 	 * Gets the list of stories in the project or the component that has the id
 	 * sent from the project or component page , and renders this list with the
@@ -29,29 +30,26 @@ public class ProductBacklogs extends SmartController
 	 *            1 if the id is of a component(@author menna_ghoneim)
 	 * @see list of user stories
 	 */
-	public static void index( long id, int isComp )
-	{
+	public static void index(long id, int isComp) {
 		User user = Security.getConnected();
 		boolean inproj = user.isAdmin;
-		if( isComp == 0 )
-		{
-			Project project = Project.findById( id );
+		String name = "";
+		if (isComp == 0) {
+			Project project = Project.findById(id);
+			name = project.name;
 			List<Story> stories = new LinkedList<Story>();
 			List<Sprint> sprints = project.sprints;
 			boolean running = false;
 			long isRunning = project.runningSprint();
-			for( int i = 0; i < sprints.size(); i++ )
-			{
-				System.out.println( "in loop" );
-				if( sprints.get( i ).id == isRunning )
+			for (int i = 0; i < sprints.size(); i++) {
+				System.out.println("in loop");
+				if (sprints.get(i).id == isRunning)
 					running = true;
 			}
-			for( Component component : project.components )
-			{
-				for( Story story : component.componentStories )
-				{
+			for (Component component : project.components) {
+				for (Story story : component.componentStories) {
 
-					stories.add( story );
+					stories.add(story);
 				}
 			}
 			// for (int i = 0; i < user.roles.size(); i++) {
@@ -60,22 +58,19 @@ public class ProductBacklogs extends SmartController
 			// break;
 			// }
 			// }
-			inproj = user.in( project ).can( "editBacklog" );
-			if( !(project.users.contains( user ) || inproj) )
-			{
+			inproj = user.in(project).can("editBacklog");
+			if (!(project.users.contains(user) || inproj)) {
 				stories = null;
 				inproj = false;
-			}
-			else
-			{
+			} else {
 				inproj = true;
 			}
-			render( stories, project, running, isComp, inproj );
+			render(stories, project, running, isComp, inproj, name);
 
-		}
-		else
-		{
-			Component component = Component.findById( id );
+		} else {
+			Component component = Component.findById(id);
+			name = component.name;
+			Long compId = component.id;
 			List<Story> stories = component.componentStories;
 			Project project = component.project;
 			List<Sprint> sprints = project.sprints;
@@ -84,11 +79,10 @@ public class ProductBacklogs extends SmartController
 			long currentDate = date.getTime();
 			long sprintEnd;
 			long sprintStart;
-			for( Sprint sprint : sprints )
-			{
+			for (Sprint sprint : sprints) {
 				sprintEnd = sprint.endDate.getTime();
 				sprintStart = sprint.startDate.getTime();
-				if( currentDate >= sprintStart && currentDate <= sprintEnd )
+				if (currentDate >= sprintStart && currentDate <= sprintEnd)
 					running = true;
 			}
 			// for (int i = 0; i < user.roles.size(); i++) {
@@ -97,17 +91,14 @@ public class ProductBacklogs extends SmartController
 			// break;
 			// }
 			// }
-			inproj = user.in( project ).can( "editBacklog" );
-			if( !(user.components.contains( component ) || inproj) )
-			{
+			inproj = user.in(project).can("editBacklog");
+			if (!(user.components.contains(component) || inproj)) {
 				stories = null;
 				inproj = false;
-			}
-			else
-			{
+			} else {
 				inproj = true;
 			}
-			render( stories, project, running, isComp, inproj );
+			render(stories, project, running, isComp, inproj, name, compId);
 		}
 
 	}
@@ -131,8 +122,8 @@ public class ProductBacklogs extends SmartController
 		Component myComponent = Component.findById( componentId );
 		String Data = temp.fetchData( componentId );
 		List<Sprint> SprintsInProject = temp.sprints;
-		if( Data.startsWith( "GenerateFullGraph([[[]]" ) )
+		if (Data.startsWith("GenerateFullGraph([[[]]"))
 			Data = null;
-		render( Data, SprintsInProject, temp, componentId, myComponent );
+		render(Data, SprintsInProject, temp, componentId, myComponent);
 	}
 }
