@@ -15,7 +15,7 @@ import play.i18n.Messages;
 import play.mvc.With;
 
 @With (Secure.class)
-public class Columns{
+public class Columns extends SmartCRUD{
 		/**
 	 * a method that stores the changes of positions of columns in the database
 	 * 
