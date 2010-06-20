@@ -165,7 +165,13 @@ public class Requests extends SmartCRUD {
 			if(body == null)
 			Notifications.notifyUsers(x.user, "deletion request from project denied", "Your deletion request from project " + x.project.name + " has been denied.", (byte) -1);
 			else
-				Notifications.notifyUsers(x.user, "deletion request from project denied", "Your deletion request from project " + x.project.name + " has been denied because "+body+".", (byte) -1);
+				{
+				String b = body.replace('+', ' ');
+				int i = body.indexOf('&');
+				i+=6;
+				b = b.substring(i);
+				Notifications.notifyUsers(x.user, "deletion request from project denied", "Your deletion request from project " + x.project.name + " has been denied because "+b+".", (byte) -1);
+				}
 		}
 		User myUser = User.find("byEmail", Security.connected()).first();
 		Date dd = new Date();
