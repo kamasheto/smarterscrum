@@ -527,6 +527,8 @@ public class Tasks extends SmartCRUD
 		User userWhoChanged = Security.getConnected();
 		Component t = temp.taskStory.componentID;
 
+		Security.check( t.componentUsers.contains( userWhoChanged ) );
+
 		Calendar timeChanged = Calendar.getInstance();
 		String changeType = "";
 
@@ -557,6 +559,7 @@ public class Tasks extends SmartCRUD
 	{
 		List<Log> temp = Log.findAll();
 		Task theTask = Task.findById( id );
+		Security.check( theTask.taskStatus.project.users.contains( Security.getConnected() ) );
 		boolean empty = temp.isEmpty();
 		String lastModified = null;
 		int numberOfModifications = 0;
@@ -623,8 +626,6 @@ public class Tasks extends SmartCRUD
 		mindate.setTime( temp.get( 0 ).date.getTime() - (3 * 86400000) );
 		String minDate = mindate.toString().substring( 0, 10 );
 		boolean canSee = true;
-		if( !Security.getConnected().projects.contains( theTask.taskType.project ) )
-			canSee = false;
 
 		Project myProject = theTask.taskType.project;
 		render( myProject, canSee, minDate, temp, lastModified, empty, efforts, changes, numberOfModifications, theTask, maxDate );

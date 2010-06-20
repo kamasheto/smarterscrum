@@ -1,11 +1,6 @@
 #{extends 'main.html' /}
-#{ifnot canSee}
-<div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all"> 
-					<p><span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
-					<strong>Alert:</strong> You are prohibited from seeing this page!!!!</p>
-				</div>
-#{/ifnot}
-#{else}
+
+
 #{set 'crumbs'}
 
 <li><a href="/show/projects">Projects</a></li>
@@ -47,5 +42,5 @@
 	<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
 	<div class="jqplot" id="chart1" style="height:300px; width:100%"></div>
 
-	#{/else}
+
 	#{/else}
