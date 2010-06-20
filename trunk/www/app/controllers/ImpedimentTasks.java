@@ -196,6 +196,7 @@ public class ImpedimentTasks extends SmartController
 	{
 		Task t = Task.findById( taskId );
 		Project proj = t.taskSprint.project;
+		Security.check( proj.users.contains( Security.getConnected()));
 		TaskStatus newType = null;
 		for( int i = 0; i < proj.taskStatuses.size(); i++ )
 		{
