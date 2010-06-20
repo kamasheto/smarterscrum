@@ -44,11 +44,12 @@ public class Requests extends SmartCRUD {
 	 * @since Sprint2.
 	 * @Task C1S14
 	 */
-	@Check ("canManageRequests")
+	// @Check ("canManageRequests")
 	public static void deletionRequestRespond(long id) throws Throwable {
 		if (id == 0)
 			Secure.login();
 		Project currentProject = Project.findById(id);
+		Security.check(currentProject, "manageRequests");
 		if (currentProject == null)
 			Secure.login();
 		List<Request> requests = Request.find("isDeletion = true and project = " + currentProject.id + " order by id desc").fetch();
@@ -99,11 +100,12 @@ public class Requests extends SmartCRUD {
 	 * @since Sprint2.
 	 * @Task C1S14
 	 */
-	@Check ("canManageRequests")
+	// @Check ("canManageRequests")
 	public static void deletionRequestAccept(String hash) throws Throwable {
 		if (hash == null)
 			Secure.login();
 		Request currentRequest = Request.find("byHash", hash).first();
+		Security.check(currentRequest.project, "manageRequests");
 		if (currentRequest == null)
 			Secure.login();
 		UserNotificationProfile currentProfile = UserNotificationProfile.find("user =  " + currentRequest.user.id + " and project = " + currentRequest.project.id).first();
@@ -112,9 +114,7 @@ public class Requests extends SmartCRUD {
 		List<Role> projectRoles = Role.find("project", currentRequest.project).fetch();
 
 		for (int i = 0; i < projectRoles.size(); i++) {
-
 			if (currentRequest.user.roles.contains(projectRoles.get(i))) {
-
 				currentRequest.user.roles.remove(projectRoles.get(i));
 				currentRequest.user.save();
 			}
@@ -148,11 +148,12 @@ public class Requests extends SmartCRUD {
 	 * @see models.Request
 	 * @Task C1S14
 	 */
-	@Check ("canManageRequests")
+	// @Check ("canManageRequests")
 	public static void requestIgnore(String hash) throws Throwable {
 		if (hash == null)
 			Secure.login();
 		Request x = Request.find("byHash", hash).first();
+		Security.check(x.project, "manageRequests");
 		if (x == null)
 			Secure.login();
 		Project y = x.project;

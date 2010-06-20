@@ -25,10 +25,11 @@ public class Invites extends SmartController {
 	 * @param userId
 	 *            user id
 	 */
-	@Check ("canInvite")
+	// @Check ("canInvite")
 	public static void sendInvite(long id, long userId) {
 		User user = User.findById(userId);
 		Role role = Role.findById(id);
+		Security.check(role.project, "invite");
 		Invite invite = new Invite(user, role).save();
 		Notifications.notifyUsers(user, "Invitation to " + role.name, "Dear " + user.name + ", you have been invited to " + role.name + " in the project " + role.project.name + ".\n\nTo accept this invitation: " + Router.getFullUrl("Invites.respondInvite") + "?what=1&hash=" + invite.hash + "&id=" + invite.id + "\nTo decline this invitation: " + Router.getFullUrl("Invites.respondInvite") + "?what=0&hash=" + invite.hash + "&id=" + invite.id, (byte) 0);
 		Logs.addLog(role.project, "invited " + user.name, "Invite", invite.id);

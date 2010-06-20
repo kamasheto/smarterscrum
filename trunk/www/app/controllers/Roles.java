@@ -1,7 +1,7 @@
 package controllers;
 
+import models.Project;
 import models.Role;
-import play.db.jpa.FileAttachment;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
@@ -35,23 +35,11 @@ public class Roles extends SmartCRUD {
 		}
 	}
 
-	@Check ("canEditRoles")
-	public static void attachment(String id, String field) throws Exception {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		JPASupport object = type.findById(id);
-		FileAttachment attachment = (FileAttachment) object.getClass().getField(field).get(object);
-		if (attachment == null) {
-			notFound();
-		}
-		renderBinary(attachment.get(), attachment.filename);
-	}
-
-	@Check ("canEditRoles")
 	public static void save(String id) throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
+		Security.check(((Role) object).project, "editRoles");
 		validation.valid(object.edit("object", params));
 		if (validation.hasErrors()) {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
@@ -69,8 +57,8 @@ public class Roles extends SmartCRUD {
 		redirect(request.controller + ".show", object.getEntityId());
 	}
 
-	@Check ("canCreateRole")
 	public static void blank(long id) {
+		Security.check(Project.<Project> findById(id), "canCreateRole");
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		try {
@@ -80,8 +68,8 @@ public class Roles extends SmartCRUD {
 		}
 	}
 
-	@Check ("canCreateRole")
 	public static void create(long id) throws Exception {
+		Security.check(Project.<Project> findById(id), "createRole");
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.entityClass.newInstance();
@@ -106,11 +94,11 @@ public class Roles extends SmartCRUD {
 		redirect(request.controller + ".show", object.getEntityId());
 	}
 
-	@Check ("canDeleteRole")
 	public static void delete(String id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
+		Security.check(((Role) object).project, "deleteRole");
 		try {
 			object.delete();
 		} catch (Exception e) {
@@ -120,5 +108,4 @@ public class Roles extends SmartCRUD {
 		flash.success(Messages.get("crud.deleted", type.modelName, object.getEntityId()));
 		redirect(request.controller + ".list");
 	}
-
 }
