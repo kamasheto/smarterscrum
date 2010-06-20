@@ -405,9 +405,10 @@ public class Projects extends SmartCRUD {
 	 *            notifications in.
 	 * @throws ClassNotFoundException
 	 */
-	@Check ("canEditProjectNotificationProfile")
+	// @Check ("canEditProjectNotificationProfile")
 	public static void manageNotificationProfile(long projectId) throws ClassNotFoundException {
 		Project currentProject = Project.findById(projectId);
+		Security.check(currentProject, "editProjectNotificationProfile");
 		ProjectNotificationProfile currentNotificationProfile = currentProject.notificationProfile;
 		ObjectType type = ObjectType.get(ProjectNotificationProfiles.class);
 		notFoundIfNull(type);
@@ -439,6 +440,7 @@ public class Projects extends SmartCRUD {
 		ObjectType type = ObjectType.get(ProjectNotificationProfiles.class);
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
+		Security.check(((ProjectNotificationProfile) object).project, "editProjectNotificationProfile");
 		validation.valid(object.edit("object", params));
 		if (validation.hasErrors()) {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
@@ -451,7 +453,7 @@ public class Projects extends SmartCRUD {
 		object.save();
 		flash.success("The Project Notificaton Profile modifications have been saved");
 		if (params.get("_save") != null) {
-			redirect("http://localhost:9000/projects/managenotificationprofile?projectId=" + id);
+			redirect("/projects/managenotificationprofile?projectId=" + id);
 		}
 		redirect(request.controller + ".show", object.getEntityId());
 	}

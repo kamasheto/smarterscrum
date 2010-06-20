@@ -132,7 +132,7 @@ public class Users extends SmartCRUD {
 	 * @since Sprint2.
 	 * @Task C1S33
 	 */
-	@Check ("canEditUserNotificationProfile")
+	// @Check ("canEditUserNotificationProfile")
 	public static void manageNotificationProfile(long id) throws ClassNotFoundException {
 		Project currentProject = Project.findById(id);
 		User currentUser = Security.getConnected();
@@ -171,6 +171,7 @@ public class Users extends SmartCRUD {
 		ObjectType type = ObjectType.get(UserNotificationProfiles.class);
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
+		Security.check(((UserNotificationProfile) object).user == Security.getConnected());
 		validation.valid(object.edit("object", params));
 		if (validation.hasErrors()) {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
@@ -183,7 +184,7 @@ public class Users extends SmartCRUD {
 		object.save();
 		flash.success("You Notificaton Profile modifications have been saved");
 		if (params.get("_save") != null) {
-			redirect("http://localhost:9000/users/managenotificationprofile?projectId=" + id);
+			redirect("/users/managenotificationprofile?projectId=" + id);
 		}
 		redirect(request.controller + ".show", object.getEntityId());
 	}
