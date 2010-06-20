@@ -111,7 +111,10 @@ $('.hideCol').click(function(){
 });    
 });
 
-
+function showCol(c)
+{
+	$('.col_'+c).css('display','table-cell');	
+}
 
 
 function popUp(URL) 
@@ -188,20 +191,29 @@ $(function(){
 </br>
 	#{/set}
 	<a href="" id="board">Toggle Board</a>
+	<span style="display:none"> ${count=0}</span>
+	<select id="changeCol" onchange="showCol(changeCol.value)">
+	<option value="">view columns</option>
+	#{list items:columnsOfBoard, as:'c'}
+	<option value= "${count}">${c.name}</option>
+	<span style="display:none"> ${count=count+1}</span>
+	#{/list}
+	
+	</select>
 		<div id="drag">
 
 		<table id="mainBoard" class="draggable"  border="1">
 				<tr>	
-					<td>Headers</td>
+					<td >Headers</td>
 					<span style="display:none"> ${count=0}</span>
 					#{list items:columnsOfBoard, as:'col'}
 					#{if connected.in(p).can('canRenameColumn')}
 				  <span style="display:none"> ${flag=true}</span>
         	#{/if}
 				#{if flag}
-					<td id="${columnsOfBoard.id} " class="col_${count}"> 	
+					<td style="text-align:center;" id="${columnsOfBoard.id} " class="col_${count}"> 	
 					<div style="display:inline-block" class="${col.name}">			
-					<span style="font-size:small; text-align:center; display:inline-block; width:3cm "id="${col.id}" title="Edit the column name?" class="editCOL ccolumn " >${col.name}</span>
+					<span style="font-size:small; display:inline-block; width:3cm "id="${col.id}" title="Edit the column name?" class="editCOL ccolumn " >${col.name}</span>
 					</div>
 					<div style="text-align:center">
 					<a id="${col.sequence}_c" onclick = "swapCol(id)" style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Swap with another column?" class="ui-state-default ui-corner-all">
@@ -245,9 +257,12 @@ $(function(){
 				<tr id="com-${component.id}_hidden" style="display:none;" >
 				<td>Click here to toggle
 				</td>
+				<span style="display:none"> ${count=0}</span>
 				#{list items:columnsOfBoard, as:'col'}
-				<td >
+				<td>
 				</td>
+				<span style="display:none"> ${count=count+1}</span>
+						
 				#{/list}
 				</tr>
 		
@@ -262,11 +277,11 @@ $(function(){
 							#{list items:col, as:'task'}
 								
 								<p >
-								<div class="${task.taskStatus.column.name}">
-								<div id="task-${task.id}_T" class="drag">
+								<div class="${task.taskStatus.column.name}" style="max-width:130px">
+								<div style="max-width:130px" id="task-${task.id}_T" class="drag">
 								
 								
-								<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};" border=0px id="${task.id}_small">
+								<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor}; max-width:110px" border=0px id="${task.id}_small">
 								<a id="task-${task.id}" style="font-size:x-large;" border=0px class="ctask">-</a>
 								T ${task.id} ${task.description}
 								
@@ -527,6 +542,8 @@ $(function(){
 	function take_meetingsnapshot(id) {
 		$.post('/snapshots/takemeetingsnapshot', {sprintID:${s.id},id:id}, function(){alert('Saved!')});
 	}
+	
+	
 	
 </script>
 
