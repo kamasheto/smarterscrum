@@ -26,8 +26,11 @@ public class Notifications {
 	 */
 	public static void notifyUsers(User user, String header, String body, byte importance) {
 
-		new Notification(user, header, body, importance).save();
-		Mail.send("se.smartsoft@gmail.com", user.email, header, body);
+		Notification not = new Notification(user, header, body, importance).save();
+		if(!not.madeBySysAdmin)
+			Mail.send("se.smartsoft@gmail.com", user.email, header, body);
+		else
+			Mail.send("se.smartsoft@gmail.com", user.email, "[SysAdmin] "+header, body);
 	}
 
 	/**
@@ -93,8 +96,11 @@ public class Notifications {
 			for (int i = 0; i < pros.size(); i++) {
 				if (pros.get(i).checkAction(action_type)) {
 					// notifyUsers(users.get(i), header, body, importance);
-					new Notification(pros.get(i).user, header, body, importance).save();
-					Mail.send("se.smartsoft@gmail.com", pros.get(i).user.email, header, body);
+					Notification not = new Notification(pros.get(i).user, header, body, importance).save();
+					if(!not.madeBySysAdmin)
+						Mail.send("se.smartsoft@gmail.com", pros.get(i).user.email, header, body);
+					else
+						Mail.send("se.smartsoft@gmail.com", pros.get(i).user.email, "[SysAdmin] "+header, body);
 				}
 			}
 		}
