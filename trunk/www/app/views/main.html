@@ -132,7 +132,7 @@
 					function(data) {
 						$(data).each(function(){
 							$.gritter.add({
-								title: this.header,
+								title: this.madeBySysAdmin? '[SysAdmin] '+this.header : this.header,
 								text: this.body,
 								image: this.importance > 0 ? '/public/images/tick.png' : this.importance < 0 ? '/public/images/cross.png' : '/public/images/error.png',
 								sticky: false,
