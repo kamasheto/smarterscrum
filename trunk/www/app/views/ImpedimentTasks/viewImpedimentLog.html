@@ -8,6 +8,7 @@ cursor:move;
 }
 </style>
 #{/set}
+
 #{set 'moreScripts'}
 <script  type="text/javascript" src="@{'/public/javascripts/dragtablenorm.js/'}" ></script>
 <script  type="text/javascript" src="@{'/public/javascripts/sorttable.js/'}" ></script>
@@ -35,36 +36,77 @@ function changeStatus(id,statID)
 #{ifnot tasks}
 <div style="padding: 10px" class="ui-state-highlight ui-corner-all">
     <span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
-    <strong>NOTE: </strong>There are no sprints in this project
+    <strong>NOTE: </strong>There are no impediment tasks
 </div>
 
 #{/ifnot}
 
 #{else}
+#{set 'moreLinks'}
+<a href="#" onclick="$('#columnssh').toggle(400)">Show/Hide Columns</a>
 
+#{/set}
 
 
 <h1> Impediment Tasks</h1>
-<div id="drag">
+<div id="columnssh" style="display:none">
+<h5>Show/Hide Columns</h5>
+Please check the columns that you would like to hide. Columns not checked will be shown.
+<br/><br/>
+<input id="id"name="ID"type="checkbox"/>
+<label for="ID">ID</label><br/>
+<input id="des"name="Description"type="checkbox"/>
+<label for="Description">Description</label><br/>
+<input id="rep"name="Reporter"type="checkbox"/>
+<label for="Reporter">Reporter</label><br/>
+<input id="stat"name="Status"type="checkbox"/>
+<label for="Status">Status</label><br/>
+<button onclick="hide()">Hide</button>
+<script type="text/javascript">
+function hide()
+{
+	if($('#id').is(':checked')==true)
+		$('.id').css('display','none');
+	else
+		$('.id').css('display','table-cell');
+
+	if($('#des').is(':checked')==true)
+		$('.des').css('display','none');
+	else
+		$('.des').css('display','table-cell');
+
+	if($('#rep').is(':checked')==true)
+		$('.rep').css('display','none');
+	else
+		$('.rep').css('display','table-cell');
+
+	if($('#stat').is(':checked')==true)
+		$('.stat').css('display','none');
+	else
+		$('.stat').css('display','table-cell');
+}
+
+</script>
+</div>
 	<table class="draggable sortable" >
 	<thead>
 	<tr>
-		<td>ID</td>
-		<td>Description</td>
-		<td>Reporter</td>
-		<td>Status</td>
+		<td class="id">ID</td>
+		<td class="des">Description</td>
+		<td class="rep">Reporter</td>
+		<td class="stat">Status</td>
 		
 		</tr>
 </thead>
 <tbody>
 		#{list items:tasks, as:'task'}
 		<tr>
-			<td>${task.id} </td>
-			<td>${task.description}</td>
-			<td>${task.reporter.getDisplayName()}</td>
-		 
-		 	<td>
+			<td class="id"><a title="view the task reports?" href="@{Tasks.getReport(task.id)}">${task.id}</a></td>
+			<td class="des">${task.description}</td>
+			<td class="rep"><a title="view user?" href="/show/user?id=${task.reporter.id}">${task.reporter.getDisplayName().raw()}</a></td>
+		 	<td class="stat">
 		 	#{if canEdit || connected.id==task.reporter.id}
+		 	
 		 	<form>
 					<select id="t_${task.id}"name="list" onchange="changeStatus(${task.id},$('#t_${task.id} option:selected').text());">
                 		#{list items:TaskStat, as:'stat'}
@@ -89,5 +131,3 @@ function changeStatus(id,statID)
 		</table>
 		#{/else}
 #{/else}
-
-</div>
