@@ -34,6 +34,7 @@ public class Log extends SmartModel {
 	@Required
 	public Date date;
 	boolean deleted;
+	public boolean madeBySysAdmin;
 
 	/**
 	 * A User "user" Performs a certain Action "action_type" using a certain
