@@ -154,6 +154,7 @@ public class ImpedimentTasks extends SmartController
 	public static void viewImpedimentLog( long Proj_id )
 	{
 		Project proj = Project.findById( Proj_id );
+		Security.check( proj.users.contains( Security.getConnected()));
 		Boolean canEdit = false;
 		if( Security.getConnected().isAdmin )
 			canEdit = true;
