@@ -163,6 +163,6 @@ profile related to this project
 <p><a href = "/users/managenotificationprofile?id=${project.id}"> Manage My Notifications for this Project </a></p>
 #{/if}
 #{if connected.in(project).can('canEditUserNotificationProfile')}
-<p><a href="/Projects/requestdeleted?id=${project.id}" onclick="return confirm('Are you sure you want to be deleted from this project???')"> Request Deletion</a></p>
+<p><a href="/Projects/requestdeleted?id=${project.id}" onclick="return confirm('Are you sure you want to be deleted from this project??? \n YOU WONT BE ABLE TO CONTRIBUTE IN THIS PROJECT ANYMORE \n HOWEVER YOUR WORK WILL STILL BE VISIBLE BY ALL PROJECT MEMBERS')"> Request Deletion</a></p>
 #{/if}
 #{/set}
