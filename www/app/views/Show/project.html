@@ -13,8 +13,8 @@
 ${project.description?.nl2br()}
         <div class="notch">
         </div></div>
-<a href="#" onclick="$('#roles').toggle()">Project Roles</a>
-<div id="roles" class="roles" style="display: block; width:300px;">
+<a href="javascript:;" onclick="$('#roles').toggle()">Project Roles</a>
+<div id="roles" class="roles" style="display: none; width:300px;">
 	#{list items:project.roles, as:'role'}
 		#{if !connected.roles.contains(role)}
 		#{set requested: requestedRoles.contains(role) /}
