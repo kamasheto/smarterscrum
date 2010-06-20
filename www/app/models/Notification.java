@@ -19,6 +19,7 @@ public class Notification extends SmartModel {
 	public long date;
 	public byte importance;
 	public boolean unread;
+	public boolean madeBySysAdmin;
 
 	/**
 	 * the constructor which is responsible of saving the notifications in the
@@ -42,6 +43,8 @@ public class Notification extends SmartModel {
 		this.date = new Date().getTime();
 		this.importance = importance;
 		this.unread = true;
+		if (user.isAdmin)
+			this.madeBySysAdmin = true;
 	}
 
 }
