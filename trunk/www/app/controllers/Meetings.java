@@ -247,13 +247,20 @@ public class Meetings extends SmartCRUD {
 		// hossam();
 		// mina();
 		Meeting meeting = Meeting.findById(id);
-		List<Artifact> artifacts = Artifact.findAll();
-		for (int i = 0; i < artifacts.size(); i++) {
-			if (artifacts.get(i).meetingsArtifacts.contains(meeting)) {
-				artifacts.remove(i);
+		List<Artifact> temp = Artifact.findAll();
+		List<Artifact> artifacts=new ArrayList<Artifact>();
+		for (int i = 0; i < temp.size(); i++) {
+			if (!temp.get(i).meetingsArtifacts.contains(meeting)) {
+				artifacts.add(temp.get( i ));
 			}
 		}
-		render(meeting, currentUser, artifacts);
+		List<Task> temp2=Task.findAll();
+		List<Task> tasks=new ArrayList<Task>(  );
+		for(int i=0;i<temp2.size();i++){
+			if(!temp2.get( i ).meeting.contains( meeting ))
+				tasks.add( temp2.get( i ));
+		}
+		render(meeting, currentUser, artifacts,tasks);
 	}
 
 	/**
@@ -263,16 +270,29 @@ public class Meetings extends SmartCRUD {
 	 * @param id
 	 * @param artifact
 	 */
-	public static void addArtifact(long id, String artifact) {
+	public static void addArtifact(long id, long artifact) {
 
-		Artifact temp = Artifact.find("description ", artifact).first();
+		Artifact temp = Artifact.findById( artifact );
 		Meeting meeting = Meeting.findById(id);
 		meeting.artifacts.add(temp);
 		temp.meetingsArtifacts.add(meeting);
 		meeting.save();
 		temp.save();
 	}
-
+	/**
+	 * @author minazakiz
+	 * @param id- the meeting id
+	 * @param tas- the task id
+	 * this method to add the task to the meeting
+	 */
+public static void addTask(long id,long task){
+	Task temp = Task.findById( task);
+	Meeting meeting = Meeting.findById(id);
+	meeting.tasks.add(temp);
+	temp.meeting.add(meeting);
+	meeting.save();
+	temp.save();
+}
 	/**
 	 * this method to remove artifact from the meeting
 	 * 
@@ -280,14 +300,29 @@ public class Meetings extends SmartCRUD {
 	 * @param id
 	 * @param artifact
 	 */
-	public static void removeArtifact(long id, String artifact) {
-		Artifact temp = Artifact.find("description ", artifact).first();
+	public static void removeArtifact(long id, long artifact) {
+		Artifact temp = Artifact.findById( artifact );
 		Meeting meeting = Meeting.findById(id);
 		meeting.artifacts.remove(temp);
 		temp.meetingsArtifacts.remove(temp);
 		meeting.save();
 		temp.save();
 	}
+	/**
+	 * @author minazaki
+	 * @param id- meeting id
+	 * @param task- task id
+	 * this method to remove the task from the meeting
+	 */
+	public static void removetask(long id, long task) {
+		Task temp = Task.findById( task );
+		Meeting meeting = Meeting.findById(id);
+		meeting.tasks.remove(temp);
+		temp.meeting.remove(temp);
+		meeting.save();
+		temp.save();
+	}
+
 
 	/**
 	 * this method takes as a parameter the meeting ID and renders the
