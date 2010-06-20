@@ -12,7 +12,7 @@ import models.UserNotificationProfile;
 import play.mvc.With;
 
 @With (Secure.class)
-public class Requests extends SmartCRUD {
+public class Requests extends SmartController {
 	/**
 	 * belongs to s15
 	 * <p>
@@ -23,9 +23,10 @@ public class Requests extends SmartCRUD {
 	 *            : takes the id of the project first checks for the permission
 	 *            then list the requests
 	 */
-	@Check ("canManageRequests")
+	// @Check ("canManageRequests")
 	public static void requestRespond(long id) {
 		Project pro = Project.findById(id);
+		Security.check(pro, "manageRequests");
 		List<Request> requests = Request.find("isDeletion = false and project = " + pro.id + " order by id desc").fetch();
 		render(requests, pro);
 	}
@@ -145,7 +146,7 @@ public class Requests extends SmartCRUD {
 	 * @param hash
 	 *            : to find the request that was ignored
 	 * @param body
-	 *           The body of the notification message that will be sent.
+	 *            The body of the notification message that will be sent.
 	 * @throws Throwable
 	 * @see models.Request
 	 * @Task C1S14
@@ -162,16 +163,17 @@ public class Requests extends SmartCRUD {
 		if (!x.isDeletion) {
 			Notifications.notifyUsers(x.user, "Role Request Denied", "Your Role request to be " + x.role.name + " in " + y.name + " has been denied", (byte) -1);
 		} else {
-			if(body == null)
-			Notifications.notifyUsers(x.user, "deletion request from project denied", "Your deletion request from project " + x.project.name + " has been denied.", (byte) -1);
+			if (body == null)
+				Notifications.notifyUsers(x.user, "deletion request from project denied", "Your deletion request from project " + x.project.name + " has been denied.", (byte) -1);
 			else
-				{
+				Notifications.notifyUsers(x.user, "deletion request from project denied", "You deletion request from project " + x.project.name + " has been denied because " + body + ".", (byte) -1);
+			{
 				String b = body.replace('+', ' ');
 				int i = body.indexOf('&');
-				i+=6;
+				i += 6;
 				b = b.substring(i);
-				Notifications.notifyUsers(x.user, "deletion request from project denied", "Your deletion request from project " + x.project.name + " has been denied because "+b+".", (byte) -1);
-				}
+				Notifications.notifyUsers(x.user, "deletion request from project denied", "Your deletion request from project " + x.project.name + " has been denied because " + b + ".", (byte) -1);
+			}
 		}
 		User myUser = User.find("byEmail", Security.connected()).first();
 		Date dd = new Date();
