@@ -67,6 +67,40 @@ public class Columns extends SmartCRUD{
 
 	}
 	/**
+	 * a method that stores the changes of positions of columns in the database
+	 * using settings
+	 * 
+	 * @author josephhajj
+	 * @param id
+	 *            : Sprint id
+	 * @param pos1
+	 *            : starting position of the column
+	 * @param pos2
+	 *            : finishing position of column Story 17
+	 */
+	public static void changeColumnPosition2(long id, int pos1, int pos2, long user_id) {
+		if (user_id == 0) {
+			user_id = Security.getConnected().id;
+		}
+
+		Sprint s = Sprint.findById(id);
+		Project p = s.project;
+		Security.check(p, "canEditColumnsPositions");
+		Board b = p.board;
+		Column c1 = Column.find("bySequence", pos1).first();
+		Column c2 = Column.find("bySequence", pos2).first();
+		c1.sequence = pos2;
+		c2.sequence = pos1;
+		c1.save();
+		c2.save();
+		Calendar cal = new GregorianCalendar();
+		User user = User.findById(user_id);
+		Logs.addLog(user, "edit", "Column Position", c1.id, p, cal.getTime());
+		String message = user.name + " has swapped the position of column " + c1.name + "with" + c2.name;
+		Notifications.notifyUsers(p, "swapped Column Position", message, "Column Position", (byte) 0);
+	}
+
+	/**
 	 * this method saves the new column name in the database
 	 * 
 	 * @author Dina_Helal
