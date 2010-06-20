@@ -4,11 +4,11 @@ function import_permissions(role_id) {
 		$('#loading').show();
 		$.post('/roles/getpermissions?id='+role_id,
 			function(data) {
-				$('select#object_permissions option').each(function() {
+				$('select#object_permissions > option').each(function() {
 					$(this).attr('selected', false);
 				});
 				$.each(data.permissions, function(index, item) {
-					$('option[value="'+item.id+'"]').attr('selected', true);
+					$('select#object_permissions > option[value="'+item.id+'"]').attr('selected', true);
 				})
 				$('#loading').hide();
 			});

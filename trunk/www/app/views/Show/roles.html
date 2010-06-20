@@ -7,7 +7,7 @@
 #{/set}
 
 #{set 'moreLinks'}
-<a href="/admin/roles/new?id=${project.id}">Create new role</a>
+#{if connected.in(project).can('createRole')}<a href="/admin/roles/new?id=${project.id}">Create new role</a>#{/if}
 #{/set}
 <ul>
 #{list project.roles}
