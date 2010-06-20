@@ -105,6 +105,10 @@ $('.select').click(function(){
 		
 		
 		});    
+$('.hideCol').click(function(){
+	var i =this.id;
+	$('.col_'+i).css('display','none');
+});    
 });
 
 
@@ -189,30 +193,47 @@ $(function(){
 		<table id="mainBoard" class="draggable"  border="1">
 				<tr>	
 					<td>Headers</td>
+					<span style="display:none"> ${count=0}</span>
 					#{list items:columnsOfBoard, as:'col'}
 					#{if connected.in(p).can('canRenameColumn')}
 				  <span style="display:none"> ${flag=true}</span>
         	#{/if}
 				#{if flag}
-					<td id="${columnsOfBoard.id} "> 	
-					<div style="display:inline-block" class="${col.name} col_${col.id}">			
-					<span style="font-size:small; text-align:center; display:inline-block; width:3cm "id="${col.id}" title="Edit the column name?" class="editCOL ccolumn col_${col.id}" >${col.name}</span>
+					<td id="${columnsOfBoard.id} " class="col_${count}"> 	
+					<div style="display:inline-block" class="${col.name}">			
+					<span style="font-size:small; text-align:center; display:inline-block; width:3cm "id="${col.id}" title="Edit the column name?" class="editCOL ccolumn " >${col.name}</span>
 					</div>
-					<a id="${col.sequence}_c" onclick = "swapCol(id)" style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Swap with another column?" class="ui-state-default ui-corner-all col_${col.id}">
-					<span style="display:inline-block !important"class="ui-icon ui-icon-transferthick-e-w col_${col.id}"></span>
+					<div style="text-align:center">
+					<a id="${col.sequence}_c" onclick = "swapCol(id)" style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Swap with another column?" class="ui-state-default ui-corner-all">
+					<span style="display:inline-block !important"class="ui-icon ui-icon-transferthick-e-w "></span>
 					</span></a>
-<a ><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Drag the column Anywhere" >
-					<span style="display:inline-block" class="ui-icon ui-icon-arrow-4"></span>
+					<a ><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Drag the column Anywhere" >
+					<span style="display:inline-block" class="ui-icon ui-icon-arrow-4 "></span>
 					</span></a>
+					
+					<a style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" class="ui-state-default ui-corner-all ">
+					<span title="hide column?" id="${count}" style="display:inline-block !important"class="tiptitize hideCol ui-icon ui-icon-hide "></span>
+					</span></a>
+					<span style="display:none"> ${count=count+1}</span>
+					</div>
+					</td>
 					#{/if}
 					
 					#{else}
-					<td id="${columnsOfBoard.id} "> 	
-					<div style="display:inline-block" class="${col.name}">${col.name}</div>
-					<a id="${col.sequence}_c" onclick = "swapCol(id)" style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Swap with another column?" class="ui-state-default ui-corner-all col_${col.id}">
-					<span style="display:inline-block !important"class="ui-icon ui-icon-transferthick-e-w col_${col.id}"></span>
+					<td id="${columnsOfBoard.id} " class="col_${count}"> 	
+					<div style="display:inline-block" class="${col.name} ">${col.name}</div>
+					<a id="${col.sequence}_c" onclick = "swapCol(id)" style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Swap with another column?" class="ui-state-default ui-corner-all ">
+					<span style="display:inline-block !important"class="ui-icon ui-icon-transferthick-e-w "></span>
+					</span></a>
+					<a ><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Drag the column Anywhere" >
+					<span style="display:inline-block" class="ui-icon ui-icon-arrow-4 "></span>
+					</span></a>
+					
+					<a style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" class="ui-state-default ui-corner-all ">
+					<span id="${col.id}" style="display:inline-block !important"class="hideCol ui-icon ui-icon-transferthick-e-w"></span>
 					</span></a>
 					</td>
+					
 			
 					#{/else}
 					
@@ -225,23 +246,24 @@ $(function(){
 				<td>Click here to toggle
 				</td>
 				#{list items:columnsOfBoard, as:'col'}
-				<td>
+				<td >
 				</td>
 				#{/list}
 				</tr>
 		
 		
 					<tr id="com-${component.id}" style="height:100px">
-											<td id="com-${component.id}" class="component">
-											
-											${component.title}</td>
+					<td id="com-${component.id}" class="component">${component.title}</td>
+					<span style="display:none"> ${count=0}</span>
+					
 						#{list items:component, as:'col'}
-						<td >
+						<td class="col_${count}">
+						<span style="display:none"> ${count=count+1}</span>
 							#{list items:col, as:'task'}
 								
 								<p >
-								<div id="task-${task.id}_T" class="drag">
 								<div class="${task.taskStatus.column.name}">
+								<div id="task-${task.id}_T" class="drag">
 								
 								
 								<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};" border=0px id="${task.id}_small">
@@ -507,5 +529,6 @@ $(function(){
 	}
 	
 </script>
+
 
 
