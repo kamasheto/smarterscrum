@@ -116,7 +116,7 @@ public class SprintBacklog extends SmartController
 		String pName = project.name;
 		String sNum = sprint.sprintNumber;
 
-		render( taskOfStory, flag, user, id, daysHeader, projectId, incomp, pName, sNum, componentID );
+		render( taskOfStory, flag, user, id, daysHeader, projectId, incomp, pName, sNum, componentID, project );
 
 	}
 
