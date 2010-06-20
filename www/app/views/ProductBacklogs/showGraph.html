@@ -1,14 +1,7 @@
 #{extends 'main.html' /}
 #{set title:'Project Burndown Chart' /}
 
-#{if !connected.projects.contains(temp) || (!connected.components.contains(myComponent) && componentId!=0)}
-<div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all"> 
-					<p><span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
-					<strong>Alert:</strong> You are prohibited from seeing this page!!!!</p>
-				</div>
-#{/if}
-#{else}
-#{if connected.components.contains(myComponent) || componentId==0}
+
 #{set 'crumbs'}
 <li><a href="/show/projects">Projects</a></li>
 <li><a href="/show/project?id=${temp.id}">${pName}</a></li>
@@ -111,7 +104,4 @@ if(isBefore('${sprint.format(sprint.startDate)}')==true){
         #{/list}
        
         #{/set}
-         
-    #{/else}
-    #{/if}
-    #{/else}
+         #{/else}

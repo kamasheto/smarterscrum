@@ -126,6 +126,8 @@ public class ProductBacklogs extends SmartController
 	public static void showGraph( long id, long componentId )
 	{
 		Project temp = Project.findById( id );
+
+		Security.check( Security.getConnected().projects.contains( temp) );
 		Component myComponent = Component.findById( componentId );
 		String Data = temp.fetchData( componentId );
 		List<Sprint> SprintsInProject = temp.sprints;

@@ -7,6 +7,7 @@ import models.Component;
 import models.Project;
 import models.Sprint;
 import models.Task;
+import models.TaskStatus;
 import models.User;
 import play.mvc.With;
 
@@ -133,26 +134,12 @@ public class SprintBacklog extends SmartController
 	 */
 	public static void showGraph( long id, long componentID )
 	{
-		boolean canSee = false;
-
+		Boolean canSee = false;
 		Sprint temp = Sprint.findById( id );
+		Security.check( Security.getConnected().projects.contains( temp.project ) );
+		canSee = true;
 		String Data = temp.fetchData( componentID );
-		if( Security.getConnected().isAdmin )
-		{
-			canSee = true;
-		}
-		if( componentID == 0 )
-		{
-			if( Security.getConnected().projects.contains( temp.project ) )
-				canSee = true;
-		}
-		else
-		{
-			Component comp = Component.findById( componentID );
-			if( Security.getConnected().projects.contains( temp.project ) && Security.getConnected().components.contains( comp ) )
-				canSee = true;
-		}
-		if( Data.contains( "NONE" ))
+		if( Data.contains( "NONE" ) )
 			Data = null;
 		render( Data, temp, componentID, canSee );
 	}
