@@ -1,23 +1,18 @@
 #{extends 'main.html' /}
 #{set title:'Add members' /}
 
-<h2> Assign Users to ${comp.name} </h1>
+<h2> Assign Users to ${comp.name} </h2>
 
 #{if users.isEmpty()}
-<br/>
-<b><font color="red"> There are no available free developers in ${pro.name} to add them to ${comp.name} !</font>
-<br/>
-<br/>
-if you want to invite new developers to ${pro.name} to be able to add them <a href="/show/users"><font color = "blue"><u>Click Here</u></font></a> !
-</b>
-<br/> 
+<p><font color=""> There are no available free developers in ${pro.name} to add them to ${comp.name}</font></p>
+<p>if you want to invite new developers to ${pro.name} to be able to add them <a href="/show/users">Click Here</a>!</p>
 #{/if}
 
 #{if !users.isEmpty()}
 <h3> please choose users to add from this list: </h3>
 <ul id= "Users">
 #{list items:users, as:'puser'}
-	<li>${puser.name} 
+	<li>${puser.getDisplayName(comp.project).raw()} 
 	&nbsp;&nbsp;
 	<a onclick="assign_users(${puser.id} , ${comp.id});" href="#"> Add</a>
 	</li>

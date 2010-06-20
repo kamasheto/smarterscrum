@@ -42,10 +42,11 @@ public class Users extends SmartCRUD {
 	 *            component id when the actions are done
 	 */
 
-	@Check ("canEditComponent")
+	// @Check ("canEditComponent")
 	public static void assignUsers(long id) {
 		Component comp = Component.findById(id);
 		Project pro = comp.project;
+		Security.check(pro, "editComponent");
 		List<User> users = getFreeUsers(pro);
 		render(users, comp, pro);
 	}
@@ -88,10 +89,11 @@ public class Users extends SmartCRUD {
 	 *            the relation between the user & the component to make sure
 	 *            that this user is assigned to that component
 	 */
-	@Check ("canAssignUserToComponent")
+	// @Check ("canAssignUserToComponent")
 	public static void chooseUsers(long id, long UId) {
 		User myUser = User.findById(UId);
 		Component myComponent = Component.findById(id);
+		Security.check(myComponent.project, "assignUserToComponent");
 		myUser.components.add(myComponent);
 		myComponent.componentUsers.add(myUser);
 		Date d = new Date();

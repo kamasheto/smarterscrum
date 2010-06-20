@@ -23,11 +23,19 @@ public class ProjectTasks extends SmartController {
 	 *            role id
 	 */
 	public static void requestRole(long id) {
-		User user = User.find("byEmail", Security.connected()).first();
+		User user = Security.getConnected();
 		Role role = Role.findById(id);
 		notFoundIfNull(role);
-		new Request(user, role).save();
-		flash.success("Successfully requested role: " + role.name);
+		if (user.in(role.project).can("manageRequests")) {
+			user.roles.add(role);
+			if (!user.projects.contains(role.project))
+				user.projects.add(role.project);
+			user.save();
+			flash.success("Successfully added role: " + role.name);
+		} else {
+			new Request(user, role).save();
+			flash.success("Successfully requested role: " + role.name);
+		}
 		Show.project(role.project.id);
 	}
 
