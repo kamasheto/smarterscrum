@@ -190,9 +190,9 @@ $(function(){
 				<tr>	
 					<td>Headers</td>
 					#{list items:columnsOfBoard, as:'col'}
-					#{secure.check 'canRenameColumn'}
+					#{if connected.in(p).can('canRenameColumn')}
 				  <span style="display:none"> ${flag=true}</span>
-        	#{/secure.check}
+        	#{/if}
 				#{if flag}
 					<td id="${columnsOfBoard.id} "> 	
 					<div style="display:inline-block" class="${col.name} col_${col.id}">			
@@ -269,9 +269,9 @@ $(function(){
 								<p>
 								
 								<div  border=0px align="center">T ${task.id}</div>
-								#{secure.check 'canChangeTaskDescreption'}
+								#{if connected.in(p).can('canChangeTaskDescreption')}
 								<span style="display:none"> ${flag2=true}</span>
-								#{/secure.check}
+								#{/if}
 								
 								#{if flag2 || controllers.Security.getConnected().equals(task.assignee)}
 								<div style=" id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}">
@@ -285,10 +285,9 @@ $(function(){
 								#{/else}
 								
 								
-								
-								#{secure.check 'canChangeAssignee'}
+								#{if connected.in(p).can('canChangeAssignee')}
 								 <span style="display:none"> ${flag3=true}</span>
-								#{/secure.check}
+								#{/if}
 								
 								#{if flag3}
 								<A class="hides" id="usr" HREF="javascript:popUp('@{Tasks.chooseTaskAssi(task.id,component.id)}')">
@@ -302,9 +301,9 @@ $(function(){
 								Assignee:${task.assignee}</div><div id="${task.id}_assigneee"></div>	
 								#{/else}
 								
-								#{secure.check 'canChangeReviewer'}
+								#{if connected.in(p).can('canChangeReviewer')}
 								 <span style="display:none"> ${flag4=true}</span>
-								#{/secure.check}
+								#{/if}
 								#{if flag4}
 								
 								<a id="rev" class="hides"  HREF="javascript:popUp('@{Tasks.chooseRev(task.id,component.id)}')">
@@ -322,9 +321,9 @@ $(function(){
 								
 								#{/else}
 								
-								#{secure.check 'canChangeTaskType'}
+								#{if connected.in(p).can('canChangeTaskType')}
 								 <span style="display:none"> ${flag5=true}</span>
-								#{/secure.check}
+								#{/if}
 								
 								
 								#{if flag5 || controllers.Security.getConnected().equals(task.assignee)}
