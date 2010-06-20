@@ -144,12 +144,14 @@ public class Requests extends SmartCRUD {
 	 * @author Amr Tj.Wallas
 	 * @param hash
 	 *            : to find the request that was ignored
+	 * @param body
+	 *           The body of the notification message that will be sent.
 	 * @throws Throwable
 	 * @see models.Request
 	 * @Task C1S14
 	 */
 	// @Check ("canManageRequests")
-	public static void requestIgnore(String hash) throws Throwable {
+	public static void requestIgnore(String hash, String body) throws Throwable {
 		if (hash == null)
 			Secure.login();
 		Request x = Request.find("byHash", hash).first();
@@ -160,7 +162,10 @@ public class Requests extends SmartCRUD {
 		if (!x.isDeletion) {
 			Notifications.notifyUsers(x.user, "Role Request Denied", "Your Role request to be " + x.role.name + " in " + y.name + " has been denied", (byte) -1);
 		} else {
+			if(body == null)
 			Notifications.notifyUsers(x.user, "deletion request from project denied", "You deletion request from project " + x.project.name + " has been denied.", (byte) -1);
+			else
+				Notifications.notifyUsers(x.user, "deletion request from project denied", "You deletion request from project " + x.project.name + " has been denied because "+body+".", (byte) -1);
 		}
 		User myUser = User.find("byEmail", Security.connected()).first();
 		Date dd = new Date();
