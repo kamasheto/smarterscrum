@@ -56,6 +56,8 @@ public class Logs extends SmartCRUD {
 	public static boolean addLog(User user, String action_type, String resource_type, long resource_id, Project project, Date date) {
 
 		Log newLog = new Log(user, action_type, resource_type, resource_id, project, date);
+		if (user.isAdmin)
+			newLog.madeBySysAdmin = true;
 
 		newLog.save(); /* Save That Log Entry */
 
