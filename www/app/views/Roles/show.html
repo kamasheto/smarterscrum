@@ -8,9 +8,9 @@
 	<div class="objectForm">
 	#{form action:@save(object.id), enctype:'multipart/form-data'}
 		<a href="javascript:check_all_perms();">Check all</a>, <a href="javascript:uncheck_all_perms();">uncheck all</a> or
-		import permissions from: <select id="inherit" onchange="import_permissions($('#inherit :selected').val());"><option value=0></option>
+		import permissions from: <select id="inherit" onchange="import_permissions($('#inherit :selected').val());">
 			#{list object.project.roles}
-				<option value="${_.id}">${_.name}</option>
+				<option value="${_.id}" ${_ == object ? 'selected' : ''}>${_.name}</option>
 			#{/list}
 		</select> <img id="loading" style="display:none;" src="/public/images/ajax-loader.gif" />
 		#{crud.form}
