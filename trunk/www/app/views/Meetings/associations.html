@@ -146,7 +146,7 @@ var temp=other.options.length;
 
 for(i=0;i<selectedArray.length;i++) {
 other.options[temp]=selectedArray[i];
-add(artifacts[i]);
+adda(artifacts[i]);
 temp++;
 }
 }
@@ -167,15 +167,15 @@ function removeArtifacts(){
 	var temp=other.options.length;
 	for(i=0;i<selectedArray.length;i++) {
 	other.options[temp]=selectedArray[i];
-	remove(artifacts[i]);
+	removea(artifacts[i]);
 	temp++;
 	}
 	}
-function add(input){
+function adda(input){
 	var send=input;
 	$.post('@{addArtifact()}',{id:${meeting.id},artifact:send},function(){});
 }
-function remove(input){
+function removea(input){
 	var send=input;
 	$.post('@{removeArtifact()}',{id:${meeting.id},artifact:send},function(){});
 }
@@ -183,7 +183,7 @@ function remove(input){
 	
 <select id="artifacts" multiple="yes" style="width: 300px;">
 		#{list items:artifacts, as:'artifact'}
-	<option>${artifact.description}</option>
+	<option label="${artifact.description}" value="${artifact.id}"></option>
 #{/list}
  <input type="button" value="Add" onclick="addArtifacts()"></input>
  <input type="button" value="Remove" onclick="removeArtifacts()"></input>
@@ -191,31 +191,84 @@ function remove(input){
 	
 	<select id="meetingartifacts" multiple="yes" style="width: 300px;">
 	#{list items:meeting.artifacts, as:'artifact'}
-	<option>${artifact.description}</option>
+	<option label="${artifact.description}" value="${artifact.id}"></option>
 #{/list}
-	</select>"
+	</select>
 	</div>
 	
 	<!--end of minazaki part -->
 	 
 	<!-- hossam sharaf's part-->
 	<h3><a>Associated Tasks</a></h3> 
-	<div> 
-	#{if meeting.project.tasks.size() >0}
-	<div class="tiny_info">Associated tasks are in bold</div>
-	#{/if}
-	#{else}
-	<div>There are no tasks at the moment</div>
-	#{/else}
-	<ul>
-		#{list items:meeting.project.tasks, as:'task'}
-	<li id=${task.id} class="${ meeting.tasks.contains(task) ? 'bold' : '' }">
-		<a href='javascript:toggletask(${task.id})'>${task.description}</a> 
-	</li> 
+<div>
+		<script type="text/javascript">
+function addTasks(){
+var obj=document.getElementById('tasks');
+var selectedArray=new Array();
+var artifacts=new Array();
+var count=0;
+for (i=0; i<obj.options.length; i++) {
+    if (obj.options[i].selected) {
+      selectedArray[count] = obj.options[i];
+      artifacts[count]=obj.options[i].value;
+      count++;
+    }
+  }
+
+var other=document.getElementById('meetingtasks');
+var temp=other.options.length;
+
+for(i=0;i<selectedArray.length;i++) {
+other.options[temp]=selectedArray[i];
+add(artifacts[i]);
+temp++;
+}
+}
+function removeTasks(){
+	var obj=document.getElementById('meetingtasks');
+	var selectedArray=new Array();
+	var artifacts=new Array();
+	var count=0;
+	for (i=0; i<obj.options.length; i++) {
+	    if (obj.options[i].selected) {
+	      selectedArray[count] = obj.options[i];
+	      artifacts[count]=obj.options[i].value;
+	      count++;
+	    }
+	  }
+
+	var other=document.getElementById('tasks');
+	var temp=other.options.length;
+	for(i=0;i<selectedArray.length;i++) {
+	other.options[temp]=selectedArray[i];
+	remove(artifacts[i]);
+	temp++;
+	}
+	}
+function add(input){
+	var send=input;
+	$.post('@{addTask()}',{id:${meeting.id},task:send},function(){});
+}
+function remove(input){
+	var send=input;
+	$.post('@{removeTask()}',{id:${meeting.id},task:send},function(){});
+}
+</script>
+<select id="tasks" multiple="yes" style="width: 300px;">
+		#{list items:tasks, as:'task'}
+	<option label="${task.description}" value="${task.id}"></option>
 #{/list}
+ <input type="button" value="Add" onclick="addTasks()"></input>
+ <input type="button" value="Remove" onclick="removeTasks()"></input>
+</select>
+	
+	<select id="meetingtasks" multiple="yes" style="width: 300px;">
+	#{list items:meeting.tasks, as:'task'}
+	<option label="${task.description}" value="${task.id}"></option>
+#{/list}
+	</select>
+	</div>
 <!-- end hossam sharaf's part-->
-</ul>
-	</div> 
 	<h3><a>Associated Components</a></h3>
 	<!-- Amr Hany Part-->
 	<div> 
