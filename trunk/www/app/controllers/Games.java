@@ -29,9 +29,9 @@ public class Games extends SmartController {
 	 * @param cId
 	 *            component id
 	 */
-	@Check ("canStartGame")
 	public static void chooseStories(long cId) {
 		Component c = Component.findById(cId);
+		Security.check( c.componentUsers.contains( Security.getConnected()));
 		render(c);
 	}
 
