@@ -162,6 +162,17 @@ You are not a user in this component, you cannot view their tasks.
 	<strong>NOTE: </strong>to view the task report click on the <img src="@{'public/images/note.png'}"/> next to the corresponding task. 
 	<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
 
+	 #{if connected.in(project).can('editBacklog')}
+          <span style="display:none"> ${flag=true}</span>
+     #{/if}
+          
+	#{ifnot flag}
+	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+	<strong>NOTE: </strong>Editing is not allowed. 
+	<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
+	#{/ifnot}
+
 <!--@author ahmedkhaled7 c4S4/c4s5  
 check boxes for choosing the columns to be hidden -->
 
@@ -215,9 +226,7 @@ ${storyTask.get(0).taskStory.description}</a></h3>
 			title="view the task reports?" href="@{Tasks.getReport(task.id)}"><img
 			src="@{'public/images/note.png'}" /></a> </span>${task.id}</td>
 
-          #{secure.check 'canEditSprintBacklog'}
-          <span style="display:none"> ${flag=true}</span>
-          #{/secure.check}
+         
         
          #{ifnot user.id==task.assignee.id || flag}
 

@@ -98,7 +98,15 @@ $(function()
 </script>
 #{/set}
 #{/ifnot}
+#{else}
+<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+	<strong>NOTE: </strong>Editing is not allowed as there is a sprint running. 
+	<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
+#{/else}
 </div>
+
+
 <!-- @author ahmedkhaled7 C4 S2,S3
  Creating a table , then Looping on the list of stories rendered to this page
  and putting the attributes of each story(id,description , dependent stories, successSenario
