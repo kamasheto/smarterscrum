@@ -577,3 +577,8 @@ select#object_permissions {
 .userNotInProject {
 	color:#aaaaaa;
 }
+input.disabled {
+	background:#bbb;
+	color:#444;
+	text-shadow: #fff 1px 1px 1px;
+}

@@ -14,11 +14,13 @@ ${project.description?.nl2br()}
         <div class="notch">
         </div></div>
 <a href="#" onclick="$('#roles').toggle()">Project Roles</a>
-<div id="roles" class="roles" style="display:none;width:300px">
+<div id="roles" class="roles" style="display: block; width:300px;">
 	#{list items:project.roles, as:'role'}
+		#{set requested: requestedRoles.contains(role) /}
 		<div style="float:left;width:200px;">${role.name}</div>
 		<div style="float:left;">
-		<form style="display:inline;" action="/projecttasks/requestrole?id=${role.id}" method="post"><input type="submit" value="request" ${requestedRoles.contains(role)?'disabled':''} /></form>
+		<form style="display:inline;" action="/projecttasks/requestrole?id=${role.id}" method="post">
+			<input type="submit" value="request${requested ? 'ed' : ''}" class="${requested ? 'disabled' : ''}" ${requested ? 'disabled':''} /></form>
 		</div>	
 <br  style="clear:both;"  />
 	#{/list}
