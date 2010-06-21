@@ -779,6 +779,73 @@ public class Bootstrap extends Job
 			T34.save();
 			
 			
+			Task T35 = new Task();
+			T35.description = "Senario testing";
+			T35.taskStory = S6;
+			T35.taskStatus = S6.componentID.project.taskStatuses.get( 0 );
+			T35.taskType = S6.componentID.project.taskTypes.get( 0 );
+
+			T35.reporter = users.get( 11 );
+			T35.assignee = users.get( 12 );
+			T35.reviewer = users.get( 13 );
+			T35.estimationPoints = 1.0;
+			T35.taskSprint = Sp1;
+			Sp1.tasks.add( T35 );
+			S7.componentID.project.taskStatuses.get( 0 ).Tasks.add( T35 );
+			S7.storiesTask.add( T35 );
+			T35.save();
+			
+			Task T36 = new Task();
+			T36.description = "Documentation testing";
+			T36.taskStory = S6;
+			T36.taskStatus = S6.componentID.project.taskStatuses.get( 0 );
+			T36.taskType = S6.componentID.project.taskTypes.get( 0 );
+
+			T36.reporter = users.get( 11 );
+			T36.assignee = users.get( 12 );
+			T36.reviewer = users.get( 13 );
+			T36.estimationPoints = 1.0;
+			T36.taskSprint = Sp1;
+			Sp1.tasks.add( T36 );
+			S7.componentID.project.taskStatuses.get( 0 ).Tasks.add( T36 );
+			S7.storiesTask.add( T36 );
+			T36.save();
+			
+			Task T37 = new Task();
+			T37.description = "Senario testing";
+			T37.taskStory = S6;
+			T37.taskStatus = S6.componentID.project.taskStatuses.get( 0 );
+			T37.taskType = S6.componentID.project.taskTypes.get( 0 );
+
+			T37.reporter = users.get( 11 );
+			T37.assignee = users.get( 12 );
+			T37.reviewer = users.get( 13 );
+			T37.estimationPoints = 1.0;
+			T37.taskSprint = Sp1;
+			Sp1.tasks.add( T37 );
+			S7.componentID.project.taskStatuses.get( 0 ).Tasks.add( T37 );
+			S7.storiesTask.add( T37 );
+			T37.save();
+			
+			
+			Task T38 = new Task();
+			T38.description = "Senario testing";
+			T38.taskStory = S6;
+			T38.taskStatus = S6.componentID.project.taskStatuses.get( 0 );
+			T38.taskType = S6.componentID.project.taskTypes.get( 0 );
+
+			T38.reporter = users.get( 11 );
+			T38.assignee = users.get( 12 );
+			T38.reviewer = users.get( 13 );
+			T38.estimationPoints = 1.0;
+			T38.taskSprint = Sp1;
+			Sp1.tasks.add( T38 );
+			S7.componentID.project.taskStatuses.get( 0 ).Tasks.add( T38 );
+			S7.storiesTask.add( T38 );
+			T38.save();
+			
+			
+			
 			// ************ LOGS BEGIN ************
 			for( int l = 0; l < 30; l++ )
 			{
