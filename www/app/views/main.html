@@ -25,8 +25,10 @@
         
         <script type="text/javascript">
        		$(function(){
-
-       		
+/*
+           	    var x = $("#login").html();
+           	    $('#logger').html(x);
+           	    $('#login').remove();*/
        			$("#breadCrumb").jBreadCrumb();
        			$('.formatDate').each(function(){
 					$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );
@@ -37,96 +39,160 @@
    			    $("a").tipTip({delay:0});
    			    $("td").tipTip({delay:0});
    			    $("span").tipTip({delay:0});
+   			    
    			    $("button").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
    			    $("a button").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-
    			    $("input[type='submit']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
    			    $("input[type='button']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
    			    $("input[type='ok']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
    			    $("input[type='add']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
    			    $("input[type='send']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-
+   			    
    			    $('div.crudField').each(function(){
 						if ($(this).html().trim() == '') {
 							$(this).remove();
 						}
    	   			    });
-	   			    #{secure.check 'loggedIn'}
-		 			getNotifications();
-					ping();
-	   			    #{/secure.check}
+   			    #{secure.check 'loggedIn'}
+	 			getNotifications();
+				ping();
+   			    #{/secure.check}
        		});
         </script>
-    </head>
-    <body onload="#{get 'onLoad' /}" onunload="#{get 'onUnLoad'/}">
-    
-    
-    <div style="postion:relative;top:0px;left:0px;z-index:9;display:inline-block;margin-bottom:-80px;float;left">
-    
-	    	<a href="/" title="Because we are the smartest"><img src="@{'public/images/tag.png'}" height="150px"/></a>
-    </div>
-    <!-- $('#THELOADER').css('display','none');
-    	<div id="THELOADER"style="z-index:22;top:0px;left:0px;position:fixed;width:100%;height:100%;background-color:rgba(0,0,0,0.4)">
-	    	<div style="text-align:center; padding-top:15%">
-	    	<img src="@{'public/images/ajax-loader.gif'}"/>
-	    	</div>
-    	</div> -->
-    	<div class="navMAIN" style="margin-top:-30px; margin-bottom:50px">
-			<a class="leftMAIN"href="/" title="Go back home?">Home</a>
-			#{secure.check 'systemAdmin'}
-				<a class="middleMAIN"href="/admin/projects" title="View the admin panel" href="/admin/projects" style="color:#E5A1A5;">Admin Panel</a>
-				#{/secure.check}
-				#{secure.check 'loggedIn'}
-				<a class="middleMAIN"style="width:120px !important" title="Want to see your projects?"href="@{Projects.myProjects()}">My Projects</a>
-				#{/secure.check}
-			<a class="middleMAIN"href="@{Show.users}" title="show users?">View Users</a>
-			<a class="rightMAIN" href="@{Show.projects}" title="view all projects?">View Projects</a>
-		</div>
-		#{secure.check 'loggedIn'}
-		
-    	<br style="clear:both;" />
-	    	<div id="breadCrumb" class="breadCrumb module">
-		    	<ul>
-		        	<li><a href="/">Home</a></li>
-		        	#{get 'crumbs' /}
-	           </ul>
-	    	</div>
-    	<br style="clear:both;" />
-		#{/secure.check}
-    	<br style="clear:both;" />
-    	
-    	#{secure.check 'loggedIn'}
-    	<div id="left_menu">
-    	 <div class="inner" style="float:left">
-			<div class="smartBarContent">
-				<div class="smartBarHeader">Tools</div>
-				#{get 'moreLinks' /}
-			</div>
-			<div class="smartBarContent">
-				<div class="smartBarHeader">My Controls</div>
-				You are logged in as ${connected.name}. 
-				<p><a href="/show/user?id=${connected.id}"> View my Profile</a></p>
-				
-				<p>#{get 'moreControls'/}</p>
-				<a href="/sessions/logout" title="Logout from the system">Logout</a>
+</head>
 
-			</div>
-			<div class="smartBarContent">
-				<div class="smartBarHeader">Online Users</div>
-				<div id="onlineUsers"></div>
+<body onload="#{get 'onLoad' /}">
+<div style="position:relative; top:0px; right:10px">
+		<div class="inline-block right" style="background-color:#111; width: 20px; height: 20px;">
+			<div class="curlyNotchTopLeft"style="background: url('@{'/public/images/bg2.png'}') repeat-x fixed left top;">
 			</div>
 		</div>
-		</div>
+
+
+	<div class="bottomCornersRounded right" style="padding: 10px 10px 10px 10px; background-color: #111; overflow: auto;">
+		<input class="search" type="text" /><input class="searchBtn" type="button" value="search" /></div>
 		
-		<div id="THECONTENT">
-    	#{/secure.check}
-		        #{doLayout /}
-		#{secure.check 'loggedIn'}
+<div class="inline-block right" style="background-color:#111; width: 20px; height: 20px;">
+			<div class="curlyNotchTopRight" style="background: url('@{'/public/images/bg2.png'}') repeat-x fixed left top;">
+			</div>
+</div>
+</div>
+<div style="background: url('@{'/public/images/bg2.png'}') repeat-x scroll left top; width: 100%;height:156px">
+<div class="left"><a  href="/" title="Go back home?"><img src="@{'/public/images/smartsoft.png'}"/></a></div>
+<br style="clear:both"/>
+<div class="right">
+#{secure.check 'systemAdmin'}
+	<a class="aDIV topCornersRounded" href="/admin/projects" style="color: #E5A1A5;" title="View the admin panel">Admin Panel</a>
+#{/secure.check}
+<a class="aDIV topCornersRounded" href="#" title="read aboout SmartSoft?">About Us</a>
+	<a class="aDIV topCornersRounded" href="@{Show.users}" title="show users?">Users</a>
+	<a class="aDIV topCornersRounded" href="@{Show.projects}" title="view all projects?">Projects</a> </div>
+</div>
+
+<div class="topper">
+#{secure.check 'loggedIn'}
+	Hello ${controllers.Security.getConnected().name}!&nbsp;&nbsp;|&nbsp;&nbsp;
+	<a href="/show/user?id=${controllers.Security.getConnected().id}">Profile</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	<a href="@{Projects.myProjects()}" style="width: 120px !important" title="Want to see your projects?">My Projects</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	<a href="/secure/logout" title="Logout from the system">[x] Logout</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+#{/secure.check}	
+Switch Theme&nbsp;&nbsp;
+
+<a href="@{Accounts.register}" #{secure.check 'loggedIn'} style="display:none"#{/secure.check}>|&nbsp;&nbsp;Register</a>
+	</div>
+
+
+<table cellpadding="0" style="width: 100%" class="myTables">
+	<tr>
+		<td>
+		<table cellpadding="0" class="myTables" style="width: 100%; overflow: auto">
+			<tr>
+				<td style="width: 47px">
+				<img alt="" src="@{'/public/images/topleft.png'}" /></td>
+				<td>
+				<div class="left" style="position:relative;z-index:0;background: url('@{'/public/images/topcenter.png'}') repeat-x scroll left top; height: 43px; width: 100%">
+				</div>
+				</td>
+				<td style="width: 47px">
+				<img alt="" src="@{'/public/images/topright.png'}" /></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<div style="padding: 0px 14px 0px 14px; vertical-align: top">
+			<div style="background-color: #fff; overflow: auto;">
+				<table style="width: 100%" class="myTables">
+					<tr>
+						<td style="width: 200px; vertical-align: top; border-right:1px #ddd solid">
+						<div id="logger">
+					
+						
+						</div>
+						#{secure.check 'loggedIn'}
+						<div class="sideBar bottomCornersRounded" style="vertical-align: top">
+							<div class="block">
+								<div class="left inline-block" style="color: rgb(158, 53, 114); margin-top:10px;font-size:30px;line-height:10px;">{</div>
+								<div class="sideBarHeading inline-block left">Tools</div>		
+								<div class="left inline-block"  style="color: rgb(158, 53, 114); margin-top:10px;font-size:30px;line-height:10px;">}</div>
+							</div>
+							<br style="clear:both"/>
+							<div class="sideBarElements">
+								#{get 'moreLinks' /}
+								#{get 'moreControls'/}
+							</div>
+						</div>
+						#{/secure.check}
+						</td>
+						<td style="vertical-align: top; padding: 10px;">
+						<div class="left" style="width: 100%; vertical-align: top">
+							#{secure.check 'loggedIn'}
+							<div id="breadCrumb" class="breadCrumb module">
+								<ul>
+									<li><a href="/">Home</a></li>
+									<li>#{get 'crumbs' /} </li>
+								</ul>
+							</div>
+										
+							
+							#{/secure.check}
+							<br/>
+							<div style="margin-top:35px">
+							#{doLayout /}
+							</div>
+						</div>
+						</td>
+					</tr>
+				</table>
+			</div>
 		</div>
-		<br style="clear:both;" />
-		#{/secure.check}
-		<div style="text-align:center;font-size:9px; padding:10px; display:block;color:#666;">all rights reserved  &copy; smartsoft, 2010<br />made with <span style="font-size:10px;color:#F33A78">♥</span> (lots and lots of it)</div>
-		<script type="text/javascript">
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<table class="myTables"cellpadding="0" class="myTables" style="width: 100%; overflow: auto">
+			<tr>
+				<td style="width: 43px">
+				<img alt="" src="@{'/public/images/bottomleft.png'}" /></td>
+				<td>
+				<div class="left" style="position:relative;z-index:0;background: url('@{'/public/images/bottomcenter.png'}') repeat-x scroll left top; height: 43px; width: 100%">
+				</div>
+				</td>
+				<td style="width: 43px">
+				<img alt="" src="@{'/public/images/bottomright.png'}" /></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+
+
+<div style="text-align: center; font-size: 9px; display: block;padding:10px;background:#fff; margin:10px auto 10px auto; width:320px" class="allCornersRounded">
+
+			all rights reserved &copy; smartsoft, 2010 <br/> made with <span style="font-size: 10px; color: #F33A78">♥</span> (lots and lots of it) </div>		
+
+<script type="text/javascript">
 		var getNotifications = function() {
 				$.getJSON('/notificationtasks/getlatestnews',
 					function(data) {
@@ -166,5 +232,9 @@ var ping = function() {
 				time: 5000 // hang on the screen for...
 			});
 			</script>
-    </body>
+
+
+</body>
+
 </html>
+
