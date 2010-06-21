@@ -207,7 +207,7 @@ public class Meetings extends SmartCRUD {
 	 */
 
 	@Check ("canEditMeeting")
-	public static void saveChanges(long id, String name, String description, long startTime, long endTime, String location, boolean infrontBoard, String sprintId) {
+	public static void saveChanges(long id, String name, String description, long startTime, long endTime, String location, String sprintId) {
 		Meeting m = Meeting.findById(id);
 		Date currentDate = new Date();
 		long longCurrentDate = currentDate.getTime();
@@ -225,7 +225,6 @@ public class Meetings extends SmartCRUD {
 			m.endTime = endTime;
 			m.description = description;
 			m.location = location;
-			m.infrontBoard = infrontBoard;
 			m.name = name;
 			/**
 			 * adding the sprint to the meeting
