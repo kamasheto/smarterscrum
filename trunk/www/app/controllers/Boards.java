@@ -38,14 +38,22 @@ public class Boards extends SmartCRUD {
 		List<Component> components = p.getComponents();
 		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>();
 		List<Column> columns = b.columns;
-		columns = orderColumns(columns);
-		List<Column> columnsOfBoard=new ArrayList<Column>();
 		
+		List<Column> columnsOfBoard=new ArrayList<Column>();
+		List<Column> hidencolumnsOfBoard=new ArrayList<Column>();
 		for( int i=0; i<columns.size();i++)
 		{
 			if(columns.get( i ).onBoard==true)
 			{
 				columnsOfBoard.add( columns.get( i ) );
+			}
+		}
+		columnsOfBoard = orderColumns(columnsOfBoard);
+		for( int i=0; i<columns.size();i++)
+		{
+			if(columns.get( i ).onBoard!=true)
+			{
+				hidencolumnsOfBoard.add( columns.get( i ) );
 			}
 		}
 		for (int i = 0; i < components.size(); i++) {
@@ -58,7 +66,7 @@ public class Boards extends SmartCRUD {
 				data.get(i).set(j, new ArrayList<Task>());
 			}
 			for (Task task : tasks) {
-				data.get(i).get(columnsOfBoard.indexOf(task.taskStatus.column)).add(task);
+				data.get(i).get(columns.indexOf(task.taskStatus.column)).add(task);
 			}
 		}
 
@@ -112,7 +120,7 @@ public class Boards extends SmartCRUD {
 			System.out.print(columnsOfBoard.get( i ).name+ " ");
 		}
 		System.out.println();
-		render(data, columnsOfBoard, u, b, s, p, total,columns);
+		render(data, columnsOfBoard,hidencolumnsOfBoard, u, b, s, p, total,columns);
 
 	}
 
@@ -164,14 +172,22 @@ public class Boards extends SmartCRUD {
 		ArrayList<User> u = new ArrayList<User>();
 		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>();
 		List<Column> columns = b.columns;
-		columns = orderColumns(columns);
-		List<Column> columnsOfBoard=new ArrayList<Column>();
 		
+		List<Column> columnsOfBoard=new ArrayList<Column>();
+		List<Column> hidencolumnsOfBoard=new ArrayList<Column>();
 		for( int i=0; i<columns.size();i++)
 		{
 			if(columns.get( i ).onBoard==true)
 			{
 				columnsOfBoard.add( columns.get( i ) );
+			}
+		}
+		columnsOfBoard = orderColumns(columnsOfBoard);
+		for( int i=0; i<columns.size();i++)
+		{
+			if(columns.get( i ).onBoard!=true)
+			{
+				hidencolumnsOfBoard.add( columns.get( i ) );
 			}
 		}
 		for (int i = 0; i < users.size(); i++) {
@@ -185,7 +201,7 @@ public class Boards extends SmartCRUD {
 			}
 
 			for (Task task : tasks) {
-				data.get(i).get(columnsOfBoard.indexOf(task.taskStatus.column)).add(task);
+				data.get(i).get(columns.indexOf(task.taskStatus.column)).add(task);
 			}
 
 		}
@@ -222,6 +238,6 @@ public class Boards extends SmartCRUD {
 			}
 
 		}
-		render(data, columnsOfBoard, u, s, c, p, total);
+		render(data, columnsOfBoard,hidencolumnsOfBoard, u, s, c, p, total);
 	}
 }
