@@ -27,9 +27,9 @@
 <a href="@{Snapshots.loadsnapShot(meeting.snapshot.id)} " >View associated Snapshot</a>
 #{/if}
 <br>
-#{secure.check 'canDeleteMeeting' }
+#{if connected.in(meeting.project).can('deleteMeeting')}
 <a href = "#"  name="deleteMeeting" onclick="delete_meeting(${meeting.id}, ${meeting.project.id})"  >Delete this meeting</a>
-#{/secure.check}
+#{/if}
 #{/set}
 
 <script type="text/javascript"> 
