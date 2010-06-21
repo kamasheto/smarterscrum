@@ -32,7 +32,7 @@ public class Meetings extends SmartCRUD {
 	 * @author Ghada Fakhry
 	 * @param projectID
 	 */
-	@Check ("canAddMeeting")
+	//@Check ("canAddMeeting")
 	public static void blank(long id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -40,14 +40,23 @@ public class Meetings extends SmartCRUD {
 		List<Sprint> sprints = currentProject.upcomingSprints();
 		User creator = Security.getConnected();
 		List<String> types = currentProject.meetingTypes();
-		// params.add("projectID", projectID);
-		// params.flash();
-		try {
+		
+		
+		
+		if( Security.getConnected().in( currentProject ).can( "addMeeting" ) )
+		{
+			try
+			{
 
-			render(type, currentProject, creator, sprints, types);
-		} catch (TemplateNotFoundException e) {
-			render("CRUD/blank.html", type);
+				render(type, currentProject, creator, sprints, types);
+			}
+			catch( TemplateNotFoundException e )
+			{
+				render( "CRUD/blank.html", type );
+			}
 		}
+		else
+			forbidden();		
 	}
 
 	/**
@@ -363,44 +372,52 @@ public static void addTask(long id,long task){
 	 * @author Ghada Fakhry
 	 * @param id
 	 */
-	@Check ("canDeleteMeeting")
+	//@Check ("canDeleteMeeting")
 	public static void deleteMeeting(long id) {
 		Meeting meeting = Meeting.findById(id);
+	   Project currentProject = meeting.project;
 		long longTempStart = meeting.startTime;
-		meeting.deleted = true;
-		String message = "";
-		Date currDate = new Date();
-		long longCurrDate = currDate.getTime();
-		List<MeetingAttendance> attendees = MeetingAttendance.find("byMeeting.id", meeting.id).fetch();
-		List<User> users = new ArrayList<User>();
-		while (attendees.isEmpty() == false) {
-			users.add(attendees.remove(0).user);
-		}
+		if( Security.getConnected().in( currentProject ).can( "deleteMeeting" ) )
+		{
+			meeting.deleted = true;
+			String message = "";
+			Date currDate = new Date();
+			long longCurrDate = currDate.getTime();
+			List<MeetingAttendance> attendees = MeetingAttendance.find("byMeeting.id", meeting.id).fetch();
+			List<User> users = new ArrayList<User>();
+			while (attendees.isEmpty() == false) {
+				users.add(attendees.remove(0).user);
+			}
 
-		if (longCurrDate < longTempStart) {
-			meeting.status = false;
-			if (users.isEmpty() == false)
-				message = "unfortunately " + meeting.name + " meeting that you've been invited to is cancelled";
-			Notifications.notifyUsers(users, "Meeting Canceled", message);
-		}
+			if (longCurrDate < longTempStart) {
+				meeting.status = false;
+				if (users.isEmpty() == false)
+					message = "unfortunately " + meeting.name + " meeting that you've been invited to is cancelled";
+				Notifications.notifyUsers(users, "Meeting Canceled", message);
+			}
 
-		List<Artifact> artifacts = meeting.artifacts;
-		boolean flag = false;
-		while (artifacts.isEmpty() == false) {
-			Artifact temp = artifacts.remove(0);
-			String type = temp.type;
-			if (type.equals("Notes"))
-				flag = true;
-		}
-		if (flag) {
-			if (users.isEmpty() == false)
-				message = "unfortunately " + meeting.name + " meeting notes are deleted :(";
-			Notifications.notifyUsers(users, "Meeting Notes deleted", message);
-		}
-		Logs.addLog(Security.getConnected(), "delete", "Meeting", meeting.id, meeting.project, new Date(System.currentTimeMillis()));
-		meeting.save();
-		redirect("/projects/" + meeting.project.id + "/meetings");
+			List<Artifact> artifacts = meeting.artifacts;
+			boolean flag = false;
+			while (artifacts.isEmpty() == false) {
+				Artifact temp = artifacts.remove(0);
+				String type = temp.type;
+				if (type.equals("Notes"))
+					flag = true;
+			}
+			if (flag) {
+				if (users.isEmpty() == false)
+					message = "unfortunately " + meeting.name + " meeting notes are deleted :(";
+				Notifications.notifyUsers(users, "Meeting Notes deleted", message);
+			}
+			Logs.addLog(Security.getConnected(), "delete", "Meeting", meeting.id, meeting.project, new Date(System.currentTimeMillis()));
+			meeting.save();
+			redirect("/projects/" + meeting.project.id + "/meetings");
 
+			
+		}
+		else
+			forbidden() ;
+		
 	}
 
 	/**
