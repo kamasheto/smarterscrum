@@ -240,16 +240,21 @@ public class Boards extends SmartCRUD {
 		}
 		render(data, columnsOfBoard,hidencolumnsOfBoard, u,b, s, c, p, total);
 	}
-	public static void showHiddenColumn(String name,Board b)
+	public static void showHiddenColumn(String name,long id)
 	{
-		List<Column> columns = b.columns;
+		Board b=Board.findById( id );
+		Column c=Column.find("byNameAndBoard", name, b).first();
+		c.onBoard=true;
+		System.out.println(name);
+		System.out.println(id);
+		/*List<Column> columns = b.columns;
 		for(int i=0;i<columns.size();i++)
 		{
 			if(columns.get( i ).name.equalsIgnoreCase( name ))
 			{
 				columns.get( i ).onBoard=true;
 			}
-		}
+		}*/
 		
 	}
 }
