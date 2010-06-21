@@ -242,12 +242,11 @@ public class Boards extends SmartCRUD {
 	}
 	public static void showHiddenColumn(long cid,long bid)
 	{
-		
-		
 		System.out.println(cid);
-		
 		Column c=Column.findById( cid );
+		System.out.println(c.name);
 		c.onBoard=true;
+		c.save();
 		/*List<Column> columns = b.columns;
 		for(int i=0;i<columns.size();i++)
 		{
