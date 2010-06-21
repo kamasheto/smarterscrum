@@ -200,6 +200,15 @@ $(function(){
 	#{/list}
 	
 	</select>
+	
+	<div>
+	<select id="showCol" onchange="">
+	<option value="">view hiden columns</option>
+	#{list items:hidencolumnsOfBoard, as:'c'}
+	<option value= "${c.name}">${c.name}</option>
+	#{/list}
+	</div>
+	</select>
 		<div id="drag">
 
 		<table id="mainBoard" class="draggable"  border="1">
