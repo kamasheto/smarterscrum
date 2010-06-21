@@ -6,7 +6,8 @@ import models.ChatRoom;
 import models.Message;
 import models.User;
 
-public class ChatSystem extends SmartController {
+public class ChatSystem extends SmartController
+{
 
 	/**
 	 * Add message method that adds a new message being sent to the system in
@@ -17,11 +18,11 @@ public class ChatSystem extends SmartController {
 	 * @param id
 	 *            : which is the room ID
 	 */
-	public static void addMessage(String message, long id) {
-
-		ChatRoom room = ChatRoom.findById(id);
-		new Message(Security.getConnected().name, message, room).save();
-
+	public static void addMessage( String message, long id )
+	{
+		ChatRoom room = ChatRoom.findById( id );
+		Security.check( Security.getConnected().projects.contains( room.project ) );
+		new Message( Security.getConnected().name, message, room ).save();
 	}
 
 	/**
@@ -34,17 +35,21 @@ public class ChatSystem extends SmartController {
 	 * @param id
 	 *            : which is the room ID
 	 */
-	public static void newMessages(long id) {
-		ChatRoom room = ChatRoom.findById(id);
-		List<Message> messages = Message.find("room = ?1 and stamp > ?2", room, request.date.getTime()).fetch();
-		if (messages.isEmpty()) {
-			suspend("1s");
+	public static void newMessages( long id )
+	{
+		ChatRoom room = ChatRoom.findById( id );
+		Security.check( Security.getConnected().projects.contains( room.project ) );
+		List<Message> messages = Message.find( "room = ?1 and stamp > ?2", room, request.date.getTime() ).fetch();
+		if( messages.isEmpty() )
+		{
+			suspend( "1s" );
 		}
-		for (Message m : messages) {
+		for( Message m : messages )
+		{
 			m.room = null;
 		}
 
-		renderJSON(messages);
+		renderJSON( messages );
 	}
 
 	/**
@@ -55,11 +60,12 @@ public class ChatSystem extends SmartController {
 	 * @param id
 	 *            which is the room ID
 	 */
-	public static void enterChat(long id) {
-
-		ChatRoom room = ChatRoom.findById(id);
+	public static void enterChat( long id )
+	{
+		ChatRoom room = ChatRoom.findById( id );
+		Security.check( Security.getConnected().projects.contains( room.project ) );
 		User currentUser = Security.getConnected();
-		new Message("notice", currentUser.name + " has entered the chat", room).save();
+		new Message( "notice", currentUser.name + " has entered the chat", room ).save();
 	}
 
 	/**
@@ -70,10 +76,12 @@ public class ChatSystem extends SmartController {
 	 * @param id
 	 *            which is the room ID
 	 */
-	public static void leaveChat(long id) {
-		ChatRoom room = ChatRoom.findById(id);
+	public static void leaveChat( long id )
+	{
+		ChatRoom room = ChatRoom.findById( id );
+		Security.check( Security.getConnected().projects.contains( room.project ) );
 		User currentUser = Security.getConnected();
-		new Message("notice", currentUser.name + " has left the chat", room).save();
+		new Message( "notice", currentUser.name + " has left the chat", room ).save();
 	}
 
 	/**
@@ -84,9 +92,11 @@ public class ChatSystem extends SmartController {
 	 *            :room id
 	 */
 
-	public static void viewRoom(long id) {
-		ChatRoom room = ChatRoom.findById(id);
+	public static void viewRoom( long id )
+	{
+		ChatRoom room = ChatRoom.findById( id );
+		Security.check( Security.getConnected().projects.contains( room.project ) );
 		User currentUser = Security.getConnected();
-		render(room, currentUser);
+		render( room, currentUser );
 	}
 }
