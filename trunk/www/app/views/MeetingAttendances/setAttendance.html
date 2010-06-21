@@ -4,34 +4,38 @@
 <li><a href="/show/projects">Projects</a></li>
 <li><a href="/show/project?id=${meeting.project.id}">${meeting.project.name}</a></li>
 <li><a href="/projects/${meeting.project.id}/meetings"> Meetings and Events</a> </li>
-<li><a href="/meetings/${meeting.id}">${meeting.name}</li>
+<li><a href="/meetings/${meeting.id}">${meeting.name}</a></li>
 #{/set}
 
 <h3>${meeting.name} Attendance list</h3>
 
 Here you can set the attendance of the users invited to ${meeting.name}
 <br/>
-<br/>
 Please note that When changing the status to not attending, you must enter a reason and click Set reason button to change the status.
 <br/>
+<br/>
+
 
 
 #{list items:attendances, as:'attendance'}
 	<li>
+		<div style="width:200px !important">
 		<a href="@{Show.user(attendance.user.id)}">${attendance.user.getDisplayName(meeting.project).raw()}</a>
-		&nbsp<input type="radio" id="attendance_${attendance.id}_confirmed" name="attendance_${attendance.id}" onclick="set_confirmed(${attendance.id});" value="confirmed" #{if attendance.status=='confirmed'}checked#{/if}  /> attended
-		&nbsp<input type="radio" id="attendance_${attendance.id}_declined" name="attendance_${attendance.id}" onclick="show_reason(${attendance.id});"value="declined" #{if attendance.status=='declined'}checked#{/if} /> did not attend
-		&nbsp<span id="reason_${attendance.id}" style="display: ${attendance.status=='declined'?'blocked':'none'};">
-			<input type=text id="text_reason_${attendance.id}" value="${attendance.reason}"/>
+		</div>
+		&nbsp&nbsp<input type="radio" id="attendance_${attendance.id}_confirmed" name="attendance_${attendance.id}" onclick="set_confirmed(${attendance.id});" value="confirmed" #{if attendance.status=='confirmed'}checked#{/if}  /> attended
+		&nbsp&nbsp<input type="radio" id="attendance_${attendance.id}_declined" name="attendance_${attendance.id}" onclick="show_reason(${attendance.id});"value="declined" #{if attendance.status=='declined'}checked#{/if} /> did not attend
+		&nbsp&nbsp<span id="reason_${attendance.id}" style="display: ${attendance.status=='declined'?'blocked':'none'};">
+			<input type=text id="text_reason_${attendance.id}" value="${attendance.reason}"/><span style="color:red">*</span>
 			<input type=button id="button_$(attendance.id}" onclick="set_declined(${attendance.id});" value="Set reason">
 		</span>
-		<span id="success_declined_${attendance.id}" style="display:none">
+		<span id="success_declined_${attendance.id}" style="display:none; font-style: italic; font-size :90%; color : red;">
 			&nbsp&nbsp Attendance changed to: did not attend
 		</span>
-		<span id="success_confirmed_${attendance.id}" style="display:none">
+		<span id="success_confirmed_${attendance.id}" style="display:none; font-style: italic; font-size :90%; color : green;">
 			&nbsp&nbsp Attendance changed to: attended
 		</span>
 	</li>
+	<br/>
 #{/list}
 
 <script type="text/javascript">
@@ -59,6 +63,7 @@ Please note that When changing the status to not attending, you must enter a rea
 			{
 				$('#success_declined_'+id).show();
 				$('#success_confirmed_'+id).hide();
+				$('#reason_'+id).hide();
 				
 			}
 			)

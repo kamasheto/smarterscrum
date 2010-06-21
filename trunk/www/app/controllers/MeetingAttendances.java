@@ -175,9 +175,15 @@ public class MeetingAttendances extends SmartCRUD
 	 */
 	public static void setAttendance( long meetingID )
 	{
+
 		Meeting meeting = Meeting.findById( meetingID );
-		List<MeetingAttendance> attendances = MeetingAttendance.find( "byMeeting.idAndDeleted", meetingID, false ).fetch();
-		render( attendances, meeting );
+		if( Security.getConnected().in( meeting.project ).can( "setMeetingAttendance" ) )
+		{
+			List<MeetingAttendance> attendances = MeetingAttendance.find( "byMeeting.idAndDeleted", meetingID, false ).fetch();
+			render( attendances, meeting );
+		}
+		else
+			forbidden();
 	}
 
 	/**
@@ -192,12 +198,18 @@ public class MeetingAttendances extends SmartCRUD
 	public static void setConfirmed( long id )
 	{
 		MeetingAttendance ma = MeetingAttendance.findById( id );
-		ma.status = "confirmed";
-		ma.save();
-		String header = "Attendance to " + ma.meeting.name;
-		String body = "Dear " + ma.user.getDisplayName( ma.meeting.project ) + "\n";
-		String body2 = "Your attendance to " + ma.meeting.name + " was confirmed.";
-		Notifications.notifyUsers( ma.user, header, body + body2, (byte) 1 );
+		if( Security.getConnected().in( ma.meeting.project ).can( "setMeetingAttendance" ) )
+		{
+			ma.status = "confirmed";
+			ma.reason = "";
+			ma.save();
+			String header = "Attendance to " + ma.meeting.name;
+			String body = "Dear " + ma.user.getDisplayName( ma.meeting.project ) + "\n";
+			String body2 = "Your attendance to " + ma.meeting.name + " was confirmed.";
+			Notifications.notifyUsers( ma.user, header, body + body2, (byte) 1 );
+		}
+		else
+			forbidden();
 	}
 
 	/**
@@ -207,17 +219,25 @@ public class MeetingAttendances extends SmartCRUD
 	 * 
 	 * @param id
 	 *            which is the MeetingAttendance id
+	 * @param reason
+	 *            which is the reason of decline.
 	 */
+
 	public static void setDeclined( long id, String reason )
 	{
 		MeetingAttendance ma = MeetingAttendance.findById( id );
-		ma.status = "declined";
-		ma.reason = reason;
-		ma.save();
-		String header = "Attendance to " + ma.meeting.name;
-		String body = "Dear " + ma.user.getDisplayName( ma.meeting.project ) + "\n";
-		String body2 = "Your attendance to " + ma.meeting.name + " was changed to NOT attended.";
-		Notifications.notifyUsers( ma.user, header, body + body2, (byte) 1 );
+		if( Security.getConnected().in( ma.meeting.project ).can( "setMeetingAttendance" ) )
+		{
+			ma.status = "declined";
+			ma.reason = reason;
+			ma.save();
+			String header = "Attendance to " + ma.meeting.name;
+			String body = "Dear " + ma.user.getDisplayName( ma.meeting.project ) + "\n";
+			String body2 = "Your attendance to " + ma.meeting.name + " was changed to NOT attended.";
+			Notifications.notifyUsers( ma.user, header, body + body2, (byte) 1 );
+		}
+		else
+			forbidden();
 	}
 
 }
