@@ -124,7 +124,12 @@ function showCol(c)
 {
 	$('.col_'+c).css('display','table-cell');	
 }
-
+function showHiddenCol(colName,b)
+{
+	$.post('/showHiddenColumn' ,			
+			{name:colName,						
+			board:b});
+}
 function popUp(URL) 
 {
 day = new Date();
@@ -213,7 +218,7 @@ End At
 
 <!-- view hidden Col by Hadeer -->	
 <div>
-<select id="showCol" onchange="">
+<select id="showCol" onchange="showHiddenCol(showCol.value,b)">
 <option value="">view hiden columns</option>
 #{list items:hidencolumnsOfBoard, as:'c'}
 <option value= "${c.name}">${c.name}</option>
