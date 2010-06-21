@@ -111,7 +111,7 @@ public class Boards extends SmartCRUD {
 			System.out.print(columnsOfBoard.get( i ).name+ " ");
 		}
 		System.out.println();
-		render(data, columnsOfBoard, u, b, s, p, total);
+		render(data, columnsOfBoard, u, b, s, p, total,columns);
 
 	}
 
