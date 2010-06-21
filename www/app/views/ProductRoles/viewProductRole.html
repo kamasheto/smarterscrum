@@ -59,7 +59,7 @@ function deleteProductRole()
    	 var id= ${productRole.id};
     $.post('@{deleteProductRole()}',{id:id},
     		function(){
-			makeAlert('Deletion Confirmation','Are you sure you want to delete this product role?');
+			alert('Are you sure you want to delete this product role?');
             window.location="/projects/${productRole.project.id}/productroles"
             });
 	return false;
