@@ -177,6 +177,7 @@ $(function()
 </form></br>
 <br>
 </br>
+<!-- asmaak89 Part-->
 <div class="smartBarHeader">Current Meeting</div>	
 #{list items:u, as:'users'}
 <a href ="/meetings/${users.meeting.id}"> <b>Meeting:${users.meeting.name}</b></a>
@@ -188,6 +189,7 @@ $(function()
 <a id=${user.id} href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a><br/>	
 #{/list}<a href="javascript:take_meetingsnapshot(${users.meeting.id});"><b>Attach a SnapShot</b><a/><br/>		<br />
 #{/list}
+<!-- asmaak89 Part-->
 
 
 <!---------------------------------->
