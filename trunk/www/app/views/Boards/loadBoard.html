@@ -371,13 +371,7 @@ $(function()
 <!-- asmaak89 Part-->
 <br />
 	
-#{list items:u, as:'users'}
-<a href ="/meetings/${users.meeting.id}"> <b>Meeting:${users.meeting.name}</b></a>	<br />
-	#{list items:users , as:'user'}
-<a id=${user.id} href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a><br/>	
 
-	#{/list}<a href="javascript:take_meetingsnapshot(${users.meeting.id});"><b>Attach a SnapShot</b><a/><br/>		<br />
-#{/list}
 <div id="myLayer"></div>
 
 
