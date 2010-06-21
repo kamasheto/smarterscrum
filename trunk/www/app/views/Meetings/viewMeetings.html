@@ -13,12 +13,11 @@
 
 <br>
 <br>
-#{secure.check 'canAddMeeting' }
+#{if connected.in(currentProject).can('addMeeting') }
 <a href="/admin/projects/${id}/meetings/new"> new meeting </a>
-#{/secure.check}
-
-
+#{/if}
 #{/set}
+
 
 <h2> ${projectName}'s Meetings </h2>
 
