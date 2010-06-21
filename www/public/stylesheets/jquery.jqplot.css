@@ -2,8 +2,6 @@
 .jqplot-target {
     position: relative;
     color: #666666;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 1em;
 /*    height: 300px;
     width: 400px;*/
 }
@@ -71,48 +69,56 @@
 
 .jqplot-xaxis-label {
     margin-top: 10px;
-    font-size: 11pt;
+    font-size: 12px;
     position: absolute;
 }
 
 .jqplot-x2axis-label {
     margin-bottom: 10px;
-    font-size: 11pt;
+    font-size: 12px;
     position: absolute;
 }
 
 .jqplot-yaxis-label {
     margin-right: 10px;
 /*    text-align: center;*/
-    font-size: 11pt;
+    font-size: 12px;
     position: absolute;
 }
 
 .jqplot-y2axis-label, .jqplot-y3axis-label, .jqplot-y4axis-label, .jqplot-y5axis-label, .jqplot-y6axis-label, .jqplot-y7axis-label, .jqplot-y8axis-label, .jqplot-y9axis-label {
 /*    text-align: center;*/
-    font-size: 11pt;
+    font-size: 12px;
     position: absolute;
 }
 
 table.jqplot-table-legend, table.jqplot-cursor-legend {
-    background-color: rgba(255,255,255,0.6);
-    border: 1px solid #cccccc;
-    position: absolute;
-    font-size: 0.75em;
+    background-color: rgb(255,255,255);
+    	border: 2px solid #cccccc;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border-collapse:separate !important;
+    position: absolute !important;
+    font-size: 12px !important;
     right:20px !important;
     top:40px !important;
-    width:auto;
-    max-width:500px;    
+    width:auto !important;
+    max-width:500px;  
 }
+tr.jqplot-table-legend {
+    border:0px !important;
 
+}
 td.jqplot-table-legend {
     vertical-align:middle;
+    border:0px !important;
 
 }
 
 td.jqplot-table-legend > div {
-    border:1px solid #cccccc;
-    padding:0.2em;
+    border:0px solid #cccccc !important;
+    padding:0.2em !important;
 }
 
 div.jqplot-table-legend-swatch {
@@ -136,29 +142,31 @@ div.jqplot-table-legend-swatch {
 }
 
 table.jqplot-cursor-tooltip {
-    border: 1px solid #cccccc;
-    font-size: 0.75em;
+    border: 0px solid #cccccc;
+    font-size: 12px;
 }
 
 
 .jqplot-cursor-tooltip {
-    border: 1px solid #cccccc;
-    font-size: 0.75em;
+    font-size: 12px;
     white-space: nowrap;
-    background: rgba(208,208,208,0.5);
-    padding: 1px;
+    background: #fff;
+padding:5px;
+
+	border: 1px solid #cccccc;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
 }
 
 .jqplot-highlighter-tooltip {
-    border: 1px solid #cccccc;
-    font-size: 0.75em;
-    white-space: nowrap;
-    background: rgba(208,208,208,0.5);
-    padding: 1px;
+    font-size: 12px;
+    background: #fff;
+        padding: 5px;
 }
 
 .jqplot-point-label {
-    font-size: 0.75em;
+    font-size: 12px;
 }
       
 td.jqplot-cursor-legend-swatch {
