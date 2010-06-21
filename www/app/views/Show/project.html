@@ -185,4 +185,46 @@ profile related to this project
 #{if connected.in(project).can('canEditUserNotificationProfile')}
 <p><a href="/Projects/requestdeleted?id=${project.id}" onclick="return confirm('Are you sure you want to be deleted from this project??? \n YOU WONT BE ABLE TO CONTRIBUTE IN THIS PROJECT ANYMORE \n HOWEVER YOUR WORK WILL STILL BE VISIBLE BY ALL PROJECT MEMBERS')"> Request Deletion</a></p>
 #{/if}
+
+
+#{if connected.in(project).can('deleteProject')}
+#{if project.hasRunningSprints()}
+
+<a href = "#"  name="deleteProject" onclick="delete_project(${project.id})"  >Delete Project</a>
+#{/if}
+#{else}
+<a href = "#"  name="deleteProject" onclick="delete_project_ns(${project.id})"  >Delete Project</a>
+#{/else}
+#{/if}
+
 #{/set}
+
+
+
+
+<script type="text/javascript">
+function delete_project(id)
+{
+   alert("There is Running Sprint..Project cannot be deleted");
+}
+
+function delete_project_ns(id)
+{
+	var confirmation= confirm("Are you sure you want to delete this Project ?");
+	
+	if (confirmation) {
+		$.post('@{deleteProject()}', {
+			id:id
+		}, function(){
+			window.location = "/show/projects"
+		});
+	}
+	else
+		window.location = "/show/projects"
+	return true
+	;		
+}
+
+
+
+</script>
