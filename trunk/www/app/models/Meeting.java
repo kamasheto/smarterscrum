@@ -57,7 +57,7 @@ public class Meeting extends SmartModel {
 	@OneToMany (mappedBy = "meeting", cascade = CascadeType.ALL)
 	public List<MeetingAttendance> users;
 
-	public boolean infrontBoard;
+	
 
 	// C5-S19 , to indicate infront of Board Meeting
 
