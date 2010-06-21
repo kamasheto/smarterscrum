@@ -72,7 +72,7 @@ Task Boards</h5>
 #{set 'onLoad'}
 #{if ended==true}
 #{if sprint.finalsnapshot==null }
-$.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}}, function(){});
+$.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}}, function(){alert('Saved!')});
 location.reload();
 #{/if}#{/if}#{/set}
 
