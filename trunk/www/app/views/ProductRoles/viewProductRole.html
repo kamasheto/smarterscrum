@@ -37,7 +37,7 @@ ${productRole.project}<br/><br/>
 #{/if}
 
 #{if !(editable)}
-   <p style="color:red"> *This Product role is included in some stories which are included in a current sprint, there for it cannot be edited. </p>
+   <p style="color:red"> *This Product role is included in some stories which are included in a current sprint, therefore it cannot be edited. </p>
 #{/if}
 
 #{if deletable}
@@ -48,7 +48,7 @@ ${productRole.project}<br/><br/>
 
 #{if !(deletable)}
   <br/>
-  <p style="color:red"> *This Product role is included in some stories, there for it cannot be deleted. </p>
+  <p style="color:red"> *This Product role is included in some stories, therefore it cannot be deleted. </p>
 #{/if}
 <br/>
 <a href="/projects/${productRole.project.id}/productroles">Back to ${productRole.project.name} product roles</a>
