@@ -9,7 +9,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Game extends SmartModel {
+public class Game extends SmartModel
+{
 	//	
 	// @OneToMany
 	// public List<Round> rounds;
@@ -25,28 +26,33 @@ public class Game extends SmartModel {
 
 	public ChatRoom chatroom;
 
-	public Game () {
+	public Game()
+	{
 		stories = new ArrayList<Story>();
 	}
 
-	public void init() {
+	public void init()
+	{
 
-		chatroom = new ChatRoom().save();
+		chatroom = new ChatRoom( component.project ).save();
 		this.save();
 	}
 
-	public Round getRound() {
-		List<Round> rounds = Round.find("game = ? order by id desc", this).fetch();
-		if (rounds.isEmpty()) {
+	public Round getRound()
+	{
+		List<Round> rounds = Round.find( "game = ? order by id desc", this ).fetch();
+		if( rounds.isEmpty() )
+		{
 			return null;
 		}
-		return rounds.get(0);
+		return rounds.get( 0 );
 	}
 
-	public User getModerator() {
+	public User getModerator()
+	{
 
-		List<GameSession> sessionsInGame = GameSession.find("byGame", this).fetch();
-		Collections.sort(sessionsInGame);
-		return sessionsInGame.get(0).user;
+		List<GameSession> sessionsInGame = GameSession.find( "byGame", this ).fetch();
+		Collections.sort( sessionsInGame );
+		return sessionsInGame.get( 0 ).user;
 	}
 }

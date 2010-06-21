@@ -12,15 +12,20 @@ import javax.persistence.OneToMany;
  * @author Amr Hany
  */
 @Entity
-public class ChatRoom extends SmartModel {
+public class ChatRoom extends SmartModel
+{
 
 	public boolean deleted;
 
-	@OneToMany (mappedBy = "room")
+	@OneToMany( mappedBy = "room" )
 	public List<Message> chats;
 
-	public ChatRoom () {
+	public Project project;
+
+	public ChatRoom( Project p )
+	{
 		chats = new ArrayList<Message>();
+		project = p;
 	}
 
 }
