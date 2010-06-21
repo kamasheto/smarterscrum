@@ -24,14 +24,23 @@
  */
 function GenerateGraph(data,xTicks,yTicks,xLabel,yLabel,title,xMax,yMax,divName)
 {
-	var interval=5;
-	if(yMax>100)
+	var interval=1;
+	var xinterval=1;
+	if(yMax>=1000)
+		interval = Math.ceil(yMax/100);
+	else if (yMax>=200)
+		interval = Math.ceil(yMax/10);
+	else if(yMax>=100)
 		interval=10;
-	if(data=='NONE')
-	{
-		alert('THERE IS NO DATA TO DISPLAY!!!');
-		return;
-	}
+	else if(yMax>=50)
+		interval = 5;
+	else if(yMax>=10)
+		interval = 2;
+	if(xMax>=1000)
+		xinterval = Math.ceil(xMax/100);
+	else if(xMax>20)
+		xinterval=Math.ceil(xMax/10);
+
 	var estimated = []; 
 	var i=0;
 	var y=yMax/(xMax-1);
@@ -54,19 +63,21 @@ function GenerateGraph(data,xTicks,yTicks,xLabel,yLabel,title,xMax,yMax,divName)
 			xaxis:
 			{
 				label:xLabel, 
-				labelOptions:{ fontFamily:'Helvetica',fontSize: '13pt'},
+				labelOptions:{ fontFamily:'Verdana',fontSize: '13pt'},
 				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
 				//ticks: xTicks
 				max:xMax,
-				tickInterval:1,
+				tickInterval:xinterval,
+				
 			}, 
 			yaxis:
 			{
-				labelOptions:{fontFamily:'Helvetica',fontSize: '13pt'},
+				labelOptions:{fontFamily:'Verdana',fontSize: '13pt'},
 				label:yLabel,
 				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
 				//ticks:yTicks
-				tickInterval:interval,
+				//tickInterval:interval,
+				pad:1,
 				max:yMax+5,
 			}
 		},
@@ -97,7 +108,7 @@ function GenerateGraph(data,xTicks,yTicks,xLabel,yLabel,title,xMax,yMax,divName)
 			shadowDepth: 3,             
 			shadowAlpha: 0.07,          
 			renderer: $.jqplot.CanvasGridRenderer,     
-		},cursor: {tooltipLocation:'sw', followMouse:true,showVerticalLine:true,showHorizontalLine:true,zoom:true, clickReset:true,showTooltipDataPosition:true}, 
+		},cursor: {tooltipLocation:'sw',zoom:true, clickReset:true}, 
 		series: 
 		[{
 			show: true,     
@@ -135,7 +146,7 @@ function GenerateGraph(data,xTicks,yTicks,xLabel,yLabel,title,xMax,yMax,divName)
 			yaxis: 'yaxis',
 			label: 'Estimated Remaining Points per day',  
 			color: 'red',    
-			lineWidth: 5,
+			lineWidth: 4,
 			shadow: true,  
 			shadowAngle: 45,  
 			shadowOffset: 1.25, 
@@ -161,16 +172,20 @@ function GenerateGraph(data,xTicks,yTicks,xLabel,yLabel,title,xMax,yMax,divName)
  *            This ia an array of strings containing the graph names.
  * @see A Broken line graph.
  */
-function GenerateFullGraph(data,names)
+function GenerateFullGraph(maxDays,data,names)
 {
 
-	var bla = data;
+var xinterval=1;
+	if(maxDays>=1000)
+		xinterval = Math.ceil(maxDays/100);
+	else if(maxDays>20)
+		xinterval=Math.ceil(maxDays/10);
 	var plot1 = $.jqplot('c_FULL', data, 
 	{
 		series:names,
 		seriesDefaults:
 		{
-			markerOptions:{style:'square'}
+			markerOptions:{style:'circle',size:10}
 		},
 		title: 
 		{
@@ -182,18 +197,19 @@ function GenerateFullGraph(data,names)
 			xaxis:
 			{
 				label:'Days', 
-				labelOptions:{ fontFamily:'Helvetica',fontSize: '13pt'},
+				labelOptions:{ fontFamily:'Verdana',fontSize: '13pt'},
 				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
 				// ticks: xTicks
-				tickInterval:1
+			tickInterval:xinterval,
 			}, 
 			yaxis:
 			{
-				labelOptions:{fontFamily:'Helvetica',fontSize: '13pt'},
+				labelOptions:{fontFamily:'Verdana',fontSize: '13pt'},
 				label:'Remainging Points',
 				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
 			  // ticks:yTicks
-				tickInterval:2
+				pad:1
+			
 			}
 		},
 		axesDefaults: 
