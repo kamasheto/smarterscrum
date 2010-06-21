@@ -46,7 +46,8 @@ public class Games extends SmartController
 	public static void startGame( long[] stories )
 	{
 		Game game = new Game().save();
-		game.init();
+		// game.init(); moved down by Amr Hany in order to have project id in
+		// the chatroom
 		Component component = null;
 		User user = Security.getConnected();
 		for( long s : stories )
@@ -68,6 +69,7 @@ public class Games extends SmartController
 		}
 		game.component = component;
 		game.save();
+		game.init();
 
 		// for (Story s : game.stories) {
 		// System.out.println(s);
@@ -229,7 +231,7 @@ public class Games extends SmartController
 	{
 		Game game = Game.findById( gameId );
 		Security.check( game.component.componentUsers.contains( Security.getConnected() ) );
-		
+
 		if( !playAgain )
 		{
 			Story story = game.getRound().story;
@@ -265,7 +267,7 @@ public class Games extends SmartController
 	{
 		Game game = Game.findById( gameId );
 		Component component = game.component;
-		Security.check(component.componentUsers.contains( Security.getConnected() ) );
+		Security.check( component.componentUsers.contains( Security.getConnected() ) );
 		List<Story> stories = game.stories;
 		List<Round> allRounds = Round.find( "game = ?1  order by id ", game ).fetch();
 
