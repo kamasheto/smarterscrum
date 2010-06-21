@@ -196,7 +196,24 @@ public class Bootstrap extends Job
 			S7.componentID = c3;
 			c3.componentStories.add( S7 );
 			S7.save();
-
+            
+			
+			Story S8 = new Story( "As a Project Admin, I can drag and drop a task", "", "", 1, "", 1 );
+			S8.componentID = c5;
+			c5.componentStories.add( S8 );
+			S8.save();
+			
+			
+			Story S9 = new Story( "As a Project Admin, I can estimate effort points", "", "", 1, "", 1 );
+			S9.componentID = c4;
+			c4.componentStories.add( S9 );
+			S9.save();
+			
+			
+			
+			
+			
+			
 			// Sprints
 
 			Sprint Sp1 = new Sprint( 2010, 5, 1, 2010, 5, 15, p1 ).save();
@@ -269,7 +286,9 @@ public class Bootstrap extends Job
 			S4.componentID.project.taskStatuses.get( 0 ).Tasks.add( T4 );
 			S4.storiesTask.add( T4 );
 			T4.save();
-
+			
+		
+		
 			Task T5 = new Task();
 			T5.description = "Coding";
 			T5.taskStory = S6;
@@ -301,7 +320,465 @@ public class Bootstrap extends Job
 			S6.componentID.project.taskStatuses.get( 0 ).Tasks.add( T6 );
 			S6.storiesTask.add( T6 );
 			T6.save();
+			
+			
+			
+			Task T7 = new Task();
+			T7.description = "Reviewing";
+			T7.taskStory = S6;
+			T7.taskStatus = S6.componentID.project.taskStatuses.get( 0 );
+			T7.taskType = S6.componentID.project.taskTypes.get( 0 );
 
+			T7.reporter = users.get( 11 );
+			T7.assignee = users.get( 12 );
+			T7.reviewer = users.get( 13 );
+			T7.estimationPoints = 1.0;
+			T7.taskSprint = Sp1;
+			Sp1.tasks.add( T7 );
+			S7.componentID.project.taskStatuses.get( 0 ).Tasks.add( T7 );
+			S7.storiesTask.add( T7 );
+			T7.save();
+			
+			
+			
+			Task T8 = new Task();
+			T8.description = "Reviewing";
+			T8.taskStory = S6;
+			T8.taskStatus = S6.componentID.project.taskStatuses.get( 0 );
+			T8.taskType = S6.componentID.project.taskTypes.get( 0 );
+
+			T8.reporter = users.get( 11 );
+			T8.assignee = users.get( 12 );
+			T8.reviewer = users.get( 13 );
+			T8.estimationPoints = 1.0;
+			T8.taskSprint = Sp1;
+			Sp1.tasks.add( T8 );
+			S7.componentID.project.taskStatuses.get( 0 ).Tasks.add( T8 );
+			S7.storiesTask.add( T8 );
+			T8.save();
+			
+			Task T9 = new Task();
+			T9.description = "Reviewing";
+			T9.taskStory = S4;
+			T9.taskStatus = S4.componentID.project.taskStatuses.get( 0 );
+			T9.taskType = S4.componentID.project.taskTypes.get( 0 );
+
+			T9.reporter = users.get( 4 );
+			T9.assignee = users.get( 5 );
+			T9.reviewer = users.get( 6 );
+			T9.estimationPoints = 2.0;
+			T9.taskSprint = Sp1;
+			Sp1.tasks.add( T9 );
+			S4.componentID.project.taskStatuses.get( 0 ).Tasks.add( T9 );
+			S4.storiesTask.add( T9 );
+			T9.save();
+			
+			
+			Task T10 = new Task();
+			T10.description = "Reviewing";
+			T10.taskStory = S1;
+			T10.taskStatus = S1.componentID.project.taskStatuses.get( 0 );
+			T10.taskType = S1.componentID.project.taskTypes.get( 0 );
+			T10.reporter = users.get( 0 );
+			T10.assignee = users.get( 1 );
+			T10.reviewer = users.get( 2 );
+			T10.estimationPoints = 12.0;
+			T10.taskSprint = Sp1;
+			Sp1.tasks.add( T10 );
+			S1.componentID.project.taskStatuses.get( 0 ).Tasks.add( T10 );
+			S1.storiesTask.add( T10 );
+			T10.save();
+			
+
+			Task T11 = new Task();
+			T11.description = "Reviewing4";
+			T11.taskStory = S8;
+			T11.taskStatus = S8.componentID.project.taskStatuses.get( 0 );
+			T11.taskType = S8.componentID.project.taskTypes.get( 0 );
+			T11.reporter = users.get( 0 );
+			T11.assignee = users.get( 1 );
+			T11.reviewer = users.get( 2 );
+			T11.estimationPoints = 12.0;
+			T11.taskSprint = Sp1;
+			Sp1.tasks.add( T11 );
+			S8.componentID.project.taskStatuses.get( 0 ).Tasks.add( T11 );
+			S8.storiesTask.add( T11 );
+			T11.save();
+			
+
+			Task T12 = new Task();
+			T12.description = "Reviewing5";
+			T12.taskStory = S8;
+			T12.taskStatus = S8.componentID.project.taskStatuses.get( 0 );
+			T12.taskType = S8.componentID.project.taskTypes.get( 0 );
+			T12.reporter = users.get( 0 );
+			T12.assignee = users.get( 1 );
+			T12.reviewer = users.get( 2 );
+			T12.estimationPoints = 12.0;
+			T12.taskSprint = Sp1;
+			Sp1.tasks.add( T12 );
+			S8.componentID.project.taskStatuses.get( 0 ).Tasks.add( T12 );
+			S8.storiesTask.add( T12 );
+			T12.save();
+			
+
+			Task T13 = new Task();
+			T13.description = "Coding";
+			T13.taskStory = S9;
+			T13.taskStatus = S9.componentID.project.taskStatuses.get( 0 );
+			T13.taskType = S9.componentID.project.taskTypes.get( 0 );
+			T13.reporter = users.get( 0 );
+			T13.assignee = users.get( 1 );
+			T13.reviewer = users.get( 2 );
+			T13.estimationPoints = 12.0;
+			T13.taskSprint = Sp1;
+			Sp1.tasks.add( T13 );
+			S9.componentID.project.taskStatuses.get( 0 ).Tasks.add( T13 );
+			S9.storiesTask.add( T13 );
+			T13.save();
+			
+
+			Task T14 = new Task();
+			T14.description = "Documentation3";
+			T14.taskStory = S9;
+			T14.taskStatus = S9.componentID.project.taskStatuses.get( 0 );
+			T14.taskType = S9.componentID.project.taskTypes.get( 0 );
+			T14.reporter = users.get( 0 );
+			T14.assignee = users.get( 1 );
+			T14.reviewer = users.get( 2 );
+			T14.estimationPoints = 12.0;
+			T14.taskSprint = Sp1;
+			Sp1.tasks.add( T14 );
+			S9.componentID.project.taskStatuses.get( 0 ).Tasks.add( T14 );
+			S9.storiesTask.add( T14 );
+			T14.save();
+			
+			Task T15 = new Task();
+			T15.description = "Reviewing2";
+			T15.taskStory = S9;
+			T15.taskStatus = S9.componentID.project.taskStatuses.get( 0 );
+			T15.taskType = S9.componentID.project.taskTypes.get( 0 );
+			T15.reporter = users.get( 0 );
+			T15.assignee = users.get( 1 );
+			T15.reviewer = users.get( 2 );
+			T15.estimationPoints = 12.0;
+			T15.taskSprint = Sp1;
+			Sp1.tasks.add( T15 );
+			S9.componentID.project.taskStatuses.get( 0 ).Tasks.add( T15 );
+			S9.storiesTask.add( T15 );
+			T15.save();
+			
+			
+			
+			Task T16 = new Task();
+			T16.description = "Reviewing1";
+			T16.taskStory = S9;
+			T16.taskStatus = S9.componentID.project.taskStatuses.get( 0 );
+			T16.taskType = S9.componentID.project.taskTypes.get( 0 );
+			T16.reporter = users.get( 0 );
+			T16.assignee = users.get( 1 );
+			T16.reviewer = users.get( 2 );
+			T16.estimationPoints = 12.0;
+			T16.taskSprint = Sp1;
+			Sp1.tasks.add( T16 );
+			S9.componentID.project.taskStatuses.get( 0 ).Tasks.add( T16 );
+			S9.storiesTask.add( T16 );
+			T16.save();
+			
+			
+			Task T17 = new Task();
+			T17.description = "Reviewing3";
+			T17.taskStory = S9;
+			T17.taskStatus = S9.componentID.project.taskStatuses.get( 0 );
+			T17.taskType = S9.componentID.project.taskTypes.get( 0 );
+			T17.reporter = users.get( 0 );
+			T17.assignee = users.get( 1 );
+			T17.reviewer = users.get( 2 );
+			T17.estimationPoints = 12.0;
+			T17.taskSprint = Sp1;
+			Sp1.tasks.add( T17 );
+			S9.componentID.project.taskStatuses.get( 0 ).Tasks.add( T17 );
+			S9.storiesTask.add( T17 );
+			T17.save();
+		
+			
+			Task T18 = new Task();
+			T18.description = "Coding ";
+			T18.taskStory = S9;
+			T18.taskStatus = S9.componentID.project.taskStatuses.get( 0 );
+			T18.taskType = S9.componentID.project.taskTypes.get( 0 );
+			T18.reporter = users.get( 0 );
+			T18.assignee = users.get( 1 );
+			T18.reviewer = users.get( 2 );
+			T18.estimationPoints = 12.0;
+			T18.taskSprint = Sp1;
+			Sp1.tasks.add( T18 );
+			S9.componentID.project.taskStatuses.get( 0 ).Tasks.add( T18 );
+			S9.storiesTask.add( T18 );
+			T18.save();
+			
+			Task T19 = new Task();
+			T19.description = "Senario review";
+			T19.taskStory = S9;
+			T19.taskStatus = S9.componentID.project.taskStatuses.get( 0 );
+			T19.taskType = S9.componentID.project.taskTypes.get( 0 );
+			T19.reporter = users.get( 0 );
+			T19.assignee = users.get( 1 );
+			T19.reviewer = users.get( 2 );
+			T19.estimationPoints = 12.0;
+			T19.taskSprint = Sp1;
+			Sp1.tasks.add( T19 );
+			S9.componentID.project.taskStatuses.get( 0 ).Tasks.add( T19 );
+			S9.storiesTask.add( T19 );
+			T19.save();
+		
+			
+			Task T20 = new Task();
+			T20.description = "Documentation";
+			T20.taskStory = S9;
+			T20.taskStatus = S9.componentID.project.taskStatuses.get( 0 );
+			T20.taskType = S9.componentID.project.taskTypes.get( 0 );
+			T20.reporter = users.get( 0 );
+			T20.assignee = users.get( 1 );
+			T20.reviewer = users.get( 2 );
+			T20.estimationPoints = 12.0;
+			T20.taskSprint = Sp1;
+			Sp1.tasks.add( T20 );
+			S9.componentID.project.taskStatuses.get( 0 ).Tasks.add( T20 );
+			S9.storiesTask.add( T20 );
+			T20.save();
+			
+			Task T21 = new Task();
+			T21.description = "Coding4";
+			T21.taskStory = S1;
+			T21.taskStatus = S1.componentID.project.taskStatuses.get( 0 );
+			T21.taskType = S1.componentID.project.taskTypes.get( 0 );
+			T21.reporter = users.get( 0 );
+			T21.assignee = users.get( 1 );
+			T21.reviewer = users.get( 2 );
+			T21.estimationPoints = 12.0;
+			T21.taskSprint = Sp1;
+			Sp1.tasks.add( T21 );
+			S1.componentID.project.taskStatuses.get( 0 ).Tasks.add( T21 );
+			S1.storiesTask.add( T21 );
+			T21.save();
+			
+			
+			Task T22 = new Task();
+			T22.description = "Coding5";
+			T22.taskStory = S1;
+			T22.taskStatus = S1.componentID.project.taskStatuses.get( 0 );
+			T22.taskType = S1.componentID.project.taskTypes.get( 0 );
+			T22.reporter = users.get( 0 );
+			T22.assignee = users.get( 1 );
+			T22.reviewer = users.get( 2 );
+			T22.estimationPoints = 12.0;
+			T22.taskSprint = Sp1;
+			Sp1.tasks.add( T22 );
+			S1.componentID.project.taskStatuses.get( 0 ).Tasks.add( T22 );
+			S1.storiesTask.add( T22 );
+			T22.save();
+			
+			
+			
+			Task T23 = new Task();
+			T23.description = "Coding6";
+			T23.taskStory = S1;
+			T23.taskStatus = S1.componentID.project.taskStatuses.get( 0 );
+			T23.taskType = S1.componentID.project.taskTypes.get( 0 );
+			T23.reporter = users.get( 0 );
+			T23.assignee = users.get( 1 );
+			T23.reviewer = users.get( 2 );
+			T23.estimationPoints = 12.0;
+			T23.taskSprint = Sp1;
+			Sp1.tasks.add( T23 );
+			S1.componentID.project.taskStatuses.get( 0 ).Tasks.add( T23 );
+			S1.storiesTask.add( T23 );
+			T23.save();
+			
+			Task T24 = new Task();
+			T24.description = "Coding5";
+			T24.taskStory = S1;
+			T24.taskStatus = S1.componentID.project.taskStatuses.get( 0 );
+			T24.taskType = S1.componentID.project.taskTypes.get( 0 );
+			T24.reporter = users.get( 0 );
+			T24.assignee = users.get( 1 );
+			T24.reviewer = users.get( 2 );
+			T24.estimationPoints = 12.0;
+			T24.taskSprint = Sp1;
+			Sp1.tasks.add( T24 );
+			S1.componentID.project.taskStatuses.get( 0 ).Tasks.add( T24 );
+			S1.storiesTask.add( T24 );
+			T24.save();
+			
+			Task T25 = new Task();
+			T25.description = "Coding";
+			T25.taskStory = S1;
+			T25.taskStatus = S1.componentID.project.taskStatuses.get( 0 );
+			T25.taskType = S1.componentID.project.taskTypes.get( 0 );
+			T25.reporter = users.get( 0 );
+			T25.assignee = users.get( 1 );
+			T25.reviewer = users.get( 2 );
+			T25.estimationPoints = 12.0;
+			T25.taskSprint = Sp1;
+			Sp1.tasks.add( T25 );
+			S1.componentID.project.taskStatuses.get( 0 ).Tasks.add( T25 );
+			S1.storiesTask.add( T25 );
+			T25.save();
+			
+
+			Task T26 = new Task();
+			T26.description = "Reviewing7";
+			T26.taskStory = S8;
+			T26.taskStatus = S8.componentID.project.taskStatuses.get( 0 );
+			T26.taskType = S8.componentID.project.taskTypes.get( 0 );
+			T26.reporter = users.get( 0 );
+			T26.assignee = users.get( 1 );
+			T26.reviewer = users.get( 2 );
+			T26.estimationPoints = 12.0;
+			T26.taskSprint = Sp1;
+			Sp1.tasks.add( T26 );
+			S8.componentID.project.taskStatuses.get( 0 ).Tasks.add( T26 );
+			S8.storiesTask.add( T26 );
+			T26.save();
+			
+		
+			Task T27 = new Task();
+			T27.description = "Documentation";
+			T27.taskStory = S8;
+			T27.taskStatus = S8.componentID.project.taskStatuses.get( 0 );
+			T27.taskType = S8.componentID.project.taskTypes.get( 0 );
+			T27.reporter = users.get( 0 );
+			T27.assignee = users.get( 1 );
+			T27.reviewer = users.get( 2 );
+			T27.estimationPoints = 12.0;
+			T27.taskSprint = Sp1;
+			Sp1.tasks.add( T27 );
+			S8.componentID.project.taskStatuses.get( 0 ).Tasks.add( T27 );
+			S8.storiesTask.add( T27 );
+			T27.save();
+			
+			Task T28 = new Task();
+			T28.description = "Reviewing9";
+			T28.taskStory = S8;
+			T28.taskStatus = S8.componentID.project.taskStatuses.get( 0 );
+			T28.taskType = S8.componentID.project.taskTypes.get( 0 );
+			T28.reporter = users.get( 0 );
+			T28.assignee = users.get( 1 );
+			T28.reviewer = users.get( 2 );
+			T28.estimationPoints = 12.0;
+			T28.taskSprint = Sp1;
+			Sp1.tasks.add( T28 );
+			S8.componentID.project.taskStatuses.get( 0 ).Tasks.add( T28 );
+			S8.storiesTask.add( T28 );
+			T28.save();
+			
+
+			Task T29 = new Task();
+			T29.description = "senario reviewer";
+			T29.taskStory = S8;
+			T29.taskStatus = S8.componentID.project.taskStatuses.get( 0 );
+			T29.taskType = S8.componentID.project.taskTypes.get( 0 );
+			T29.reporter = users.get( 0 );
+			T29.assignee = users.get( 1 );
+			T29.reviewer = users.get( 2 );
+			T29.estimationPoints = 12.0;
+			T29.taskSprint = Sp1;
+			Sp1.tasks.add( T29 );
+			S8.componentID.project.taskStatuses.get( 0 ).Tasks.add( T29 );
+			S8.storiesTask.add( T29 );
+			T29.save();
+			
+			
+			Task T30 = new Task();
+			T30.description = "Reviewing5";
+			T30.taskStory = S8;
+			T30.taskStatus = S8.componentID.project.taskStatuses.get( 0 );
+			T30.taskType = S8.componentID.project.taskTypes.get( 0 );
+			T30.reporter = users.get( 0 );
+			T30.assignee = users.get( 1 );
+			T30.reviewer = users.get( 2 );
+			T30.estimationPoints = 12.0;
+			T30.taskSprint = Sp1;
+			Sp1.tasks.add( T30 );
+			S8.componentID.project.taskStatuses.get( 0 ).Tasks.add( T30 );
+			S8.storiesTask.add( T30 );
+			T30.save();
+			
+			
+
+			Task T31 = new Task();
+			T31.description = "Coding";
+			T31.taskStory = S4;
+			T31.taskStatus = S4.componentID.project.taskStatuses.get( 0 );
+			T31.taskType = S4.componentID.project.taskTypes.get( 0 );
+
+			T31.reporter = users.get( 4 );
+			T31.assignee = users.get( 5 );
+			T31.reviewer = users.get( 6 );
+			T31.estimationPoints = 12.0;
+			T31.taskSprint = Sp1;
+			Sp1.tasks.add( T31 );
+			S4.componentID.project.taskStatuses.get( 0 ).Tasks.add( T31 );
+			S4.storiesTask.add( T31 );
+			T31.save();
+			
+			
+
+			Task T32 = new Task();
+			T32.description = "Coding";
+			T32.taskStory = S4;
+			T32.taskStatus = S4.componentID.project.taskStatuses.get( 0 );
+			T32.taskType = S4.componentID.project.taskTypes.get( 0 );
+
+			T32.reporter = users.get( 4 );
+			T32.assignee = users.get( 5 );
+			T32.reviewer = users.get( 6 );
+			T32.estimationPoints = 12.0;
+			T32.taskSprint = Sp1;
+			Sp1.tasks.add( T32 );
+			S4.componentID.project.taskStatuses.get( 0 ).Tasks.add( T32 );
+			S4.storiesTask.add( T32 );
+			T32.save();
+			
+			
+			
+
+			Task T33 = new Task();
+			T33.description = "Coding";
+			T33.taskStory = S4;
+			T33.taskStatus = S4.componentID.project.taskStatuses.get( 0 );
+			T33.taskType = S4.componentID.project.taskTypes.get( 0 );
+
+			T33.reporter = users.get( 4 );
+			T33.assignee = users.get( 5 );
+			T33.reviewer = users.get( 6 );
+			T33.estimationPoints = 12.0;
+			T33.taskSprint = Sp1;
+			Sp1.tasks.add( T33 );
+			S4.componentID.project.taskStatuses.get( 0 ).Tasks.add( T33 );
+			S4.storiesTask.add( T33 );
+			T33.save();
+			
+			
+
+			Task T34 = new Task();
+			T34.description = "Coding";
+			T34.taskStory = S4;
+			T34.taskStatus = S4.componentID.project.taskStatuses.get( 0 );
+			T34.taskType = S4.componentID.project.taskTypes.get( 0 );
+
+			T34.reporter = users.get( 4 );
+			T34.assignee = users.get( 5 );
+			T34.reviewer = users.get( 6 );
+			T34.estimationPoints = 12.0;
+			T34.taskSprint = Sp1;
+			Sp1.tasks.add( T34 );
+			S4.componentID.project.taskStatuses.get( 0 ).Tasks.add( T34 );
+			S4.storiesTask.add( T34 );
+			T34.save();
+			
+			
 			// ************ LOGS BEGIN ************
 			for( int l = 0; l < 30; l++ )
 			{
