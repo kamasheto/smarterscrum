@@ -88,6 +88,71 @@ public class Snapshots extends SmartController {
 		Logs.addLog(user, "Took", "Snapshot", snap.id, p, cal.getTime());
 
 	}
+	public static void TakeSprintSnapshot(long sprintID) {
+		Sprint s = Sprint.findById(sprintID);
+		Project p = s.project;
+		Board b = p.board;
+		User user = Security.getConnected();
+		List<Component> components = p.getComponents();
+
+		ArrayList<ComponentRowh> data = new ArrayList<ComponentRowh>();
+		List<Column> columns = b.columns;
+		ArrayList<String> Columnsofsnapshot = new ArrayList<String>();
+		for (int i = 0; i < columns.size(); i++) {
+			Columnsofsnapshot.add(null);
+			Columnsofsnapshot.set(i, columns.get(i).name);
+		}
+
+		int smallest;
+		Column temp;
+		for (int i = 0; i < columns.size(); i++) {
+			smallest = i;
+			for (int j = i + 1; j < columns.size(); j++) {
+				if (columns.get(smallest).sequence > columns.get(j).sequence) {
+					smallest = j;
+
+				}
+
+			}
+			temp = columns.get(smallest);
+			columns.set(smallest, columns.get(i));
+			columns.set(i, temp);
+			Columnsofsnapshot.set(smallest, columns.get(i).name);
+			Columnsofsnapshot.set(i, temp.name);
+		}
+
+		for (int i = 0; i < components.size(); i++)// for each component get
+		// the tasks
+		{
+			data.add(null);
+			data.set(i, new ComponentRowh(components.get(i).id, components.get(i).name));
+			List<Task> tasks = components.get(i).returnComponentTasks(s);
+
+			for (int j = 0; j < columns.size(); j++) {
+				data.get(i).add(null);
+				data.get(i).set(j, new ArrayList<String>());
+			}
+
+			for (Task task : tasks) {
+				data.get(i).get(columns.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+
+			}
+		}
+		String type = "sprint";
+		Snapshot snap = new Snapshot();
+		snap.user = user;
+		snap.type = type;
+		snap.board = b;
+		snap.sprint = s;
+		snap.data = data;
+		snap.Columnsofsnapshot = Columnsofsnapshot;
+		snap.save();
+		s.finalsnapshot=snap;
+		s.save();
+		Calendar cal = new GregorianCalendar();
+		Logs.addLog(user, "Took", "Snapshot", snap.id, p, cal.getTime());
+
+	}
 
 	/**
 	 * Takes the sprint ID and load the same things needed to load the board
