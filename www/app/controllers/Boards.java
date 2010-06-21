@@ -238,6 +238,18 @@ public class Boards extends SmartCRUD {
 			}
 
 		}
-		render(data, columnsOfBoard,hidencolumnsOfBoard, u, s, c, p, total);
+		render(data, columnsOfBoard,hidencolumnsOfBoard, u,b, s, c, p, total);
+	}
+	public static void showHiddenColumn(String name,Board b)
+	{
+		List<Column> columns = b.columns;
+		for(int i=0;i<columns.size();i++)
+		{
+			if(columns.get( i ).name.equalsIgnoreCase( name ))
+			{
+				columns.get( i ).onBoard=true;
+			}
+		}
+		
 	}
 }
