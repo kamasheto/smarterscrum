@@ -15,6 +15,14 @@
 <br>
 #{/secure.check}
 
+#{if connected.in(meeting.project).can('setMeetingAttendance')}
+#{if meeting.startTime < new Date().getTime()}
+<br/>
+<a href="@{MeetingAttendances.setAttendance(meeting.id)}"> Set Attendance </a>
+<br/>
+#{/if}
+#{/if}
+
 #{if meeting.snapshot!=null }
 <a href="@{Snapshots.loadsnapShot(meeting.snapshot.id)} " >View associated Snapshot</a>
 #{/if}
