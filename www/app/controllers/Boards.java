@@ -163,8 +163,17 @@ public class Boards extends SmartCRUD {
 		List<User> users = c.getUsers();
 		ArrayList<User> u = new ArrayList<User>();
 		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>();
-		List<Column> columnsOfBoard = b.columns;
-		columnsOfBoard = orderColumns(columnsOfBoard);
+		List<Column> columns = b.columns;
+		columns = orderColumns(columns);
+		List<Column> columnsOfBoard=new ArrayList<Column>();
+		
+		for( int i=0; i<columns.size();i++)
+		{
+			if(columns.get( i ).onBoard==true)
+			{
+				columnsOfBoard.add( columns.get( i ) );
+			}
+		}
 		for (int i = 0; i < users.size(); i++) {
 			data.add(null);
 			data.set(i, new ComponentRow(users.get(i).id, users.get(i).name));
