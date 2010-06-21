@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -90,5 +91,30 @@ public class Show extends SmartController {
 		}
 
 		render(project, tasks);
+	}
+	
+	/**
+	 * this method takes the id of the project to be deleted and sets the deleted attribute to true and then 
+	 * sends notification e-mail to the project members that the project has been deleted
+	 * 
+	 * @Author Ghada Fakhry
+	 * @param id
+	 */
+	public static void deleteProject(long id) {
+		Project project = Project.findById(id);
+		if( Security.getConnected().in( project ).can( "deleteproject" ) )
+		{
+			project.deleted = true;
+			project.save();
+			String body = "Please note that the project " + project.name + " has been deleted and all upcoming meetings and events are cancelled !";
+			String header = project.name + " deletion notification";
+			List<User> projectMembers = project.users;
+			Notifications.notifyUsers(projectMembers, header, body, (byte) -1);
+			Logs.addLog(Security.getConnected(), "Deleted Project", "project", id, project, new Date());	
+		}
+		else
+		{
+			forbidden();
+		}
 	}
 }
