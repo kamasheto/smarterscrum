@@ -59,7 +59,8 @@ End Date: ${sprint.format(sprint.endDate)}<br/>
 #{/list}
 </ul>
 #{set 'moreLinks'}
-<a href="@{projectblank(projectId)}">Create sprint</a>
+
+<a href="@{projectblank(project.id)}">Create sprint</a>
 #{/set}
 <script type="text/javascript">
 	function showStuff(id) {
