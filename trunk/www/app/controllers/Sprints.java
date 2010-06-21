@@ -43,7 +43,12 @@ public class Sprints extends SmartCRUD {
 		Sprint sprint = Sprint.findById(id);
 		long runningSprint = proj.runningSprint();
 		boolean running = runningSprint == id ? true : false;
-		render(sprint, proj, running);
+		boolean ended=false;
+		Date now = Calendar.getInstance().getTime();
+		if(sprint.endDate.before(now)){
+			ended=true;
+		}
+		render(sprint, proj, running,ended);
 	}
 
 	/**
@@ -197,5 +202,6 @@ public class Sprints extends SmartCRUD {
 		}
 		redirect(request.controller + ".show", object.getEntityId());
 	}
+
 
 }
