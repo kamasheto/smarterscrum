@@ -1,3 +1,6 @@
+
+#{if connected.projects.contains(room.project)}
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
@@ -19,8 +22,8 @@
 <div id="threadHead"></div>
 <div id="thread">
 	<script type="text/html" id="message_tmpl">
-<strong class="title"><%= message.author%></strong> 
-		<div class="<%= message.author == '${currentUser.name}' ? 'you border-callout' : 'them border-callout' %><%= message.author == 'notice' ? 'notice' : '' %>">
+<strong class="title" style="<%= message.author == 'notice' ? 'display:none !important' : '' %>"><%= message.author%></strong> 
+		<div class="<%= message.author == 'notice' ? 'notice' : message.author == '${connectedUser.name}' ? 'you border-callout' : 'them border-callout' %>">
 			<%= message.message.replace('\n', '<br/>') %>
 		<%= message.author == 'notice' ? '' : '<b class="notch"></b>' %></div>
 	</script>
@@ -77,3 +80,4 @@
 </body>
 <!--CHAT SYSTEM End-->
 </html>
+#{/if}
