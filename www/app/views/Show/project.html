@@ -62,6 +62,25 @@ ${project.description?.nl2br()}
 <br /><a href="@{Storys.listStoriesInProject(project.id)}">Project Stories</a>
 <!--  End Of Stories -->
 
+<!-- view boards @ author Dina Helal -->
+<br/><a href="javascript:;" onclick="$('#boards').toggle()">Project Boards</a>
+<div id="boards" class="roles" style="display:none;width:300px">
+	#{list items:project.sprints, as:'sprint'}
+		<a href="javascript:;" onclick="$('#s_${sprint.id}').toggle()"  style="float:left;width:200px;">Sprint ${sprint.sprintNumber}</a><br/>
+		<div id="s_${sprint.id}" style="display:none; margin-left:10px">
+		<a style="margin-left:20px" title="go to the full task board?" href="/boards/loadboard?sprintID=${sprint.id}">View Project Task Board</a>
+		<br/>
+		<a href="javascript:;" onclick="$('#c_${sprint.id}').toggle()" title="view components' boards?" style="margin-left:20px;float:left;width:200px;">View Components' Boards</a>
+		<br/>
+		<div id="c_${sprint.id}" style="display:none; margin-left:40px">
+		#{list items:sprint.project.components, as:'component'}
+		<a style="margin-left:20px" title="${component.name}'s sprint ${sprint.id} Task Board?"href="/boards/loadComponentBoard?sprintID=${sprint.id}&componentID=${component.id}">${component.name}</a><br/>
+		#{/list}
+		</div>
+		<br/>
+		</div>
+		#{/list}
+		</div>
 
 
 #{secure.check 'canViewRoom' }
