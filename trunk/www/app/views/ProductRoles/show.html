@@ -36,7 +36,7 @@
     #{secure.check 'canDeleteProductRole' }
 	#{form @delete(object.id)}
 		<p class="crudDelete">
-			<input type="submit" value="&{'crud.delete', type.modelName}" onclick="deleteProductRole()" />
+			<input type="submit" value="&{'crud.delete', type.modelName}" onclick="deleteProductRole(${object.id})" />
 		</p>
 	#{/form}
 	#{/secure.check}
@@ -51,8 +51,17 @@
 </div>
 
 <script type="text/javascript">
-function deleteProductRole()
+function deleteProductRole(pid)
 {
-alert('Are you sure you want to delete this product role?');
+   	var confirmation= confirm("Delete Product Role?")
+   	if (confirmation) 
+   	{
+   		$.post('@{delete()}', {
+			id: pid
+		}, function(){
+			window.location="/projects/${object.project.id}/productroles"
+		});
+   	}
+	return false;
 }
 </script>
