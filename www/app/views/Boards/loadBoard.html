@@ -241,9 +241,10 @@ $(function(){
 					#{/if}
 					
 					#{else}
-					<td id="${columnsOfBoard.id} " class="col_${count}"> 	
-					<div style="display:inline-block" class="${col.name} ">${col.name}</div>
-					<a id="${col.sequence}_c" onclick = "swapCol(id)" style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Swap with another column?" class="ui-state-default ui-corner-all ">
+					<td style="text-align:center;" id="${columnsOfBoard.id} " class="col_${count}"> 	
+					<div style="font-size:small; display:inline-block;" class="${col.name} ">${col.name}</div>
+					<div style="text-align:center">
+					<a id="${col.sequence}_c" onclick = "swapCol(id)" style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Swap with another column?" class="ui-state-default ui-corner-all">
 					<span style="display:inline-block !important"class="ui-icon ui-icon-transferthick-e-w "></span>
 					</span></a>
 					<a ><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Drag the column Anywhere" >
@@ -251,8 +252,10 @@ $(function(){
 					</span></a>
 					
 					<a style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" class="ui-state-default ui-corner-all ">
-					<span id="${col.id}" style="display:inline-block !important"class="hideCol ui-icon ui-icon-transferthick-e-w"></span>
+					<span title="hide column?" id="${count}" style="display:inline-block !important"class="tiptitize hideCol ui-icon ui-icon-hide "></span>
 					</span></a>
+					<span style="display:none"> ${count=count+1}</span>
+					</div>
 					</td>
 					
 			
