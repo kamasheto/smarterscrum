@@ -658,6 +658,11 @@
         var c = plot.plugins.cursor;
         var ctx = c.zoomCanvas._ctx;
         if (c.show) {
+        	if(c._tooltipElem.html()==''){
+        		c._tooltipElem.css('display','none');}
+        	else{
+        		c._tooltipElem.css('display','block');}
+        		
             if (c.showTooltip) {
                 updateTooltip(gridpos, datapos, plot);
                 if (c.followMouse) {
