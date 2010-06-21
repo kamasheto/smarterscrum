@@ -69,7 +69,14 @@ Sprint Component Backlogs</h5>
 #{/list}
 <h5>
 Task Boards</h5>
+#{set 'onLoad'}
+#{if ended==true}
+#{if sprint.finalsnapshot==null }
+$.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}}, function(){alert('Saved!')});
+location.reload();
+#{/if}#{/if}#{/set}
 
+#{if sprint.finalsnapshot==null }
 <a title="Tak a look @ the full task board?" href="/boards/loadboard?sprintID=${sprint.id}">View Sprint ${sprint.id} Task Board</a>
 <br/>
 <br/>
@@ -78,7 +85,10 @@ Task Boards</h5>
 <br/>
 <br/>
 #{/list}
-
+#{/if}
+#{if sprint.finalsnapshot!=null }
+<a title="Take a look @ the full task board?" href="@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)} ">View Sprint ${sprint.id} Task Board</a>
+#{/if}
 <body>
 
 </body>
