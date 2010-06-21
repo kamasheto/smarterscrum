@@ -114,7 +114,7 @@ public class ProductRoles extends SmartCRUD {
 		} else {
 			object.save();
 			String header = "Product Role: " + productRoleObject.name + " has been added to Project: " + project.name + ".";
-			String body = "Product Role: " + productRoleObject.name + '\n' + "Description: " + productRoleObject.description + "." + '\n' + "Added by: " + Security.getConnected().name + "." + '\n' + "Added at: " + new Date(System.currentTimeMillis()) + ".";
+			String body = "Product Role: " + productRoleObject.name +" :"+ '\n' + " Description: " + productRoleObject.description + "." + '\n' + " Added by: " + Security.getConnected().name + "." + '\n' + " Added at: " + new Date(System.currentTimeMillis()) + ".";
 			Logs.addLog(Security.getConnected(), "Create", "ProductRole", productRoleObject.id, project, new Date(System.currentTimeMillis()));
 			Notifications.notifyUsers(project, header, body, "addProductRole", new Byte((byte) 1));
 			flash.success("Product Role " + productRoleObject.name + " has been created successfully.");
