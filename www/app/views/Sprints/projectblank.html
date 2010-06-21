@@ -14,6 +14,8 @@
 	<div class="objectForm">
 	#{form action:@projectcreate(projectId), enctype:'multipart/form-data'}
 		#{crud.form}
+		#{crud.custom 'finalsnapshot'}
+		#{/crud.custom }	
 		#{crud.custom 'startDate'}	
 	
 				
