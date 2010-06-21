@@ -242,7 +242,7 @@ public class ProductRoles extends SmartCRUD {
 			}
 		} else {
 			String header = "Product Role: " + productRoleObject.name + " in Project " + productRoleObject.project.name + " has been deleted.";
-			String body = "Product Role " + productRoleObject.name + ":" + '\n' + "Deleted by: " + Security.getConnected().name + "." + '\n' + "Deleted at: " + new Date(System.currentTimeMillis()) + ".";
+			String body = "Product Role " + productRoleObject.name + " :" + '\n' + " Deleted by: " + Security.getConnected().name + "." + '\n' + " Deleted at: " + new Date(System.currentTimeMillis()) + ".";
 			object.save();
 			Logs.addLog(Security.getConnected(), "Delete", "ProductRole", productRoleObject.id, productRoleObject.project, new Date(System.currentTimeMillis()));
 			Notifications.notifyUsers(productRoleObject.project, header, body, "deleteProductRole", new Byte((byte) -1));
@@ -266,7 +266,7 @@ public class ProductRoles extends SmartCRUD {
 		productRoleObject.deleted = true;
 		productRoleObject.save();
 		String header = "Product Role: " + productRoleObject.name + " in Project " + productRoleObject.project.name + " has been deleted.";
-		String body = "Product Role " + productRoleObject.name + ":" + '\n' + "Deleted by: " + Security.getConnected().name + "." + '\n' + "Deleted at: " + new Date(System.currentTimeMillis()) + ".";
+		String body = "Product Role " + productRoleObject.name + " :" + '\n' + " Deleted by: " + Security.getConnected().name + "." + '\n' + " Deleted at: " + new Date(System.currentTimeMillis()) + ".";
 		Logs.addLog(Security.getConnected(), "Delete", "ProductRole", productRoleObject.id, productRoleObject.project, new Date(System.currentTimeMillis()));
 		Notifications.notifyUsers(productRoleObject.project, header, body, "deleteProductRole", new Byte((byte) -1));
 		flash.success("Product Role " + productRoleObject.name + " has been deleted.");
