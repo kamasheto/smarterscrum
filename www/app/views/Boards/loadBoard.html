@@ -178,11 +178,15 @@ $(function()
 <br>
 </br>
 <!-- asmaak89 Part-->
-<div class="smartBarHeader">Current Meeting</div>	
+<div class="smartBarHeader">Current Meeting</div>
+<br>
+<br/>	
 #{list items:u, as:'users'}
 <a href ="/meetings/${users.meeting.id}"> <b>Meeting:${users.meeting.name}</b></a>
+Start At
 <div class="formatTime">${users.meeting.startTime}</div>
 <br />
+End At
 <div class="formatTime">${users.meeting.endTime}</div>
 <br/>
 #{list items:users , as:'user'}
