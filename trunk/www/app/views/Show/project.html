@@ -152,9 +152,11 @@ ${project.description?.nl2br()}
 #{/secure.check }
 
 #{set 'moreLinks'}
+<a href="@{ProductBacklogs.showGraph(project.id,0)}">View Burndown Charts</a><br/>
+
 
 <!--@author ahmedkhaled7 C4S12/c4S4/c4s5   -->
-<a href="@{ImpedimentTasks.index(project.id)}">Report impediment</a><br/><br />
+<a href="@{ImpedimentTasks.index(project.id)}">Report impediment</a><br/>
 #{if connected.in(project).can('canManageRoles')}<a href="/show/roles?id=${project.id}">Manage Roles</a><br /><br/>#{/if}
 
 <a href="@{Storys.listStoriesandSprints(project.id)}"> Assign Story to Sprint </a><br/><br/>

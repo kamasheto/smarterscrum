@@ -122,6 +122,11 @@ public class ProductBacklogs extends SmartController {
 		Component myComponent = Component.findById( componentId );
 		String Data = temp.fetchData( componentId );
 		List<Sprint> SprintsInProject = temp.sprints;
+		for(int i =0; i<SprintsInProject.size(); i++)
+		{
+			if(SprintsInProject.get(i).tasks.size()==0)
+				SprintsInProject.remove( i );
+		}
 		if (Data.startsWith("GenerateFullGraph([[[]]"))
 			Data = null;
 		render(Data, SprintsInProject, temp, componentId, myComponent);
