@@ -36,7 +36,7 @@
     #{secure.check 'canDeleteProductRole' }
 	#{form @delete(object.id)}
 		<p class="crudDelete">
-			<input type="submit" value="&{'crud.delete', type.modelName}" onclick="deleteProductRole(${object.id})" />
+			<input type="button" value="&{'crud.delete', type.modelName}" onclick="deleteProductRole(${object.id})" />
 		</p>
 	#{/form}
 	#{/secure.check}
@@ -62,6 +62,6 @@ function deleteProductRole(pid)
 			window.location="/projects/${object.project.id}/productroles"
 		});
    	}
-	return false;
+	return true;
 }
 </script>
