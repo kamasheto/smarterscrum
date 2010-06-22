@@ -302,5 +302,26 @@ public class User extends SmartModel {
 	public String getDisplayName(Project project) {
 		return projects.contains(project) ? name : "<span class='userNotInProject'>" + name + "</span>";
 	}
+	
+	/**
+	 * @author Moataz
+	 * @param project: the project we want to get the roles from
+	 * this method returns the list of roles of a user in a
+	 * specific project
+	 */
+	public String getUserRoles(Project project)
+	{
+		String res="";
+		for(int i = 0 ; i<this.roles.size() ; i++)
+		{
+			if(this.roles.get(i).project.id == project.id)
+				res += ", "+ this.roles.get(i).name;			
+		}
+		if(!res.isEmpty())
+			res = res.substring(1);
+		else
+			res= "No Role !!";
+		return res;
+	}
 
 }
