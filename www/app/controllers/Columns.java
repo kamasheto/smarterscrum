@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -28,11 +29,11 @@ public class Columns extends SmartCRUD{
 	 *            : finishing position of column Story 17
 	 */
 
-	public static void changeColumnPosition(long id, int pos1, int pos2, long userId) {
+/*	public static void changeColumnPosition(long id, int pos1, int pos2, long userId) {
 		System.out.println(id + " " + pos1 + " " + pos2);
 		Sprint s = Sprint.findById(id);
 		Project p = s.project;
-		Security.check(p, "canEditColumnsPositions");
+		Security.check(p, "editColumnsPositions");
 		Board b = p.board;
 		if (userId == 0)
 		userId = Security.getConnected().id;
@@ -66,6 +67,72 @@ public class Columns extends SmartCRUD{
 		}
 
 	}
+	
+	*/
+	
+	public static void changeColumnPosition( long id, int pos1, int pos2, long userId )
+	{
+
+		Sprint s = Sprint.findById( id );
+		Project p = s.project;
+		Board b = p.board;
+		Security.check(p, "editColumnsPositions");
+		List<Column> cols = b.columns;
+		
+		List<Column> columnsOfBoard=new ArrayList<Column>();
+		
+		for( int i=0; i<cols.size();i++)
+		{
+			if(cols.get( i ).onBoard==true)
+			{
+				columnsOfBoard.add( cols.get( i ) );
+			}
+		}
+		
+		int[] ids = new int[columnsOfBoard.size()];
+		String[] names = new String[columnsOfBoard.size() + 1];
+		for( int i = 0; i < columnsOfBoard.size(); i++ )
+		{
+			ids[i] = i;
+			names[i + 1] = columnsOfBoard.get( i ).name;
+		}
+
+		Column c1 = Column.find( "byNameAndBoard", names[pos1],b ).first();
+		Column c2 = Column.find( "byNameAndBoard", names[pos2],b ).first();
+		
+		
+		System.out.println(c1.name);
+		System.out.println(c2.name);
+		
+		
+		int x = c2.sequence;
+		if( c1.sequence < c2.sequence )
+		{
+			for( int i = c1.sequence + 1; i <= c2.sequence; i++ )
+			{
+				Column temp = Column.find( "bySequenceAndBoard", i,b ).first();
+				temp.sequence--;
+				temp.save();
+			}
+			c1.sequence = x;
+			c1.save();
+
+		}
+		else
+		{
+			for( int i = c1.sequence - 1; i >= c2.sequence; i-- )
+			{
+				Column temp = Column.find( "bySequenceAndBoard", i,b ).first();
+				temp.sequence++;
+				temp.save();
+			}
+			c1.sequence = x;
+			c1.save();
+
+		}
+
+	}
+	
 	/**
 	 * a method that stores the changes of positions of columns in the database
 	 * using settings
@@ -85,7 +152,7 @@ public class Columns extends SmartCRUD{
 
 		Sprint s = Sprint.findById(id);
 		Project p = s.project;
-		Security.check(p, "canEditColumnsPositions");
+		Security.check(p, "editColumnsPositions");
 		Board b = p.board;
 		Column c1 = Column.find("bySequence", pos1).first();
 		Column c2 = Column.find("bySequence", pos2).first();
@@ -116,7 +183,7 @@ public class Columns extends SmartCRUD{
 		c.name = name;
 		c.save();
 		Project p=c.board.project;
-		Security.check(p, "canRenameColumns");
+		Security.check(p, "renameColumns");
 		if (userId == 0)
 			userId = Security.getConnected().id;
 		Calendar cal = new GregorianCalendar();
