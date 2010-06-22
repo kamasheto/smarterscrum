@@ -5,7 +5,9 @@
 
 <!--@author: Hossam Amer
 used to show and edit the meetings that do have a review log-->
-
+<!--@author: menna.ghoneim  -->
+<!-- issue 31 fixing permissions -->
+#{if u.in(p).can(editNoteReviewLog)}
 <script language="javascript" type="text/javascript" src="@{'/public/javascripts/jeditable-mod.js'}"></script>
 
 <script type="text/javascript">
@@ -48,19 +50,27 @@ used to show and edit the meetings that do have a review log-->
 
 
 
-$(document).ready(function() {
-    $("#accor").accordion(
-	{
-		autoHeight: false,
-		alwaysOpen: false,
-		active: false,
-		event: 'mouseover',
-		navigation: true
-		
-	});
-  });
+
   });
 
+</script>
+#{/if}
+
+<script language="javascript" type="text/javascript">
+$(function()
+	{
+	$(document).ready(function() {
+	    $("#accor").accordion(
+		{
+			autoHeight: false,
+			alwaysOpen: false,
+			active: false,
+			event: 'mouseover',
+			navigation: true
+			
+		});
+	  });
+	});
 </script>
 
 #{/set}
@@ -117,7 +127,7 @@ Shows the list of meetings  for the scrum master-->
 					#{if note.checkType()}			
 					<tr>
 									
-							<td #{secure.check 'canEditNoteReviewLog'} title="edit the description?"  id="${note.id}" class="editDES"#{/secure.check}>
+							<td title="edit the description?"  id="${note.id}" class="editDES">
 							${note.description}
 						   </td>
 						   									
@@ -146,7 +156,7 @@ Shows the list of meetings  for the scrum master-->
 		</thead>
 			#{list items:meeting.tasks, as:'task'}		
 				<tr>				
-						<td #{secure.check 'canChangeTaskDescreption'} title="edit the description?"  id="${task.id}" class="editTaskDES"#{/secure.check}>
+						<td title="edit the description?"  id="${task.id}" class="editTaskDES">
 							${task.description}
 						</td>																		
 				</tr>					
@@ -217,10 +227,10 @@ Shows the list of meetings  for the scrum master-->
 	#{if cExist}
 		<li><a href="@{SprintBacklog.index(cid, sid)}">${c.name} sprint backlog</a></li>
 	#{/if}
-		<li><a href="@{ReviewLog.index(projectID, cid, sid)}">Review Log</a></li>
+	
 		
 		#{if pExist}
-			<li><a href="@{ReviewLog.showMeetings(projectID, cid, sid)}" name = "showMeetings" >${p.name}'s meetings that have a Review Log</a></li>
+			<li><a href="@{ReviewLog.showMeetings(projectID, cid, sid)}" name = "showMeetings" >${p.name}'s Review Logs</a></li>
 		#{/if}
 		#{else}
 			<li><a href="@{ReviewLog.showMeetings(projectID, cid, sid)}" name = "showMeetings" >Display the Review Log</a></li>

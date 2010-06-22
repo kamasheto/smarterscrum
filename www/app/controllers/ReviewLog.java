@@ -13,7 +13,7 @@ import models.Sprint;
 import models.User;
 import play.mvc.With;
 
-@With (Secure.class)
+@With(Secure.class)
 public class ReviewLog extends SmartController {
 	/**
 	 * ReviewLog is the class for manipulating and viewing the review log which
@@ -91,7 +91,9 @@ public class ReviewLog extends SmartController {
 		Project p = Project.findById(projectID);
 		Sprint s = Sprint.findById(sid);
 
-		List<Meeting> reviewMeetings = Meeting.find("project.id=" + projectID + " and isReviewLog=true and deleted=false").fetch();
+		List<Meeting> reviewMeetings = Meeting.find(
+				"project.id=" + projectID
+						+ " and isReviewLog=true and deleted=false").fetch();
 
 		if (reviewMeetings.isEmpty())
 			empty = true;
@@ -99,7 +101,9 @@ public class ReviewLog extends SmartController {
 		if (projectID == 0)
 			directLink = true;
 
-		render(reviewMeetings, empty, directLink, projectID, cid, sid, c, p, s, sExist, cExist, pExist);
+		User u = Security.getConnected();
+		render(reviewMeetings, empty, directLink, projectID, cid, sid, c, p, s,
+				sExist, cExist, pExist, u);
 	}
 
 	/**
@@ -113,7 +117,6 @@ public class ReviewLog extends SmartController {
 	 *            the id of a given meeting
 	 */
 
-	@Check ("canEditNoteReviewLog")
 	public static boolean editNote(long id, String des, long meetingID) {
 		try {
 			Artifact note = Artifact.findById(id);
@@ -121,8 +124,10 @@ public class ReviewLog extends SmartController {
 			note.save();
 
 			User userWhoChanged = Security.getConnected();
-			String header = "The Note " + id + " has been edited by " + userWhoChanged.name;
-			String body = "Note " + id + ":" + '\n' + "The new description is " + note.description;
+			String header = "The Note " + id + " has been edited by "
+					+ userWhoChanged.name;
+			String body = "Note " + id + ":" + '\n' + "The new description is "
+					+ note.description;
 
 			/*
 			 * Notifications.notifyUsers( User.find(//
@@ -131,8 +136,10 @@ public class ReviewLog extends SmartController {
 			 * (byte) 1 );
 			 */
 
-			Notifications.notifyUsers(getAttendanceConfirmed(meetingID), header, body, (byte) 1);
-			Logs.addLog(userWhoChanged, body, "Note", id, note.meetingsArtifacts.get(0).project, new Date());
+			Notifications.notifyUsers(getAttendanceConfirmed(meetingID),
+					header, body, (byte) 1);
+			Logs.addLog(userWhoChanged, body, "Note", id,
+					note.meetingsArtifacts.get(0).project, new Date());
 		}
 
 		catch (Exception e) {
@@ -163,113 +170,14 @@ public class ReviewLog extends SmartController {
 	}
 
 	/**
-	 * S10 Used for displaying a list of meetings of a certain project that do
-	 * not have a review log for the scrum master to change their status if he
-	 * wanted to
-	 * 
-	 * @param projectID
-	 *            the id of a given project
-	 *@param cid
-	 *            the id of a given component
-	 *@param sid
-	 *            the id of a given sprint
-	 */
-
-	@Check ("canAddReviewLog")
-	public static void showMeetingsNoReviewLog(long projectID, long cid, long sid) {
-		boolean directLink = false;
-		boolean sExist = (sid == 0) ? false : true;
-		boolean cExist = (cid == 0) ? false : true;
-		boolean pExist = (projectID == 0) ? false : true;
-
-		Component c = Component.findById(cid);
-		Project p = Project.findById(projectID);
-		Sprint s = Sprint.findById(sid);
-
-		List<Meeting> reviewMeetings = Meeting.find("project.id=" + projectID + " and isReviewLog=false and deleted=false").fetch();
-
-		if (projectID == 0)
-			directLink = true;
-
-		int size = reviewMeetings.size();
-
-		render(reviewMeetings, directLink, projectID, cid, sid, c, p, s, sExist, cExist, pExist, size);
-
-	}
-
-	/**
-	 * S10 Gets the id of a given meeting that does not have a review log and
-	 * sends it to the view using render()
-	 * 
-	 * @param id
-	 *            the id of a given meeting that do not have a review log
-	 */
-
-	@Check ("canAddReviewLog")
-	public static void changeReviewLogStatus(long id) {
-		Meeting meeting = Meeting.findById(id);
-		render(meeting);
-	}
-
-	/**
-	 * S10 Gets the id of a given meeting that does not have a review log and
-	 * changes its status
-	 * <p>
-	 * Used for changing the review log status of all meetings
-	 * 
-	 * @param id
-	 *            the id of a given meeting that do not have a review log
-	 * @param hasReview
-	 *            the new status of a given meeting
-	 * @param projectID
-	 *            the id of a given project
-	 * @param importance
-	 *            the importance of the notification
-	 */
-
-	@Check ("canAddReviewLog")
-	public static void changeReviewLogStatusDone(long id, boolean hasReview, long projectID, boolean importance) {
-		try {
-
-			Meeting tmp = Meeting.findById(id);
-			tmp.isReviewLog = hasReview;
-			tmp.save();
-
-			User userWhoChanged = Security.getConnected();
-			String header = "Meeting " + id + " in " + Project.findById(projectID) + " has the review log status changed by " + userWhoChanged.name;
-			String body = "Meeting " + id + " in " + Project.findById(projectID) + '\n' + "The new review log status of " + tmp.name + " is:  " + hasReview + ".";
-
-			Notifications.notifyUsers(getUsersFromMeetingAttendaceInACertainMeeting(tmp), header, body, (byte) (importance ? 1 : -1));
-			Logs.addLog(userWhoChanged, body, "Meeting", id, tmp.project, new Date());
-
-			render(tmp);
-		}
-
-		catch (Exception e) {
-			e.printStackTrace();
-			render(Meeting.findById(id));
-		}
-	}
-
-	/**
-	 * Displays the confirmation message for changing status of the review log
-	 * 
-	 * @param projectID
-	 *            the id of a given project
-	 */
-	@Check ("canAddReviewLog")
-	public static void changeReviewLogStatusConfirm(long projectID) {
-		render(projectID);
-	}
-
-	/**
 	 * S10 Gets the users from the meeting attendance list of a given meeting
 	 * 
 	 * @param tmp
 	 *            a given meeting
 	 */
 
-	private static List<User> getUsersFromMeetingAttendaceInACertainMeeting(Meeting tmp) {
+	private static List<User> getUsersFromMeetingAttendaceInACertainMeeting(
+			Meeting tmp) {
 		List<User> out = new ArrayList<User>();
 		List<MeetingAttendance> mA = tmp.users;
 

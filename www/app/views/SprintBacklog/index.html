@@ -1,7 +1,6 @@
 #{extends 'main.html' /} #{set title:'Sprint Backlog' /} 
 #{set 'moreScripts'}
 
-
 <script language="javascript" type="text/javascript"
 	src="@{'/public/javascripts/jeditable-mod.js'}"></script>
 
@@ -155,7 +154,7 @@ You are not a user in this component, you cannot view their tasks.
 			<!--@author Hadeer Younis C4 S8-->
 			<a title="Take a look at the chart?" href="@{SprintBacklog.showGraph(id,componentID)}"> Show Burn Down Chart </a><br/>
 			<!--@author Hossam Amer C4 S10, S11  -->
-			<a title="Take a look at the Review Log?"href="@{ReviewLog.index(projectId, componentID, id)}">View the Review Log</a>
+			<a title="Take a look at the Review Log?"href="@{ReviewLog.showMeetings(projectId, componentID, id)}">View Review Log</a>
 	#{/set}
 	    	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
 	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
