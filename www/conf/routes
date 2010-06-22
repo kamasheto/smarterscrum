@@ -30,6 +30,7 @@ GET     /tasks/chooseTaskAssiRev/{taskId}               Tasks.chooseTaskAssiRev
 GET     /projects/{id}/productroles                     ProductRoles.viewProductRoles
 GET     /productroles/{id}                              ProductRoles.viewProductRole
 GET     /admin/projects/{id}/productroles/new           ProductRoles.blank
+GET     /projects/manageProjectsRequests   		Projects.manageProjectRequests
 
 GET     /tasks/edit/{id}				         		Tasks.show
 POST	/accounts/editProfile							Application.editProfile

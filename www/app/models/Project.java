@@ -36,7 +36,7 @@ public class Project extends SmartModel
 
 	public boolean approvalStatus = false;
 
-	public String username;
+	public User user;
 
 	/* One To Many Relations */
 	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
@@ -615,7 +615,6 @@ public class Project extends SmartModel
 	/**
 	 * return list of meeting associated to end of sprint
 	 * 
-	 * @author minazaki
 	 * @return list of meetings that are associated to end of sprint
 	 */
 	public List<String> meetingTypes()
@@ -635,5 +634,6 @@ public class Project extends SmartModel
 		c.project = this;
 		c.save();
 	}
+	
 
 }

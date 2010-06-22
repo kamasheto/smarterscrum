@@ -3,6 +3,8 @@ package controllers;
 import java.util.Date;
 import java.util.List;
 
+import controllers.CRUD.ObjectType;
+
 import models.Priority;
 import models.Project;
 import models.ProjectNotificationProfile;
@@ -62,21 +64,50 @@ public class Projects extends SmartCRUD {
 		}
 
 		else {
+			if(Security.getConnected().isAdmin){
+				
+				projectObject.approvalStatus=true;
+			}
+			User user = Security.getConnected();
+			projectObject.user=user;
 			object.save();
 			((Project) object).init();
+			
 			Logs.addLog(Security.getConnected(), "Create", "Project", projectObject.id, projectObject, new Date(System.currentTimeMillis()));
-			flash.success("Your Project Creation request has been sent. You will be notified upon System Admin approval.");
-			if (params.get("_save") != null) {
-				redirect(request.controller + ".list");
+			if(Security.getConnected().isAdmin){
+				
+				flash.success("' "+projectObject.name+" '" +" Project Has Been Successfully Created.");
 			}
-			if (params.get("_saveAndAddAnother") != null) {
-				redirect(request.controller + ".blank");
+			else{
+				flash.success("Your Project Request Has Been Sent.You Will Be Notified Upon Approval");
+				
 			}
+			
 			redirect(request.controller + ".show", object.getEntityId());
 
 		}
 	}
+   
 
+    public static void list(int page, String search, String searchFields, String orderBy, String order) {
+        ObjectType type = ObjectType.get(getControllerClass());
+        notFoundIfNull(type);
+        if (page < 1) {
+            page = 1;
+        }
+       // List<JPASupport> objects = type.findPage(page, search, searchFields, orderBy, order, (String) request.args.get("where"));
+               List<Project> objects = Project.find("approvalStatus=true AND deleted=false").fetch();
+        Long totalCount = (long)objects.size();
+        Long count = (long)objects.size();
+
+        try {
+        	
+        	
+            render(type, objects, count, totalCount, page, orderBy, order);
+        } catch (TemplateNotFoundException e) {
+            render("CRUD/list.html", type, objects, count, totalCount, page, orderBy, order);
+        }
+    }
 	/**
 	 * This action takes the name of a project as input and checks whether it
 	 * already exists or not.
@@ -91,7 +122,8 @@ public class Projects extends SmartCRUD {
 		renderJSON(flag);
 
 	}
-
+	
+	
 	/**
 	 * This action method add a meeting type to the array list of meeting types
 	 * in project specified by the parameter id.
@@ -479,5 +511,44 @@ public class Projects extends SmartCRUD {
 		List<Project> projects = user.projects;
 		render(projects);
 	}
-
+	/**
+	 * Action for Manage Project Request Page, renders list of all pending projects requests.
+	 * @author Behairy
+	 */
+	public static void manageProjectRequests(){
+		 List<Project> pendingProjects = Project.find("approvalStatus=false AND deleted=false").fetch();
+	render(pendingProjects);
+	}
+	/**
+	 * This method approves the pending request for the project
+	 * given by the ID as a parameter. It Notifies project owner with
+	 * project request status.
+	 * @param id projectID
+	 * @author Behairy
+	 */
+	public static void approveRequest(long id){
+		Project p=Project.findById( id );
+		p.approvalStatus=true;
+		List<User> users=User.find( "id="+p.user.id ).fetch();
+		Notifications.notifyUsers( users,p.name+" Project Request", "This is to Kindly Inform you that your request for Project "+p.name+" has been Approved. You Can Now Start !",(byte)0 );
+		p.save();
+		renderJSON(true);
+	}
+	/**
+	 * This method declines the pending request for the project
+	 * given by the ID as a parameter, by deleting the project (i.e setting flag). It Notifies project owner with
+	 * project request status.
+	 * @param id projectID
+	 * @author Behairy
+	 */
+	public static void declineRequest(long id){
+		Project p=Project.findById( id );
+		p.deleted=true;
+		List<User> users=User.find( "id="+p.user.id ).fetch();
+		Notifications.notifyUsers( users,p.name+" Project Request", "This is to Kindly Inform you that your request for Project "+p.name+" has been Declined. We Apologize for Any inconvenience/",(byte)-1);
+		p.save();
+		renderJSON(true);
+	}
+	
+	
 }

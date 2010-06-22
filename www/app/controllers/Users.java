@@ -213,7 +213,7 @@ public class Users extends SmartCRUD {
 		for (ObjectType.ObjectField field : type.getFields()) {
 			if (field.type.equals("serializedText") && params.get("object." + field.name) != null) {
 				Field f = object.getClass().getDeclaredField(field.name);
-				f.set(object, CRUD.collectionDeserializer(params.get("object." + field.name), (Class) ((ParameterizedType) f.getGenericType()).getActualTypeArguments()[0]));
+				//f.set(object, CRUD.collectionDeserializer(params.get("object." + field.name), (Class) ((ParameterizedType) f.getGenericType()).getActualTypeArguments()[0]));
 			}
 		}
 

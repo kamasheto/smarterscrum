@@ -1,0 +1,76 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:'Project Requests' /}
+
+<script type="text/javascript">
+	
+function approve(id){
+var conf=confirm("Are you sure you want to approve this Project?");
+if(conf){
+$.post('@{approveRequest()}',{id:id},function (flag){
+if(flag){
+
+alert("Project Has Been Approved. A Notification Has Been sent to Project Owner !");
+var approveButton=document.getElementById("approve_"+id);
+approveButton.style.visibility="hidden";
+var declineButton=document.getElementById("decline_"+id);
+declineButton.style.visibility="hidden";
+var label=document.getElementById("label_"+id);
+label.style.color="green";
+}
+},'json')
+}
+
+}
+
+
+function decline(id){
+var conf=confirm("Are you sure you want to Decline this Project?");
+if(conf){
+$.post('@{declineRequest()}',{id:id},function (flag){
+if(flag){
+
+alert("Project Has Been Declined. A Notification Has Been sent to Project Owner !");
+var approveButton=document.getElementById("approve_"+id);
+approveButton.style.visibility="hidden";
+var declineButton=document.getElementById("decline_"+id);
+declineButton.style.visibility="hidden";
+var label=document.getElementById("label_"+id);
+label.style.color="red";
+}
+},'json')
+}
+}
+</script>
+<div id="Header_PendingRequests" class="Header_PendingRequests">
+	<h2>
+	Project Pending Requests
+	</h2>
+	</div>
+	<div id="List_PendingRequests" class="List_PendingRequests">
+	
+	#{list items:pendingProjects, as:'project'}
+	<li>
+	<div id="${project.id}">
+		<h2>
+		
+		
+		<a id="label_${project.id}">${project.name}</a>
+			</h2>
+		<h5>
+		 Project Owner: ${project.user.name} <br>
+		<br>
+		Description: ${project.description}
+		<br>
+		<input id="approve_${project.id}" type="button" name="add" value="Approve" onclick="approve(${project.id})"/>
+		<input id="decline_${project.id}" type="button" name="add" value="Decline" onclick="decline(${project.id})"/>
+		</h5>
+	</div>
+	
+		</li>
+	
+		#{/list}
+		
+
+	</div>
+	
+	

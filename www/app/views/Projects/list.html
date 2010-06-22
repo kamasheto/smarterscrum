@@ -3,15 +3,14 @@
 
 <div id="crudList" class="${type.name}">
 	
-	#{secure.check 'canEditProject'}
+	
 	<h2 id="crudListTitle">
 	
 	&{'crud.list.title', type.name}
 	
-	
-	
+
 	</h2>
-	#{/secure.check}
+
 
 	<div id="crudListSearch">
 		#{crud.search /}
@@ -26,7 +25,6 @@
 	</div>
 	
 	<p id="crudListAdd">
-		<a href="@{blank()}">&{'crud.add', type.modelName}</a>
-	</p>
+		<a href="@{blank()}">Create A New Project</a>
 
 </div>
