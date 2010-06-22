@@ -30,7 +30,7 @@ public class Projects extends SmartCRUD {
 		notFoundIfNull(type);
 		JPASupport object = type.entityClass.newInstance();
 		Project projectObject = (Project) object;
-
+		User user = Security.getConnected();
 		validation.valid(object.edit("object", params));
 
 		if (validation.hasErrors()) {
@@ -42,7 +42,7 @@ public class Projects extends SmartCRUD {
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/blank.html", type);
 			}
-		} else if (Project.userRequstedProjectBefore(session.get("username"), projectObject.name)) {
+		} else if (Project.userRequstedProjectBefore(user.id, projectObject.name)) {
 
 			flash.error(Messages.get("You Have Already Created a Projcet with the Same Name :'" + projectObject.name + "'. You Will Be notified Upon Approval."));
 
@@ -68,7 +68,7 @@ public class Projects extends SmartCRUD {
 				
 				projectObject.approvalStatus=true;
 			}
-			User user = Security.getConnected();
+	
 			projectObject.user=user;
 			object.save();
 			((Project) object).init();
@@ -77,13 +77,14 @@ public class Projects extends SmartCRUD {
 			if(Security.getConnected().isAdmin){
 				
 				flash.success("' "+projectObject.name+" '" +" Project Has Been Successfully Created.");
+				redirect(request.controller + ".show", object.getEntityId());
 			}
 			else{
 				flash.success("Your Project Request Has Been Sent.You Will Be Notified Upon Approval");
-				
+				redirect("/show/projects");
 			}
 			
-			redirect(request.controller + ".show", object.getEntityId());
+			
 
 		}
 	}
