@@ -20,7 +20,7 @@ used to show and edit the meetings that do have a review log-->
     	        var noteId 	= parseInt($('#lolid').closest("td").attr("id"));
 				
 				$.post('@{ReviewLog.editNote()}',
-    	    	       {id:noteId, des: value, meetingID:1}
+    	    	       {id:noteId, des: value}
 					  );
 			   
         	    return(value);

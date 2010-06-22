@@ -124,11 +124,13 @@ public class ReviewLog extends SmartController {
 	 *            the id of a given meeting
 	 */
 
-	public static boolean editNote(long id, String des, long meetingID) {
+	public static boolean editNote(long id, String des) {
 		try {
 			Artifact note = Artifact.findById(id);
 			note.description = des;
 			note.save();
+
+			List<Meeting> noteMeetings = note.meetingsArtifacts;
 
 			User userWhoChanged = Security.getConnected();
 			String header = "The Note " + id + " has been edited by "
@@ -143,8 +145,10 @@ public class ReviewLog extends SmartController {
 			 * (byte) 1 );
 			 */
 
-			Notifications.notifyUsers(getAttendanceConfirmed(meetingID),
-					header, body, (byte) 1);
+			for (Meeting m : noteMeetings) {
+				Notifications.notifyUsers(getAttendanceConfirmed(m.id), header,
+						body, (byte) 1);
+			}
 			Logs.addLog(userWhoChanged, body, "Note", id,
 					note.meetingsArtifacts.get(0).project, new Date());
 		}
