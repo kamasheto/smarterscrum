@@ -111,7 +111,16 @@ $(document).ready(function(){
 		$('.noeditdesc_'+i).css('display','none');	
 		$('.editdesc_'+i).css('display','inline-block');	
 		$('.noedit2').css('display','none');	
-	});    
+	});  
+	$('.b1').click(function()
+	{
+		$('.hidecol').css('display','inline-block');
+			
+	}); 
+	$('.b2').click(function()
+	{
+		$('.showcol').css('display','inline-block');	
+	});   
 
 	$('.hideCol').click(function()
 	{
@@ -225,21 +234,28 @@ End At
 #{/list}	
 </select>
 
-<!-- view hidden Col by Hadeer -->	
-<select id="hadeer" onchange="showHiddenCol(hadeer.value)">
+<!-- view hidden Col by Hadeer -->
+#{if connected.in(p).can('canShowColumn')}
+<button class="b1" type="button">Show Hidden Columns!</button>	
+<select id="hadeer" onchange="showHiddenCol(hadeer.value)" style="display:none" class="hidecol">
 <option value="">view hiden columns</option>
 #{list items:hidencolumnsOfBoard, as:'c'}
 <option value= "${c.id}">${c.name}</option>
 #{/list}
 </select>
+#{/if}
 
 <!-- hide Col by Hadeer -->
-<select id="hadeer2" onchange="hideCol(hadeer2.value)">
+#{if connected.in(p).can('canHideColumn')}
+<button class="b2" type="button" >Delete Columns!</button>
+
+<select id="hadeer2" onchange="hideCol(hadeer2.value)" style="display:none" class="showcol">
 <option value="">delete columns</option>
 #{list items:columnsOfBoard, as:'c'}
 <option value= "${c.id}">${c.name}</option>
 #{/list}
 </select>
+#{/if}
 
 <div id="drag">
 <table id="mainBoard" class="draggable"  border="1">
