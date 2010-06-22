@@ -47,7 +47,8 @@
    			    $("input[type='ok']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
    			    $("input[type='add']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
    			    $("input[type='send']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-   			    
+   			
+			    
    			    $('div.crudField').each(function(){
 						if ($(this).html().trim() == '') {
 							$(this).remove();
@@ -64,7 +65,7 @@
 <body onload="#{get 'onLoad' /}">
 <div style="position:relative; top:0px; right:10px">
 		<div class="inline-block right" style="background-color:#111; width: 20px; height: 20px;">
-			<div class="curlyNotchTopLeft"style="background: url('@{'/public/images/bg2.png'}') repeat-x fixed left top;">
+			<div class="curlyNotchTopLeft"style="background: url('@{'/public/images/bg2.png'}') repeat-x fixed left -40px;">
 			</div>
 		</div>
 
@@ -73,12 +74,12 @@
 		<input class="search" type="text" /><input class="searchBtn" type="button" value="search" /></div>
 		
 <div class="inline-block right" style="background-color:#111; width: 20px; height: 20px;">
-			<div class="curlyNotchTopRight" style="background: url('@{'/public/images/bg2.png'}') repeat-x fixed left top;">
+			<div class="curlyNotchTopRight" style="background: url('@{'/public/images/bg2.png'}') repeat-x fixed left -40px;">
 			</div>
 </div>
 </div>
-<div style="background: url('@{'/public/images/bg2.png'}') repeat-x scroll left top; width: 100%;height:156px">
-<div class="left"><a  href="/" title="Go back home?"><img src="@{'/public/images/smartsoft.png'}"/></a></div>
+<div style="background: url('@{'/public/images/bg2.png'}') repeat-x scroll left top; width: 100%;height:156px;margin-top:-40px">
+<div style="margin-top:-40px"class="left"><a  href="/" title="Go back home?"><img src="@{'/public/images/smartsoft.png'}"/></a></div>
 <br style="clear:both"/>
 <div class="right">
 #{secure.check 'systemAdmin'}
@@ -94,14 +95,90 @@
 	Hello ${controllers.Security.getConnected().name}!&nbsp;&nbsp;|&nbsp;&nbsp;
 	<a href="/show/user?id=${controllers.Security.getConnected().id}">Profile</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 	<a href="@{Projects.myProjects()}" style="width: 120px !important" title="Want to see your projects?">My Projects</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	<a href="#" id="chatlink"onclick="$('#chatroomList').slideToggle(200);$('#chatlink').toggleClass('topCornersRounded white')">Chatroom</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 	<a href="/secure/logout" title="Logout from the system">[x] Logout</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-#{/secure.check}	
+#{/secure.check}
 Switch Theme&nbsp;&nbsp;
-
 <a href="@{Accounts.register}" #{secure.check 'loggedIn'} style="display:none"#{/secure.check}>|&nbsp;&nbsp;Register</a>
+#{secure.check 'loggedIn'}
+<br/>
+<div id="chatroomList" style="text-align:center; color:#fff;display:none; position:absolute;z-index:100">
+ 	<div class="allCornersRounded"style="padding:5px;background-color:#555;width:100px;overflow auto;margin-left:250px" >
+ 	#{list controllers.Security.getConnected().projects, as:'proj'}
+ 	<a href="#" onclick="signIn(${proj.chatroom.id}); $('#chatContainer_${proj.name}').slideToggle(400)">${proj.name}</a><br/>
+	
+ 	
+ 	#{/list}
+	</div>
 	</div>
 
 
+</div>
+
+
+<div id="chatContainer">
+#{list controllers.Security.getConnected().projects, as:'proj'}
+<div id="chatContainer_${proj.name}" style="display:none;position:absolute; z-index:100;">
+<div class="chatContainerHeader" title="hide/show chat?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);">${proj.name} Chat</div>
+<div id="chatHolder_${proj.name}">
+	<div id="thread_${proj.name}" class="thread">
+		<div>
+			<span class="ui-icon ui-icon-extlink inline-block"></span><span class="ui-icon ui-icon-person inline-block"></span><span class="ui-icon ui-icon-circle-close inline-block"></span>
+		</div>
+		<script type="text/html" id="message_tmpl">
+			<div class="allCornersRounded <%= message.author == 'notice' ? 'notice' : message.author == '${connected.name}' ? 'you border-callout' : 'them border-callout' %>">		
+				<strong class="title" style="<%= message.author == 'notice' ? 'display:none !important' : '' %>"><%= message.author%></strong> 
+				<%= message.message.replace('\n', '<br/>') %>
+			</div>
+		</script>
+	</div>
+	<div id="newMessage">	
+		<textarea id="message_${proj.name}" name="message_${proj.name}" class="chatTextArea"></textarea>
+		<input type="button" value="send" id="send_${proj.name}" class="chatBtn"/>
+	</div>	
+	<script type="text/javascript">
+	$('#send_${proj.name}').click(function() {
+		var message = $('#message_${proj.name}').val();
+		$('#message_${proj.name}').val('');
+		$.post('@{ChatSystem.addMessage()}', {message: message , id:${proj.chatroom.id}}); 
+		$('#message_${proj.name}').focus(); 
+	});
+	
+	// Retrieve new messages
+		var getMessages = function() {
+			$.getJSON('/ChatSystem/newMessages',{id:${proj.chatroom.id}}, function(messages) {
+				$(messages).each(function() {
+					display(this);
+				});
+				setTimeout('getMessages();', 500);
+			});
+		}	
+		$(function() {
+			getMessages();
+		});
+		
+	// Display a message
+	var display = function(message) {
+		$('#thread_${proj.name}').append(tmpl('message_tmpl', {message: message}));
+		var obj = document.getElementById('thread_${proj.name}');
+		obj.scrollTop = obj.scrollHeight;
+	}
+	
+	function signIn(id)
+	{
+		$.post('/ChatSystem/enterChat',{id:id});
+	}
+	
+	function signOut(id)
+	{
+		$.post('/ChatSystem/leaveChat',{id:id});
+	}
+	</script>
+	#{/list}
+	</div>
+	</div>
+	#{/secure.check}
+</div>
 <table cellpadding="0" style="width: 100%" class="myTables">
 	<tr>
 		<td>

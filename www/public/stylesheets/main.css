@@ -8,9 +8,15 @@ body,html {
 	overflow-x: hidden;
 }
 
-table div{vertical-align:top}
+table div {
+	vertical-align: top
+}
 
-
+a.white {
+	background-color: #555;
+	color: #fff !important;
+	padding: 5px;
+}
 
 img {
 	border: 0px;
@@ -277,7 +283,7 @@ a {
 	_border-right-color: pink;
 	_border-left-color: pink;
 	margin-top: -2px;
-	_filter: chroma(color =                             pink);
+	_filter: chroma(color =                                           pink);
 }
 
 .notchBottom2 {
@@ -295,7 +301,7 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                             pink);
+	_filter: chroma(color =                                           pink);
 }
 
 .notchTop {
@@ -310,7 +316,7 @@ a {
 	margin-left: 30px;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                             pink);
+	_filter: chroma(color =                                           pink);
 }
 
 .notchRight {
@@ -327,7 +333,7 @@ a {
 	display: inline-block;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                             pink);
+	_filter: chroma(color =                                           pink);
 }
 
 .notchLeft {
@@ -342,7 +348,7 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                             pink);
+	_filter: chroma(color =                                           pink);
 }
 
 /*********form***********/
@@ -375,19 +381,17 @@ a {
 }
 
 .searchBtn {
-	margin: 2.5px;
-	padding: 5px;
+	padding: 3px !important;
+	margin: 0px !important;
+	border: 0px !important;
 	vertical-align: middle;
 	min-width: 70px;
 	overflow: auto;
 	min-height: 20px;
-	border: 0px !important;
 	color: #fff !important;
 	background: #444 !important;
 	background: -moz-linear-gradient(center bottom, #444 20%, #555 80%)
 		!important;
-	padding: 3px !important;
-	margin: 0px !important;
 	vertical-align: middle;
 	height: 36px !important;
 	border-radius-bottom-left: 0px !important;
@@ -432,134 +436,115 @@ label {
 }
 
 /*******************Messages Styles********************/
-#thread {
-	height: 300px;
-	width: 580px;
-	background: #F5F5F5;
-	overflow-y: auto;
-	padding: 10px 10px 0px 10px;
+#chatContainer {
+	width: 200px;
+	float: right;
 }
 
-#threadHead {
-	height: 20px;
-	width: 600px;
+.chatContainerHeader {
+	width: 100%;
+	background-color: #87155f;
+	color: #fff;
+	padding: 10px;
+	text-align: center;
+}
+
+.chatBtn:hover {
+	background: #b7568d !important;
+	background: -moz-linear-gradient(center bottom, #87155f 20%, #b7568d 80%)
+		!important;
+}
+
+.chatBtn {
+	float: right;
+	color:#fff !important;
+	height: 48px;
+	margin: 1px 0 0 !important;
+	vertical-align: top;
+	width: 51px !important;
+	border: 0px !important;
+	background: #444 !important;
+	background: -moz-linear-gradient(center bottom, #444 20%, #555 80%)
+		!important;
+	padding: 3px !important;
+	margin: 0px !important;
+	border: 0px !important;
+	border-radius: 0px !important; -moz-border-radius : 0px !important;
+	-webkit-border-radius : 0px !important;
+	border-radius-bottom-right: 5px !important;
+	-moz-border-radius-bottomright: 5px !important;
+	-webkit-border-bottom-right-radius: 5px !important;
+	-moz-border-radius: 0px !important;
+	-webkit-border-radius: 0px !important;
+}
+
+.chatTextArea:focus {
+	background-color: #FFF;
+		border:0px;
+	vertical-align: top !important;
+	width: 149px !important;
+	margin: 0px !important;
+	border-left: 1px solid #111 !important;
+	
+	border-bottom: 1px solid #111 !important;
+	border-radius: 0px !important;
+	-moz-border-radius: 0px !important;
+	-webkit-border-radius: 0px !important;
+	border-radius-bottom-left: 5px !important;
+	-moz-border-radius-bottomleft: 5px !important;
+	-webkit-border-bottom-left-radius: 5px !important
+}
+
+.chatTextArea {
+	background-color: #ddd;
+	border:0px;
+	vertical-align: top !important;
+	width: 149px !important;
+	margin: 0px !important;
+	border-left: 1px solid #111 !important;
+	
+	border-bottom: 1px solid #111 !important;
+	border-radius: 0px !important;
+	-moz-border-radius: 0px !important;
+	-webkit-border-radius: 0px !important;
+	border-radius-bottom-left: 5px !important;
+	-moz-border-radius-bottomleft: 5px !important;
+	-webkit-border-bottom-left-radius: 5px !important;
+}
+
+.thread {
+	width: 100%;
+	overflow-y: auto;
 	background: #F5F5F5;
-	-moz-border-radius-topleft: 20px;
-	-webkit-border-top-left-radius: 20px;
-	-moz-border-radius-topright: 20px;
-	-webkit-border-top-right-radius: 20px;
+	height: 300px;
+
+	border-left: 1px solid #111 !important;
+	
+	border-bottom: 1px solid #111 !important;
 }
 
 .you {
-	position: relative;
-	margin: 18px 0;
-	width: 200px;
-	padding: 18px 20px;
+	width: 180px;
 	background-color: #B7DFF0;
-	/* easy rounded corners for modern browsers */
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
-	border-radius: 6px;
-}
-
-.you .notch {
-	position: absolute;
-	top: -10px;
-	left: 20px;
-	margin: 0;
-	border-top: 0;
-	border-left: 10px solid transparent;
-	border-right: 10px solid transparent;
-	border-bottom: 10px solid #B7DFF0;
-	padding: 0;
-	width: 0;
-	height: 0;
-	/* ie6 height fix */
-	font-size: 0;
-	line-height: 0;
-	/* ie6 transparent fix */
-	_border-right-color: pink;
-	_border-left-color: pink;
-	_filter: chroma(color =                                     pink);
+	padding: 5px;
+	margin: 5px;
+	overflow-y: auto;
 }
 
 .them {
-	position: relative;
-	margin: 18px 0;
-	padding: 18px 20px;
-	background-color: #E9C2F4;
-	/* easy rounded corners for modern browsers */
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
-	border-radius: 6px;
-}
-
-.them .notch {
-	position: absolute;
-	top: -10px;
-	left: 20px;
-	margin: 0;
-	border-top: 0;
-	border-left: 10px solid transparent;
-	border-right: 10px solid transparent;
-	border-bottom: 10px solid #E9C2F4;
-	padding: 0;
-	width: 0;
-	height: 0;
-	/* ie6 height fix */
-	font-size: 0;
-	line-height: 0;
-	/* ie6 transparent fix */
-	_border-right-color: pink;
-	_border-left-color: pink;
-	_filter: chroma(color =                                     pink);
-}
-
-.title {
-	color: #000;
-	display: inline-block !important;
-	font-size: 14px !important;
-	font-weight: bold;
-	margin: 0;
-	width: 70px;
-	text-align: center;
+	width: 100%;
+	padding: 5px;
+	margin: 5px;
+	width: 180px;
+	overflow-y: auto;
 }
 
 .notice {
 	background: #60EC08;
-	padding: 5px 20px 5px 5px;
-	-moz-border-radius-topleft: 5px;
-	-webkit-border-top-left-radius: 5px;
-	-moz-border-radius-topright: 5px;
-	-webkit-border-top-right-radius: 5px;
-	-moz-border-radius-bottomleft: 5px;
-	-webkit-border-bottom-left-radius: 5px;
-	-moz-border-radius-bottomright: 5px;
-	-webkit-border-bottom-right-radius: 5px;
-}
-
-#newMessage {
-	margin-top: 5px;
-	width: 580px;
-	background: #F5F5F5;
-	padding: 5px 10px 20px 10px;
-	-moz-border-radius-bottomleft: 20px;
-	-webkit-border-bottom-left-radius: 20px;
-	-moz-border-radius-bottomright: 20px;
-	-webkit-border-bottom-right-radius: 20px;
-	-moz-border-radius-bottomleft: 20px;
-}
-
-#newMessage textarea {
-	width: 570px;
-	height: 70px;
-}
-
-#send {
-	margin-top: 0px !important;
-	top: -30px;
-	width: 60px;
-	height: 75px;
+	padding: 5px;
+	margin: 5px;
+	width: 180px;
+	overflow-y: auto;
 }
 
 /***************tables*******************/
@@ -604,11 +589,12 @@ h1,h2,h3,h4,h5 {
 }
 
 h1 {
-	font-size: 52px !important;	font-weight: 100;
+	font-size: 30px !important;
+	font-weight: 100;
 }
 
 h2 {
-	font-size: 38px !important;
+	font-size: 24px !important;
 	font-weight: 100;
 }
 
@@ -619,15 +605,15 @@ h3,h4,h5 {
 }
 
 h3 {
-	font-size: 30px;
+	font-size: 20px;
 }
 
 h4 {
-	font-size: 24px;
+	font-size: 16px;
 }
 
 h5 {
-	font-size: 20px;
+	font-size: 14px;
 }
 
 .crudField {

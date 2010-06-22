@@ -8,11 +8,11 @@
 #{if flash.success}
 <p class="success">&{flash.success}</p>
 #{/if}
-<h2>${project.name}</h2><div class="you">
-
+<h2>${project.name}</h2>
+<div >
+ 
 ${project.description?.nl2br()}
-        <div class="notch">
-        </div></div>
+</div>
 <a href="javascript:;" onclick="$('#roles').toggle()">Project Roles</a>
 <div id="roles" class="roles" style="display: none; width:300px;">
 	#{list items:project.roles, as:'role'}
@@ -51,7 +51,7 @@ ${project.description?.nl2br()}
 
 <!--  adding impediment tasks @author Hadeer Younis -->
 <br/>
-<a href="@{ImpedimentTasks.viewImpedimentLog(project.id)}"> Project's Impediment Tasks</a>
+<a href="@{ImpedimentTasks.viewImpedimentLog(project.id)}"> Project's Impediment Log</a>
 
 <!-- adding product role's link by Heba Elsherif -->
 <br/>
@@ -81,74 +81,6 @@ ${project.description?.nl2br()}
 		</div>
 		#{/list}
 		</div>
-
-
-#{if connected.projects.contains(project)}
-<!--CHAT SYSTEM START-->
-
-#{set 'onLoad'} signIn(${project.chatroom.id}) #{/set} 
-#{set 'onUnLoad'} signOut(${project.chatroom.id}) #{/set} 
-<div id="threadHead"></div>
-<div id="thread">
-	<script type="text/html" id="message_tmpl">
-<strong class="title" style="<%= message.author == 'notice' ? 'display:none !important' : '' %>"><%= message.author%></strong> 
-		<div class="<%= message.author == 'notice' ? 'notice' : message.author == '${connectedUser.name}' ? 'you border-callout' : 'them border-callout' %>">
-			<%= message.message.replace('\n', '<br/>') %>
-		<%= message.author == 'notice' ? '' : '<b class="notch"></b>' %></div>
-	</script>
-	</div>
-
-
-<div id="newMessage">	
-	<textarea id="message" name="message" style="width:500px;"></textarea>
-	<input type="button" value="send" id="send"/>
-</div>
-
-
-
-<script type="text/javascript">
-	$('#send').click(function(e) {
-		var message = $('#message').val();
-		$('#message').val('');
-		$.post('@{ChatSystem.addMessage()}', {message: message , id:${project.chatroom.id}}); 
-		$('#message').focus(); 
-    });
-	// Retrieve new messages
-	var getMessages = function() {
-		$.getJSON('/ChatSystem/newMessages',{id:${project.chatroom.id}}, function(messages) {
-			$(messages).each(function() {
-				display(this);
-			});
-			setTimeout('getMessages();', 500);
-		});
-	}	
-	$(function() {
-		getMessages();
-	});
-	
-	// Display a message
-	var display = function(message) {
-		$('#thread').append(tmpl('message_tmpl', {message: message}));
-		var obj = document.getElementById('thread');
-		obj.scrollTop = obj.scrollHeight;
-	}
-	
-	function signIn(id)
-	{
-		$.post('/ChatSystem/enterChat',{id:id});
-	}
-	
-	function signOut(id)
-	{
-		$.post('/ChatSystem/leaveChat',{id:id});
-	}
-	
-</script>
-
-
-
-<!--CHAT SYSTEM End-->
-#{/if }
 
 #{set 'moreLinks'}
 
