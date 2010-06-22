@@ -1,5 +1,16 @@
 #{extends 'main.html' /}
 #{set title:'Project List' /}
+
+#{set 'moreLinks'}
+
+
+<a href="/admin/projects/new">Create a New Project</a><br />
+
+
+
+#{/set}
+
+
 #{set 'crumbs'}
 <li><a href="/show/projects">Projects</a></li>
 #{/set}
@@ -14,8 +25,11 @@
 <p>Type to filter: <input type="text" id="search_term" onkeyup="search_users();" /> <img id="loading" style="display:none;" src="@{'/public/images/ajax-loader.gif'}" /></p>
 <div id="results" class="dark">
 #{list items:projects, as:'project'}
+#{if project.approvalStatus}
 <a title="Goto ${project.name}'s homepage?"href="/show/project?id=${project.id}">${project.name}</a><br />
+#{/if}
 #{/list}
+
 <center>#{if page>0}<a href="/show/projects?page=${page-1}">Previous</a>#{/if} &bull; #{if page+1<=total/20}<a href="/show/projects?page=${page+1}">Next</a>#{/if} </center>
 </div>
 <script type="text/javascript">
