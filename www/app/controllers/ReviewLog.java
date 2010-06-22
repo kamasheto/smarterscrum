@@ -38,28 +38,10 @@ public class ReviewLog extends SmartController {
 	 */
 
 	/**
-	 * S10, S11 Renders the project id to be used by the view
+	 * changes done for sprint 3:
 	 * 
-	 * @param projectID
-	 *            the id of a given project
-	 * @param cid
-	 *            the id of a given component
-	 * @param sid
-	 *            the id of a given sprint
+	 * @author: menna.ghoneim
 	 */
-
-	public static void index(long projectID, long cid, long sid) {
-
-		Component c = Component.findById(cid);
-		Project p = Project.findById(projectID);
-		Sprint s = Sprint.findById(sid);
-
-		boolean sExist = (sid == 0) ? false : true;
-		boolean cExist = (cid == 0) ? false : true;
-		boolean pExist = (projectID == 0) ? false : true;
-
-		render(projectID, cid, sid, c, p, s, sExist, cExist, pExist);
-	}
 
 	/**
 	 * S10, S11 Used for sending a list all the meetings of a certain project
@@ -80,6 +62,12 @@ public class ReviewLog extends SmartController {
 	 *            the id of a given sprint
 	 */
 
+	/**
+	 * Sprint 3:
+	 * 
+	 * @author: menna.ghoneim This method renders PAST meetings to view their
+	 *          review logs
+	 */
 	public static void showMeetings(long projectID, long cid, long sid) {
 		boolean empty = false;
 		boolean directLink = false;
