@@ -24,6 +24,7 @@
         
         <script type="text/javascript">
        		$(function(){
+       			$('#content').load();
 /*
            	    var x = $("#login").html();
            	    $('#logger').html(x);
@@ -104,7 +105,7 @@ Switch Theme&nbsp;&nbsp;
 <div id="chatroomList" style="text-align:center; color:#fff;display:none; position:absolute;z-index:100">
  	<div class="allCornersRounded"style="padding:5px;background-color:#555;width:100px;overflow auto;margin-left:250px" >
  	#{list controllers.Security.getConnected().projects, as:'proj'}
- 	<a href="#" onclick="signIn(${proj.chatroom.id}); $('#chatContainer_${proj.name}').slideToggle(400)">${proj.name}</a><br/>
+ 	<a href="#" onclick="	getMessages();signIn(${proj.chatroom.id}); $('#chatContainer_${proj.name}').slideToggle(400)">${proj.name}</a><br/>
 	
  	
  	#{/list}
@@ -152,9 +153,7 @@ Switch Theme&nbsp;&nbsp;
 				setTimeout('getMessages();', 500);
 			});
 		}	
-		$(function() {
-			getMessages();
-		});
+
 		
 	// Display a message
 	var display = function(message) {
