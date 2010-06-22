@@ -181,16 +181,25 @@ Shows the list of meetings  for the scrum master-->
 		
 			#{list items:meeting.users, as:'user'}
 				
+				<tr>
+				
+				<td>
+		     	${user.user.name} : 
+    			</td>
+				
 				#{if user.checkConfirmed()}											
-					<tr>
+								
+				Attended.		
 						
-						<td>
-							${user.user.name}
-						</td>
-						
-						
-					</tr>
-				#{/if}										
+				#{/if}	
+				
+				#{else}
+				
+				Did not attend.
+				
+				#{/else}
+				
+				</tr>									
 			#{/list}
 </tbody>
 </table>
