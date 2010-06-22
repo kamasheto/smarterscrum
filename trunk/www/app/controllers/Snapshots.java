@@ -34,27 +34,35 @@ public class Snapshots extends SmartController {
 
 		ArrayList<ComponentRowh> data = new ArrayList<ComponentRowh>();
 		List<Column> columns = b.columns;
+		List<Column> CS =new ArrayList<Column>();
 		ArrayList<String> Columnsofsnapshot = new ArrayList<String>();
-		for (int i = 0; i < columns.size(); i++) {
+		for( int i=0; i<columns.size();i++)
+		{
+			if(columns.get( i ).onBoard==true)
+			{
+				CS.add( columns.get( i ) );
+			}
+		}
+		for (int i = 0; i < CS.size(); i++) {
 			Columnsofsnapshot.add(null);
-			Columnsofsnapshot.set(i, columns.get(i).name);
+			Columnsofsnapshot.set(i, CS.get(i).name);
 		}
 
 		int smallest;
 		Column temp;
-		for (int i = 0; i < columns.size(); i++) {
+		for (int i = 0; i < CS.size(); i++) {
 			smallest = i;
-			for (int j = i + 1; j < columns.size(); j++) {
-				if (columns.get(smallest).sequence > columns.get(j).sequence) {
+			for (int j = i + 1; j < CS.size(); j++) {
+				if (CS.get(smallest).sequence > CS.get(j).sequence) {
 					smallest = j;
 
 				}
 
 			}
-			temp = columns.get(smallest);
-			columns.set(smallest, columns.get(i));
-			columns.set(i, temp);
-			Columnsofsnapshot.set(smallest, columns.get(i).name);
+			temp = CS.get(smallest);
+			CS.set(smallest, columns.get(i));
+			CS.set(i, temp);
+			Columnsofsnapshot.set(smallest, CS.get(i).name);
 			Columnsofsnapshot.set(i, temp.name);
 		}
 
@@ -65,7 +73,7 @@ public class Snapshots extends SmartController {
 			data.set(i, new ComponentRowh(components.get(i).id, components.get(i).name));
 			List<Task> tasks = components.get(i).returnComponentTasks(s);
 
-			for (int j = 0; j < columns.size(); j++) {
+			for (int j = 0; j < CS.size(); j++) {
 				data.get(i).add(null);
 				data.get(i).set(j, new ArrayList<String>());
 			}
@@ -97,27 +105,35 @@ public class Snapshots extends SmartController {
 
 		ArrayList<ComponentRowh> data = new ArrayList<ComponentRowh>();
 		List<Column> columns = b.columns;
+		List<Column> CS =new ArrayList<Column>();
 		ArrayList<String> Columnsofsnapshot = new ArrayList<String>();
-		for (int i = 0; i < columns.size(); i++) {
+		for( int i=0; i<columns.size();i++)
+		{
+			if(columns.get( i ).onBoard==true)
+			{
+				CS.add( columns.get( i ) );
+			}
+		}
+		for (int i = 0; i < CS.size(); i++) {
 			Columnsofsnapshot.add(null);
-			Columnsofsnapshot.set(i, columns.get(i).name);
+			Columnsofsnapshot.set(i, CS.get(i).name);
 		}
 
 		int smallest;
 		Column temp;
-		for (int i = 0; i < columns.size(); i++) {
+		for (int i = 0; i < CS.size(); i++) {
 			smallest = i;
-			for (int j = i + 1; j < columns.size(); j++) {
-				if (columns.get(smallest).sequence > columns.get(j).sequence) {
+			for (int j = i + 1; j < CS.size(); j++) {
+				if (CS.get(smallest).sequence > CS.get(j).sequence) {
 					smallest = j;
 
 				}
 
 			}
-			temp = columns.get(smallest);
-			columns.set(smallest, columns.get(i));
-			columns.set(i, temp);
-			Columnsofsnapshot.set(smallest, columns.get(i).name);
+			temp = CS.get(smallest);
+			CS.set(smallest, columns.get(i));
+			CS.set(i, temp);
+			Columnsofsnapshot.set(smallest, CS.get(i).name);
 			Columnsofsnapshot.set(i, temp.name);
 		}
 
@@ -128,7 +144,7 @@ public class Snapshots extends SmartController {
 			data.set(i, new ComponentRowh(components.get(i).id, components.get(i).name));
 			List<Task> tasks = components.get(i).returnComponentTasks(s);
 
-			for (int j = 0; j < columns.size(); j++) {
+			for (int j = 0; j < CS.size(); j++) {
 				data.get(i).add(null);
 				data.get(i).set(j, new ArrayList<String>());
 			}
@@ -137,8 +153,7 @@ public class Snapshots extends SmartController {
 				data.get(i).get(columns.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
 
 			}
-		}
-		String type = "sprint";
+		}		String type = "sprint";
 		Snapshot snap = new Snapshot();
 		snap.user = user;
 		snap.type = type;
@@ -171,33 +186,40 @@ public class Snapshots extends SmartController {
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
 		Board b = p.board;
-
 		User user = Security.getConnected();
 		List<Component> components = p.getComponents();
 
 		ArrayList<ComponentRowh> data = new ArrayList<ComponentRowh>();
 		List<Column> columns = b.columns;
+		List<Column> CS =new ArrayList<Column>();
 		ArrayList<String> Columnsofsnapshot = new ArrayList<String>();
-		for (int i = 0; i < columns.size(); i++) {
+		for( int i=0; i<columns.size();i++)
+		{
+			if(columns.get( i ).onBoard==true)
+			{
+				CS.add( columns.get( i ) );
+			}
+		}
+		for (int i = 0; i < CS.size(); i++) {
 			Columnsofsnapshot.add(null);
-			Columnsofsnapshot.set(i, columns.get(i).name);
+			Columnsofsnapshot.set(i, CS.get(i).name);
 		}
 
 		int smallest;
 		Column temp;
-		for (int i = 0; i < columns.size(); i++) {
+		for (int i = 0; i < CS.size(); i++) {
 			smallest = i;
-			for (int j = i + 1; j < columns.size(); j++) {
-				if (columns.get(smallest).sequence > columns.get(j).sequence) {
+			for (int j = i + 1; j < CS.size(); j++) {
+				if (CS.get(smallest).sequence > CS.get(j).sequence) {
 					smallest = j;
 
 				}
 
 			}
-			temp = columns.get(smallest);
-			columns.set(smallest, columns.get(i));
-			columns.set(i, temp);
-			Columnsofsnapshot.set(smallest, columns.get(i).name);
+			temp = CS.get(smallest);
+			CS.set(smallest, columns.get(i));
+			CS.set(i, temp);
+			Columnsofsnapshot.set(smallest, CS.get(i).name);
 			Columnsofsnapshot.set(i, temp.name);
 		}
 
@@ -208,7 +230,7 @@ public class Snapshots extends SmartController {
 			data.set(i, new ComponentRowh(components.get(i).id, components.get(i).name));
 			List<Task> tasks = components.get(i).returnComponentTasks(s);
 
-			for (int j = 0; j < columns.size(); j++) {
+			for (int j = 0; j < CS.size(); j++) {
 				data.get(i).add(null);
 				data.get(i).set(j, new ArrayList<String>());
 			}
@@ -218,7 +240,6 @@ public class Snapshots extends SmartController {
 
 			}
 		}
-
 		Snapshot snap = new Snapshot();
 		snap.user = user;
 		snap.type = "Meeting";
