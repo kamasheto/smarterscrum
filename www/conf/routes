@@ -34,6 +34,7 @@ GET     /projects/manageProjectsRequests   		Projects.manageProjectRequests
 
 GET     /tasks/edit/{id}				         		Tasks.show
 POST	/accounts/editProfile							Application.editProfile
+GET		/about											About.index
 
 # Home page
 GET     /                                       	Application.index
