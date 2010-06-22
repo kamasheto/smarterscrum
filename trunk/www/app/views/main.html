@@ -2,14 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <title>#{get 'title' /}</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        
-        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/main.css'}">
-       	<link rel="stylesheet" type="text/css" media="screen"href="@{'/public/stylesheets/tipTip.css'}">
-        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jquery-ui-1.8.custom.css'}">
-		<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/BreadCrumb.css'}">
-		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/jquery.gritter.css">
-		<link rel="shortcut icon" href="@{'public/images/favicon.ico'}" type="image/x-icon"> 
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/main.css'}"/>
+       	<link rel="stylesheet" type="text/css" media="screen"href="@{'/public/stylesheets/tipTip.css'}"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jquery-ui-1.8.custom.css'}"/>
+		<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/BreadCrumb.css'}"/>
+		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/jquery.gritter.css"/>
+		<link rel="shortcut icon" href="@{'public/images/favicon.ico'}" type="image/x-icon"/> 
         #{get 'moreStyles' /}
         
         <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
@@ -119,7 +118,7 @@ Switch Theme&nbsp;&nbsp;
 <div id="chatContainer">
 #{list controllers.Security.getConnected().projects, as:'proj'}
 <div id="chatContainer_${proj.name}" style="display:none;position:absolute; z-index:100;">
-<div class="chatContainerHeader" title="hide/show chat?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);">${proj.name} Chat</div>
+<div class="chatContainerHeader"><a href="#" title="hide/show chat?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);" style="text-decoration:none; color:#fff">${proj.name} Chat</a></div>
 <div id="chatHolder_${proj.name}">
 	<div id="thread_${proj.name}" class="thread">
 		<div>
