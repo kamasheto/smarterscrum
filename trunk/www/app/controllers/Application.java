@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import models.Component;
+import models.Notification;
 import models.Project;
 import models.User;
 import play.data.validation.Email;
@@ -60,10 +61,28 @@ public class Application extends SmartController
 	{
 		return hash( System.currentTimeMillis() * Math.random() + "" ).substring( 0, length );
 	}
-
+	/**
+	 *@author Moataz
+	 *this method retrieves the latest 30 notifications to the home page 
+	 */
 	public static void index()
 	{
-		render();
+		User user = Security.getConnected();
+		List<Notification> notis = Notification.find("user = " +user.id + "order by id desc").fetch();
+		List<Notification> noti;
+		if(notis.size()<30)
+			noti = notis;
+			else
+				noti = notis.subList(0, 30);
+		 
+		render(noti);
+	}
+	
+	public static void notificationsHistory()
+	{
+		User user = Security.getConnected();
+		List<Notification> notis = Notification.find("user = " +user.id + "order by id desc").fetch();
+		render(notis);
 	}
 
 	/**

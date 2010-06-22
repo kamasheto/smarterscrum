@@ -1,0 +1,22 @@
+#{extends 'main.html' /} #{set title:'Notification History' /}
+
+<h1>All News</h1>
+#{list items:notis, as:'notif'}
+<li>
+<DL>
+#{if notif.importance ='1'}
+<dt><font size =3 color = "green"><b>${notif.header} </b>:</font> </dt>
+#{/if}
+#{elseif notif.importance ='0'}
+<dt><font size =3 color = "yellow"><b>${notif.header} </b>:</font> </dt>
+#{/elseif}
+#{else}
+<dt><font size =3 color = "red"><b>${notif.header} </b>:</font> </dt>
+#{/else}
+<dd><font size =2> ${notif.body}. </font>${notif.date}</dd>
+</DL></li>
+#{/list}
+
+#{set 'crumbs'}
+<a href="@{Application.notificationsHistory()}"> Notification History </a>
+#{/set}
