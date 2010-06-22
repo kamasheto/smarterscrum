@@ -91,9 +91,16 @@ public class ReviewLog extends SmartController {
 		Project p = Project.findById(projectID);
 		Sprint s = Sprint.findById(sid);
 
-		List<Meeting> reviewMeetings = Meeting.find(
-				"project.id=" + projectID
-						+ " and isReviewLog=true and deleted=false").fetch();
+		Date currentDate = new Date();
+		long longCurrentDate = currentDate.getTime();
+
+		List<Meeting> reviewMeetings = Meeting.find("byProject.idAndDeleted",
+				projectID, false).fetch();
+
+		for (int i = 0; i < reviewMeetings.size(); i++) {
+			if (reviewMeetings.get(i).endTime > longCurrentDate)
+				reviewMeetings.remove(i);
+		}
 
 		if (reviewMeetings.isEmpty())
 			empty = true;
