@@ -7,7 +7,7 @@ public class About extends SmartController {
 		"Ahmed Khaled (C4)<br />Ask him anything and he'll say: &#147;fol&#148;", // 
 		"Mina Zaki (C2)<br />", // 
 		"Mahmoud Sharawi (C3)<br />", // 
-		"Joseph ElHajj (C5)<br />Joe speaks Japanese, and watches cartoon.<br />(Even during meetings!)", // 
+		"Joseph ElHajj (C5)<br />Joe speaks Japanese, and watches cartoons.<br />(Even during meetings!)", // 
 		"Hossam Sharaf (C2)<br />", // 
 		"Mohamed Monayri (C3)<br />One of the people behind the estimation game!", // 
 		"Moataz Mekki (C1)<br />Moataz is notifying everyone!", // 
