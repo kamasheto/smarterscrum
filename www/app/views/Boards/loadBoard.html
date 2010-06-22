@@ -132,6 +132,13 @@ function showHiddenCol(colid)
 			window.location.reload();
 		});
 }
+function hideCol(colid)
+{
+	$.post('@{hideColumn()}' ,			
+			{cid:colid}, function(){
+			window.location.reload();
+		});
+}
 function popUp(URL) 
 {
 day = new Date();
@@ -219,15 +226,20 @@ End At
 </select>
 
 <!-- view hidden Col by Hadeer -->	
-<div>
 <select id="hadeer" onchange="showHiddenCol(hadeer.value)">
 <option value="">view hiden columns</option>
 #{list items:hidencolumnsOfBoard, as:'c'}
 <option value= "${c.id}">${c.name}</option>
 #{/list}
 </select>
-</div>
 
+<!-- hide Col by Hadeer -->
+<select id="hadeer2" onchange="hideCol(hadeer2.value)">
+<option value="">delete columns</option>
+#{list items:columnsOfBoard, as:'c'}
+<option value= "${c.id}">${c.name}</option>
+#{/list}
+</select>
 
 <div id="drag">
 <table id="mainBoard" class="draggable"  border="1">
