@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import controllers.Security;
+
 import models.Board;
 import models.Column;
 import models.Component;
@@ -80,17 +82,27 @@ public class Boards extends SmartCRUD {
 		 *            this list of Users in views-Boards- loadBoard.html
 		 */
 
-		LinkedList<Meeting> total = new LinkedList<Meeting>();
-
-		// ArrayList<MeetingUsers> u = new ArrayList<MeetingUsers>();
+		long id=Security.getConnected().id;
+		boolean found=false;
+		LinkedList<Meeting> total = new LinkedList<Meeting>();		
 		for (Meeting m : p.meetings) {
 			long now = new Date().getTime();
 			if (m.startTime < now && m.endTime > now) {
-				total.add(m);
+				for(int i=0;i<m.users.size();i++)
+				{
+					if(m.users.get(i).id==id)
+						if(m.users.get(i).checkConfirmed())
+						total.add(m);
+				       found=true;
+				}
+				
 			}
 		}
 
+
 		ArrayList<ArrayList<User>> u = new ArrayList<ArrayList<User>>();
+		if(found==true)
+		{
 		for (int i = 0; i < total.size(); i++) {
 			Meeting m = Meeting.findById(total.get(i).id);
 
@@ -102,6 +114,7 @@ public class Boards extends SmartCRUD {
 
 			}
 
+		}
 		}
 		for(int i=0; i<columns.size();i++)
 		{
