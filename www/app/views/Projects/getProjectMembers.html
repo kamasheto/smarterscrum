@@ -12,16 +12,24 @@ if you want to invite developers to ${pro.name}   <a href="/show/users"><font co
 <br/> 
 #{/if}
 #{if !users.isEmpty()}
-<ul id= "prequests">
-#{list items:users, as:'useer'}
-	<li id="us_${useer.id}">
-	<a href="/show/user?id=${useer.id}"> ${useer.getDisplayName(pro).raw()} </a>
-	</li>
-#{/list}
-
-</ul>
+<font size="3">
+<TABLE>
+  <tr>
+    <th>Member Name</th>
+    <th>Role(s)</th>
+  </tr>
+  #{list items:users, as:'useer'}
+  <tr>
+    <td>    
+	<a href="/show/user?id=${useer.id}"> ${useer.getDisplayName(pro).raw()} </a> 	
+</td>
+    <td> ${useer.getUserRoles(pro)} </td>
+    
+  </tr>
+  #{/list}
+</TABLE>
+</font>
 #{/if}
-<br/>
 #{set 'crumbs'}
 <li><a href="/show/projects">Projects</a></li>
 <li><a href="/show/project?id=${pro.id}">${pro.name}</a></li>
