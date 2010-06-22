@@ -32,4 +32,8 @@ public class UserNotificationProfiles extends SmartCRUD {
 	public static void save(String id) {
 		forbidden();
 	}
+
+	public static void list(int page, String search, String searchFields, String orderBy, String order) {
+		forbidden();
+	}
 }
