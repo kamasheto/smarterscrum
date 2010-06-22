@@ -362,23 +362,6 @@ public class Projects extends SmartCRUD {
 
 	}
 
-	/**
-	 * Deleting a project
-	 * 
-	 * @author hossam sharaf
-	 * @param projectId
-	 */
-	public static void deleteProject(long projectId) {
-		Project project = Project.findById(projectId);
-		project.deleted = true;
-		project.save();
-		String body = "Please note that the project " + project.name + " has been deleted!";
-		String header = project.name + " deletion notification";
-		List<User> projectMembers = project.users;
-		Notifications.notifyUsers(projectMembers, header, body, (byte) -1);
-		Logs.addLog(Security.getConnected(), "Deleted Project", "project", projectId, project, new Date());
-		Show.projects(0);
-	}
 
 	/**
 	 * This action method sets the effort estimation unit of the specified
