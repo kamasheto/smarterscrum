@@ -18,7 +18,7 @@ public class About extends SmartController {
 		"Ahmed Behairy (C2)<br />He approves project requests. Really.", // 
 		"Saher (scrum-master)<br />He made sure we followed the rules.<br />He also brought cake. Lots and lots of it.", // 
 		"Amr Abdelwahab (C5)<br />Amr took snapshots. During meetings, after sprints.", // 
-		"Mahmoud Sakr (C1-lead, Manager)<br />Mahmoud is also known as ela2ra3<br />Unfortunately, it was true. :'(", // 
+		"Mahmoud Sakr (C1-lead, Manager)<br />Mahmoud is also known as ela2ra3<br />Unfortunately, it was true.", // 
 		"Menna Ghoneim (C4-lead)<br />", // 
 		"Dina Helal (C5-lead)<br />", // 
 		"Heba Sherif (C3)<br />Heba, our best reviewer, loves sequence diagrams", //
