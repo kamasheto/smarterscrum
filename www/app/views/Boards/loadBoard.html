@@ -188,18 +188,9 @@ $(function()
 
 <!--Tools-->
 #{set 'moreLinks'}
-<a href="" id="form">Swap Columns Settings</a><br><br>	
 <a href="/admin/projects/${p.id}/meetings/new?object.infrontBoard=true">Create Board Meeting<a/><br><br>	
 <a href="@{Snapshots.index(s.id,'board')}" >View snapshots</a><br><br>	
 <a href="javascript:take_snapshot();">Take Snapshot</a><br>
-<!--i think this should be removed-->
-<form style="display:none;">
-<textarea id="from"></textarea>
-<textarea id="to"></textarea>
-<input type="button" onclick="swapValues()" value="swap" />
-</form></br>
-<br>
-</br>
 <!-- asmaak89 Part-->
 <div class="smartBarHeader">Current Meeting</div>
 <br>
@@ -331,7 +322,7 @@ End At
 		<!-- big sticky note -->						
 		<p> 
 		<div style="display:none;"  id="${task.id}Large" style="border:hidden">
-		<div id="tas-${task.id}_" >
+		<div style="max-width:150px" id="tas-${task.id}_" >
 		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 15px" border=0px id="tas-${task.id}_T">
 		<p>
 		<div  border=0px align="center">T ${task.id}</div>
