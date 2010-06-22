@@ -397,10 +397,6 @@ hideLoader('addES','loaderES');
 	<h2 id="crudShowTitle">Edit "&{object.name}" Defaults and Settings 	
 	</h2>
 	
-	#{form @deleteProject(object.id)}
-			<input style="margin-align:left" onclick ="return confirm('Are you sure you want to delete this project${object.hasRunningSprints()?', there are running sprints':''}?')"  style="margin-left:800px" type="submit" value="&{'crud.delete', type.modelName}" />
-		
-	#{/form} 
 	
 	<h5 id="description style="length:200px"><u>Description:</u> <br> &{object.description}  </h5>
 	
