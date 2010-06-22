@@ -512,9 +512,9 @@ public class Project extends SmartModel
 	 * @return boolean
 	 * @author behairy
 	 */
-	public static boolean userRequstedProjectBefore( String username, String projectname )
+	public static boolean userRequstedProjectBefore( Long userId, String projectname )
 	{
-		List<Project> p = Project.find( "name='" + projectname + "' and " + " username='" + username + "' and approvalStatus=false and deleted=false" ).fetch();
+		List<Project> p = Project.find( "name='" + projectname + "' and " + " user.id='" + userId+ "' and approvalStatus=false and deleted=false" ).fetch();
 
 		if( p.isEmpty() )
 			return false;
