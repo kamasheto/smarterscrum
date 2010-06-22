@@ -257,4 +257,14 @@ public class Boards extends SmartCRUD {
 		}*/
 		
 	}
+	public static void hideColumn(long cid)
+	{
+		System.out.println(cid);
+		Column c=Column.findById( cid );
+		System.out.println(c.name);
+		c.onBoard=false;
+		c.save();
+		
+		
+	}
 }
