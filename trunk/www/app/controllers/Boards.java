@@ -280,4 +280,17 @@ public class Boards extends SmartCRUD {
 		
 		
 	}
+	
+	/**
+	 * @author Dina Helal
+	 * @param usr_id: user ID
+	 * 
+	 * */
+	
+	public static void getUser(long usr_id)
+	{
+		User usr = User.findById(usr_id);
+		renderJSON(usr);
+	}
+	
 }
