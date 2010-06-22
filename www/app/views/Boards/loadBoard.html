@@ -226,7 +226,7 @@ End At
 </select>
 
 <!-- view hidden Col by Hadeer -->
-#{if connected.in(p).can('canShowColumn')}
+#{if connected.in(p).can('ShowColumn')}
 <button class="b1" type="button">Show Hidden Columns!</button>	
 <select id="hadeer" onchange="showHiddenCol(hadeer.value)" style="display:none" class="hidecol">
 <option value="">view hiden columns</option>
@@ -237,7 +237,7 @@ End At
 #{/if}
 
 <!-- hide Col by Hadeer -->
-#{if connected.in(p).can('canHideColumn')}
+#{if connected.in(p).can('HideColumn')}
 <button class="b2" type="button" >Delete Columns!</button>
 
 <select id="hadeer2" onchange="hideCol(hadeer2.value)" style="display:none" class="showcol">
@@ -257,7 +257,7 @@ End At
 	<!-- set flag based on logged in user -->
 	<span style="display:none"> ${count=0}</span>
 	#{list items:columnsOfBoard, as:'col'}
-	#{if connected.in(p).can('canRenameColumn')}
+	#{if connected.in(p).can('renameColumns')}
 	<span style="display:none"> ${flag=true}</span>
     #{/if}
 		
@@ -328,12 +328,12 @@ End At
 		<div  border=0px align="center">T ${task.id}</div>
 		
 		<!-- set flag for logged in user (edit description) -->
-		#{if connected.in(p).can('canChangeTaskDescreption')} 
+		#{if connected.in(p).can('changeTaskDescreption')} 
 		<span style="display:none"> ${flag2=true}</span>
 		#{/if}
 		#{if flag2 || controllers.Security.getConnected().equals(task.assignee)} <!-- if has permission (desc) or assignee -->
-		<div style=" id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}">
-		<span style="id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}"  title="Edit description?" >${task.description}</span>
+		<div id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}">
+		<span id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}"  title="Edit description?" >${task.description}</span>
 		</div>	
 		#{/if}
 		#{else} <!-- if doesn't have have permission (desc) nor assignee -->
@@ -343,7 +343,7 @@ End At
 		#{/else}
 				
 		<!-- set flag for logged in user (edit assignee) -->						
-		#{if connected.in(p).can('canChangeAssignee')} 
+		#{if connected.in(p).can('changeAssignee')} 
 		<span style="display:none"> ${flag3=true}</span>
 		#{/if}
 		#{if flag3} <!-- if has permission (edit assignee) -->
@@ -356,7 +356,7 @@ End At
 		#{/else}
 								
 		<!-- set flag for logged in user (edit reviewer) -->						
-		#{if connected.in(p).can('canChangeReviewer')}
+		#{if connected.in(p).can('changeReviewer')}
 		<span style="display:none"> ${flag4=true}</span>
 		#{/if}
 		#{if flag4}  <!-- if has permission (edit reviewer) -->
@@ -370,7 +370,7 @@ End At
 		#{/else}
 		
 		<!-- set flag for logged in user (edit type) -->	
-		#{if connected.in(p).can('canChangeTaskType')}
+		#{if connected.in(p).can('changeTaskType')}
 		<span style="display:none"> ${flag5=true}</span>
 		#{/if}
 		#{if flag5 || controllers.Security.getConnected().equals(task.assignee)} <!-- if has permission (type) or assignee -->
