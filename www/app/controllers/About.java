@@ -2,7 +2,8 @@ package controllers;
 
 public class About extends SmartController {
 	public static void index() {
-		String[] data = { "Amr Hany (C2), the CRUD guru!<br />Amr, the man behind the chat system, is akbar men keda bekter", // Amr Hany
+		String[] data = { "Amr Hany (C2), the CRUD guru!<br />Amr, the man behind the chat system, is akbar men keda bekter", // Amr
+		// Hany
 		"Ahmed Khaled (C4)<br />Ask him anything and he'll say: &#147;fol&#148;", // 
 		"Mina Zaki (C2)<br />", // 
 		"Mahmoud Sharawi (C3)<br />", // 
@@ -23,7 +24,7 @@ public class About extends SmartController {
 		"Dina Helal (C5-lead)<br />", // 
 		"Heba Sherif (C3)<br />Heba, our best reviewer, loves sequence diagrams", //
 		"Hadeer Diwan (C5)<br />", // 
-		"Hadeer Younis (C4)<br />Hadeer made our site look pretty.<br />She's also responsible for the burndown chart", // 
+		"Hadeer Younis (C4)<br />Hadeer made our site look pretty.<br />She's also very strong indeed!", // 
 		"Dr Fatma Meawad (CEO)<br />Dr Fatma didn't only request a whole lot,<br />she also made us change it all (A)", // 
 		"Asmaa Alkomy (C5)<br />Asmaa made dish parties come true.", // 
 		"Ghada Fakhry (C2-lead)<br />", // 
