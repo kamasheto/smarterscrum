@@ -27,8 +27,12 @@
 				
 				#{secure.check 'loggedIn'}
 				$('#logger').html('');
-				#{/secure.check}
-
+				#{/secure.check}/*
+if($('.sideBarElements').html()=='')
+{$('#theSide').remove();
+$('#theContent').css('padding','20px');
+}
+				*/
 				$('#logger').html($('#login').html());
 				$('#login').html('');
        			$("#breadCrumb").jBreadCrumb();
@@ -49,8 +53,12 @@
    			    $("input[type='ok']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
    			    $("input[type='add']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
    			    $("input[type='send']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-   			
-			    
+   			 $("td").contents().each(function() {
+   	   			 var br ="<br/>"
+   			    if(this.nodeType == 3)
+   			        this.nodeValue = this.nodeValue.replace("/n", unescape(br));
+   			});
+
    			    $('div.crudField').each(function(){
 						if ($(this).html().trim() == '') {
 							$(this).remove();
@@ -218,7 +226,7 @@ Switch Theme&nbsp;&nbsp;
 			<div style="background-color: #fff; overflow: auto;">
 				<table style="width: 100%" class="myTables">
 					<tr>
-						<td style="width: 200px; vertical-align: top; border-right:1px #ddd solid">
+						<td id="theSide"style="width: 200px; vertical-align: top; border-right:1px #ddd solid">
 						<div id="logger" style="padding-left:20px">
 			<!-- 
 	<form method="post" action="@{secure.authenticate()}">
@@ -259,15 +267,12 @@ Switch Theme&nbsp;&nbsp;
 								<div class="left inline-block"  style="color: rgb(158, 53, 114); margin-top:10px;font-size:30px;line-height:10px;">}</div>
 							</div>
 							<br style="clear:both"/>
-							<div class="sideBarElements">
-								#{get 'moreLinks' /}
-								#{get 'moreControls'/}
-							</div>
+							<div class="sideBarElements">#{get 'moreLinks' /}#{get 'moreControls'/}</div>
 						</div>
 						#{/secure.check}
 						</td>
-						<td style="vertical-align: top; padding: 10px;">
-						<div class="left" style=" vertical-align: top;">
+						<td id="theContent"style="vertical-align: top; padding: 10px;">
+						<div class="left" style=" vertical-align: top;width:100%">
 							#{secure.check 'loggedIn'}
 							<div id="breadCrumb" class="breadCrumb module">
 								<ul>

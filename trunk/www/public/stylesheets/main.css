@@ -436,7 +436,8 @@ label {
 	width: 150px;
 	display: inline-block;
 }
-
+button
+{padding:5px 10px 5px 10px !important}
 /*******************Messages Styles********************/
 #chatContainer {
 	width: 200px;
@@ -559,10 +560,10 @@ table {
 	border-collapse: collapse;
 }
 
-#content table thead {
-	background-color: #ddd;
+#content table thead,#content table thead tr:hover {
+	background-color: #ddd !important;
 	color: #333;
-	font-size: 12px;
+	font-size: 10px;
 }
 
 #content tr,#content td,#content table {
@@ -584,7 +585,11 @@ table {
 tr {
 	margin: 0px !important;
 }
-#sprint td form input
+#content tr:hover
+{
+background-color:#fefefe;
+}
+#sprint td form input, #project_stories td form input
 {
 width:100%!important;
 height:100% !important;
