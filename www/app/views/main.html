@@ -65,9 +65,22 @@
 </head>
 
 <body onload="#{get 'onLoad' /}">
+
+<div style="position:absolute; top:100px; right:10px">
+#{secure.check 'systemAdmin'}
+	<a class="aDIV topCornersRounded" href="/admin/projects" style="color: #E5A1A5;" title="View the admin panel">Admin Panel</a>
+#{/secure.check}
+<a class="aDIV topCornersRounded" href="@{About.index}" title="read aboout SmartSoft?">About Us</a>
+	<a class="aDIV topCornersRounded" href="@{Show.users}" title="show users?">Users</a>
+	<a class="aDIV topCornersRounded" href="@{Show.projects}" title="view all projects?">Projects</a> 
+	</div>
+
+
+
+
 <div style="position:relative; top:0px; right:10px">
 		<div class="inline-block right" style="background-color:#111; width: 20px; height: 20px;">
-			<div class="curlyNotchTopLeft"style="background: url('@{'/public/images/bg2.png'}') repeat-x fixed left -40px;">
+			<div class="curlyNotchTopLeft"style="background: url('@{'/public/images/bg2.png'}') repeat-x fixed left -50px;">
 			</div>
 		</div>
 
@@ -76,20 +89,22 @@
 		<input class="search" type="text" /><input class="searchBtn" type="button" value="search" /></div>
 		
 <div class="inline-block right" style="background-color:#111; width: 20px; height: 20px;">
-			<div class="curlyNotchTopRight" style="background: url('@{'/public/images/bg2.png'}') repeat-x fixed left -40px;">
+			<div class="curlyNotchTopRight" style="background: url('@{'/public/images/bg2.png'}') repeat-x fixed left -50px;">
 			</div>
 </div>
 </div>
-<div style="background: url('@{'/public/images/bg2.png'}') repeat-x scroll left top; width: 100%;height:156px;margin-top:-40px">
-<div style="margin-top:-40px"class="left"><a  href="/" title="Go back home?"><img src="@{'/public/images/smartsoft.png'}"/></a></div>
-<br style="clear:both"/>
-<div class="right">
-#{secure.check 'systemAdmin'}
-	<a class="aDIV topCornersRounded" href="/admin/projects" style="color: #E5A1A5;" title="View the admin panel">Admin Panel</a>
-#{/secure.check}
-<a class="aDIV topCornersRounded" href="@{About.index}" title="read aboout SmartSoft?">About Us</a>
-	<a class="aDIV topCornersRounded" href="@{Show.users}" title="show users?">Users</a>
-	<a class="aDIV topCornersRounded" href="@{Show.projects}" title="view all projects?">Projects</a> </div>
+
+
+
+<table cellpadding="0" style="width: 100%" class="myTables">
+<tr><td>
+
+<table cellpadding="0" style="width: 100%" class="myTables">
+<tr><td>
+<div style="background: url('@{'/public/images/bg2.png'}') repeat-x scroll left top; width: 100%;height:156px;margin-top:-50px">
+<div class="left"><a  href="/" title="Go back home?"><img src="@{'/public/images/smartsoft.png'}"/></a></div>
+
+
 </div>
 
 <div class="topper">
@@ -179,7 +194,8 @@ Switch Theme&nbsp;&nbsp;
 	</div>
 	#{/secure.check}
 </div>
-<table cellpadding="0" style="width: 100%" class="myTables">
+</td></tr>
+</table></td></tr>
 	<tr>
 		<td>
 		<table cellpadding="0" class="myTables" style="width: 100%; overflow: auto">
@@ -251,7 +267,7 @@ Switch Theme&nbsp;&nbsp;
 						#{/secure.check}
 						</td>
 						<td style="vertical-align: top; padding: 10px;">
-						<div class="left" style="width: 100%; vertical-align: top">
+						<div class="left" style=" vertical-align: top;">
 							#{secure.check 'loggedIn'}
 							<div id="breadCrumb" class="breadCrumb module">
 								<ul>
@@ -262,7 +278,7 @@ Switch Theme&nbsp;&nbsp;
 										
 							
 							#{/secure.check}
-							<div id="content"style="margin-top:35px">
+							<div id="content"style="margin-top:35px;">
 							#{doLayout /}
 							</div>
 						</div>
