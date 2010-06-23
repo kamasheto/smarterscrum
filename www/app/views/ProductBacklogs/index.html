@@ -1,9 +1,13 @@
-#{extends 'main.html' /} #{set title:'product backlog' /}
+#{extends 'main.html' /} #{set title: project.name + '\'s Product Backlog' /}
 #{set 'crumbs'}
-
-<script type="text/javascript">
-
-</script>
+#{set 'moreStyles'}
+<style type="text/css">
+thead
+{
+cursor:move;
+}
+</style>
+#{/set}
 <li><a href="/show/projects">Projects</a></li>
 <li><a href="/show/project?id=${project.id}">${project.name}</a></li>
 #{if isComp}
@@ -15,6 +19,9 @@
 <div>
 #{ifnot running}
 #{set 'moreScripts'}
+
+<script  type="text/javascript" src="@{'/public/javascripts/dragtablenorm.js/'}" ></script>
+<script  type="text/javascript" src="@{'/public/javascripts/sorttable.js/'}" ></script>
 <script language="javascript" type="text/javascript" src="@{'/public/javascripts/jeditable-mod.js'}"></script>
 
 <script type="text/javascript">
@@ -39,7 +46,7 @@ $(function()
     	    },
     	    {    
     	        indicator : 'Saving...',
-    	        tooltip   : 'Click to edit...'
+    	        
     	    });
     $('.editSsenario').editable(
     	    function(value,settings)
@@ -54,7 +61,7 @@ $(function()
     	    },
     	    {    
     	        indicator : 'Saving...',
-    	        tooltip   : 'Click to edit...'
+    	        
     	    });
     $('.editFsenario').editable(
     	    function(value,settings)
@@ -68,7 +75,7 @@ $(function()
     	    },
     	    {    
     	        indicator : 'Saving...',
-    	        tooltip   : 'Click to edit...'
+    	        
     	    });
 
     $('.editPRIORITY').editable(
@@ -94,7 +101,7 @@ $(function()
     	    },
     	    {    
     	        indicator : 'Saving...',
-    	        tooltip   : 'Click to edit...'
+    	        
     	    });
 
     
@@ -139,35 +146,42 @@ Backlog
 
 #{set 'moreLinks'}
 	<a title="Take a look at the charts?" href="@{ProductBacklogs.showGraph(project.id,isComp)}">View the Burndown Chart </a><br/> 
-<a onclick="$('#checklist').toggle()" href="#">Customize columns</a><br/>
+<a onclick="$('#checklist').toggle(400)" href="#">Show/Hide Columns</a><br/>
 #{/set}
 
 <!--@author ahmedkhaled7 c4S2 
 check boxes for choosing the columns to be hidden -->
-<div id="checklist" style="display:none"><br>
-	
-	<input type="checkbox" id="option1" value="description"> Description
-	<input type="checkbox" id="option2" value="priority"> Priority<br/>
-	<input type="checkbox" id="option3" value="success demos"> Success Demos
-	<input type="checkbox" id="option4" value="failure demos"> Failure Demos<br/>
-	
-	<a id="custom" onclick="customize_columns();$('#checklist').toggle()" href="#">hide</a>
-	</div>
+<div id="checklist" style="display:none;">
+	<h5>Show/Hide Columns</h5>
+<div class="crudField">
+Please check the columns that you would like to hide. Columns not checked will be shown.
+<br/><br/>
+</div>
+<div class="crudField">
+	<input type="checkbox" id="option1" ><label for="option1">Description</label><br/>
+	<input type="checkbox" id="option2" ><label for="option2">Priority</label><br/>
+	<input type="checkbox" id="option5" ><label for="option5">Dependent Stories</label><br/>
+	<input type="checkbox" id="option3" ><label for="option3">Success Demos</label><br/>
+	<input type="checkbox" id="option4" ><label for="option4">Failure Demos</label><br/>
+	<br/></div><div class="crudField">
+	<button id="custom" onclick="customize_columns();">Hide</button>
+	</div></div>
 
 <!-- @author ahmedkhaled7 C4 S2,S3
  Creating a table , then Looping on the list of stories rendered to this page
  and putting the attributes of each story(id,description ,priority, dependent stories
  , successSenarios , failureSenarios) on different rows and each attribute in a cell  -->
-<h3>Stories</h3>
-<table id="project_stories">
+<table id="project_stories" class="draggable sortable">
 
 	<thead>
+	<tr>
 	<td>ID</td>
-	<td id="desHead"> Description</td>
-	<td id="prioHead">Priority</td>
-	<td> Dependent Stories</td>
-	<td id="succHead"> Success Demos</td>
-	<td id="failHead"> Failure Demos</td>
+	<td class="shDes">Description</td>
+	<td class="shPriority">Priority</td>
+	<td class="shDep">Dependent Stories</td>
+	<td class="shSD">Success Demos</td>
+	<td class="shFD">Failure Demos</td>
+	</tr>
 	</thead>
  
   #{list items:stories, as:'story'}
@@ -175,26 +189,24 @@ check boxes for choosing the columns to be hidden -->
 		
 	
 		<td>${story.id}</td>
-		<td id=${story.id} class="editDES">${story.description}</td>
-		<td id=${story.id} class="editPRIORITY">${story.priority}</td>
+		<td id=${story.id} class="editDES shDes">${story.description}</td>
+		<td id=${story.id} class="editPRIORITY shPriority">${story.priority}</td>
 		
 		
 		 #{ifnot story.dependentStories}
-		 <td id=${story.id} class="editDStories">
-		 <A HREF="javascript:popUp('@{Storys.chooseDependentStories(story.id)}')">
-		<span title="Edit the dependent stories??"class="ui-icon ui-icon-plusthick" style="display:inline-block"></span></A>
-		 No dependent stories</td>
+		 <td id=${story.id} class="editDStories shDes">
+		 <a  href="javascript:popUp('@{Storys.chooseDependentStories(story.id)}')">
+		add?</a></td>
 		 #{/ifnot}
 	    
 	    #{else}
-		<td id=${story.id} class="editDStories">   
-	    <A HREF="javascript:popUp('@{Storys.chooseDependentStories(story.id)}')">
-		<span title="Edit the dependent stories??"class="ui-icon ui-icon-pencil" style="display:inline-block;margin-left:1px;"></span></A>
+		<td id=${story.id} class="editDStories shDep">   
+	    <a href="javascript:popUp('@{Storys.chooseDependentStories(story.id)}')">
 		
 		#{list items:story.dependentStories, as:'dependentStory'}
                      ${dependentStory.id},
                       #{/list}
-         
+         </a>
           </td>
           #{/else}        
 				
@@ -210,26 +222,24 @@ check boxes for choosing the columns to be hidden -->
 		#{/list} </td>
 		 -->
 		#{ifnot story.succussSenario} 
-		<td>
-		  No success scenarios
+		<td class="editSsenario shSD">
+		 
 		  </td>
 		  #{/ifnot}
 		 	
 		 	#{else}
-		 	<td  id="${story.id}" class="editSsenario">
-		
-		 ${story.succussSenario.nl2br()}
+		 	<td  id="${story.id}" class="editSsenario shSD">
+			${story.succussSenario};
 		</td>
 			#{/else}	
-			
 			#{ifnot story.failureSenario} 
-		<td>
-		  No failure scenarios
+		<td class="shFD editFsenario">
+		  
 		 </td>
 		 #{/ifnot}
 		
 		#{else}
-		<td  id="${story.id}" class="editFsenario">
+		<td  id="${story.id}" class="editFsenario shFD">
 		 ${story.failureSenario}
 		</td>		
 		#{/else}
@@ -263,36 +273,30 @@ function customize_columns()
 {
 	
 	if($('#option1').is(':checked')==true)	
-	{$('.editDES').css('display','none');
-	$('#desHead').css('display','none');
-	}
-else{$('.editDES').css('display','table-cell');
-$('#desHead').css('display','table-cell');
-	}
-
+		$('.shDes').css('display','none');
+	else
+		$('.shDes').css('display','table-cell');
+	
 	if($('#option2').is(':checked')==true)	
-	{$('.editPRIORITY').css('display','none');
-	$('#prioHead').css('display','none');
-	}
-else{$('.editPRIORITY').css('display','table-cell');
-$('#prioHead').css('display','table-cell');
-	}
+		$('.shPriority').css('display','none');
+	else
+		$('.shPriority').css('display','table-cell');
 
 	if($('#option3').is(':checked')==true)	
-{$('.editSsenario').css('display','none');
-$('#succHead').css('display','none');
-}
-else{$('.editSsenario').css('display','table-cell');
-$('#succHead').css('display','table-cell');
-}
+		$('.shSD').css('display','none');
+	else 
+		$('.shSD').css('display','table-cell');
+	
+	if($('#option4').is(':checked')==true)	
+		$('.shFD').css('display','none');
+	else
+		$('.shFD').css('display','table-cell');
 
-if($('#option4').is(':checked')==true)	
-{$('.editFsenario').css('display','none');
-$('#failHead').css('display','none');
-}
-else{$('.editFsenario').css('display','table-cell');
-$('#failHead').css('display','table-cell');
-}
+	if($('#option5').is(':checked')==true)	
+		$('.shDep').css('display','none');
+	else
+		$('.shDep').css('display','table-cell');
+
 }
 </script>
 

@@ -30,40 +30,40 @@ ${project.description?.nl2br()}
 
 
 <br/>
-<a href="@{Projects.getProjectMembers(project.id)}"> Project Members </a><br/>
+<a href="@{Projects.getProjectMembers(project.id)}">Members</a><br/>
 
-<a href="tasks?id=${project.id}">Project Tasks</a>
+<a href="tasks?id=${project.id}">Tasks</a>
 <!-- adding component's link by Amr Hany -->
 <br/>
-<a href="/projects/${project.id}/components">Project Components</a>
+<a href="/projects/${project.id}/components">Components</a>
 
 <!-- adding sprints' link by minazaki -->
 <br/>
-<a href="@{Sprints.showsprints(project.id)}" >Project Sprints</a>
+<a href="@{Sprints.showsprints(project.id)}" >Sprints</a>
 
 <!-- adding meetings link @author ghadafakhry -->
 <br/>
-<a href="/projects/${project.id}/meetings">Project Meetings</a>
+<a href="/projects/${project.id}/meetings">Meetings</a>
 
 <!-- adding meetings link @author ahmedKhaled7 -->
 <br/>
-<a href="/productbacklog/${project.id}/0">Project Product Backlog</a>
+<a href="/productbacklog/${project.id}/0">Product Backlog</a>
 
 <!--  adding impediment tasks @author Hadeer Younis -->
 <br/>
-<a href="@{ImpedimentTasks.viewImpedimentLog(project.id)}"> Project's Impediment Log</a>
+<a href="@{ImpedimentTasks.viewImpedimentLog(project.id)}">Impediment Log</a>
 
 <!-- adding product role's link by Heba Elsherif -->
 <br/>
-<a href="/projects/${project.id}/productroles">Project Product Roles</a>
+<a href="/projects/${project.id}/productroles">Product Roles</a>
 
 
 <!--  Stories : Galal Aly -->
-<br /><a href="@{Storys.listStoriesInProject(project.id)}">Project Stories</a>
+<br /><a href="@{Storys.listStoriesInProject(project.id)}">Stories</a>
 <!--  End Of Stories -->
 
 <!-- view boards @ author Dina Helal -->
-<br/><a href="javascript:;" onclick="$('#boards').toggle()">Project Boards</a>
+<br/><a href="javascript:;" onclick="$('#boards').toggle()">Boards</a>
 <div id="boards" class="roles" style="display:none;width:300px">
 	#{list items:project.sprints, as:'sprint'}
 		<a href="javascript:;" onclick="$('#s_${sprint.id}').toggle()"  style="float:left;width:200px;">Sprint ${sprint.sprintNumber}</a><br/>
@@ -86,24 +86,24 @@ ${project.description?.nl2br()}
 
 <a href="@{ProductBacklogs.showGraph(project.id,0)}">View Burndown Charts</a><br/>
 
-
 <!--@author ahmedkhaled7 C4S12/c4S4/c4s5   -->
 <a href="@{ImpedimentTasks.index(project.id)}">Report impediment</a><br/>
-#{if connected.in(project).can('canManageRoles')}<a href="/show/roles?id=${project.id}">Manage Roles</a><br /><br/>#{/if}
+#{if connected.in(project).can('canManageRoles')}
+<a href="/show/roles?id=${project.id}">Manage Roles</a><br/>#{/if}
 
-<a href="@{Storys.listStoriesandSprints(project.id)}"> Assign Story to Sprint </a><br/><br/>
+<a href="@{Storys.listStoriesandSprints(project.id)}">Assign Story to Sprint </a><br/>
 <!-- adding a check requests link @author moataz_mekki -->
 #{if connected.in(project).can('canManageRequests')}
-<a href="/projects/requestrespond?id=${project.id}"> Check Role Requests</a><br /><br/>
+<a href="/projects/requestrespond?id=${project.id}">Check Role Requests</a><br />
 <!-- adding a check project deletion requests link
 @author Amr Tj.Wallas
 @Task C1S14 -->
-<a href="/projects/deletionRequestRespond?id=${project.id}"> Check Deletion Requests</a><br /><br/>
+<a href="/projects/deletionRequestRespond?id=${project.id}">Check Deletion Requests</a><br />
 #{/if}
 
 <!-- project notification profile @ author moataz_mekki-->
 #{if connected.in(project).can('canEditProjectNotificationProfile')}
-<a href = "/projects/managenotificationprofile?projectId=${project.id}"> Edit Project Notifications </a>
+<a href = "/projects/managenotificationprofile?projectId=${project.id}">Edit Project Notifications </a>
 #{/if}
 #{/set}
 
@@ -113,10 +113,9 @@ profile related to this project
 @author Amr Tj.Wallas 
 @Task C1S33 -->
 #{if connected.in(project).can('canEditUserNotificationProfile')}
-<p><a href = "/users/managenotificationprofile?id=${project.id}"> Manage My Notifications for this Project </a></p>
+<a href = "/users/managenotificationprofile?id=${project.id}">Manage My Notifications for this Project </a><br/>
 #{/if}
-#{if connected.in(project).can('canEditUserNotificationProfile')}
-<p><a href="/Projects/requestdeleted?id=${project.id}" onclick="return confirm('Are you sure you want to be deleted from this project??? \n YOU WONT BE ABLE TO CONTRIBUTE IN THIS PROJECT ANYMORE \n HOWEVER YOUR WORK WILL STILL BE VISIBLE BY ALL PROJECT MEMBERS')"> Request Deletion</a></p>
+#{if connected.in(project).can('canEditUserNotificationProfile')}<a href="/Projects/requestdeleted?id=${project.id}" onclick="return confirm('Are you sure you want to be deleted from this project??? \n YOU WONT BE ABLE TO CONTRIBUTE IN THIS PROJECT ANYMORE \n HOWEVER YOUR WORK WILL STILL BE VISIBLE BY ALL PROJECT MEMBERS')"> Request Deletion</a>
 #{/if}
 
 

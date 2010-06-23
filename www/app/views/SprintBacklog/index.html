@@ -98,7 +98,7 @@ $(function()
     	    },
     	    {    
     	        indicator : 'Saving...',
-    	        tooltip   : 'Click to edit...'
+    	       
     	    });
     
     
@@ -138,7 +138,7 @@ $(function()
     	    },
     	    {    
     	        indicator : 'Saving...',
-    	        tooltip   : 'Click to edit...'
+    	       
     	    });
 
     
@@ -189,7 +189,7 @@ You are not a user in this component, you cannot view their tasks.
 	#{set 'moreLinks'}
 	<div class="clear"></div>
 				<!--@author ahmedkhaled7 C4S12/c4S4/c4s5   -->
-			<a onclick="$('#checklist').toggle()" href="#">Customize columns</a><br/>
+			<a onclick="$('#checklist').toggle(400)" href="#">Show/Hide Columns</a><br/>
 			<!--@author Hadeer Younis C4 S8-->
 			<a title="Take a look at the chart?" href="@{SprintBacklog.showGraph(id,componentID)}"> Show Burn Down Chart </a><br/>
 			<!--@author Hossam Amer C4 S10, S11  -->
@@ -212,15 +212,20 @@ check boxes for choosing the columns to be hidden -->
 
 <div id="checklist" style="display:none">
 	<h5>Show/Hide Columns</h5>
+	Please check the columns that you would like to hide. Columns not checked will be shown.
+<br/><br/>
+</div>
+<div class="crudField">
 	<input type="checkbox" id="option1"><label for="option1">Description</label><br/>
 	<input type="checkbox" id="option2"><label for="option2">Type</label><br/>
 	<input type="checkbox" id="option7"><label for="option7">Status</label><br/>
 	<input type="checkbox" id="option3"><label for="option3">Assignee</label><br/>
 	<input type="checkbox" id="option4"><label for="option4">Reviewer</label><br/>
 	<input type="checkbox" id="option5"><label for="option5">Total Points</label><br/>
-	<input type="checkbox" id="option6"><label for="option6">Efforts</label><br/>
-	
+	<input type="checkbox" id="option6"><label for="option6">Efforts</label><br/><br/>
+	</div><div class="crudField">
 	<button onclick="customize_columns();">Hide</button>
+	</div>
 </div>
 
 
