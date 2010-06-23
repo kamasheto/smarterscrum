@@ -77,7 +77,7 @@
 			#{crud.custom 'assignee'}
 			<p>
 			<label for="object_assignee">Assignee</label>
-			<select id="object_assignee" name="object.assignee@id" >
+			<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers();">
 					#{list items:users ,as :'User'}
 					<option value="${User.id}">${User.name}</option>
 					#{/list}		
@@ -85,12 +85,19 @@
 		    <span class="crudHelp"><font color="Red">*</font></span>
 			</p>
 			#{/crud.custom}
-		
+			%{
+   		count=0;
+	}%
 			#{crud.custom 'reviewer'}
 			<label for="object_reviewer">Reviewer</label>
 			<select id="object_reviewer" name="object.reviewer@id" >
 				#{list items:users ,as :'User'}
+				#{if count !=0}
 				<option value="${User.id}">${User.name}</option>
+				#{/if}
+							%{
+   		count=1;
+	}%
 				#{/list}		
 			</select>
 		    <span class="crudHelp"><font color="Red">*</font></span>
@@ -149,10 +156,23 @@ function change_dependency2(){
 					str += '<option value='+item.id+'>'+item.description+'</option>';
 				});
 				$('#object_dependentTasks').html( str );
-				console.log("hello2");
 			}); 
 		    
 			}
+
+function change_reviewers(){
+	console.log("here");
+    var value = $('#Story').val(); 
+    var value2 = $('#object_assignee').val(); 
+    $.post('@{reviewers}', {id:value, id2 : value2}, function(data){
+		str = ''
+		$.each(data, function(id, item){
+			str += '<option value='+item.id+'>'+item.name+'</option>';
+		});
+		$('#object_reviewer').html( str );
+	}); 
+    
+	}
 	
 
 
