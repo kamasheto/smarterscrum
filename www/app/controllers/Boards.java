@@ -232,14 +232,27 @@ public class Boards extends SmartCRUD {
 		 *            List of Users for this Component .
 		 * @author asmaak89
 		 */
-
+     
+		long id=Security.getConnected().id;
+		boolean found =false;
 		LinkedList<Meeting> total = new LinkedList<Meeting>();
 
 		for (Meeting m : c.componentMeetings) {
 			long now = new Date().getTime();
-			if (m.startTime < now && m.endTime > now) {
-
-				total.add(m);
+			if (m.startTime < now && m.endTime > now) 
+			{
+                for(int i=0;i<m.users.size();i++)
+                {
+                	if(m.users.get(i).id==id)
+                	{
+                		if(m.users.get(i).checkConfirmed())
+                		{
+                		total.add(m);
+                		found=true;
+                		}
+                	}
+                }
+				
 
 			}
 		}
