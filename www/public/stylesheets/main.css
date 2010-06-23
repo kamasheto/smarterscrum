@@ -582,7 +582,14 @@ table {
 tr {
 	margin: 0px !important;
 }
-
+#sprint td form input
+{
+width:100%!important;
+height:100% !important;
+border:0px !important;
+font:inherit !important;
+font-size:inherit !important;
+}
 /*************headings***********/
 h1,h2,h3,h4,h5 {
 	font-family: Georgia, Serif !important;
