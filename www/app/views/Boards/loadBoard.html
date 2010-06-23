@@ -136,15 +136,14 @@ function showCol(c)
 function showHiddenCol(colid)
 {
 	$.post('@{showHiddenColumn()}' ,			
-			{cid:colid,						
-			bid:${b.id}}, function(){
-			window.location.reload();
+			{cid:colid,uid:${connected.id}}, function(){
+		window.location.reload();
 		});
 }
 function hideCol(colid)
 {
 	$.post('@{hideColumn()}' ,			
-			{cid:colid}, function(){
+			{cid:colid,uid:${connected.id}}, function(){
 			window.location.reload();
 		});
 }
