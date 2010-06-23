@@ -118,25 +118,53 @@ public class Boards extends SmartCRUD {
 
 		}
 		}
-		for(int i=0; i<columns.size();i++)
+				List <User> usrs = p.users;
+		List <User> users_desc = new ArrayList();
+		List <User> users_assignee = new ArrayList();
+		List <User> users_reviewer = new ArrayList();
+		List <User> users_type = new ArrayList();
+		for(int i=0;i<usrs.size();i++)
 		{
-			System.out.print(columns.get( i ).onBoard+ " ");
-		}
-		System.out.println();
-		for(int i=0; i<columns.size();i++)
-		{
-			System.out.print(columns.get( i ).name+ " ");
-		}
-		System.out.println();
+				if(usrs.get(i).in(p).can("changeTaskDescreption"))
+					users_desc.add(usrs.get(i));
+				if(usrs.get(i).in(p).can("changeAssignee"))
+					users_assignee.add(usrs.get(i));
+				if(usrs.get(i).in(p).can("changeReviewer"))
+					users_reviewer.add(usrs.get(i));
+				if(usrs.get(i).in(p).can("changeTaskType"))
+					users_type.add(usrs.get(i));
 
+		}
 		
-		for(int i=0; i<columnsOfBoard.size();i++)
+		ArrayList ud = new ArrayList (users_desc.size());
+		for(int i=0;i<users_desc.size();i++)
 		{
-			System.out.print(columnsOfBoard.get( i ).name+ " ");
+			User uu = users_desc.get(i);
+			ud.add(uu.id);
 		}
-		System.out.println();
-		render(data, columnsOfBoard,hidencolumnsOfBoard, u, b, s, p, total,columns);
-
+		
+		ArrayList ua = new ArrayList (users_assignee.size());
+		for(int i=0;i<users_assignee.size();i++)
+		{
+			User uu = users_assignee.get(i);
+			ua.add(uu.id);
+		}
+		
+		ArrayList ur = new ArrayList (users_reviewer.size());
+		for(int i=0;i<users_reviewer.size();i++)
+		{
+			User uu = users_reviewer.get(i);
+			ur.add(uu.id);
+		}
+		
+		ArrayList ut = new ArrayList (users_type.size());
+		for(int i=0;i<users_type.size();i++)
+		{
+			User uu = users_type.get(i);
+			ut.add(uu.id);
+		}
+		render(data, columnsOfBoard,hidencolumnsOfBoard, u, b, s, p, total,columns,ud,ua,ur,ut);
+		
 	}
 
 	/**
