@@ -1,4 +1,16 @@
 #{extends 'main.html' /}
+
+
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${object.project.id}">${meeting.project.name}</a></li>
+<li><a href="/projects/${object.project.id}/meetings"> Meetings and Events</a> </li>
+
+
+#{/set}
+
+<br>
+
   <script type="text/javascript"> 
 $(function() {
 	$('#object_startTime').datepicker({  
