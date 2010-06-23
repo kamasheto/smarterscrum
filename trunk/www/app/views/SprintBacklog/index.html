@@ -229,6 +229,14 @@ check boxes for choosing the columns to be hidden -->
 
 #{list items:taskOfStory, as:'storyTask'}
 
+<h3><a href="#" title="hide me? show me?"
+	onclick="$('#stroy_${storyTask.get(0).taskStory.id}').toggle();">
+Story ${storyTask.get(0).taskStory.id} :
+${storyTask.get(0).taskStory.description}</a></h3>
+<div style="margin-left: 10px;"
+	id="stroy_${storyTask.get(0).taskStory.id}">
+
+
 <table class="draggable sortable">
 
 	<thead>
@@ -320,17 +328,17 @@ check boxes for choosing the columns to be hidden -->
 		
 		#{ifnot task.taskType}
 		<td id="${task.id}" class="editTYPE shType">
-		#{secure.check 'canChangeTaskType'}
+		#{if user.in(project).can('changeTaskType')}
 		<a title="Enter a task type??"HREF="javascript:popUp('@{Tasks.chooseTaskType(task.id)}')">No type chosen</a>
-	    #{/secure.check}
+	    #{/if}
 		No type chosen
 		</td>
 		#{/ifnot} 
 		#{else}
 		<td id="${task.id}" title="edit the task type?" class="editTYPE shType">
-		#{secure.check 'canChangeTaskType'}
-		<a title="Change the task type??" HREF="javascript:popUp('@{Tasks.chooseTaskType(task.id)}')">${task.taskType.name}</a>
-		#{/secure.check}
+		#{if user.in(project).can('changeTaskType')}
+		<a title="Enter a task type??"HREF="javascript:popUp('@{Tasks.chooseTaskType(task.id)}')">${task.taskType.name}</a>
+		#{/if}
 </td>
 		#{/else} 
 		
