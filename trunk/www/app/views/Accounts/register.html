@@ -1,7 +1,7 @@
 <!--Author: Amr Tj.Wallas-->
 <!--Task: C1S24-->
-#{extends 'Secure/layout.html' /}
-#{set title:'Registr New Account' /}
+#{extends 'main.html' /}
+#{set title:'Register New Account' /}
 #{set 'moreScripts'}
 <script type="text/javascript">
 	// Useless but there for further tweaking if necessary.
@@ -9,7 +9,8 @@
 	
 </script>
 #{/set}
-<div id="login">
+<div id="register">
+	<h1>Register</h1>
 	<!--The Registration form element-->
 	<form name = "register" action = "@{addUser()}" method="post">
 		<!--Show an error from the controller if any-->
