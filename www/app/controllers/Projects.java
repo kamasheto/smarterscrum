@@ -510,11 +510,11 @@ public class Projects extends SmartCRUD {
 	 * @param id projectID
 	 * @author Behairy
 	 */
-	public static void approveRequest(long id){
+	public static void approveRequest(long id,String message){
 		Project p=Project.findById( id );
 		p.approvalStatus=true;
 		List<User> users=User.find( "id="+p.user.id ).fetch();
-		Notifications.notifyUsers( users,p.name+" Project Request", "This is to Kindly Inform you that your request for Project "+p.name+" has been Approved. You Can Now Start !",(byte)0 );
+		Notifications.notifyUsers( users,p.name+" Project Request", "This is to Kindly Inform you that your request for Project "+p.name+" has been Approved. \n \n Message From Admin:"+message,(byte)1 );
 		p.save();
 		renderJSON(true);
 	}
@@ -525,11 +525,11 @@ public class Projects extends SmartCRUD {
 	 * @param id projectID
 	 * @author Behairy
 	 */
-	public static void declineRequest(long id){
+	public static void declineRequest(long id,String message){
 		Project p=Project.findById( id );
 		p.deleted=true;
 		List<User> users=User.find( "id="+p.user.id ).fetch();
-		Notifications.notifyUsers( users,p.name+" Project Request", "This is to Kindly Inform you that your request for Project "+p.name+" has been Declined. We Apologize for Any inconvenience/",(byte)-1);
+		Notifications.notifyUsers( users,p.name+" Project Request", "This is to Kindly Inform you that your request for Project "+p.name+" has been Declined. We Apologize for Any inconvenience. \n \n Message From Admin:"+message,(byte)-1);
 		p.save();
 		renderJSON(true);
 	}

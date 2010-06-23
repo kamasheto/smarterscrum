@@ -5,8 +5,9 @@
 	
 function approve(id){
 var conf=confirm("Are you sure you want to approve this Project?");
+var msg=document.getElementById("message_"+id).value;
 if(conf){
-$.post('@{approveRequest()}',{id:id},function (flag){
+$.post('@{approveRequest()}',{id:id,message:msg},function (flag){
 if(flag){
 
 alert("Project Has Been Approved. A Notification Has Been sent to Project Owner !");
@@ -16,6 +17,8 @@ var declineButton=document.getElementById("decline_"+id);
 declineButton.style.visibility="hidden";
 var label=document.getElementById("label_"+id);
 label.style.color="green";
+var msgArea=document.getElementById("message_"+id);
+msgArea.style.visibility="hidden";
 }
 },'json')
 }
@@ -25,8 +28,10 @@ label.style.color="green";
 
 function decline(id){
 var conf=confirm("Are you sure you want to Decline this Project?");
+var msg=document.getElementById("message_"+id).value;
+
 if(conf){
-$.post('@{declineRequest()}',{id:id},function (flag){
+$.post('@{declineRequest()}',{id:id,message:msg},function (flag){
 if(flag){
 
 alert("Project Has Been Declined. A Notification Has Been sent to Project Owner !");
@@ -35,6 +40,8 @@ approveButton.style.visibility="hidden";
 var declineButton=document.getElementById("decline_"+id);
 declineButton.style.visibility="hidden";
 var label=document.getElementById("label_"+id);
+var msgArea=document.getElementById("message_"+id);
+msgArea.style.visibility="hidden";
 label.style.color="red";
 }
 },'json')
@@ -60,6 +67,10 @@ label.style.color="red";
 		 Project Owner: ${project.user.name} <br>
 		<br>
 		Description: ${project.description}
+		<br>
+		<br>
+		
+		Leave a Message : <label style="color:red"> (optional)</label><br> <TextArea id="message_${project.id}" class="" type="text" name="object.description" cols="53" rows="5" value="" /></TextArea>
 		<br>
 		<input id="approve_${project.id}" type="button" name="add" value="Approve" onclick="approve(${project.id})"/>
 		<input id="decline_${project.id}" type="button" name="add" value="Decline" onclick="decline(${project.id})"/>
