@@ -8,10 +8,11 @@ import models.Meeting;
 import models.MeetingAttendance;
 import models.Project;
 import models.User;
+import play.mvc.Controller;
 import play.mvc.With;
 
 @With( Secure.class )
-public class MeetingAttendances extends SmartCRUD
+public class MeetingAttendances extends Controller
 {
 
 	/**
@@ -31,7 +32,7 @@ public class MeetingAttendances extends SmartCRUD
 		MeetingAttendance attendance = MeetingAttendance.find( "byMeetingHash", meetingHash ).first();
 		String status = attendance.status;
 		Date currentDate = new Date();
-		Date tempStart = new Date( attendance.meeting.startTime );
+		Date tempStart = new Date( attendance.meeting.endTime );
 		boolean notYet = tempStart.after( currentDate );
 		boolean setbefore = false;
 		User user = Security.getConnected();
@@ -68,7 +69,7 @@ public class MeetingAttendances extends SmartCRUD
 		MeetingAttendance attendance = MeetingAttendance.find( "byMeetingHash", meetingHash ).first();
 		String status = attendance.status;
 		Date currentDate = new Date();
-		Date tempStart = new Date( attendance.meeting.startTime );
+		Date tempStart = new Date( attendance.meeting.endTime );
 		boolean notYet = tempStart.after( currentDate );
 		boolean setbefore = false;
 		User user = Security.getConnected();
@@ -157,7 +158,7 @@ public class MeetingAttendances extends SmartCRUD
 		Date currentDate = new Date();
 		for( MeetingAttendance meeting : allmeetings )
 		{
-			Date meetingDate = new Date( meeting.meeting.startTime );
+			Date meetingDate = new Date( meeting.meeting.endTime );
 			if( currentDate.before( meetingDate ) )
 			{
 				meetings.add( meeting );

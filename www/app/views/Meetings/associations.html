@@ -88,7 +88,9 @@
 	Please select the users you wish to invite in the meeting :
 	<br/>
 	<br/>
+		#{if meeting.endTime>(new Date().getTime()) }
 		&nbsp;&nbsp; <a href="#" onclick="invite_all(${meeting.id});">Invite all project members</a>
+		#{/if}
 	<br/>
 	<br/>
 	<ul>
@@ -97,13 +99,13 @@
 			<li>
 				<a id= "user_${user.id}_href" href="@{Show.user(user.id)}">${user.name} #{if user.equals(currentUser) }  (myself) #{/if}</a>&nbsp;&nbsp;
 				#{if user.meetingStatus(meeting.id).equals("notInvited")}
-				#{if meeting.startTime>(new Date().getTime()) }
+				#{if meeting.endTime>(new Date().getTime()) }
 				<span id="${user.id}_invite">	<a  href="#" name ="test_user_${user.name}" onClick ="invite_user(${meeting.id},${user.id})"style=" font-style: italic; font-size :85%; ">invite</a></span>
 				<span id="${user.id}_invited" style="display: none; font-style: italic; font-size :85%; color : blue;">invited</span>
 				#{/if}
 				#{/if}
 				#{if user.meetingStatus(meeting.id).equals("waiting")}
-				#{if meeting.startTime>(new Date().getTime() )}
+				#{if meeting.endTime>(new Date().getTime() )}
 				<span id="${user.id}_onLoadInvited" style=" font-style: italic; font-size :85%;color : blue; "> invited</span>
 				#{/if}
 				#{else}
@@ -277,13 +279,13 @@ function remove(input){
 			<li>
 				<a href="/components/${component.id}">${component.name}</a> &nbsp;&nbsp;
 				#{if component.meetingStatus(meeting.id).equals("notInvited")}
-				#{if meeting.startTime>(new Date().getTime()) }
+				#{if meeting.endTime>(new Date().getTime()) }
 				<span id="${component.id}_invite_c">	<a  href="#" name="test_component_${component.id}"onClick ="invite_component(${meeting.id},${component.id})"style=" font-style: italic; font-size :85%; ">invite</a></span>
 				<span id="${component.id}_invited_c" style="display: none; font-style: italic; font-size :85%;color : blue; "> invited</span>
 				#{/if}
 				#{/if}
 				#{if component.meetingStatus(meeting.id).equals("waiting")}
-				#{if meeting.startTime>(new Date().getTime()) }
+				#{if meeting.endTime>(new Date().getTime()) }
 				<span id="${component.id}_onLoadInvited_c" style=" font-style: italic; font-size :85%;color : blue; "> invited</span>
 				#{/if}
 				

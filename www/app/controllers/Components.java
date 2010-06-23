@@ -201,4 +201,9 @@ public class Components extends SmartCRUD
 			forbidden();
 	}
 
+	public static void list( int page, String search, String searchFields, String orderBy, String order )
+	{
+		forbidden();
+	}
+
 }
