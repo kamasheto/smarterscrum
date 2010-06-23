@@ -94,7 +94,7 @@
 			#{secure.check 'canModifyTask' }
 			<p>
 			<label for="object_assignee">Assignee</label>
-			<select id="object_assignee" name="object.assignee@id" >
+			<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers();">
 					#{list items:users ,as :'User'}
 					<option value="${User.id}"#{if object.assignee == User} selected#{/if}>${User.name}</option>
 					#{/list}		
@@ -111,7 +111,9 @@
 			<label for="object_reviewer">Reviewer</label>
 			<select id="object_reviewer" name="object.reviewer@id" >
 				#{list items:users ,as :'User'}
+				#{if User.name != object.assignee.name}
 				<option value="${User.id}"#{if object.reviewer == User} selected#{/if}>${User.name}</option>
+				#{/if}
 				#{/list}		
 			</select>
 		    <span class="crudHelp"><font color="Red">*</font></span>
@@ -175,6 +177,22 @@
 		<label><font color="green">&nbsp;&nbsp;The task can't be deleted As some other tasks depends on it !</font></label>
 	#{/if}
 	#{/secure.check}
-	
-	
 </div>
+#{set 'moreScripts'}
+<script type="text/javascript">
+
+	function change_reviewers(){
+    var value = ${object.taskStory.id}; 
+    var value2 = $('#object_assignee').val(); 
+    $.post('@{reviewers}', {id:value, id2 : value2}, function(data){
+		str = ''
+		$.each(data, function(id, item){
+			str += '<option value='+item.id+'>'+item.name+'</option>';
+		});
+		$('#object_reviewer').html( str );
+	}); 
+    
+	}
+
+	</script>
+#{/set}
