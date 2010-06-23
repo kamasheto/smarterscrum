@@ -16,7 +16,7 @@
 #{/secure.check}
 
 #{if connected.in(meeting.project).can('setMeetingAttendance')}
-#{if meeting.startTime < new Date().getTime()}
+#{if meeting.endTime < new Date().getTime()}
 <br/>
 <a href="@{MeetingAttendances.setAttendance(meeting.id)}"> Set Attendance </a>
 <br/>
