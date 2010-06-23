@@ -1,9 +1,19 @@
 #{extends 'main.html' /} #{set title:'Sprint Backlog' /} 
+#{set 'moreStyles'}
+<style type="text/css">
+thead
+{
+cursor:move;
+}
+</style>
+#{/set}
 #{set 'moreScripts'}
 
 <script language="javascript" type="text/javascript"
 	src="@{'/public/javascripts/jeditable-mod.js'}"></script>
 
+<script  type="text/javascript" src="@{'/public/javascripts/dragtablenorm.js/'}" ></script>
+<script  type="text/javascript" src="@{'/public/javascripts/sorttable.js/'}" ></script>
 <script type="text/javascript">
 function popUp(URL) 
 {
@@ -12,7 +22,19 @@ id = day.getTime();
 eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=200,height=400,left = 583,top = 184');");
 }
 $(function() 
-{
+{	
+	$(".enterEffort").each(function()
+	{
+		if($(this).html()!='')
+			$(this).html(parseInt($(this).html()));
+	});
+
+	$(".editPOINTS").each(function()
+	{
+		if($(this).html()!='')
+			$(this).html(parseInt($(this).html()));
+	});
+	
 	/**
 	 * This function enables the inplace editing for the effort point for a day.
 	 * they have the class, enterEfforts
@@ -27,19 +49,20 @@ $(function()
     {
         var theId 		= $('#lolid').closest("td").attr("id");
         var splitted 	= theId.split("_");
-        var dayId 		= parseInt(splitted[0])-1;
         var taskId 		= parseInt(splitted[1]);
-        var max			= parseInt(splitted[2]);
+        var dayId 		= parseInt(splitted[2])-1;
+        var max			= parseInt(splitted[3]);
+        var original	= parseInt(splitted[4]);
     	var points 		= parseInt(value);
     	if(points>max)
     	{
     		alert('Please enter a number between 0 & '+max);
-    		return;
+    		return(original);
     	}
     	else if(isNaN(points))
     	{
     		alert('Please enter a number!');
-    		return;
+    		return(original);
     	}
     	else
     	{	
@@ -82,18 +105,34 @@ $(function()
     $('.editPOINTS').editable(
     	    function(value)
     	    {
-    	        var taskId 		= parseInt($('#lolid').closest("td").attr("id"));
+    	        var theId 		= $('#lolid').closest("td").attr("id");
+    	        var splitted 	= theId.split("_");
+    	        var taskId 		= parseInt(splitted[0]);
+    	        var original	= parseInt(splitted[1]);
+    	    	var points 		= parseInt(value);
     	        
-    	    	if(isNaN(value))
+    	    	if(isNaN(points))
     	    	{
     	    		alert('Please enter a number!');
-    	    		return;
+    	    		return(original);
     	    	}
     	    	else
     	    	{	
-        	    	var newPoint = parseInt(value);
     	    		$.post('@{Tasks.editTaskEstimation()}',
-    	    				{id:taskId,estimation:newPoint});     
+    	    				{id:taskId,estimation:points});
+    	    		$('#lolid').closest("td").attr("id",taskId+"_"+points);
+    	    		$("td[id^=EF_"+taskId+"_]").each(function()
+    	    	    		{
+    	    	        		var theId 		= $(this).attr("id");
+    	    	        		var splitted 	= theId.split("_");
+    	    	       			var taskId 		= parseInt(splitted[1]);
+    	    	        		var dayId 		= parseInt(splitted[2])-1;
+    	    	        		var max			= parseInt(splitted[3]);
+    	    	        		var original	= parseInt(splitted[4]);
+	    	    				$(this).attr("id","EF_"+taskId+"_"+dayId+"_"+points+"_"+original);
+	    	    			}
+	    			);
+
     	        	return(value);  
     	    	}      
     	    },
@@ -134,7 +173,7 @@ $(function()
 #{/set}
 
 
-<div id="sprintID">
+<div id="sprint">
 #{ifnot taskOfStory}
 #{if incomp}
 The component has no tasks yet.
@@ -156,10 +195,6 @@ You are not a user in this component, you cannot view their tasks.
 			<!--@author Hossam Amer C4 S10, S11  -->
 			<a title="Take a look at the Review Log?"href="@{ReviewLog.showMeetings(projectId, componentID, id)}">View Review Log</a>
 	#{/set}
-	    	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
-	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
-	<strong>NOTE: </strong>to view the task report click on the <img src="@{'public/images/note.png'}"/> next to the corresponding task. 
-	<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
 
 	 #{if connected.in(project).can('editBacklog')}
           <span style="display:none"> ${flag=true}</span>
@@ -175,16 +210,17 @@ You are not a user in this component, you cannot view their tasks.
 <!--@author ahmedkhaled7 c4S4/c4s5  
 check boxes for choosing the columns to be hidden -->
 
-<div id="checklist" style="display:none"><br>
+<div id="checklist" style="display:none">
+	<h5>Show/Hide Columns</h5>
+	<input type="checkbox" id="option1"><label for="option1">Description</label><br/>
+	<input type="checkbox" id="option2"><label for="option2">Type</label><br/>
+	<input type="checkbox" id="option7"><label for="option7">Status</label><br/>
+	<input type="checkbox" id="option3"><label for="option3">Assignee</label><br/>
+	<input type="checkbox" id="option4"><label for="option4">Reviewer</label><br/>
+	<input type="checkbox" id="option5"><label for="option5">Total Points</label><br/>
+	<input type="checkbox" id="option6"><label for="option6">Efforts</label><br/>
 	
-	<input type="checkbox" id="option1" value="description"> Description
-	<input type="checkbox" id="option2" value="type"> Type<br/>
-	<input type="checkbox" id="option3" value="assignee" > Assignee
-	<input type="checkbox" id="option4" value="reviewer" > Reviewer<br/>
-	<input type="checkbox" id="option5" value="total points"> Total points
-	<input type="checkbox" id="option6" value="efforts"> Efforts<br/>
-	
-	<a id="custom" onclick="customize_columns(); $('#checklist').toggle()" href="#">hide</a>
+	<button onclick="customize_columns();">Hide</button>
 </div>
 
 
@@ -193,89 +229,79 @@ check boxes for choosing the columns to be hidden -->
 
 #{list items:taskOfStory, as:'storyTask'}
 
-<h3><a href="#" title="hide me? show me?"
-	onclick="$('#stroy_${storyTask.get(0).taskStory.id}').toggle();">
-Story ${storyTask.get(0).taskStory.id} :
-${storyTask.get(0).taskStory.description}</a></h3>
-<div style="margin-left: 10px;"
-	id="stroy_${storyTask.get(0).taskStory.id}">
-
-<table>
+<table class="draggable sortable">
 
 	<thead>
-
+<tr>
 		<td>ID</td>
-		<td id="desHead">Description</td>
-		<td id="typeHead">Type</td>
-		<td id="statusHead">Status</td>
-		<td id="assigneeHead">Assignee</td>
-		<td id="reviewerHead">Reviewer</td>
-		<td id="pointsHead">Total Points</td>
+		<td class="shDes">Description</td>
+		<td class="shType">Type</td>
+		<td class="shStatus">Status</td>
+		<td class="shAssignee">Assignee</td>
+		<td class="shReviewer">Reviewer</td>
+		<td class="shPoints">Total Points</td>
 		#{list items:daysHeader, as:'day'}
-		<td class="enterEffortHead">Day ${day}</td>
+		<td class="shEfforts">Day ${day}</td>
 		#{/list}
+	</tr>
 	</thead>
 
 	#{list items:storyTask, as:'task'}
 
 	<tr id="task_${task.id}">
 
-		<td><a
-			style="width: 20px; position: relative; left: -30px; padding: 10px 10px 10px 10px;"
-			title="view the task reports?" href="@{Tasks.getReport(task.id)}"><img
-			src="@{'public/images/note.png'}" /></a> </span>${task.id}</td>
+		<td><a title="view the task reports?" href="@{Tasks.getReport(task.id)}">${task.id}</a></td>
 
          
         
          #{ifnot user.id==task.assignee.id || flag}
 
           #{ifnot task.description}
-          <td>No Description stated</td>
+          <td class="shDes">No Description stated</td>
           #{/ifnot}
           #{else}
-          <td>${task.description}</td>
+          <td class="shDes">${task.description}</td>
           #{/else}
           
           #{ifnot task.taskType}
-          <td>No Type stated</td>
+          <td class="shType">No Type stated</td>
           #{/ifnot}
           #{else}
-          <td>${task.taskType.name}</td>
+          <td class="shType">${task.taskType.name}</td>
           #{/else}
           
            #{ifnot task.taskStatus}
-          <td>No Status stated</td>
+          <td class="shStatus">No Status stated</td>
           #{/ifnot}
           #{else}
-          <td>${task.taskStatus.name}</td>
+          <td class="shStatus">${task.taskStatus.name}</td>
           #{/else}
         
           #{ifnot task.assignee}
-          <td>No assignee stated</td>
+          <td class="shAssignee">No assignee stated</td>
           #{/ifnot}
           #{else}
-          <td>${task.assignee.name}</td>
+          <td class="shAssignee>${task.assignee.name}</td>
           #{/else}
         
          #{ifnot task.reviewer}
-          <td>No reviewer stated</td>
+          <td class="shReviewer">No reviewer stated</td>
           #{/ifnot}
           #{else}
-          <td>${task.reviewer.name}</td>
+          <td class="shReviewer">${task.reviewer.name}</td>
           #{/else}
         
          #{ifnot task.estimationPoints}
-          <td>No points</td>
+          <td class="shPoints">&nbsp;</td>
           #{/ifnot}
           #{else}
-          <td>${task.estimationPoints}</td>
+          <td class="shPoints">${task.estimationPoints}</td>
           #{/else}
         
         <!--@author Hadeer Younis C4 S8-->
         #{list items:daysHeader, as:'day'}
-		<td style="text-align: center"
-			id="${day}_${task.id}_${task.estimationPoints}" >
-		#{if task.getEffortPerDay(day-1)==-1.0}<br />
+		<td class="shEfforts"style="text-align: center" id="${day}_${task.id}_${task.estimationPoints}" >
+		#{if task.getEffortPerDay(day-1)==-1.0}&nbsp;
 		#{/if} #{else} ${task.getEffortPerDay(day-1)} #{/else}</td>
 		#{/list}
 	
@@ -286,83 +312,76 @@ ${storyTask.get(0).taskStory.description}</a></h3>
       
          #{else}
 		#{ifnot task.description}
-		<td><a href="@{Tasks.getReport(task.id)}"><span
-			id="${task.id}" class="editDES">No description stated
-		</span></a></td>
+		<td class="shDes"><span id="${task.id}" class="editDES">No description stated
+		</span></td>
 		#{/ifnot} #{else}
-		<td class="editDES" title="edit the description?" id="${task.id}"
-			class="editDES">${task.description}</td>
+		<td class="editDES shDes" title="edit the description?" id="${task.id}">${task.description}</td>
 		#{/else} 
 		
 		#{ifnot task.taskType}
-		<td id="${task.id}" class="editTYPE">
+		<td id="${task.id}" class="editTYPE shType">
 		#{secure.check 'canChangeTaskType'}
-		<A title="Enter a task type??"HREF="javascript:popUp('@{Tasks.chooseTaskType(task.id)}')">	
-		<span class="ui-icon ui-icon-plusthick" style="display:inline-block;margin-left:1px;"></span></A>
+		<a title="Enter a task type??"HREF="javascript:popUp('@{Tasks.chooseTaskType(task.id)}')">No type chosen</a>
 	    #{/secure.check}
 		No type chosen
 		</td>
 		#{/ifnot} 
 		#{else}
-		<td id="${task.id}" title="edit the task type?" class="editTYPE">
+		<td id="${task.id}" title="edit the task type?" class="editTYPE shType">
 		#{secure.check 'canChangeTaskType'}
-		<A title="Change the task type??" HREF="javascript:popUp('@{Tasks.chooseTaskType(task.id)}')">
-		<span class="ui-icon ui-icon-pencil" style="display:inline-block;margin-left:1px;"></span></A>
+		<a title="Change the task type??" HREF="javascript:popUp('@{Tasks.chooseTaskType(task.id)}')">${task.taskType.name}</a>
 		#{/secure.check}
-		${task.taskType.name}</td>
+</td>
 		#{/else} 
 		
 		#{ifnot task.taskStatus}
-		<td id="${task.id}" class="editStatus">
-		<A title="Add the task Status??"HREF="javascript:popUp('@{Tasks.chooseTaskStatus(task.id)}')">
-		<span style="display:inline-block;margin-left:1px;" class="ui-icon ui-icon-plusthick"></span></A>
+		<td id="${task.id}" class="editStatus shStatus">
+		<a title="Add the task Status??"HREF="javascript:popUp('@{Tasks.chooseTaskStatus(task.id)}')">No status chosen</a>
 		No status chosen
 		</td>
 		#{/ifnot}
 		 #{else}
-		<td id="${task.id}" title="edit the task type?" class="editStatus">
-		<A title="edit the task status??"HREF="javascript:popUp('@{Tasks.chooseTaskStatus(task.id)}')">
-		<span style="display:inline-block"><span class="ui-icon ui-icon-pencil" style="display:inline-block;margin-left:1px;"></span></A>
-		${task.taskStatus.name}</span></td>
+		<td id="${task.id}" title="edit the task type?" class="editStatus shStatus">
+		<a title="edit the task status??"HREF="javascript:popUp('@{Tasks.chooseTaskStatus(task.id)}')">
+		${task.taskStatus.name}</a></td>
 		#{/else}
 		
 		 #{ifnot task.assignee}
-		<td id="${task.id}_assigneee" class="editASSI"><A title="Choose an assignee?"HREF="javascript:popUp('@{Tasks.chooseTaskAssiRev(task.id,0)}')">
-		<span class="ui-icon ui-icon-person" style="display:inline-block;margin-left:1px;"></span></A>
-		Choose assignee</td>
+		<td id="${task.id}_assigneee" class="editASSI shAssignee"><a title="Choose an assignee?"HREF="javascript:popUp('@{Tasks.chooseTaskAssiRev(task.id,0)}')">
+		
+		Choose assignee</a></td>
 		#{/ifnot}
 		 #{else}
-		<td id="${task.id}_assigneee" class="editASSI"><A  title="change assignee?" HREF="javascript:popUp('@{Tasks.chooseTaskAssiRev(task.id,0)}')">
-		<span class="ui-icon ui-icon-person" style="display:inline-block;margin-left:1px;"></span></a>
-		${task.assignee.name}
+		<td id="${task.id}_assigneee" class="editASSI shAssignee"><a  title="change assignee?" HREF="javascript:popUp('@{Tasks.chooseTaskAssiRev(task.id,0)}')">
+		${task.assignee.name}</a>
+		
 		</td>
 		#{/else} 
 		
 		#{ifnot task.reviewer}
-		<td id="${task.id}" class="editREV"><A title="Add a reviewer?"HREF="javascript:popUp('@{Tasks.chooseTaskAssiRev(task.id,1)}')">
-		<span class="ui-icon ui-icon-person" style="display:inline-block;margin-left:1px;"></span></a>
-		No reviewer chosen</td>
+		<td id="${task.id}" class="editREV shReviewer"><a title="Add a reviewer?"HREF="javascript:popUp('@{Tasks.chooseTaskAssiRev(task.id,1)}')">
+		No reviewer chosen</a>
+		</td>
 		#{/ifnot} 
 		#{else}
-		<td id="${task.id}" title="Change the reviewer?" class="editREV"><A HREF="javascript:popUp('@{Tasks.chooseTaskAssiRev(task.id,1)}')">
-		<span class="ui-icon ui-icon-person" style="display:inline-block;margin-left:1px;"></span></a>
-		${task.reviewer.name}</td>
+		<td id="${task.id}" title="Change the reviewer?" class="editREV shReviewer"><a HREF="javascript:popUp('@{Tasks.chooseTaskAssiRev(task.id,1)}')">
+		${task.reviewer.name}</a>
+		</td>
 		#{/else} 
 		
 		#{ifnot task.estimationPoints}
-		<td id="${task.id}" class="editPOINTS">No points 
+		<td id="${task.id}" class="editPOINTS shPoints">No points 
 		</td>
 		#{/ifnot}
 		 #{else}
-		<td id="${task.id}" title="edit the estimationpoints?"
-			class="editPOINTS" style="text-align: center">${task.estimationPoints}</td>
+		<td id="${task.id}_${task.estimationPoints}" title="edit the estimationpoints?"
+			class="editPOINTS shPoints" style="text-align: center">${task.estimationPoints}</td>
 		#{/else}
 
 		<!--@author Hadeer Younis C4 S8-->
 		#{list items:daysHeader, as:'day'}
-		<td style="text-align: center"
-			id="${day}_${task.id}_${task.estimationPoints}" class="enterEffort">
-		#{if task.getEffortPerDay(day-1)==-1.0}
+		<td style="text-align: center"id="EF_${task.id}_${day}_${task.estimationPoints}_${task.getEffortPerDay(day-1)}" class="enterEffort shEfforts">
+		#{if task.getEffortPerDay(day-1)==-1.0}$nbsp;
 		#{/if} #{else} ${task.getEffortPerDay(day-1)} #{/else}</td>
 		#{/list}
 		#{/else}
@@ -370,7 +389,6 @@ ${storyTask.get(0).taskStory.description}</a></h3>
 
 	#{/list}
 </table>
-</div>
 <br />
 #{/list}
  #{/else} 
@@ -387,56 +405,42 @@ ${storyTask.get(0).taskStory.description}</a></h3>
  */
 function customize_columns()
 {
-	//alert($('#option1').is(':checked'));
-
 	if($('#option1').is(':checked')==true)	
-		{$('.editDES').css('display','none');
-		$('#desHead').css('display','none');
-		}
-	else{$('.editDES').css('display','table-cell');
-	$('#desHead').css('display','table-cell');
-		}
+		$('.shDes').css('display','none');
+	else
+		$('.shDes').css('display','tabel-cell');
 
 	if($('#option2').is(':checked')==true)	
-	{$('.editTYPE').css('display','none');
-	$('#typeHead').css('display','none');
-	}
-else{$('.editTYPE').css('display','table-cell');
-$('#typeHead').css('display','table-cell');
-	}
+		$('.shType').css('display','none');
+	else
+		$('.shType').css('display','table-cell');
 
 	if($('#option3').is(':checked')==true)	
-	{$('.editASSI').css('display','none');
-	$('#assigneeHead').css('display','none');
-	}
-else{$('.editASSI').css('display','table-cell');
-$('#assigneeHead').css('display','table-cell');
-	}
+		$('.shAssignee').css('display','none');
+	else
+		$('.shAssignee').css('display','table-cell');
 
 	if($('#option4').is(':checked')==true)	
-	{$('.editREV').css('display','none');
-	$('#desHead').css('display','none');
-	}
-else{$('.editREV').css('display','table-cell');
-$('#reviewerHead').css('display','table-cell');
-	}
+		$('.shReviewer').css('display','none');
+	else
+		$('.shReviewer').css('display','table-cell');
 
 	if($('#option5').is(':checked')==true)	
-	{$('.editPOINTS').css('display','none');
-	$('#pointsHead').css('display','none');
-	}
-else{$('.editPOINTS').css('display','table-cell');
-$('pointsHead').css('display','table-cell');
-	}
+		$('.shPoints').css('display','none');
+	else
+		$('.shPoints').css('display','table-cell');
 
-if($('#option6').is(':checked')==true)	
-{$('.enterEffort').css('display','none');
-$('.enterEffortHead').css('display','none');
+	if($('#option6').is(':checked')==true)	
+		$('.shEfforts').css('display','none');
+	else
+		$('.shEfforts').css('display','table-cell');
+
+	if($('#option7').is(':checked')==true)	
+		$('.shStatus').css('display','none');
+	else
+		$('.shStatus').css('display','table-cell');
+
 }
-else{$('.enterEffort').css('display','table-cell');
-$('.enterEffortHead').css('display','table-cell');
-}
-}
-//$('#checklist').toggle();
 
 </script>
+</div>
