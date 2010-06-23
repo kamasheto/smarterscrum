@@ -63,7 +63,7 @@ public class Bootstrap extends Job
 			Project p2 = new Project( "Sharesoft", "The second best company project ever!" ).save();
 			p2.user=users.get( 1 );
 			p2.approvalStatus=true;
-			p2.init();
+			p2.init(); 
 
 			Project p3 = new Project( "Collabsoft", "The least best company project ever!" ).save();
 			p3.user=users.get( 2 );
