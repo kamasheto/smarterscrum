@@ -9,13 +9,17 @@
 
 #{set 'moreLinks'}
 
+#{if connected.in(currentProject).can('addMeeting') }
+<a href="/admin/projects/${id}/meetings/new"> New meeting </a>
+#{/if}
+
+<br>
+<br>
 <a  href="/MeetingAttendances/viewInvites?projectID=${id}" name="check">Check my invitations</a>
 
 <br>
 <br>
-#{if connected.in(currentProject).can('addMeeting') }
-<a href="/admin/projects/${id}/meetings/new"> new meeting </a>
-#{/if}
+
 #{/set}
 
 
