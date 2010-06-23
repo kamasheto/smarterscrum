@@ -1,7 +1,9 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -253,30 +255,32 @@ public class Boards extends SmartCRUD {
 		}
 		render(data, columnsOfBoard,hidencolumnsOfBoard, u,b, s, c, p, total);
 	}
-	public static void showHiddenColumn(long cid,long bid)
+	public static void showHiddenColumn(long cid,long uid)
 	{
 		System.out.println(cid);
 		Column c=Column.findById( cid );
 		System.out.println(c.name);
 		c.onBoard=true;
 		c.save();
-		/*List<Column> columns = b.columns;
-		for(int i=0;i<columns.size();i++)
-		{
-			if(columns.get( i ).name.equalsIgnoreCase( name ))
-			{
-				columns.get( i ).onBoard=true;
-			}
-		}*/
+		Calendar cal = new GregorianCalendar();
+		User u = User.findById(uid);
+		Logs.addLog(u, "shown", "Column", cid, c.board.project, cal.getTime());
+		String message = u.name + "has shown " + c.name;
+		Notifications.notifyUsers(c.board.project, "Show Column", message, "showColumn", (byte) 0);
 		
 	}
-	public static void hideColumn(long cid)
+	public static void hideColumn(long cid,long uid)
 	{
 		System.out.println(cid);
 		Column c=Column.findById( cid );
 		System.out.println(c.name);
 		c.onBoard=false;
 		c.save();
+		Calendar cal = new GregorianCalendar();
+		User u = User.findById(uid);
+		Logs.addLog(u, "hided", "Column", c.id, c.board.project, cal.getTime());
+		String message = u.name + "has hided " + c.name;
+		Notifications.notifyUsers(c.board.project, "Hide Column", message, "hideColumn", (byte) 0);
 		
 		
 	}
