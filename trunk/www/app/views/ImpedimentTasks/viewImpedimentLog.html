@@ -51,24 +51,24 @@ function changeStatus(id,statID)
 <h1> Impediment Tasks</h1>
 <div id="columnssh" style="display:none">
 <h5>Show/Hide Columns</h5>
+<div class="crudField">
 Please check the columns that you would like to hide. Columns not checked will be shown.
 <br/><br/>
-<input id="id"name="ID"type="checkbox"/>
-<label for="ID">ID</label><br/>
+</div>
+<div class="crudField">
 <input id="des"name="Description"type="checkbox"/>
 <label for="Description">Description</label><br/>
 <input id="rep"name="Reporter"type="checkbox"/>
 <label for="Reporter">Reporter</label><br/>
 <input id="stat"name="Status"type="checkbox"/>
-<label for="Status">Status</label><br/>
-<button onclick="hide()">Hide</button>
+<label for="Status">Status</label><br/><br/>
+</div>
+<div class="crudField">
+<button onclick="hide()">Hide</button></div>
 <script type="text/javascript">
 function hide()
 {
-	if($('#id').is(':checked')==true)
-		$('.id').css('display','none');
-	else
-		$('.id').css('display','table-cell');
+
 
 	if($('#des').is(':checked')==true)
 		$('.des').css('display','none');
@@ -88,7 +88,7 @@ function hide()
 
 </script>
 </div>
-	<table class="draggable sortable" >
+	<table class="draggable sortable" style="width:100%" id="impedimentLog">
 	<thead>
 	<tr>
 		<td class="id">ID</td>
