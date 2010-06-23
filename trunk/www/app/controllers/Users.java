@@ -137,6 +137,7 @@ public class Users extends SmartCRUD {
 	// @Check ("canEditUserNotificationProfile")
 	public static void manageNotificationProfile(long id) throws ClassNotFoundException {
 		Project currentProject = Project.findById(id);
+		Security.check(currentProject, "canEditUserNotificationProfile");
 		User currentUser = Security.getConnected();
 		UserNotificationProfile currentNotificationProfile = UserNotificationProfile.find("user = " + currentUser.id + " and project = " + currentProject.id).first();
 		ObjectType type = ObjectType.get(UserNotificationProfiles.class);
