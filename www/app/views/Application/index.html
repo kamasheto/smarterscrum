@@ -13,8 +13,6 @@
 #{set 'moreScripts'}
 <script type="text/javascript">
        		$(function(){
-				
-
        			$('.notifYear').each(function(){
 					$(this).html( formatDate( new Date(Number($(this).html())), '<b>yyyy</b>') );
 				});
@@ -31,13 +29,19 @@
 	<div class="notifDM bottomCornersRounded" style="width:50px;background-color:#eee;padding:5px; text-align:center;">${notif.date}</div>
 </div>
 <div class="left" style="margin-bottom:10px;">
-<b>${notif.header} </b><br/>
+<b>${notif.header}</b><br/>
 ${notif.body}.
 </div>
 <div class="right">
-#{if notif.importance ='1'}
-	<div class ="allCornersRounded"style="width:60px;background-color:red ;height:10px;padding:5px; text-align:center; color:white">Important</div>
+#{if notif.importance =-1}
+	<div class ="allCornersRounded"style="width:60px;background-color:red ;height:10px;padding:5px; text-align:center; color:white">High</div>
 #{/if}
+#{elseif notif.importance =1}
+	<div class ="allCornersRounded"style="width:60px;background-color:#8ef13c ;height:10px;padding:5px; text-align:center; color:black">Low</div>
+#{/elseif}
+#{elseif notif.importance =0}
+	<div class ="allCornersRounded"style="width:60px;background-color:#FF9A00 ;height:10px;padding:5px; text-align:center; color:black">Medium</div>
+#{/elseif}
 </div>
 </div>
 <br style="clear:both"/>
