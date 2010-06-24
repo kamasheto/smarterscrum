@@ -138,11 +138,6 @@ public class Sprints extends SmartCRUD
 			renderArgs.put( "error", "Please Enter Missing Dates" );
 			render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
 		}
-		else if( proj.inSprint( startDate, endDate ) )
-		{
-			renderArgs.put( "error", "Sprint Start Date and End Date are overlapping with other Sprint" );
-			render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
-		}
 		else if( startDate.after( endDate ) )
 		{
 			renderArgs.put( "error", "Sprint Start Date is after Sprint End Date" );
@@ -151,6 +146,11 @@ public class Sprints extends SmartCRUD
 		else if( startDate.before( new Date() ) || endDate.before( new Date() ) )
 		{
 			renderArgs.put( "error", "Cant Create Sprint with Past Date" );
+			render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
+		}
+		else if( proj.inSprint( startDate, endDate ) )
+		{
+			renderArgs.put( "error", "Sprint Start Date and End Date are overlapping with other Sprint" );
 			render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
 		}
 		else
@@ -217,12 +217,6 @@ public class Sprints extends SmartCRUD
 
 			render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
 		}
-		else if( (proj.inSprint( object.startDate, object.endDate )) )
-		{
-			renderArgs.put( "error", "Sprint is Overlapping with other Sprint time" );
-
-			render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
-		}
 		else if( object.startDate.after( object.endDate ) )
 		{
 			renderArgs.put( "error", "Sprint Start Date is after Sprint End Date" );
@@ -233,6 +227,12 @@ public class Sprints extends SmartCRUD
 		else if( object.startDate.before( new Date() ) || object.endDate.before( new Date() ) )
 		{
 			renderArgs.put( "error", "Cant Create Sprint with Past Date" );
+
+			render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+		}
+		else if( (proj.inSprint( object.startDate, object.endDate )) )
+		{
+			renderArgs.put( "error", "Sprint is Overlapping with other Sprint time" );
 
 			render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
 		}
