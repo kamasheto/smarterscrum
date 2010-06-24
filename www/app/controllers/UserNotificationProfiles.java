@@ -13,11 +13,11 @@ import play.mvc.With;
  */
 @With (Secure.class)
 public class UserNotificationProfiles extends SmartCRUD {
-	public static void show(String id) {
+	public static void show() {
 		forbidden();
 	}
 
-	public static void delete(String id) {
+	public static void delete() {
 		forbidden();
 	}
 
@@ -29,11 +29,11 @@ public class UserNotificationProfiles extends SmartCRUD {
 		forbidden();
 	}
 
-	public static void save(String id) {
+	public static void save() {
 		forbidden();
 	}
 
-	public static void list(int page, String search, String searchFields, String orderBy, String order) {
+	public static void list() {
 		forbidden();
 	}
 }
