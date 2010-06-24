@@ -30,10 +30,6 @@ public class About extends SmartController {
 		"Ghada Fakhry (C2-lead)<br />Ghada had to put up with ALL our ERD issues<br />She also has the best ringtone ever!", // 
 		};
 
-		for (int i = 0; i < data.length; i++) {
-			data[i] = "hi";
-		}
-
 		render(null, data);
 	}
 }
