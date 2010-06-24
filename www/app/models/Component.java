@@ -213,7 +213,7 @@ public class Component extends SmartModel {
 	}
 
 	public void init() {
-		Board board = new Board(this).save();
+		componentBoard = new Board(this).save();
 		// board.component = this;?
 		// board.save();
 	}
