@@ -28,7 +28,7 @@
 var selectedUser = 0;
 var col_from = -1;
 var col_to = -1;
-
+		
 //Author Amr Abdelwahab A script used to toogle the board
 $(document).ready(function(){
 		
@@ -99,19 +99,7 @@ $(document).ready(function(){
    		event.preventDefault();
    		$('form').toggle(400);
  	});
- 
-	$('.select').click(function()
-	{
-		$('.hides').css('display','none');
-		$('.editDES').css('display','none');
-		var split 	= this.id.split("_");
-		var i= split[0];
-		$('.shows_'+i).css('display','block');	
-		$('.noedit').css('display','inline-block');	
-		$('.noeditdesc_'+i).css('display','none');	
-		$('.editdesc_'+i).css('display','inline-block');	
-		$('.noedit2').css('display','none');	
-	});  
+  
 	$('.b1').click(function()
 	{
 		$('.hidecol').css('display','inline-block');
@@ -334,11 +322,13 @@ End At
 		<div id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}">
 		<span id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}"  title="Edit description?" >${task.description}</span>
 		</div>	
+		<div style="display:none" class="noedit noedit_${task.assignee.id}"id="${task.id}_des" border=0px >${task.description}</div>	
 		#{/if}
 		#{else} <!-- if doesn't have have permission (desc) nor assignee -->
-		<div style="display:none" id="${task.id}_des" border=0px class="noedit2 noeditdesc_${task.assignee.id}">
-		<span style="display:none" id="${task.id}_des" border=0px class="noedit2 noeditdesc_${task.assignee.id}"  title="Edit description?" >${task.description}</span>
-		</div>	
+		<div class="noedit noedit_${task.assignee.id}"id="${task.id}_des" border=0px >${task.description}</div>
+		<div style="display:none" id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}">
+		<span id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}"  title="Edit description?" >${task.description}</span>
+		</div>		
 		#{/else}
 				
 		<!-- set flag for logged in user (edit assignee) -->						
@@ -346,12 +336,17 @@ End At
 		<span style="display:none"> ${flag3=true}</span>
 		#{/if}
 		#{if flag3} <!-- if has permission (edit assignee) -->
-		<a class="hides" id="usr" HREF="javascript:popUp('@{Tasks.chooseTaskAssi(task.id,component.id)}')">
-		<span title="Change Assignee?" class="ui-icon ui-icon-person"></span></a>
+		<a class="hidesassi" id="usr" HREF="javascript:popUp('@{Tasks.chooseTaskAssi(task.id,component.id)}')">
+		<span title="Change Assignee?" class="ui-icon ui-icon-person hidesassi"></span></a>
 		<div>Assignee:${task.assignee}</div><div id="${task.id}_assigneee"></div>	
+		<div style="display:none">Assignee:${task.assignee}</div><div style="display:none" id="${task.id}_assigneee"></div>	
 		#{/if}
 		#{else} <!-- if doesn't have permission (edit assignee) -->
-		<div>Assignee:${task.assignee}</div><div id="${task.id}_assigneee"></div>	
+		<div style="display:none">Assignee:${task.assignee}</div><div id="${task.id}_assigneee"></div>		
+		<a style="display:none" class="hidesassi" id="usr" HREF="javascript:popUp('@{Tasks.chooseTaskAssi(task.id,component.id)}')">
+		<span style="display:none" title="Change Assignee?" class="ui-icon ui-icon-person hidesassi"></span></a>
+		<div>Assignee:${task.assignee}</div><div id="${task.id}_assigneee"></div>
+		
 		#{/else}
 								
 		<!-- set flag for logged in user (edit reviewer) -->						
@@ -359,12 +354,16 @@ End At
 		<span style="display:none"> ${flag4=true}</span>
 		#{/if}
 		#{if flag4}  <!-- if has permission (edit reviewer) -->
-		<a id="rev" class="hides"  HREF="javascript:popUp('@{Tasks.chooseRev(task.id,component.id)}')">
-		<span  title="Change Reviewer?" class="ui-icon ui-icon-person"></span></a>
+		<a id="rev" class="hidesrev"  HREF="javascript:popUp('@{Tasks.chooseRev(task.id,component.id)}')">
+		<span  title="Change Reviewer?" class="ui-icon ui-icon-person hidesrev"></span></a>
 		<div>Reviewer:${task.reviewer}</div>
 		<div id="${task.id}_rev"></div>
+		<div style="display:none">Reviewer:${task.reviewer}</div><div id="${task.id}_rev"></div>
 		#{/if}
 		#{else} <!-- if doesn't have permission (edit reviewer) -->
+		<a style="display:none" id="rev" class="hidesrev"  HREF="javascript:popUp('@{Tasks.chooseRev(task.id,component.id)}')">
+		<span  title="Change Reviewer?" class="ui-icon ui-icon-person hidesrev"></span></a>
+		<div style="display:none">Reviewer:${task.reviewer}</div>
 		<div>Reviewer:${task.reviewer}</div><div id="${task.id}_rev"></div>
 		#{/else}
 		
@@ -373,13 +372,15 @@ End At
 		<span style="display:none"> ${flag5=true}</span>
 		#{/if}
 		#{if flag5 || controllers.Security.getConnected().equals(task.assignee)} <!-- if has permission (type) or assignee -->
-		<a id="usr" class="hides shows_${task.assignee.id}" HREF="javascript:popUp('@{Tasks.chooseType(task.id)}')">
+		<a id="usr" class="hidestype shows_${task.assignee.id}" HREF="javascript:popUp('@{Tasks.chooseType(task.id)}')">
 		<span  title="Edit type?" class="ui-icon ui-icon-bookmark"></span></a>
 		<div>Type:${task.taskType.name}</div>
 		<div id="${task.id}_type"></div>
 		#{/if}
 		#{else} <!-- if doesn't have have permission (type) nor assignee -->
 		<div>Type:${task.taskType.name}</div>
+		<a style="display:none" id="usr" class="hidestype shows_${task.assignee.id}" HREF="javascript:popUp('@{Tasks.chooseType(task.id)}')">
+		<span  title="Edit type?" class="ui-icon ui-icon-bookmark"></span></a>
 		#{/else}
 		</p>
 		<a id="${task.id}_HiddenSticky" >
@@ -412,11 +413,101 @@ End At
 	
  <script type="text/javascript">
 
- function select_user(id, str) {
+ function select_user(id, str) 
+ {
+ 	 $('.editDES').css('display','none');
+	 $('.noedit').css('display','none');
 	 selectedUser = id;
 	 $('#myLayer').html(str+' is editing the Board now ').effect('highlight',{}, 1000).fadeOut();
- }
-
+	 var descList = ${ud};
+	 var f_desc = false;
+     for(var j=0; j<descList.length; j++)
+    {
+     if(descList[j]==id)
+	 {
+	 	f_desc = true;
+	 }
+    }
+	if(f_desc)
+	{
+		$('.noedit').css('display','none');
+		$('.editDES').css('display','inline-block');			
+	}
+	else
+	{
+		$('.noedit').css('display','inline-block');
+		$('.noedit_'+id).css('display','none');
+		$('.editdesc_'+id).css('display','inline-block');	
+	}
+	
+	 
+			
+	 var assiList = ${ua};
+	 var f_assi = false;
+	 
+     for(var j=0; j<assiList.length; j++)
+    {
+     if(assiList[j]==id)
+	 {
+	 	f_assi = true;
+	 }
+    }
+	if(f_assi)
+	{
+		$('.hidesassi').css('display','inline-block');		
+	
+	}
+	else
+	{
+		$('.hidesassi').css('display','none');		
+	
+	}
+	
+	 
+	 var revList = ${ur};
+	 var f_rev = false;
+	 
+     for(var l=0; l<revList.length; l++)
+    {
+     if(revList[l]==id)
+	 {
+	 	f_rev = true;
+	 }
+    }
+	if(f_rev)
+	{
+		$('.hidesrev').css('display','inline-block');		
+	
+	}
+	else
+	{
+		$('.hidesrev').css('display','none');		
+	
+	}
+	
+	 var typeList = ${ut};
+	 var f_type = false;
+	 
+     for(var l=0; l<typeList.length; l++)
+    {
+     if(typeList[l]==id)
+	 {
+	 	f_type = true;
+	 }
+    }
+	if(f_type)
+	{
+		$('.hidestype').css('display','inline-block');		
+	}
+	else
+	{
+		$('.hidestype').css('display','none');		
+		$('.shows_'+id).css('display','inline-block');		
+	}
+	 
+	}
+	
+	
 	/**
 	 * swapping with clicking instead of drag and drop.
 	 * 
