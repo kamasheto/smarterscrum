@@ -198,7 +198,7 @@ public class Meetings extends SmartCRUD
 			upcomingIsEmpty = true;
 		Logs.addLog( Security.getConnected(), "view", "Meetings", project.id, project, new Date( System.currentTimeMillis() ) );
 		String projectName = project.name;
-		render( meetings, id, projectName, past, upcoming, upcomingIsEmpty, pastIsEmpty );
+		render( meetings, id, projectName, past, upcoming, upcomingIsEmpty, pastIsEmpty, project );
 
 	}
 
@@ -277,23 +277,28 @@ public class Meetings extends SmartCRUD
 		// hossam();
 		// mina();
 		Meeting meeting = Meeting.findById( id );
-		List<Artifact> temp = Artifact.findAll();
-		List<Artifact> artifacts = new ArrayList<Artifact>();
-		for( int i = 0; i < temp.size(); i++ )
+		if( Security.getConnected().in( meeting.project ).can( "manageMeetingAssociations" ) || Security.getConnected().equals( meeting.creator ) )
 		{
-			if( !temp.get( i ).meetingsArtifacts.contains( meeting ) )
+			List<Artifact> temp = Artifact.findAll();
+			List<Artifact> artifacts = new ArrayList<Artifact>();
+			for( int i = 0; i < temp.size(); i++ )
 			{
-				artifacts.add( temp.get( i ) );
+				if( !temp.get( i ).meetingsArtifacts.contains( meeting ) )
+				{
+					artifacts.add( temp.get( i ) );
+				}
 			}
+			List<Task> temp2 = Task.findAll();
+			List<Task> tasks = new ArrayList<Task>();
+			for( int i = 0; i < temp2.size(); i++ )
+			{
+				if( !temp2.get( i ).meeting.contains( meeting ) )
+					tasks.add( temp2.get( i ) );
+			}
+			render( meeting, currentUser, artifacts, tasks );
 		}
-		List<Task> temp2 = Task.findAll();
-		List<Task> tasks = new ArrayList<Task>();
-		for( int i = 0; i < temp2.size(); i++ )
-		{
-			if( !temp2.get( i ).meeting.contains( meeting ) )
-				tasks.add( temp2.get( i ) );
-		}
-		render( meeting, currentUser, artifacts, tasks );
+		else
+			forbidden();
 	}
 
 	/**

@@ -9,12 +9,11 @@
 
 #{set 'moreLinks'}
 
-#{if connected.in(currentProject).can('addMeeting') }
+#{if connected.in(project).can('addMeeting') }
 <a href="/admin/projects/${id}/meetings/new"> New meeting </a>
+<br>
+<br>
 #{/if}
-
-<br>
-<br>
 <a  href="/MeetingAttendances/viewInvites?projectID=${id}" name="check">Check my invitations</a>
 
 <br>
@@ -40,9 +39,9 @@ There are no Upcoming meetings and events
 		<span id= "meeting_${meeting.name}">
 			<a href="/meetings/${meeting.id}">${meeting.name}</a>
 			&nbsp;&nbsp;&nbsp; <span class="formatTime">${meeting.startTime}</span>
-				#{secure.check 'canEditMeeting'}
+				#{if connected.in(project).can('editMeeting')}
 			<input type="button" value="Edit" onclick="window.location='/admin/meetings/${meeting.id}'" />
-				#{/secure.check}
+				#{/if}
 			#{if !meeting.status} <label style="color:red; font-style: italic;"> canceled </label>  #{/if}
 		    <br>
 		</span>  
