@@ -42,18 +42,30 @@ public class Columns extends SmartCRUD{
 		List<Column> cols = b.columns;
 		Column c1 = Column.find("bySequenceAndBoard", pos1 - 1, b).first();
 		Column c2 = Column.find("bySequenceAndBoard", pos2 - 1, b).first();
+		System.out.println(c1.name+" "+c1.sequence);
+		System.out.println(c2.name+" "+c2.sequence);
+		
 		Logs.addLog(u, "edit", "Column Position", c1.id, p, cal.getTime());
 		String message = u.name + " has changed the position of " + c1.name + " from " + c1.sequence + " to " + c2.sequence;
-		Notifications.notifyUsers(p, "Edit Column Position", message, "editColumnPosition", (byte) 0);
+		//Notifications.notifyUsers(p, "Edit Column Position", message, "editColumnPosition", (byte) 0);
 		int x = c2.sequence;
 		if (c1.sequence < c2.sequence) {
-			for (int i = c1.sequence + 1; i <= c2.sequence; i++) {
-				Column temp = Column.find("bySequenceAndBoard", i, b).first();
-				temp.sequence--;
-				temp.save();
+			for (int i = c1.sequence; i <= c2.sequence; i++) {
+				Column temp1 = Column.find("bySequenceAndBoard", i, b).first();
+				if(i+1<=c2.sequence)
+				{
+				//Column temp2 = Column.find("bySequenceAndBoard", i+1, b).first();
+				//int d=temp2.sequence-temp1.sequence;
+				
+				//temp2.sequence=temp2.sequence-d;
+				//temp2.save();
+				}
 			}
 			c1.sequence = x;
 			c1.save();
+			System.out.println(c1.name+" "+c1.sequence);
+			System.out.println(c2.name+" "+c2.sequence);
+			
 
 		} else {
 			for (int i = c1.sequence - 1; i >= c2.sequence; i--) {
@@ -96,24 +108,43 @@ public class Columns extends SmartCRUD{
 			ids[i] = i;
 			names[i + 1] = columnsOfBoard.get( i ).name;
 		}
-
 		Column c1 = Column.find( "byNameAndBoard", names[pos1],b ).first();
 		Column c2 = Column.find( "byNameAndBoard", names[pos2],b ).first();
 		
+		for(int i=0;i<names.length;i++)
+		{
+			if(names[i].equals(c1.name))
+			{
+				if(!names[i].equals(c2.name))
+				{
+					
+				}
+			}
+		}
+		for(int i=0;i<names.length;i++)
+		System.out.println(names[i]);
+		System.out.println("pos 1 is "+pos1+"pos2 is "+pos2);
 		
-		System.out.println(c1.name);
-		System.out.println(c2.name);
+		
+		
+		System.out.println("column 1 is "+c1.name);
+		System.out.println("column 2 is "+c2.name);
 		
 		
 		int x = c2.sequence;
 		if( c1.sequence < c2.sequence )
 		{
-			for( int i = c1.sequence + 1; i <= c2.sequence; i++ )
-			{
-				Column temp = Column.find( "bySequenceAndBoard", i,b ).first();
-				temp.sequence--;
-				temp.save();
-			}
+			for (int i = 0 ; i <names.length; i++) {
+				if(c1.sequence>=pos1 && c2.sequence<=pos2)
+				{
+				Column temp1 = Column.find("byNameAndBoard", names[i], b).first();
+				Column temp2 = Column.find("byNameAndBoard", names[i+1], b).first();
+				int d=temp2.sequence-temp1.sequence;
+				temp2.sequence=temp2.sequence-d;
+				temp2.save();
+				}
+				}
+			
 			c1.sequence = x;
 			c1.save();
 
@@ -194,4 +225,27 @@ public class Columns extends SmartCRUD{
 		return true;
 	}
 
+	public static void show(String id) {
+		forbidden();
+	}
+
+	public static void delete(String id) {
+		forbidden();
+	}
+
+	public static void blank() {
+		forbidden();
+	}
+
+	public static void create() {
+		forbidden();
+	}
+
+	public static void save(String id) {
+		forbidden();
+	}
+
+	public static void list(int page, String search, String searchFields, String orderBy, String order) {
+		forbidden();
+	}
 }
