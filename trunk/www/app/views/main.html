@@ -27,14 +27,18 @@
 				
 				#{if connected}
 				$('#logger').html('');
-				#{/if}/*
+				#{/if}
+				#{else}
+				$('#logger').html($('#login').html());
+				$('#login').html('');
+				#{/else}
+					/*
 if($('.sideBarElements').html()=='')
 {$('#theSide').remove();
 $('#theContent').css('padding','20px');
 }
 				*/
-				$('#logger').html($('#login').html());
-				$('#login').html('');
+
        			$("#breadCrumb").jBreadCrumb();
        			$('.formatDate').each(function(){
 					$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );
@@ -124,7 +128,9 @@ $('#theContent').css('padding','20px');
 	<a href="/secure/logout" title="Logout from the system">[x] Logout</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 #{/if}
 Switch Theme&nbsp;&nbsp;
-<a href="@{Accounts.register}" #{if connected} style="display:none"#{/if}>|&nbsp;&nbsp;Register</a>
+#{ifnot connected}
+<a href="@{Accounts.register}"  style="display:none">|&nbsp;&nbsp;Register</a>
+#{/ifnot}
 #{if connected}
 <br/>
 <div id="chatroomList" style="text-align:center; color:#fff;display:none; position:absolute;z-index:100">
