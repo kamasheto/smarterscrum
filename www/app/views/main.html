@@ -137,7 +137,7 @@ Switch Theme&nbsp;&nbsp;
 <div id="chatroomList" style="text-align:center; color:#fff;display:none; position:absolute;z-index:100">
  	<div class="allCornersRounded"style="padding:5px;background-color:#555;width:100px;overflow auto;margin-left:250px" >
  	#{list controllers.Security.getConnected().projects, as:'proj'}
- 	<a href="#" onclick="getMessages();signIn(${proj.chatroom.id});$('#chatContainer_${proj.name}').slideToggle(400)">${proj.name}</a><br/>
+ 	<a href="#" onclick="getMessages();#{ifnot controllers.Security.getConnected().openChats.contains(proj.chatroom)}signIn(${proj.chatroom.id});#{/ifnot}$('#chatContainer_${proj.name}').slideToggle(400)">${proj.name}</a><br/>
 	
  	
  	#{/list}
@@ -150,7 +150,12 @@ Switch Theme&nbsp;&nbsp;
 
 <div id="chatContainer">
 #{list controllers.Security.getConnected().projects, as:'proj'}
-<div id="chatContainer_${proj.name}" style="display:none;position:absolute; z-index:100;">
+<div id="chatContainer_${proj.name}" style="
+#{ifnot controllers.Security.getConnected().openChats.contains(proj.chatroom)}
+
+display:none;
+#{/ifnot}
+position:absolute; z-index:100;">
 <div class="chatContainerHeader"><a href="#" title="hide/show chat?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);" style="text-decoration:none; color:#fff">${proj.name} Chat</a></div>
 <div id="chatHolder_${proj.name}">
 	<div id="thread_${proj.name}" class="thread">
@@ -158,7 +163,7 @@ Switch Theme&nbsp;&nbsp;
 			<span class="ui-icon ui-icon-extlink inline-block"></span><span class="ui-icon ui-icon-person inline-block"></span><span class="ui-icon ui-icon-circle-close inline-block"></span>
 		</div>
 		<script type="text/html" id="message_tmpl">
-			<div class="allCornersRounded <%= message.author == 'notice' ? 'notice' : message.author == '${controllers.Security.getConnected().name}' ? 'you border-callout' : 'them border-callout' %>">		
+			<div class="allCornersRounded <%= message.author == 'notice' ? 'notice' : message.author == '${controllers.Security.getConnected().name}' ? 'you' : 'them' %>">		
 				<strong class="title" style="<%= message.author == 'notice' ? 'display:none !important' : '' %>"><%= message.author%></strong> 
 				<%= message.message.replace('\n', '<br/>') %>
 			</div>
@@ -171,7 +176,10 @@ Switch Theme&nbsp;&nbsp;
 		<input type="button" value="send" id="send_${proj.name}" class="chatBtn"/>
 	</div>	
 	<script type="text/javascript">
-	
+	#{if controllers.Security.getConnected().openChats.contains(proj.chatroom)}
+	$(function(){getMessages();});
+	#{/if}
+		
 	$('#send_${proj.name}').click(function() {
 		getMessages();
 		var message = $('#message_${proj.name}').val();

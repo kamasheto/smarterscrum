@@ -415,10 +415,11 @@ button
 #chatContainer {
 	width: 200px;
 	float: right;
+	margin-right:10px;
 }
 
 .chatContainerHeader {
-	width: 100%;
+	width: 181px;
 	background-color: #87155f;
 	color: #fff;
 	padding: 10px;
@@ -450,8 +451,7 @@ button
 	border-radius-bottom-right: 5px !important;
 	-moz-border-radius-bottomright: 5px !important;
 	-webkit-border-bottom-right-radius: 5px !important;
-	-moz-border-radius: 0px !important;
-	-webkit-border-radius: 0px !important;
+
 }
 
 .chatTextArea:focus {
@@ -489,18 +489,18 @@ button
 }
 
 .thread {
-	width: 100%;
+	width: 199px;
 	overflow-y: auto;
 	background: #F5F5F5;
 	height: 300px;
 
 	border-left: 1px solid #111 !important;
-	
+	border-right: 1px solid #111 !important;
 	border-bottom: 1px solid #111 !important;
 }
 
 .you {
-	width: 180px;
+	width: 179px;
 	background-color: #B7DFF0;
 	padding: 5px;
 	margin: 5px;
