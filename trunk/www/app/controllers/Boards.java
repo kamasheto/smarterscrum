@@ -24,6 +24,69 @@ import play.mvc.With;
 
 @With (Secure.class)
 public class Boards extends SmartCRUD {
+	public static void loadBoard1(long sprintID,long componentID)
+	{
+		Sprint s = Sprint.findById(sprintID);
+		Project p = s.project;
+		Board b = p.board;
+		List<Component> components = p.getComponents();
+		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>();
+		List<Column> columns = b.columns;
+		Component c = Component.findById(componentID);
+		List<User> users = c.getUsers();
+		List<Column> columnsOfBoard=new ArrayList<Column>();
+		List<Column> hidencolumnsOfBoard=new ArrayList<Column>();
+		for( int i=0; i<columns.size();i++)
+		{
+			if(columns.get( i ).onBoard==true)
+			columnsOfBoard.add( columns.get( i ) );
+		}
+		columnsOfBoard = orderColumns(columnsOfBoard);
+		for( int i=0; i<columns.size();i++)
+		{
+			if(columns.get( i ).onBoard!=true)
+				hidencolumnsOfBoard.add( columns.get( i ) );
+		}
+		
+		for (int i = 0; i < components.size(); i++) {
+			data.add(null);
+			List<Task> tasks=new ArrayList<Task>();
+			if(componentID==-1)
+			{
+				data.set(i, new ComponentRow(components.get(i).id, components.get(i).name));
+			    tasks = components.get(i).returnComponentTasks(s);
+			}
+			else
+			{
+				data.set(i, new ComponentRow(users.get(i).id, users.get(i).name));
+			    tasks = users.get(i).returnUserTasks(s, componentID);
+			}
+			for (int j = 0; j < columnsOfBoard.size(); j++) {
+				data.get(i).add(null);
+				data.get(i).set(j, new ArrayList<Task>());
+			}
+			for (Task task : tasks) {
+				data.get(i).get(columns.indexOf(task.taskStatus.column)).add(task);
+			}
+		}
+	
+		long id=Security.getConnected().id;
+		boolean found=false;
+		LinkedList<Meeting> total = new LinkedList<Meeting>();
+		
+		if(componentID==-1)
+		{
+			//companyMetting
+		}
+		else
+		{
+			//componentMeeting
+		}
+	
+		//render(data, columnsOfBoard,hidencolumnsOfBoard, u, b, s, p,columns, total,ud,ua,ur,ut,componentID);
+		
+	}
+	
 	/**
 	 * Renders the data and the columnsOfBoard to be used by the views. this
 	 * method is used to fill the 2D array attribute in the board with the data
@@ -296,11 +359,21 @@ public class Boards extends SmartCRUD {
 		}
 		render(data, columnsOfBoard,hidencolumnsOfBoard, u,b, s, c, p, total);
 	}
+	/**
+	 * this method is used to search for a specific column and change the value
+	 * of the boolean variable of it called onBoard to true
+	 * so as to let this column appear on the board
+	 * 
+	 * @author Hadeer_Diwan
+	 * @param cid
+	 *            the component id
+	 * @param uid
+	 *            the user id
+	 */
+	
 	public static void showHiddenColumn(long cid,long uid)
 	{
-		System.out.println(cid);
 		Column c=Column.findById( cid );
-		System.out.println(c.name);
 		c.onBoard=true;
 		c.save();
 		Calendar cal = new GregorianCalendar();
@@ -310,6 +383,17 @@ public class Boards extends SmartCRUD {
 		Notifications.notifyUsers(c.board.project, "Show Column", message, "showColumn", (byte) 0);
 		
 	}
+	/**
+	 * this method is used to search for a specific column and change the value
+	 * of the boolean variable of it called onBoard to false
+	 * so as to hide this column 
+	 * 
+	 * @author Hadeer_Diwan
+	 * @param cid
+	 *            the component id
+	 * @param uid
+	 *            the user id
+	 */
 	public static void hideColumn(long cid,long uid)
 	{
 		System.out.println(cid);
