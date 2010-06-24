@@ -190,9 +190,40 @@ Please check the columns that you would like to hide. Columns not checked will b
 	
 		<td>${story.id}</td>
 		<td id=${story.id} class="editDES shDes">${story.description}</td>
-		<td id=${story.id} class="editPRIORITY shPriority">${story.priority}</td>
-		
-		
+		<td class="shPriority">
+		<form>
+		<select id="s_${story.id}"name="list" onchange="Storys.editPriority(${story.id},$('#s_${story.id} option:selected').value());">
+                		#{list items:[1,2,3], as:'p'}
+                		#{if story.priority==p}
+                	
+                		#{if p==1}
+                		<option selected="selected" value="${p}">High</option>
+                		#{/if}
+                        #{if p==2}
+                		<option selected="selected" value="${p}">Medium</option>
+                		#{/if}
+                		#{if p==3}
+                		<option selected="selected" value="${p}">Low</option>
+                		#{/if}
+                		                	
+                		#{/if}
+                		#{else}
+                		
+                		#{if p==1}
+                		<option value="${p}">High</option>
+                		#{/if}
+                        #{if p==2}
+                		<option value="${p}">Medium</option>
+                		#{/if}
+                		#{if p==3}
+                		<option value="${p}">Low</option>
+                		#{/if}
+                		
+                		#{/else}
+                		#{/list}
+		</select>
+		</form>
+		</td>
 		 #{ifnot story.dependentStories}
 		 <td id=${story.id} class="editDStories shDes">
 		 <a  href="javascript:popUp('@{Storys.chooseDependentStories(story.id)}')">
