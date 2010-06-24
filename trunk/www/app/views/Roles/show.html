@@ -1,4 +1,5 @@
-#{extends 'CRUD/layout.html' /}
+#{extends 'main.html' /}
+#{set title:'Editing role: ' + object.name /}
 #{set 'crumbs'}
 <li><a href="/show/projects/">Projects</a></li>
 <li><a href="/show/project?id=${object.project.id}">${object.project.name}</a></li>
