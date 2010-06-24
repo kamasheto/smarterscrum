@@ -75,6 +75,19 @@ public class Sprint extends SmartModel
 		p.sprints.add( this );
 		deleted = false;
 	}
+	
+	public Sprint( Date startDate, Date endDate, Project p )
+	{
+		this();
+		this.startDate = startDate; 
+		this.endDate = endDate;
+		this.project = p;
+		// this.sprintNumber = p.getSprintCounter();
+		this.sprintNumber = p.sprints.size() + 1 + "";
+		p.sprints.add( this );
+		deleted = false;
+	}
+
 
 	public Sprint()
 	{
