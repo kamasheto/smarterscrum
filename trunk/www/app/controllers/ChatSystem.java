@@ -65,6 +65,8 @@ public class ChatSystem extends SmartController
 		ChatRoom room = ChatRoom.findById( id );
 		Security.check( Security.getConnected().projects.contains( room.project ) );
 		User currentUser = Security.getConnected();
+		currentUser.openChats.add(room);
+		currentUser.save();
 		new Message( "notice", currentUser.name + " has entered the chat", room ).save();
 	}
 
@@ -82,6 +84,8 @@ public class ChatSystem extends SmartController
 		Security.check( Security.getConnected().projects.contains( room.project ) );
 		User currentUser = Security.getConnected();
 		new Message( "notice", currentUser.name + " has left the chat", room ).save();
+		currentUser.openChats.remove(room);
+		currentUser.save();
 	}
 
 	/**

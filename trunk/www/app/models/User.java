@@ -126,8 +126,10 @@ public class User extends SmartModel {
 	@OneToMany (mappedBy = "user")
 	public List<Request> requests;
 
+	public ArrayList<ChatRoom>openChats;
 	public User () {
 		roles = new ArrayList<Role>();
+		openChats = new ArrayList<ChatRoom>();
 		attendantusers = new ArrayList<MeetingAttendance>();
 		projects = new ArrayList<Project>();
 		components = new ArrayList<Component>();
@@ -157,6 +159,8 @@ public class User extends SmartModel {
 		this.avatar = avatar;
 		this.isAdmin = isAdmin;
 		this.activationHash = Application.randomHash(32);
+
+		openChats = new ArrayList<ChatRoom>();
 	}
 
 	/**
@@ -199,6 +203,8 @@ public class User extends SmartModel {
 		this.pwdHash = Application.hash(password);
 		this.avatar = "";
 		this.activationHash = Application.randomHash(32);
+
+		openChats = new ArrayList<ChatRoom>();
 	}
 
 	public String toString() {
