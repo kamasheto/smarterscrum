@@ -166,10 +166,7 @@ Switch Theme&nbsp;&nbsp;
 		<input type="button" value="send" id="send_${proj.name}" class="chatBtn"/>
 	</div>	
 	<script type="text/javascript">
-	$(function(){//alert('${proj.chatroom.chats}');alert('${proj.chatroom.users}');
 
-		$.post('/ChatSystem/get',{id:1},function(data){alert(data);});
-	});
 	$('#send_${proj.name}').click(function() {
 		getMessages();
 		var message = $('#message_${proj.name}').val();
