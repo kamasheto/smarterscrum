@@ -473,21 +473,26 @@ public class Meetings extends SmartCRUD
 	public static void inviteUser( long meetingID, long userID )
 	{
 		Meeting currentMeeting = Meeting.findById( meetingID );
-		User invitedUser = User.findById( userID );
-		MeetingAttendance attendance = new MeetingAttendance( invitedUser, currentMeeting );
-		attendance.save();
-		List<User> userList = new LinkedList<User>();
-		userList.add( invitedUser );
-		String meetingHash = attendance.meetingHash;
-		String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
-		String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
-		String header = "Invitation to Meeting in " + currentMeeting.project.name + " project";
-		String body1 = "Hello " + invitedUser.name;
-		String body2 = "You have been invited to attend " + currentMeeting.name + " ";
-		String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
-		String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
-		String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-		Notifications.notifyUsers( userList, header, body );
+		if( Security.getConnected().in( currentMeeting.project ).can( "manageMeetingAssociations" ) || Security.getConnected().equals( currentMeeting.creator ) )
+		{
+			User invitedUser = User.findById( userID );
+			MeetingAttendance attendance = new MeetingAttendance( invitedUser, currentMeeting );
+			attendance.save();
+			List<User> userList = new LinkedList<User>();
+			userList.add( invitedUser );
+			String meetingHash = attendance.meetingHash;
+			String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
+			String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
+			String header = "Invitation to Meeting in " + currentMeeting.project.name + " project";
+			String body1 = "Hello " + invitedUser.name;
+			String body2 = "You have been invited to attend " + currentMeeting.name + " ";
+			String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
+			String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
+			String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
+			Notifications.notifyUsers( userList, header, body );
+		}
+		else
+			forbidden();
 
 	}
 
@@ -504,34 +509,39 @@ public class Meetings extends SmartCRUD
 	{
 		Meeting meeting = Meeting.findById( meetingID );
 		List<User> projectMembers = meeting.project.users;
-		for( User invitedUser : projectMembers )
+		if( Security.getConnected().in( meeting.project ).can( "manageMeetingAssociations" ) || Security.getConnected().equals( meeting.creator ) )
 		{
-			if( invitedUser.deleted == false )
+			for( User invitedUser : projectMembers )
 			{
-				if( invitedUser.meetingStatus( meetingID ).equals( "notInvited" ) )
+				if( invitedUser.deleted == false )
 				{
-					MeetingAttendance attendance = new MeetingAttendance( invitedUser, meeting );
-					attendance.save();
-					List<User> userList = new LinkedList<User>();
-					userList.add( invitedUser );
-					String meetingHash = attendance.meetingHash;
-					String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
-					String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
-					String header = "Invitation to Meeting in " + meeting.project.name + " project";
-					String body1 = "Hello " + invitedUser.name;
-					String body2 = "You have been invited to attend " + meeting.name + " ";
-					String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
-					String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
-					String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-					Notifications.notifyUsers( userList, header, body );
+					if( invitedUser.meetingStatus( meetingID ).equals( "notInvited" ) )
+					{
+						MeetingAttendance attendance = new MeetingAttendance( invitedUser, meeting );
+						attendance.save();
+						List<User> userList = new LinkedList<User>();
+						userList.add( invitedUser );
+						String meetingHash = attendance.meetingHash;
+						String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
+						String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
+						String header = "Invitation to Meeting in " + meeting.project.name + " project";
+						String body1 = "Hello " + invitedUser.name;
+						String body2 = "You have been invited to attend " + meeting.name + " ";
+						String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
+						String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
+						String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
+						Notifications.notifyUsers( userList, header, body );
+					}
 				}
 			}
+			for( Component c : meeting.project.components )
+			{
+				meeting.components.add( c );
+				meeting.save();
+			}
 		}
-		for( Component c : meeting.project.components )
-		{
-			meeting.components.add( c );
-			meeting.save();
-		}
+		else
+			forbidden();
 	}
 
 	/**
@@ -547,31 +557,41 @@ public class Meetings extends SmartCRUD
 	{
 		Meeting meeting = Meeting.findById( meetingID );
 		Component component = Component.findById( componentID );
-		for( User user : component.componentUsers )
+
+		if( Security.getConnected().in( meeting.project ).can( "manageMeetingAssociations" ) || Security.getConnected().equals( meeting.creator ) )
 		{
-			if( !user.deleted )
+			if( !component.deleted )
 			{
-				if( user.meetingStatus( meetingID ).equals( "notInvited" ) )
+				for( User user : component.componentUsers )
 				{
-					MeetingAttendance attendance = new MeetingAttendance( user, meeting );
-					attendance.save();
-					List<User> userList = new LinkedList<User>();
-					userList.add( user );
-					String meetingHash = attendance.meetingHash;
-					String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
-					String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
-					String header = "Invitation to Meeting in " + meeting.project.name + " project";
-					String body1 = "Hello " + user.name;
-					String body2 = "You have been invited to attend " + meeting.name + " ";
-					String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
-					String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
-					String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-					Notifications.notifyUsers( userList, header, body );
+					if( !user.deleted )
+					{
+						if( user.meetingStatus( meetingID ).equals( "notInvited" ) )
+						{
+							MeetingAttendance attendance = new MeetingAttendance( user, meeting );
+							attendance.save();
+							List<User> userList = new LinkedList<User>();
+							userList.add( user );
+							String meetingHash = attendance.meetingHash;
+							String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
+							String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
+							String header = "Invitation to Meeting in " + meeting.project.name + " project";
+							String body1 = "Hello " + user.name;
+							String body2 = "You have been invited to attend " + meeting.name + " ";
+							String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
+							String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
+							String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
+							Notifications.notifyUsers( userList, header, body );
+						}
+					}
 				}
+				meeting.components.add( component );
+				meeting.save();
 			}
 		}
-		meeting.components.add( component );
-		meeting.save();
+
+		else
+			forbidden();
 	}
 
 	/**
