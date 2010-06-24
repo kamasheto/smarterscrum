@@ -178,7 +178,7 @@ public class MeetingAttendances extends Controller
 	{
 
 		Meeting meeting = Meeting.findById( meetingID );
-		if( Security.getConnected().in( meeting.project ).can( "setMeetingAttendance" ) )
+		if( Security.getConnected().in( meeting.project ).can( "setMeetingAttendance" ) || Security.getConnected().equals( meeting.creator ) )
 		{
 			List<MeetingAttendance> attendances = MeetingAttendance.find( "byMeeting.idAndDeleted", meetingID, false ).fetch();
 			render( attendances, meeting );

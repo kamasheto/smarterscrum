@@ -10,18 +10,34 @@
 #{/set}
 
 #{set 'moreLinks'}
-#{secure.check 'canEditMeeting'}
+#{if connected.in(meeting.project).can('manageMeetingAssociations')}
 <a href="@{associations(meeting.id)}">Manage Associations</a>
 <br>
-#{/secure.check}
+#{/if}
+#{else}
+#{if meeting.creator.equals(controllers.Security.getConnected())}
+<a href="@{associations(meeting.id)}">Manage Associations</a>
+<br>
+#{/if}
+#{/else}
 
-#{if connected.in(meeting.project).can('setMeetingAttendance')}
 #{if meeting.endTime < new Date().getTime()}
+#{if connected.in(meeting.project).can('setMeetingAttendance')}
 <br/>
 <a href="@{MeetingAttendances.setAttendance(meeting.id)}"> Set Attendance </a>
 <br/>
 #{/if}
+
+#{else}
+#{if meeting.creator.equals(controllers.Security.getConnected())}
+<br/>
+<a href="@{MeetingAttendances.setAttendance(meeting.id)}"> Set Attendance </a>
+<br/>
 #{/if}
+#{/else}
+
+#{/if}
+
 
 #{if meeting.snapshot!=null }
 <a href="@{Snapshots.loadsnapShot(meeting.snapshot.id)} " >View associated Snapshot</a>
