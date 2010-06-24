@@ -84,7 +84,7 @@ var st=$('#object_startTime').val();
 var et=$('#object_endTime').val();
 var lc=$('#object_location').val();
 var sprintId=$('#object_sprint').val();
-var inf=document.getElementById('object_infrontBoard').value;
+
 
 if(!nm || !desc || !lc){
 alert("Please Enter All Required Fields !");
@@ -92,7 +92,7 @@ hideLoader('save','loaderSV');
 return;
 }
 
-$.post('@{saveChanges()}',{id:n,name:nm,description:desc,startTime:st,endTime:et,location:lc,infrontBoard:inf,sprintId:sprintId}
+$.post('@{saveChanges()}',{id:n,name:nm,description:desc,startTime:st,endTime:et,location:lc,sprintId:sprintId}
 ,function (timeFlag){
 if(timeFlag){
 document.getElementById('done').style.visibility="visible";
