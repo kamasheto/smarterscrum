@@ -367,6 +367,7 @@ a {
 	background: #444 !important;
 	background: -moz-linear-gradient(center bottom, #444 20%, #555 80%)
 		!important;
+	background:
 	vertical-align: middle;
 	height: 36px !important;
 	border-radius-bottom-left: 0px !important;
@@ -381,7 +382,6 @@ a {
 	border-radius-top-right: 3px !important;
 	-moz-border-radius-topright: 3px !important;
 	-webkit-border-top-right-radius: 3px !important;
-	background: -moz-linear-gradient(center bottom, #666 20%, #888 80%);
 	/*-webkit-gradient(
     linear,
     left bottom,
