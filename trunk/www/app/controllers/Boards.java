@@ -421,5 +421,27 @@ public class Boards extends SmartCRUD {
 		User usr = User.findById(usr_id);
 		renderJSON(usr);
 	}
-	
+		public static void show(String id) {
+		forbidden();
+	}
+
+	public static void delete(String id) {
+		forbidden();
+	}
+
+	public static void blank() {
+		forbidden();
+	}
+
+	public static void create() {
+		forbidden();
+	}
+
+	public static void save(String id) {
+		forbidden();
+	}
+
+	public static void list(int page, String search, String searchFields, String orderBy, String order) {
+		forbidden();
+	}
 }
