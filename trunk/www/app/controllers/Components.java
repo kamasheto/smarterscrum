@@ -64,35 +64,40 @@ public class Components extends SmartCRUD
 		// redirect to the same page without giving error and with the
 		// same project
 		Component temp = (Component) object;
-		Project currentProject = temp.project;
+		if( Security.getConnected().in( temp.project ).can( "addComponent" ) )
+		{
+			Project currentProject = temp.project;
 
-		if( validation.hasErrors() )
-		{
-			renderArgs.put( "error", Messages.get( "crud.hasErrors" ) );
-			try
+			if( validation.hasErrors() )
 			{
+				renderArgs.put( "error", Messages.get( "crud.hasErrors" ) );
+				try
+				{
 
-				render( "Components/blank.html", type, currentProject );
+					render( "Components/blank.html", type, currentProject );
+				}
+				catch( TemplateNotFoundException e )
+				{
+					render( "CRUD/blank.html", type );
+				}
 			}
-			catch( TemplateNotFoundException e )
+			object.save();
+			temp.init();
+			Logs.addLog( Security.getConnected(), "Create", "Component", temp.id, currentProject, new Date( System.currentTimeMillis() ) );
+			Notifications.notifyUsers( temp.project, "Component", "Component " + temp.name + " was created ", "onCreateComponent", (byte) 1 );
+			flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
+			if( params.get( "_save" ) != null )
 			{
-				render( "CRUD/blank.html", type );
+				redirect( "/projects/" + currentProject.id + "/components" );
 			}
+			if( params.get( "_saveAndAddAnother" ) != null )
+			{
+				redirect( "/admin/projects/" + currentProject.id + "/components/new" );
+			}
+			redirect( request.controller + ".show", object.getEntityId() );
 		}
-		object.save();
-		temp.init();
-		Logs.addLog( Security.getConnected(), "Create", "Component", temp.id, currentProject, new Date( System.currentTimeMillis() ) );
-		Notifications.notifyUsers( temp.project, "Component", "Component " + temp.name + " was created ", "onCreateComponent", (byte) 1 );
-		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
-		if( params.get( "_save" ) != null )
-		{
-			redirect( "/projects/" + currentProject.id + "/components" );
-		}
-		if( params.get( "_saveAndAddAnother" ) != null )
-		{
-			redirect( "/admin/projects/" + currentProject.id + "/components/new" );
-		}
-		redirect( request.controller + ".show", object.getEntityId() );
+		else
+			forbidden();
 	}
 
 	/**
@@ -109,29 +114,35 @@ public class Components extends SmartCRUD
 		ObjectType type = ObjectType.get( getControllerClass() );
 		notFoundIfNull( type );
 		JPASupport object = type.findById( id );
-		validation.valid( object.edit( "object", params ) );
-		if( validation.hasErrors() )
-		{
-			renderArgs.put( "error", Messages.get( "crud.hasErrors" ) );
-			try
-			{
-				render( request.controller.replace( ".", "/" ) + "/show.html", type, object );
-			}
-			catch( TemplateNotFoundException e )
-			{
-				render( "CRUD/show.html", type, object );
-			}
-		}
-		object.save();
 		Component temp = (Component) object;
-		Notifications.notifyUsers( temp.project, "Component", "Component " + temp.name + " was edited", "onEditComponent", (byte) 0 );
-		Logs.addLog( Security.getConnected(), "Edit", "Component", temp.id, temp.project, new Date( System.currentTimeMillis() ) );
-		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
-		if( params.get( "_save" ) != null )
+		if( Security.getConnected().in( temp.project ).can( "editComponent" ) )
 		{
-			redirect( "/components/" + id );
+			validation.valid( object.edit( "object", params ) );
+			if( validation.hasErrors() )
+			{
+				renderArgs.put( "error", Messages.get( "crud.hasErrors" ) );
+				try
+				{
+					render( request.controller.replace( ".", "/" ) + "/show.html", type, object );
+				}
+				catch( TemplateNotFoundException e )
+				{
+					render( "CRUD/show.html", type, object );
+				}
+			}
+			object.save();
+
+			Notifications.notifyUsers( temp.project, "Component", "Component " + temp.name + " was edited", "onEditComponent", (byte) 0 );
+			Logs.addLog( Security.getConnected(), "Edit", "Component", temp.id, temp.project, new Date( System.currentTimeMillis() ) );
+			flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
+			if( params.get( "_save" ) != null )
+			{
+				redirect( "/components/" + id );
+			}
+			redirect( request.controller + ".show", object.getEntityId() );
 		}
-		redirect( request.controller + ".show", object.getEntityId() );
+		else
+			forbidden();
 	}
 
 	/**
