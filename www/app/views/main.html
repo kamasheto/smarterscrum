@@ -32,12 +32,12 @@
 				$('#logger').html($('#login').html());
 				$('#login').html('');
 				#{/else}
-					/*
+					
 if($('.sideBarElements').html()=='')
 {$('#theSide').remove();
 $('#theContent').css('padding','20px');
 }
-				*/
+				
 
        			$("#breadCrumb").jBreadCrumb();
        			$('.formatDate').each(function(){
@@ -130,7 +130,7 @@ $('#theContent').css('padding','20px');
 #{/if}
 Switch Theme&nbsp;&nbsp;
 #{ifnot connected}
-<a href="@{Accounts.register}"  style="display:none">|&nbsp;&nbsp;Register</a>
+<a href="@{Accounts.register}">|&nbsp;&nbsp;Register</a>
 #{/ifnot}
 #{if connected}
 <br/>
