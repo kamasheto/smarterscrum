@@ -29,6 +29,11 @@ public class About extends SmartController {
 		"Asmaa Alkomy (C5)<br />Asmaa made dish parties come true.<br />She is really in C5. I promise.", // 
 		"Ghada Fakhry (C2-lead)<br />Ghada had to put up with ALL our ERD issues<br />She also has the best ringtone ever!", // 
 		};
+
+		for (int i = 0; i < data.length; i++) {
+			data[i] = "hi";
+		}
+
 		render(null, data);
 	}
 }
