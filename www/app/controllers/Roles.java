@@ -108,4 +108,8 @@ public class Roles extends SmartCRUD {
 		flash.success(Messages.get("crud.deleted", type.modelName, object.getEntityId()));
 		redirect(request.controller + ".list");
 	}
+	
+	public static void list() {
+		forbidden();
+	}
 }
