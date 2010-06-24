@@ -94,6 +94,7 @@ public class Bootstrap extends Job
 			// Components
 			Component c1 = new Component();
 			c1.name = "User and Roles";
+			c1.init();
 			p1.addComponent( c1 );
 			// c1.componentUsers = new ArrayList<User>();
 			// c1.componentStories = new ArrayList<Story>();
@@ -108,6 +109,7 @@ public class Bootstrap extends Job
 
 			Component c2 = new Component();
 			c2.name = "Projects and events";
+			c2.init();
 			// c2.project = p1;
 			p1.addComponent( c2 );
 			// c2.componentUsers = new ArrayList<User>();
@@ -123,6 +125,7 @@ public class Bootstrap extends Job
 
 			Component c3 = new Component();
 			c3.name = "User Stories and Tasks";
+			c3.init();
 			// c3.project = p1;
 			p1.addComponent( c3 );
 			// c3.componentUsers = new ArrayList<User>();
@@ -139,6 +142,7 @@ public class Bootstrap extends Job
 
 			Component c4 = new Component();
 			c4.name = "Artifacts";
+			c4.init();
 			p1.addComponent( c4 );
 			// c4.componentUsers = new ArrayList<User>();
 			// c4.componentStories = new ArrayList<Story>();
@@ -153,6 +157,7 @@ public class Bootstrap extends Job
 
 			Component c5 = new Component();
 			c5.name = "Virtual task Board";
+			c5.init();
 			p1.addComponent( c5 );
 			// c5.componentUsers = new ArrayList<User>();
 			// c5.componentStories = new ArrayList<Story>();
