@@ -150,39 +150,12 @@ a {
 	padding-bottom: 10px;
 }
 
-.aDIV2:hover {
-	background: rgb(158, 53, 114) !important;
-	color: #fff !important;
-	cursor: pointer;
-	padding-top: 10px;
-}
-
-.aDIV2 {
-	background-color: rgb(158, 53, 114) !important;
-	border-bottom: 1px rgb(158, 53, 114) dashed;
-	height: 10px;
-	margin-top: -17px;
-	font-family: Verdana;
-	font-size: 12px;
-	font-variant: small-caps;
-	text-transform: lowercase;
-	min-width: 100px;
-	display: inline-block;
-	float: left;
-	text-align: center;
-	padding: 10px;
-	color: #fff;
-	overflow: hidden;
-	margin-right: 10px;
-	text-decoration: none !important;
-}
-
 .aDIV {
 	color: #eee !important;
 	padding: 5px;
-	margin-top: -19px;
+	margin-top: -22px;
 	font-family: Verdana;
-	font-size: 12px;
+	font-size: 14px;
 	font-variant: small-caps;
 	text-transform: lowercase;
 	min-width: 100px;
@@ -598,37 +571,10 @@ font:inherit !important;
 font-size:inherit !important;
 }
 /*************headings***********/
-h1,h2,h3,h4,h5 {
+h1,h2,h4,h5 {
 	font-family: Georgia, Serif !important;
 }
 
-h1 {
-	font-size: 30px !important;
-	font-weight: 100;
-}
-
-h2 {
-	font-size: 24px !important;
-	font-weight: 100;
-}
-
-h3,h4,h5 {
-	font-variant: small-caps;
-	text-transform: lowercase;
-	font-weight: normal;
-}
-
-h3 {
-	font-size: 20px;
-}
-
-h4 {
-	font-size: 16px;
-}
-
-h5 {
-	font-size: 14px;
-}
 
 .crudField {
 	padding: 10px;
