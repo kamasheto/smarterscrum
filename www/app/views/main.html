@@ -72,9 +72,9 @@ $('#theContent').css('padding','20px');
         </script>
 </head>
 
-<body onload="#{get 'onLoad' /}">
+<body onload="#{get 'onLoad' /};">
 
-<div style="position:absolute; top:100px; right:10px">
+<div style="position:absolute; top:103px; right:10px">
 #{secure.check 'systemAdmin'}
 	<a class="aDIV topCornersRounded" href="/admin/projects" style="color: #E5A1A5;" title="View the admin panel">Admin Panel</a>
 #{/secure.check}
@@ -130,7 +130,7 @@ Switch Theme&nbsp;&nbsp;
 <div id="chatroomList" style="text-align:center; color:#fff;display:none; position:absolute;z-index:100">
  	<div class="allCornersRounded"style="padding:5px;background-color:#555;width:100px;overflow auto;margin-left:250px" >
  	#{list controllers.Security.getConnected().projects, as:'proj'}
- 	<a href="#" onclick="	getMessages();signIn(${proj.chatroom.id}); $('#chatContainer_${proj.name}').slideToggle(400)">${proj.name}</a><br/>
+ 	<a href="#" onclick="getMessages();#{ifnot proj.chatroom.users.contains(controllers.Security.getConnected())}signIn(${proj.chatroom.id});#{/ifnot} $('#chatContainer_${proj.name}').slideToggle(400)">${proj.name}</a><br/>
 	
  	
  	#{/list}
@@ -156,13 +156,17 @@ Switch Theme&nbsp;&nbsp;
 				<%= message.message.replace('\n', '<br/>') %>
 			</div>
 		</script>
+		<div id ="threader_${proj.name}">
+		</div>
 	</div>
 	<div id="newMessage">	
 		<textarea id="message_${proj.name}" name="message_${proj.name}" class="chatTextArea"></textarea>
 		<input type="button" value="send" id="send_${proj.name}" class="chatBtn"/>
 	</div>	
 	<script type="text/javascript">
+	//$(function(){alert('${proj.chatroom.chats}');alert('${proj.chatroom.users}');});
 	$('#send_${proj.name}').click(function() {
+		getMessages();
 		var message = $('#message_${proj.name}').val();
 		$('#message_${proj.name}').val('');
 		$.post('@{ChatSystem.addMessage()}', {message: message , id:${proj.chatroom.id}}); 
@@ -182,7 +186,7 @@ Switch Theme&nbsp;&nbsp;
 		
 	// Display a message
 	var display = function(message) {
-		$('#thread_${proj.name}').append(tmpl('message_tmpl', {message: message}));
+		$('#threader_${proj.name}').append(tmpl('message_tmpl', {message: message}));
 		var obj = document.getElementById('thread_${proj.name}');
 		obj.scrollTop = obj.scrollHeight;
 	}
