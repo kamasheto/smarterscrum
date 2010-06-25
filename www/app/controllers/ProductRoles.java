@@ -211,7 +211,7 @@ public class ProductRoles extends SmartCRUD {
 				+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
 			object.save();
 			Logs.addLog(Security.getConnected(), "Edit", "ProductRole", productRoleObject.id, project, new Date(System.currentTimeMillis()));
-			Notifications.notifyUsers(project, header, body, "editProductRole", new Byte((byte) 1));
+			Notifications.notifyUsers(project, header, body, "editProductRole", new Byte((byte) 0));
 			flash.success("Product Role " + productRoleObject.name + " has been edited.");
 			if (params.get("_save") != null) {
 				redirect("/productroles/" + productRoleObject.id);

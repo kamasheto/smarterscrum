@@ -342,7 +342,7 @@ public class Storys extends SmartCRUD {
 		 * Log and notification
 		 */
 		Logs.addLog(storyObj.addedBy, "Edit", "Story", storyObj.id, project, new Date(System.currentTimeMillis()));
-		Notifications.notifyUsers(storyObj.componentID.getUsers(), header, body, (byte) 1);
+		Notifications.notifyUsers(storyObj.componentID.getUsers(), header, body, (byte) 0);
 		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
 			listStoriesInProject(project.id, 0);
