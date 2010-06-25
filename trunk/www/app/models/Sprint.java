@@ -26,6 +26,7 @@ public class Sprint extends SmartModel
 	public Date endDate;
 
 	public boolean deleted;
+	public boolean ended;
 	public Snapshot finalsnapshot;
 
 	@Required
