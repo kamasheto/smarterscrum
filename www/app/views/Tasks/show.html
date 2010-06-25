@@ -23,26 +23,28 @@
 			
 			
 			#{crud.custom 'taskStory'}
-			#{if connected.in(project).can('modifyTask')}
 			<label for="task_Story">Story</label> 
 			<p>
 			<span id="task_Story2"><font color="green">${object.taskStory.description}</font></span> 
 			</p>
-			#{/if}
 			#{/crud.custom }
 			
 			#{crud.custom 'description'}
-			#{if connected.in(project).can('modifyTask')}
+			#{if isReporter || isAssignee}
  			<label for="object_description">Description</label> 
 			<textarea id="object_description" cols="48" rows="5" class="" name="object.description">${object.description}</textarea> 
 			<span class="crudHelp" ><font color="Red">*</font>Max length is 300.</span> 
  			#{/if}
+ 			#{else}
+ 			<label for="object_description">Description</label>
+ 			<label for="object_description"><font color = "green">${object.description}</font></label>
+ 			#{/else}
 			#{/crud.custom}
 			
 			
 			
 			#{crud.custom 'taskStatus'}
-			#{if connected.in(project).can('changeStatus')}
+			#{if isReviewer || isAssignee}
 			<p>
 			<label for="task_type">Status</label>
 			<select id="object_taskStatus" name="object.taskStatus@id">
@@ -52,12 +54,16 @@
 			</select>
 			</p>
 			#{/if}
+			#{else}
+ 			<label for="object_description">Status</label>
+ 			<label for="object_description"><font color = "green">${object.taskStatus.name}</font></label>
+ 			#{/else}
 			#{/crud.custom }
 				
 		
 			
 			#{crud.custom 'taskType'}
-			#{if connected.in(project).can('modifyTask')}
+			#{if isReporter || isAssignee}
 			<p>
 			<label for="task_type">Type</label> 
 			<select id="object_taskType" name="object.taskType@id">
@@ -67,10 +73,14 @@
 			</select>
 			</p>
 			#{/if}
+			#{else}
+ 			<label for="object_description">Type</label>
+ 			<label for="object_description"><font color = "green">${object.taskType.name}</font></label>
+ 			#{/else}
 			#{/crud.custom }
 			
 			#{crud.custom 'estimationPoints'}
-			#{if connected.in(project).can('modifyTask')}
+			#{if isReporter||isAssignee}
 			<p> 
 			<label for="object_estimationPoints">Estimation Points</label> 
 			<input id="object_estimationPoints" type="text" name="object.estimationPoints" 
@@ -78,20 +88,22 @@
 			<span class="crudHelp" ><font color="Red">*</font>Numeric.</span> 
  			</p> 
 			#{/if}
+			#{else}
+ 			<label for="object_description">Estimation Points</label>
+ 			<label for="object_description"><font color = "green">${object.estimationPoints}</font></label>
+ 			#{/else}
 			#{/crud.custom }
 			
 			
 			#{crud.custom 'reporter'}
-			#{if connected.in(project).can('modifyTask')}
 			<p>
 			<label for="task_reporter">Reporter</label> 
 			<span id="task_reporter2" ><font color="green">${object.reporter.name}</font></span> 
 			</p>
-			#{/if}
 			#{/crud.custom }
 			
 			#{crud.custom 'assignee'}
-			#{if connected.in(project).can('modifyTask')}
+			#{if isReporter}
 			<p>
 			<label for="object_assignee">Assignee</label>
 			<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers();">
@@ -102,12 +114,15 @@
 		    <span class="crudHelp"><font color="Red">*</font></span>
 			</p>
 			#{/if}
+			
+			#{if !isReporter}
+ 			<label for="object_description">Assignee</label>
+ 			<label for="object_description"><font color = "green">${object.assignee.name}</font></label>
+ 			#{/if}
 			#{/crud.custom}
 	
 			#{crud.custom 'reviewer'}
-			#{if connected.in(project).can('modifyTask')}
-			
-			
+			#{if isReporter || isAssignee}
 			<label for="object_reviewer">Reviewer</label>
 			<select id="object_reviewer" name="object.reviewer@id" >
 				#{list items:users ,as :'User'}
@@ -124,12 +139,16 @@
 			</ul>
 			
 			#{/if}
-			
+			#{else}
+ 			<label for="object_description">Reviewer</label>
+ 			<label for="object_description"><font color = "green">${object.reviewer.name}</font></label>
+ 			#{/else}
+ 			
 			#{/crud.custom}
 			
 			
 			#{crud.custom 'dependentTasks'}
-			#{if connected.in(project).can('modifyTask')}
+			#{if isReporter || isAssignee}
 			
 			<p>
 			<label for="object_dependentTasks"> Dependent Tasks</label> 
@@ -145,7 +164,7 @@
 			#{/crud.custom }
 			
 			#{crud.custom 'taskSprint'}
-			#{if connected.in(project).can('modifyTask')}
+			#{if isAssignee || isReporter}
 			<p>
 			<label for="object_taskSprint">Sprint</label> 
 			<span>
@@ -153,19 +172,26 @@
 			</span>
 			</p>
 			#{/if}
+			#{else}
+ 			<label for="object_description">Sprint</label>
+ 			<label for="object_description"><font color = "green">Sprint${object.taskSprint.sprintNumber}</font></label>
+ 			#{/else}
 			#{/crud.custom }
 			
 		#{/crud.form }
 			
-		#{if connected.in(project).can('modifyTask')}
+		#{if isReporter || isAssignee || isReviewer}
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
 			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
 		</p>
 		#{/if}
+		#{else}
+		<label><font color = "red">You don't have the permission to edit the task.</font></label><br/>
+		#{/else}
 	#{/form}
 	</div>
-	#{if connected.in(project).can('modifyTask')}
+	#{if isAssignee || isReporter}
 	#{if deletable}
 	<form action="@{delete(object.id)}?x-http-method-override=DELETE" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('${message2}');">	
 				<p class="crudDelete">
