@@ -41,7 +41,6 @@ public class Tasks extends SmartCRUD {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		User user = User.find("byEmail", Security.connected()).first();
-		//System.out.println(user.roles.get(0));
 		Component component = Component.findById(id);
 		Story taskStory = Story.findById(id2);
 		Security.check(user.in(component.project).can("canAddTask"));
@@ -658,18 +657,20 @@ public class Tasks extends SmartCRUD {
 		Task task1 = Task.findById(id);
 		if (task1 == null)
 			return false;
+		String oldDescription = task1.description;
 		task1.description = desc;
 		task1.save();
-		List<User> m = new ArrayList();
-		m.add(task1.assignee);
-		m.add(task1.reporter);
-		m.add(task1.reviewer);
-		Notifications.notifyUsers(m, "TASk editing", "task " + id
-				+ " description is edited", (byte) 1);
-		Calendar cal = new GregorianCalendar();
-		Project y = task1.taskStory.componentID.project;
-		User myUser = User.find("byEmail", Security.connected()).first();
-		Logs.addLog(myUser, "EditDesc", "Task", id, y, cal.getTime());
+		String header = "A Task Description has been edited in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
+		String body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+				    + " in Story: " + task1.taskStory.description + '\n' 
+				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
+			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
+				    + " had Description:  " + "\'" + oldDescription + "\'" + ", and it has been edited." + '\n' + '\n'
+			        + "The New Description: " +  task1.description + "." 
+					+ " Edited by: " + Security.getConnected() + "." + '\n' 
+					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+		Logs.addLog(Security.getConnected(), "Edit", "Task Description", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
+		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
 		return true;
 
 	}
@@ -766,17 +767,15 @@ public class Tasks extends SmartCRUD {
 		Task task1 = Task.findById(id);
 		if (task1 == null)
 			return false;
-
+		String oldType = task1.taskType.name;
 		if (userId == 0) {
 			userId = Security.getConnected().id;
 		}
 		User user1 = User.findById(userId);
 		if (user1 == null)
 			return false;
-
 		Project currentProject = task1.taskStory.componentID.project;
 		boolean permession = user1.in(currentProject).can("changeTaskType");
-
 		if (task1.reviewer.id != userId && task1.assignee.id != userId) {
 			if (!permession)
 				return false;
@@ -784,19 +783,19 @@ public class Tasks extends SmartCRUD {
 		TaskType type = TaskType.findById(typeId);
 		task1.taskType = type;
 		task1.save();
-
-		List<User> m = new ArrayList();
-		m.add(task1.assignee);
-		m.add(task1.reporter);
-		m.add(task1.reviewer);
-		Notifications.notifyUsers(m, "TASK editing", "task " + id
-				+ " task type is edited", (byte) 1);
-		Calendar cal = new GregorianCalendar();
-		Project y = task1.taskStory.componentID.project;
-		User myUser = User.find("byEmail", Security.connected()).first();
-		Logs.addLog(myUser, "EditTasktype", "Task", id, y, cal.getTime());
+		User myUser = User.findById(userId);
+		String header = "A Task Type has been edited in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
+		String body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+				    + " in Story: " + task1.taskStory.description + '\n' 
+				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
+			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
+				    + " had Type:  " + "\'" + oldType + "\'" + ", and it has been edited." + '\n' + '\n'
+			        + "The New Task Type:: " +  task1.taskType.name + "." 
+					+ " Edited by: " + myUser.name + "." + '\n' 
+					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
+		Logs.addLog(myUser, "Edit", "Task Type", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 		return true;
-
 	}
 
 	/**
@@ -946,8 +945,7 @@ public class Tasks extends SmartCRUD {
 	 *            the id of the user who will change the taskstatus
 	 * @return boolean
 	 */
-	public static boolean editTaskStatus(long id, long userId,
-			TaskStatus newStatus) {
+	public static boolean editTaskStatus(long id, long userId, TaskStatus newStatus) {
 		Task task1 = Task.findById(id);
 
 		if (task1 == null)
@@ -991,6 +989,7 @@ public class Tasks extends SmartCRUD {
 
 		if (newStatus.name.equals("Reopened"))
 			task1.taskStory.done = false;
+		String oldStatus = task1.taskStatus.name;
 		task1.taskStatus = newStatus;
 		task1.save();
 
@@ -999,17 +998,18 @@ public class Tasks extends SmartCRUD {
 		}
 		if (newStatus.name.equals("Reopened"))
 			task1.taskStory.done = false;
-
-		List<User> m = new ArrayList();
-		m.add(task1.assignee);
-		m.add(task1.reporter);
-		m.add(task1.reviewer);
-		Notifications.notifyUsers(m, "TASK editing", "task " + id
-				+ " taskstatus is edited", (byte) 1);
-		Calendar cal = new GregorianCalendar();
-		Project y = task1.taskStory.componentID.project;
-
-		Logs.addLog(user1, "Edit task status", "Task", id, y, cal.getTime());
+		
+		String header = "A Task Status has been edited in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
+		String body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+				    + " in Story: " + task1.taskStory.description + '\n' 
+				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
+			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
+				    + " had Status:  " + "\'" + oldStatus + "\'" + ", and it has been edited." + '\n' + '\n'
+			        + "The New Status: " +  task1.taskStatus.name + "."
+					+ " Edited by: " + user1.name + "." + '\n' 
+					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
+		Logs.addLog(user1, "Edit", "task status", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 		return true;
 
 	}
@@ -1108,21 +1108,22 @@ public class Tasks extends SmartCRUD {
 		Task task1 = Task.findById(id);
 		if (task1 == null)
 			return false;
+		Double oldEstimation = task1.estimationPoints;
 		if (estimation < 0)
 			return false;
 		task1.estimationPoints = estimation;
 		task1.save();
-		List<User> m = new ArrayList();
-		m.add(task1.assignee);
-		m.add(task1.reporter);
-		m.add(task1.reviewer);
-		Notifications.notifyUsers(m, "TASK editing", "task " + id
-				+ " estimation points is edited", (byte) 1);
-		Calendar cal = new GregorianCalendar();
-		Project y = task1.taskStory.componentID.project;
-		User myUser = User.find("byEmail", Security.connected()).first();
-		Logs.addLog(myUser, "Edit task estimation", "Task", id, y, cal
-				.getTime());
+		String header = "A Task Estimation has been edited in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
+		String body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+				    + " in Story: " + "\'" + task1.taskStory.description + "\'" + '\n' 
+				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
+			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
+				    + " had Estimation Points:  " + "\'" + oldEstimation + "\'" + ", and it has been edited." + '\n' + '\n'
+			        + "The New Estimation Points:: " +  task1.estimationPoints + "." 
+					+ " Edited by: " + Security.getConnected().name + "." + '\n' 
+					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+		Logs.addLog(Security.getConnected(), "Edit", "Task estimation", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
+		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
 		return true;
 	}
 
@@ -1179,22 +1180,22 @@ public class Tasks extends SmartCRUD {
 			return false;
 		if (task1.reviewer.getId() == assigneeId)
 			return false;
-
+		String oldAssignee = task1.assignee.name;
 		task1.assignee = assignee;
 		task1.save();
 		assignee.tasks.add(task1);
 		assignee.save();
-		List<User> m = new ArrayList();
-		m.add(task1.assignee);
-		m.add(task1.reporter);
-		m.add(task1.reviewer);
-		Notifications.notifyUsers(m, "TASK editing", "task " + id
-				+ " assignee is now changed to" + assignee.email, (byte) 1);
-		Calendar cal = new GregorianCalendar();
-		Project y = task1.taskStory.componentID.project;
-		User myUser = User.find("byEmail", Security.connected()).first();
-		Logs.addLog(myUser, "change  task assignee", "Task", id, y, cal
-				.getTime());
+		String header = "A Task Assignee has been changed in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
+		String body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+				    + " in Story: " + task1.taskStory.description + '\n' 
+				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
+			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
+				    + " had Task Assignee: " + "\'" + oldAssignee + "\'" + ", and it has been changed." + '\n' + '\n'
+			        + "The New Estimation Points: " +  task1.assignee.name + "." 
+					+ " Edited by: " + Security.getConnected().name + "." + '\n' 
+					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
+		Logs.addLog(Security.getConnected(), "Edit", "Task Assignee", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 		return true;
 	}
 
@@ -1272,22 +1273,24 @@ public class Tasks extends SmartCRUD {
 
 		if (!permession)
 			return false;
-
+		String oldAssignee = task1.assignee.name;
 		task1.assignee = assignee;
 		task1.save();
 		assignee.tasks.add(task1);
 		assignee.save();
-		List<User> m = new ArrayList();
-		m.add(task1.assignee);
-		m.add(task1.reporter);
-		m.add(task1.reviewer);
-		Notifications.notifyUsers(m, "TASK editing", "task " + id
-				+ " assignee is now changed to" + assignee.email, (byte) 1);
-		Calendar cal = new GregorianCalendar();
-		Project y = task1.taskStory.componentID.project;
-
-		Logs.addLog(user1, "change  task assignee", "Task", id, y, cal
-				.getTime());
+		
+		String header = "A Task Assignee has been changed in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
+		String body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+				    + " in Story: " + task1.taskStory.description + '\n' 
+				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
+			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
+				    + " had Task Assignee: " + "\'" + oldAssignee + "\'" + ", and it has been changed." + '\n' + '\n'
+			        + "The New Estimation Points: " +  task1.assignee.name + "." 
+					+ " Edited by: " + user1.name + "." + '\n' 
+					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
+		Logs.addLog(user1, "Edit", "Task Assignee", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
+		
 		return true;
 	}
 
@@ -1310,20 +1313,22 @@ public class Tasks extends SmartCRUD {
 			return false;
 		if (task1.assignee.getId() == reviewerId)
 			return false;
+		String oldReviewer = task1.reviewer.name;
 		task1.reviewer = reviewer;
 		task1.save();
 		reviewer.tasks.add(task1);
 		reviewer.save();
-		List<User> m = new ArrayList();
-		m.add(task1.assignee);
-		m.add(task1.reporter);
-		m.add(task1.reviewer);
-		Notifications.notifyUsers(m, "TASK editing", "task " + id
-				+ "reviewer is changed to " + reviewer.email, (byte) 1);
-		Calendar cal = new GregorianCalendar();
-		Project y = task1.taskStory.componentID.project;
-		User myUser = User.find("byEmail", Security.connected()).first();
-		Logs.addLog(myUser, "Edit task reviewer", "Task", id, y, cal.getTime());
+		String header = "A Task Reviewer has been changed in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
+		String body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+				    + " in Story: " + task1.taskStory.description + '\n' 
+				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
+			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
+				    + " had Task Assignee: " + "\'" + oldReviewer + "\'" + ", and it has been changed." + '\n' + '\n'
+			        + "The New Estimation Points: " +  task1.reviewer.name + "." 
+					+ " Edited by: " + Security.getConnected().name + "." + '\n' 
+					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
+		Logs.addLog(Security.getConnected(), "Edit", "Task Reviewer", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 		return true;
 	}
 
@@ -1399,20 +1404,23 @@ public class Tasks extends SmartCRUD {
 
 		if (!permession)
 			return false;
-
+		String oldReviewer = task1.reviewer.name;
 		task1.reviewer = reviewer;
 		task1.save();
 		reviewer.tasks.add(task1);
 		reviewer.save();
-		List<User> m = new ArrayList();
-		m.add(task1.assignee);
-		m.add(task1.reporter);
-		m.add(task1.reviewer);
-		Notifications.notifyUsers(m, "TASK editing", "task " + id
-				+ "reviewer is changed to " + reviewer.email, (byte) 1);
-		Calendar cal = new GregorianCalendar();
-		Project y = task1.taskStory.componentID.project;
-		Logs.addLog(user1, "Edit task reviewer", "Task", id, y, cal.getTime());
+		String header = "A Task Reviewer has been changed in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
+		String body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+				    + " in Story: " + task1.taskStory.description + '\n' 
+				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
+			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
+				    + " had Task Assignee: " + "\'" + oldReviewer + "\'" + ", and it has been changed." + '\n' + '\n'
+			        + "The New Estimation Points: " +  task1.reviewer.name + "." 
+					+ " Edited by: " + user1.name + "." + '\n' 
+					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
+		Logs.addLog(user1, "Edit", "Task Reviewer", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
+		
 		return true;
 	}
 
