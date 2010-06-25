@@ -13,8 +13,7 @@ import models.TaskType;
 import models.User;
 import play.mvc.With;
 
-@With( Secure.class )
-// @Check("systemAdmin")
+
 public class ImpedimentTasks extends SmartController
 {
 	/**
@@ -28,6 +27,7 @@ public class ImpedimentTasks extends SmartController
 	public static void index( long projectId )
 	{
 		Project project = Project.findById( projectId );
+		Security.check( project.users.contains( Security.getConnected()));
 		render( project );
 	}
 
@@ -90,7 +90,7 @@ public class ImpedimentTasks extends SmartController
 	public static void selectDependentTasks( long projectId, long itaskId )
 	{
 		Project project = Project.findById( projectId );
-
+		Security.check( project.users.contains( Security.getConnected()));
 		List<Task> Tasks = new ArrayList<Task>();
 		List<Long> taskIds = new ArrayList<Long>();
 
