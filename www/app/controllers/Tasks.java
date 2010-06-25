@@ -455,6 +455,20 @@ public class Tasks extends SmartCRUD {
 		}
 		renderJSON(tasks);
 	}
+	
+	public static void reviewers(long id, long id2) {
+		System.out.println(id);
+		Story chosen = Story.findById(id);
+		User Assignee = User.findById(id2);
+		List<User> users = chosen.componentID.componentUsers;
+		List<User.Object> reviewers = new ArrayList<User.Object>();
+		for( User user : users){
+			if(!user.name.equals(Assignee.name)){
+				reviewers.add(new User.Object(user.id, user.name));
+			}
+		}
+		renderJSON(reviewers);
+	}
 
 	public static void addTask(String dis, boolean deleted, String type,
 			double estimationPoints, int status) {
