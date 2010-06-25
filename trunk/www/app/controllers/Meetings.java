@@ -58,11 +58,24 @@ public class Meetings extends SmartCRUD
 		else
 			forbidden();
 	}
+	/**
+	 * added this method to extend a running meeting on board
+	 * 
+	 * @author amr Abdelwahab
+	 * @param meetingid
+	 */
+
 	public static void extend( long meetingid ){
 	Meeting M=Meeting.findById(meetingid);
 	M.endTime+=1000*60*60;
 	M.save();
 	}
+	/**
+	 * added this method to end a running meeting on board
+	 * 
+	 * @author amr Abdelwahab
+	 * @param meetingid
+	 */
 	public static void end( long meetingid ){
 		Meeting M=Meeting.findById(meetingid);
 		M.endTime=new Date().getTime();
