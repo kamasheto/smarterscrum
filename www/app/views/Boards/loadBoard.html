@@ -204,13 +204,10 @@ End At
 
 ////////// CONFIGURE THE COUNTDOWN SCRIPT HERE //////////////////
 var date=${users.meeting.endTime};
-var tz =0;           
-var lab = 'tzcd';    //  The id of the page entry where the countdown is to show
+var tz =0;         //  
+var lab = 'tzcd';    //  The id of the page entry where the timezone countdown is to show
 
-function start() {displayTZCountDown(setTZCountDown(date,tz),lab);}
-
-   
-window.onload = start;
+displayTZCountDown(setTZCountDown(date,tz),lab);
 
 
 function setTZCountDown(date,tz) 
