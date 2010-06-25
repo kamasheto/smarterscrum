@@ -704,8 +704,15 @@ public class Storys extends SmartCRUD {
 		Story story1 = Story.findById(id);
 		story1.succussSenario = s;
 		story1.save();
-		System.out.println("succsses is entered");
-
+		Logs.addLog(Security.getConnected(), "Create", "Succuss Senario", story1.id, story1.componentID.project, new Date(System.currentTimeMillis()));
+		String header = "New Succuss Senario has been added to a Story in Component: " + "\'" + story1.componentID.name + "\'" + " in Project: " + "\'" + story1.componentID.project.name + "\'" + ".";
+		String body = "New Succuss Senario has been added to a Story: " + "\'" + story1.description + "\'"
+		    + " in Component: " + "\'" + story1.componentID.name + "\'" 
+		    + " in Project: " + "\'" + story1.componentID.project.name + "\'" + "." + '\n' + '\n' 
+			+ "Succuss Senario: " +  story1.succussSenario + "." + '\n' 
+			+ " Added by: " + Security.getConnected().name + "." + '\n' 
+			+ " Added at: " + new Date(System.currentTimeMillis()) + ".";
+		Notifications.notifyUsers(story1.componentID.getUsers(), header, body, (byte) 1);
 	}
 
 	/**
@@ -722,8 +729,15 @@ public class Storys extends SmartCRUD {
 		Story story1 = Story.findById(id);
 		story1.failureSenario = f;
 		story1.save();
-		System.out.println("failure is entered");
-
+		Logs.addLog(Security.getConnected(), "Create", "Failure Senario", story1.id, story1.componentID.project, new Date(System.currentTimeMillis()));
+		String header = "New Failure Senario has been added to a Story in Component: " + "\'" + story1.componentID.name + "\'" + " in Project: " + "\'" + story1.componentID.project.name + "\'" + ".";
+		String body = "New Failure Senario has been added to a Story: " + "\'" + story1.description + "\'"
+		    + " in Component: " + "\'" + story1.componentID.name + "\'" 
+		    + " in Project: " + "\'" + story1.componentID.project.name + "\'" + "." + '\n' + '\n' 
+			+ "Failure Senario: " +  story1.failureSenario + "." + '\n' 
+			+ " Added by: " + Security.getConnected().name + "." + '\n' 
+			+ " Added at: " + new Date(System.currentTimeMillis()) + ".";
+		Notifications.notifyUsers(story1.componentID.getUsers(), header, body, (byte) 1);
 	}
 
 	public static void listStoriesInProject(long projectId, long storyId) {
