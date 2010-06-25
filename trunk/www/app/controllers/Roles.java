@@ -99,6 +99,12 @@ public class Roles extends SmartCRUD {
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
 		Security.check(((Role) object).project, "deleteRole");
+		if(((Role) object).name.equalsIgnoreCase("project admin"))
+		{
+			flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
+			redirect("/show/roles?id="+((Role) object).project.id);
+		}
+		else{
 		try {
 			object.delete();
 		} catch (Exception e) {
@@ -106,7 +112,8 @@ public class Roles extends SmartCRUD {
 			redirect(request.controller + ".show", object.getEntityId());
 		}
 		flash.success(Messages.get("crud.deleted", type.modelName, object.getEntityId()));
-		redirect(request.controller + ".list");
+		redirect("/show/roles?id="+((Role) object).project.id);
+	}
 	}
 	
 	public static void list() {
