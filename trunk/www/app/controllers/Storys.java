@@ -29,7 +29,7 @@ public class Storys extends SmartCRUD {
 	 * @author Galal Aly
 	 * @return void
 	 **/
-	@Check ("canAddStory")
+	//@Check ("canAddStory")
 	public static void blank(long id) {
 		boolean roles, components, priorities = true;
 		roles = components = priorities;
@@ -39,6 +39,8 @@ public class Storys extends SmartCRUD {
 		boolean ok = true;
 		// We will add the story to a project .. We need to get that project
 		Project project = Project.findById(id);
+		User user = User.find("byEmail", Security.connected()).first();
+		Security.check(user.in(project).can("addStory"));
 		if (project == null)
 			ok = false;
 		if (project.productRoles == null) {
@@ -82,7 +84,7 @@ public class Storys extends SmartCRUD {
 	 * @author Galal Aly
 	 * @return void
 	 **/
-	@Check ("canEditStory")
+	//@Check ("canEditStory")
 	public static void show(String id) {
 		boolean roles, components, priorities = true;
 		roles = components = priorities;
@@ -94,6 +96,8 @@ public class Storys extends SmartCRUD {
 		// Whether everything is ok to edit the story
 		boolean ok = true;
 		Project project = temp.componentID.project;
+		User user = User.find("byEmail", Security.connected()).first();
+		Security.check(user.in(project).can("editStory"));
 		if (project == null)
 			ok = false;
 		if (project.productRoles == null) {
@@ -157,7 +161,7 @@ public class Storys extends SmartCRUD {
 	 * @author Galal Aly
 	 * @return void
 	 **/
-	@Check ("canDeleteStory")
+	//@Check ("canDeleteStory")
 	public static void delete(String id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -171,6 +175,8 @@ public class Storys extends SmartCRUD {
 			 */
 			ArrayList<Story> projectStories = new ArrayList<Story>();
 			Project project = story.componentID.project;
+			User user = User.find("byEmail", Security.connected()).first();
+			Security.check(user.in(project).can("deleteStory"));
 			for (Component component : project.components) {
 				projectStories.addAll(component.componentStories);
 			}
@@ -214,15 +220,18 @@ public class Storys extends SmartCRUD {
 	 * @return void
 	 **/
 	@SuppressWarnings ("deprecation")
-	@Check ("canAddStory")
+	//@Check ("canAddStory")
 	public static void create() throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.entityClass.newInstance();
-		validation.valid(object.edit("object", params));
 		// We will add the story to a project .. We need to get that project
 		Story storyObj = (Story) object;
 		Project project = storyObj.componentID.project;
+		User user = User.find("byEmail", Security.connected()).first();
+		Security.check(user.in(project).can("addStory"));
+		validation.valid(object.edit("object", params));
+		
 		// We can set the dependent stories .. We need to get a list of stories
 		// in a project to list them so that we can set the dependency
 		ArrayList<Story> stories = new ArrayList<Story>();
@@ -281,17 +290,20 @@ public class Storys extends SmartCRUD {
 	 * @author Galal Aly
 	 * @return void
 	 **/
-	@Check ("canEditStory")
+	//@Check ("canEditStory")
 	public static void save(String id) throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
 		Story storyObj = (Story) object;
 		String oldDescription = storyObj.description;
-		validation.valid(object.edit("object", params));
+		
 		// We will add the story to a project .. We need to get that project
 		
 		Project project = storyObj.componentID.project;
+		User user = User.find("byEmail", Security.connected()).first();
+		Security.check(user.in(project).can("editStory"));
+		validation.valid(object.edit("object", params));
 		// We can set the dependent stories .. We need to get a list of stories
 		// in a project to list them so that we can set the dependency
 		ArrayList<Story> stories = new ArrayList<Story>();
@@ -539,11 +551,12 @@ public class Storys extends SmartCRUD {
 	 * @sprint 2
 	 */
 
-	@Check ("canassignStorytoSprint")
+	//@Check ("canassignStorytoSprint")
 	public static void listStoriesandSprints(long PID) {
 		Date todayDate = new GregorianCalendar().getTime();
 		Project project = Project.findById(PID);
-
+		User user = User.find("byEmail", Security.connected()).first();
+		Security.check(user.in(project).can("assignStoryToSprint"));
 		ArrayList<Story> stories = new ArrayList<Story>();
 		List<Component> components = project.components;
 
@@ -643,13 +656,15 @@ public class Storys extends SmartCRUD {
 	 *            the id of the story edited
 	 * @return void
 	 */
-	@Check ("canEditStory")
+	//@Check ("canEditStory")
 	public static void editScenario(long id) {
 
 		Story story1 = Story.findById(id);
 		ArrayList<String> succsses = new ArrayList();
 		ArrayList<String> failure = new ArrayList();
-
+		Project project = story1.componentID.project;
+		User user = User.find("byEmail", Security.connected()).first();
+		Security.check(user.in(project).can("editStory"));
 		if (story1.succussSenario != null) {
 			String[] s = story1.succussSenario.split("\n");
 			for (int i = 0; i < s.length; i++) {
