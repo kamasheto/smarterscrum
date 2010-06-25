@@ -128,10 +128,10 @@ $(function()
 <div id="stories">
 #{ifnot stories} 	
 #{if inproj}
-The project has no stories yet.
+No stories added yet.
 #{/if}
 #{else}
-You are not a user in this project, you cannot view their stories.
+You are not a developer in this project, you cannot view their stories.
 #{/else}
 #{/ifnot}
 #{else}
@@ -171,7 +171,14 @@ Please check the columns that you would like to hide. Columns not checked will b
  Creating a table , then Looping on the list of stories rendered to this page
  and putting the attributes of each story(id,description ,priority, dependent stories
  , successSenarios , failureSenarios) on different rows and each attribute in a cell  -->
-<table id="project_stories" class="draggable sortable">
+
+ 
+  #{list items:stories, as:'compStories'}
+	
+		<h3>Component ${compStories.get(0).componentID} </h3>
+		
+		
+		<table id="project_stories" class="draggable sortable">
 
 	<thead>
 	<tr>
@@ -183,19 +190,11 @@ Please check the columns that you would like to hide. Columns not checked will b
 	<td class="shFD">Failure Demos</td>
 	</tr>
 	</thead>
- 
-  #{list items:stories, as:'compStories'}
-	<tr>
-		<h3>Component ${compStories.get(0).componentID} </h3>
-		</tr>
+	
 	  #{list items:compStories, as:'story'}
 		
-		
-	
-	
 	<tr id="story_${story.id}">
 		
-	
 		<td>${story.id}</td>
 		<td id=${story.id} class="editDES shDes">${story.description}</td>
 		<td class="shPriority">
@@ -247,7 +246,7 @@ Please check the columns that you would like to hide. Columns not checked will b
                       #{/list}
          </a>
           </td>
-          #{/else}        
+        #{/else}        
 				
 	<!-- 	
 		<td  id=${story.id} class="editSsenario"><ul>
@@ -261,18 +260,18 @@ Please check the columns that you would like to hide. Columns not checked will b
 		#{/list} </td>
 		 -->
 		#{ifnot story.succussSenario} 
-		<td class="editSsenario shSD">
+		<td id="${story.id}" class="editSsenario shSD">
 		 
 		  </td>
-		  #{/ifnot}
-		 	
-		 	#{else}
-		 	<td  id="${story.id}" class="editSsenario shSD">
-			${story.succussSenario};
-		</td>
-			#{/else}	
-			#{ifnot story.failureSenario} 
-		<td class="shFD editFsenario">
+	    #{/ifnot}	
+		 #{else}
+		 <td   id="${story.id}" class="shSD editSsenario">
+		
+		${story.succussSenario}
+	    </td>
+		#{/else}	
+	    #{ifnot story.failureSenario} 
+		<td id="${story.id}" class="shFD editFsenario">
 		  
 		 </td>
 		 #{/ifnot}
@@ -288,8 +287,9 @@ Please check the columns that you would like to hide. Columns not checked will b
 
 
 	#{/list}
+		</table>
 		#{/list}
-	</table>
+
 	
 	#{/else}
 	</div>
