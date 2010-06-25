@@ -5,6 +5,7 @@ import java.util.List;
 
 import models.ProductRole;
 import models.Project;
+import models.User;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
@@ -60,11 +61,13 @@ public class ProductRoles extends SmartCRUD {
 	 * @task C3 S1
 	 * @sprint 2
 	 **/
-	@Check ("canAddProductRole")
+	//@Check ("canAddProductRole")
 	public static void blank(long id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Project project = Project.findById(id);
+		User user = User.find("byEmail", Security.connected()).first();
+		Security.check(user.in(project).can("addProductRole"));
 		try {
 			render(type, project);
 		} catch (TemplateNotFoundException e) {
@@ -84,7 +87,7 @@ public class ProductRoles extends SmartCRUD {
 	 * @task C3 S1
 	 * @sprint 2
 	 **/
-	@Check ("canAddProductRole")
+	//@Check ("canAddProductRole")
 	public static void create() throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -93,6 +96,8 @@ public class ProductRoles extends SmartCRUD {
 		ProductRole productRoleObject = (ProductRole) object;
 		Project project = productRoleObject.project;
 		String message = "";
+		User user = User.find("byEmail", Security.connected()).first();
+		Security.check(user.in(project).can("addProductRole"));
 		if (validation.hasErrors()) {
 			message = "Please Fill in All The Required Fields.";
 			if (productRoleObject.name.equals("")) {
@@ -143,7 +148,7 @@ public class ProductRoles extends SmartCRUD {
 	 * @task C3 S2 & S3
 	 * @sprint 2
 	 **/
-	@Check ("canEditProductRole")
+	//@Check ("canEditProductRole")
 	public static void show(String id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -152,6 +157,8 @@ public class ProductRoles extends SmartCRUD {
 		Project project = productRoleObject.project;
 		boolean editable = !(productRoleObject.inSprint());
 		boolean deletable = (productRoleObject.stories.isEmpty());
+		User user = User.find("byEmail", Security.connected()).first();
+		Security.check(user.in(project).can("editProductRole"));
 		try {
 			render(type, object, project, editable, deletable);
 		} catch (TemplateNotFoundException e) {
@@ -170,7 +177,7 @@ public class ProductRoles extends SmartCRUD {
 	 * @task C3 S2
 	 * @sprint 2
 	 **/
-	@Check ("canEditProductRole")
+	//@Check ("canEditProductRole")
 	public static void save(String id) throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -182,6 +189,8 @@ public class ProductRoles extends SmartCRUD {
 		String message = "";
 		boolean editable = !(productRoleObject.inSprint());
 		boolean deletable = (productRoleObject.stories.isEmpty());
+		User user = User.find("byEmail", Security.connected()).first();
+		Security.check(user.in(project).can("editProductRole"));
 		if (validation.hasErrors()) {
 			message = "Please Fill in All The Required Fields.";
 			if (productRoleObject.name.equals("")) {
@@ -223,7 +232,7 @@ public class ProductRoles extends SmartCRUD {
 	 * @task C3 S3
 	 * @sprint 2
 	 **/
-	@Check ("canDeleteProductRole")
+	//@Check ("canDeleteProductRole")
 	public static void delete(String id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -233,6 +242,8 @@ public class ProductRoles extends SmartCRUD {
 		productRoleObject.deleted = true;
 		boolean editable = !(productRoleObject.inSprint());
 		boolean deletable = (productRoleObject.stories.isEmpty());
+		User user = User.find("byEmail", Security.connected()).first();
+		Security.check(user.in(project).can("deleteProductRole"));
 		if (validation.hasErrors()) {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
 			try {
@@ -270,11 +281,15 @@ public class ProductRoles extends SmartCRUD {
 	 * @task C3 S3
 	 * @sprint 2
 	 **/
-	@Check ("canDeleteProductRole")
+	//@Check ("canDeleteProductRole")
 	public static void deleteProductRole(long id) {
 		ProductRole productRoleObject = ProductRole.findById(id);
+		Project project = productRoleObject.project;
+		User user = User.find("byEmail", Security.connected()).first();
+		Security.check(user.in(project).can("deleteProductRole"));
 		productRoleObject.deleted = true;
 		productRoleObject.save();
+		
 		String header = "Product Role: " + "\'" + productRoleObject.name + "\'" + " in Project " + "\'" + productRoleObject.project.name + "\'" + " has been deleted.";
 		String body = "The Product Role: " + "\'" + productRoleObject.name + "\'" + " in Project " + "\'" + productRoleObject.project.name + "\'" + " has been deleted."
 			+ '\n' + '\n' 

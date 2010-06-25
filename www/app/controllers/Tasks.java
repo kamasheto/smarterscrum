@@ -36,12 +36,14 @@ public class Tasks extends SmartCRUD {
 	 * @author Monayri
 	 * @category C3 17.1
 	 */
-	@Check("canAddTask")
+	//@Check("canAddTask")
 	public static void blank(long id, long id2) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
+		User user = User.find("byEmail", Security.connected()).first();
 		Component component = Component.findById(id);
 		Story taskStory = Story.findById(id2);
+		Security.check(user.in(component.project).can("canAddTask"));
 		List<Requestreviewer> reviewers = Requestreviewer.find(
 				"byComponentAndAccepted", component, true).fetch();
 		Story story = null;
@@ -470,13 +472,7 @@ public class Tasks extends SmartCRUD {
 		renderJSON(reviewers);
 	}
 
-	public static void addTask(String dis, boolean deleted, String type,
-			double estimationPoints, int status) {
-		Task add = new Task(dis, deleted, type, estimationPoints, status);
-		add.save();
-		// String message = "task have been added";
-		// render( message );
-	}
+	
 
 	/**
 	 * Saves a specific effort of a given day for a certain task in a specific
