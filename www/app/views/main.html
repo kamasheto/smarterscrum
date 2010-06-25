@@ -81,10 +81,10 @@ $('#theContent').css('padding','20px');
 							$(this).remove();
 						}
    	   			    });
-   			    //#{if connected}
-	 			//getNotifications();
-				//ping();
-   			    //#{/if}
+   			    #{if connected}
+	 			getNotifications();
+				ping();
+   			    #{/if}
        		});
         </script>
 </head>
@@ -287,11 +287,12 @@ Switch Theme&nbsp;&nbsp;
 
 </td>
 #{if connected}
-<td style="width:225px" id="THECHATTD" style="#{ifnot controllers.Security.getConnected().openChats.contains(proj.chatroom)}
+
+<td  id="THECHATTD" style="width:225px;#{ifnot controllers.Security.getConnected().openChats.contains(proj.chatroom)}
 
 display:none;
 #{/ifnot}">
-
+${controllers.Security.getConnected().openChats}
 <div id="chatContainer">
 #{list controllers.Security.getConnected().projects, as:'proj'}
 
