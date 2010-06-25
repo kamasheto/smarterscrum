@@ -336,16 +336,14 @@ End At
 		<span style="display:none"> ${flag3=true}</span>
 		#{/if}
 		#{if flag3} <!-- if has permission (edit assignee) -->
-		<a class="hidesassi" id="usr" HREF="javascript:popUp('@{Tasks.chooseTaskAssi(task.id,component.id)}')">
-		<span title="Change Assignee?" class="ui-icon ui-icon-person hidesassi"></span></a>
-		<div>Assignee:${task.assignee}</div><div id="${task.id}_assigneee"></div>	
-		<div style="display:none">Assignee:${task.assignee}</div><div style="display:none" id="${task.id}_assigneee"></div>	
+		<a title="Change Assignee?" class="hidesassi tiptitize" id="usr" href="javascript:popUp('@{Tasks.chooseTaskAssi(task.id,component.id,selectedUser)}')">
+		Assignee:${task.assignee}</a>
+		<div class="showdesc" style="display:none">Assignee:${task.assignee}</div>	
 		#{/if}
 		#{else} <!-- if doesn't have permission (edit assignee) -->
-		<div style="display:none">Assignee:${task.assignee}</div><div id="${task.id}_assigneee"></div>		
-		<a style="display:none" class="hidesassi" id="usr" HREF="javascript:popUp('@{Tasks.chooseTaskAssi(task.id,component.id)}')">
-		<span style="display:none" title="Change Assignee?" class="ui-icon ui-icon-person hidesassi"></span></a>
-		<div>Assignee:${task.assignee}</div><div id="${task.id}_assigneee"></div>
+		<a title="Change Assignee?" style="display:none" class="hidesassi tiptitize" id="usr" HREF="javascript:popUp('@{Tasks.chooseTaskAssi(task.id,component.id,selectedUser)}')">
+		Assignee:${task.assignee}</a>
+		<div class="showdesc">Assignee:${task.assignee}</div>
 		#{/else}
 		
 		<!-- set flag for logged in user (edit reviewer) -->												
@@ -353,17 +351,14 @@ End At
 		<span style="display:none"> ${flag4=true}</span>
 		#{/if}
 		#{if flag4} <!-- if has permission (edit reviewer) -->
-		<a id="rev" class="hidesrev"  HREF="javascript:popUp('@{Tasks.chooseRev(task.id,component.id)}')">
-		<span  title="Change Reviewer?" class="ui-icon ui-icon-person hidesrev"></span></a>
-		<div>Reviewer:${task.reviewer}</div>
-		<div id="${task.id}_rev"></div>
-		<div style="display:none">Reviewer:${task.reviewer}</div><div id="${task.id}_rev"></div>
+		<a title="Change Reviewer?" id="rev" class="hidesrev tiptitize"  HREF="javascript:popUp('@{Tasks.chooseRev(task.id,component.id)}')">
+		Reviewer:${task.reviewer}</a>
+		<div class="showrev" style="display:none">Reviewer:${task.reviewer}</div>
 		#{/if}
 		#{else} <!-- if doesn't have permission (edit reviewer) -->
-		<a style="display:none" id="rev" class="hidesrev"  HREF="javascript:popUp('@{Tasks.chooseRev(task.id,component.id)}')">
-		<span  title="Change Reviewer?" class="ui-icon ui-icon-person hidesrev"></span></a>
-		<div style="display:none">Reviewer:${task.reviewer}</div>
-		<div>Reviewer:${task.reviewer}</div><div id="${task.id}_rev"></div>
+		<a title="Change Reviewer?" style="display:none" id="rev" class="hidesrev tiptitize"  HREF="javascript:popUp('@{Tasks.chooseRev(task.id,component.id)}')">
+		Reviewer:${task.reviewer}</a>
+		<div class="showrev">Reviewer:${task.reviewer}</div>
 		#{/else}
 		
 		<!-- set flag for logged in user (edit type) -->	
@@ -371,15 +366,15 @@ End At
 		<span style="display:none"> ${flag5=true}</span>
 		#{/if}
 		#{if flag5 || controllers.Security.getConnected().equals(task.assignee)} <!-- if has permission (type) or assignee -->
-		<a id="usr" class="hidestype shows_${task.assignee.id}" HREF="javascript:popUp('@{Tasks.chooseType(task.id)}')">
-		<span  title="Edit type?" class="ui-icon ui-icon-bookmark"></span></a>
-		<div>Type:${task.taskType.name}</div>
-		<div id="${task.id}_type"></div>
+		<a id="usr" title="Edit type?" class="tiptitize hidestype shows_${task.assignee.id}" HREF="javascript:popUp('@{Tasks.chooseType(task.id)}')">
+		Type:${task.taskType.name}</a>
+		<div style="display:none" class="shwtype" id="${task.id}_type">Type:${task.taskType.name}</div>
 		#{/if}
 		#{else} <!-- if doesn't have have permission (type) nor assignee -->
 		<div>Type:${task.taskType.name}</div>
-		<a style="display:none" id="usr" class="hidestype shows_${task.assignee.id}" HREF="javascript:popUp('@{Tasks.chooseType(task.id)}')">
-		<span  title="Edit type?" class="ui-icon ui-icon-bookmark"></span></a>
+		<a title="Edit type?" style="display:none" id="usr" class="tiptitize hidestype shows_${task.assignee.id}" HREF="javascript:popUp('@{Tasks.chooseType(task.id)}')">
+		Type:${task.taskType.name}</a>
+		<div class="shwtype" style="display:none" id="${task.id}_type"></div>
 		#{/else}
 		</p>
 		<a id="${task.id}_HiddenSticky" >
@@ -453,13 +448,14 @@ End At
     }
 	if(f_assi)
 	{
+		$('.showdesc').css('display','none');
 		$('.hidesassi').css('display','inline-block');		
 	
 	}
 	else
 	{
-		$('.hidesassi').css('display','none');		
-	
+		$('.hidesassi').css('display','none');
+		$('.showdesc').css('display','inline-block');
 	}
 	
 	 
@@ -475,11 +471,13 @@ End At
     }
 	if(f_rev)
 	{
+		$('.showrev').css('display','none');
 		$('.hidesrev').css('display','inline-block');		
 	
 	}
 	else
 	{
+		$('.showrev').css('display','inline-block');
 		$('.hidesrev').css('display','none');		
 	
 	}
@@ -496,12 +494,15 @@ End At
     }
 	if(f_type)
 	{
-		$('.hidestype').css('display','inline-block');		
+		$('.shwtype').css('display','none');		
+		$('.hidestype').css('display','inline-block');	
+		$('.shows_'+id).css('display','none');	
 	}
 	else
 	{
 		$('.hidestype').css('display','none');		
-		$('.shows_'+id).css('display','inline-block');		
+		$('.shows_'+id).css('display','inline-block');
+		$('.shwtype').css('display','none');			
 	}
 	 
 	}
