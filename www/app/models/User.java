@@ -199,12 +199,16 @@ public class User extends SmartModel {
 	public User (String name, String email, String password) {
 		this();
 		this.name = name;
-		this.email = email;
+		this.email = email.toLowerCase();
 		this.pwdHash = Application.hash(password);
 		this.avatar = "";
 		this.activationHash = Application.randomHash(32);
 
 		openChats = new ArrayList<ChatRoom>();
+	}
+	
+	public String getEmail() {
+		return email.toLowerCase();
 	}
 
 	public String toString() {
