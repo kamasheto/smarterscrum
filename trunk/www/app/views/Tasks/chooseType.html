@@ -14,6 +14,7 @@ function set_type(tyId,tskId,usrId)
 			{id:tskId, typeId:tyId, userId:usrId},
 			function()
 			{
+				window.opener.location.reload();
 				window.close();
 				});
 	return true;
