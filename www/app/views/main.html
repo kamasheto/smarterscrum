@@ -163,7 +163,7 @@ position:absolute; z-index:100;">
 			<span class="ui-icon ui-icon-extlink inline-block"></span><span class="ui-icon ui-icon-person inline-block"></span><span class="ui-icon ui-icon-circle-close inline-block"></span>
 		</div>
 		<script type="text/html" id="message_tmpl">
-			<div class="allCornersRounded <%= message.author == 'notice' ? 'notice' : message.author == '${controllers.Security.getConnected().name}' ? 'you' : 'them' %>">		
+			<div class="<%= message.author == 'notice' ? 'notice allCornersRounded' : message.author == '${controllers.Security.getConnected().name}' ? 'you' : 'them' %>">		
 				<strong class="title" style="<%= message.author == 'notice' ? 'display:none !important' : '' %>"><%= message.author%></strong> 
 				<%= message.message.replace('\n', '<br/>') %>
 			</div>
@@ -171,32 +171,38 @@ position:absolute; z-index:100;">
 		<div id ="threader_${proj.name}">
 		</div>
 	</div>
-	<div id="newMessage">	
-		<textarea id="message_${proj.name}" name="message_${proj.name}" class="chatTextArea"></textarea>
-		<input type="button" value="send" id="send_${proj.name}" class="chatBtn"/>
+	<div id="newMessage" class="chatboxinput">	
+		<textarea id="message_${proj.name}" name="message_${proj.name}" class="chatboxtextarea"></textarea>
 	</div>	
 	<script type="text/javascript">
 	#{if controllers.Security.getConnected().openChats.contains(proj.chatroom)}
-	$(function(){getMessages();});
+	$(function(){
+		getMessages();
+	});
 	#{/if}
-		
-	$('#send_${proj.name}').click(function() {
-		
-		var message = $('#message_${proj.name}').val();
+
+
+	$('#message_${proj.name}').keypress(function(event)
+	{
+		if (event.keyCode == '13')
+		{		var message = $('#message_${proj.name}').val();
 		$('#message_${proj.name}').val('');
 		$.post('@{ChatSystem.addMessage()}', {message: message , id:${proj.chatroom.id}}); 
-		$('#message_${proj.name}').focus(); 
+		$('#message_${proj.name}').focus(); }
 	});
+
+			// Retrieve new messages
+				var getMessages = function() {
+					$.getJSON('/ChatSystem/newMessages',{id:${proj.chatroom.id}}, function(messages) {
+						$(messages).each(function() {
+							display(this);
+						});
+						setTimeout('getMessages();', 1000);
+					});
+				}
+			
+		
 	
-	// Retrieve new messages
-		var getMessages = function() {
-			$.getJSON('/ChatSystem/newMessages',{id:${proj.chatroom.id}}, function(messages) {
-				$(messages).each(function() {
-					display(this);
-				});
-				setTimeout('getMessages();', 1000);
-			});
-		}	
 
 		
 	// Display a message

@@ -5,7 +5,6 @@ body,html {
 	font-size: 10px;
 	margin: 0px;
 	padding: 0px;
-	
 }
 
 table div {
@@ -69,8 +68,8 @@ a {
 	margin-top: -4px;
 	padding: 5px 1% 5px 1%;
 	width: 98%;
-	position:relative;
-	z-index:99;
+	position: relative;
+	z-index: 99;
 }
 
 .topper a,.topper a:hover {
@@ -258,7 +257,8 @@ a {
 	_border-right-color: pink;
 	_border-left-color: pink;
 	margin-top: -2px;
-	_filter: chroma(color =                                           pink);
+	_filter: chroma(color =                                                 pink)
+		;
 }
 
 .notchBottom2 {
@@ -276,7 +276,8 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                           pink);
+	_filter: chroma(color =                                                 pink)
+		;
 }
 
 .notchTop {
@@ -291,7 +292,8 @@ a {
 	margin-left: 30px;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                           pink);
+	_filter: chroma(color =                                                 pink)
+		;
 }
 
 .notchRight {
@@ -308,7 +310,8 @@ a {
 	display: inline-block;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                           pink);
+	_filter: chroma(color =                                                 pink)
+		;
 }
 
 .notchLeft {
@@ -323,7 +326,8 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                           pink);
+	_filter: chroma(color =                                                 pink)
+		;
 }
 
 /*********form***********/
@@ -367,8 +371,7 @@ a {
 	background: #444 !important;
 	background: -moz-linear-gradient(center bottom, #444 20%, #555 80%)
 		!important;
-	background:
-	vertical-align: middle;
+	background: vertical-align :       middle;
 	height: 36px !important;
 	border-radius-bottom-left: 0px !important;
 	-moz-border-radius-bottomleft: 0px !important;
@@ -409,118 +412,79 @@ label {
 	width: 150px;
 	display: inline-block;
 }
-button
-{padding:5px 10px 5px 10px !important}
+
+button {
+	padding: 5px 10px 5px 10px !important
+}
+
 /*******************Messages Styles********************/
 #chatContainer {
 	width: 200px;
 	float: right;
-	margin-right:10px;
+	margin-right: 10px;
+}
+
+
+
+.chatboxinput {
+	padding: 5px;
+	background-color: #ffffff;
+	border-left: 1px solid #cccccc;
+	border-right: 1px solid #cccccc;
+	border-bottom: 1px solid #cccccc;
+}
+
+.chatboxtextarea {
+	width: 206px;
+	height: 44px;
+	padding: 3px 0pt 3px 3px;
+	border: 1px solid #eeeeee;
+	margin: 1px;
+	overflow: hidden;
+}
+
+.chatboxtextarea:focus {
+	border: 2px solid #b7568d !important;
+	margin: 0;
 }
 
 .chatContainerHeader {
-	width: 181px;
-	background-color: #87155f;
-	color: #fff;
-	padding: 10px;
-	text-align: center;
-}
-
-.chatBtn:hover {
-	background: #b7568d !important;
-	background: -moz-linear-gradient(center bottom, #87155f 20%, #b7568d 80%)
-		!important;
-}
-
-.chatBtn {
-	float: right;
-	color:#fff !important;
-	height: 48px;
-	margin: 1px 0 0 !important;
-	vertical-align: top;
-	width: 51px !important;
-	border: 0px !important;
-	background: #444 !important;
-	background: -moz-linear-gradient(center bottom, #444 20%, #555 80%)
-		!important;
-	padding: 3px !important;
-	margin: 0px !important;
-	border: 0px !important;
-	border-radius: 0px !important; -moz-border-radius : 0px !important;
-	-webkit-border-radius : 0px !important;
-	border-radius-bottom-right: 5px !important;
-	-moz-border-radius-bottomright: 5px !important;
-	-webkit-border-bottom-right-radius: 5px !important;
-
-}
-
-.chatTextArea:focus {
-	background-color: #FFF;
-		border:0px;
-	vertical-align: top !important;
-	width: 149px !important;
-	margin: 0px !important;
-	border-left: 1px solid #111 !important;
-	
-	border-bottom: 1px solid #111 !important;
-	border-radius: 0px !important;
-	-moz-border-radius: 0px !important;
-	-webkit-border-radius: 0px !important;
-	border-radius-bottom-left: 5px !important;
-	-moz-border-radius-bottomleft: 5px !important;
-	-webkit-border-bottom-left-radius: 5px !important
-}
-
-.chatTextArea {
-	background-color: #ddd;
-	border:0px;
-	vertical-align: top !important;
-	width: 149px !important;
-	margin: 0px !important;
-	border-left: 1px solid #111 !important;
-	
-	border-bottom: 1px solid #111 !important;
-	border-radius: 0px !important;
-	-moz-border-radius: 0px !important;
-	-webkit-border-radius: 0px !important;
-	border-radius-bottom-left: 5px !important;
-	-moz-border-radius-bottomleft: 5px !important;
-	-webkit-border-bottom-left-radius: 5px !important;
+	background-color: #b7568d;
+	padding: 7px;
+	color: #ffffff;
+	border-right: 1px solid #b7568d;
+	border-left: 1px solid #b7568d;
 }
 
 .thread {
-	width: 199px;
+	color: #333333;
+	height: 200px;
+	width: 209px;
 	overflow-y: auto;
-	background: #F5F5F5;
-	height: 300px;
+	padding: 7px;
+	border-left: 1px solid #cccccc;
+	border-right: 1px solid #cccccc;
+	border-bottom: 1px solid #eeeeee;
+	background-color: #ffffff;
+	line-height: 1.3em;
+}
 
-	border-left: 1px solid #111 !important;
-	border-right: 1px solid #111 !important;
-	border-bottom: 1px solid #111 !important;
+.you,.them,.notice {
+	padding: 5px;
+	margin: 5px;
+	overflow-y: auto;
+}
+
+.you,.notice
+{
+border-bottom:1px solid #eee;
 }
 
 .you {
-	width: 179px;
-	background-color: #B7DFF0;
-	padding: 5px;
-	margin: 5px;
-	overflow-y: auto;
+	background-color: #eee;
 }
-
-.them {
-	width: 100%;
-	padding: 5px;
-	margin: 5px;
-	width: 180px;
-	overflow-y: auto;
-}
-
 .notice {
 	background: #60EC08;
-	padding: 5px;
-	margin: 5px;
-	width: 180px;
-	overflow-y: auto;
 }
 
 /***************tables*******************/
@@ -529,18 +493,22 @@ button
 	padding: 0px;
 }
 
+.cTitle {
+	background-color: #bbb !important;
+}
+
 table {
 	border-collapse: collapse;
 }
 
 #content table thead,#content table thead tr:hover {
-	background-color: #ddd !important;
+	background-color: #999 !important;
 	color: #333;
 	font-size: 10px;
 }
 
 #content tr,#content td,#content table {
-	border: 1px #ddd solid;
+	border: 1px #999 solid;
 }
 
 #content table {
@@ -558,23 +526,23 @@ table {
 tr {
 	margin: 0px !important;
 }
-#content tr:hover
-{
-background-color:#fefefe;
+
+#content table tbody tr:hover {
+	background-color: #efefef !important;
 }
-#sprint td form input, #project_stories td form input
-{
-width:100%!important;
-height:100% !important;
-border:0px !important;
-font:inherit !important;
-font-size:inherit !important;
+
+#sprint td form input,#Pstories td form input {
+	width: 100% !important;
+	height: 100% !important;
+	border: 0px !important;
+	font: inherit !important;
+	font-size: inherit !important;
 }
+
 /*************headings***********/
 h1,h2,h4,h5 {
 	font-family: Georgia, Serif !important;
 }
-
 
 .crudField {
 	padding: 10px;
