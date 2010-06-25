@@ -41,6 +41,7 @@ public class Tasks extends SmartCRUD {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		User user = User.find("byEmail", Security.connected()).first();
+		//System.out.println(user.roles.get(0));
 		Component component = Component.findById(id);
 		Story taskStory = Story.findById(id2);
 		Security.check(user.in(component.project).can("canAddTask"));

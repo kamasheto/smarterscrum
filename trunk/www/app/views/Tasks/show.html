@@ -23,26 +23,26 @@
 			
 			
 			#{crud.custom 'taskStory'}
-			#{secure.check 'canModifyTask' }
+			#{if connected.in(project).can('modifyTask')}
 			<label for="task_Story">Story</label> 
 			<p>
 			<span id="task_Story2"><font color="green">${object.taskStory.description}</font></span> 
 			</p>
-			#{/secure.check}
+			#{/if}
 			#{/crud.custom }
 			
 			#{crud.custom 'description'}
-			#{secure.check 'canModifyTask' }
+			#{if connected.in(project).can('modifyTask')}
  			<label for="object_description">Description</label> 
 			<textarea id="object_description" cols="48" rows="5" class="" name="object.description">${object.description}</textarea> 
 			<span class="crudHelp" ><font color="Red">*</font>Max length is 300.</span> 
- 			#{/secure.check}
+ 			#{/if}
 			#{/crud.custom}
 			
 			
 			
 			#{crud.custom 'taskStatus'}
-			#{secure.check 'canChangeStatus' }
+			#{if connected.in(project).can('changeStatus')}
 			<p>
 			<label for="task_type">Status</label>
 			<select id="object_taskStatus" name="object.taskStatus@id">
@@ -51,13 +51,13 @@
 								#{/list}		
 			</select>
 			</p>
-			#{/secure.check}
+			#{/if}
 			#{/crud.custom }
 				
 		
 			
 			#{crud.custom 'taskType'}
-			#{secure.check 'canModifyTask' }
+			#{if connected.in(project).can('modifyTask')}
 			<p>
 			<label for="task_type">Type</label> 
 			<select id="object_taskType" name="object.taskType@id">
@@ -66,32 +66,32 @@
 								#{/list}		
 			</select>
 			</p>
-			#{/secure.check}
+			#{/if}
 			#{/crud.custom }
 			
 			#{crud.custom 'estimationPoints'}
-			#{secure.check 'canModifyTask' }
+			#{if connected.in(project).can('modifyTask')}
 			<p> 
 			<label for="object_estimationPoints">Estimation Points</label> 
 			<input id="object_estimationPoints" type="text" name="object.estimationPoints" 
 			size="5"  value = "${object.estimationPoints}"/> 
 			<span class="crudHelp" ><font color="Red">*</font>Numeric.</span> 
  			</p> 
-			#{/secure.check}
+			#{/if}
 			#{/crud.custom }
 			
 			
 			#{crud.custom 'reporter'}
-			#{secure.check 'canModifyTask' }
+			#{if connected.in(project).can('modifyTask')}
 			<p>
 			<label for="task_reporter">Reporter</label> 
 			<span id="task_reporter2" ><font color="green">${object.reporter.name}</font></span> 
 			</p>
-			#{/secure.check}
+			#{/if}
 			#{/crud.custom }
 			
 			#{crud.custom 'assignee'}
-			#{secure.check 'canModifyTask' }
+			#{if connected.in(project).can('modifyTask')}
 			<p>
 			<label for="object_assignee">Assignee</label>
 			<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers();">
@@ -101,11 +101,11 @@
 					</select>
 		    <span class="crudHelp"><font color="Red">*</font></span>
 			</p>
-			#{/secure.check}
+			#{/if}
 			#{/crud.custom}
 	
 			#{crud.custom 'reviewer'}
-			#{secure.check 'canModifyTask' }
+			#{if connected.in(project).can('modifyTask')}
 			
 			
 			<label for="object_reviewer">Reviewer</label>
@@ -123,13 +123,13 @@
 				#{/list}
 			</ul>
 			
-			#{/secure.check}
+			#{/if}
 			
 			#{/crud.custom}
 			
 			
 			#{crud.custom 'dependentTasks'}
-			#{secure.check 'canModifyTask' }
+			#{if connected.in(project).can('modifyTask')}
 			
 			<p>
 			<label for="object_dependentTasks"> Dependent Tasks</label> 
@@ -141,31 +141,31 @@
 			</select> 
 			</p>
 			
-			#{/secure.check}
+			#{/if}
 			#{/crud.custom }
 			
 			#{crud.custom 'taskSprint'}
-			#{secure.check 'canModifyTask' }
+			#{if connected.in(project).can('modifyTask')}
 			<p>
 			<label for="object_taskSprint">Sprint</label> 
 			<span>
 			<font color="green">&nbsp;&nbsp;#{if object.taskSprint}Sprint ${object.taskSprint.sprintNumber}#{/if}#{else} The Task is not assigned to a Sprint.#{/else}</font>
 			</span>
 			</p>
-			#{/secure.check}
+			#{/if}
 			#{/crud.custom }
 			
 		#{/crud.form }
 			
-		#{secure.check 'canModifyTask' }	
+		#{if connected.in(project).can('modifyTask')}
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
 			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
 		</p>
-		#{/secure.check}
+		#{/if}
 	#{/form}
 	</div>
-	#{secure.check 'canModifyTask' }
+	#{if connected.in(project).can('modifyTask')}
 	#{if deletable}
 	<form action="@{delete(object.id)}?x-http-method-override=DELETE" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('${message2}');">	
 				<p class="crudDelete">
@@ -173,10 +173,11 @@
 				</p>
 	</form>
 	#{/if}
+	
 	#{if !deletable}
 		<label><font color="green">&nbsp;&nbsp;The task can't be deleted As some other tasks depends on it !</font></label>
 	#{/if}
-	#{/secure.check}
+	#{/if}
 </div>
 #{set 'moreScripts'}
 <script type="text/javascript">

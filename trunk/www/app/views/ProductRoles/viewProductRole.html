@@ -31,9 +31,9 @@ ${productRole.project}<br/><br/>
 </ul>
 <br/><br/>
 #{if editable}
-#{secure.check 'canEditProductRole' }
+#{if connected.in(project).can('editProductRole')}
 <input type="button" value="Edit" onclick="window.location='/admin/productroles/${productRole.id}'" />
-#{/secure.check}
+#{/if}
 #{/if}
 
 #{if !(editable)}
@@ -41,9 +41,9 @@ ${productRole.project}<br/><br/>
 #{/if}
 
 #{if deletable}
-#{secure.check 'canDeleteProductRole' }
+#{if connected.in(project).can('deleteProductRole')}
 <input type="button" value="Delete" onclick="deleteProductRole()"/>
-#{/secure.check}
+#{/if}
 #{/if}
 
 #{if !(deletable)}

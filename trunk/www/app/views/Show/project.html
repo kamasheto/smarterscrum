@@ -118,7 +118,10 @@ location.reload();
 
 <!-- project notification profile @ author moataz_mekki-->
 #{if connected.in(project).can('canEditProjectNotificationProfile')}
-<a href = "/projects/managenotificationprofile?projectId=${project.id}">Edit Project Notifications </a>
+<a href = "/projects/managenotificationprofile?projectId=${project.id}">Edit Project Notifications </a><br />
+#{/if}
+#{if connected.in(project).can('respond')}
+<a href="/Requestreviewers/respond?id=${project.id}">respond to reviewer requests</a><br />
 #{/if}
 #{/set}
 

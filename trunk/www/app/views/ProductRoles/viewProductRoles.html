@@ -30,9 +30,9 @@
 </p>
 
 
-#{secure.check 'canAddProductRole' }
+#{if connected.in(project).can('addProductRole')}
 <a href="/admin/projects/${id}/productroles/new"> Add a new Product Role. </a>
-#{/secure.check}
+#{/if}
 
 <br/>
 <a href="/show/project?id=${id}">Back to ${projectName}</a>

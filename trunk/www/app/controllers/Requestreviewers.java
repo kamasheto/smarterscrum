@@ -1,9 +1,11 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import models.Component;
 import models.Project;
 import models.Requestreviewer;
 import models.TaskType;
@@ -24,8 +26,8 @@ public class Requestreviewers extends SmartController {
 		User user = Security.getConnected();
 
 		List<Project> projects = user.projects;
-
-		render(projects);
+		boolean check = projects ==null;
+		render(projects, check);
 	}
 
 	/**
@@ -81,7 +83,7 @@ public class Requestreviewers extends SmartController {
 							Logs.addLog(user, "request to be reviewer", "", ID, project, todayDate);
 							byte p = 1;
 							Notifications.notifyUsers(xx, "Request", " i requested to be reviewer", p);
-							message = "The request had been sent succesfully";
+							message = "The request for " + task.name +" has been sent succesfully";
 
 						}
 					}
@@ -133,7 +135,7 @@ public class Requestreviewers extends SmartController {
 								Logs.addLog(user, "request to be reviewer", "", ID, project, todayDate);
 								byte p = 1;
 								Notifications.notifyUsers(xx, "Request", " i requested to be reviewer", p);
-								message = "The request had been sent succesfully";
+								message = "The request for " + task.name +" has been sent succesfully";
 
 							}
 						}
@@ -156,11 +158,18 @@ public class Requestreviewers extends SmartController {
 	 * @task C3,S24
 	 * @Sprint2
 	 */
-	@Check ("canrespond")
-	public static void respond() {
-		List<Requestreviewer> requests = Requestreviewer.find("byAccepted", false).fetch();
-
-		render(requests);
+	//@Check ("canrespond")
+	public static void respond(long id) {
+		Project project = Project.findById(id);
+		List<Requestreviewer> requests = new ArrayList<Requestreviewer>();
+		User user = User.find("byEmail", Security.connected()).first();
+		Security.check(user.in(project).can("respond"));
+		for(Component component : project.components){
+			List<Requestreviewer> list = Requestreviewer.findBy("byComponentAndAcceptedAndRejected", component, false, false);
+			requests.addAll(list);
+		}
+		boolean check = requests.size()==0;
+		render(requests, check, project);
 	}
 
 	/**
@@ -178,11 +187,11 @@ public class Requestreviewers extends SmartController {
 		String message = "";
 		if (requests != null) {
 			requests.accepted = true;
-			message = "the request had been accepted ";
+			message = "the request has been accepted ";
 
 			requests.save();
 			byte p = 1;
-			Notifications.notifyUsers(requests.user, "Request", "your request had been rejected", p);
+			Notifications.notifyUsers(requests.user, "Request", "your request has been accepted", p);
 		}
 
 		renderText(message);
@@ -202,10 +211,11 @@ public class Requestreviewers extends SmartController {
 		Requestreviewer x = Requestreviewer.findById(requestID);
 		if (x != null) {
 			byte p = -1;
-			Notifications.notifyUsers(x.user, "Request", "your request had been rejected", p);
-			x.delete();
+			Notifications.notifyUsers(x.user, "Request", "your request has been rejected", p);
+			x.rejected=true;
+			x.save();
 
 		}
-		renderText("the request had been deleted");
+		renderText("the request has been rejected");
 	}
 }
