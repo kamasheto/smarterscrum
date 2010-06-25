@@ -8,11 +8,10 @@ import models.Meeting;
 import models.MeetingAttendance;
 import models.Project;
 import models.User;
-import play.mvc.Controller;
 import play.mvc.With;
 
 @With( Secure.class )
-public class MeetingAttendances extends Controller
+public class MeetingAttendances extends SmartController
 {
 
 	/**
