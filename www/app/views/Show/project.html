@@ -72,8 +72,8 @@ ${project.description?.nl2br()}
 #{if sprint.ended==true}
 #{if sprint.finalsnapshot==null }
 <script type="text/javascript">
-$.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}}, function(){alert(' Sprint '+${sprint.id}+' has ended')});
-location.reload();
+$.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}});
+
 
 </script>
 #{/if}#{/if}
