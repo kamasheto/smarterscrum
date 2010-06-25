@@ -63,7 +63,11 @@ public class Meetings extends SmartCRUD
 	M.endTime+=1000*60*60;
 	M.save();
 	}
-	
+	public static void end( long meetingid ){
+		Meeting M=Meeting.findById(meetingid);
+		M.endTime=new Date().getTime();
+		M.save();
+		}
 	/**
 	 * added this method to render the sprints with the page
 	 * 
