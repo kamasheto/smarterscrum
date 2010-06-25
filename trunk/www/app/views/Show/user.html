@@ -41,10 +41,10 @@
 		<br style="clear:both;" />
 		#{secure.check 'canEditProfile'}<a href="/accounts/profile?id=${user.id}">Edit profile</a>#{secure.check 'systemAdmin'} &bull; <a href="/admin/users/${user.id}">(ACP) Edit Profile</a>#{/secure.check}<br />#{/secure.check}
 		#{if user == me}<a href="/requestDeletion">Request to be deleted from the system</a>#{/if}
-		#{secure.check 'systemAdmin'}
+		#{if connected.isAdmin & user != me}
 		<div class="clear"></div>
-		<a href="@{Users.del(user.id)}">Delete</a>
-		#{/secure.check}
+		<a href="@{Users.del(user.id)}">Delete This User </a>
+		#{/if}
 	</div>
 </div>
 <script type="text/javascript">
