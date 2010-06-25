@@ -29,7 +29,8 @@ public class Roles extends SmartCRUD {
 		JPASupport object = type.findById(id);
 		Security.check(((Role) object).project, "editRoles");
 		try {
-			render(type, object);
+			Role x = (Role) object;
+			render(type, object, x);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
