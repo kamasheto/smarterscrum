@@ -403,7 +403,7 @@ public class Tasks extends SmartCRUD {
 					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
 		object.save();
 		Logs.addLog(myUser, "Edit", "Task", tmp.id, tmp.taskStory.componentID.project, new Date(System.currentTimeMillis()));
-		Notifications.notifyUsers(tmp.taskStory.componentID.componentUsers, header, body, (byte) 1);
+		Notifications.notifyUsers(tmp.taskStory.componentID.componentUsers, header, body, (byte) 0);
 		flash.success(Messages.get("crud.saved", type.modelName, object
 				.getEntityId()));
 		if (params.get("_save") != null)
