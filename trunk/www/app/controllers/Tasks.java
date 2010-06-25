@@ -202,13 +202,21 @@ public class Tasks extends SmartCRUD {
 		object.save();
 		tmp = (Task) object;
 		Calendar cal = new GregorianCalendar();
-		Logs.addLog(tmp.reporter, "add", "Task", tmp.id,
-				tmp.taskStory.componentID.project, cal.getTime());
-		String message2 = tmp.reporter.name + " has Created the task "
-				+ tmp.description;
-		Notifications.notifyUsers(tmp.taskStory.componentID.componentUsers,
-				"Task Created", message2, (byte) 1);
-
+		Logs.addLog(tmp.reporter, "Create", "Task", tmp.id, tmp.taskStory.componentID.project, new Date(System.currentTimeMillis()));
+		String header = "New Task has been added to Component: " + "\'" + tmp.taskStory.componentID.name + "\'" + " in Project: " + "\'" + tmp.taskStory.componentID.project.name + "\'" + ".";
+		String body = "New Task has been added to Component: " + "\'" + tmp.taskStory.componentID.name + "\'" 
+				    + " in Project: " + "\'" + tmp.taskStory.componentID.project.name + "\'" + "." + '\n' + '\n' 
+					+ "Task Description: " +  tmp.description + "." + '\n' 
+					+ " Story: " + tmp.taskStory.description + "." + '\n' 
+					+ " Type: " + tmp.taskType.name + "." + '\n' 
+					+ " Status: " + tmp.taskStatus.name+ "." + '\n' 
+					+ " Sprint: " + tmp.taskSprint.sprintNumber+ "." + '\n' 
+					+ " Assignee: " + tmp.assignee.name + "." + '\n' 
+					+ " Reporter: " + tmp.reporter.name + "." + '\n' 
+					+ " Reviewer: " + tmp.reviewer.name + "." + '\n' 
+					+ " Added by: " + tmp.reporter.name + "." + '\n' 
+					+ " Added at: " + new Date(System.currentTimeMillis()) + ".";		
+		Notifications.notifyUsers(tmp.taskStory.componentID.componentUsers, header, body, (byte) 1);
 		// tmp.init();
 		flash.success(Messages.get("crud.created", type.modelName, object
 				.getEntityId()));
@@ -274,8 +282,9 @@ public class Tasks extends SmartCRUD {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
-		validation.valid(object.edit("object", params));
 		Task tmp = (Task) object;
+		String oldDescription = tmp.description;
+		validation.valid(object.edit("object", params));
 		List<User> users = tmp.taskStory.componentID.componentUsers;
 		List<TaskStatus> statuses = tmp.taskStory.componentID.project.taskStatuses;
 		List<TaskType> types = tmp.taskStory.componentID.project.taskTypes;
@@ -378,17 +387,23 @@ public class Tasks extends SmartCRUD {
 				}
 			}
 		}
-		Calendar cal = new GregorianCalendar();
+		String header = "A Task has been edited in Component: " + "\'" + tmp.taskStory.componentID.name + "\'" + " in Project: " + "\'" + tmp.taskStory.componentID.project.name + "\'" + ".";
+		String body = "The Task:" + '\n' 
+				    + " " + "\'" + oldDescription + "\'" + '\n' 
+			        + " has been edited in Component: " + "\'" + tmp.taskStory.componentID.name + "\'" + " in Project: " + "\'" + tmp.taskStory.componentID.project.name + "\'" + "." + '\n' + '\n'  
+			        + "Task Description: " +  tmp.description + "." + '\n' 
+					+ " Story: " + tmp.taskStory.description + "." + '\n' 
+					+ " Type: " + tmp.taskType.name + "." + '\n' 
+					+ " Status: " + tmp.taskStatus.name+ "." + '\n' 
+					+ " Sprint: " + tmp.taskSprint.sprintNumber+ "." + '\n' 
+					+ " Assignee: " + tmp.assignee.name + "." + '\n' 
+					+ " Reporter: " + tmp.reporter.name + "." + '\n' 
+					+ " Reviewer: " + tmp.reviewer.name + "." + '\n' 
+					+ " Edited by: " + tmp.reporter.name + "." + '\n' 
+					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
 		object.save();
-		Logs.addLog(myUser, "edit", "Task", tmp.id,
-				tmp.taskStory.componentID.project, cal.getTime());
-		String message3 = myUser.name + " has editted the task "
-				+ tmp.description;
-		Notifications.notifyUsers(tmp.taskStory.componentID.componentUsers,
-				"Task editted", message3, (byte) 1);
-		System.out.println("here!!!!!!!!!!!!!!!!");
-		System.out.println(tmp.dependentTasks);
-
+		Logs.addLog(myUser, "Edit", "Task", tmp.id, tmp.taskStory.componentID.project, new Date(System.currentTimeMillis()));
+		Notifications.notifyUsers(tmp.taskStory.componentID.componentUsers, header, body, (byte) 1);
 		flash.success(Messages.get("crud.saved", type.modelName, object
 				.getEntityId()));
 		if (params.get("_save") != null)
@@ -416,14 +431,15 @@ public class Tasks extends SmartCRUD {
 		Task tmp = (Task) object;
 		try {
 			tmp.deleted = true;
-			Calendar cal = new GregorianCalendar();
-			User myUser = User.find("byEmail", Security.connected()).first();
-			Logs.addLog(myUser, "delete", "Task", tmp.id,
-					tmp.taskStory.componentID.project, cal.getTime());
-			String message = myUser.name + " has deleted the task "
-					+ tmp.description;
-			Notifications.notifyUsers(tmp.taskStory.componentID.componentUsers,
-					"Task deleted", message, (byte) 1);
+			String header = "A Task in Component: " + "\'" + tmp.taskStory.componentID.name + "\'" + " in Project: " + "\'" + tmp.taskStory.componentID.project.name + "\'" + " has been deleted.";
+			String body = "The Task:" + '\n' 
+			    + " " + "\'" + tmp.description + "\'" + '\n' 
+				+ " in Component: " + "\'" + tmp.taskStory.componentID.name + "\'" + " in Project: " + "\'" + tmp.taskStory.componentID.project.name + "\'" + " has been deleted." + '\n' + '\n'  
+				+ " Story: " + tmp.taskStory.description + "." + '\n' 
+				+ " Deleted by: " + Security.getConnected().name + "." + '\n' 
+				+ " Deleted at: " + new Date(System.currentTimeMillis()) + ".";
+			Logs.addLog(Security.getConnected(), "delete", "Task", tmp.id, tmp.taskStory.componentID.project, new Date(System.currentTimeMillis()));
+			Notifications.notifyUsers(tmp.taskStory.componentID.componentUsers, header, body, (byte) -1);
 			object.save();
 		} catch (Exception e) {
 			flash.error(Messages.get("crud.delete.error", type.modelName,
@@ -434,7 +450,6 @@ public class Tasks extends SmartCRUD {
 				.getEntityId()));
 		redirect("/show/tasks?id=" + tmp.taskStory.componentID.project.id);
 	}
-
 	/**
 	 * A Method that renders back the tasks of the dependent story of a given
 	 * story
