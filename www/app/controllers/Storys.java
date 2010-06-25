@@ -185,12 +185,17 @@ public class Storys extends SmartCRUD {
 				// delete the tasks
 				t.DeleteTask();
 			}
-
+			String header = "A Story in Component " + "\'" + story.componentID.name + "\'" + " in Project " + "\'" + project.name + "\'" + " has been deleted.";
+			String body = "The Story:" + '\n' 
+			    + " " + "\'" + story.description + "\'" + '\n' 
+				+ " in Component " + "\'" + story.componentID.name + "\'" + " in Project " + "\'" + project.name + "\'" + " has been deleted." + '\n' + '\n'  
+				+ " Deleted by: " + story.addedBy.name + "." + '\n' 
+				+ " Deleted at: " + new Date(System.currentTimeMillis()) + ".";
 			// Now mark my story as deleted
 			story.deleted = true;
 			story.save();
-			Logs.addLog(story.addedBy, "Delete", "Story", story.id, project, new GregorianCalendar().getTime());
-			Notifications.notifyUsers(story.componentID.getUsers(), story.componentID.project.name + ": Story Edited", "A Story \"" + story.description + "\" was deleted in the component " + story.componentID.name + " in the project " + story.componentID.project.name, (byte) 0);
+			Logs.addLog(story.addedBy, "Delete", "Story", story.id, project, new Date(System.currentTimeMillis()));
+			Notifications.notifyUsers(story.componentID.getUsers(), header, body, (byte) -1);
 		} catch (Exception e) {
 			System.out.println(e);
 			flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
@@ -242,8 +247,19 @@ public class Storys extends SmartCRUD {
 		Story toBeSaved = (Story) object;
 		toBeSaved.addedBy = User.find("byEmail", Security.connected()).first();
 		object.save();
-		Logs.addLog(toBeSaved.addedBy, "Create", "Story", storyObj.id, project, new GregorianCalendar().getTime());
-		Notifications.notifyUsers(storyObj.componentID.getUsers(), storyObj.componentID.project.name + ": Story Created", "A Story was created in the component " + storyObj.componentID.name + " in the project " + storyObj.componentID.project.name, (byte) 0);
+		Logs.addLog(toBeSaved.addedBy, "Create", "Story", storyObj.id, project, new Date(System.currentTimeMillis()));
+		String header = "New Story has been added to Component " + "\'" + storyObj.componentID.name + "\'" + " in Project " + "\'" + project.name + "\'" + ".";
+		String body = "New Story has been added to Component " + "\'" + storyObj.componentID.name + "\'" 
+		    + " in Project " + "\'" + project.name + "\'" + "." + '\n' + '\n' 
+			+ "Story Description: " +  storyObj.description + "." + '\n' 
+			+ " Priority: " + storyObj.priority + "." + '\n' 
+			+ " Estimate points: " + storyObj.estimate + "." + '\n' 
+			+ " Succuss Senario: " + storyObj.succussSenario + "." + '\n'
+			+ " Failure Senario: " + storyObj.failureSenario + "." + '\n' 
+			+ " Notes: " + storyObj.notes + "." + '\n' 
+			+ " Added by: " + toBeSaved.addedBy.name + "." + '\n' 
+			+ " Added at: " + new Date(System.currentTimeMillis()) + ".";
+		Notifications.notifyUsers(storyObj.componentID.getUsers(), header, body, (byte) 1);
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
 			listStoriesInProject(project.id, 0);
@@ -270,9 +286,11 @@ public class Storys extends SmartCRUD {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
+		Story storyObj = (Story) object;
+		String oldDescription = storyObj.description;
 		validation.valid(object.edit("object", params));
 		// We will add the story to a project .. We need to get that project
-		Story storyObj = (Story) object;
+		
 		Project project = storyObj.componentID.project;
 		// We can set the dependent stories .. We need to get a list of stories
 		// in a project to list them so that we can set the dependency
@@ -295,12 +313,24 @@ public class Storys extends SmartCRUD {
 				render("CRUD/show.html", type, object);
 			}
 		}
+		String header = "A Story has been edited in Component " + "\'" + storyObj.componentID.name + "\'" + " in Project " + "\'" + project.name + "\'" + ".";
+		String body = "The Story:" + '\n' 
+		    + " " + "\'" + oldDescription + "\'" + '\n' 
+	        + " has been edited in Component " + "\'" + storyObj.componentID.name + "\'" + " in Project " + "\'" + project.name + "\'" + "." + '\n' + '\n'  
+			+ "Story Description: " +  storyObj.description + "." + '\n' 
+			+ " Priority: " + storyObj.priority + "." + '\n' 
+			+ " Estimate points: " + storyObj.estimate + "." + '\n' 
+			+ " Succuss Senario: " + storyObj.succussSenario + "." + '\n'
+			+ " Failure Senario: " + storyObj.failureSenario + "." + '\n' 
+			+ " Notes: " + storyObj.notes + "." + '\n' 
+			+ " Added by: " + storyObj.addedBy.name + "." + '\n' 
+			+ " Added at: " + new Date(System.currentTimeMillis()) + ".";
 		object.save();
 		/**********
 		 * Log and notification
 		 */
-		Logs.addLog(storyObj.addedBy, "Edit", "Story", storyObj.id, project, new GregorianCalendar().getTime());
-		Notifications.notifyUsers(storyObj.componentID.getUsers(), storyObj.componentID.project.name + ": Story Edited", "A Story was edited in the component " + storyObj.componentID.name + " in the project " + storyObj.componentID.project.name, (byte) 0);
+		Logs.addLog(storyObj.addedBy, "Edit", "Story", storyObj.id, project, new Date(System.currentTimeMillis()));
+		Notifications.notifyUsers(storyObj.componentID.getUsers(), header, body, (byte) 1);
 		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
 			listStoriesInProject(project.id, 0);
