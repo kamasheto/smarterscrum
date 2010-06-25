@@ -180,7 +180,8 @@ $(function()
 <a href="@{Snapshots.index(s.id,'board')}" >View snapshots</a><br><br>	
 <a href="javascript:take_snapshot();">Take Snapshot</a><br>
 <!-- asmaak89 Part-->
-<div class="smartBarHeader">Current Meeting</div>
+<div id="current">
+<div class="smartBarHeader" >Current Meeting</div>
 <br>
 <br/>	
 #{list items:u, as:'users'}
@@ -243,6 +244,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 </script>
 
 #{/list}
+</div>
 <!-- asmaak89 Part-->
 #{/set}
 
@@ -678,8 +680,16 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 	
 		function extend(id) {
 		$.post('/Meetings/extend', {meetingid:id}, function(){alert('extended')});
-		location.reload();
+			
 	}
+
+
+function replaceContent(id1) {
+ 
+     document.getElementById("current").innerHTML = "lesa ba2a mesh 3aref a call the same ID";
+ 
+}
+
 	function end(id) {
 		var ans=confirm('are you sure you want to end the meeting?');
 		if(ans){
@@ -687,6 +697,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 	var answer=confirm('The system will now automaticaly update the associated snapshot to the current view of the board!')
 		if (answer) {
 		take_meetingsnapshot(id);
+	replaceContent(current);
 	}}
 	
 	}
