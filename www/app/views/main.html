@@ -137,7 +137,7 @@ Switch Theme&nbsp;&nbsp;
 <div id="chatroomList" style="text-align:center; color:#fff;display:none; position:absolute;z-index:100">
  	<div class="allCornersRounded"style="padding:5px;background-color:#555;width:100px;overflow auto;margin-left:250px" >
  	#{list controllers.Security.getConnected().projects, as:'proj'}
- 	<a href="#" onclick="$('#chatContainer_${proj.name}').slideToggle(400);getMessages${proj.id}();#{ifnot controllers.Security.getConnected().openChats.contains(proj.chatroom)}signIn(${proj.chatroom.id});#{/ifnot}">${proj.name}</a><br/>
+ 	<a href="#" onclick="$('#chatContainer_${proj.name}').slideToggle(400);#{ifnot controllers.Security.getConnected().openChats.contains(proj.chatroom)}signIn(${proj.chatroom.id});getMessages${proj.id}();#{/ifnot}">${proj.name}</a><br/>
 	
  	
  	#{/list}
@@ -158,7 +158,8 @@ display:none;
 ">
 <div class="chatContainerHeader">
 ${proj.name} Chat 
-<a class="right"href="#" title="minimize?" onclick="$('#chatHolder_${proj.name}').slideToggle();" style="text-decoration:none; color:#fff">[-]</a>
+<a id="${proj.name}_min"class="right"href="#" title="minimize?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);$('#${proj.name}_max').slideToggle(400);$('#${proj.name}_min').slideToggle(400);" style="text-decoration:none; color:#fff">[-]</a>
+<a id="${proj.name}_max"class="right"href="#" title="minimize?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);$('#${proj.name}_max').slideToggle(400);$('#${proj.name}_min').slideToggle(400);" style="display:none;text-decoration:none; color:#fff">[+]</a>
 <a class="right"href="#" title="signout?" onclick="signOut(${proj.chatroom.id});$('#chatContainer_${proj.name}').slideToggle(400);" style="text-decoration:none; color:#fff">[x]</a>
 </div>
 <div id="chatHolder_${proj.name}">
