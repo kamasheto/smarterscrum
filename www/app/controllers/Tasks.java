@@ -800,18 +800,17 @@ public class Tasks extends SmartCRUD {
 		TaskType type = TaskType.findById(typeId);
 		task1.taskType = type;
 		task1.save();
-		User myUser = User.findById(userId);
 		String header = "A Task Type has been edited in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
 		String body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
 				    + " in Story: " + task1.taskStory.description + '\n' 
 				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
 			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
 				    + " had Type:  " + "\'" + oldType + "\'" + ", and it has been edited." + '\n' + '\n'
-			        + "The New Task Type:: " +  task1.taskType.name + "." 
-					+ " Edited by: " + myUser.name + "." + '\n' 
+			        + "The New Task Type: " +  task1.taskType.name + "." 
+					+ " Edited by: " + user1.name + "." + '\n' 
 					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
-		Logs.addLog(myUser, "Edit", "Task Type", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
+		Logs.addLog(user1, "Edit", "Task Type", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 		return true;
 	}
 
@@ -1136,7 +1135,7 @@ public class Tasks extends SmartCRUD {
 				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
 			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
 				    + " had Estimation Points:  " + "\'" + oldEstimation + "\'" + ", and it has been edited." + '\n' + '\n'
-			        + "The New Estimation Points:: " +  task1.estimationPoints + "." 
+			        + "The New Estimation Points: " +  task1.estimationPoints + "." 
 					+ " Edited by: " + Security.getConnected().name + "." + '\n' 
 					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
 		Logs.addLog(Security.getConnected(), "Edit", "Task estimation", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
