@@ -16,6 +16,7 @@ function set_person(id,taskId,name, user1Id)
 			{id:taskId, userId:user1Id, assigneeId:id},
 			function()
 			{
+				window.opener.location.reload();
 				window.close();
 				});
 			
