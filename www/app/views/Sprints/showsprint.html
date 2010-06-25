@@ -74,8 +74,8 @@ Task Boards</h5>
 #{set 'onLoad'}
 #{if ended==true}
 #{if sprint.finalsnapshot==null }
-$.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}}, function(){alert('This Sprint has ended ')});
-location.reload();
+$.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}});
+
 #{/if}#{/if}#{/set}
 #{if sprint.finalsnapshot==null }
 <a title="Tak a look @ the full task board?" href="/boards/loadboard?sprintID=${sprint.id}">View Sprint ${sprint.id} Task Board</a>
