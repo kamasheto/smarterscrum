@@ -194,6 +194,7 @@ End At
 <a id=${user.id} href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a><br/>	
 #{/list}
 <a  href="javascript: extend(${users.meeting.id});"><b>extend another hour</b></a>
+<a  href="javascript: end(${users.meeting.id});"><b>end meeting</b></a>
 <a href="javascript:take_meetingsnapshot(${users.meeting.id});"><b>Attach a SnapShot</b><a/><br/>		<br />
 #{/list}
 <!-- asmaak89 Part-->
@@ -630,7 +631,18 @@ End At
 		function extend(id) {
 		$.post('/Meetings/extend', {meetingid:id}, function(){alert('extended')});
 	}
+	function end(id) {
+		var ans=confirm('are you sure you want to end the meeting?');
+		if(ans){
+		$.post('/Meetings/end', {meetingid:id});
+	var answer=confirm('The system will now automaticaly update the associated snapshot to the current view of the board!')
+		if (answer) {
+		take_meetingsnapshot(id);
+	}}
+	
+	}
 	function take_meetingsnapshot(id) {
+	
 		$.post('/snapshots/takemeetingsnapshot', {sprintID:${s.id},id:id}, function(){alert('Saved!')});
 	}
 
