@@ -194,15 +194,16 @@ End At
 <a id=${user.id} href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a><br/>	
 #{/list}
 <!--Amr Abdelwahab-->
+<a href="javascript:take_meetingsnapshot(${users.meeting.id});"><b>Attach a SnapShot</b><a/><br/>		<br />
+<span id="tzcd"></span>
 <a  href="javascript: extend(${users.meeting.id});"><b>extend another hour</b></a>
 <a  href="javascript: end(${users.meeting.id});"><b>end meeting</b></a>
-<a href="javascript:take_meetingsnapshot(${users.meeting.id});"><b>Attach a SnapShot</b><a/><br/>		<br />
 
 <script type="text/javascript" charset="utf-8"> 
 
 ////////// CONFIGURE THE COUNTDOWN SCRIPT HERE //////////////////
 var date=${users.meeting.endTime};
-var tz =-5;         //  Offset for your timezone in hours from UTC
+var tz =0;         //  
 var lab = 'tzcd';    //  The id of the page entry where the timezone countdown is to show
 
 function start() {displayTZCountDown(setTZCountDown(date,tz),lab);}
@@ -213,8 +214,9 @@ window.onload = start;
 
 function setTZCountDown(date,tz) 
 {var toDate=new Date(date);
+
 var fromDate = new Date();
-fromDate.setMinutes(fromDate.getMinutes() + fromDate.getTimezoneOffset());
+fromDate.setMinutes(fromDate.getMinutes());
 var diffDate = new Date(0);
 diffDate.setMilliseconds(toDate - fromDate);
 return Math.floor(diffDate.valueOf()/1000);
@@ -225,6 +227,7 @@ if (countdown < 0)  {
 	var answer=confirm('Meeting ended now ,the system will now automaticaly update the associated snapshot to the current view of the board!')
 		if (answer) {
 		take_meetingsnapshot(${users.meeting.id});
+		location.reload();
 	}
 }
 else {var secs = countdown % 60; 
@@ -239,10 +242,8 @@ document.getElementById(tzcd).innerHTML = days + " day" + (days == 1 ? '' : 's')
 setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 }
 }
-
 </script>
 
-<span id="tzcd"></span>
 #{/list}
 <!-- asmaak89 Part-->
 #{/set}
@@ -678,6 +679,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 	
 		function extend(id) {
 		$.post('/Meetings/extend', {meetingid:id}, function(){alert('extended')});
+		location.reload();
 	}
 	function end(id) {
 		var ans=confirm('are you sure you want to end the meeting?');
