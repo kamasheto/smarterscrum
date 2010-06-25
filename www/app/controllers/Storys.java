@@ -185,7 +185,7 @@ public class Storys extends SmartCRUD {
 				// delete the tasks
 				t.DeleteTask();
 			}
-			String header = "A Story in Component " + "\'" + story.componentID.name + "\'" + " in Project " + "\'" + project.name + "\'" + " has been deleted.";
+			String header = "A Story in Component: " + "\'" + story.componentID.name + "\'" + " in Project: " + "\'" + project.name + "\'" + " has been deleted.";
 			String body = "The Story:" + '\n' 
 			    + " " + "\'" + story.description + "\'" + '\n' 
 				+ " in Component " + "\'" + story.componentID.name + "\'" + " in Project " + "\'" + project.name + "\'" + " has been deleted." + '\n' + '\n'  
@@ -248,7 +248,7 @@ public class Storys extends SmartCRUD {
 		toBeSaved.addedBy = User.find("byEmail", Security.connected()).first();
 		object.save();
 		Logs.addLog(toBeSaved.addedBy, "Create", "Story", storyObj.id, project, new Date(System.currentTimeMillis()));
-		String header = "New Story has been added to Component " + "\'" + storyObj.componentID.name + "\'" + " in Project " + "\'" + project.name + "\'" + ".";
+		String header = "New Story has been added to Component: " + "\'" + storyObj.componentID.name + "\'" + " in Project: " + "\'" + project.name + "\'" + ".";
 		String body = "New Story has been added to Component " + "\'" + storyObj.componentID.name + "\'" 
 		    + " in Project " + "\'" + project.name + "\'" + "." + '\n' + '\n' 
 			+ "Story Description: " +  storyObj.description + "." + '\n' 
@@ -313,7 +313,7 @@ public class Storys extends SmartCRUD {
 				render("CRUD/show.html", type, object);
 			}
 		}
-		String header = "A Story has been edited in Component " + "\'" + storyObj.componentID.name + "\'" + " in Project " + "\'" + project.name + "\'" + ".";
+		String header = "A Story has been edited in Component: " + "\'" + storyObj.componentID.name + "\'" + " in Project: " + "\'" + project.name + "\'" + ".";
 		String body = "The Story:" + '\n' 
 		    + " " + "\'" + oldDescription + "\'" + '\n' 
 	        + " has been edited in Component " + "\'" + storyObj.componentID.name + "\'" + " in Project " + "\'" + project.name + "\'" + "." + '\n' + '\n'  
