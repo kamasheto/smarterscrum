@@ -736,7 +736,7 @@ public class Tasks extends SmartCRUD {
 	 *            The new description
 	 * @return boolean
 	 */
-	public static boolean editTaskDesc(long id, long userId, String desc) {
+	public static boolean editTaskDesc2(long id, long userId, String desc) {
 		Task task1 = Task.findById(id);
 		if (task1 == null)
 			return false;
@@ -945,7 +945,7 @@ public class Tasks extends SmartCRUD {
 		task_id = Integer.parseInt(task_id_helper2[1]);
 
 		// calling the method
-		editTaskAssignee(task_id, user_id, users.get(row).id);
+		editTaskAssignee2(task_id, user_id, users.get(row).id);
 
 	}
 
@@ -1267,7 +1267,7 @@ public class Tasks extends SmartCRUD {
 	 *            the id of the user who will be the assignee of the task
 	 * @return boolean
 	 */
-	public static boolean editTaskAssignee(long id, long userId, long assigneeId) {
+	public static boolean editTaskAssignee2(long id, long userId, long assigneeId) {
 		Task task1 = Task.findById(id);
 		if (task1 == null)
 			return false;
@@ -1398,7 +1398,7 @@ public class Tasks extends SmartCRUD {
 	 *            the id of the user who will be the reviewer of the task
 	 * @return boolean
 	 */
-	public static boolean editTaskReviewer(long id, long userId, long reviewerId) {
+	public static boolean editTaskReviewer2(long id, long userId, long reviewerId) {
 		Task task1 = Task.findById(id);
 		if (task1 == null)
 			return false;
@@ -1577,11 +1577,12 @@ public class Tasks extends SmartCRUD {
 	 *            the task to be edited
 	 */
 
-	public static void chooseType(long taskId) {
+	public static void chooseType(long taskId, long userId) {
+		if (userId == 0) {
+			userId = Security.getConnected().id;
+		}
 		Task task = Task.findById(taskId);
 		List<TaskType> types = task.taskSprint.project.taskTypes;
-		User user = Security.getConnected();
-		long userId = user.id;
 		render(taskId, types, userId);
 	}
 
