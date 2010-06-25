@@ -19,10 +19,10 @@
 		#{/crud.form}
 		<p class="crudButtons">
 		#{if editable}
-		#{secure.check 'canEditProductRole' }
+		#{if connected.in(project).can('editProductRole')}
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
 			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
-		#{/secure.check}
+		#{/if}
 		#{/if}
 		
 		#{if !(editable)}
@@ -33,13 +33,13 @@
 	</div>
 	
 	#{if deletable}
-    #{secure.check 'canDeleteProductRole' }
+    #{if connected.in(project).can('deleteProductRole')}
 	#{form @delete(object.id)}
 		<p class="crudDelete">
 			<input type="button" value="&{'crud.delete', type.modelName}" onclick="deleteProductRole(${object.id})" />
 		</p>
 	#{/form}
-	#{/secure.check}
+	#{/if}
 	#{/if}
 	
 	#{if !(deletable)}

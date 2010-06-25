@@ -123,23 +123,23 @@ $('#object_dependentStories').tipsy({fade: true, gravity: 'w', html:true });
 		#{/if}
 		#{if editable}
 			<p class="crudButtons">
-			#{secure.check 'canEditStory' }
+			#{if connected.in(project).can('editStory')}
 				<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
 			<!-- 
 				<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
 			 -->
-			#{/secure.check}
+			#{/if}
 			</p>
 		#{/if}
 		#{if editable == false}
 			#{if editable2 == false}
 			<p class="crudButtons">
-			#{secure.check 'canEditStory' }
+			#{if connected.in(project).can('editStory')}
 				<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
 			<!-- 
 				<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
 			 -->
-			 #{/secure.check}
+			 #{/if}
 			 #{/if}
 			 #{else}
 			 	<b><font color="red">The story can not be edited. Possible Reasons : Story in sprint.</font></b>
@@ -150,13 +150,13 @@ $('#object_dependentStories').tipsy({fade: true, gravity: 'w', html:true });
 	</div>
 	
 	#{if editable}
-		#{secure.check 'canDeleteStory' }
+		#{if connected.in(project).can('deleteStory')}
 			<form action="@{delete(object.id)}?x-http-method-override=DELETE" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('${message}');">	
 				<p class="crudDelete">
 					<input type="submit" value="&{'crud.delete', type.modelName}" />
 				</p>
 			</form>
-		#{/secure.check}
+		#{/if}
 	#{/if}
 	<a href="#" onclick="$.closePopupLayer('editForm')">Exit Story View</a>
 </div>

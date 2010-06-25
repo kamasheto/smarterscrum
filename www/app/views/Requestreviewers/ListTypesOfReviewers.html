@@ -15,10 +15,14 @@
 			#{/if}
 			#{/list}		
 			</select>
+			
       #{/if}
-    
+    #{if check}
+    <label> You Are not a member of Any Project !!</label>
+    #{/if}
       <button id="buttonID" onclick="javascript:rrequest($('#TypeID :selected').val(), ${project.id})">Request</button>
-      
+      <br></br>
+      <label id = "message"></label>
       #{/list}
       
       </div>
@@ -37,9 +41,7 @@ function rrequest(Type, PID)
 		},
 			function(message)
 			{
-				alert(message);
-				$('#buttonID').hide();
-				 window.location.reload();
+				$('#message').html("<font color='Red'>"+message+"</font>");
 			});
 }
 

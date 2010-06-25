@@ -48,9 +48,9 @@
 #{/list}
 </div>					
 	
-	#{secure.check 'canAddStory' }
+	#{if connected.in(project).can('addStory')}
 		<a href="@{blank(project.id)}"><img src="@{'/public/images/new_story.gif'}"></a>
-	#{/secure.check}
+	#{/if}
 <script type = "text/javascript">
 
 function openAjaxPopup(address) {

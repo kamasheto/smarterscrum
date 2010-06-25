@@ -31,6 +31,8 @@ public class Requestreviewer extends SmartModel {
 	 * a boolean variable to show if it is accepted or not
 	 */
 	public boolean accepted;
+	
+	public boolean rejected;
 
 	/**
 	 * This is a Class Constructor Creates a new Requestreviewer object

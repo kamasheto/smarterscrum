@@ -1,6 +1,10 @@
 #{extends 'main.html'/}
-#{set title:'List Types'/}
-<h1> respond to the requests </h1>
+#{set title:'Respond to reviewer requests'/}
+<h1> respond to ${project.name} reviewer requests  </h1>
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
+#{/set}
 <form onsubmit="return false">
 <div>
 			#{list items:requests ,as :'request'}
@@ -10,12 +14,17 @@
 			   <option id="${request.id}">For Task Type : ${request.types.name}</option>
 		
 			 
-        <button id="button1" onclick="Accept(${request.id})">Accept</button>
-	  <button id="button2" onclick="javascript:Reject(${request.id})">Reject</button>
+        <button id="button1_${request.id}" onclick="Accept(${request.id})">Accept</button>
+	  <button id="button2_${request.id}" onclick="javascript:Reject(${request.id})">Reject</button>
+	  <label id = "message_${request.id}"></label>
 	     
 			#{/list}	
 </div>
 </form>
+
+#{if check}
+<label>There are no pending requests !</label>
+#{/if}
 
 <script type="text/javascript">
 function Accept(typeID)
@@ -26,10 +35,9 @@ function Accept(typeID)
 		},
 			function(message)
 			{
-				alert(message);
-				$('#button1').hide();
-				$('#button2').hide();
-				 window.location.reload();
+				$('#button1_'+typeID).hide();
+				$('#button2_'+typeID).hide();
+				$('#message_'+typeID).html("<font color='Red'>"+message+"</font>");
 				
 			});
 }
@@ -47,10 +55,10 @@ function Reject(typeID)
 		},
 			function(message)
 			{
-				alert(message);
-				$('#button2').hide();
-				$('#button1').hide();
-				 window.location.reload();
+				
+				$('#button2_'+typeID).hide();
+				$('#button1_'+typeID).hide();
+				$('#message_'+typeID).html("<font color='Red'>"+message+"</font>");
 			});
 }
 
