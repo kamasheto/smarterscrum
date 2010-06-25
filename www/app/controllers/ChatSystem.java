@@ -65,8 +65,8 @@ public class ChatSystem extends SmartController
 	public static void enterChat( long id )
 	{
 		ChatRoom room = ChatRoom.findById( id );
-		Security.check( Security.getConnected().projects.contains( room.project ) );
 		User currentUser = Security.getConnected();
+		Security.check( Security.getConnected().projects.contains( room.project ));// || !(currentUser.openChats.size()==1) );	
 		currentUser.openChats.add(room);
 		currentUser.save();
 		new Message( "notice", currentUser.name + " has entered the chat", room ).save();
