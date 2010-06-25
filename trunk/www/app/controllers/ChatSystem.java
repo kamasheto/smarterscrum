@@ -43,6 +43,8 @@ public class ChatSystem extends SmartController
 		if( messages.isEmpty() )
 		{
 			suspend( "1s" );
+			
+			
 		}
 		for( Message m : messages )
 		{
