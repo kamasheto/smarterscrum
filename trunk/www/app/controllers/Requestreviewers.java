@@ -192,10 +192,13 @@ public class Requestreviewers extends SmartController {
 		if (requests != null) {
 			requests.accepted = true;
 			message = "the request has been accepted ";
-
 			requests.save();
-			byte p = 1;
-			Notifications.notifyUsers(requests.user, "Request", "your request has been accepted", p);
+			String header = "User: " + "\'" + requests.user.name + "\'" + " request to be a " + "\'" + requests.types.name + "\'" + " reviewer has been accepted.";
+			String body = "User: " + "\'" + requests.user.name + "\'" + " request to be a " + "\'" + requests.types.name + "\'" + " reviewer has been accepted." + '\n' + '\n'   
+			    + " Accepted by: " + Security.getConnected().name + "." + '\n' 
+				+ " Accepted at: " + new Date(System.currentTimeMillis()) + ".";
+			Logs.addLog(Security.getConnected(), "Accept to be a reviewer request", "Task Type", requestID, requests.component.project, new Date(System.currentTimeMillis()));
+			Notifications.notifyUsers(requests.component.project, header, body, "Accept To Be Reviewer Request",new Byte((byte) 1));
 		}
 
 		renderText(message);
@@ -214,11 +217,14 @@ public class Requestreviewers extends SmartController {
 	public static void reject(long requestID) {
 		Requestreviewer x = Requestreviewer.findById(requestID);
 		if (x != null) {
-			byte p = -1;
-			Notifications.notifyUsers(x.user, "Request", "your request has been rejected", p);
 			x.rejected=true;
 			x.save();
-
+			String header = "User: " + "\'" + x.user.name + "\'" + " request to be a " + "\'" + x.types.name + "\'" + " reviewer has been rejected.";
+			String body = "User: " + "\'" + x.user.name + "\'" + " request to be a " + "\'" + x.types.name + "\'" + " reviewer has been rejected." + '\n' + '\n'   
+			    + " Rejected by: " + Security.getConnected().name + "." + '\n' 
+				+ " Rejwcted at: " + new Date(System.currentTimeMillis()) + ".";
+			Logs.addLog(Security.getConnected(), "Reject to be a reviewer request", "Task Type", requestID, x.component.project, new Date(System.currentTimeMillis()));
+			Notifications.notifyUsers(x.component.project, header, body, "Reject To Be Reviewer Request",new Byte((byte) -1));
 		}
 		renderText("the request has been rejected");
 	}
