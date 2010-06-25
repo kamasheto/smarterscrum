@@ -10,10 +10,10 @@ import models.Sprint;
 import models.Story;
 import models.User;
 import play.mvc.With;
-import controllers.Secure;
+
 import controllers.SmartController;
 
-@With(Secure.class)
+
 public class ProductBacklogs extends SmartController {
 	/**
 	 * Gets the list of stories in the project or the component that has the id
@@ -31,13 +31,18 @@ public class ProductBacklogs extends SmartController {
 	 * @see list of user stories
 	 */
 	public static void index(long id, int isComp) {
+		
+		Project project1 = Project.findById( id );
+		Security.check( project1.users.contains( Security.getConnected()));
 		User user = Security.getConnected();
+		
+		
 		boolean inproj = user.isAdmin;
 		String name = "";
 		if (isComp == 0) {
 			Project project = Project.findById(id);
 			name = project.name;
-			List<Story> stories = new LinkedList<Story>();
+			List<List<Story>> stories = new LinkedList<List<Story>>();
 			List<Sprint> sprints = project.sprints;
 			boolean running = false;
 			long isRunning = project.runningSprint();
@@ -46,12 +51,19 @@ public class ProductBacklogs extends SmartController {
 				if (sprints.get(i).id == isRunning)
 					running = true;
 			}
+			int i =0;
 			for (Component component : project.components) {
+				stories.add(new LinkedList<Story>());
 				for (Story story : component.componentStories) {
-
-					stories.add(story);
+					stories.get(i).add(story);
+				
 				}
+	i++;
 			}
+			
+		
+			
+			
 			// for (int i = 0; i < user.roles.size(); i++) {
 			// if (user.roles.get(i).project.equals(project)) {
 			// inproj = user.roles.get(i).canEditBacklog;
@@ -65,6 +77,21 @@ public class ProductBacklogs extends SmartController {
 			} else {
 				inproj = true;
 			}
+			
+			
+			for(int a =0 ; a<stories.size();a++)
+			{
+				for(int j=0; j<stories.get( a ).size();j++)
+					{
+					String [] temp=stories.get( a ).get(j).succussSenario.split("/n");
+					String temp1="";
+					for(int k=0;k<temp.length;k++)
+					temp1=temp1+temp[k]+" <br/> " ;
+					stories.get( a ).get( j ).succussSenario= temp1;
+					
+					}
+			}
+			
 			render(stories, project, running, isComp, inproj, name);
 
 		} else {
@@ -98,6 +125,8 @@ public class ProductBacklogs extends SmartController {
 			} else {
 				inproj = true;
 			}
+			
+			
 			render(stories, project, running, isComp, inproj, name, compId);
 		}
 

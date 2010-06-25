@@ -184,7 +184,15 @@ Please check the columns that you would like to hide. Columns not checked will b
 	</tr>
 	</thead>
  
-  #{list items:stories, as:'story'}
+  #{list items:stories, as:'compStories'}
+	<tr>
+		<h3>Component ${compStories.get(0).componentID} </h3>
+		</tr>
+	  #{list items:compStories, as:'story'}
+		
+		
+	
+	
 	<tr id="story_${story.id}">
 		
 	
@@ -280,7 +288,7 @@ Please check the columns that you would like to hide. Columns not checked will b
 
 
 	#{/list}
-	
+		#{/list}
 	</table>
 	
 	#{/else}
