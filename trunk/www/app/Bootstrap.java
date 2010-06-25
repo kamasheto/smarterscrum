@@ -226,10 +226,10 @@ public class Bootstrap extends Job
 			
 			
 			// Sprints
-
-			Sprint Sp1 = new Sprint( 2010, 5, 1, 2010, 5, 15, p1 ).save();
+			
+			Sprint Sp1 = new Sprint( 2010, 5, 1, 2010, 7, 20, p1 ).save();
 			Sprint Sp2 = new Sprint( 2010, 6, 1, 2010, 6, 15, p1 ).save();
-
+			Sprint Sp3 = new Sprint( 2010, 5, 1, 2010, 6, 16, p1 ).save();
 			p1.sprints.add( Sp1 );
 			p1.sprints.add( Sp2 );
 			//
@@ -895,7 +895,7 @@ public class Bootstrap extends Job
 			c1.componentMeetings.add( m2 );
 			m2.save();
 
-			Meeting m3 = new Meeting( "Scrum meeting", users.get( 0 ), "15 minute scrum meeting", new Date().getTime() + 1000000000, new Date().getTime(), "board", "scrum", projects.get( 0 ), Sp1 );
+			Meeting m3 = new Meeting( "Scrum meeting", users.get( 0 ), "15 minute scrum meeting", new Date().getTime() + 60000, new Date().getTime(), "board", "scrum", projects.get( 0 ), Sp1 );
 			m3.components.add( c2 );
 		
 			c2.componentMeetings.add( m3 );
