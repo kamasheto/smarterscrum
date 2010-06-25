@@ -65,6 +65,8 @@ public class Sessions extends SmartController
 	public static void logout() throws Throwable
 	{
 		Session.delete( "user = ?", Security.getConnected() );
+		Security.getConnected().openChats=null;
+		Security.getConnected().save();
 		Secure.logout();
 	}
 }
