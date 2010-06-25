@@ -12,7 +12,7 @@
 <script type="text/javascript">
 function set_person(id,taskId,name, user1Id)
 {
-	$.post('@{editTaskReviewer()}',
+	$.post('@{editTaskReviewer2()}',
 			{id:taskId, userId:user1Id, reviewerId:id},
 			function()
 			{
