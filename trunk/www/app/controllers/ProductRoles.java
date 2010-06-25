@@ -113,8 +113,12 @@ public class ProductRoles extends SmartCRUD {
 			}
 		} else {
 			object.save();
-			String header = "Product Role: " + productRoleObject.name + " has been added to Project: " + project.name + ".";
-			String body = "Product Role: " + productRoleObject.name +" :"+ '\n' + " Description: " + productRoleObject.description + "." + '\n' + " Added by: " + Security.getConnected().name + "." + '\n' + " Added at: " + new Date(System.currentTimeMillis()) + ".";
+			String header = "Product Role: " + "\'" + productRoleObject.name + "\'" + " has been added to Project: " + "\'" + project.name + "\'" + ".";
+			String body = "New Product Role has been added to Project " + "\'" + project.name + "\'" + "." + '\n' + '\n' 
+				+ "Product Role Name: " + productRoleObject.name +"."+ '\n' 
+				+ " Description: " + productRoleObject.description + "." + '\n' 
+				+ " Added by: " + Security.getConnected().name + "." + '\n' 
+				+ " Added at: " + new Date(System.currentTimeMillis()) + ".";
 			Logs.addLog(Security.getConnected(), "Create", "ProductRole", productRoleObject.id, project, new Date(System.currentTimeMillis()));
 			Notifications.notifyUsers(project, header, body, "addProductRole", new Byte((byte) 1));
 			flash.success("Product Role " + productRoleObject.name + " has been created successfully.");
@@ -190,8 +194,12 @@ public class ProductRoles extends SmartCRUD {
 				render("CRUD/show.html", type, object);
 			}
 		} else {
-			String header = "Product Role: " +  oldName + " in Project " + project.name + " has been edited.";
-			String body = "Product Role: " + productRoleObject.name + " :" + '\n' + " Description: " + productRoleObject.description + "." + '\n' + " Edited by: " + Security.getConnected().name + "." + '\n' + " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+			String header = "Product Role: " + "\'" + oldName + "\'" + " in Project " + "\'" + project.name + "\'" + " has been edited.";
+			String body = "The Product Role: " + "\'" + oldName + "\'" + " in Project " + "\'" + project.name + "\'" + " has been edited." + '\n' + '\n'
+				+ "Product Role Name: " + productRoleObject.name + "." + '\n' 
+				+ " Description: " + productRoleObject.description + "." + '\n' 
+				+ " Edited by: " + Security.getConnected().name + "." + '\n' 
+				+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
 			object.save();
 			Logs.addLog(Security.getConnected(), "Edit", "ProductRole", productRoleObject.id, project, new Date(System.currentTimeMillis()));
 			Notifications.notifyUsers(project, header, body, "editProductRole", new Byte((byte) 1));
@@ -240,8 +248,11 @@ public class ProductRoles extends SmartCRUD {
 				render("CRUD/show.html", type, object);
 			}
 		} else {
-			String header = "Product Role: " + productRoleObject.name + " in Project " + productRoleObject.project.name + " has been deleted.";
-			String body = "Product Role " + productRoleObject.name + " :" + '\n' + " Deleted by: " + Security.getConnected().name + "." + '\n' + " Deleted at: " + new Date(System.currentTimeMillis()) + ".";
+			String header = "Product Role: " + "\'" + productRoleObject.name + "\'" + " in Project " + "\'" + productRoleObject.project.name + "\'" + " has been deleted.";
+			String body = "The Product Role: " + "\'" + productRoleObject.name + "\'" + " in Project " + "\'" + productRoleObject.project.name + "\'" + " has been deleted."
+				+ '\n' + '\n' 
+				+ " Deleted by: " + Security.getConnected().name + "." + '\n' 
+				+ " Deleted at: " + new Date(System.currentTimeMillis()) + ".";
 			object.save();
 			Logs.addLog(Security.getConnected(), "Delete", "ProductRole", productRoleObject.id, productRoleObject.project, new Date(System.currentTimeMillis()));
 			Notifications.notifyUsers(productRoleObject.project, header, body, "deleteProductRole", new Byte((byte) -1));
@@ -264,8 +275,11 @@ public class ProductRoles extends SmartCRUD {
 		ProductRole productRoleObject = ProductRole.findById(id);
 		productRoleObject.deleted = true;
 		productRoleObject.save();
-		String header = "Product Role: " + productRoleObject.name + " in Project " + productRoleObject.project.name + " has been deleted.";
-		String body = "Product Role " + productRoleObject.name + " :" + '\n' + " Deleted by: " + Security.getConnected().name + "." + '\n' + " Deleted at: " + new Date(System.currentTimeMillis()) + ".";
+		String header = "Product Role: " + "\'" + productRoleObject.name + "\'" + " in Project " + "\'" + productRoleObject.project.name + "\'" + " has been deleted.";
+		String body = "The Product Role: " + "\'" + productRoleObject.name + "\'" + " in Project " + "\'" + productRoleObject.project.name + "\'" + " has been deleted."
+			+ '\n' + '\n' 
+			+ " Deleted by: " + Security.getConnected().name + "." + '\n' 
+			+ " Deleted at: " + new Date(System.currentTimeMillis()) + ".";
 		Logs.addLog(Security.getConnected(), "Delete", "ProductRole", productRoleObject.id, productRoleObject.project, new Date(System.currentTimeMillis()));
 		Notifications.notifyUsers(productRoleObject.project, header, body, "deleteProductRole", new Byte((byte) -1));
 		flash.success("Product Role " + productRoleObject.name + " has been deleted.");
