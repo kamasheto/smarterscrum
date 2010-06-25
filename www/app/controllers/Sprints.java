@@ -63,9 +63,9 @@ public class Sprints extends SmartCRUD
 	 * @author minazaki
 	 * @param projectId
 	 */
-	@Check( "canAddSprint" )
 	public static void projectblank( long projectId )
 	{
+		if(Security.getConnected().in( (Project)Project.findById( projectId )).can( "addSprint" ) ){
 		ObjectType type = ObjectType.get( getControllerClass() );
 		notFoundIfNull( type );
 		try
@@ -77,6 +77,10 @@ public class Sprints extends SmartCRUD
 		{
 			render( "CRUD/blank.html", type );
 		}
+		}
+		else{
+			forbidden();
+		}
 	}
 
 	/**
@@ -87,9 +91,10 @@ public class Sprints extends SmartCRUD
 	 * @param projectId
 	 * @throws Exception
 	 */
-	@Check( "canAddSprint" )
+	
 	public static void projectcreate( long projectId ) throws Exception
 	{
+		if(Security.getConnected().in( (Project)Project.findById( projectId )).can( "addSprint" ) ){
 		ObjectType type = ObjectType.get( getControllerClass() );
 		notFoundIfNull( type );
 		Sprint object = (Sprint) type.entityClass.newInstance();
@@ -171,11 +176,16 @@ public class Sprints extends SmartCRUD
 			redirect( "/sprints/projectblank?projectId=" + projectId );
 		}
 		redirect( request.controller + ".show", object.getEntityId() );
+		}
+		else{
+			forbidden();
+		}
 	}
 
-	@Check( "canEditSprint" )
+	
 	public static void projectshow( long id, long projId )
 	{
+		if(Security.getConnected().in( (Project)Project.findById( projId )).can( "editSprint" ) ){
 		ObjectType type = ObjectType.get( getControllerClass() );
 		notFoundIfNull( type );
 		JPASupport object = type.findById( id );
@@ -189,11 +199,16 @@ public class Sprints extends SmartCRUD
 		{
 			render( "Sprints/show.html", type, object );
 		}
+		}
+		else{
+			forbidden();
+		}
 	}
 
-	@Check( "canEditSprint" )
+	
 	public static void projectsave( long id, long projId ) throws Exception
 	{
+		if(Security.getConnected().in( (Project)Project.findById( projId )).can( "editSprint" ) ){
 		Project proj = Project.findById( projId );
 		ObjectType type = ObjectType.get( getControllerClass() );
 		notFoundIfNull( type );
@@ -248,6 +263,10 @@ public class Sprints extends SmartCRUD
 			redirect( "/show/project?id=" + projId );
 		}
 		redirect( request.controller + ".show", object.getEntityId() );
+		}
+		else{
+			forbidden();
+		}
 	}
 
 }
