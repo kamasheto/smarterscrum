@@ -181,7 +181,7 @@ position:absolute; z-index:100;">
 	#{/if}
 		
 	$('#send_${proj.name}').click(function() {
-		getMessages();
+		
 		var message = $('#message_${proj.name}').val();
 		$('#message_${proj.name}').val('');
 		$.post('@{ChatSystem.addMessage()}', {message: message , id:${proj.chatroom.id}}); 
@@ -194,7 +194,7 @@ position:absolute; z-index:100;">
 				$(messages).each(function() {
 					display(this);
 				});
-				setTimeout('getMessages();', 500);
+				setTimeout('getMessages();', 1000);
 			});
 		}	
 
