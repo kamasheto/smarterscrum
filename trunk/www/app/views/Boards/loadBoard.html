@@ -195,6 +195,9 @@ End At
 #{list items:users , as:'user'}
 <a id=${user.id} href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a><br/>	
 #{/list}
+<br>
+<br/>
+<div id="myLayer"></div>
 <!--Amr Abdelwahab-->
 <a href="javascript:take_meetingsnapshot(${users.meeting.id});"><b>Attach a SnapShot</b><a/><br/>		<br />
 <span id="tzcd"></span>
@@ -442,16 +445,6 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 	author: joseph hajj
 -->
 
-<!-- asmaak89 Part-->
-<br />
-	
-
-<div id="myLayer"></div>
-
-
-<!-- asmaak89 Part-->
-
-	
  <script type="text/javascript">
 
  function select_user(id, str) 
