@@ -99,29 +99,44 @@ $.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}});
 
 #{set 'moreLinks'}
 
-<a href="@{ProductBacklogs.showGraph(project.id,0)}">View Burndown Charts</a><br/>
+<p>
+	<a href="@{ProductBacklogs.showGraph(project.id,0)}">View Burndown Charts</a>
+</p>
 
 <!--@author ahmedkhaled7 C4S12/c4S4/c4s5   -->
-<a href="@{ImpedimentTasks.index(project.id)}">Report impediment</a><br/>
-#{if connected.in(project).can('canManageRoles')}
-<a href="/show/roles?id=${project.id}">Manage Roles</a><br/>#{/if}
+<p>
+	<a href="@{ImpedimentTasks.index(project.id)}">Report impediment</a>
+</p>
+#{if connected.in(project).can('canManageRoles')}<p>
+	<a href="/show/roles?id=${project.id}">Manage Roles (${project.roles.size()})</a>
+</p>#{/if}
 
-<a href="@{Storys.listStoriesandSprints(project.id)}">Assign Story to Sprint </a><br/>
+<p>
+	<a href="@{Storys.listStoriesandSprints(project.id)}">Assign Story to Sprint </a>
+</p>
 <!-- adding a check requests link @author moataz_mekki -->
 #{if connected.in(project).can('canManageRequests')}
-<a href="/projects/requestrespond?id=${project.id}">Check Role Requests</a><br />
+<p>
+	<a href="/projects/requestrespond?id=${project.id}">Check Role Requests (${project.getNumberOfRequests()})</a>
+</p>
 <!-- adding a check project deletion requests link
 @author Amr Tj.Wallas
 @Task C1S14 -->
-<a href="/projects/deletionRequestRespond?id=${project.id}">Check Deletion Requests</a><br />
+<p>
+	<a href="/projects/deletionRequestRespond?id=${project.id}">Check Deletion Requests (${project.getNumberOfDeletionRequests()})</a>
+</p>
 #{/if}
 
 <!-- project notification profile @ author moataz_mekki-->
 #{if connected.in(project).can('canEditProjectNotificationProfile')}
-<a href = "/projects/managenotificationprofile?projectId=${project.id}">Edit Project Notifications </a><br />
+<p>
+	<a href = "/projects/managenotificationprofile?projectId=${project.id}">Edit Project Notifications </a>
+</p>
 #{/if}
 #{if connected.in(project).can('respond')}
-<a href="/Requestreviewers/respond?id=${project.id}">respond to reviewer requests</a><br />
+<p>
+	<a href="/Requestreviewers/respond?id=${project.id}">respond to reviewer requests</a>
+</p>
 #{/if}
 #{/set}
 
@@ -131,9 +146,13 @@ profile related to this project
 @author Amr Tj.Wallas 
 @Task C1S33 -->
 #{if connected.in(project).can('canEditUserNotificationProfile')}
-<a href = "/users/managenotificationprofile?id=${project.id}">Manage My Notifications for this Project </a><br/>
+<p>
+	<a href = "/users/managenotificationprofile?id=${project.id}">Manage My Notifications for this Project </a>
+</p>
 #{/if}
-#{if connected.in(project).can('canEditUserNotificationProfile')}<a href="/Projects/requestdeleted?id=${project.id}" onclick="return confirm('Are you sure you want to be deleted from this project??? \n YOU WONT BE ABLE TO CONTRIBUTE IN THIS PROJECT ANYMORE \n HOWEVER YOUR WORK WILL STILL BE VISIBLE BY ALL PROJECT MEMBERS')"> Request Deletion</a>
+#{if connected.in(project).can('canEditUserNotificationProfile')}<p>
+	<a href="/Projects/requestdeleted?id=${project.id}" onclick="return confirm('Are you sure you want to be deleted from this project??? \n YOU WONT BE ABLE TO CONTRIBUTE IN THIS PROJECT ANYMORE \n HOWEVER YOUR WORK WILL STILL BE VISIBLE BY ALL PROJECT MEMBERS')"> Request Deletion</a>
+</p>
 #{/if}
 
 
