@@ -103,6 +103,7 @@ function showStuff(id) {
 			#{/crud.custom}
 			
 		#{crud.custom 'sprint'}
+		#{if connected.in(currentProject).can('AssociateSprinttoMeeting') }
 		<div class="crudField">  
 			<label for="object_sprint">Associate to Sprint</label>
 			<input type="checkbox" onclick="showStuff('span'); showtypes();">
@@ -116,6 +117,7 @@ function showStuff(id) {
 					</span>
     <span class="crudHelp"></span>
 </div>
+#{/if}
 		#{/crud.custom}
 	        
 	        #{crud.custom 'creator'}
