@@ -312,7 +312,12 @@ public class Boards extends SmartCRUD {
 			}
 
 			for (Task task : tasks) {
-				data.get(i).get(columns.indexOf(task.taskStatus.column)).add(task);
+				if(task.taskStatus.column.onBoard==true)
+				{
+				data.get(i).get(columnsOfBoard.indexOf(task.taskStatus.column)).add(task);
+				//System.out.println(task.description);
+				//System.out.print( columns. );
+				}
 			}
 
 		}
