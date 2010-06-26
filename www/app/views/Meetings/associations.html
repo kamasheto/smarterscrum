@@ -82,7 +82,7 @@
 </script>
 
 <div id="accordion"> 
-	<h3><a>Meeting Attendees</a></h3> 
+	<h6><a>Meeting Attendees</a></h6> 
 	<!-- amr_hany part-->
 	<div >
 	Please select the users you wish to invite in the meeting :
@@ -127,7 +127,8 @@
 	<!-- end amr_hany part-->
 	
 	<!-- minazaki -->
-	<h3><a>Associated Artifacts</a></h3> 
+	#{if connected.in(meeting.project).can('AssociateArtifacts') }
+	<h6><a>Associated Artifacts</a></h6> 
 	<div>
 	<script type="text/javascript">
 function addArtifacts(){
@@ -197,11 +198,11 @@ function removea(input){
 #{/list}
 	</select>
 	</div>
-	
+	#{/if}
 	<!--end of minazaki part -->
 	 
 	<!-- hossam sharaf's part-->
-	<h3><a>Associated Tasks</a></h3> 
+	<h6><a>Associated Tasks</a></h6> 
 <div>
 		<script type="text/javascript">
 function addTasks(){
@@ -271,7 +272,7 @@ function remove(input){
 	</select>
 	</div>
 <!-- end hossam sharaf's part-->
-	<h3><a>Associated Components</a></h3>
+	<h6><a>Associated Components</a></h6>
 	<!-- Amr Hany Part-->
 	<div> 
 		#{list items:meeting.project.components, as:'component'}
