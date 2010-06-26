@@ -43,8 +43,7 @@ public class ChatSystem extends SmartController
 		if( messages.isEmpty() )
 		{
 			suspend( "1s" );
-			
-			
+
 		}
 		for( Message m : messages )
 		{
@@ -66,10 +65,14 @@ public class ChatSystem extends SmartController
 	{
 		ChatRoom room = ChatRoom.findById( id );
 		User currentUser = Security.getConnected();
-		Security.check( Security.getConnected().projects.contains( room.project ));// || !(currentUser.openChats.size()==1) );	
-		if(!currentUser.openChats.contains( room ))
-		{currentUser.openChats.add(room);
-		currentUser.save();}
+		Security.check( Security.getConnected().projects.contains( room.project ) );// ||
+		// !(currentUser.openChats.size()==1)
+		// );
+		if( !currentUser.openChats.contains( room ) )
+		{
+			currentUser.openChats.add( room );
+			currentUser.save();
+		}
 		new Message( "notice", currentUser.name + " has entered the chat", room ).save();
 	}
 
@@ -87,7 +90,7 @@ public class ChatSystem extends SmartController
 		Security.check( Security.getConnected().projects.contains( room.project ) );
 		User currentUser = Security.getConnected();
 		new Message( "notice", currentUser.name + " has left the chat", room ).save();
-		currentUser.openChats.remove(room);
+		currentUser.openChats.remove( room );
 		currentUser.save();
 	}
 
@@ -105,5 +108,23 @@ public class ChatSystem extends SmartController
 		Security.check( Security.getConnected().projects.contains( room.project ) );
 		User currentUser = Security.getConnected();
 		render( room, currentUser );
+	}
+
+	/**
+	 * retrieveSinceLastLogin method that gets the messages that are on the DB
+	 * for a specific room after a specific user signed in
+	 * 
+	 * @author Amr Hany
+	 * @param userId
+	 * @param roomId
+	 */
+	public static void retrieveSinceLastLogin( long userId, long roomId )
+	{
+		User user = User.findById( userId );
+		Message lastLogMessage = Message.find( "author like ?1 and message like ?2 and room.id = ?3 order by stamp desc", "notice", user.name + " has entered the chat", roomId ).first();
+		Long lastLogIn = lastLogMessage.stamp;
+		List<Message> messages = Message.find( "room.id = ?1 and stamp >= ?2 order by stamp", roomId, lastLogIn ).fetch();
+
+		renderJSON( messages );
 	}
 }
