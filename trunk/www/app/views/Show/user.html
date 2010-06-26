@@ -39,11 +39,14 @@
 			<div id="search_results" class="roles" style="display:none;"></div>
 		</div>
 		<br style="clear:both;" />
-		#{secure.check 'canEditProfile'}<a href="/accounts/profile?id=${user.id}">Edit profile</a>#{secure.check 'systemAdmin'} &bull; <a href="/admin/users/${user.id}">(ACP) Edit Profile</a>#{/secure.check}<br />#{/secure.check}
-		#{if user == me}<a href="/requestDeletion">Request to be deleted from the system</a>#{/if}
-		#{if connected.isAdmin & user != me}
+		#{if user == me}<a href="/accounts/profile?id=${user.id}">Edit profile</a><br />
+		<a href="/requestDeletion">Request to be deleted from the system</a>#{/if}<br /><br />
+		
+		
 		<div class="clear"></div>
-		<a href="@{Users.del(user.id)}">Delete This User </a>
+		#{if connected.isAdmin}<a href="/admin/users/${user.id}">(ACP) Edit Profile</a>#{/if}
+		#{if connected.isAdmin & user != me}
+		<a href="@{Users.del(user.id)}">Delete This User</a>
 		#{/if}
 	</div>
 </div>
