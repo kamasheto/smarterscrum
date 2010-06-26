@@ -135,11 +135,10 @@ public class Projects extends SmartCRUD {
 	 *            String
 	 * @author Behairy
 	 */
-	@Check ("canEditProject")
+	
 	public static void addMeetingType(long id, String meetingType, boolean inSprint) {
-
+		if(Security.getConnected().in( (Project)Project.findById( id )).can( "editProject" ) ){
 		Project p = Project.findById(id);
-
 		p.meetingsTypes.add(meetingType);
 		p.meetingsTypesInSprint.add(inSprint);
 
@@ -147,7 +146,11 @@ public class Projects extends SmartCRUD {
 
 		Logs.addLog(Security.getConnected(), "Add", "Project Defualt Meeting Types", p.id, p, new Date(System.currentTimeMillis()));
 		renderJSON(true);
-
+		}
+		else{
+			forbidden();
+		}
+		
 	}
 
 	/**
@@ -160,15 +163,20 @@ public class Projects extends SmartCRUD {
 	 *            String
 	 * @author Behairy
 	 */
-	@Check ("canEditProject")
+	
 	public static void removeMeetingType(long id, String meetingType) {
 		Project p = Project.findById(id);
+		if(Security.getConnected().in( p).can( "editProject" ) ){
 		int index = p.meetingsTypes.indexOf(meetingType);
 		p.meetingsTypes.remove(meetingType);
 		p.meetingsTypesInSprint.remove(index);
 		p.save();
 		Logs.addLog(Security.getConnected(), "Remove", "Project Default Meeting Types ", p.id, p, new Date(System.currentTimeMillis()));
 		renderJSON(true);
+		}
+		else{
+			forbidden();
+		}
 	}
 
 	/**
@@ -179,14 +187,18 @@ public class Projects extends SmartCRUD {
 	 * @param meetingType
 	 * @author Behairy
 	 */
-	@Check ("canEditProject")
+	
 	public static void isMeetingTypeAssociatedToSprint(long id, String meetingType) {
 		Project p = Project.findById(id);
+		if(Security.getConnected().in( p).can( "editProject" ) ){
 		int index = p.meetingsTypes.indexOf(meetingType);
 		boolean inSprint = p.meetingsTypesInSprint.get(index);
 
 		renderJSON(inSprint);
-
+		}
+		else{
+			forbidden();
+		}
 	}
 
 	/**
@@ -199,10 +211,11 @@ public class Projects extends SmartCRUD {
 	 *            String
 	 * @author Behairy
 	 */
-	@Check ("canEditProject")
+	
 	public static void addTaskType(long id, String taskType) {
 
 		Project p = Project.findById(id);
+		if(Security.getConnected().in( p).can( "editProject" ) ){
 		TaskType t = new TaskType();
 		t.project = p;
 		t.name = taskType;
@@ -211,6 +224,10 @@ public class Projects extends SmartCRUD {
 		t.save();
 		Logs.addLog(Security.getConnected(), "Add", "Project Default Task Types ", t.id, p, new Date(System.currentTimeMillis()));
 		renderJSON(t.id);
+		}
+		else{
+			forbidden();
+		}
 
 	}
 
@@ -224,10 +241,11 @@ public class Projects extends SmartCRUD {
 	 *            String
 	 * @author Behairy
 	 */
-	@Check ("canEditProject")
+	
 	public static void addTaskStatus(long id, String taskStatus) {
 
 		Project p = Project.findById(id);
+		if(Security.getConnected().in( p).can( "editProject" ) ){
 		TaskStatus t = new TaskStatus();
 		t.project = p;
 		t.name = taskStatus;
@@ -236,7 +254,10 @@ public class Projects extends SmartCRUD {
 		t.save();
 		Logs.addLog(Security.getConnected(), "Add", "Project Default Task Status", t.id, p, new Date(System.currentTimeMillis()));
 		renderJSON(t.id);
-
+		}
+	else{
+		forbidden();
+	}
 	}
 
 	/**
@@ -247,6 +268,7 @@ public class Projects extends SmartCRUD {
 	 *            long
 	 * @author Behairy
 	 */
+	//3ayzen id 
 	@Check ("canEditProject")
 	public static void removetaskType(long taskID) {
 
@@ -266,6 +288,7 @@ public class Projects extends SmartCRUD {
 	 *            long
 	 * @author Behairy
 	 */
+	//3ayzeen id
 	@Check ("canEditProject")
 	public static void removeTaskStatus(long statusID) {
 
@@ -287,10 +310,11 @@ public class Projects extends SmartCRUD {
 	 *            String
 	 * @author Behairy
 	 */
-	@Check ("canEditProject")
+	
 	public static void addStoryType(long id, String storyType, String unit) {
-		Project p = Project.findById(id);
-		Priority x = new Priority();
+	Project p = Project.findById(id);
+	if(Security.getConnected().in( p).can( "editProject" ) ){
+	Priority x = new Priority();
 		x.project = p;
 		x.title = storyType;
 		x.priority = Integer.parseInt(unit);
@@ -300,7 +324,10 @@ public class Projects extends SmartCRUD {
 		p.save();
 		Logs.addLog(Security.getConnected(), "Add", "Project Default Story Priroity ", x.id, x.project, new Date(System.currentTimeMillis()));
 		renderJSON(x.id);
-
+	}
+	else{
+		forbidden();
+	}
 	}
 
 	/**
@@ -311,6 +338,7 @@ public class Projects extends SmartCRUD {
 	 *            int
 	 * @author Behairy
 	 */
+	//3ayzen id 
 	@Check ("canEditProject")
 	public static void removeStoryType(long priorityID) {
 
@@ -332,14 +360,18 @@ public class Projects extends SmartCRUD {
 	 *            boolean
 	 * @author Behairy
 	 */
-	@Check ("canEditProject")
+	
 	public static void changeAutoRescheduleStatus(long id, boolean autoReschedule) {
 		Project p = Project.findById(id);
-
+		if(Security.getConnected().in( p).can( "editProject" ) ){
 		p.autoReschedule = autoReschedule;
 		p.save();
 		Logs.addLog(Security.getConnected(), "Edit", "Project Default Auto Meeting Reschedule Option ", p.id, p, new Date(System.currentTimeMillis()));
 		renderJSON(true);
+	}
+		else{
+			forbidden();
+		}
 	}
 
 	/**
@@ -352,15 +384,18 @@ public class Projects extends SmartCRUD {
 	 *            String
 	 * @author Behairy
 	 */
-	@Check ("canEditProject")
+	
 	public static void setDefaultSprintDuartion(long id, String duration) {
 		Project p = Project.findById(id);
-
+		if(Security.getConnected().in( p).can( "editProject" ) ){
 		p.sprintDuration = Integer.parseInt(duration);
 		p.save();
 		Logs.addLog(Security.getConnected(), "Edit", "Project Default Sprint Duration ", p.id, p, new Date(System.currentTimeMillis()));
 		renderJSON(true);
-
+		}
+		else{
+			forbidden();
+		}
 	}
 
 
@@ -373,9 +408,10 @@ public class Projects extends SmartCRUD {
 	 * @param unit
 	 * @author Behairy
 	 */
-	@Check ("canEditProject")
+	
 	public static void setEffortEstimationUnit(long id, String unit) {
 		Project p = Project.findById(id);
+		if(Security.getConnected().in( p).can( "editProject" ) ){
 		int selectedUnit;
 		if (unit == "Hours")
 			selectedUnit = 0;
@@ -386,7 +422,10 @@ public class Projects extends SmartCRUD {
 		p.save();
 		Logs.addLog(Security.getConnected(), "Edit", "Project Default Effort Estimation Unit", p.id, p, new Date(System.currentTimeMillis()));
 		renderJSON(true);
-
+		}
+		else{
+			forbidden();
+		}
 	}
 
 	/**
