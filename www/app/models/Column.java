@@ -39,11 +39,21 @@ public class Column extends SmartModel {
 		{
 			
 			this.onBoard=true;
+			int count=0;
+			for(int i=0;i<board.columns.size();i++)
+			{
+				if(board.columns.get(i).onBoard==true)
+					count++;
+			}
+			this.sequence=count;
 		}
 		else
-		this.onBoard=false;	
+		{
+			this.onBoard=false;
+			this.sequence=-1;
+		}	
 		board.columns.add(this);
-
+		
 	}
 	// public String toString()
 	// {
