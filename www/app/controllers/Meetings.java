@@ -94,6 +94,7 @@ public class Meetings extends SmartCRUD
 		JPASupport object = type.findById( id );
 		Meeting meeting = (Meeting) object;
 		Project p = meeting.project;
+		if(Security.getConnected().in( p).can( "editMeeting" ) ){
 		List<Sprint> sprints = p.upcomingSprints();
 		try
 		{
@@ -102,6 +103,10 @@ public class Meetings extends SmartCRUD
 		catch( TemplateNotFoundException e )
 		{
 			render( "CRUD/show.html", type, object );
+		}
+		}
+		else {
+			forbidden();
 		}
 	}
 
