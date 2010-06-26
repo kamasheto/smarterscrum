@@ -30,14 +30,14 @@ public class Bootstrap extends Job
 	{
 		if( User.count() == 0 )
 		{
-			String[] perms = { "manageRoles", "createRole", "editRole", "deleteRole", "editProject", "editBacklog", "editProjectNotificationprofile", "editUserNotificationProfile", "addComponent", "editComponent", "deleteComponent", "addSprint", "editSprint", "editSprintBacklog", "addMeeting", "editMeeting", "deleteMeeting", "addStory", "editStory", "deleteStory", "changeEstimations", "changeTaskType", "changeTaskStatus", "changeTaskDescreption", "changeReviewer", "changeAssignee", "changeAssigneeInSprint", "invite", "manageRequests", "editColumn", "getComponentMembers", "chooseAssignee", "chooseReporter", "chooseReviewer", "addProductRole", "editProductRole", "deleteProductRole", "request", "setDependentStories", "editColumnsPositions", "assignStoryToSprint", "respond", "accept", "renameColumns", "addReviewLog", "canAddTask", "modifyTask", "changeStatus", "addTaskStatus", "editTaskStatus", "addTaskType", "editTaskType", "viewReviewLog", "startGame", "viewChat", "associateTaskToMeeting", "reportImpediment", "editTask", "setMeetingAttendance" , "deleteProject","ShowColumn","HideColumn"};
+			String[] perms = { "manageRoles", "createRole", "editRole", "deleteRole", "editProject", "editBacklog", "editProjectNotificationprofile", "editUserNotificationProfile", "addComponent", "editComponent", "deleteComponent", "addSprint", "editSprint", "editSprintBacklog", "addMeeting", "editMeeting", "deleteMeeting", "addStory", "editStory", "deleteStory", "changeEstimations", "changeTaskType", "changeTaskStatus", "changeTaskDescreption", "changeReviewer", "changeAssignee", "changeAssigneeInSprint", "invite", "manageRequests", "editColumn", "getComponentMembers", "chooseAssignee", "chooseReporter", "chooseReviewer", "addProductRole", "editProductRole", "deleteProductRole", "request", "setDependentStories", "editColumnsPositions", "assignStoryToSprint", "respond", "accept", "renameColumns", "addReviewLog", "canAddTask", "modifyTask", "changeStatus", "addTaskStatus", "editTaskStatus", "addTaskType", "editTaskType", "viewReviewLog", "startGame", "viewChat", "associateTaskToMeeting", "reportImpediment", "editTask", "setMeetingAttendance", "deleteProject", "ShowColumn", "HideColumn","AssociateArtifacts","AssociateSprinttoMeeting" };
 			for( String perm : perms )
 			{
 				new Permission( perm, perm ).save();
 			}
 			ArrayList<String> emails = new ArrayList<String>();
 
-			emails.addAll( Arrays.asList( new String[] { "me@sakr.me", "moataz.mekki@gmail.com", "omar.nabil10@gmail.com", "ahmed.behairy9@gmail.com", "eminem.virus2010@gmail.com", "amorotto@Gmail.com","dina.e.helal@gmail.com", "ghadafakhry@gmail.com", "hossam.sharaf@gmail.com", "minazakiz@gmail.com", "galalaly28@gmail.com", "justheba@gmail.com", "evilmonster.300@gmail.com", "mohamed.monayri@gmail.com", "moumen.elteir@gmail.com", "ahmed.k.abdelhameed@gmail.com", "eabdelrahman89@gmail.com", "iistcrimi@gmail.com", "hossam.amer12@gmail.com", "menna.ghoneim@gmail.com", "amr.mohamed.abdelwahab@gmail.com", "asmaa89alkomy@gmail.com",  "hadeer.diwan@gmail.com", "joseph.hajj90@gmail.com" } ) );
+			emails.addAll( Arrays.asList( new String[] { "me@sakr.me", "moataz.mekki@gmail.com", "omar.nabil10@gmail.com", "ahmed.behairy9@gmail.com", "eminem.virus2010@gmail.com", "amorotto@Gmail.com", "dina.e.helal@gmail.com", "ghadafakhry@gmail.com", "hossam.sharaf@gmail.com", "minazakiz@gmail.com", "galalaly28@gmail.com", "justheba@gmail.com", "evilmonster.300@gmail.com", "mohamed.monayri@gmail.com", "moumen.elteir@gmail.com", "ahmed.k.abdelhameed@gmail.com", "eabdelrahman89@gmail.com", "iistcrimi@gmail.com", "hossam.amer12@gmail.com", "menna.ghoneim@gmail.com", "amr.mohamed.abdelwahab@gmail.com", "asmaa89alkomy@gmail.com", "hadeer.diwan@gmail.com", "joseph.hajj90@gmail.com" } ) );
 			// Fixtures.load( "dummy-data.yml" );
 			ArrayList<User> users = new ArrayList<User>();
 			ArrayList<Project> projects = new ArrayList<Project>();
@@ -56,18 +56,18 @@ public class Bootstrap extends Job
 			}
 
 			Project p1 = new Project( "Smartsoft", "The best company project ever!" ).save();
-			p1.user=users.get( 0 );
-			p1.approvalStatus=true;
+			p1.user = users.get( 0 );
+			p1.approvalStatus = true;
 			p1.init();
 
 			Project p2 = new Project( "Sharesoft", "The second best company project ever!" ).save();
-			p2.user=users.get( 1 );
-			p2.approvalStatus=true;
+			p2.user = users.get( 1 );
+			p2.approvalStatus = true;
 			p2.init();
 
 			Project p3 = new Project( "Collabsoft", "The least best company project ever!" ).save();
-			p3.user=users.get( 2 );
-			p3.approvalStatus=true;
+			p3.user = users.get( 2 );
+			p3.approvalStatus = true;
 			p3.init();
 
 			projects.add( p1 );
@@ -207,24 +207,17 @@ public class Bootstrap extends Job
 			S7.componentID = c3;
 			c3.componentStories.add( S7 );
 			S7.save();
-            
-			
+
 			Story S8 = new Story( "As a Project Admin, I can drag and drop a task", "", "", 1, "", 1 );
 			S8.componentID = c5;
 			c5.componentStories.add( S8 );
 			S8.save();
-			
-			
+
 			Story S9 = new Story( "As a Project Admin, I can estimate effort points", "", "", 1, "", 1 );
 			S9.componentID = c4;
 			c4.componentStories.add( S9 );
 			S9.save();
-			
-			
-			
-			
-			
-			
+
 			// Sprints
 			
 			Sprint Sp1 = new Sprint( 2010, 5, 1, 2010, 7, 20, p1 ).save();
@@ -297,9 +290,7 @@ public class Bootstrap extends Job
 			S4.componentID.project.taskStatuses.get( 0 ).Tasks.add( T4 );
 			S4.storiesTask.add( T4 );
 			T4.save();
-			
-		
-		
+
 			Task T5 = new Task();
 			T5.description = "Coding";
 			T5.taskStory = S6;
@@ -331,9 +322,7 @@ public class Bootstrap extends Job
 			S6.componentID.project.taskStatuses.get( 0 ).Tasks.add( T6 );
 			S6.storiesTask.add( T6 );
 			T6.save();
-			
-			
-			
+
 			Task T7 = new Task();
 			T7.description = "Reviewing";
 			T7.taskStory = S6;
@@ -349,9 +338,7 @@ public class Bootstrap extends Job
 			S7.componentID.project.taskStatuses.get( 0 ).Tasks.add( T7 );
 			S7.storiesTask.add( T7 );
 			T7.save();
-			
-			
-			
+
 			Task T8 = new Task();
 			T8.description = "Reviewing";
 			T8.taskStory = S6;
@@ -367,7 +354,7 @@ public class Bootstrap extends Job
 			S7.componentID.project.taskStatuses.get( 0 ).Tasks.add( T8 );
 			S7.storiesTask.add( T8 );
 			T8.save();
-			
+
 			Task T9 = new Task();
 			T9.description = "Reviewing";
 			T9.taskStory = S4;
@@ -383,8 +370,7 @@ public class Bootstrap extends Job
 			S4.componentID.project.taskStatuses.get( 0 ).Tasks.add( T9 );
 			S4.storiesTask.add( T9 );
 			T9.save();
-			
-			
+
 			Task T10 = new Task();
 			T10.description = "Reviewing";
 			T10.taskStory = S1;
@@ -399,7 +385,6 @@ public class Bootstrap extends Job
 			S1.componentID.project.taskStatuses.get( 0 ).Tasks.add( T10 );
 			S1.storiesTask.add( T10 );
 			T10.save();
-			
 
 			Task T11 = new Task();
 			T11.description = "Reviewing4";
@@ -415,7 +400,6 @@ public class Bootstrap extends Job
 			S8.componentID.project.taskStatuses.get( 0 ).Tasks.add( T11 );
 			S8.storiesTask.add( T11 );
 			T11.save();
-			
 
 			Task T12 = new Task();
 			T12.description = "Reviewing5";
@@ -431,7 +415,6 @@ public class Bootstrap extends Job
 			S8.componentID.project.taskStatuses.get( 0 ).Tasks.add( T12 );
 			S8.storiesTask.add( T12 );
 			T12.save();
-			
 
 			Task T13 = new Task();
 			T13.description = "Coding";
@@ -447,7 +430,6 @@ public class Bootstrap extends Job
 			S9.componentID.project.taskStatuses.get( 0 ).Tasks.add( T13 );
 			S9.storiesTask.add( T13 );
 			T13.save();
-			
 
 			Task T14 = new Task();
 			T14.description = "Documentation3";
@@ -463,7 +445,7 @@ public class Bootstrap extends Job
 			S9.componentID.project.taskStatuses.get( 0 ).Tasks.add( T14 );
 			S9.storiesTask.add( T14 );
 			T14.save();
-			
+
 			Task T15 = new Task();
 			T15.description = "Reviewing2";
 			T15.taskStory = S9;
@@ -478,9 +460,7 @@ public class Bootstrap extends Job
 			S9.componentID.project.taskStatuses.get( 0 ).Tasks.add( T15 );
 			S9.storiesTask.add( T15 );
 			T15.save();
-			
-			
-			
+
 			Task T16 = new Task();
 			T16.description = "Reviewing1";
 			T16.taskStory = S9;
@@ -495,8 +475,7 @@ public class Bootstrap extends Job
 			S9.componentID.project.taskStatuses.get( 0 ).Tasks.add( T16 );
 			S9.storiesTask.add( T16 );
 			T16.save();
-			
-			
+
 			Task T17 = new Task();
 			T17.description = "Reviewing3";
 			T17.taskStory = S9;
@@ -511,8 +490,7 @@ public class Bootstrap extends Job
 			S9.componentID.project.taskStatuses.get( 0 ).Tasks.add( T17 );
 			S9.storiesTask.add( T17 );
 			T17.save();
-		
-			
+
 			Task T18 = new Task();
 			T18.description = "Coding ";
 			T18.taskStory = S9;
@@ -527,7 +505,7 @@ public class Bootstrap extends Job
 			S9.componentID.project.taskStatuses.get( 0 ).Tasks.add( T18 );
 			S9.storiesTask.add( T18 );
 			T18.save();
-			
+
 			Task T19 = new Task();
 			T19.description = "Senario review";
 			T19.taskStory = S9;
@@ -542,8 +520,7 @@ public class Bootstrap extends Job
 			S9.componentID.project.taskStatuses.get( 0 ).Tasks.add( T19 );
 			S9.storiesTask.add( T19 );
 			T19.save();
-		
-			
+
 			Task T20 = new Task();
 			T20.description = "Documentation";
 			T20.taskStory = S9;
@@ -558,7 +535,7 @@ public class Bootstrap extends Job
 			S9.componentID.project.taskStatuses.get( 0 ).Tasks.add( T20 );
 			S9.storiesTask.add( T20 );
 			T20.save();
-			
+
 			Task T21 = new Task();
 			T21.description = "Coding4";
 			T21.taskStory = S1;
@@ -573,8 +550,7 @@ public class Bootstrap extends Job
 			S1.componentID.project.taskStatuses.get( 0 ).Tasks.add( T21 );
 			S1.storiesTask.add( T21 );
 			T21.save();
-			
-			
+
 			Task T22 = new Task();
 			T22.description = "Coding5";
 			T22.taskStory = S1;
@@ -589,9 +565,7 @@ public class Bootstrap extends Job
 			S1.componentID.project.taskStatuses.get( 0 ).Tasks.add( T22 );
 			S1.storiesTask.add( T22 );
 			T22.save();
-			
-			
-			
+
 			Task T23 = new Task();
 			T23.description = "Coding6";
 			T23.taskStory = S1;
@@ -606,7 +580,7 @@ public class Bootstrap extends Job
 			S1.componentID.project.taskStatuses.get( 0 ).Tasks.add( T23 );
 			S1.storiesTask.add( T23 );
 			T23.save();
-			
+
 			Task T24 = new Task();
 			T24.description = "Coding5";
 			T24.taskStory = S1;
@@ -621,7 +595,7 @@ public class Bootstrap extends Job
 			S1.componentID.project.taskStatuses.get( 0 ).Tasks.add( T24 );
 			S1.storiesTask.add( T24 );
 			T24.save();
-			
+
 			Task T25 = new Task();
 			T25.description = "Coding";
 			T25.taskStory = S1;
@@ -636,7 +610,6 @@ public class Bootstrap extends Job
 			S1.componentID.project.taskStatuses.get( 0 ).Tasks.add( T25 );
 			S1.storiesTask.add( T25 );
 			T25.save();
-			
 
 			Task T26 = new Task();
 			T26.description = "Reviewing7";
@@ -652,8 +625,7 @@ public class Bootstrap extends Job
 			S8.componentID.project.taskStatuses.get( 0 ).Tasks.add( T26 );
 			S8.storiesTask.add( T26 );
 			T26.save();
-			
-		
+
 			Task T27 = new Task();
 			T27.description = "Documentation";
 			T27.taskStory = S8;
@@ -668,7 +640,7 @@ public class Bootstrap extends Job
 			S8.componentID.project.taskStatuses.get( 0 ).Tasks.add( T27 );
 			S8.storiesTask.add( T27 );
 			T27.save();
-			
+
 			Task T28 = new Task();
 			T28.description = "Reviewing9";
 			T28.taskStory = S8;
@@ -683,7 +655,6 @@ public class Bootstrap extends Job
 			S8.componentID.project.taskStatuses.get( 0 ).Tasks.add( T28 );
 			S8.storiesTask.add( T28 );
 			T28.save();
-			
 
 			Task T29 = new Task();
 			T29.description = "senario reviewer";
@@ -699,8 +670,7 @@ public class Bootstrap extends Job
 			S8.componentID.project.taskStatuses.get( 0 ).Tasks.add( T29 );
 			S8.storiesTask.add( T29 );
 			T29.save();
-			
-			
+
 			Task T30 = new Task();
 			T30.description = "Reviewing5";
 			T30.taskStory = S8;
@@ -715,8 +685,6 @@ public class Bootstrap extends Job
 			S8.componentID.project.taskStatuses.get( 0 ).Tasks.add( T30 );
 			S8.storiesTask.add( T30 );
 			T30.save();
-			
-			
 
 			Task T31 = new Task();
 			T31.description = "Coding";
@@ -733,8 +701,6 @@ public class Bootstrap extends Job
 			S4.componentID.project.taskStatuses.get( 0 ).Tasks.add( T31 );
 			S4.storiesTask.add( T31 );
 			T31.save();
-			
-			
 
 			Task T32 = new Task();
 			T32.description = "Coding";
@@ -751,9 +717,6 @@ public class Bootstrap extends Job
 			S4.componentID.project.taskStatuses.get( 0 ).Tasks.add( T32 );
 			S4.storiesTask.add( T32 );
 			T32.save();
-			
-			
-			
 
 			Task T33 = new Task();
 			T33.description = "Coding";
@@ -770,8 +733,6 @@ public class Bootstrap extends Job
 			S4.componentID.project.taskStatuses.get( 0 ).Tasks.add( T33 );
 			S4.storiesTask.add( T33 );
 			T33.save();
-			
-			
 
 			Task T34 = new Task();
 			T34.description = "Coding";
@@ -788,8 +749,7 @@ public class Bootstrap extends Job
 			S4.componentID.project.taskStatuses.get( 0 ).Tasks.add( T34 );
 			S4.storiesTask.add( T34 );
 			T34.save();
-			
-			
+
 			Task T35 = new Task();
 			T35.description = "Senario testing";
 			T35.taskStory = S6;
@@ -805,7 +765,7 @@ public class Bootstrap extends Job
 			S7.componentID.project.taskStatuses.get( 0 ).Tasks.add( T35 );
 			S7.storiesTask.add( T35 );
 			T35.save();
-			
+
 			Task T36 = new Task();
 			T36.description = "Documentation testing";
 			T36.taskStory = S6;
@@ -821,7 +781,7 @@ public class Bootstrap extends Job
 			S7.componentID.project.taskStatuses.get( 0 ).Tasks.add( T36 );
 			S7.storiesTask.add( T36 );
 			T36.save();
-			
+
 			Task T37 = new Task();
 			T37.description = "Senario testing";
 			T37.taskStory = S6;
@@ -837,8 +797,7 @@ public class Bootstrap extends Job
 			S7.componentID.project.taskStatuses.get( 0 ).Tasks.add( T37 );
 			S7.storiesTask.add( T37 );
 			T37.save();
-			
-			
+
 			Task T38 = new Task();
 			T38.description = "Senario testing";
 			T38.taskStory = S6;
@@ -854,9 +813,7 @@ public class Bootstrap extends Job
 			S7.componentID.project.taskStatuses.get( 0 ).Tasks.add( T38 );
 			S7.storiesTask.add( T38 );
 			T38.save();
-			
-			
-			
+
 			// ************ LOGS BEGIN ************
 			for( int l = 0; l < 30; l++ )
 			{
@@ -891,13 +848,13 @@ public class Bootstrap extends Job
 
 			Meeting m2 = new Meeting( "Scrum meeting", users.get( 0 ), "15 minute scrum meeting", new Date().getTime() + 1000000000, new Date().getTime(), "board", "scrum", projects.get( 0 ), Sp1 );
 			m2.components.add( c1 );
-		
+
 			c1.componentMeetings.add( m2 );
 			m2.save();
 
 			Meeting m3 = new Meeting( "Scrum meeting", users.get( 0 ), "15 minute scrum meeting", new Date().getTime() + 6000000, new Date().getTime(), "board", "scrum", projects.get( 0 ), Sp1 );
 			m3.components.add( c2 );
-		
+
 			c2.componentMeetings.add( m3 );
 			m3.save();
 
