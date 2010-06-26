@@ -384,6 +384,15 @@ public class Boards extends SmartCRUD {
 	public static void showHiddenColumn(long cid,long uid)
 	{
 		Column c=Column.findById( cid );
+		int count=0;
+		for(int i=0;i<c.board.columns.size();i++)
+		{
+			if(c.board.columns.get(i).onBoard==true)
+				count++;
+			System.out.println(c.board.columns.get(i).name+" "+c.board.columns.get(i).sequence);
+			
+		}
+		c.sequence=count;
 		c.onBoard=true;
 		c.save();
 		Calendar cal = new GregorianCalendar();
@@ -410,6 +419,7 @@ public class Boards extends SmartCRUD {
 		Column c=Column.findById( cid );
 		System.out.println(c.name);
 		c.onBoard=false;
+		c.sequence=-1;
 		c.save();
 		Calendar cal = new GregorianCalendar();
 		User u = User.findById(uid);
