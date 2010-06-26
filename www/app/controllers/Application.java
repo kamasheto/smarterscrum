@@ -166,14 +166,16 @@ public class Application extends SmartController
 	 * @param id
 	 *            user id
 	 */
-	@Check( "canEditProfile" )
+	
 	public static void profile( long id )
 	{
+		
 		if( id == 0 )
 		{
 			id = Security.getConnected().id;
 		}
 		User user = User.findById( id );
+		Security.check(Security.getConnected().equals(user));
 		render( user );
 	}
 
@@ -186,17 +188,16 @@ public class Application extends SmartController
 	 * @param email
 	 * @param id
 	 *            user id
-	 */
-	@Check( "canEditProfile" )
+	 */	
 	public static void editProfile( @Required( message = "You must enter a name" ) String name, String pwd1, String pwd2, @Required( message = "You must enter an email" ) @Email( message = "You must enter a valid email" ) String email, long id )
 	{
+		User usr = User.findById( id );
+		Security.check(Security.getConnected().equals(usr));
 		if( Validation.hasErrors() || (pwd1.length() > 0 && !pwd1.equals( pwd2 )) )
 		{
 			flash.error( "An error has occured" );
 			profile( id );
 		}
-
-		User usr = User.findById( id );
 		String oldEmail = usr.email;
 		usr.name = name;
 		if( pwd1.length() > 0 )
