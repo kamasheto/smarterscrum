@@ -403,8 +403,9 @@ hideLoader('addES','loaderES');
 	<div class="objectForm">
 	#{form action:@save(object.id), enctype:'multipart/form-data'}
 
-<div id="accordion">
 
+<div id="accordion">
+#{if connected.in(object).can('editProject') }
 <div id="sd" class="sprintsDuration">
 	<h3>
 		Default Sprint Duration:
@@ -425,7 +426,8 @@ hideLoader('addES','loaderES');
 	<img id="loaderSP"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
 	</p>
 		</div>
-		
+		#{/if}
+		#{if connected.in(object).can('editProject') }
 	<div class="meetingTypes">
 	<h3>
 		Default Meeting Types:
@@ -451,10 +453,10 @@ hideLoader('addES','loaderES');
 	
 	<img id="loaderMB"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
 	</div>
+	#{/if}
 	
 	
-	
-	
+	#{if connected.in(object).can('editProject') }
 	<div class="taskTypes">
 	<h3>
 		Default Task Types:
@@ -477,7 +479,8 @@ hideLoader('addES','loaderES');
 	
 	<img id="loaderTSK"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
 	</div>
-	
+	#{/if}
+	#{if connected.in(object).can('editProject') }
 	<div class="taskStatus">
 	<h3>
 		Default Task Statuses:
@@ -502,7 +505,8 @@ hideLoader('addES','loaderES');
 	
 	</div>
 	
-		
+		#{/if}
+		#{if connected.in(object).can('editProject') }
 	<div class="storyPriorities">
 	<h3>
 		Edit Story Priorities:
@@ -530,7 +534,8 @@ hideLoader('addES','loaderES');
 	
 		<img id="loaderST"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
 		</div>
-		
+		#{/if}
+		#{if connected.in(object).can('editProject') }
 		<div class="meetingReSchedule">
 	<h3>
 		Edit Meeting Rescheduling Policies:
@@ -544,8 +549,8 @@ hideLoader('addES','loaderES');
 		<br>
 		 <INPUT id="checkBoxAutoRS"TYPE=CHECKBOX NAME="autoReschedule"  onclick="changeAutoRS()"  ${object.autoReschedule ? 'checked': ''} >Auto Meeting Reschedule</p>
 		</div>
-		
-		
+		#{/if}
+		#{if connected.in(object).can('editProject') }
 				<div class="meetingReSchedule">
 	<h3>
 		Edit Effort Estimation Points Unit:
@@ -577,7 +582,7 @@ hideLoader('addES','loaderES');
 	</p>
 
 		</div>
-	
+	#{/if}
 	
 	<br>
 		
