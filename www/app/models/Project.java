@@ -635,5 +635,15 @@ public class Project extends SmartModel
 		c.save();
 	}
 	
+	public int getNumberOfRequests() {
+		List<Request> requests = Request.find("byIsDeletionAndProject", false, this).fetch();
+		return requests.size();
+	}
+	
+	public int getNumberOfDeletionRequests() {
+		List<Request> requests = Request.find("byIsDeletionAndProject", true, this).fetch();
+		return requests.size();
+	}
+	
 
 }
