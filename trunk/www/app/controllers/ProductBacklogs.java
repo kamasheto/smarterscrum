@@ -28,15 +28,14 @@ public class ProductBacklogs extends SmartController {
 	 */
 	public static void index(long id, int isComp) {
 
-		
-		
 		User user = Security.getConnected();
 
 		boolean inproj = user.isAdmin;
 		String name = "";
 		if (isComp == 0) {
 			Project project = Project.findById(id);
-			Security.check(project.users.contains(Security.getConnected()));
+			Security.check(project.users.contains(Security.getConnected())
+					|| Security.getConnected().isAdmin);
 			name = project.name;
 			List<List<Story>> stories = new LinkedList<List<Story>>();
 			List<Sprint> sprints = project.sprints;
@@ -81,7 +80,7 @@ public class ProductBacklogs extends SmartController {
 					stories.get(a).get(j).succussSenario = tempS1;
 
 					String[] tempF = stories.get(a).get(j).failureSenario
-					.split("/n");
+							.split("/n");
 					String tempS2 = "";
 					for (int k = 0; k < tempF.length; k++)
 						tempS2 = tempS2 + tempF[k] + " <br/> ";
@@ -93,7 +92,9 @@ public class ProductBacklogs extends SmartController {
 
 		} else {
 			Component component = Component.findById(id);
-			Security.check(component.componentUsers.contains( Security.getConnected() ));
+			Security.check(component.componentUsers.contains(Security
+					.getConnected())
+					|| Security.getConnected().isAdmin);
 			name = component.name;
 			Long compId = component.id;
 			List<List<Story>> stories = new LinkedList<List<Story>>();
