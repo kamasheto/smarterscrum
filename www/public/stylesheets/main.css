@@ -553,3 +553,13 @@ h1,h2,h4,h5 {
 	border-bottom: 1px solid #eee;
 	position: relative;
 }
+
+/** project links **/
+ul.project_links a {
+	background:#ccc;
+	display:block;
+	float:left;
+	padding:10px;
+	margin:10px;
+	font-size:28px;
+}

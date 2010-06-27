@@ -13,6 +13,7 @@
  
 ${project.description?.nl2br()}
 </div>
+<ul class="project_links">
 <a href="javascript:;" onclick="$('#roles').toggle()">Project Roles</a>
 <div id="roles" class="roles" style="display: none; width:300px;">
 	#{list items:project.roles, as:'role'}
@@ -29,41 +30,34 @@ ${project.description?.nl2br()}
 </div>
 
 
-<br/>
-<a href="@{Projects.getProjectMembers(project.id)}">Members</a><br/>
+<a href="@{Projects.getProjectMembers(project.id)}">Members</a>
 
 <a href="tasks?id=${project.id}">Tasks</a>
 <!-- adding component's link by Amr Hany -->
-<br/>
 <a href="/projects/${project.id}/components">Components</a>
 
 <!-- adding sprints' link by minazaki -->
-<br/>
 <a href="@{Sprints.showsprints(project.id)}" >Sprints</a>
 
 <!-- adding meetings link @author ghadafakhry -->
-<br/>
 <a href="/projects/${project.id}/meetings">Meetings</a>
 
 <!-- adding meetings link @author ahmedKhaled7 -->
-<br/>
 <a href="/productbacklog/${project.id}/0">Product Backlog</a>
 
 <!--  adding impediment tasks @author Hadeer Younis -->
-<br/>
 <a href="@{ImpedimentTasks.viewImpedimentLog(project.id)}">Impediment Log</a>
 
 <!-- adding product role's link by Heba Elsherif -->
-<br/>
 <a href="/projects/${project.id}/productroles">Product Roles</a>
 
 
 <!--  Stories : Galal Aly -->
-<br /><a href="@{Storys.listStoriesInProject(project.id)}">Stories</a>
+<a href="@{Storys.listStoriesInProject(project.id)}">Stories</a>
 <!--  End Of Stories -->
 
 <!-- view boards @ author Dina Helal -->
-<br/><a href="javascript:;" onclick="$('#boards').toggle()">Boards</a>
+<a href="javascript:;" onclick="$('#boards').toggle()">Boards</a>
 <div id="boards" class="roles" style="display:none;width:300px">
 	#{list items:project.sprints, as:'sprint'}
 		<a href="javascript:;" onclick="$('#s_${sprint.id}').toggle()"  style="float:left;width:200px;">Sprint ${sprint.sprintNumber}</a><br/>
@@ -73,29 +67,25 @@ ${project.description?.nl2br()}
 #{if sprint.finalsnapshot==null }
 <script type="text/javascript">
 $.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}});
-
-
 </script>
-#{/if}#{/if}
+#{/if}
+#{/if}
 #{if sprint.finalsnapshot==null }
 <a title="Take a look @ the full task board?" href="/boards/loadboard?sprintID=${sprint.id}">View Sprint ${sprint.id} Task Board</a>
-
-		<br/>#{/if}
-		#{if sprint.finalsnapshot!=null }
+#{/if}
+#{if sprint.finalsnapshot!=null }
 <a title="Take a look @ the full task board?" href="@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)} ">View Sprint ${sprint.id} Task Board</a>
 #{/if}
 
-		<a href="javascript:;" onclick="$('#c_${sprint.id}').toggle()" title="view components' boards?" style="margin-left:20px;float:left;width:200px;">View Components' Boards</a>
-		<br/>
+<a href="javascript:;" onclick="$('#c_${sprint.id}').toggle()" title="view components' boards?" style="margin-left:20px;float:left;width:200px;">View Components' Boards</a>
 		<div id="c_${sprint.id}" style="display:none; margin-left:40px">
 		#{list items:sprint.project.components, as:'component'}
-		<a style="margin-left:20px" title="${component.name}'s sprint ${sprint.id} Task Board?"href="/boards/loadComponentBoard?sprintID=${sprint.id}&componentID=${component.id}">${component.name}</a><br/>
+		<a style="margin-left:20px" title="${component.name}'s sprint ${sprint.id} Task Board?"href="/boards/loadComponentBoard?sprintID=${sprint.id}&componentID=${component.id}">${component.name}</a>
 		#{/list}
 		</div>
-		<br/>
 		</div>
 		#{/list}
-		</div>
+		</ul>
 
 #{set 'moreLinks'}
 
@@ -167,7 +157,7 @@ profile related to this project
 #{/if}
 
 #{/set}
-
+</div>
 
 
 
