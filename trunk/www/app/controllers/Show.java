@@ -55,7 +55,7 @@ public class Show extends SmartController {
 	 */
 	public static void user(long id) {
 		User user = User.findById(id);
-		User me = User.find("byEmail", Security.connected()).first();
+		User me = Security.getConnected();
 		List<Project> myProjects = new LinkedList<Project>();
 		if (me.isAdmin)
 			myProjects = Project.findAll();
@@ -69,7 +69,7 @@ public class Show extends SmartController {
 
 	public static void project(long id) {
 		Project project = Project.findById(id);
-		List<Request> requests = Request.find("byUser", User.find("byEmail", Security.connected()).first()).fetch();
+		List<Request> requests = Request.find("byUser", Security.getConnected()).fetch();
 		List<Role> requestedRoles = new LinkedList<Role>();
 		for (Request request : requests) {
 			requestedRoles.add(request.role);
