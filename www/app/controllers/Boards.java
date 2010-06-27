@@ -398,7 +398,7 @@ public class Boards extends SmartCRUD {
 		User u = User.findById(uid);
 		Logs.addLog(u, "shown", "Column", cid, c.board.project, cal.getTime());
 		String message = u.name+" "+ "has shown " + c.name;
-		Notifications.notifyUsers(c.board.project, "Show Column", message, "showColumn", (byte) 0);
+		Notifications.notifyUsers(c.board.project, "Show Column",message, "addColumn", (byte) 0);
 		
 	}
 	/**
@@ -416,7 +416,7 @@ public class Boards extends SmartCRUD {
 	{
 		System.out.println(cid);
 		Column c=Column.findById( cid );
-		System.out.println(c.name);
+		
 		c.onBoard=false;
 		c.sequence=-1;
 		c.save();
@@ -424,7 +424,7 @@ public class Boards extends SmartCRUD {
 		User u = User.findById(uid);
 		Logs.addLog(u, "hided", "Column", c.id, c.board.project, cal.getTime());
 		String message = u.name+" " + "has hided " + c.name;
-		Notifications.notifyUsers(c.board.project, "Hide Column", message, "hideColumn", (byte) 0);
+		Notifications.notifyUsers(c.board.project, "Hide Column", message, "deleteColumn", (byte) 0);
 		
 		
 	}
