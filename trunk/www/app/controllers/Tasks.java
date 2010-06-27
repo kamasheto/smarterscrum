@@ -901,7 +901,7 @@ public class Tasks extends SmartCRUD {
 
 		// getting the actual status
 		Column col;
-		col = Column.find("bySequence", columnSequence).first();
+		col = Column.find("bySequenceAndBoard", columnSequence,b).first();
 		status = col.taskStatus;
 
 		// get the actual task_id in an int
