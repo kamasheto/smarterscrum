@@ -89,10 +89,10 @@ $(document).ready(function(){
 	});
 	});
 		
-	$('#board').click(function(event)
+	$('#ToggleBoard').click(function(event)
 	{
    		event.preventDefault();
-   		$('table').toggle(400);
+   		$('#mainBoard').toggle();
  	});
  	
 	$('#form').click(function(event)
@@ -275,7 +275,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 <!-- asmaak89 Part-->
 #{/set}
 
-<a href="" id="board">Toggle Board</a>
+<a href="" id="ToggleBoard">Toggle Board</a>
 
 <!-- Show Col drop down list by Dina -->
 <span style="display:none"> ${count=0}</span>
