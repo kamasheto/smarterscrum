@@ -108,7 +108,7 @@ $(document).ready(function(){
 	}); 
 	$('.b2').click(function()
 	{
-		$('.showcol').css('display','inline-block');	
+		$('.showcol').css('display','inline-block');	 
 	});   
 
 	$('.hideCol').click(function()
@@ -121,6 +121,8 @@ $(document).ready(function(){
 function showCol(c)
 {
 	$('.col_'+c).css('display','table-cell');	
+	var seloption = document.getElementById('changeCol');
+	seloption.selectedIndex='d';
 }
 function showHiddenCol(colid)
 {
@@ -176,13 +178,35 @@ $(function()
 
 <!--Tools-->
 #{set 'moreLinks'}
-<a href="/admin/projects/${p.id}/meetings/new?object.infrontBoard=true">Create Board Meeting<a/><br><br>	
-<a href="@{Snapshots.index(s.id,'board')}" >View snapshots</a><br><br>	
-<a href="javascript:take_snapshot();">Take Snapshot</a><br>
+<!-- view hidden Col by Hadeer -->
+#{if connected.in(p).can('ShowColumn')}
+<a href="#" class="b1 tiptitize" title="add hidden column?" type="button">Add Hidden Columns!</a><br/>	
+<select id="hadeer" onchange="showHiddenCol(hadeer.value)" style="display:none" class="hidecol">
+<option value="">view hiden columns</option>
+#{list items:hidencolumnsOfBoard, as:'c'}
+<option value= "${c.id}">${c.name}</option>
+#{/list}
+</select>
+#{/if}
+
+<!-- hide Col by Hadeer -->
+#{if connected.in(p).can('HideColumn')}
+<a href="#" class="b2 tiptitize" title="delete column?" type="button" >Delete Columns!</a><br/>
+
+<select id="hadeer2" onchange="hideCol(hadeer2.value)" style="display:none" class="showcol">
+<option value="">delete columns</option>
+#{list items:columnsOfBoard, as:'c'}
+<option value= "${c.id}">${c.name}</option>
+#{/list}
+</select>
+#{/if}
+
+<a href="/admin/projects/${p.id}/meetings/new?object.infrontBoard=true">Create Board Meeting<a/><br/>	
+<a href="@{Snapshots.index(s.id,'board')}" >View snapshots</a><br/>
+<a href="javascript:take_snapshot();">Take Snapshot</a><br/><br/>
 <!-- asmaak89 Part-->
 <div id="current">
-<div class="smartBarHeader" >Current Meeting</div>
-<br>
+<b><div style="font-size:small;" class="smartBarHeader" >Current Meeting</div></b>
 <br/>	
 #{list items:u, as:'users'}
 <a href ="/meetings/${users.meeting.id}"> <b>Meeting:${users.meeting.name}</b></a>
@@ -256,41 +280,18 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 <!-- Show Col drop down list by Dina -->
 <span style="display:none"> ${count=0}</span>
 <select id="changeCol" onchange="showCol(changeCol.value)">
-<option value="">view columns</option>
+<option id="d" value="d">View Hidden Columns</option>
 #{list items:columnsOfBoard, as:'c'}
 <option value= "${count}">${c.name}</option>
 <span style="display:none"> ${count=count+1}</span>
 #{/list}	
 </select>
 
-<!-- view hidden Col by Hadeer -->
-#{if connected.in(p).can('ShowColumn')}
-<button class="b1" type="button">Show Hidden Columns!</button>	
-<select id="hadeer" onchange="showHiddenCol(hadeer.value)" style="display:none" class="hidecol">
-<option value="">view hiden columns</option>
-#{list items:hidencolumnsOfBoard, as:'c'}
-<option value= "${c.id}">${c.name}</option>
-#{/list}
-</select>
-#{/if}
-
-<!-- hide Col by Hadeer -->
-#{if connected.in(p).can('HideColumn')}
-<button class="b2" type="button" >Delete Columns!</button>
-
-<select id="hadeer2" onchange="hideCol(hadeer2.value)" style="display:none" class="showcol">
-<option value="">delete columns</option>
-#{list items:columnsOfBoard, as:'c'}
-<option value= "${c.id}">${c.name}</option>
-#{/list}
-</select>
-#{/if}
-
 <div id="drag">
 <table id="mainBoard" class="draggable"  border="1">
 
 <tr> <!-- headers row -->					
-	<td >Headers</td>
+	<td>Headers</td>
 	
 	<!-- set flag based on logged in user -->
 	<span style="display:none"> ${count=0}</span>
