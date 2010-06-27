@@ -230,7 +230,6 @@ public class User extends SmartModel {
 			}
 		}
 		Role result = new Role(null);
-		result.systemAdminRole = isAdmin;
 
 		for (Role r : temp) {
 			for (Permission permission : r.permissions) {
