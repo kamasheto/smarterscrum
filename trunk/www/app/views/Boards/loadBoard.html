@@ -201,29 +201,29 @@ $(function()
 </select>
 #{/if}
 
-<a href="/admin/projects/${p.id}/meetings/new?object.infrontBoard=true">Create Board Meeting<a/><br/>	
-<a href="@{Snapshots.index(s.id,'board')}" >View snapshots</a><br/>
-<a href="javascript:take_snapshot();">Take Snapshot</a><br/><br/>
+<a class="titptitize" title="create meeting?" href="/admin/projects/${p.id}/meetings/new?object.infrontBoard=true">Create Meeting<a/><br/>	
+<a class="titptitize" title="view board snapshots?" href="@{Snapshots.index(s.id,'board')}" >View snapshots</a><br/>
+<a class="titptitize" title="take board snapshot?" href="javascript:take_snapshot();">Take Snapshot</a><br/><br/>
 <!-- asmaak89 Part-->
 <div id="current">
-<b><div style="font-size:small;" class="smartBarHeader" >Current Meeting</div></b>
+<b><div style="font-size:small;" class="smartBarHeader" >Running Meetings</div></b>
 <br/>	
 #{list items:u, as:'users'}
-<a href ="/meetings/${users.meeting.id}"> <b>Meeting:${users.meeting.name}</b></a>
-Start At
+<a href ="/meetings/${users.meeting.id}"> <b>Meeting: ${users.meeting.name}</b></a><br/>
+<u>Start date</u>
 <div class="formatTime">${users.meeting.startTime}</div>
 <br />
-End At
+<u>End date</u>
 <div class="formatTime">${users.meeting.endTime}</div>
 <br/>
+<u>Attendees</u>
 #{list items:users , as:'user'}
-<a id=${user.id} href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a><br/>	
+<a id=${user.id} href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a>
 #{/list}
-<br>
 <br/>
 <div id="myLayer"></div>
 <!--Amr Abdelwahab-->
-<a href="javascript:take_meetingsnapshot(${users.meeting.id});"><b>Attach a SnapShot</b><a/><br/>		<br />
+<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u><a/><br/><br />
 <span id="tzcd"></span>
 <a  href="javascript: extend(${users.meeting.id});"><b>extend another hour</b></a>
 <a  href="javascript: end(${users.meeting.id});"><b>end meeting</b></a>
