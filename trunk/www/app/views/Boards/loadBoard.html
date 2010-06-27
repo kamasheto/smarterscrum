@@ -153,13 +153,13 @@ eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,lo
 $(function() 
 {
 	$('.editDES').editable(function(value)
-		{var taskId 	= parseInt($('#lolid').closest("span").attr("id"));  
+		{var taskId 	= parseInt($('#lolid').closest("div").attr("id"));  
     	 $.post('@{Tasks.editTaskDesc2()}',{id:taskId, userId:selectedUser, desc:value});
        	 return(value);   
     	},{indicator : 'Saving...',});
 
 	$('.editCOL').editable(function(value)
-    	   {var colId 	= parseInt($('#lolid').closest("span").attr("id"));   
+    	   {var colId 	= parseInt($('#lolid').closest("div").attr("id"));   
     	    $.post('@{Columns.editColumnName}',{id:colId, name:value, userId:selectedUser});
 		    return(value);
     	   },{indicator : 'Saving...',});
@@ -302,9 +302,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		
 	<td style="text-align:center;" id="${columnsOfBoard.id} " class="col_${count}"> 	
 		#{if flag}<!-- if admin -->
-		<div style="display:inline-block" class="${col.name}">			
-		<span style="font-size:small; display:inline-block; width:3cm "id="${col.id}" title="Edit the column name?" class="editCOL ccolumn " >${col.name}</span>
-		</div>
+		<div style="font-size:small;display:inline-block;width:3cm" class="${col.name} editCOL ccolumn" id="${col.id}" title="Edit the column name?">${col.name}</div>
 		#{/if}
 		#{else} <!-- if not admin -->
 		<div style="font-size:small; display:inline-block;" class="${col.name} ">${col.name}</div>
@@ -350,9 +348,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<div style="max-width:130px" id="task-${task.id}_T" class="drag">
 		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor}; max-width:110px" border=0px id="${task.id}_small">
 		<a id="task-${task.id}" style="font-size:x-large;" border=0px class="ctask">-</a>T ${task.id} ${task.description}
-		<a class="SmallSticky"  style="cursor: pointer !important" id="${task.id}"  >
-		<span style="display:inline-block; width:3cm "  title="Edit task info?" >view/edit info..</span>
-		</a>
+		<a class="SmallSticky tiptitize" title="Edit task info?" style="cursor: pointer !important" id="${task.id}">view/edit info..</a>
 		</div>
 		</div>
 		<a id="task-${task.id}_hidden" style="display:none; font-size:large;" class="showtask">+</a>
@@ -371,16 +367,12 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<span style="display:none"> ${flag2=true}</span>
 		#{/if}
 		#{if flag2 || controllers.Security.getConnected().equals(task.assignee)} <!-- if has permission (desc) or assignee -->
-		<div id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}">
-		<span id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}"  title="Edit description?" >${task.description}</span>
-		</div>	
+		<div style="width:3cm" id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id} tiptitize" title="Edit description?">${task.description}</div>	
 		<div style="display:none" class="noedit noedit_${task.assignee.id}"id="${task.id}_des" border=0px >${task.description}</div>	
 		#{/if}
 		#{else} <!-- if doesn't have have permission (desc) nor assignee -->
 		<div class="noedit noedit_${task.assignee.id}"id="${task.id}_des" border=0px >${task.description}</div>
-		<div style="display:none" id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}">
-		<span id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}"  title="Edit description?" >${task.description}</span>
-		</div>		
+		<div style="display:none;width:3cm" id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}" title="Edit description?">${task.description}</div>		
 		#{/else}
 		
 		<!-- set flag for logged in user (edit assignee) -->								
@@ -428,8 +420,8 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<div class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${task.taskType.name}</div>
 		#{/else}
 		</p>
-		<a id="${task.id}_HiddenSticky" >
-		<span style="text-align:right; display:inline-block; width:3cm "  title="Done Editing?" >Done</span></a>
+		<a href="#" id="${task.id}_HiddenSticky">
+		<span style="text-align:right; display:inline-block; width:3cm " title="Done Editing?" >Done</span></a>
 		</div>
 		</div>
 		</div>
