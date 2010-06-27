@@ -1,6 +1,13 @@
 package controllers;
 
+/**
+ * About controller, handles /about URLs
+ */
 public class About extends SmartController {
+	/**
+	 * Default /about action, shows image of smartsoft with title on each
+	 * developer
+	 */
 	public static void index() {
 		String[] data = { "Amr Hany (C2), the CRUD guru!<br />Amr, the man behind the chat system, is akbar men keda bekter", // Amr
 		// Hany
