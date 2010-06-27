@@ -288,4 +288,8 @@ public class Users extends SmartCRUD {
 			render("CRUD/list.html", type, objects, count, totalCount, page, orderBy, order);
 		}
 	}
+	
+	public static void delete() {
+		forbidden();
+	}
 }
