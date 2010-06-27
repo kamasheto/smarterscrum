@@ -12,10 +12,26 @@ cursor:move;
 #{set 'moreScripts'}
 <script  type="text/javascript" src="@{'/public/javascripts/dragtablenorm.js/'}" ></script>
 <script  type="text/javascript" src="@{'/public/javascripts/sorttable.js/'}" ></script>
+<script language="javascript" type="text/javascript" src="@{'/public/javascripts/jeditable-mod.js'}"></script>
 <script type="text/javascript">
+$(function() 
+		{
+		    $('.des').editable(
+		    	    function(value,settings)
+		    	       {
+		    	    	 var data 	= parseInt($('#lolid').closest("td").attr("id"));
+		     	        $.post('@{Tasks.editTaskDesc()}',
+		     	            {id:data, desc:value});
+
+		         	    return(value);      
+		    	    },
+		    	    {    
+		    	        indicator : 'Saving...',
+		    	        
+		    	    });});
 function changeStatus(id,statID)
 {
-	  $.post('@{ImpedimentTasks.changeStatus()}',{taskId:id,type:statID},function(){alert(statID)});
+	  $.post('@{ImpedimentTasks.changeStatus()}',{taskId:id,type:statID},function(){$('#editor'+id).toggle();$('#text'+id).toggle()});
 }
 </script>
 #{/set}
@@ -25,8 +41,6 @@ function changeStatus(id,statID)
 <li><a href="/tasks/choose?Proj_id=${proj.id}">Impediment Tasks</a></li>
 #{/set}
 #{ifnot connected.projects.contains(proj)}
-
-
 <div style="padding: 10px;" class="ui-state-error ui-corner-all">
      <span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span>
      <strong>Alert:</strong> You are prohibited to see this page.
@@ -102,12 +116,14 @@ function hide()
 		#{list items:tasks, as:'task'}
 		<tr>
 			<td class="id"><a title="view the task reports?" href="@{Tasks.getReport(task.id)}">${task.id}</a></td>
-			<td class="des">${task.description}</td>
+			<td id="${task.id}"class="des">${task.description}</td>
 			<td class="rep"><a title="view user?" href="/show/user?id=${task.reporter.id}">${task.reporter.getDisplayName().raw()}</a></td>
 		 	<td class="stat">
 		 	#{if canEdit || connected.id==task.reporter.id}
-		 	
-		 	<form>
+		 	<span id="text${task.id}">
+		 	<a href="#" title="click to edit" onclick="$('#editor${task.id}').toggle();$('#text${task.id}').toggle();">
+		 	${task.taskStatus.name}</a></span>
+		 	<form id="editor${task.id}" style="display:none">
 					<select id="t_${task.id}"name="list" onchange="changeStatus(${task.id},$('#t_${task.id} option:selected').text());">
                 		#{list items:TaskStat, as:'stat'}
                 		#{if stat.name==task.taskStatus.name}

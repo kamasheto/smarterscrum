@@ -535,7 +535,7 @@ tr {
 	background-color: #efefef !important;
 }
 
-#sprint td form input,#Pstories td form input {
+#sprint td form input,#Pstories td form input, #impedimentLog td form input{
 	width: 100% !important;
 	height: 100% !important;
 	border: 0px !important;
