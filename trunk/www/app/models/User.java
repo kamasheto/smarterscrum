@@ -333,5 +333,12 @@ public class User extends SmartModel {
 			res= "No Role !!";
 		return res;
 	}
-
+	
+	public void removeRole(Role role) {
+		roles.remove(role);
+		if (roles.size() < 0) {
+			projects.remove(role.project);
+		}
+		save();
+	}
 }
