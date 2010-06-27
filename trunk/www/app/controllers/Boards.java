@@ -389,7 +389,6 @@ public class Boards extends SmartCRUD {
 		{
 			if(c.board.columns.get(i).onBoard==true)
 				count++;
-			System.out.println(c.board.columns.get(i).name+" "+c.board.columns.get(i).sequence);
 			
 		}
 		c.sequence=count;
@@ -398,7 +397,7 @@ public class Boards extends SmartCRUD {
 		Calendar cal = new GregorianCalendar();
 		User u = User.findById(uid);
 		Logs.addLog(u, "shown", "Column", cid, c.board.project, cal.getTime());
-		String message = u.name + "has shown " + c.name;
+		String message = u.name+" "+ "has shown " + c.name;
 		Notifications.notifyUsers(c.board.project, "Show Column", message, "showColumn", (byte) 0);
 		
 	}
@@ -424,7 +423,7 @@ public class Boards extends SmartCRUD {
 		Calendar cal = new GregorianCalendar();
 		User u = User.findById(uid);
 		Logs.addLog(u, "hided", "Column", c.id, c.board.project, cal.getTime());
-		String message = u.name + "has hided " + c.name;
+		String message = u.name+" " + "has hided " + c.name;
 		Notifications.notifyUsers(c.board.project, "Hide Column", message, "hideColumn", (byte) 0);
 		
 		
