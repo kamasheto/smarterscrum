@@ -213,7 +213,7 @@ public class ImpedimentTasks extends SmartController
 				users =proj.roles.get( i ).users;
 		}
 		users.add( t.reporter );
-		Notifications.notifyUsers( users, "Impediment reported", "The status of the impediment task " + taskId + "has been changed to" + type, (byte) -1 );
+		Notifications.notifyUsers( users, "Impediment reported", "The status of the impediment task " + taskId + " has been changed to " + type, (byte) -1 );
 		Logs.addLog( proj, "updated", "Task", t.id );
 	}
 
