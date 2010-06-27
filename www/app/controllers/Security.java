@@ -47,7 +47,7 @@ public class Security extends Secure.Security {
 	 * @return false
 	 */
 	public static boolean check(boolean can) {
-		if (!can) {
+		if (!can && !Security.getConnected().isAdmin) {
 			forbidden();
 		}
 		return false;
