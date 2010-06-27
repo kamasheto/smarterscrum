@@ -55,6 +55,9 @@ public class Show extends SmartController {
 	 */
 	public static void user(long id) {
 		User user = User.findById(id);
+		if (user == null || user.deleted) {
+			notFound();
+		}
 		User me = Security.getConnected();
 		List<Project> myProjects = new LinkedList<Project>();
 		if (me.isAdmin)
