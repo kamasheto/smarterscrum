@@ -1,23 +1,6 @@
 #{extends 'main.html' /} #{set title: project.name + '\'s Product Backlog' /}
 #{set 'crumbs'}
-#{set 'moreStyles'}
-<style type="text/css">
-thead
-{
-cursor:move;
-}
-</style>
-#{/set}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
-#{if isComp}
-<li><a href="/projects/${project.id}/components">Components</a></li>
-<li><a href="/components/${compId}">${name}</a></li>
-#{/if}
-<li><a href="/productbacklog/${project.id}/${isComp}">Product Backlog</a></li>
-#{/set}
-<div>
-#{ifnot running}
+
 #{set 'moreScripts'}
 
 <script  type="text/javascript" src="@{'/public/javascripts/dragtablenorm.js/'}" ></script>
@@ -108,7 +91,25 @@ $(function()
  });
 </script>
 #{/set}
-#{/ifnot}
+
+#{set 'moreStyles'}
+<style type="text/css">
+thead
+{
+cursor:move;
+}
+</style>
+#{/set}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
+#{if isComp}
+<li><a href="/projects/${project.id}/components">Components</a></li>
+<li><a href="/components/${compId}">${name}</a></li>
+#{/if}
+<li><a href="/productbacklog/${project.id}/${isComp}">Product Backlog</a></li>
+#{/set}
+<div>
+#{ifnot running}#{/ifnot}
 #{else}
 <div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
 	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
@@ -125,7 +126,7 @@ $(function()
 
 	
 
-<div id="stories">
+<div >
 #{ifnot stories} 	
 #{if inproj}
 The project has no stories yet.
