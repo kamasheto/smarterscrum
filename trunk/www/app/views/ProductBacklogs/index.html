@@ -12,8 +12,7 @@ function edit_priority(id,p)
 {
 
  $.post('@{Storys.editPriority()}',
-			 {id:id , p:p},
-			 function(){alert(id,p)});
+			 {id:id , p:p});
 	 return true;
 }
 
