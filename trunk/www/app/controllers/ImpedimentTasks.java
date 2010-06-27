@@ -206,11 +206,11 @@ public class ImpedimentTasks extends SmartController
 		t.taskStatus = newType;
 		t.save();
 		Sprint s = Sprint.findById( t.taskSprint.id );
-		ArrayList<User> users = new ArrayList<User>( 2 );
+		List<User> users = new ArrayList<User>( 2 );
 		for( int i = 0; i < proj.roles.size(); i++ )
 		{
 			if( proj.roles.get( i ).name.equalsIgnoreCase( "Scrum Master" ) )
-				users = (ArrayList<User>) proj.roles.get( i ).users;
+				users =proj.roles.get( i ).users;
 		}
 		users.add( t.reporter );
 		Notifications.notifyUsers( users, "Impediment reported", "The status of the impediment task " + taskId + "has been changed to" + type, (byte) -1 );
