@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 public class Role extends SmartModel {
 	public String name;
 
+	public boolean systemAdmin;
+	
 	@ManyToOne
 	public Project project;
 
@@ -74,6 +76,11 @@ public class Role extends SmartModel {
 	 * @return true if role could, false otherwise
 	 */
 	public boolean can(String action) {
+		// System admins can, really, do anything..
+		if (systemAdmin) {
+			return true;
+		}
+		
 		for (Permission perm : permissions) {
 			if (perm.name.equalsIgnoreCase(action)) {
 				return true;
