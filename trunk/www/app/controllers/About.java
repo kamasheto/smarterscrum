@@ -1,7 +1,7 @@
 package controllers;
 
 /**
- * About controller, handles /about URLs
+ * About controller, handles all about us requests
  */
 public class About extends SmartController {
 	/**
