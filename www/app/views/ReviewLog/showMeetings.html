@@ -89,15 +89,21 @@ Shows the list of meetings  for the scrum master-->
 <br>
 
 #{if directLink}
-<h3>Access Denied, You should select a Project first</h3>
+	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+	<strong>NOTE: </strong>Access Denied, You should select a Project first.
+</div>
+
 #{/if}
 
 #{else}
 
 #{ifnot reviewMeetings}
+	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+	<strong>NOTE: </strong>There are no meetings available to be displayed.
+</div>
 	
-	<h3>There are no meetings available to be displayed.</h3>
-		
 #{/ifnot}
 
 #{else}
@@ -111,7 +117,9 @@ Shows the list of meetings  for the scrum master-->
 	<h3>The Artifact(s), Attendee(s), and Task(s) for ${meeting.name} of type ${meeting.type} are:</h3>
 		
 		#{ifnot meeting.hasNotes()}
-			<h3>There are no notes for the ${meeting.name} Meeting</h3>
+			<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+	<strong>NOTE: </strong>There are no notes for the ${meeting.name} Meeting</div>
 		#{/ifnot}
 		
 		#{else}
@@ -144,7 +152,9 @@ Shows the list of meetings  for the scrum master-->
 <br>
 
 		#{ifnot meeting.tasks}
-		<h6>There are no tasks for the ${meeting.name} Meeting</h6>
+		<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+	<strong>NOTE: </strong>There are no tasks for the ${meeting.name} Meeting</div>
 		#{/ifnot}
 		
 		#{else}
@@ -168,7 +178,9 @@ Shows the list of meetings  for the scrum master-->
 <br>
 	
 		#{ifnot meeting.hasAttendees()}
-			<h6>There are no attendees for the ${meeting.name} Meeting</h6>
+			<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+	<strong>NOTE: </strong>There are no attendees for the ${meeting.name} Meeting</div>
 		#{/ifnot}		
 	#{else}
 	<h3> Attending Developers in ${meeting.name} Meeting:</h3> <br>
