@@ -21,7 +21,7 @@
 	#{/form}
 	</div>
 	
-	#{form @del(object.id)}
+	#{form @del(object.id, true)}
 		<p class="crudDelete">
 			<input type="submit" value="&{'crud.delete', type.modelName}" />
 		</p>

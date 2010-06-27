@@ -110,12 +110,12 @@ public class Users extends SmartCRUD {
 	 * @param id
 	 *            user id
 	 */
-	public static void del(long id) {
+	public static void del(long id, boolean fromACP) {
 		Security.check(Security.getConnected().isAdmin);
 		User user = User.findById(id);
 		user.deleted = true;
 		user.save();
-		redirect("/show/users");
+		redirect(fromACP ? "/admin/users" : "/show/users");
 		// redirect( flash.get( "url" ) );
 	}
 
