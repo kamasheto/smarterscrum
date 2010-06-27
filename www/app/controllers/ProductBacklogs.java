@@ -88,7 +88,7 @@ public class ProductBacklogs extends SmartController {
 			Component component = Component.findById(id);
 			name = component.name;
 			Long compId = component.id;
-			List<Story> stories = component.componentStories;
+			List<List<Story>> stories = new LinkedList<List<Story>>();
 			Project project = component.project;
 			List<Sprint> sprints = project.sprints;
 			boolean running = false;
@@ -126,6 +126,8 @@ public class ProductBacklogs extends SmartController {
 
 			}
 
+			List<Story> compStories = component.componentStories;
+			stories.add(compStories);
 			render(stories, project, running, isComp, inproj, name, compId);
 		}
 
