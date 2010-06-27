@@ -93,7 +93,7 @@ public class ProductBacklogs extends SmartController {
 
 		} else {
 			Component component = Component.findById(id);
-			Security.check(component.project.users.contains(Security.getConnected()));
+			Security.check(component.componentUsers.contains( Security.getConnected() ));
 			name = component.name;
 			Long compId = component.id;
 			List<List<Story>> stories = new LinkedList<List<Story>>();
