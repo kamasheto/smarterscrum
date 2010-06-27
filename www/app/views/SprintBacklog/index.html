@@ -196,7 +196,7 @@ You are not a user in this component, you cannot view their tasks.
 			<a title="Take a look at the Review Log?"href="@{ReviewLog.showMeetings(projectId, componentID, id)}">View Review Log</a>
 	#{/set}
 
-	 #{if connected.in(project).can('editBacklog')}
+	 #{if Security.getConnected().in(project).can('editBacklog') || Security.getConnected().isAdmin}
           <span style="display:none"> ${flag=true}</span>
      #{/if}
           
