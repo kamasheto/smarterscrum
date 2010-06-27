@@ -72,13 +72,19 @@ public class ProductBacklogs extends SmartController {
 
 			for (int a = 0; a < stories.size(); a++) {
 				for (int j = 0; j < stories.get(a).size(); j++) {
-					String[] temp = stories.get(a).get(j).succussSenario
+					String[] tempS = stories.get(a).get(j).succussSenario
 							.split("/n");
-					String temp1 = "";
-					for (int k = 0; k < temp.length; k++)
-						temp1 = temp1 + temp[k] + " <br/> ";
-					stories.get(a).get(j).succussSenario = temp1;
+					String tempS1 = "";
+					for (int k = 0; k < tempS.length; k++)
+						tempS1 = tempS1 + tempS[k] + " <br/> ";
+					stories.get(a).get(j).succussSenario = tempS1;
 
+					String[] tempF = stories.get(a).get(j).failureSenario
+					.split("/n");
+					String tempS2 = "";
+					for (int k = 0; k < tempF.length; k++)
+						tempS2 = tempS2 + tempF[k] + " <br/> ";
+					stories.get(a).get(j).failureSenario = tempS2;
 				}
 			}
 
