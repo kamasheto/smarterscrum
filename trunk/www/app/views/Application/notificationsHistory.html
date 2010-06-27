@@ -1,22 +1,44 @@
 #{extends 'main.html' /} #{set title:'Notification History' /}
+<div id="notifContent">
 
-<h1>All News</h1>
 #{list items:notis, as:'notif'}
-<li>
-<DL>
-#{if notif.importance ='1'}
-<dt><font size =3 color = "green"><b>${notif.header} </b>:</font> </dt>
+#{set 'moreScripts'}
+<script type="text/javascript">
+       		$(function(){
+       			$('.notifYear').each(function(){
+					$(this).html( formatDate( new Date(Number($(this).html())), '<b>yyyy</b>') );
+				});
+       			$('.notifDM').each(function(){
+					$(this).html( formatDate( new Date(Number($(this).html())), 'dd <br/> MMM') );
+				});
+				
+       		});
+</script>
+#{/set}
+<div style="padding:10px; border-top:1px solid #eee">
+<div class="left" style="width:60px; margin:-10px 10px 10px 0px">
+	<div class="notifYear"style="width:50px;background-color:#b7568d ;height:10px;padding:5px; text-align:center;">${notif.date}</div>
+	<div class="notifDM bottomCornersRounded" style="width:50px;background-color:#eee;padding:5px; text-align:center;">${notif.date}</div>
+</div>
+<div class="left" style="margin-bottom:10px;">
+<b>${notif.header}</b><br/>
+${notif.body}.
+</div>
+<div class="right">
+#{if notif.importance =-1}
+	<div class ="allCornersRounded"style="width:60px;background-color:red ;height:10px;padding:5px; text-align:center; color:white">High</div>
 #{/if}
-#{elseif notif.importance ='0'}
-<dt><font size =3 color = "yellow"><b>${notif.header} </b>:</font> </dt>
+#{elseif notif.importance =1}
+	<div class ="allCornersRounded"style="width:60px;background-color:#8ef13c ;height:10px;padding:5px; text-align:center; color:black">Low</div>
 #{/elseif}
-#{else}
-<dt><font size =3 color = "red"><b>${notif.header} </b>:</font> </dt>
-#{/else}
-<dd><font size =2> ${notif.body}. </font>${notif.date}</dd>
-</DL></li>
+#{elseif notif.importance =0}
+	<div class ="allCornersRounded"style="width:60px;background-color:#FF9A00 ;height:10px;padding:5px; text-align:center; color:black">Medium</div>
+#{/elseif}
+</div>
+</div>
+<br style="clear:both"/>
 #{/list}
-
+<br/><br/><br/></div>
 #{set 'crumbs'}
 <a href="@{Application.notificationsHistory()}"> Notification History </a>
 #{/set}
