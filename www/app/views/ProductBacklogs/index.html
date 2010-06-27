@@ -8,6 +8,15 @@
 <script language="javascript" type="text/javascript" src="@{'/public/javascripts/jeditable-mod.js'}"></script>
 
 <script type="text/javascript">
+function edit_priority(id,p)
+{
+
+ $.post('@{Storys.editPriority()}',
+			 {id:id , p:p},
+			 function(){alert(id,p)});
+	 return true;
+}
+
 function popUp(URL) 
 {
 day = new Date();
@@ -203,7 +212,7 @@ Please check the columns that you would like to hide. Columns not checked will b
 		<td id=${story.id} class="editDES shDes">${story.description}</td>
 		<td class="shPriority">
 		<form>
-		<select id="s_${story.id}"name="list" onchange="Storys.editPriority(${story.id},$('#s_${story.id} option:selected').value());">
+		<select id="s_${story.id}" name="list" onchange="edit_priority(${story.id},$('#s_${story.id} option:selected').val());">
                 		#{list items:[1,2,3], as:'p'}
                 		#{if story.priority==p}
                 	
