@@ -19,13 +19,14 @@ import play.mvc.With;
 @With (Secure.class)
 public class Logs extends SmartCRUD {
 	/**
-	 * New method by mahmoudsakr
+	 * Shortcut to more general Logs.addLog
 	 * 
 	 * @param project
 	 * @param action_type
 	 * @param resource_type
 	 * @param resource_id
 	 * @return
+	 * @see Logs.addLog(User, String, String, long, Project, Date)
 	 */
 	public static boolean addLog(Project project, String action_type, String resource_type, long resource_id) {
 		addLog(Security.getConnected(), action_type, resource_type, resource_id, project, new Date());

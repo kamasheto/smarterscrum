@@ -11,7 +11,7 @@ import models.User;
 public class Security extends Secure.Security {
 
 	public static User getConnected() {
-		return User.find("byEmail", connected().toLowerCase()).first();
+		return User.find("byEmail", (isConnected() ? connected() : "").toLowerCase()).first();
 	}
 
 	/**
