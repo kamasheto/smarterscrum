@@ -59,13 +59,13 @@ public class Storys extends SmartCRUD {
 			}
 		}
 		if (project.priorities == null || project.priorities.isEmpty()) {
-			ok = false;
-			priorities = false;
+			//ok = false;
+			//priorities = false;
 		}
 		if (!ok)
 			render("Storys/error.html", priorities, components, roles);
 		// Sort the priorities according to their priority
-		Collections.sort(project.priorities);
+	//	Collections.sort(project.priorities);
 		try {
 			render(type, stories, project);
 		} catch (TemplateNotFoundException e) {
@@ -122,10 +122,10 @@ public class Storys extends SmartCRUD {
 		// Sort the priorities according to their priority (how priorities are
 		// compared is specified in the model Priority.java)
 		if (project.priorities == null || project.priorities.isEmpty()) {
-			ok = false;
+			//ok = false;
 			priorities = false;
 		}
-		Collections.sort(project.priorities);
+		//Collections.sort(project.priorities);
 
 		if (!ok)
 			render("Storys/error.html", priorities, components, roles);
@@ -225,6 +225,7 @@ public class Storys extends SmartCRUD {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.entityClass.newInstance();
+		validation.valid(object.edit("object", params));
 		// We will add the story to a project .. We need to get that project
 		Story storyObj = (Story) object;
 		Project project = storyObj.componentID.project;
@@ -777,7 +778,7 @@ public class Storys extends SmartCRUD {
 		if (!ok) {
 			render(ok, message);
 		} else {
-			render(project, storyId, cId);
+			render(project, storyId, cId,ok);
 		}
 	}
 }
