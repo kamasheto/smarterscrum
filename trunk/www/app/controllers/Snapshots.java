@@ -98,7 +98,7 @@ public class Snapshots extends SmartController {
 		Logs.addLog(user, "Took", "Snapshot", snap.id, p, cal.getTime());
 
 	}
-	public  long TakeSprintSnapshot(long sprintID) {
+	public static long TakeSprintSnapshot(long sprintID) {
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
 		Board b = p.board;
