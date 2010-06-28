@@ -9,27 +9,11 @@
 <p class="success">&{flash.success}</p>
 #{/if}
 <h2>${project.name}</h2>
-<div >
- 
+<div class="notchTop"></div>
+<div class="allCornersRounded projDes">
 ${project.description?.nl2br()}
-</div>
+</div><div>
 <ul class="project_links">
-<a href="javascript:;" onclick="$('#roles').toggle()"><img src="@{'/public/images/addrole.png'}"/>Request Roles</a>
-<div id="roles" class="roles" style="display: none; width:300px;">
-	#{list items:project.roles, as:'role'}
-		#{if !connected.roles.contains(role)}
-		#{set requested: requestedRoles.contains(role) /}
-		<div style="float:left;width:200px;">${role.name}</div>
-		<div style="float:left;">
-		<form style="display:inline;" action="/projecttasks/requestrole?id=${role.id}" method="post">
-			<input type="submit" value="request${requested ? 'ed' : ''}" class="${requested ? 'disabled' : ''}" ${requested ? 'disabled':''} /></form>
-		</div>	
-		<br  style="clear:both;"  />
-		#{/if}
-	#{/list}
-</div>
-
-
 <a  href="@{Projects.getProjectMembers(project.id)}"><img src="@{'/public/images/users.png'}"/>Members</a>
 
 <a  href="tasks?id=${project.id}"><img src="@{'/public/images/TASKS.png'}"/>Tasks</a>
@@ -54,11 +38,30 @@ ${project.description?.nl2br()}
 
 <!--  Stories : Galal Aly -->
 <a  href="@{Storys.listStoriesInProject(project.id)}"><img src="@{'/public/images/BOOK.png'}"/>Stories</a>
-<!--  End Of Stories -->
+<!--  End Of Stories --><div class="left">
+<a href="javascript:;" onclick="$('#boards').css('display','none');$('#roles').slideToggle(400)"><img src="@{'/public/images/addrole.png'}"/>Request Roles</a>
+<br style="clear:both"/>
+<div id="roles" style="margin-left:-100px;margin-right:-50px;position:relative;width:300px;z-index:999;display:none"><div class="notchTop" style="margin:0px auto"></div>
+<div class="allCornersRounded proj" style="width:280px;padding:10px;overflow:auto">
+	#{list items:project.roles, as:'role'}
+		#{if !connected.roles.contains(role)}
+		#{set requested: requestedRoles.contains(role) /}
+		<div style="float:left;width:200px;">${role.name}</div>
+		<div style="float:left;">
+		<form style="display:inline;" action="/projecttasks/requestrole?id=${role.id}" method="post">
+			<input type="submit" value="request${requested ? 'ed' : ''}" class="${requested ? 'disabled' : ''}" ${requested ? 'disabled':''} /></form>
+		</div>	
 
+		#{/if}
+	#{/list}</div></div></div>
+	<div class="left">
 <!-- view boards @ author Dina Helal -->
-<a  href="javascript:;" onclick="$('#boards').toggle()"><img src="@{'/public/images/DESKTOP.png'}"/>Boards</a>
-<div id="boards" class="roles" style="display:none;width:300px">
+<a  href="javascript:;" onclick="$('#roles').css('display','none');$('#boards').slideToggle(400)"><img src="@{'/public/images/DESKTOP.png'}"/>Boards</a>
+<br style="clear:both"/>
+
+
+<div id="boards" style="display:none;margin-left:-50px;margin-right:-50px;position:relative;width:210px;z-index:999;"><div class="notchTop" style="margin:0px auto"></div>
+<div  class="allCornersRounded proj" style="width:200px;float:left;padding:10px">
 	#{list items:project.sprints, as:'sprint'}
 		<a href="javascript:;" onclick="$('#s_${sprint.id}').toggle()"  style="float:left;width:200px;">Sprint ${sprint.sprintNumber}</a><br/>
 		<div id="s_${sprint.id}" style="display:none; margin-left:10px">
@@ -66,17 +69,22 @@ ${project.description?.nl2br()}
 #{if sprint.ended==true}
 #{if sprint.finalsnapshot==null }
 <script type="text/javascript">
-$.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}});
+$.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}},function(){
+	$('#sprint${sprint.id}').attr("href", "/boards/loadboard?sprintID=${sprint.id}");
+});
 </script>
-#{/if}
-#{/if}
-#{if sprint.finalsnapshot==null }
-<a title="Take a look @ the full task board?" href="/boards/loadboard?sprintID=${sprint.id}">View Sprint ${sprint.id} Task Board</a>
-#{/if}
-#{if sprint.finalsnapshot!=null }
-<a title="Take a look @ the full task board?" href="@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)} ">View Sprint ${sprint.id} Task Board</a>
+
 #{/if}
 
+#{if sprint.finalsnapshot!=null }
+<a id="sprint${sprint.id}"title="Take a look @ the full task board?" href="@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)} ">View Sprint ${sprint.id} Task Board</a>
+
+#{/if}
+#{/if}
+#{if sprint.ended!=true }
+<a title="Take a look @ the full task board?" href="/boards/loadboard?sprintID=${sprint.id}">View Sprint ${sprint.id} Task Board</a>
+		
+#{/if}
 <a href="javascript:;" onclick="$('#c_${sprint.id}').toggle()" title="view components' boards?" style="margin-left:20px;float:left;width:200px;">View Components' Boards</a>
 		<div id="c_${sprint.id}" style="display:none; margin-left:40px">
 		#{list items:sprint.project.components, as:'component'}
@@ -86,11 +94,11 @@ $.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}});
 		</div>
 		#{/list}
 		</ul>
-
+</div></div></div></div>
 #{set 'moreLinks'}
 
 <p>
-	<a href="@{ProductBacklogs.showGraph(project.id,0)}">View Burndown Charts</a>
+	<a href="@{ProductBacklogs.showGraph(project.id,0)}">View Burn down Charts</a>
 </p>
 
 <!--@author ahmedkhaled7 C4S12/c4S4/c4s5   -->
@@ -98,29 +106,29 @@ $.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}});
 	<a href="@{ImpedimentTasks.index(project.id)}">Report impediment</a>
 </p>
 #{if connected.in(project).can('canManageRoles')}<p>
-	<a href="/show/roles?id=${project.id}">Manage Roles (${project.roles.size()})</a>
+	<a href="/show/roles?id=${project.id}">Manage roles (${project.roles.size()})</a>
 </p>#{/if}
 
 <p>
-	<a href="@{Storys.listStoriesandSprints(project.id)}">Assign Story to Sprint </a>
+	<a href="@{Storys.listStoriesandSprints(project.id)}">Assign story to sprint </a>
 </p>
 <!-- adding a check requests link @author moataz_mekki -->
 #{if connected.in(project).can('canManageRequests')}
 <p>
-	<a href="/projects/requestrespond?id=${project.id}">Check Role Requests (${project.getNumberOfRequests()})</a>
+	<a href="/projects/requestrespond?id=${project.id}">Check role requests (${project.getNumberOfRequests()})</a>
 </p>
 <!-- adding a check project deletion requests link
 @author Amr Tj.Wallas
 @Task C1S14 -->
 <p>
-	<a href="/projects/deletionRequestRespond?id=${project.id}">Check Deletion Requests (${project.getNumberOfDeletionRequests()})</a>
+	<a href="/projects/deletionRequestRespond?id=${project.id}">Check deletion requests (${project.getNumberOfDeletionRequests()})</a>
 </p>
 #{/if}
 
 <!-- project notification profile @ author moataz_mekki-->
 #{if connected.in(project).can('canEditProjectNotificationProfile')}
 <p>
-	<a href = "/projects/managenotificationprofile?projectId=${project.id}">Edit Project Notifications </a>
+	<a href = "/projects/managenotificationprofile?projectId=${project.id}">Edit project(whole) notifications </a>
 </p>
 #{/if}
 #{if connected.in(project).can('respond')}
@@ -137,7 +145,7 @@ profile related to this project
 @Task C1S33 -->
 #{if connected.in(project).can('canEditUserNotificationProfile')}
 <p>
-	<a href = "/users/managenotificationprofile?id=${project.id}">Manage My Notifications for this Project </a>
+	<a href = "/users/managenotificationprofile?id=${project.id}">Manage my notifications</a>
 </p>
 #{/if}
 #{if project.users.contains(connected)}<p>
