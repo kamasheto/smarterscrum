@@ -2,14 +2,21 @@
 <!--Task: C1S23-->
 #{extends 'Secure/layout.html' /}
 #{set title:'Delete Me' /}
+<script type="text/javascript">
+	function showz(){
+		var check = $('#check').attr('checked');
+		//prompt(check);
+		if(check)
+		$('#delete').show();
+		else
+		$('#delete').hide();
+	}
+</script>
 
-<div id="login">
-	<h1>Deletion Request</h1>
 	
-	<!--The Registration form element-->
-	<form name = "delete" action = "@{deletionRequest()}" method="post">
-		<!--Show an error from the controller if any-->
-		#{ifErrors}
+	<h1><p align="center">Deletion Request</p></h1>
+	<!--Show an error from the controller if any-->
+	#{ifErrors}
 		<p class="error left">
 		    #{errors}
 		    	${error}<br />
@@ -23,6 +30,27 @@
 		#{if flash.success}
 			<p class="success">&{flash.success}</p>
 		#{/if}
+	<br /> <br />
+	<h2><u> WARNING !!!</u></h2>
+	<p align="justify"><font color="red" size="4"><b>
+		By Requesting to be deleted from the system, you should be aware of the following:<br />
+		- You will no longer be able to Access the system or login with your account.<br />
+		- Your profile will not be visible to other users.<br />
+		- All you contributions in projects will presist and will remain visible by project members.<br />
+		- You will no longer be able to view projects or contact users through the system.<br />
+		- You will no longer recieve any emails or notifications from us.<br />
+		- You will not be able to undo such action and would need to contact us if you need your account back.<br />
+		
+	</b></font></p>
+	<p align="center">
+	<INPUT TYPE=CHECKBOX id = "check" onchange = "showz();">&nbsp;
+	I HAVE CAREFULLY READ THE ABOVE WARNING AND I STILL WANT TO DELETE MY ACCOUNT</p>
+	<!--The Registration form element-->
+	<div id="login">
+		
+	<form name = "delete" id = "delete" action = "@{deletionRequest()}" method="post" style="display:none">
+		
+		<p align = "center"><b><u>Please Confirm By Entering your user name:</u></b></p>
 		<p class="form-field">
 			<label>Username</label>
 			<input type="text" name="userName" id="firstname" value="${flash.userName}"/>
