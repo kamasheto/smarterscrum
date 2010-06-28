@@ -255,6 +255,15 @@ public class User extends SmartModel {
 		} else
 			return attendance.get(0).status;
 	}
+	
+	public boolean canInvite() {
+		for (Project p : projects) {
+			if (this.in(p).can("invite")) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public static class Object {
 
