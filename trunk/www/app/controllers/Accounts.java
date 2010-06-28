@@ -49,6 +49,12 @@ public class Accounts extends SmartController {
 			register();
 		} else {
 			try {
+				User existingUser = User.find("name like '"+name+"' or "+"email like '"+email+"'").first();
+				if(existingUser != null)
+				{
+					flash.error("Oops, that user already exists!" + "\t" + "Please choose another user name and/or email.");
+					register();
+				}
 				User user = new User(name, email, password);
 				// System.out.println( user );
 				user.save();
@@ -58,10 +64,10 @@ public class Accounts extends SmartController {
 				Mail.send("se.smartsoft@gmail.com", user.email, subject, body);
 				flash.success("You have been registered. An Activation link has been sent to your Email Address");
 				Secure.login();
-			} catch (PersistenceException e) {
+			} /*catch (PersistenceException e) {
 				flash.error("Oops, that user already exists!" + "\t" + "Please choose another user name and/or email.");
 				register();
-			} catch (Throwable e) {
+			}*/ catch (Throwable e) {
 				e.printStackTrace();
 			}
 
