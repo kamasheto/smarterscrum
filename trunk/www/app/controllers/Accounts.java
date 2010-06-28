@@ -115,19 +115,20 @@ public class Accounts extends SmartController {
 	 * @Task C1S23
 	 */
 
-	public static void deletionRequest(@Required String userName) {
+	public static void deletionRequest(@Required String pwd) {
 
 		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
 			requestDeletion();
 		} else {
-			User userFound = User.find("name", userName).first();
-			if (userFound == null)
-				flash.error("Oops, please enter your user name to verify that you wanna be deleted!");
-			else {
-				if (!userFound.email.equals(Security.connected()))
-					flash.error("Oops, please verify that you want to be deleted by entering your user name");
+			User userFound = Security.getConnected();
+			String pwdHash = Application.hash(pwd);
+				if(!userFound.pwdHash.equals(pwdHash))
+				{
+					flash.error("You have entered a wrong password!");
+				}
+				
 				else {
 					userFound.pendingDeletion = true;
 					userFound.save();
@@ -136,7 +137,7 @@ public class Accounts extends SmartController {
 			}
 			requestDeletion();
 		}
-	}
+	
 
 	/**
 	 * This method activates a user with an activation hash "hash" when that
