@@ -689,7 +689,8 @@ public class Storys extends SmartCRUD {
 		int succssesNum = succsses.size();
 		int failureNum = failure.size();
 		long storyId = id;
-		render(succsses, failure, succssesNum, failureNum, storyId);
+		Long projectId=story1.componentID.project.id;
+		render(succsses, failure, succssesNum, failureNum, storyId,projectId);
 
 	}
 
