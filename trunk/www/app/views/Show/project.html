@@ -70,7 +70,7 @@ ${project.description?.nl2br()}
 #{if sprint.finalsnapshot==null }
 <script type="text/javascript">
 $.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}},function( data ){
-	$('#sprint${sprint.id}').attr("href","@{Snapshots.loadsnapShot(data)}",function(){alert("saved")});
+	$('#sprint${sprint.id}').attr("href","@{Snapshots.loadsnapShot(data)}");
 
 });
 </script>
