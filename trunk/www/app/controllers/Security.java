@@ -11,7 +11,8 @@ import models.User;
 public class Security extends Secure.Security {
 
 	public static User getConnected() {
-		return User.find("byEmail", (isConnected() ? connected() : "").toLowerCase()).first();
+		String usr = (isConnected() ? connected() : "").toLowerCase();
+		return User.find("select u from User u where u.email=? or u.name=?", usr, usr).first();
 	}
 
 	/**
@@ -24,7 +25,7 @@ public class Security extends Secure.Security {
 	 * @return true if such a user exist, false otherwise
 	 */
 	public static boolean authentify(String email, String password) {
-		User user = User.find("select u from User u where u.email=? and u.pwdHash = ?", email.toLowerCase(), Application.hash(password)).first();
+		User user = User.find("select u from User u where (u.email=? or u.name=?) and u.pwdHash = ?", email.toLowerCase(), email.toLowerCase(), Application.hash(password)).first();
 		/* By Tj.Wallas_ in Sprint2 */
 		if (user != null && !user.isActivated) {
 			flash.error("Your account is not activated, please follow the instructions in the Email we sent you to activate your account");
@@ -34,7 +35,7 @@ public class Security extends Secure.Security {
 				e.printStackTrace();
 			}
 		} else if ( user != null && user.deleted) {
-			flash.error("Your account has been deleted. Please contact a website administrator for clarification.");
+			flash.error("Your account has been deleted. Please contact a website administrator for further information.");
 			try {
 				Secure.login();
 			} catch(Throwable e) {
