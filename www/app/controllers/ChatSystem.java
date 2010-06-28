@@ -124,7 +124,10 @@ public class ChatSystem extends SmartController
 		Message lastLogMessage = Message.find( "author like ?1 and message like ?2 and room.id = ?3 order by stamp desc", "notice", user.name + " has entered the chat", roomId ).first();
 		Long lastLogIn = lastLogMessage.stamp;
 		List<Message> messages = Message.find( "room.id = ?1 and stamp >= ?2 order by stamp", roomId, lastLogIn ).fetch();
-
+		for( Message m : messages )
+		{
+			m.room = null;
+		}
 		renderJSON( messages );
 	}
 }

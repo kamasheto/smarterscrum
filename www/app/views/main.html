@@ -182,6 +182,7 @@ ${proj.name} Chat
 	<script type="text/javascript">
 	#{if controllers.Security.getConnected().openChats.contains(proj.chatroom)}
 	$(function(){
+		retrieve${proj.id}();
 		getMessages${proj.id}();
 	});
 	#{/if}
@@ -205,7 +206,14 @@ ${proj.name} Chat
 						setTimeout('getMessages${proj.id}();', 1000);
 					});
 				}
-			
+				// Retrieve all messages
+				var retrieve${proj.id} = function() {
+					$.getJSON('/ChatSystem/retrieveSinceLastLogin',{userId:${connected.id},roomId:${proj.chatroom.id}}, function(messages) {
+						$(messages).each(function() {
+							display${proj.id}(this);
+						});
+					});
+				}
 		
 	
 
