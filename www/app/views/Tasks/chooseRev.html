@@ -16,7 +16,7 @@ function set_person(id,taskId,name, user1Id)
 			{id:taskId, userId:user1Id, reviewerId:id},
 			function()
 			{
-				window.opener.location.reload();
+				window.opener.document.getElementById("rev_"+taskId).innerHTML = "Reviewer:"+name;
 				window.close();
 				});
 			
