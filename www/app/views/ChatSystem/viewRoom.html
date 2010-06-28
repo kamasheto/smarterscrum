@@ -23,7 +23,7 @@
 <div id="thread">
 	<script type="text/html" id="message_tmpl">
 <strong class="title" style="<%= message.author == 'notice' ? 'display:none !important' : '' %>"><%= message.author%></strong> 
-		<div class="<%= message.author == 'notice' ? 'notice' : message.author == '${connectedUser.name}' ? 'you border-callout' : 'them border-callout' %>">
+		<div class="<%= message.author == 'notice' ? 'notice' : message.author == '${currentUser.name}' ? 'you border-callout' : 'them border-callout' %>">
 			<%= message.message.replace('\n', '<br/>') %>
 		<%= message.author == 'notice' ? '' : '<b class="notch"></b>' %></div>
 	</script>
