@@ -558,24 +558,31 @@ h1,h2,h4,h5 {
 
 /** project links **/
 ul.project_links a {
-background:none repeat scroll 0 0 #EEEEEE;
-border:2px solid #9E3572;
-color:#9E3572;
+background:-moz-linear-gradient(center bottom, #666 20%, #888 80%);
+color:#000;
 display:block;
 float:left;
-font-size:20px;
+font-size:12px;
 margin:10px;
 padding:10px;
 text-align:center;
 text-decoration:none;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
 }
+ul.project_links a:hover {
+background:-moz-linear-gradient(center bottom, #999 20%, #888 80%);	box-shadow: 0px 0px 15px #9E3572;
+	-moz-box-shadow: 0px 0px 15px #9E3572;
+	-webkit-box-shadow: 0px 0px 15px #9E3572;}
 
 ul.project_links a img {
 	border: 0 none;
 	display: block;
 	margin: 0 auto;
 	vertical-align: middle;
-	width: 100px;
+	height: 100px;
+	margin-bottom:5px;
 }
 
 tr.deleted {
