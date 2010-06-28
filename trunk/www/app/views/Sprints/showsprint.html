@@ -78,7 +78,8 @@ $.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}});
 
 #{/if}#{/if}#{/set}
 #{if sprint.finalsnapshot==null }
-<a title="Tak a look @ the full task board?" href="/boards/loadboard?sprintID=${sprint.id}">View Sprint ${sprint.id} Task Board</a>
+<a title="Take a look @ the full task board?" href="/boards/loadboard?sprintID=${sprint.id}">View Sprint ${sprint.id} Task Board</a>
+
 <br/>
 <br/>
 #{list items:sprint.project.components, as:'component'}
@@ -88,7 +89,7 @@ $.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}});
 #{/list}
 #{/if}
 #{if sprint.finalsnapshot!=null }
-<a title="Take a look @ the full task board?" href="@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)} ">View Sprint ${sprint.id} Task Board</a>
+<div><a title="Take a look @ the full task board?" href="@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)} ">View Sprint ${sprint.id} Task Board</a>
 #{/if}
 <body>
 
