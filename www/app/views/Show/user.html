@@ -32,7 +32,9 @@
 #{/if}
 <h1>${user.name}</h1>
 	<div>
-		<div class="tiny_info">Click a project to toggle the components this user is member of</div><br />
+		#{if user.projects}
+			<div class="tiny_info">Click a project to toggle the components this user is member of</div>
+		#{/if}
 		#{list items:user.projects, as:'project'}
 			<div><a href="javascript:;" onclick="$('#project_components_${project.id}').toggle()"><font size = 2>${project.name}</font></a></div>
 			<ol id="project_components_${project.id}" style="display:none;">
@@ -46,6 +48,9 @@
 			#{ifnot has}--#{/ifnot}
 			</ol>
 		#{/list}
+		#{else}
+			<div class="tiny_info">This user is not in any project as of yet</div>
+		#{/else}
 	
 </div>
 <script type="text/javascript">
