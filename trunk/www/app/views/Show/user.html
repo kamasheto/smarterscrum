@@ -6,19 +6,25 @@
 #{/set}
 #{set 'moreLinks'}
 #{if user != me}
-	<a href="#" onclick="$('#roles').toggle()">Invite user to a project</a><br />
-		<div id="roles" style="display:none;" class="">
-			<input type="text" id="project_search" onkeyup="search_projects();" style="width:200px;opacity:0.5;" value="Start typing project name..." onfocus="if($(this).val()==$(this)[0].defaultValue) {$(this).css({opacity:1}); $(this).val('');}" onblur="if($(this).val()==''){$(this).val($(this)[0].defaultValue); $(this).css('opacity', 0.5);}" /> <img id="loading" style="display:none;" src="@{'/public/images/ajax-loader.gif'}" />
-			<div id="search_results" class="roles" style="display:none;"></div>
-		</div>
-		<br style="clear:both;" />
-		#{/if}
-#{if user == me & !(connected.isAdmin)}<a href="/accounts/profile?id=${user.id}">Edit profile</a><br />#{/if}
-#{if user == me}<a href="@{Requestreviewers.ListTypesOfReviewers()}">Request to be a reviewer in a project</a><br />
-		<a href="/requestDeletion">Request to be deleted from the system</a><br />#{/if}
-		#{if connected.isAdmin}<a href="/admin/users/${user.id}">Edit profile</a><br />#{/if} 
-		#{if connected.isAdmin & user != me}
-		<a href="@{Users.del(user.id)}">Delete this user</a>
+<a href="#" onclick="$('#roles').toggle()">Invite user to a project</a><br />
+<div id="roles" style="display:none;" class="">
+	<input type="text" id="project_search" onkeyup="search_projects();" style="width:200px;opacity:0.5;" value="Start typing project name..." onfocus="if($(this).val()==$(this)[0].defaultValue) {$(this).css({opacity:1}); $(this).val('');}" onblur="if($(this).val()==''){$(this).val($(this)[0].defaultValue); $(this).css('opacity', 0.5);}" /> <img id="loading" style="display:none;" src="@{'/public/images/ajax-loader.gif'}" />
+	<div id="search_results" class="roles" style="display:none;"></div>
+</div>
+<br style="clear:both;" />
+#{/if}	
+		#{if connected.isAdmin}<p>
+			<a href="/admin/users/${user.id}">Edit profile</a>
+		</p>#{/if}
+		#{elseif user==me}
+			<p>
+				<a href="/accounts/profile?id=${user.id}">Edit profile</a>
+			</p>
+		#{/elseif}
+		#{if connected.isAdmin && user != me}
+<p>
+			<a href="@{Users.del(user.id)}">Delete this user</a>
+</p>
 		#{/if}
 #{/set}
 #{if flash.success}

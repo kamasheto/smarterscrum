@@ -1,5 +1,13 @@
 #{extends 'main.html' /}
 #{set title:'My Projects' /}
+#{set 'moreLinks'}
+<p>
+	<a href="@{Requestreviewers.ListTypesOfReviewers()}">Request to be a reviewer in a project</a>
+</p>
+<p>
+			<a href="/requestDeletion">Request to be deleted from the system</a>
+</p>
+#{/set}
 
 <h1> My Projects </h1>
 #{if projects.isEmpty()}
