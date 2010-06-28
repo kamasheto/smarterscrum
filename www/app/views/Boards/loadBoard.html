@@ -253,7 +253,7 @@ if (countdown < 0)  {
 	var answer=confirm('Meeting ended now ,the system will now automaticaly update the associated snapshot to the current view of the board!')
 		if (answer) {
 		take_meetingsnapshot(${users.meeting.id});
-		location.reload();
+		replaceContent(current,'This Meeting has ended');
 	}
 }
 else {var secs = countdown % 60; 
