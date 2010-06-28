@@ -69,22 +69,23 @@ ${project.description?.nl2br()}
 #{if sprint.ended==true}
 #{if sprint.finalsnapshot==null }
 <script type="text/javascript">
-$.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}},function(){
-	$('#sprint${sprint.id}').attr("href", "/boards/loadboard?sprintID=${sprint.id}");
+$.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}},function( data ){
+	$('#sprint${sprint.id}').attr("href","@{Snapshots.loadsnapShot(data)}",function(){alert("saved")});
+
 });
 </script>
 
 #{/if}
 
 #{if sprint.finalsnapshot!=null }
-<a id="sprint${sprint.id}"title="Take a look @ the full task board?" href="@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)} ">View Sprint ${sprint.id} Task Board</a>
+<a title="Take a look @ the full task board?" href="@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)} ">View Sprint ${sprint.id} Task Board</a>
 
 #{/if}
 #{/if}
-#{if sprint.ended!=true }
-<a title="Take a look @ the full task board?" href="/boards/loadboard?sprintID=${sprint.id}">View Sprint ${sprint.id} Task Board</a>
-		
-#{/if}
+#{if sprint.finalsnapshot==null }
+<a id="sprint${sprint.id}" title="Take a look @ the full task board?" href="/boards/loadboard?sprintID=${sprint.id}">View Sprint ${sprint.id} Task Board</a>
+	#{/if}
+
 <a href="javascript:;" onclick="$('#c_${sprint.id}').toggle()" title="view components' boards?" style="margin-left:20px;float:left;width:200px;">View Components' Boards</a>
 		<div id="c_${sprint.id}" style="display:none; margin-left:40px">
 		#{list items:sprint.project.components, as:'component'}
