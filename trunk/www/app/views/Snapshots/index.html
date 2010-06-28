@@ -1,9 +1,17 @@
 #{extends 'main.html' /}
 #{set title:'snapshot List' /}
 <h2>Snapshots List</h2>
+#{if (snapshots.size()==0)}
+Sorry, There are no snapshots to display now.<br/>
+#{/if}
+#{if (snapshots.size()!=0)}
+
 
 <ul>
 <table>
+
+
+
 		<thead>		
 		
 		<td ><b>Snapshot</b></td>
@@ -11,6 +19,7 @@
 		<td><b>Date</b></td>
 				</thead>
 #{list items:snapshots, as:'snapshot'}
+
 		<tr>
 	<td>	
 <li><a href="@{Snapshots.loadsnapShot(snapshot.id)} ">Snapshot ${snapshot.id}</a></li>
@@ -21,3 +30,4 @@
 #{/list}
 </table>
 </ul>
+#{/if}
