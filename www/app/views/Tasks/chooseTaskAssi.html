@@ -12,11 +12,12 @@
 <script type="text/javascript">
 function set_person(id,taskId,name, user1Id)
 {
+	
 	$.post('@{editTaskAssignee2()}',
 			{id:taskId, userId:user1Id, assigneeId:id},
 			function()
 			{
-				window.opener.location.reload();
+				window.opener.document.getElementById("usr_"+taskId).innerHTML = "Assignee:"+name;
 				window.close();
 				});
 			
