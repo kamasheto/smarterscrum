@@ -257,7 +257,7 @@ a {
 	_border-right-color: pink;
 	_border-left-color: pink;
 	margin-top: -2px;
-	_filter: chroma(color =                                                 pink)
+	_filter: chroma(color =                                                     pink)
 		;
 }
 
@@ -276,7 +276,7 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                 pink)
+	_filter: chroma(color =                                                     pink)
 		;
 }
 
@@ -292,7 +292,7 @@ a {
 	margin-left: 30px;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                 pink)
+	_filter: chroma(color =                                                     pink)
 		;
 }
 
@@ -310,7 +310,7 @@ a {
 	display: inline-block;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                 pink)
+	_filter: chroma(color =                                                     pink)
 		;
 }
 
@@ -326,7 +326,7 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                 pink)
+	_filter: chroma(color =                                                     pink)
 		;
 }
 
@@ -371,7 +371,7 @@ a {
 	background: #444 !important;
 	background: -moz-linear-gradient(center bottom, #444 20%, #555 80%)
 		!important;
-	background: vertical-align :       middle;
+	background: vertical-align :           middle;
 	height: 36px !important;
 	border-radius-bottom-left: 0px !important;
 	-moz-border-radius-bottomleft: 0px !important;
@@ -419,15 +419,16 @@ button {
 
 /*******************Messages Styles********************/
 #chatContainer {
-vertical-align:top;
-position:absolute;
-right:0px;
-margin-right:10px;
-
-z-index:99;
+	vertical-align: top;
+	position: absolute;
+	right: 0px;
+	margin-right: 10px;
+	z-index: 99;
 }
 
-#content{min-height:300px}
+#content {
+	min-height: 300px
+}
 
 .chatboxinput {
 	padding: 5px;
@@ -478,14 +479,14 @@ z-index:99;
 	overflow-y: auto;
 }
 
-.you,.notice
-{
-border-bottom:1px solid #eee;
+.you,.notice {
+	border-bottom: 1px solid #eee;
 }
 
 .you {
 	background-color: #eee;
 }
+
 .notice {
 	background: #60EC08;
 }
@@ -494,7 +495,7 @@ border-bottom:1px solid #eee;
 .myTables,.myTables td,.myTables tr,.myTables table {
 	border: 0px;
 	padding: 0px;
-	vertical-align:top;
+	vertical-align: top;
 }
 
 .cTitle {
@@ -535,7 +536,8 @@ tr {
 	background-color: #efefef !important;
 }
 
-#sprint td form input,#Pstories td form input, #impedimentLog td form input{
+#sprint td form input,#Pstories td form input,#impedimentLog td form input
+	{
 	width: 100% !important;
 	height: 100% !important;
 	border: 0px !important;
@@ -556,13 +558,26 @@ h1,h2,h4,h5 {
 
 /** project links **/
 ul.project_links a {
-	background:#ccc;
-	display:block;
-	float:left;
-	padding:10px;
-	margin:10px;
-	font-size:28px;
+background:none repeat scroll 0 0 #EEEEEE;
+border:2px solid #9E3572;
+color:#9E3572;
+display:block;
+float:left;
+font-size:20px;
+margin:10px;
+padding:10px;
+text-align:center;
+text-decoration:none;
 }
+
+ul.project_links a img {
+	border: 0 none;
+	display: block;
+	margin: 0 auto;
+	vertical-align: middle;
+	width: 100px;
+}
+
 tr.deleted {
 	background: #FFA8A8;
 }

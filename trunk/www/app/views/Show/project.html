@@ -14,7 +14,7 @@
 ${project.description?.nl2br()}
 </div>
 <ul class="project_links">
-<a href="javascript:;" onclick="$('#roles').toggle()">Project Roles</a>
+<a href="javascript:;" class="allCornersRounded"onclick="$('#roles').toggle()"><img src="@{'/public/images/addrole.png'}"/>Request Roles</a>
 <div id="roles" class="roles" style="display: none; width:300px;">
 	#{list items:project.roles, as:'role'}
 		#{if !connected.roles.contains(role)}
@@ -30,34 +30,34 @@ ${project.description?.nl2br()}
 </div>
 
 
-<a href="@{Projects.getProjectMembers(project.id)}">Members</a>
+<a class="allCornersRounded" href="@{Projects.getProjectMembers(project.id)}"><img src="@{'/public/images/users.png'}"/>Members</a>
 
-<a href="tasks?id=${project.id}">Tasks</a>
+<a class="allCornersRounded" href="tasks?id=${project.id}"><img src="@{'/public/images/TASKS.png'}"/>Tasks</a>
 <!-- adding component's link by Amr Hany -->
-<a href="/projects/${project.id}/components">Components</a>
+<a class="allCornersRounded" href="/projects/${project.id}/components"><img src="@{'/public/images/SOFTWARE.png'}"/>Components</a>
 
 <!-- adding sprints' link by minazaki -->
-<a href="@{Sprints.showsprints(project.id)}" >Sprints</a>
+<a class="allCornersRounded" href="@{Sprints.showsprints(project.id)}" ><img src="@{'/public/images/sprint.png'}"/>Sprints</a>
 
 <!-- adding meetings link @author ghadafakhry -->
-<a href="/projects/${project.id}/meetings">Meetings</a>
+<a class="allCornersRounded" href="/projects/${project.id}/meetings"><img src="@{'/public/images/cal.png'}"/>Meetings</a>
 
 <!-- adding meetings link @author ahmedKhaled7 -->
-<a href="/productbacklog/${project.id}/0">Product Backlog</a>
+<a  class="allCornersRounded"href="/productbacklog/${project.id}/0"><img src="@{'/public/images/FILE - EXECUTABLE.png'}"/>Product Backlog</a>
 
 <!--  adding impediment tasks @author Hadeer Younis -->
-<a href="@{ImpedimentTasks.viewImpedimentLog(project.id)}">Impediment Log</a>
+<a class="allCornersRounded" href="@{ImpedimentTasks.viewImpedimentLog(project.id)}"><img src="@{'/public/images/log.png'}"/>Impediment Log</a>
 
 <!-- adding product role's link by Heba Elsherif -->
-<a href="/projects/${project.id}/productroles">Product Roles</a>
+<a class="allCornersRounded" href="/projects/${project.id}/productroles"><img src="@{'/public/images/role.png'}"/>Product Roles</a>
 
 
 <!--  Stories : Galal Aly -->
-<a href="@{Storys.listStoriesInProject(project.id)}">Stories</a>
+<a class="allCornersRounded" href="@{Storys.listStoriesInProject(project.id)}"><img src="@{'/public/images/BOOK.png'}"/>Stories</a>
 <!--  End Of Stories -->
 
 <!-- view boards @ author Dina Helal -->
-<a href="javascript:;" onclick="$('#boards').toggle()">Boards</a>
+<a class="allCornersRounded" href="javascript:;" onclick="$('#boards').toggle()"><img src="@{'/public/images/DESKTOP.png'}"/>Boards</a>
 <div id="boards" class="roles" style="display:none;width:300px">
 	#{list items:project.sprints, as:'sprint'}
 		<a href="javascript:;" onclick="$('#s_${sprint.id}').toggle()"  style="float:left;width:200px;">Sprint ${sprint.sprintNumber}</a><br/>
@@ -125,7 +125,7 @@ $.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}});
 #{/if}
 #{if connected.in(project).can('respond')}
 <p>
-	<a href="/Requestreviewers/respond?id=${project.id}">respond to reviewer requests</a>
+	<a href="/Requestreviewers/respond?id=${project.id}">Respond to reviewer requests</a>
 </p>
 #{/if}
 #{/set}
