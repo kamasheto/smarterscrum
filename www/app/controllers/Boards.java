@@ -382,7 +382,14 @@ public class Boards extends SmartCRUD {
 		
 		
 	}
-	
+	/**
+	 * This method takes project P & retrn a list of users 
+	 * who can edit task description in this project
+	 * 
+	 * @author Dina Helal
+	 * @param p 
+	 * 			Project p
+	 * */
 	public static ArrayList getDescPerm (Project p)
 	{
 		List <User> usrs = p.users;
@@ -400,6 +407,15 @@ public class Boards extends SmartCRUD {
 		}
 		return ud;
 	}
+	
+	/**
+	 * This method takes project P & retrn a list of users 
+	 * who can edit task assignee in this project
+	 * 
+	 * @author Dina Helal
+	 * @param p 
+	 * 			Project p
+	 * */
 	
 	public static ArrayList getAssiPerm (Project p)
 	{
@@ -419,6 +435,15 @@ public class Boards extends SmartCRUD {
 		return ua;
 	}
 	
+	/**
+	 * This method takes project P & retrn a list of users 
+	 * who can edit task reviewer in this project
+	 * 
+	 * @author Dina Helal
+	 * @param p 
+	 * 			Project p
+	 * */
+	
 	public static ArrayList getRevPerm (Project p)
 	{
 		List <User> usrs = p.users;
@@ -437,6 +462,14 @@ public class Boards extends SmartCRUD {
 		return ur;
 	}
 	
+	/**
+	 * This method takes project P & retrn a list of users 
+	 * who can edit task type in this project
+	 * 
+	 * @author Dina Helal
+	 * @param p 
+	 * 			Project p
+	 * */
 	public static ArrayList getTypePerm (Project p) 
 	{
 		List <User> usrs = p.users;
