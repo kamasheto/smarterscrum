@@ -380,12 +380,12 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<span style="display:none"> ${flag3=true}</span>
 		#{/if}
 		#{if flag3} <!-- if has permission (edit assignee) -->
-		<div><a title="Change Assignee?" class="hidesassi tiptitize" id="usr" href="javascript:popUp('/Tasks/chooseTaskAssi?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
+		<div><a title="Change Assignee?" value="dddd" class="hidesassi tiptitize" id="usr_${task.id}" href="javascript:popUp('/Tasks/chooseTaskAssi?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Assignee:${task.assignee}</a></div>
 		<div class="showdesc" style="display:none">Assignee:${task.assignee}</div>	
 		#{/if}
 		#{else} <!-- if doesn't have permission (edit assignee) -->
-		<div><a title="Change Assignee?" style="display:none" class="hidesassi tiptitize" id="usr" HREF="javascript:popUp('/Tasks/chooseTaskAssi?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
+		<div><a title="Change Assignee?" style="display:none" class="hidesassi tiptitize" id="usr_${task.id}" HREF="javascript:popUp('/Tasks/chooseTaskAssi?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Assignee:${task.assignee}</a></div>
 		<div class="showdesc">Assignee:${task.assignee}</div>
 		#{/else}
@@ -395,12 +395,12 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<span style="display:none"> ${flag4=true}</span>
 		#{/if}
 		#{if flag4} <!-- if has permission (edit reviewer) -->
-		<div><a title="Change Reviewer?" id="rev" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
+		<div><a title="Change Reviewer?" id="rev_${task.id}" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Reviewer:${task.reviewer}</a></div>
 		<div class="showrev" style="display:none">Reviewer:${task.reviewer}</div>
 		#{/if}
 		#{else} <!-- if doesn't have permission (edit reviewer) -->
-		<div><a title="Change Reviewer?" style="display:none" id="rev" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
+		<div><a title="Change Reviewer?" style="display:none" id="rev_${task.id}" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Reviewer:${task.reviewer}</a></div>
 		<div class="showrev">Reviewer:${task.reviewer}</div>
 		#{/else}
@@ -410,12 +410,12 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<span style="display:none"> ${flag5=true}</span>
 		#{/if}
 		#{if flag5 || controllers.Security.getConnected().equals(task.assignee)} <!-- if has permission (type) or assignee -->
-		<div><a id="usr" title="Edit type?" class="tiptitize hidestype shows_${task.assignee.id}" HREF="javascript:popUp('/Tasks/chooseType?taskId=${task.id}&userId='+selectedUser)">
+		<div><a id="type_${task.id}" title="Edit type?" class="tiptitize hidestype shows_${task.assignee.id}" HREF="javascript:popUp('/Tasks/chooseType?taskId=${task.id}&userId='+selectedUser)">
 		Type:${task.taskType.name}</a></div>
 		<div style="display:none" class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${task.taskType.name}</div>
 		#{/if}
 		#{else} <!-- if doesn't have have permission (type) nor assignee -->
-		<div><a title="Edit type?" style="display:none" id="usr" class="tiptitize hidestype shows_${task.assignee.id}" HREF="javascript:popUp('/Tasks/chooseType?taskId=${task.id}&userId='+selectedUser)">
+		<div><a title="Edit type?" style="display:none" id="type_${task.id}" class="tiptitize hidestype shows_${task.assignee.id}" HREF="javascript:popUp('/Tasks/chooseType?taskId=${task.id}&userId='+selectedUser)">
 		Type:${task.taskType.name}</a></div>
 		<div class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${task.taskType.name}</div>
 		#{/else}
@@ -670,9 +670,9 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 	}
 
 
-function replaceContent(id1) {
+function replaceContent(id1,content) {
  
-     document.getElementById("current").innerHTML = "lesa ba2a mesh 3aref a call the same ID";
+     document.getElementById("current").innerHTML = content;
  
 }
 
@@ -683,7 +683,7 @@ function replaceContent(id1) {
 	var answer=confirm('The system will now automaticaly update the associated snapshot to the current view of the board!')
 		if (answer) {
 		take_meetingsnapshot(id);
-	replaceContent(current);
+	replaceContent(current,'This Meeting has ended');
 	}}
 	
 	}
