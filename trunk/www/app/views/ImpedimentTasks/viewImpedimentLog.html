@@ -22,23 +22,22 @@ $(function()
 		    	    	 var data 	= parseInt($('#lolid').closest("td").attr("id"));
 		     	        $.post('@{Tasks.editTaskDesc()}',
 		     	            {id:data, desc:value});
-
 		         	    return(value);      
 		    	    },
 		    	    {    
 		    	        indicator : 'Saving...',
 		    	        
 		    	    });});
-function changeStatus(id,statID)
+function changeStatus(id,data)
 {
-	  $.post('@{ImpedimentTasks.changeStatus()}',{taskId:id,type:statID},function(){$('#editor'+id).toggle();$('#text'+id).toggle()});
+	  $.post('@{ImpedimentTasks.changeStatus()}',{taskId:id,type:data},function(){$('#text'+id).html(data);$('#editor'+id).toggle();$('#text'+id).toggle()});
 }
 </script>
 #{/set}
 #{set 'crumbs'}
 <li><a href="/show/projects">Projects</a></li>
 <li><a href="/show/project?id=${proj.id}">${proj.name} </a></li>
-<li><a href="/tasks/choose?Proj_id=${proj.id}">Impediment Tasks</a></li>
+<li><a href="/impedimenttasks/viewimpedimentlog?Proj_id=${proj.id}">Impediment Tasks</a></li>
 #{/set}
 #{ifnot connected.projects.contains(proj)}
 <div style="padding: 10px;" class="ui-state-error ui-corner-all">
