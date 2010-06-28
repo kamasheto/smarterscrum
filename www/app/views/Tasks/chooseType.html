@@ -3,18 +3,18 @@
 <div id="${taskId}">
 <h2>Task Types</h2>
 #{list items:types, as:'type'}
-<a href="#" onclick="set_type( ${type.id},${taskId},${userId})"> ${type.name} </a><br/>
+<a href="#" onclick="set_type( ${type.id},${taskId},${userId},'${type.name}')"> ${type.name} </a><br/>
 #{/list}
 </div>
 
 <script type="text/javascript">
-function set_type(tyId,tskId,usrId)
+function set_type(tyId,tskId,usrId,name)
 {
 	$.post('@{editTaskType()}',
 			{id:tskId, typeId:tyId, userId:usrId},
 			function()
 			{
-				window.opener.location.reload();
+				window.opener.document.getElementById("type_"+tskId).innerHTML = "Type:"+name;
 				window.close();
 				});
 	return true;
