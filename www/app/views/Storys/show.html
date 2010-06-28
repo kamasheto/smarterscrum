@@ -31,6 +31,38 @@ function techliveValid()
 	}
 	return false;
 }
+
+
+function setDesc()
+{
+	for(var i=0; i< $('#object_productRole').length +1;i++)
+	{
+	if(document.getElementById('object_productRole').options[i].selected== true)
+		{
+			document.getElementById('descRole').options[i].selected=true;
+		}
+		else
+		{
+			document.getElementById('descRole').options[i].selected=false;
+		}
+	}
+}
+
+function setRole()
+{
+	for(var i=0; i< $('#object_productRole').length +1;i++)
+	{
+		if(document.getElementById('descRole').options[i].selected== true)
+		{
+			document.getElementById('object_productRole').options[i].selected=true;
+		}
+		else
+		{
+			document.getElementById('object_productRole').options[i].selected=false;
+		}
+	}
+	
+}
 /* The Tips jQuery code */
 $('#object_componentID').tipsy({fade: true, gravity: 'w'});
 $('#object_description').tipsy({fade: true, gravity: 'w'});
@@ -54,11 +86,11 @@ $('#object_dependentStories').tipsy({fade: true, gravity: 'w', html:true });
 	</div>
 	<div class="objectForm">
 	<form id="galal" onSubmit="return techliveValid()" action="@{save(object.id)}" method="POST" accept-charset="utf-8" enctype="multipart/form-data" >
-	#{crud.form fields:['componentID','description', 'priority', 'notes', 'dependentStories', 'productRole']}
+	#{crud.form fields:['componentID','productRole','description', 'priority', 'notes', 'dependentStories']}
 		
 		#{crud.custom 'componentID'}
 			<label for="object_componentID">Story's Component*</label>
-					<select id="object_componentID" name="object.componentID@id" title="The Component">
+					<select id="object_componentID" name="object.componentID@id" title="The Component" onchange="setDesc();">
 								#{list items:project.components ,as :'component'}
 									<option value="${component.id}" #{if component.id == object.componentID.id}selected#{/if}>${component.name}</option>
 								#{/list}		
@@ -68,11 +100,29 @@ $('#object_dependentStories').tipsy({fade: true, gravity: 'w', html:true });
 		
 		#{crud.custom 'description'}
 			<label for="object_description">Description</label>
-			<textarea id="object_description" cols="48" rows="5" class="" name="object.description" title="The description of the story. Example : I should be able to create a new invoice">${object.description}</textarea>
+			
+			AS a <select id="descRole" onchange="setRole();" >
+								#{list items:project.productRoles ,as :'productRole'}
+									<option value="${productRole.id}">${productRole.name}</option>
+									
+								#{/list}
+								
+						</select> , I can
+			<textarea id="object_description" cols="48" rows="5" class="" name="object.description" >${object.description}</textarea>
 			<span class="crudHelp">Required.Max length is 1000.</span>
 			<span id="test"></span>
 		#{/crud.custom}
 		
+			#{crud.custom 'productRole'}
+					<label for="object_productRole">Product Role</label>
+		
+						<select id="object_productRole" name="object.productRole@id" title = "The product role to be associated with the story. Example : The famous cashier." onchange="setDesc();">
+								#{list items:project.productRoles ,as :'productRole'}
+									#{if productRole} <option value="${productRole.id}" #{if object.productRole}#{if productRole.id == object.productRole.id}selected#{/if}#{/if}>${productRole.name}</option>#{/if}
+								#{/list}
+						</select>
+		    <span class="crudHelp"></span>
+		#{/crud.custom}
 		
 		#{crud.custom 'notes'}
 		<label for="object_notes">
@@ -81,16 +131,7 @@ $('#object_dependentStories').tipsy({fade: true, gravity: 'w', html:true });
 		<textarea id="object_notes" cols="48" rows="5" class="" name="object.notes" title="For your own use. Enter some notes that you do not want to forget or so.">${object.notes}</textarea>
 		#{/crud.custom}
 		
-		#{crud.custom 'productRole'}
-					<label for="object_productRole">Product Role</label>
-		
-						<select id="object_productRole" name="object.productRole@id" title = "The product role to be associated with the story. Example : The famous cashier.">
-								#{list items:project.productRoles ,as :'productRole'}
-									#{if productRole} <option value="${productRole.id}" #{if object.productRole}#{if productRole.id == object.productRole.id}selected#{/if}#{/if}>${productRole.name}</option>#{/if}
-								#{/list}
-						</select>
-		    <span class="crudHelp"></span>
-		#{/crud.custom}
+	}
 		
 		#{crud.custom 'priority'}
 				<label for="object_priority">priority</label>
