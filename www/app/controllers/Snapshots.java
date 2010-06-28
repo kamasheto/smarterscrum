@@ -79,8 +79,10 @@ public class Snapshots extends SmartController {
 			}
 
 			for (Task task : tasks) {
-				data.get(i).get(columns.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
-
+				if(task.taskStatus.column.onBoard==true)
+				{
+				data.get(i).get(CS.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+				}
 			}
 		}
 		String type = "board";
@@ -150,8 +152,10 @@ public class Snapshots extends SmartController {
 			}
 
 			for (Task task : tasks) {
-				data.get(i).get(columns.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
-
+				if(task.taskStatus.column.onBoard==true)
+				{
+				data.get(i).get(CS.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+				}
 			}
 		}		String type = "sprint";
 		Snapshot snap = new Snapshot();
@@ -236,8 +240,10 @@ public class Snapshots extends SmartController {
 			}
 
 			for (Task task : tasks) {
-				data.get(i).get(columns.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
-
+				if(task.taskStatus.column.onBoard==true)
+				{
+				data.get(i).get(CS.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+				}
 			}
 		}
 		Snapshot snap = new Snapshot();
