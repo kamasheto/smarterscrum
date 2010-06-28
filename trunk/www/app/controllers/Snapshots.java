@@ -98,7 +98,7 @@ public class Snapshots extends SmartController {
 		Logs.addLog(user, "Took", "Snapshot", snap.id, p, cal.getTime());
 
 	}
-	public static void TakeSprintSnapshot(long sprintID) {
+	public  long TakeSprintSnapshot(long sprintID) {
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
 		Board b = p.board;
@@ -168,9 +168,8 @@ public class Snapshots extends SmartController {
 		snap.save();
 		s.finalsnapshot=snap;
 		s.save();
-		Calendar cal = new GregorianCalendar();
-		Logs.addLog(user, "Took", "Snapshot", snap.id, p, cal.getTime());
-
+		return snap.id;
+		
 	}
 
 	/**
