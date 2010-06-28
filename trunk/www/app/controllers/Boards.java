@@ -24,7 +24,7 @@ import play.mvc.With;
 
 @With (Secure.class)
 public class Boards extends SmartCRUD {
-	public static void loadBoard1(long sprintID,long componentID)
+/*	public static void loadBoard1(long sprintID,long componentID)
 	{
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
@@ -86,7 +86,7 @@ public class Boards extends SmartCRUD {
 		//render(data, columnsOfBoard,hidencolumnsOfBoard, u, b, s, p,columns, total,ud,ua,ur,ut,componentID);
 		
 	}
-	
+*/	
 	/**
 	 * Renders the data and the columnsOfBoard to be used by the views. this
 	 * method is used to fill the 2D array attribute in the board with the data
@@ -105,7 +105,6 @@ public class Boards extends SmartCRUD {
 		List<Component> components = p.getComponents();
 		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>();
 		List<Column> columns = b.columns;
-		
 		List<Column> columnsOfBoard=new ArrayList<Column>();
 		List<Column> hidencolumnsOfBoard=new ArrayList<Column>();
 		for( int i=0; i<columns.size();i++)
@@ -136,8 +135,6 @@ public class Boards extends SmartCRUD {
 				if(task.taskStatus.column.onBoard==true)
 				{
 				data.get(i).get(columnsOfBoard.indexOf(task.taskStatus.column)).add(task);
-				//System.out.println(task.description);
-				//System.out.print( columns. );
 				}
 			}
 		}
@@ -157,7 +154,7 @@ public class Boards extends SmartCRUD {
 		LinkedList<Meeting> total = new LinkedList<Meeting>();		
 		for (Meeting m : p.meetings) {
 			long now = new Date().getTime();
-			if (m.startTime < now && m.endTime > now) {
+			if (m.startTime <= now && m.endTime > now) {
 				for(int i=0;i<m.users.size();i++)
 				{
 					if(m.users.get(i).id==id)
@@ -169,13 +166,11 @@ public class Boards extends SmartCRUD {
 			}
 		}
 
-
 		ArrayList<ArrayList<User>> u = new ArrayList<ArrayList<User>>();
 		if(found==true)
 		{
 		for (int i = 0; i < total.size(); i++) {
 			Meeting m = Meeting.findById(total.get(i).id);
-
 			u.add(new MeetingUsers(m));
 			for (MeetingAttendance k : m.users) {
 				if (k.status.equals("confirmed")) {
@@ -183,58 +178,17 @@ public class Boards extends SmartCRUD {
 				}
 
 			}
-
 		}
 		}
-				List <User> usrs = p.users;
-		List <User> users_desc = new ArrayList();
-		List <User> users_assignee = new ArrayList();
-		List <User> users_reviewer = new ArrayList();
-		List <User> users_type = new ArrayList();
-		for(int i=0;i<usrs.size();i++)
-		{
-				if(usrs.get(i).in(p).can("changeTaskDescreption"))
-					users_desc.add(usrs.get(i));
-				if(usrs.get(i).in(p).can("changeAssignee"))
-					users_assignee.add(usrs.get(i));
-				if(usrs.get(i).in(p).can("changeReviewer"))
-					users_reviewer.add(usrs.get(i));
-				if(usrs.get(i).in(p).can("changeTaskType"))
-					users_type.add(usrs.get(i));
-
-		}
-		
-		ArrayList ud = new ArrayList (users_desc.size());
-		for(int i=0;i<users_desc.size();i++)
-		{
-			User uu = users_desc.get(i);
-			ud.add(uu.id);
-		}
-		
-		ArrayList ua = new ArrayList (users_assignee.size());
-		for(int i=0;i<users_assignee.size();i++)
-		{
-			User uu = users_assignee.get(i);
-			ua.add(uu.id);
-		}
-		
-		ArrayList ur = new ArrayList (users_reviewer.size());
-		for(int i=0;i<users_reviewer.size();i++)
-		{
-			User uu = users_reviewer.get(i);
-			ur.add(uu.id);
-		}
-		
-		ArrayList ut = new ArrayList (users_type.size());
-		for(int i=0;i<users_type.size();i++)
-		{
-			User uu = users_type.get(i);
-			ut.add(uu.id);
-		}
-		render(data, columnsOfBoard,hidencolumnsOfBoard, u, b, s, p, total,columns,ud,ua,ur,ut);
-		
+		ArrayList ud = getDescPerm(p);
+		ArrayList ua = getAssiPerm(p);
+		ArrayList ur = getRevPerm(p);
+		ArrayList ut = getTypePerm(p);	
+		render(data, columnsOfBoard,hidencolumnsOfBoard, u, b, s, p, total,columns,ud,ua,ur,ut);	
 	}
 
+	
+	
 	/**
 	 * order any list of columns and return the ordered list.
 	 * 
@@ -429,18 +383,80 @@ public class Boards extends SmartCRUD {
 		
 	}
 	
-	/**
-	 * @author Dina Helal
-	 * @param usr_id: user ID
-	 * 
-	 * */
-	
-	public static void getUser(long usr_id)
+	public static ArrayList getDescPerm (Project p)
 	{
-		User usr = User.findById(usr_id);
-		renderJSON(usr);
+		List <User> usrs = p.users;
+		List <User> users_desc = new ArrayList();
+		for(int i=0;i<usrs.size();i++)
+		{
+			if(usrs.get(i).in(p).can("changeTaskDescreption"))
+				users_desc.add(usrs.get(i));
+		}
+		ArrayList ud = new ArrayList (users_desc.size());
+		for(int i=0;i<users_desc.size();i++)
+		{
+			User uu = users_desc.get(i);
+			ud.add(uu.id);
+		}
+		return ud;
 	}
-		public static void show(String id) {
+	
+	public static ArrayList getAssiPerm (Project p)
+	{
+		List <User> usrs = p.users;
+		List <User> users_assignee = new ArrayList();
+		for(int i=0;i<usrs.size();i++)
+		{
+			if(usrs.get(i).in(p).can("changeAssignee"))
+				users_assignee.add(usrs.get(i));
+		}	
+		ArrayList ua = new ArrayList (users_assignee.size());
+		for(int i=0;i<users_assignee.size();i++)
+		{
+			User uu = users_assignee.get(i);
+			ua.add(uu.id);
+		}
+		return ua;
+	}
+	
+	public static ArrayList getRevPerm (Project p)
+	{
+		List <User> usrs = p.users;
+		List <User> users_reviewer = new ArrayList();
+		for(int i=0;i<usrs.size();i++)
+		{
+			if(usrs.get(i).in(p).can("changeReviewer"))
+				users_reviewer.add(usrs.get(i));
+		}
+		ArrayList ur = new ArrayList (users_reviewer.size());
+		for(int i=0;i<users_reviewer.size();i++)
+		{
+			User uu = users_reviewer.get(i);
+			ur.add(uu.id);
+		}
+		return ur;
+	}
+	
+	public static ArrayList getTypePerm (Project p) 
+	{
+		List <User> usrs = p.users;
+		List <User> users_type = new ArrayList();
+		for(int i=0;i<usrs.size();i++)
+		{
+				if(usrs.get(i).in(p).can("changeTaskType"))
+					users_type.add(usrs.get(i));
+
+		}	
+		ArrayList ut = new ArrayList (users_type.size());
+		for(int i=0;i<users_type.size();i++)
+		{
+			User uu = users_type.get(i);
+			ut.add(uu.id);
+		}
+		return ut;
+	}
+	
+	public static void show(String id) {
 		forbidden();
 	}
 
