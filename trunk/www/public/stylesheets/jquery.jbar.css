@@ -1,7 +1,7 @@
 .jbar{
 	height:50px;
 	width:100%;
-	background-color: #FF9C91;
+	background-color: #EEEEEE;
 	position:fixed;
 	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=95); 
 	opacity: 0.95;
@@ -14,7 +14,7 @@
 }
 .jbar-top{
 	top:0px;
-	border-bottom: 1px solid #7F4D48;
+	border-bottom: 1px solid #444444;
 }
 .jbar-bottom{
 	bottom:0px;
