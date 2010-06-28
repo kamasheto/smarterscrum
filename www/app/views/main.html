@@ -8,6 +8,7 @@
         <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jquery-ui-1.8.custom.css'}"/>
 		<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/BreadCrumb.css'}"/>
 		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/jquery.gritter.css"/>
+		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/jquery.jbar.css"/>
 		<link rel="shortcut icon" href="@{'public/images/favicon.ico'}" type="image/x-icon"/> 
         #{get 'moreStyles' /}
         
@@ -20,6 +21,7 @@
        	<script src="@{'/public/javascripts/md5.js'}" type="text/javascript"charset="utf-8"></script>
        	<script src="@{'/public/javascripts/more.js'}" type="text/javascript"charset="utf-8"></script>
 		<script type="text/javascript" src="/public/javascripts/jquery.gritter.min.js"></script>
+        <script src="@{'/public/javascripts/jquery.bar.js'}" type="text/javascript" charset="utf-8"></script>
         #{get 'moreScripts' /}
         
         <script type="text/javascript">
@@ -361,31 +363,22 @@ var ping = function() {
 			</script>
 
 			#{ifErrors}
-			    #{errors}
-				<script type="text/javascript">
-				$.gritter.add({
-					title: 'Registration Error',
-					text: '${error}',
-					image: '/public/images/cross.png',
-					sticky: false,
-					time: ''
-				});
-				</script>
-			    #{/errors}
+			<script type="text/javascript">
+				$(document).ready(function(){
+					$.bar({
+						message : '${errors}'
+					});
+				})
+			</script>
 			#{/ifErrors}
 			#{if flash.error}
 			<script type="text/javascript">
-			$.gritter.add({
-				title: 'Registration Error',
-				text: '&{flash.error}',
-				image: '/public/images/cross.png',
-				sticky: false,
-				time: ''
-			});
+			$(document).ready(function(){
+				$.bar({
+					message : '&{flash.error}'
+				});
+			})
 			</script>
 			#{/if}
-
 </body>
-
 </html>
-
