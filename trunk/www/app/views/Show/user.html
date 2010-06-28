@@ -31,7 +31,7 @@
 			</p>
 		#{/elseif}
 		
-		#{if connected.isAdmin}
+		#{if connected.isAdmin & user != me }
 <p>
 			<a href="@{Users.del(user.id)}" onclick="return confirm('Are you absolutely really sure?');">Delete this user</a>
 </p>
