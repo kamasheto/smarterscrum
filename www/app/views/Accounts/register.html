@@ -14,18 +14,6 @@
 	<!--The Registration form element-->
 	<form name = "register" action = "@{addUser()}" method="post">
 		<!--Show an error from the controller if any-->
-		#{ifErrors}
-		<p class="error left">
-		    #{errors}
-		    	${error}<br />
-		    #{/errors}
-		    </p>
-			<br style="clear:both;" />
-		#{/ifErrors}
-		#{if flash.error}
-			<p class="error left">&{flash.error}</p>
-			<br style="clear:both;" />
-		#{/if}
 		<p class="form-field">
 			<label>Username</label>
 			<input type="text" name="name" id="firstname" value="${flash.name}" onblur = "User.name = firstname.value"/> *

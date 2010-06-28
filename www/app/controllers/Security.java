@@ -33,7 +33,7 @@ public class Security extends Secure.Security {
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
-		} else if (user.deleted) {
+		} else if ( user != null && user.deleted) {
 			flash.error("Your account has been deleted. Please contact a website administrator for clarification.");
 			try {
 				Secure.login();
