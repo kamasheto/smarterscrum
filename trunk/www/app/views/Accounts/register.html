@@ -20,28 +20,33 @@
 		    	${error}<br />
 		    #{/errors}
 		    </p>
+			<br style="clear:both;" />
 		#{/ifErrors}
 		#{if flash.error}
 			<p class="error left">&{flash.error}</p>
+			<br style="clear:both;" />
 		#{/if}
 		<p class="form-field">
 			<label>Username</label>
-			<input type="text" name="name" id="firstname" value="${flash.name}" onblur = "User.name = firstname.value"/>
+			<input type="text" name="name" id="firstname" value="${flash.name}" onblur = "User.name = firstname.value"/> *
 		</p>
 		<p class="form-field">
 			<label>Email</label>
-			<input type="text" name="email" id="email" value="${flash.email}" onblur = "User.email = email.value"/>
+			<input type="text" name="email" id="email" value="${flash.email}" onblur = "User.email = email.value"/> *
 		</p>
 		<p class="form-field">
 			<label>Password</label>
-			<input type="password" name="password" id="password" onblur = "User.pass = password.value" />
+			<input type="password" name="password" id="password" onblur = "User.pass = password.value" /> *
 		</p>
 		<p class="form-field">
 			<label>Confirm Password</label>
-			<input type="password" name="confirmPass" id="confirmPass"  />
+			<input type="password" name="confirmPass" id="confirmPass"  /> *
 		</p>
 		<p id="signin-field">
 			<input type = "submit" value = "Register" /> or <a href="/secure/login">Login</a>
+		</p>
+		<p class="form-field">
+			* Required fields
 		</p>
 	</form> 
 </div>

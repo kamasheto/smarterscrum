@@ -563,3 +563,9 @@ ul.project_links a {
 	margin:10px;
 	font-size:28px;
 }
+tr.deleted {
+	background: #FFA8A8;
+}
+p.error {
+	color:darkred;
+}

@@ -1,6 +1,10 @@
+#{extends 'CRUD/layout.html' /}
 <!--Author: Amr Tj.Wallas-->
 <!--Task: C1S4-->
-#{extends 'CRUD/layout.html' /}
+#{set 'moreScripts'}
+<script  type="text/javascript" src="@{'/public/javascripts/dragtablenorm.js/'}" ></script>
+<script  type="text/javascript" src="@{'/public/javascripts/sorttable.js/'}" ></script>
+#{/set}
 
 <div id="crudList" class="${type.name}">
 	
@@ -11,7 +15,24 @@
 	</div>
 
 	<div id="crudListTable">
-		#{crud.table fields:['name', 'email', 'isAdmin', 'pendingDeletion', 'deleted']/}
+		<table class="sortable draggable">
+			<thead>
+					<tr>
+						<th width="2E + 1%">Name</th>
+						<th width="2E + 1%">Email Address</th>
+						<th width="2E + 1%">Admin?</th>
+						<th width="2E + 1%">Pending Deletion</th>
+					</tr>
+			</thead>
+		#{list objects}
+			<tr class='${_.deleted ? 'deleted' : ''}'>
+				<td><a href="/admin/users/${_.id}">${_.name}</a></td>
+				<td>${_.email}</td>
+				<td>${_.isAdmin}</td>
+				<td>${_.pendingDeletion}</td>
+			</tr>
+		#{/list}
+	</table>
 	</div>
 	
 	<div id="crudListPagination">
