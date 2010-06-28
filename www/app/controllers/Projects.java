@@ -539,7 +539,8 @@ public class Projects extends SmartCRUD {
 	 * @author Behairy
 	 */
 	public static void manageProjectRequests(){
-		 List<Project> pendingProjects = Project.find("approvalStatus=false AND deleted=false").fetch();
+		Security.check(Security.getConnected().isAdmin); 
+		List<Project> pendingProjects = Project.find("approvalStatus=false AND deleted=false").fetch();
 	render(pendingProjects);
 	}
 	/**
