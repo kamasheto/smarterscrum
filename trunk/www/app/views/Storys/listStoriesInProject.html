@@ -12,6 +12,7 @@
 </style>
 #{/set}
 <h2>Stories</h2>
+#{if ok == true}
 <div id="accordion">				
 #{list items:project.components, as:'component'}
 	<div id="component_${component.id}">
@@ -51,6 +52,10 @@
 	#{if connected.in(project).can('addStory')}
 		<a href="@{blank(project.id)}"><img src="@{'/public/images/new_story.gif'}"></a>
 	#{/if}
+	#{/if}
+	#{else}
+	${message}
+	#{/else}
 <script type = "text/javascript">
 
 function openAjaxPopup(address) {
