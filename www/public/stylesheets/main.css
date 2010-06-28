@@ -245,7 +245,7 @@ a {
 
 /********************triangle notch**************************/
 .notchBottom {
-	border-top: 15px solid black;
+	border-top: 15px solid #b7568d;
 	border-right: 15px solid transparent;
 	border-left: 15px solid transparent;
 	border-bottom: 0px;
@@ -257,12 +257,12 @@ a {
 	_border-right-color: pink;
 	_border-left-color: pink;
 	margin-top: -2px;
-	_filter: chroma(color =                                                     pink)
-		;
+	_filter: chroma(color =                                                      
+		pink);
 }
 
 .notchBottom2 {
-	border-top: 13px solid #ff6699;
+	border-top: 13px solid #b7568d;
 	border-right: 13px solid transparent;
 	border-left: 13px solid transparent;
 	border-bottom: 0px;
@@ -276,12 +276,12 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                     pink)
-		;
+	_filter: chroma(color =                                                      
+		pink);
 }
 
 .notchTop {
-	border-bottom: 15px solid #66CCFF;
+	border-bottom: 15px solid #b7568d;
 	border-right: 15px solid transparent;
 	border-left: 15px solid transparent;
 	border-top: 0px;
@@ -292,12 +292,12 @@ a {
 	margin-left: 30px;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                     pink)
-		;
+	_filter: chroma(color =                                                      
+		pink);
 }
 
 .notchRight {
-	border-left: 15px solid #ff6699;
+	border-left: 15px solid #b7568d;
 	border-top: 15px solid transparent;
 	border-bottom: 15px solid transparent;
 	border-right: 0;
@@ -310,12 +310,12 @@ a {
 	display: inline-block;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                     pink)
-		;
+	_filter: chroma(color =                                                      
+		pink);
 }
 
 .notchLeft {
-	border-right: 15px solid #ff6699;
+	border-right: 15px solid #b7568d;
 	border-top: 15px solid transparent;
 	border-bottom: 15px solid transparent;
 	border-left: 0;
@@ -326,8 +326,8 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                     pink)
-		;
+	_filter: chroma(color =                                                      
+		pink);
 }
 
 /*********form***********/
@@ -371,7 +371,7 @@ a {
 	background: #444 !important;
 	background: -moz-linear-gradient(center bottom, #444 20%, #555 80%)
 		!important;
-	background: vertical-align :           middle;
+	background: vertical-align :             middle;
 	height: 36px !important;
 	border-radius-bottom-left: 0px !important;
 	-moz-border-radius-bottomleft: 0px !important;
@@ -557,24 +557,38 @@ h1,h2,h4,h5 {
 }
 
 /** project links **/
+#boards a {
+	background: transparent !important;
+	padding: 0px !important;
+	border: 0px !important;
+	margin: 0px !important;
+	float: none !important;
+	font-size:10px!important;
+	text-align:left !important;
+	text-decoration:underline !important;
+}
+
 ul.project_links a {
-background:-moz-linear-gradient(center bottom, #666 20%, #888 80%);
-color:#000;
-display:block;
-float:left;
-font-size:12px;
-margin:10px;
-padding:10px;
-text-align:center;
-text-decoration:none;
+	background: -moz-linear-gradient(center bottom, #666 20%, #888 80%);
+	color: #000;
+	display: block;
+	float: left;
+	font-size: 12px;
+	margin: 10px;
+	padding: 10px;
+	text-align: center;
+	text-decoration: none;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 }
+
 ul.project_links a:hover {
-background:-moz-linear-gradient(center bottom, #999 20%, #888 80%);	box-shadow: 0px 0px 15px #9E3572;
+	background: -moz-linear-gradient(center bottom, #999 20%, #888 80%);
+	box-shadow: 0px 0px 15px #9E3572;
 	-moz-box-shadow: 0px 0px 15px #9E3572;
-	-webkit-box-shadow: 0px 0px 15px #9E3572;}
+	-webkit-box-shadow: 0px 0px 15px #9E3572;
+}
 
 ul.project_links a img {
 	border: 0 none;
@@ -582,9 +596,20 @@ ul.project_links a img {
 	margin: 0 auto;
 	vertical-align: middle;
 	height: 100px;
-	margin-bottom:5px;
+	margin-bottom: 5px;
 }
 
 tr.deleted {
 	background: #FFA8A8;
+}
+
+.proj {
+	background-color: #b7568d;
+}
+
+.projDes {
+	padding: 10px;
+	background-color: #b7568d;
+	width: 300px;
+	overflow: auto
 }
