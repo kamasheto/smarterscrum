@@ -13,7 +13,10 @@
 #{/set}
 <h2>Stories</h2>
 #{if ok == true}
-<div id="accordion">				
+<div id="accordion">
+#{if connected.in(project).can('addStory')}
+		<a href="@{blank(project.id)}"><img src="@{'/public/images/new_story.gif'}" title="Create new story"></a>
+	#{/if}				
 #{list items:project.components, as:'component'}
 	<div id="component_${component.id}">
 	<h3><a>${component.name}</a></h3>
@@ -49,9 +52,7 @@
 #{/list}
 </div>					
 	
-	#{if connected.in(project).can('addStory')}
-		<a href="@{blank(project.id)}"><img src="@{'/public/images/new_story.gif'}"></a>
-	#{/if}
+	
 	#{/if}
 	#{else}
 	${message}
