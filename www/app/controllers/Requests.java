@@ -152,10 +152,10 @@ public class Requests extends SmartCRUD {
 		if (!x.isDeletion) {
 			Notifications.notifyUsers(x.user, "Role Request Denied", "Your Role request to be " + x.role.name + " in " + y.name + " has been denied", (byte) -1);
 		} else {
-			if (body == null)
+			/*if (body == null)
 				Notifications.notifyUsers(x.user, "deletion request from project denied", "Your deletion request from project " + x.project.name + " has been denied.", (byte) -1);
 			else
-				Notifications.notifyUsers(x.user, "deletion request from project denied", "You deletion request from project " + x.project.name + " has been denied because " + body + ".", (byte) -1);
+				Notifications.notifyUsers(x.user, "deletion request from project denied", "You deletion request from project " + x.project.name + " has been denied because " + body + ".", (byte) -1);*/
 			{
 				String b = body.replace('+', ' ');
 				int i = body.indexOf('&');
