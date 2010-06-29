@@ -102,7 +102,9 @@ public class Logs extends SmartCRUD {
 			filter2 = filter2.toLowerCase();
 			//System.out.println(filter2);
 			//logs = Log.find("LOWER(user.name) in "+filter2 +" and LOWER(action_type) in " + filter2 + " and LOWER(resource_type) in " + filter2 + " and LOWER(project.name) in " + filter2 + " and LOWER(date) in " + filter2 + " order by date desc").from(index).fetch(25);
-			logs = Log.find(smartFilter(filter2)).from(index).fetch(25);
+			//System.out.println(smartFilter(filter2)+" <<there");
+			if(!smartFilter(filter2).isEmpty())
+				logs = Log.find(smartFilter(filter2)).from(index).fetch(25);
 			}
 		else
 			logs = Log.find("order by date desc").from(index).fetch(25);
@@ -134,9 +136,14 @@ public class Logs extends SmartCRUD {
 				query = query + " and LOWER(date) in " + filter;
 			else
 				query = query + "LOWER(date) in " + filter;
-		query = query + " order by date desc";
-		return query;
-		
+		if(query.isEmpty())
+			return query;
+		else
+		{
+			query = query + " order by date desc";
+			return query;
+		}
+				
 	}
 
 	public static void show(String id) {
