@@ -18,9 +18,12 @@
 			//alert(ids);
 		}
 		function do_it(){
+			if(!(ids.length<1))
 			$.post('@{deleteUsers()}' ,{users:ids},function(){
 				window.location.reload();
 			});
+			else
+			alert("You didn't select any users!");
 		}
 	</script>
 </head>
