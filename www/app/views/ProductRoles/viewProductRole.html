@@ -2,9 +2,9 @@
 #{set title:productRole.name /}
 #{set 'crumbs'}
 <li><a href="/show/projects"> Projects </a></li>
-<li><a href="/show/project?id=${productRole.project.id}"> ${project.name} </a></li>
+<li><a href="/show/project?id=${productRole.project.id}"> ${productRole.project.name} </a></li>
 <li><a href="/projects/${productRole.project.id}/productroles"> Product Roles </a></li>
-<li><a href="/productroles/${object.id}"> ${object.name} </a></li>
+<li><a href="/productroles/${productRole.id}">${productRole.name}</a></li>
 #{/set}
 #{set 'moreLinks'}
 #{if connected.in(project).can('editProductRole')}
@@ -79,7 +79,7 @@ ${productRole.project}<br/><br/>
 function deleteProductRole()
 {
    	var id= ${productRole.id};
-   	var confirmation= confirm("Delete Product Role?")
+   	var confirmation= confirm("Are you sure you want to Delete Product Role?")
    	if (confirmation) {
    	   	$.post('@{deleteProductRole()}',{id:id},
     		function(){
