@@ -402,7 +402,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<span style="display:none"> ${flag4=true}</span>
 		#{/if}
 		#{if flag4} <!-- if has permission (edit reviewer) -->
-		<div><a id="rev_${task.id}" title="Change Reviewer?" c class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
+		<div><a id="rev_${task.id}" title="Change Reviewer?" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Reviewer:${task.reviewer}</a></div>
 		<div id="revs_${task.id}" class="showrev" style="display:none">Reviewer:${task.reviewer}</div>
 		#{/if}
