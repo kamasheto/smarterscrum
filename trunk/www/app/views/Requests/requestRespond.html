@@ -8,7 +8,7 @@
 	<div>
 #{if requests.isEmpty()}
 <br/>
-<p>There are no new role requests in ${pro.name}</p>
+#{note 'error'}There are no new role requests in ${pro.name} #{/note}
 <br/> 
 #{/if}
 #{else}
@@ -27,7 +27,7 @@
 	<div>
 #{if drequests.isEmpty()}
 <br/>
-<p>There are no new deletion requests in ${pro.name}</p>
+#{note 'error'}There are no new deletion requests in ${pro.name}#{/note}
 <br/> 
 #{/if}
 
