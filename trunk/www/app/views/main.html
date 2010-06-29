@@ -47,15 +47,7 @@
 					$('#theContent').css('padding','20px');
 				}
 				*/
-				function signIn(id)
-				{
-					$.post('/ChatSystem/enterChat',{id:id});
-				}
-				
-				function signOut(id)
-				{
-					$.post('/ChatSystem/leaveChat',{id:id});
-				}
+
 
        			$("#breadCrumb").jBreadCrumb();
        			$('.formatDate').each(function(){
@@ -178,6 +170,15 @@
 										<textarea id="message_${proj.name}" name="message_${proj.name}" class="chatboxtextarea"></textarea>
 									</div>	
 									<script type="text/javascript">
+									function signIn(id)
+									{
+										$.post('/ChatSystem/enterChat',{id:id});
+									}
+									
+									function signOut(id)
+									{
+										$.post('/ChatSystem/leaveChat',{id:id});
+									}
 									#{if controllers.Security.getConnected().openChats.contains(proj.chatroom)}
 									$(function()
 									{
