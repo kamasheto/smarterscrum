@@ -63,23 +63,37 @@ alert("You Must Enter a Meeting Type.");
 hideLoader('addMB','loaderMB');
 return;
 }
-$.post('@{addMeetingType()}',{id:n,meetingType:m,inSprint:x},function (flag){
-
-if(flag){
-var select=document.getElementById('meetingTypesList');
-var optn = document.createElement("OPTION");
-optn.text = m;
-optn.value = m;
-select.options.add(optn);
-
-}
-else{
-alert("Meeting Type couldn't be added.");
-}
-
-
-hideLoader('addMB','loaderMB');
-},'json')
+$.post('@{meetingTypesCheck()}',{id:n,type:m},function(exist){
+	if (!exist) 
+	{
+		$.post('@{addMeetingType()}', {
+			id: n,
+			meetingType: m,
+			inSprint: x
+		}, function(flag){
+		
+			if (flag) {
+				var select = document.getElementById('meetingTypesList');
+				var optn = document.createElement("OPTION");
+				optn.text = m;
+				optn.value = m;
+				select.options.add(optn);
+				
+			}
+			else {
+				alert("Meeting Type couldn't be added.");
+			}
+			
+			
+			hideLoader('addMB', 'loaderMB');
+		}, 'json')
+	}
+	else
+	alert("Meeting type name is already used.");
+	
+})
+document.getElementById('meetingText').value="";
+hideLoader('addMB', 'loaderMB');
 }
 
 
@@ -193,22 +207,36 @@ alert("You Must Enter a Task Type.");
 hideLoader('addTSK','loaderTSK');
 return;
 }
-$.post('@{addTaskType()}',{id:n,taskType:m},function (id){
+$.post('@{taskTypesCheck()}',{id:n , type:m},function(exist){
+	if (!exist) 
+	{
+	
+		$.post('@{addTaskType()}', {
+			id: n,
+			taskType: m
+		}, function(id){
+		
+			if (id) {
+				var select = document.getElementById('taskTypesList');
+				var optn = document.createElement("OPTION");
+				optn.text = m;
+				optn.value = id;
+				select.options.add(optn);
+				
+			}
+			else {
+				alert("Task Type couldn't be added.");
+			}
+			
+			hideLoader('addTSK', 'loaderTSK');
+		}, 'json')
+	}
+	else
+	alert("Task type name is already used.");
 
-if(id){
-var select=document.getElementById('taskTypesList');
-var optn = document.createElement("OPTION");
-optn.text = m;
-optn.value = id;
-select.options.add(optn);
-
-}
-else{
-alert("Task Type couldn't be added.");
-}
-
-hideLoader('addTSK','loaderTSK');
-},'json')
+})
+hideLoader('addTSK', 'loaderTSK');
+document.getElementById('taskText').value="";
 }
 
 
@@ -222,22 +250,34 @@ alert("You Must Enter a Valid Task Status Type.");
 hideLoader('addTST','loaderTST');
 return;
 }
-$.post('@{addTaskStatus()}',{id:n,taskStatus:m},function (id){
-
-if(id){
-var select=document.getElementById('taskStatusesList');
-var optn = document.createElement("OPTION");
-optn.text = m;
-optn.value = id;
-select.options.add(optn);
-
-}
-else{
-alert("Task Type couldn't be added.");
-}
-
-hideLoader('addTST','loaderTST');
-},'json')
+$.post('@{taskStatusCheck()}',{id:n,status:m},function(exist){
+	if (!exist) {
+		$.post('@{addTaskStatus()}', {
+			id: n,
+			taskStatus: m
+		}, function(id){
+		
+			if (id) {
+				var select = document.getElementById('taskStatusesList');
+				var optn = document.createElement("OPTION");
+				optn.text = m;
+				optn.value = id;
+				select.options.add(optn);
+				
+			}
+			else {
+				alert("Task status couldn't be added.");
+			}
+			
+			hideLoader('addTST', 'loaderTST');
+		}, 'json')
+	}
+	else
+	alert("Task status name is already used.");
+	
+})
+	hideLoader('addTST', 'loaderTST');
+	document.getElementById('taskTSText').value="";
 }
 
 
@@ -254,23 +294,38 @@ hideLoader('addST','loaderST');
 return;
 }
 
-$.post('@{addStoryType()}',{id:n,storyType:m,unit:x},function (id){
-
-if(id) {
-var select=document.getElementById('storiesTypesList');
-var optn = document.createElement("OPTION");
-optn.text = x+": "+m;
-optn.value= id;
-
-select.options.add(optn);
-
-}
-else{
-alert("Story Type couldn't be added.");
-}
-
-hideLoader('addST','loaderST');
-},'json')
+$.post('@{storyPriorityCheck()}',{id:n ,pName:m},function(exist){
+	
+	if (!exist) {
+	
+		$.post('@{addStoryType()}', {
+			id: n,
+			storyType: m,
+			unit: x
+		}, function(id){
+		
+			if (id) {
+				var select = document.getElementById('storiesTypesList');
+				var optn = document.createElement("OPTION");
+				optn.text = x + ": " + m;
+				optn.value = id;
+				
+				select.options.add(optn);
+				
+			}
+			else {
+				alert("Story Type couldn't be added.");
+			}
+			
+			hideLoader('addST', 'loaderST');
+		}, 'json')
+	}
+	else
+	alert("Priority Title is already used.");
+})
+hideLoader('addST', 'loaderST');
+document.getElementById('storyText').value="";
+document.getElementById('priorityText').value="";
 }
 
 
@@ -445,7 +500,7 @@ hideLoader('addES','loaderES');
 	</select>
 	<br>
 	
-	<input id="meetingText" class="" type="text" name="object.name" value="" "size="27" /> 
+	Add new : &nbsp;<input id="meetingText" class="" type="text" name="object.name" value="" "size="27" /> 
 	<br>
 	<INPUT id="assocSprint"TYPE=CHECKBOX NAME="assocSprint"  onclick=""   > 	Associate New Type To End Of Sprint
 	<input id="addMB"type="button" name="add" value="Add" onclick="addMeeting()" />
@@ -472,7 +527,7 @@ hideLoader('addES','loaderES');
 #{/list}
 	</select>
 	<br>
-	<input id="taskText" class="" type="text" name="object.name" value="" "size="27" /> 
+	Add new : &nbsp;<input id="taskText" class="" type="text" name="object.name" value="" "size="27" /> 
 	<br>
 	<input id="addTSK" type="button" name="add" value="Add" onclick="addTask()" />
 	<input id="removeTSK" type="button" name="add" value="Remove" onclick="removeTask()"/>
@@ -496,7 +551,7 @@ hideLoader('addES','loaderES');
 #{/list}
 	</select>
 	<br>
-	<input id="taskTSText" class="" type="text" name="object.name" value="" "size="27" /> 
+	Add new : &nbsp;<input id="taskTSText" class="" type="text" name="object.name" value="" "size="27" /> 
 	<br>
 	<input id="addTST" type="button" name="add" value="Add" onclick="addTaskStatus()" />
 	<input id="removeTST" type="button" name="add" value="Remove" onclick="removeTaskStatus()"/>
