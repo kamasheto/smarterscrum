@@ -12,7 +12,7 @@ import models.UserNotificationProfile;
 import play.mvc.With;
 
 @With (Secure.class)
-public class Requests extends SmartController {
+public class Requests extends SmartCRUD {
 	/**
 	 * belongs to s15
 	 * <p>
@@ -188,6 +188,47 @@ public class Requests extends SmartController {
 		Show.project(myComponent.project.id);
 		// Logs.addLog(myComponent, "request to be deleted", "Request", x.id );
 
+	}
+	
+	public static void list()
+	{
+		Security.check(Security.getConnected().isAdmin);
+		List<User> users = User.find("pendingDeletion = true").fetch();
+		render(users);
+	}
+	
+	public static void deleteUsers(int [] users)
+	{
+		for(int i=0; i<users.length; i++)
+		{
+			User currentUser = User.find("id = "+ users[i]).first();
+			currentUser.deleted=true;
+			currentUser.pendingDeletion = false;
+			currentUser.save();
+			Notifications.notifyUsers(currentUser, "Your deletion request from our system has been approved.", "Dear "+currentUser.name+", your deletion request from our system has been approved by a system admin. we hope to see you back again!", (byte) -1);
+		}
+		flash.success( "Users are now deactivated ");
+		redirect("/admin/requests");
+	}
+	
+	public static void show(String id) {
+		forbidden();
+	}
+
+	public static void save(String id) {
+		forbidden();
+	}
+
+	public static void blank() {
+		forbidden();
+	}
+
+	public static void create() {
+		forbidden();
+	}
+
+	public static void delete(String id) {
+		forbidden();
 	}
 
 }
