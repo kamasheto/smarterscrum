@@ -182,7 +182,7 @@ $(function(){
 #{if connected.in(p).can('ShowColumn')}
 <a href="#" class="b1 tiptitize" title="add hidden column?" type="button">Add Hidden Columns!</a><br/>	
 <select id="hadeer" onchange="showHiddenCol(hadeer.value)" style="display:none" class="hidecol">
-<option value="">view hiden columns</option>
+<option value="">view hidden columns</option>
 #{list items:hidencolumnsOfBoard, as:'c'}
 <option value= "${c.id}">${c.name}</option>
 #{/list}
