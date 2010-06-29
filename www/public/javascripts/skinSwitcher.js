@@ -22,7 +22,7 @@ document.cookie = name+"="+value+"; expires="+expireDate.toGMTString()+"; path=/
 }
 
 function deleteCookie(name){
-setCookie(name, "moot")
+setCookie(name, "moot")// <------------------ TjWallas: LOL !!!
 }
 
 
