@@ -4,7 +4,12 @@
 <script type="text/javascript" src="@{'/public/javascripts/jquery.tooltip.min.js'}" />
 <script type="text/javascript">
 $(document).ready(function() {
-	$("map *").tooltip({ positionLeft: true, delay:0, track:true, showURL: false });
+//	$("map *").tooltip({ positionLeft: true, delay:0, track:true, showURL: false });
+	$('map *').hover(function() {
+			$.bar({
+				message: $(this).attr('title')
+			});
+	})
 })
 </script>
 #{/set}
