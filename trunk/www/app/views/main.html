@@ -371,5 +371,14 @@ var ping = function() {
 			})
 			</script>
 			#{/if}
+			#{if flash.success}
+			<script type="text/javascript">
+			$(document).ready(function(){
+				$.bar({
+					message : '&{flash.success}'
+				});
+			})
+			</script>
+			#{/if}
 </body>
 </html>
