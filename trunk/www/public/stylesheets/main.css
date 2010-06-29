@@ -7,6 +7,11 @@ body,html {
 	padding: 0px;
 }
 
+.makeTransparent {
+	background: url('/public/images/bg2.png') repeat-x fixed left
+		top;
+}
+
 table div {
 	vertical-align: top
 }
@@ -244,9 +249,9 @@ a {
 	_border-right-color: pink;
 	_border-left-color: pink;
 	margin-top: -2px;
-	_filter: chroma(color =          
+	_filter: chroma(color =            
 		                                                          
-		               pink);
+		                 pink);
 }
 
 .notchBottom2 {
@@ -264,9 +269,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =          
+	_filter: chroma(color =            
 		                                                          
-		               pink);
+		                 pink);
 }
 
 .notchTop {
@@ -281,9 +286,9 @@ a {
 	margin-left: 30px;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =          
+	_filter: chroma(color =            
 		                                                          
-		               pink);
+		                 pink);
 }
 
 .notchRight {
@@ -300,9 +305,9 @@ a {
 	display: inline-block;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =          
+	_filter: chroma(color =            
 		                                                          
-		               pink);
+		                 pink);
 }
 
 .notchLeft {
@@ -317,9 +322,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =          
+	_filter: chroma(color =            
 		                                                          
-		               pink);
+		                 pink);
 }
 
 /**form**/
@@ -406,6 +411,21 @@ button {
 }
 
 /**Messages Styles**/
+#chatroomList {
+	text-align: center;
+	color: #fff;
+	display: none;
+	position: absolute;
+	z-index: 100
+}
+
+.chatroomListHolder {
+	padding: 5px;
+	background-color: #555;
+	width: 100px; overflow auto;
+	margin-left: 250px
+}
+
 #chatContainer {
 	vertical-align: top;
 	position: absolute;
@@ -573,9 +593,6 @@ ul.project_links a {
 	text-decoration: none;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	background: -moz-linear-gradient(center bottom, #666 20%, #888 80%)
-		!important;
 }
 
 #boards a:hover {
