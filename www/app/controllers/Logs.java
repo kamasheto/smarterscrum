@@ -87,7 +87,7 @@ public class Logs extends SmartCRUD {
 			flash.error("ILLEGAL CHARACTER !!");
 			filter = null;
 			logs = Log.find("order by date desc").from(index).fetch(25);
-			render(logs, page);
+			redirect("/admin");
 		} else if (filter != null)
 			{
 			if(filter.charAt(0) == ' ' || filter.charAt(filter.length()-1) == ' ' || filter.contains("  "))
