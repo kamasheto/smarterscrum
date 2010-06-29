@@ -4,8 +4,8 @@
 <h2> Assign Users to ${comp.name} </h2>
 
 #{if users.isEmpty()}
-<p><font color=""> There are no available free developers in ${pro.name} to add them to ${comp.name}</font></p>
-<p>if you want to invite new developers to ${pro.name} to be able to add them <a href="/show/users">Click Here</a>!</p>
+#{note 'error'} There are no available free developers in ${pro.name} to add them to ${comp.name}
+<br/>if you want to invite new developers to ${pro.name} to be able to add them <a href="/show/users">Click Here</a>!#{/note}
 #{/if}
 
 #{if !users.isEmpty()}
