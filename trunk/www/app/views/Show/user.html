@@ -40,10 +40,9 @@
 #{/if}
 <h1>${user.name}</h1>
 	<div>
-		
+		<h2>Projects:</h2>
 		#{if user.projects}
-			#{note}<div class="tiny_info">Click a project to toggle the components ${user.name} is assigned to</div>#{/note}
-			<h2>Projects:</h2>			
+			#{note 'highlight'}Click a project to toggle the components ${user.name} is assigned to#{/note}<br/>						
 		#{/if}
 		#{list items:user.projects, as:'project'}
 			<div><a href="javascript:;" onclick="$('#project_components_${project.id}').toggle()"><font size = 2>${project.name}</font></a></div>
@@ -55,12 +54,11 @@
 					<li>${component.name}</li>
 				#{/if}
 			#{/list}
-			#{ifnot has}${user.name} is not assigned to a component in ${project.name} yet !#{/ifnot}
+			#{ifnot has} #{note 'error'}${user.name} is not assigned to a component in ${project.name} yet !#{/note}#{/ifnot}
 			</ol>
 		#{/list}
-		#{else}
-			<h2>Projects:</h2>
-			<div class="tiny_info">${user.name} is not involved in any projects yet !</div>
+		#{else}			
+			#{note 'error'}${user.name} is not involved in any projects yet !#{/note}</div>
 		#{/else}
 	
 </div>
