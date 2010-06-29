@@ -1,6 +1,11 @@
 #{extends 'CRUD/layout.html' /}
 #{extends 'main.html' /}
 #{set title: projectName+ '\'s ProductRoles '/}
+#{set 'crumbs'}
+<li><a href="/show/projects"> Projects </a></li>
+<li><a href="/show/project?id=${productRole.project.id}"> ${project.name} </a></li>
+<li><a href="/projects/${productRole.project.id}/productroles"> Product Roles </a></li>
+#{/set}
 #{set 'moreLinks'}
 #{if connected.in(project).can('addProductRole')}
 <p>
