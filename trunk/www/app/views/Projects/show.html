@@ -12,7 +12,7 @@
 <script type="text/javascript">
 
 $(function(){
-	$("#accordion").accordion({ header: "h3" });
+	$("#accordion").accordion({autoHeight:false });
 	
 	});
 	
@@ -71,23 +71,23 @@ $.post('@{meetingTypesCheck()}',{id:n,type:m},function(exist){
 			meetingType: m,
 			inSprint: x
 		}, function(flag){
-		
-			if (flag) {
-				var select = document.getElementById('meetingTypesList');
-				var optn = document.createElement("OPTION");
-				optn.text = m;
-				optn.value = m;
-				select.options.add(optn);
-				
-			}
-			else {
-				alert("Meeting Type couldn't be added.");
-			}
-			
-			
-			hideLoader('addMB', 'loaderMB');
-		}, 'json')
-	}
+
+if(flag){
+var select=document.getElementById('meetingTypesList');
+var optn = document.createElement("OPTION");
+optn.text = m;
+optn.value = m;
+select.options.add(optn);
+
+}
+else{
+alert("Meeting Type couldn't be added.");
+}
+
+
+hideLoader('addMB','loaderMB');
+},'json')
+}
 	else
 	alert("Meeting type name is already used.");
 	
@@ -215,22 +215,22 @@ $.post('@{taskTypesCheck()}',{id:n , type:m},function(exist){
 			id: n,
 			taskType: m
 		}, function(id){
-		
-			if (id) {
-				var select = document.getElementById('taskTypesList');
-				var optn = document.createElement("OPTION");
-				optn.text = m;
-				optn.value = id;
-				select.options.add(optn);
-				
-			}
-			else {
-				alert("Task Type couldn't be added.");
-			}
-			
-			hideLoader('addTSK', 'loaderTSK');
-		}, 'json')
-	}
+
+if(id){
+var select=document.getElementById('taskTypesList');
+var optn = document.createElement("OPTION");
+optn.text = m;
+optn.value = id;
+select.options.add(optn);
+
+}
+else{
+alert("Task Type couldn't be added.");
+}
+
+hideLoader('addTSK','loaderTSK');
+},'json')
+}
 	else
 	alert("Task type name is already used.");
 
@@ -256,22 +256,22 @@ $.post('@{taskStatusCheck()}',{id:n,status:m},function(exist){
 			id: n,
 			taskStatus: m
 		}, function(id){
-		
-			if (id) {
-				var select = document.getElementById('taskStatusesList');
-				var optn = document.createElement("OPTION");
-				optn.text = m;
-				optn.value = id;
-				select.options.add(optn);
-				
-			}
-			else {
-				alert("Task status couldn't be added.");
-			}
-			
-			hideLoader('addTST', 'loaderTST');
-		}, 'json')
-	}
+
+if(id){
+var select=document.getElementById('taskStatusesList');
+var optn = document.createElement("OPTION");
+optn.text = m;
+optn.value = id;
+select.options.add(optn);
+
+}
+else{
+alert("Task Type couldn't be added.");
+}
+
+hideLoader('addTST','loaderTST');
+},'json')
+}
 	else
 	alert("Task status name is already used.");
 	
@@ -303,23 +303,23 @@ $.post('@{storyPriorityCheck()}',{id:n ,pName:m},function(exist){
 			storyType: m,
 			unit: x
 		}, function(id){
-		
-			if (id) {
-				var select = document.getElementById('storiesTypesList');
-				var optn = document.createElement("OPTION");
-				optn.text = x + ": " + m;
-				optn.value = id;
-				
-				select.options.add(optn);
-				
-			}
-			else {
-				alert("Story Type couldn't be added.");
-			}
-			
-			hideLoader('addST', 'loaderST');
-		}, 'json')
-	}
+
+if(id) {
+var select=document.getElementById('storiesTypesList');
+var optn = document.createElement("OPTION");
+optn.text = x+": "+m;
+optn.value= id;
+
+select.options.add(optn);
+
+}
+else{
+alert("Story Type couldn't be added.");
+}
+
+hideLoader('addST','loaderST');
+},'json')
+}
 	else
 	alert("Priority Title is already used.");
 })
@@ -449,11 +449,10 @@ hideLoader('addES','loaderES');
 
 </script>
 	
-	<h2 id="crudShowTitle">Edit "&{object.name}" Defaults and Settings 	
-	</h2>
+	<h2 id="crudShowTitle">Edit "&{object.name}" Defaults and Settings </h2>
 	
 	
-	<h5 id="description style="length:200px"><u>Description:</u> <br> &{object.description}  </h5>
+<p>	&{object.description}</p> 
 	
 	<div class="objectForm">
 	#{form action:@save(object.id), enctype:'multipart/form-data'}
@@ -461,10 +460,9 @@ hideLoader('addES','loaderES');
 
 <div id="accordion">
 #{if connected.in(object).can('editProject') }
-<div id="sd" class="sprintsDuration">
-	<h3>
-		Default Sprint Duration:
-		</h3>
+	<h3><a href="#">Default Sprint Duration:</a></h3>
+	
+	<div id="sd" class="sprintsDuration">
 		<p><b> Current Default Sprint Duration : <label id="durationLabel" style="color:red">&{object.sprintDuration}</label> Days.</b> 
 		<br><br>
 		Setting default sprint duration will be used when an end date for the sprint date is not specified upon creation.
@@ -483,10 +481,8 @@ hideLoader('addES','loaderES');
 		</div>
 		#{/if}
 		#{if connected.in(object).can('editProject') }
+	<h3><a href="#">Default Meeting Types:</a></h3>
 	<div class="meetingTypes">
-	<h3>
-		Default Meeting Types:
-		</h3>
 	<ul >
 	<small> <b><label id=" " style="color:red" >Click On a Meeting Type to view Sprint Association </small></b></label>
 		<p><u><b>Meeting Type:</b></u>  <b><label id="inSprintLbl"> </label></b></p> 
@@ -512,11 +508,11 @@ hideLoader('addES','loaderES');
 	
 	
 	#{if connected.in(object).can('editProject') }
-	<div class="taskTypes">
 	<h3>
-		Default Task Types:
+		<a href="#">Default Task Types:</a>
 		</h3>
 	
+		<div class="taskTypes">
 	<ul >
 <select name="drop1" id="taskTypesList" style="width:200px" size="10" multiple="multiple">
 #{list items:object.taskTypes, as:'taskType'}
@@ -536,10 +532,10 @@ hideLoader('addES','loaderES');
 	</div>
 	#{/if}
 	#{if connected.in(object).can('editProject') }
-	<div class="taskStatus">
 	<h3>
-		Default Task Statuses:
+	<a href="#">	Default Task Statuses:</a>
 		</h3>
+		<div class="taskStatus">
 	
 	<ul >
 <select name="drop1" id="taskStatusesList" style="width:200px" size="10" multiple="multiple">
@@ -562,10 +558,10 @@ hideLoader('addES','loaderES');
 	
 		#{/if}
 		#{if connected.in(object).can('editProject') }
-	<div class="storyPriorities">
 	<h3>
-		Edit Story Priorities:
+		<a href="#">Edit Story Priorities:</a>
 		</h3>
+	<div class="storyPriorities">
 			<ul >
 <select name="drop1" id="storiesTypesList" style="width:200px" size="10" multiple="multiple">
 #{list items:object.priorities, as:'storiesPriority'}
@@ -591,10 +587,10 @@ hideLoader('addES','loaderES');
 		</div>
 		#{/if}
 		#{if connected.in(object).can('editProject') }
-		<div class="meetingReSchedule">
 	<h3>
-		Edit Meeting Rescheduling Policies:
+		<a href="#">Edit Meeting Rescheduling Policies:</a>
 		</h3>
+		<div class="meetingReSchedule">
 		
 		
 		<p>
@@ -606,12 +602,8 @@ hideLoader('addES','loaderES');
 		</div>
 		#{/if}
 		#{if connected.in(object).can('editProject') }
+	<h3><a href="#">Edit Effort Estimation Points Unit:</a></h3>
 				<div class="meetingReSchedule">
-	<h3>
-		Edit Effort Estimation Points Unit:
-		
-		
-		</h3>
 	<p><b> Current Effort  Estimation Unit : <label id="estimationLabel" style="color:red">
 	
 		#{if object.effortEstimationUnit==0}
@@ -638,17 +630,6 @@ hideLoader('addES','loaderES');
 
 		</div>
 	#{/if}
-	
 	<br>
-		
-		
-		
 	#{/form}
-	
-	
-	
-	
-	
-
-
 </div>

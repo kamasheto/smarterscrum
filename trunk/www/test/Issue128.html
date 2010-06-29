@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>Issue128</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Issue128</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/secure/login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>me@sakr.me</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>signin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Admin Panel</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage Roles</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Create new role</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>object_name</td>
+	<td>Test Role</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>_save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Projects</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Create a New Project</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>object_name</td>
+	<td>Test Project 2</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>_save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>object_name</td>
+	<td>Test Proejct 2</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>object_description</td>
+	<td>test desc</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>_save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Test Proejct 2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Manage roles (4)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Test Role</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

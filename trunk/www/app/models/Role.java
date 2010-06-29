@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import play.data.validation.Required;
+
 /**
  * Role model
  * 
@@ -14,10 +16,11 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class Role extends SmartModel {
+	@Required
 	public String name;
 
 	public boolean systemAdmin;
-	
+
 	@ManyToOne
 	public Project project;
 
@@ -80,7 +83,7 @@ public class Role extends SmartModel {
 		if (systemAdmin) {
 			return true;
 		}
-		
+
 		for (Permission perm : permissions) {
 			if (perm.name.equalsIgnoreCase(action)) {
 				return true;

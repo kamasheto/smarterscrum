@@ -1,0 +1,9 @@
+#{extends 'Application/adminIndex.html' /}
+#{set title: 'Manage Global Roles' /}
+#{set 'moreControls'}
+<hr />
+<p><a href="/admin/roles/new">Create new role</a></p>
+#{/set}
+#{list items:roles, as:'role'}
+	<p><a href="/admin/roles/${role.id}">${role.name}</a></p>
+#{/list}
