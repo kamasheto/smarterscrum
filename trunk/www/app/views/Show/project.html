@@ -98,7 +98,7 @@ ${project.description?.nl2br()}
 		</ul>
 </div></div></div></div>
 #{set 'moreLinks'}
-
+<p><a href="/admin/projects/${project.id}">Edit Project Settings</a></p>
 <p>
 	<a href="@{ProductBacklogs.showGraph(project.id,0)}">View Burn down Charts</a>
 </p>
@@ -124,7 +124,7 @@ ${project.description?.nl2br()}
 <!-- project notification profile @ author moataz_mekki-->
 #{if connected.in(project).can('canEditProjectNotificationProfile')}
 <p>
-	<a href = "/projects/managenotificationprofile?projectId=${project.id}">Edit project(whole) notifications </a>
+	<a href = "/projects/managenotificationprofile?projectId=${project.id}">Edit project (whole) notifications </a>
 </p>
 #{/if}
 #{if connected.in(project).can('respond')}

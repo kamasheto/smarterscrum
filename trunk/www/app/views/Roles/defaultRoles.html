@@ -7,3 +7,6 @@
 #{list items:roles, as:'role'}
 	<p><a href="/admin/roles/${role.id}">${role.name}</a></p>
 #{/list}
+#{else}
+	<p>No default roles at the moment. <a href="/admin/roles/new">Create one?</a></p>
+#{/else}
