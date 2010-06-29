@@ -2,6 +2,10 @@
 #{extends 'main.html' /}
 #{set title: projectName+ '\'s ProductRoles '/}
 #{set 'moreLinks'}
+<p>
+<a href="/admin/projects/${id}/productroles/new"> Add a new Product Role. </a>
+</p>
+#{/set}
 
 #{if flash.success}
 <p class="success" style="color:gray">&{flash.success}</p>
