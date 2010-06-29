@@ -85,7 +85,7 @@ public class Storys extends SmartCRUD {
 	 * @return void
 	 **/
 	//@Check ("canEditStory")
-	public static void show(String id) {
+	public static void show(String id) {		
 		boolean roles, components, priorities = true;
 		roles = components = priorities;
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -93,6 +93,8 @@ public class Storys extends SmartCRUD {
 		JPASupport object = type.findById(id);
 		// We added the story to a project .. We need to get that project
 		Story temp = (Story) object;
+		int formatt= 13+temp.productRole.name.length();
+		temp.description= temp.description.substring(formatt);
 		// Whether everything is ok to edit the story
 		boolean ok = true;
 		Project project = temp.componentID.project;
@@ -254,7 +256,8 @@ public class Storys extends SmartCRUD {
 				render("CRUD/blank.html", type);
 			}
 		}
-		Story toBeSaved = (Story) object;
+		Story toBeSaved = (Story) object;		
+		storyObj.description= "As a "+storyObj.productRole.name+", I can "+ storyObj.description;
 		toBeSaved.addedBy = User.find("byEmail", Security.connected()).first();
 		object.save();
 		Logs.addLog(toBeSaved.addedBy, "Create", "Story", storyObj.id, project, new Date(System.currentTimeMillis()));
@@ -292,15 +295,16 @@ public class Storys extends SmartCRUD {
 	 * @return void
 	 **/
 	//@Check ("canEditStory")
-	public static void save(String id) throws Exception {
+	public static void save(String id) throws Exception {	
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
+		validation.valid(object.edit("object", params));
 		Story storyObj = (Story) object;
 		String oldDescription = storyObj.description;
-		
+		storyObj.description= "As a "+storyObj.productRole.name+", I can "+ storyObj.description;
 		// We will add the story to a project .. We need to get that project
-		
+      
 		Project project = storyObj.componentID.project;
 		User user = User.find("byEmail", Security.connected()).first();
 		Security.check(user.in(project).can("editStory"));
@@ -326,6 +330,7 @@ public class Storys extends SmartCRUD {
 				render("CRUD/show.html", type, object);
 			}
 		}
+		storyObj.description= "As a "+storyObj.productRole.name+", I can "+ storyObj.description;
 		String header = "A Story has been edited in Component: " + "\'" + storyObj.componentID.name + "\'" + " in Project: " + "\'" + project.name + "\'" + ".";
 		String body = "The Story:" + '\n' 
 		    + " " + "\'" + oldDescription + "\'" + '\n' 
