@@ -2,15 +2,13 @@
 
 #{secure.check 'systemAdmin'}
 #{set 'moreLinks'}
-<a href="/admin/users">Manage Users</a><br />
-<a href="/admin/projects">Manage Projects</a><br />
-<div class="clear"></div>
-<a href="/admin/storys">Manage Stories</a><br />
-<a href="/admin/tasks">Manage Tasks</a><br />
-<div class="clear"></div>
-<a href="/projects/manageProjectRequests">Manage Project Requests</a><br />
-<a href="/admin/logs">Manage Logs</a><br />
-<a href="/admin/requests">Manage System Deletion Requests</a>
+<p><a href="/admin/projects">Manage Projects</a></p>
+<p><a href="/projects/manageProjectRequests">Manage Project Requests</a></p>
+<p><a href="/admin/users">Manage Users</a></p>
+
+<p><a href="/roles/defaultroles">Manage Roles</a></p>
+<p><a href="/admin/logs">Manage Logs</a></p>
+<p><a href="/admin/requests">Manage System Deletion Requests</a></p>
 #{/set}
 #{/secure.check}
 #{doLayout /}

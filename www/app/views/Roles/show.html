@@ -1,8 +1,15 @@
-#{extends 'main.html' /}
+#{if project}
+	#{extends 'main.html' /}
+#{/if}
+#{else}
+	#{extends 'Application/adminIndex.html' /}
+#{/else}
 #{set title:'Editing role: ' + object.name /}
 #{set 'crumbs'}
-<li><a href="/show/projects/">Projects</a></li>
-<li><a href="/show/project?id=${object.project.id}">${object.project.name}</a></li>
+#{if project}
+	<li><a href="/show/projects/">Projects</a></li>
+	<li><a href="/show/project?id=${object.project.id}">${object.project.name}</a></li>
+#{/if}
 #{/set}
 <div id="crudShow" class="${type.name}">
 	<h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
@@ -10,7 +17,7 @@
 	#{form action:@save(object.id), enctype:'multipart/form-data'}
 		<a href="javascript:check_all_perms();">Check all</a>, <a href="javascript:uncheck_all_perms();">uncheck all</a> or
 		import permissions from: <select id="inherit" onchange="import_permissions($('#inherit :selected').val());">
-			#{list object.project.roles}
+			#{list project ? project.roles : roles}
 				<option value="${_.id}" ${_ == object ? 'selected' : ''}>${_.name}</option>
 			#{/list}
 		</select> <img id="loading" style="display:none;" src="/public/images/ajax-loader.gif" />
@@ -18,7 +25,7 @@
 			#{crud.custom 'users'}#{/crud.custom}
 			#{crud.custom 'project'}#{/crud.custom}
 			#{crud.custom 'deleted'}#{/crud.custom}
-			#{crud.custom 'systemAdminRole'}#{/crud.custom}
+			#{crud.custom 'systemAdmin'}#{/crud.custom}
 		#{/crud.form}
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
