@@ -207,9 +207,9 @@ $(function(){
 <a href="/admin/projects/${p.id}/meetings/new">Create Board Meeting<a />
 <br>
 <br>	
-<a href="@{Snapshots.index(s.id,c.name)}" >View snapshots</a><br>
+<a href="@{Snapshots.index(s.id,comp.name)}" >View snapshots</a><br>
 <br>	
-<a href="javascript:take_snap();">Take Snapshot</a>
+<a href="javascript:take_snap(${comp.id})">Take Snapshot</a>
 <br>
 
 <br/>
@@ -503,7 +503,8 @@ function swapCol(TheID)
 		$.post('/Columns/changeColumnPosition2' ,{id:gup('sprintID'),pos1:from-1, pos2:to-1});
 		}
 		function take_snap() {
-		$.post('@{snapshots.takecomponentsnapshot()}', {sprintID:${s.id},componentID:${c.id}} ,function(){alert('Saved!')});
+		$.post('@{snapshots.takecomponentsnapshot()}', {sprintID:${s.id},componentID:${comp.id}} ,function(){alert(${c.id})});
+	
 	}
 	function take_componentmeetingsnapshot(id) {
 		$.post('/snapshots/takecomponentmeetingsnapshot', {sprintID:${s.id},componentID:${c.id},meetingID:id}, function(){alert('Saved!')});
