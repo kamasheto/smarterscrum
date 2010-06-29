@@ -165,14 +165,27 @@ $(function(){
 <br>	
 <a href="javascript:take_snap();">Take Snapshot</a>
 <br>
-#{list items:total,as:'meeting'}
-<a href="/meetings/${meeting.id}"><b>Meeting:${meeting.name}</b></a><br/>
+
 <br/>
-#{list items:u , as:'user'}
-<a id=${user.id} href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a><br />	
+#{if u.size()==0}
+<b><div style="font-size:small;" class="smartBarHeader" >There are now running Meeting </div></b>
+#{/if}	
+#{else}
+<b><div style="font-size:small;" class="smartBarHeader" >Running Meetings</div></b>
+#{list items:u, as:'users'}
+<a href ="/meetings/${users.meeting.id}"> <b>Meeting: ${users.meeting.name}</b></a><br/>
+<u>Start date</u>
+<div class="formatTime">${users.meeting.startTime}</div>
+<br />
+<u>End date</u>
+<div class="formatTime">${users.meeting.endTime}</div>
+<br/>
+<u>Attendees</u>
+#{list items:users , as:'user'}
+<a id=${user.id} href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a>
 #{/list}
-<a href="javascript:take_componentmeetingsnapshot(${meeting.id});"><b>Attach snapshot</b><a/>	
 #{/list}
+#{/else}
 <br/>
 <br/>	
 <div id="myLayer"></div>
