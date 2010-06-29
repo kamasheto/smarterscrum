@@ -38,15 +38,9 @@
     
     function setupBreadCrumb()
     {
-		//Check if easing plugin exists. If it doesn't, use "swing"
-		if(typeof(jQuery.easing) == 'object')
-		{
-			_easingEquation = 'easeOutQuad'
-		}
-		else
-		{
+		
 			_easingEquation = 'swing'
-		}
+		
     
         //The reference object containing all of the breadcrumb elements
         _breadCrumbElements = jQuery(_container).find('li');
@@ -227,12 +221,12 @@
         maxFinalElementLength: 400,
         minFinalElementLength: 200,
         minimumCompressionElements: 4,
-        endElementsToLeaveOpen: 1,
-        beginingElementsToLeaveOpen: 1,
+        endElementsToLeaveOpen: 100,
+        beginingElementsToLeaveOpen: 100,
         timeExpansionAnimation: 800,
         timeCompressionAnimation: 500,
         timeInitialCollapse: 600,
-        easing: _easingEquation,
+        easing: 'swing',
         overlayClass: 'chevronOverlay',
         previewWidth: 5
     };
