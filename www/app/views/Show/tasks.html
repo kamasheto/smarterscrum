@@ -5,7 +5,7 @@
 #{set 'crumbs'}
 <li><a href="/show/projects">Projects</a></li>
 <li><a href="/show/project?id=${project.id}">${project.name}</a></li>
-<li><a href="/show/tasks">Tasks</a></li>
+<li><a href="/show/tasks?id=${project.id}">Tasks</a></li>
 #{/set}
 
 #{if flash.success}
