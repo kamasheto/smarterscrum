@@ -206,8 +206,13 @@ $(function()
 <a class="titptitize" title="take board snapshot?" href="javascript:take_snapshot();">Take Snapshot</a><br/><br/>
 <!-- asmaak89 Part-->
 <div id="current">
+
+<br/>
+#{if u.size()==0}
+<b><div style="font-size:small;" class="smartBarHeader" >There are now running Meeting </div></b>
+#{/if}	
+#{else}
 <b><div style="font-size:small;" class="smartBarHeader" >Running Meetings</div></b>
-<br/>	
 #{list items:u, as:'users'}
 <a href ="/meetings/${users.meeting.id}"> <b>Meeting: ${users.meeting.name}</b></a><br/>
 <u>Start date</u>
@@ -220,6 +225,7 @@ $(function()
 #{list items:users , as:'user'}
 <a id=${user.id} href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a>
 #{/list}
+
 <br/>
 <div id="myLayer"></div>
 <!--Amr Abdelwahab-->
@@ -271,6 +277,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 </script>
 
 #{/list}
+#{/else}
 </div>
 <!-- asmaak89 Part-->
 #{/set}
