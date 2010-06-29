@@ -3,6 +3,8 @@ package controllers;
 import java.util.Date;
 import java.util.List;
 
+import models.Column;
+
 import models.Priority;
 import models.Project;
 import models.ProjectNotificationProfile;
@@ -336,6 +338,7 @@ public class Projects extends SmartCRUD
 
 		taskStatus.save();
 		taskStatus.column.deleted=true;
+		taskStatus.column.save();
 		Logs.addLog( Security.getConnected(), "Remove", "Project Default Task Status ", taskStatus.id, taskStatus.project, new Date( System.currentTimeMillis() ) );
 		renderJSON( true );
 	}
