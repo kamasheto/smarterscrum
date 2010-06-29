@@ -149,7 +149,7 @@ public class Boards extends SmartCRUD {
 		 *            this list of Users in views-Boards- loadBoard.html
 		 */
 
-		long id=Security.getConnected().id;
+	/*	long id=Security.getConnected().id;
 		boolean found=false;
 		LinkedList<Meeting> total = new LinkedList<Meeting>();		
 		for (Meeting m : p.meetings) {
@@ -179,12 +179,14 @@ public class Boards extends SmartCRUD {
 
 			}
 		}
-		}
+		}*/
+  ArrayList<ArrayList<User>> u=Meetingloadboard( p);
 		ArrayList ud = getDescPerm(p);
 		ArrayList ua = getAssiPerm(p);
 		ArrayList ur = getRevPerm(p);
 		ArrayList ut = getTypePerm(p);	
-		render(data, columnsOfBoard,hidencolumnsOfBoard, u, b, s, p, total,columns,ud,ua,ur,ut);	
+		render(data, columnsOfBoard,hidencolumnsOfBoard, u, b, s, p,columns,ud,ua,ur,ut);	
+		//render(data, columnsOfBoard,hidencolumnsOfBoard, b, s, p,columns,ud,ua,ur,ut);
 	}
 
 	
@@ -234,7 +236,7 @@ public class Boards extends SmartCRUD {
 
 		Component c = Component.findById(componentID);
 		List<User> users = c.getUsers();
-		ArrayList<User> u = new ArrayList<User>();
+		//ArrayList<User> u = new ArrayList<User>();
 		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>();
 		List<Column> columns = b.columns;
 		
@@ -275,7 +277,7 @@ public class Boards extends SmartCRUD {
 			}
 
 		}
-
+      
 		/**
 		 * next lines indicates how current Component meeting is held infront of
 		 * each component board . as it user Component c and it's list of Users
@@ -287,8 +289,8 @@ public class Boards extends SmartCRUD {
 		 *            List of Users for this Component .
 		 * @author asmaak89
 		 */
-     
-		long id=Security.getConnected().id;
+		ArrayList<ArrayList<User>> u=Meetingcomponent(c);
+	/*	long id=Security.getConnected().id;
 		boolean found =false;
 		LinkedList<Meeting> total = new LinkedList<Meeting>();
 
@@ -320,9 +322,110 @@ public class Boards extends SmartCRUD {
 				}
 			}
 
-		}
-		render(data, columnsOfBoard,hidencolumnsOfBoard, u,b, s, c, p, total);
+		}*/
+	
+		render(data, columnsOfBoard,hidencolumnsOfBoard, u,b, s, c, p);
+	
 	}
+	 /* 
+	 * @param Project as P then loop to get all Running meeting of Project
+	 * and compare the logged in user's id in order to get which meeting he is 
+	 * confirmed in . if not then lost of empty meeting will be render to 
+	 * loadboard.html .
+	 *            
+	 *            
+	 * @author asmaak89
+	 */
+	
+	public static ArrayList<ArrayList<User>> Meetingloadboard(Project p)
+	{
+		
+			long id=Security.getConnected().id;
+			LinkedList<Meeting> total = new LinkedList<Meeting>();		
+			ArrayList<ArrayList<User>> u = new ArrayList<ArrayList<User>>();
+			for (Meeting m : p.meetings) 
+			{
+				long now = new Date().getTime();
+				if (m.startTime <= now && m.endTime > now) 
+				{
+					for(int i=0;i<m.users.size();i++)
+					{
+						if(m.users.get(i).user.id==id)
+							if(m.users.get(i).checkConfirmed())
+							total.add(m);
+					  
+					}
+					
+				}
+			}
+
+			for (int i = 0; i < total.size(); i++) 
+			{
+				Meeting m = Meeting.findById(total.get(i).id);
+				u.add(new MeetingUsers(m));
+				for (MeetingAttendance k : m.users) 
+				{
+					if (k.status.equals("confirmed")) 
+					{
+						u.get(i).add(k.user);
+					}
+
+				}
+			}
+			return u;
+			
+	
+	}
+	 /* @param Component as c  
+	  * given componenet to loop to get all componenets meetings that is running 
+	  * and the logged in user is confirmed in it.
+	  * and i made them list of list as for further enhancment if it will have more than one 
+	  * meeting to one componenet.
+	  *
+	  *   
+	  * @author asmaak89
+	  */
+	
+	public static ArrayList<ArrayList<User>> Meetingcomponent(Component c)
+	{
+		long id=Security.getConnected().id;
+		LinkedList<Meeting> total = new LinkedList<Meeting>();
+		ArrayList<ArrayList<User>> u = new ArrayList<ArrayList<User>>();
+		for (Meeting m : c.componentMeetings) 
+		{
+			long now = new Date().getTime();
+			if (m.startTime <= now && m.endTime > now) 
+			{
+                
+			for(int i=0;i<m.users.size();i++)
+             {
+             if(m.users.get(i).user.id==id)
+             {
+              if(m.users.get(i).checkConfirmed())
+             {
+              total.add(m);
+             }
+             }
+             }
+		     }
+		}
+		for (int i = 0; i < total.size(); i++) 
+		{
+			Meeting m = Meeting.findById(total.get(i).id);
+			u.add(new MeetingUsers(m));
+			for (MeetingAttendance k : m.users) 
+			{
+				if (k.status.equals("confirmed")) 
+				{
+					u.get(i).add(k.user);
+				}
+
+			}
+		}
+		return u;
+	
+	}
+	
 	/**
 	 * this method is used to search for a specific column and change the value
 	 * of the boolean variable of it called onBoard to true
