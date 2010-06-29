@@ -3,15 +3,18 @@
     <head>
         <title>#{get 'title' /}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/main.css'}"/>
-       	<link rel="stylesheet" type="text/css" media="screen"href="@{'/public/stylesheets/tipTip.css'}"/>
+        <link rel="stylesheet" type="text/css" media="screen" title="original" href="@{'/public/stylesheets/main.css'}"/>
+		<link rel="alternate stylesheet" type="text/css" media="screen" title="blue" href="@{'/public/stylesheets/mainblue.css'}" />
+		<link rel="alternate stylesheet" type="text/css" media="screen" title="red" href="@{'/public/stylesheets/mainred.css'}" />
+		<link rel="alternate stylesheet" type="text/css" media="screen" title="green" href="@{'/public/stylesheets/maingreen.css'}" />
+		<link rel="stylesheet" type="text/css" media="screen"href="@{'/public/stylesheets/tipTip.css'}"/>
         <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jquery-ui-1.8.custom.css'}"/>
 		<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/BreadCrumb.css'}"/>
 		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/jquery.gritter.css"/>
 		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/jquery.jbar.css"/>
 		<link rel="shortcut icon" href="@{'public/images/favicon.ico'}" type="image/x-icon"/> 
         #{get 'moreStyles' /}
-        
+ 
         <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" src="@{'public/javascripts/jquery-ui-1.8.custom.min.js'}"> </script>
 		<script type="text/javascript" src="@{'public/javascripts/timepicker.js'}"> </script>
@@ -23,7 +26,8 @@
 		<script type="text/javascript" src="/public/javascripts/jquery.gritter.min.js"></script>
         <script src="@{'/public/javascripts/jquery.bar.js'}" type="text/javascript" charset="utf-8"></script>
         #{get 'moreScripts' /}
-        
+              <script src="@{'/public/javascripts/skinSwitcher.js'}" type="text/javascript" charset="utf-8"></script>
+		
         <script type="text/javascript">
        		$(function(){
 
@@ -111,9 +115,9 @@
 			<table cellpadding="0" style="width: 100%" class="myTables">
 				<tr>
 					<td>
-						<div style="background: url('@{'/public/images/bg2.png'}') repeat-x scroll left top; width: 100%;height:120px;">
+						<div class="logoHolder">
 							<div class="left">
-								<a  href="/" title="Go back home?"><img src="@{'/public/images/smartsoft.png'}"/></a>
+								<a  href="/" title="Go back home?" id="TheLogo"></a>
 							</div>
 						</div>
 						<div class="topper">
@@ -124,18 +128,30 @@
 							<a href="#" id="chatlink"onclick="$('#chatroomList').slideToggle(200);$('#chatlink').toggleClass('topCornersRounded white')">Chatroom</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 							<a href="/secure/logout" title="Logout from the system">[x] Logout</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 						#{/if}
-							Switch Theme&nbsp;&nbsp;
+							<a href="#" id="skinlink"onclick="$('#skinList').slideToggle(200);$('#skinlink').toggleClass('topCornersRounded white')">Change Color</a>&nbsp;&nbsp;
+							
 						#{ifnot connected}
 							<a href="@{Accounts.register}">|&nbsp;&nbsp;Register</a>
 						#{/ifnot}
 						#{if connected}
 							<br/>
-							<div id="chatroomList">
+							<div id="chatroomList" style="display:none">
  								<div class="allCornersRounded chatroomListHolder" >
  								#{list controllers.Security.getConnected().projects, as:'proj'}
  									<a href="#" onclick="$('#chatContainer_${proj.name}').slideToggle(400);#{ifnot controllers.Security.getConnected().openChats.contains(proj.chatroom)}signIn(${proj.chatroom.id});getMessages${proj.id}();#{/ifnot}">${proj.name}</a>
  									<br/> 	
 							 	#{/list}
+								</div>
+							</div>
+							<div id="skinList" style="display:inline-block">
+ 								<div class="allCornersRounded skinListHolder" >
+ 									<a href="javascript:"onclick="chooseStyle('blue', 60)">Blue</a>
+ 									<br/>
+ 									<a href="javascript:"onclick="chooseStyle('green', 60)">Green</a>
+ 									<br/>
+ 									<a href="javascript:"onclick="chooseStyle('red', 60);$('#theLogoImage').attr('src','@{'/public/images/smartsoftred.png'}');">Red</a>
+ 									<br/>
+ 									<a checked="checked"href="javascript:"onclick="chooseStyle('original', 60)">Purple</a>
 								</div>
 							</div>
 						</div>
@@ -241,9 +257,9 @@
 						#{if connected}
 						<div class="sideBar" style="vertical-align: top">
 							<div class="block">
-								<div class="left inline-block" style="color: rgb(158, 53, 114); margin-top:10px;font-size:30px;line-height:10px;">{</div>
+								<div class="left inline-block ss">{</div>
 								<div class="sideBarHeading inline-block left">Tools</div>		
-								<div class="left inline-block"  style="color: rgb(158, 53, 114); margin-top:10px;font-size:30px;line-height:10px;">}</div>
+								<div class="left inline-block ss">}</div>
 							</div>
 							<br style="clear:both"/>
 							<div class="sideBarElements">#{get 'moreLinks' /}#{get 'moreControls'/}</div>
