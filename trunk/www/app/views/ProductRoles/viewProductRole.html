@@ -1,5 +1,11 @@
 #{extends 'main.html' /}
 #{set title:productRole.name /}
+#{set 'crumbs'}
+<li><a href="/show/projects"> Projects </a></li>
+<li><a href="/show/project?id=${productRole.project.id}"> ${project.name} </a></li>
+<li><a href="/projects/${productRole.project.id}/productroles"> Product Roles </a></li>
+<li><a href="/productroles/${object.id}"> ${object.name} </a></li>
+#{/set}
 #{set 'moreLinks'}
 #{if connected.in(project).can('editProductRole')}
 #{if editable}
