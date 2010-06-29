@@ -1,18 +1,18 @@
 #{extends 'main.html' /}#{set title:'Select Dependent Tasks' /}
- <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
- #{set 'crumbs'}
+#{set 'crumbs'}
 <li><a href="/show/projects">Projects</a></li>
 <li><a href="/show/project?id=${project.id}">${project.name}</a></li>
 <li><a href="@{ImpedimentTasks.index(project.id)}">Report Impediment</a></li>
 <li><a href="#">Select dependent tasks</a></li> 
 #{/set}
-<div >
-<h2>Select Dependent Tasks</h2>
+
+<h1>Select Dependent Tasks</h1>
+<div class="crudField">
 #{list items:Tasks, as:'task'}
 <input type="checkbox" id="${task.id}" value="${task.id}">${task.id} ${task.description}<br/>
-#{/list}
-<button id="custom" onclick="add_tasks()">Add</button>
-</div>
+#{/list}</div><div class="crudField">
+<button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"onclick="add_tasks()">Add</button></div>
+
 <!-- 
 @author ahmedkhaled7 C4 S12
 	Looping on the check boxes and adding the checked task to the
