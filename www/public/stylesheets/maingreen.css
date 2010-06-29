@@ -6,8 +6,13 @@ body,html {
 	margin: 0px;
 	padding: 0px;
 }
-.logoHolder{background: url('/public/images/bg2.png') repeat-x scroll left top; width: 100%;height:120px;}
-#TheLogo{background: url('/public/images/smartsoft.png') no-repeat top left;height:120px; width:697px;display:inline-block;}
+
+.ss {
+	color: rgb(158, 53, 114);
+	margin-top: 10px;
+	font-size: 30px;
+	line-height: 10px;
+}
 
 a:hover {
 	color: #b7568d;
@@ -82,17 +87,12 @@ a {
 	padding: 10px;
 	display: block;
 }
-.ss {
-	color: #b7568d;
-	margin-top: 10px;
-	font-size: 30px;
-	line-height: 10px;
-}
+
 .sideBarHeading {
 	text-align: center;
 	padding: 5px 10px 15px 10px;
 	font-family: century gothic;
-	color: #b7568d;
+	color: rgb(158, 53, 114);
 	font-size: 18px;
 	font-variant: small-caps;
 	text-transform: lowercase;

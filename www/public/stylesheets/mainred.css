@@ -6,15 +6,15 @@ body,html {
 	margin: 0px;
 	padding: 0px;
 }
-.logoHolder{background: url('/public/images/bg2.png') repeat-x scroll left top; width: 100%;height:120px;}
-#TheLogo{background: url('/public/images/smartsoft.png') no-repeat top left;height:120px; width:697px;display:inline-block;}
+.logoHolder{background: url('/public/images/bg2red.png') repeat-x scroll left top; width: 100%;height:120px;}
+#TheLogo{background: url('/public/images/smartsoftred.png') no-repeat top left;height:120px; width:697px;display:inline-block;}
 
 a:hover {
-	color: #b7568d;
+	color: #e40000;
 }
 
 .makeTransparent {
-	background: url('/public/images/bg2.png') repeat-x fixed left top;
+	background: url('/public/images/bg2red.png') repeat-x fixed left top;
 }
 
 table div {
@@ -32,7 +32,7 @@ img {
 }
 
 a {
-	color: #9E3572;
+	color: #b60000;
 	text-decoration: underline;
 }
 
@@ -83,7 +83,7 @@ a {
 	display: block;
 }
 .ss {
-	color: #b7568d;
+	color: #e40000;
 	margin-top: 10px;
 	font-size: 30px;
 	line-height: 10px;
@@ -92,7 +92,7 @@ a {
 	text-align: center;
 	padding: 5px 10px 15px 10px;
 	font-family: century gothic;
-	color: #b7568d;
+	color: #e40000;
 	font-size: 18px;
 	font-variant: small-caps;
 	text-transform: lowercase;
@@ -101,7 +101,7 @@ a {
 }
 
 .sideBarElements a:hover {
-	color: rgb(158, 53, 114);
+	color: #b60000;
 }
 
 .sideBarElements a {
@@ -247,7 +247,7 @@ a {
 
 /**triangle notch**/
 .notchBottom {
-	border-top: 15px solid #b7568d;
+	border-top: 15px solid #e40000;
 	border-right: 15px solid transparent;
 	border-left: 15px solid transparent;
 	border-bottom: 0px;
@@ -265,7 +265,7 @@ a {
 }
 
 .notchBottom2 {
-	border-top: 13px solid #b7568d;
+	border-top: 13px solid #e40000;
 	border-right: 13px solid transparent;
 	border-left: 13px solid transparent;
 	border-bottom: 0px;
@@ -285,7 +285,7 @@ a {
 }
 
 .notchTop {
-	border-bottom: 15px solid #b7568d;
+	border-bottom: 15px solid #e40000;
 	border-right: 15px solid transparent;
 	border-left: 15px solid transparent;
 	border-top: 0px;
@@ -302,7 +302,7 @@ a {
 }
 
 .notchRight {
-	border-left: 15px solid #b7568d;
+	border-left: 15px solid #e40000;
 	border-top: 15px solid transparent;
 	border-bottom: 15px solid transparent;
 	border-right: 0;
@@ -321,7 +321,7 @@ a {
 }
 
 .notchLeft {
-	border-right: 15px solid #b7568d;
+	border-right: 15px solid #e40000;
 	border-top: 15px solid transparent;
 	border-bottom: 15px solid transparent;
 	border-left: 0;
@@ -404,11 +404,11 @@ a {
 }
 
 .searchBtn:hover {
-	background: #b7568d !important;
-	background: -moz-linear-gradient(center bottom, #87155f 20%, #b7568d 80%)
+	background: #e40000 !important;
+	background: -moz-linear-gradient(center bottom, #87155f 20%, #e40000 80%)
 		!important;
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #87155f),
-		color-stop(0.8, #b7568d) ) !important;
+		color-stop(0.8, #e40000) ) !important;
 }
 
 label {
@@ -473,16 +473,16 @@ button {
 }
 
 .chatboxtextarea:focus {
-	border: 2px solid #b7568d !important;
+	border: 2px solid #e40000 !important;
 	margin: 0;
 }
 
 .chatContainerHeader {
-	background-color: #b7568d;
+	background-color: #e40000;
 	padding: 7px;
 	color: #ffffff;
-	border-right: 1px solid #b7568d;
-	border-left: 1px solid #b7568d;
+	border-right: 1px solid #e40000;
+	border-left: 1px solid #e40000;
 }
 
 .thread {
@@ -613,9 +613,9 @@ ul.project_links a {
 }
 
 #boards a:hover {
-	box-shadow: 0px 0px 0px #9E3572;
-	-moz-box-shadow: 0px 0px 0px #9E3572;
-	-webkit-box-shadow: 0px 0px 0px #9E3572;
+	box-shadow: 0px 0px 0px #b60000;
+	-moz-box-shadow: 0px 0px 0px #b60000;
+	-webkit-box-shadow: 0px 0px 0px #b60000;
 }
 
 ul.project_links a:hover {
@@ -624,9 +624,9 @@ ul.project_links a:hover {
 		!important;
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #999),
 		color-stop(0.8, #888) ) !important;
-	box-shadow: 0px 0px 15px #9E3572;
-	-moz-box-shadow: 0px 0px 15px #9E3572;
-	-webkit-box-shadow: 0px 0px 15px #9E3572;
+	box-shadow: 0px 0px 15px #b60000;
+	-moz-box-shadow: 0px 0px 15px #b60000;
+	-webkit-box-shadow: 0px 0px 15px #b60000;
 }
 
 ul.project_links a img {
@@ -643,16 +643,16 @@ tr.deleted {
 }
 
 .proj {
-	background-color: #b7568d;
+	background-color: #e40000;
 }
 
 .proj2 {
-	background-color: #9E3572;
+	background-color: #b60000;
 }
 
 .projDes {
 	padding: 10px;
-	background-color: #b7568d;
+	background-color: #e40000;
 	width: 300px;
 	overflow: auto
 }
