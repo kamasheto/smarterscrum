@@ -15,6 +15,7 @@ function set_type(tyId,tskId,usrId,name)
 			function()
 			{
 				window.opener.document.getElementById("type_"+tskId).innerHTML = "Type:"+name;
+				window.opener.document.getElementById("types_"+tskId).innerHTML = "Type:"+name;
 				window.close();
 				});
 	return true;

@@ -18,6 +18,7 @@ function set_person(id,taskId,name, user1Id)
 			function()
 			{
 				window.opener.document.getElementById("usr_"+taskId).innerHTML = "Assignee:"+name;
+				window.opener.document.getElementById("usrs_"+taskId).innerHTML = "Assignee:"+name;
 				window.close();
 				});
 			
