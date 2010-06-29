@@ -29,59 +29,6 @@ public class Columns extends SmartCRUD{
 	 *            : finishing position of column Story 17
 	 */
 
-/*	public static void changeColumnPosition(long id, int pos1, int pos2, long userId) {
-		System.out.println(id + " " + pos1 + " " + pos2);
-		Sprint s = Sprint.findById(id);
-		Project p = s.project;
-		Security.check(p, "editColumnsPositions");
-		Board b = p.board;
-		if (userId == 0)
-		userId = Security.getConnected().id;
-		Calendar cal = new GregorianCalendar();
-		User u = User.findById(userId);
-		List<Column> cols = b.columns;
-		Column c1 = Column.find("bySequenceAndBoard", pos1 - 1, b).first();
-		Column c2 = Column.find("bySequenceAndBoard", pos2 - 1, b).first();
-		System.out.println(c1.name+" "+c1.sequence);
-		System.out.println(c2.name+" "+c2.sequence);
-		
-		Logs.addLog(u, "edit", "Column Position", c1.id, p, cal.getTime());
-		String message = u.name + " has changed the position of " + c1.name + " from " + c1.sequence + " to " + c2.sequence;
-		//Notifications.notifyUsers(p, "Edit Column Position", message, "editColumnPosition", (byte) 0);
-		int x = c2.sequence;
-		if (c1.sequence < c2.sequence) {
-			for (int i = c1.sequence; i <= c2.sequence; i++) {
-				Column temp1 = Column.find("bySequenceAndBoard", i, b).first();
-				if(i+1<=c2.sequence)
-				{
-				//Column temp2 = Column.find("bySequenceAndBoard", i+1, b).first();
-				//int d=temp2.sequence-temp1.sequence;
-				
-				//temp2.sequence=temp2.sequence-d;
-				//temp2.save();
-				}
-			}
-			c1.sequence = x;
-			c1.save();
-			System.out.println(c1.name+" "+c1.sequence);
-			System.out.println(c2.name+" "+c2.sequence);
-			
-
-		} else {
-			for (int i = c1.sequence - 1; i >= c2.sequence; i--) {
-				Column temp = Column.find("bySequenceAndBoard", i, b).first();
-				temp.sequence++;
-				temp.save();
-			}
-			c1.sequence = x;
-			c1.save();
-
-		}
-
-	}
-	
-	*/
-	
 	public static void changeColumnPosition(long id, int pos1, int pos2, long userId) {
 		System.out.println(id + " " + pos1 + " " + pos2);
 		Sprint s = Sprint.findById(id);
@@ -151,7 +98,7 @@ public class Columns extends SmartCRUD{
 		Calendar cal = new GregorianCalendar();
 		User user = User.findById(user_id);
 		Logs.addLog(user, "edit", "Column Position", c1.id, p, cal.getTime());
-		String message = user.name + " has swapped the position of column " + c1.name + "with" + c2.name;
+		String message = user.name + " has swapped the position of column " + c1.name + " with " + c2.name;
 		Notifications.notifyUsers(p, "swapped Column Position", message, "Column Position", (byte) 0);
 	}
 
