@@ -96,6 +96,20 @@ function showCol(c)
 	var seloption = document.getElementById('changeCol');
 	seloption.selectedIndex='d';
 }
+function showHiddenCol(colid)
+{
+	$.post('@{showHiddenColumn()}' ,			
+			{cid:colid,uid:${connected.id}}, function(){
+		window.location.reload();
+		});
+}
+function hideCol(colid)
+{
+	$.post('@{hideColumn()}' ,			
+			{cid:colid,uid:${connected.id}}, function(){
+			window.location.reload();
+		});
+}
 
 function popUp(URL) 
 {
@@ -155,6 +169,7 @@ $(function(){
 
 <table border="0"></table>
 #{set 'moreLinks'}
+
 <a href="" id="form">Swap Columns Settings</a>	
 <br>
 <br>	
