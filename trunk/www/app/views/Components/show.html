@@ -1,5 +1,13 @@
 #{extends 'CRUD/layout.html' /}
 
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${object.project.id}">${object.project.name}</a></li>
+<li><a href ="/projects/${object.project.id}/components">Components</a></li>
+<li><a href ="/components/${object.id}">${object.name}</a></li>
+<li>edit</li>
+#{/set}
+
 <div id="crudShow" class="${type.name}">
 	
 	<h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
