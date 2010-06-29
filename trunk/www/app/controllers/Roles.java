@@ -60,15 +60,28 @@ public class Roles extends SmartCRUD {
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
 		Role role = (Role) object;
+		Project p = role.project;
 		if (role.project == null) {
 			Security.check(Security.getConnected().isAdmin);
 		} else {
 			Security.check(role.project, "editRoles");
 		}
+
 		validation.valid(object.edit("object", params));
+		Security.check(p == role.project);
+
+		List<Role> dups;
+		if (role.project == null) {
+			dups = Role.find("select r from Role r where LCASE(r.name) = ?1 and r.project = null", role.name.toLowerCase()).fetch();
+		} else {
+			dups = Role.find("select r from Role r where LCASE(r.name) = ?1 and r.project = ?2", role.name.toLowerCase(), role.project).fetch();
+		}
+		if (dups.size() > 0) {
+			validation.addError("Name", "That name already exists");
+		}
+
 		if (validation.hasErrors()) {
-			renderArgs.put("error", Messages.get("crud.hasErrors"));
-			flash.error(Messages.get("crud.hasErrors"));
+			flash.error(validation.errors().toString());
 			redirect("/admin/roles/" + id);
 		}
 		object.save();
@@ -110,14 +123,20 @@ public class Roles extends SmartCRUD {
 		ObjectType type = ObjectType.get(getControllerClass());
 		JPASupport object = type.entityClass.newInstance();
 		validation.valid(object.edit("object", params));
+		Role role = (Role) object;
+		List<Role> dups;
+		if (role.project == null) {
+			dups = Role.find("select r from Role r where LCASE(r.name) = ?1 and r.project = null", role.name.toLowerCase()).fetch();
+		} else {
+			dups = Role.find("select r from Role r where LCASE(r.name) = ?1 and r.project = ?2", role.name.toLowerCase(), role.project).fetch();
+		}
+		if (dups.size() > 0) {
+			validation.addError("Name", "That name already exists");
+		}
 		if (validation.hasErrors()) {
-			renderArgs.put("error", Messages.get("crud.hasErrors"));
-			try {
-				render(request.controller.replace(".", "/") + "/blank.html", type, id);
-				// blank()
-			} catch (TemplateNotFoundException e) {
-				render("CRUD/blank.html", type);
-			}
+			params.flash();
+			flash.error(validation.errors().toString());
+			redirect("/admin/roles/new?id=" + id);
 		}
 		object.save();
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));

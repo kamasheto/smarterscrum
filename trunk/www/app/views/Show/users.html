@@ -4,8 +4,11 @@
 <li><a href="/show/users">Users</a></li>
 #{/set}
 <h2>User List</h2>
+#{note 'highlight'}
+	Click on a user to view the users profile
+#{/note}
 <p>Type to filter: <input type="text" id="search_term" onkeyup="search_users();" /> <img id="loading" style="display:none;" src="@{'/public/images/ajax-loader.gif'}" /></p>
-<p>Click on a name to view his/her profile</p>
+
 <div id="results" class="dark">
 #{list items:users, as:'user'}
 <a href="/show/user?id=${user.id}">${user.name}</a><br/>
