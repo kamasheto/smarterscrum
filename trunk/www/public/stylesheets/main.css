@@ -7,9 +7,12 @@ body,html {
 	padding: 0px;
 }
 
+a:hover {
+	color: #b7568d;
+}
+
 .makeTransparent {
-	background: url('/public/images/bg2.png') repeat-x fixed left
-		top;
+	background: url('/public/images/bg2.png') repeat-x fixed left top;
 }
 
 table div {
@@ -27,7 +30,7 @@ img {
 }
 
 a {
-	color: #0066FF;
+	color: #9E3572;
 	text-decoration: underline;
 }
 
@@ -249,9 +252,9 @@ a {
 	_border-right-color: pink;
 	_border-left-color: pink;
 	margin-top: -2px;
-	_filter: chroma(color =            
+	_filter: chroma(color =             
 		                                                          
-		                 pink);
+		                  pink);
 }
 
 .notchBottom2 {
@@ -269,9 +272,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =            
+	_filter: chroma(color =             
 		                                                          
-		                 pink);
+		                  pink);
 }
 
 .notchTop {
@@ -286,9 +289,9 @@ a {
 	margin-left: 30px;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =            
+	_filter: chroma(color =             
 		                                                          
-		                 pink);
+		                  pink);
 }
 
 .notchRight {
@@ -305,9 +308,9 @@ a {
 	display: inline-block;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =            
+	_filter: chroma(color =             
 		                                                          
-		                 pink);
+		                  pink);
 }
 
 .notchLeft {
@@ -322,9 +325,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =            
+	_filter: chroma(color =             
 		                                                          
-		                 pink);
+		                  pink);
 }
 
 /**form**/
