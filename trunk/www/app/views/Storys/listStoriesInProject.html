@@ -1,4 +1,4 @@
-#{extends 'CRUD/layout.html' /}
+#{extends 'main.html' /}
 #{set 'moreScripts'}
 	<script src="@{'/public/javascripts/jquery.pops.js'}" type="text/javascript" charset="utf-8"></script>
 #{/set}
@@ -15,11 +15,13 @@
 #{if ok == true}
 <div id="accordion">
 #{if connected.in(project).can('addStory')}
-		<a href="@{blank(project.id)}"><img src="@{'/public/images/new_story.gif'}" title="Create new story"></a>
+#{set 'moreLinks'}
+		<a href="@{blank(project.id)}">Create a new story</a>
+	#{/set}
 	#{/if}				
 #{list items:project.components, as:'component'}
 	<div id="component_${component.id}">
-	<h3><a>${component.name}</a></h3>
+	<h6><a>${component.name}</a></h6>
 	<ul>
 	%{
    		count=0;
@@ -72,7 +74,7 @@ function openAjaxPopup(address) {
 	});
 }
 $(function(){
-	$("#accordion").accordion({ header: "h3", autoHeight: false #{if cId} #{ifnot cId == 0},active:${cId-1}#{/ifnot}#{/if} });
+	$("#accordion").accordion({ header: "h6", autoHeight: false #{if cId} #{ifnot cId == 0},active:${cId-1}#{/ifnot}#{/if} });
 	
 	});
 
