@@ -11,6 +11,11 @@
 			.popup-body {padding:10px;}
 </style>
 #{/set}
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${projecr.id}">${proj.name}</a></li>
+
+#{/set}
 <h2>Stories</h2>
 #{if ok == true}
 <div id="accordion">
