@@ -20,7 +20,7 @@
 	
 	</div>
 	<br />
-	#{if !logs.isEmpty()}
+	#{if logs != null && !logs.isEmpty()}
 	#{if filter}
 	<font size="3">You are currently viewing logs that match the Keyword: <font color="red">${filter.toLowerCase();}</font> &nbsp; <font size="1"><a href="/admin/logs"> view all logs? </a></font></font> 
 	<script type="text/javascript">
