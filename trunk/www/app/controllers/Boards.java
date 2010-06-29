@@ -109,7 +109,7 @@ public class Boards extends SmartCRUD {
 		List<Column> hidencolumnsOfBoard=new ArrayList<Column>();
 		for( int i=0; i<columns.size();i++)
 		{
-			if(columns.get( i ).onBoard)
+			if(columns.get( i ).onBoard&&!columns.get( i ).deleted)
 			{
 				columnsOfBoard.add( columns.get( i ) );
 			}
@@ -117,7 +117,7 @@ public class Boards extends SmartCRUD {
 		columnsOfBoard = orderColumns(columnsOfBoard);
 		for( int i=0; i<columns.size();i++)
 		{
-			if(!columns.get( i ).onBoard)
+			if(!columns.get( i ).onBoard&&!columns.get( i ).deleted)
 			{
 				hidencolumnsOfBoard.add( columns.get( i ) );
 			}
@@ -132,7 +132,7 @@ public class Boards extends SmartCRUD {
 				data.get(i).set(j, new ArrayList<Task>());
 			}
 			for (Task task : tasks) {
-				if(task.taskStatus.column.onBoard)
+				if(task.taskStatus.column.onBoard&&!task.taskStatus.column.deleted)
 				{
 				data.get(i).get(columnsOfBoard.indexOf(task.taskStatus.column)).add(task);
 				}
