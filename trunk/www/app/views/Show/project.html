@@ -117,13 +117,7 @@ ${project.description?.nl2br()}
 <!-- adding a check requests link @author moataz_mekki -->
 #{if connected.in(project).can('canManageRequests')}
 <p>
-	<a href="/projects/requestrespond?id=${project.id}">Check role requests (${project.getNumberOfRequests()})</a>
-</p>
-<!-- adding a check project deletion requests link
-@author Amr Tj.Wallas
-@Task C1S14 -->
-<p>
-	<a href="/projects/deletionRequestRespond?id=${project.id}">Check deletion requests (${project.getNumberOfDeletionRequests()})</a>
+	<a href="/projects/requestrespond?id=${project.id}">Check requests (${project.getNumberOfTotalRequests()})</a>
 </p>
 #{/if}
 

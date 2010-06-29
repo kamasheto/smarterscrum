@@ -23,14 +23,6 @@ public class Requests extends SmartController {
 	 *            : takes the id of the project first checks for the permission
 	 *            then list the requests
 	 */
-	// @Check ("canManageRequests")
-	public static void requestRespond(long id) {
-		Project pro = Project.findById(id);
-		Security.check(pro, "manageRequests");
-		List<Request> requests = Request.find("isDeletion = false and project = " + pro.id + " order by id desc").fetch();
-		render(requests, pro);
-	}
-
 	/**
 	 * This method fetches and renders all deletion requests corresponding to a
 	 * project with id "id" .
@@ -46,16 +38,13 @@ public class Requests extends SmartController {
 	 * @Task C1S14
 	 */
 	// @Check ("canManageRequests")
-	public static void deletionRequestRespond(long id) throws Throwable {
-		if (id == 0)
-			Secure.login();
-		Project currentProject = Project.findById(id);
-		Security.check(currentProject, "manageRequests");
-		if (currentProject == null)
-			Secure.login();
-		List<Request> requests = Request.find("isDeletion = true and project = " + currentProject.id + " order by id desc").fetch();
-		render(requests, id);
-	}
+	public static void requestRespond(long id) {
+		Project pro = Project.findById(id);
+		Security.check(pro, "manageRequests");
+		List<Request> requests = Request.find("isDeletion = false and project = " + pro.id + " order by id desc").fetch();		
+		List<Request> drequests = Request.find("isDeletion = true and project = " + pro.id + " order by id desc").fetch();
+		render(requests, drequests, pro);
+	}	
 
 	/**
 	 * belongs to s15
