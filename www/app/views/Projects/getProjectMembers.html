@@ -1,22 +1,31 @@
 #{extends 'main.html' /}
 #{set title:'Project Members' /}
+#{set 'moreStyles'}
+<style type="text/css">
+thead
+{
+cursor:move;
+}
+</style>
+#{/set}
+#{set 'moreScripts'}
 
+
+<script  type="text/javascript" src="@{'/public/javascripts/dragtablenorm.js/'}" ></script>
+<script  type="text/javascript" src="@{'/public/javascripts/sorttable.js/'}" ></script>
+#{/set}
 <h1> ${pro.name}'s Members </h1>
 #{if users.isEmpty()}
+#{note}Currently There are no members in ${pro.name} !! 
 <br/>
-<b><font color="red" >Currently There are no members in ${pro.name} !! </font>
-<br/>
-<br/>
-if you want to invite developers to ${pro.name}   <a href="/show/users"><font color = "blue"><u>Click Here</u></font></a> !
-</b>
-<br/> 
+If you want to invite developers to ${pro.name}   <a href="/show/users">Click Here</a>.#{/note}
+
 #{/if}
 #{if !users.isEmpty()}
-<font size="3">
-<TABLE>
+<table class="draggable sortable" id="users">
   <tr>
-    <th>Member Name</th>
-    <th>Role(s)</th>
+    <td>Member Name</td>
+    <td>Role(s)</td>
   </tr>
   #{list items:users, as:'useer'}
   <tr>
@@ -27,8 +36,7 @@ if you want to invite developers to ${pro.name}   <a href="/show/users"><font co
     
   </tr>
   #{/list}
-</TABLE>
-</font>
+</table>
 #{/if}
 #{set 'crumbs'}
 <li><a href="/show/projects">Projects</a></li>
