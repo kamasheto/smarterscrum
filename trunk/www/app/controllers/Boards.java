@@ -471,7 +471,6 @@ public class Boards extends SmartCRUD {
 	 */
 	public static void hideColumn(long cid,long uid)
 	{
-		System.out.println(cid);
 		Column c=Column.findById( cid );
 		
 		c.onBoard=false;
