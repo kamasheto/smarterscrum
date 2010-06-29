@@ -89,10 +89,54 @@ public class Logs extends SmartCRUD {
 			logs = Log.find("order by date desc").from(index).fetch(25);
 			render(logs, page);
 		} else if (filter != null)
-			logs = Log.find("LOWER(user.name) like '%" + filter.toLowerCase() + "%' or " + "LOWER(action_type) like '%" + filter.toLowerCase() + "%' or " + "LOWER(resource_type) like '%" + filter.toLowerCase() + "%' or " + "LOWER(project.name) like '%" + filter.toLowerCase() + "%' or " + "LOWER(date) like '%" + filter.toLowerCase() + "%' order by date desc").from(index).fetch(25);
+			{
+			if(filter.charAt(0) == ' ' || filter.charAt(filter.length()-1) == ' ' || filter.contains("  "))
+			{
+				flash.error("Please Remove any extra Spaces !!");
+				filter = null;
+				logs = Log.find("order by date desc").from(index).fetch(25);
+				redirect("/admin");
+			}
+			String filter2 = "('" + filter + "')";
+			filter2 = filter2.replaceAll(" ", "','");
+			filter2 = filter2.toLowerCase();
+			//System.out.println(filter2);
+			//logs = Log.find("LOWER(user.name) in "+filter2 +" and LOWER(action_type) in " + filter2 + " and LOWER(resource_type) in " + filter2 + " and LOWER(project.name) in " + filter2 + " and LOWER(date) in " + filter2 + " order by date desc").from(index).fetch(25);
+			logs = Log.find(smartFilter(filter2)).from(index).fetch(25);
+			}
 		else
 			logs = Log.find("order by date desc").from(index).fetch(25);
 		render(logs, page, filter);
+	}
+	
+	public static String smartFilter(String filter)
+	{
+		String query="";
+		if(User.find("LOWER(name) in "+ filter).first() != null)
+			query = query + "LOWER(user.name) in "+filter;
+		if(Log.find("LOWER(action_type) in "+filter).first()!=null)
+			if(!query.isEmpty())
+				query = query + " and LOWER(action_type) in " + filter;
+			else
+				query = query + "LOWER(action_type) in " + filter;
+		if(Log.find("LOWER(resource_type) in " + filter).first()!=null)
+			if(!query.isEmpty())
+				query = query + " and LOWER(resource_type) in " + filter;
+			else
+				query = query + "LOWER(resource_type) in " + filter;
+		if(Project.find("LOWER(name) in "+filter).first()!=null)
+			if(!query.isEmpty())
+				query = query + " and LOWER(project.name) in " + filter;
+			else
+				query = query + "LOWER(project.name) in " + filter;
+		if(Log.find("LOWER(date) in "+filter).first()!=null)
+			if(!query.isEmpty())
+				query = query + " and LOWER(date) in " + filter;
+			else
+				query = query + "LOWER(date) in " + filter;
+		query = query + " order by date desc";
+		return query;
+		
 	}
 
 	public static void show(String id) {
