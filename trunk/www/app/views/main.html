@@ -135,7 +135,7 @@
 						#{/ifnot}
 						#{if connected}
 							<br/>
-							<div id="chatroomList" style="display:none">
+							<div id="chatroomList">
  								<div class="allCornersRounded chatroomListHolder" >
  								#{list controllers.Security.getConnected().projects, as:'proj'}
  									<a href="#" onclick="$('#chatContainer_${proj.name}').slideToggle(400);#{ifnot controllers.Security.getConnected().openChats.contains(proj.chatroom)}signIn(${proj.chatroom.id});getMessages${proj.id}();#{/ifnot}">${proj.name}</a>
@@ -143,7 +143,7 @@
 							 	#{/list}
 								</div>
 							</div>
-							<div id="skinList" style="display:inline-block">
+							<div id="skinList">
  								<div class="allCornersRounded skinListHolder" >
  									<a href="javascript:"onclick="chooseStyle('blue', 60)">Blue</a>
  									<br/>
