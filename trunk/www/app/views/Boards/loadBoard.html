@@ -357,7 +357,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<!-- big sticky note -->						
 		<p> 
 		<div style="display:none;"  id="${task.id}Large" style="border:hidden">
-		<div style="max-width:150px" id="tas-${task.id}_" >
+		<div style="max-width:165px" id="tas-${task.id}_" >
 		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 15px" border=0px id="tas-${task.id}_T">
 		<p>
 		<div  border=0px align="center">T ${task.id}</div>
@@ -382,12 +382,12 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		#{if flag3} <!-- if has permission (edit assignee) -->
 		<div><a title="Change Assignee?" value="dddd" class="hidesassi tiptitize" id="usr_${task.id}" href="javascript:popUp('/Tasks/chooseTaskAssi?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Assignee:${task.assignee}</a></div>
-		<div class="showdesc" style="display:none">Assignee:${task.assignee}</div>	
+		<div id="usrs_${task.id}" class="showdesc" style="display:none">Assignee:${task.assignee}</div>	
 		#{/if}
 		#{else} <!-- if doesn't have permission (edit assignee) -->
 		<div><a title="Change Assignee?" style="display:none" class="hidesassi tiptitize" id="usr_${task.id}" HREF="javascript:popUp('/Tasks/chooseTaskAssi?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Assignee:${task.assignee}</a></div>
-		<div class="showdesc">Assignee:${task.assignee}</div>
+		<div id="usrs_${task.id}" class="showdesc">Assignee:${task.assignee}</div>
 		#{/else}
 		
 		<!-- set flag for logged in user (edit reviewer) -->												
@@ -395,14 +395,14 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<span style="display:none"> ${flag4=true}</span>
 		#{/if}
 		#{if flag4} <!-- if has permission (edit reviewer) -->
-		<div><a title="Change Reviewer?" id="rev_${task.id}" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
+		<div><a id="rev_${task.id}" title="Change Reviewer?" c class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Reviewer:${task.reviewer}</a></div>
-		<div class="showrev" style="display:none">Reviewer:${task.reviewer}</div>
+		<div id="revs_${task.id}" class="showrev" style="display:none">Reviewer:${task.reviewer}</div>
 		#{/if}
 		#{else} <!-- if doesn't have permission (edit reviewer) -->
-		<div><a title="Change Reviewer?" style="display:none" id="rev_${task.id}" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
+		<div><a id="rev_${task.id}" title="Change Reviewer?" style="display:none" id="rev_${task.id}" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Reviewer:${task.reviewer}</a></div>
-		<div class="showrev">Reviewer:${task.reviewer}</div>
+		<div id="revs_${task.id}" class="showrev">Reviewer:${task.reviewer}</div>
 		#{/else}
 		
 		<!-- set flag for logged in user (edit type) -->	
@@ -412,12 +412,12 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		#{if flag5 || controllers.Security.getConnected().equals(task.assignee)} <!-- if has permission (type) or assignee -->
 		<div><a id="type_${task.id}" title="Edit type?" class="tiptitize hidestype shows_${task.assignee.id}" HREF="javascript:popUp('/Tasks/chooseType?taskId=${task.id}&userId='+selectedUser)">
 		Type:${task.taskType.name}</a></div>
-		<div style="display:none" class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${task.taskType.name}</div>
+		<div id="types_${task.id}" style="display:none" class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${task.taskType.name}</div>
 		#{/if}
 		#{else} <!-- if doesn't have have permission (type) nor assignee -->
 		<div><a title="Edit type?" style="display:none" id="type_${task.id}" class="tiptitize hidestype shows_${task.assignee.id}" HREF="javascript:popUp('/Tasks/chooseType?taskId=${task.id}&userId='+selectedUser)">
 		Type:${task.taskType.name}</a></div>
-		<div class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${task.taskType.name}</div>
+		<div id="types_${task.id}" class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${task.taskType.name}</div>
 		#{/else}
 		</p>
 		<a href="#" id="${task.id}_HiddenSticky">
@@ -447,7 +447,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 	 $('.shwtype').css('display','none');		
 	$('.hidestype').css('display','none');
 	 selectedUser = id;
-	 $('#myLayer').html(str+' is editing the Board now ').effect('highlight',{}, 1000).fadeOut();
+	 $('#myLayer').html(str+' is editing the Board now '+ '<br/><br/>').effect('highlight',{}, 6000).fadeOut();
 	 var descList = ${ud};
 	 var f_desc = false;
      for(var j=0; j<descList.length; j++)
