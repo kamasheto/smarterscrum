@@ -287,6 +287,7 @@ public class Projects extends SmartCRUD
 
 			p.save();
 			t.save();
+			t.init();
 			Logs.addLog( Security.getConnected(), "Add", "Project Default Task Status", t.id, p, new Date( System.currentTimeMillis() ) );
 			renderJSON( t.id );
 		}
@@ -334,6 +335,7 @@ public class Projects extends SmartCRUD
 		taskStatus.deleted = true;
 
 		taskStatus.save();
+		taskStatus.column.deleted=true;
 		Logs.addLog( Security.getConnected(), "Remove", "Project Default Task Status ", taskStatus.id, taskStatus.project, new Date( System.currentTimeMillis() ) );
 		renderJSON( true );
 	}
