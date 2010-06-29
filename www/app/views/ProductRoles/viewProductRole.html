@@ -1,6 +1,22 @@
 #{extends 'main.html' /}
 #{set title:productRole.name /}
+#{set 'moreLinks'}
+#{if connected.in(project).can('editProductRole')}
+#{if editable}
+<p>
+<a href="/admin/productroles/${productRole.id}"> Edit Product Role </a>
+</p>
+#{/if}
+#{/if}
 
+#{if connected.in(project).can('deleteProductRole')}
+#{if deletable}
+<p>
+<a href = "#"  name="deleteProductRole" onclick="deleteProductRole()"> Delete Product Role </a>
+</p>
+#{/if}
+#{/if}
+#{/set}
 #{if flash.success}
 <p class="success" style="color:gray">&{flash.success}</p>
 #{/if}
