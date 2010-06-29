@@ -234,8 +234,8 @@ public class Boards extends SmartCRUD {
 		Project p = s.project;
 		Board b = p.board;
 
-		Component c = Component.findById(componentID);
-		List<User> users = c.getUsers();
+		Component comp = Component.findById(componentID);
+		List<User> users = comp.getUsers();
 		//ArrayList<User> u = new ArrayList<User>();
 		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>();
 		List<Column> columns = b.columns;
@@ -289,7 +289,7 @@ public class Boards extends SmartCRUD {
 		 *            List of Users for this Component .
 		 * @author asmaak89
 		 */
-		ArrayList<ArrayList<User>> u=Meetingcomponent(c);
+		ArrayList<ArrayList<User>> u=Meetingcomponent(comp);
 	/*	long id=Security.getConnected().id;
 		boolean found =false;
 		LinkedList<Meeting> total = new LinkedList<Meeting>();
@@ -323,8 +323,9 @@ public class Boards extends SmartCRUD {
 			}
 
 		}*/
-	
-		render(data, columnsOfBoard,hidencolumnsOfBoard, u,b, s, c, p);
+//	long cid=c.id;
+//	String cname=c.name; 
+		render(data, columnsOfBoard,hidencolumnsOfBoard, u,b, s,comp, p);
 	
 	}
 	 /* 
