@@ -1,5 +1,12 @@
 #{extends 'CRUD/layout.html' /}
 
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${currentProject.id}">${currentProject.name}</a></li>
+<li><a href="/projects/${currentProject.id}/meetings">Meetings and Events</a></li>
+<li>new</li>
+
+#{/set}
    
   <script type="text/javascript"> 
 $(function() {
