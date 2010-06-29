@@ -19,14 +19,15 @@
 			<a href="/admin/users/${user.id}">Edit profile</a>
 			</p>			
 		#{/if}
-		#{elseif user==me}
+		#{if user==me & !(connected.isAdmin)}
 			<p>
 				<a href="/accounts/profile?id=${user.id}">Edit profile</a>
-			</p>
+			</p>#{/if}
+			#{if user == me}
 			<p>
 				<a href="/requestDeletion">Request Deletion From System</a>
 			</p>
-		#{/elseif}
+		#{/if}
 		
 		#{if connected.isAdmin & user != me }
 <p>
