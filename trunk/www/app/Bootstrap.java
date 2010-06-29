@@ -9,6 +9,7 @@ import models.MeetingAttendance;
 import models.Permission;
 import models.ProductRole;
 import models.Project;
+import models.Role;
 import models.Sprint;
 import models.Story;
 import models.Task;
@@ -54,6 +55,11 @@ public class Bootstrap extends Job
 				u.save();
 				users.add( u );
 			}
+			
+			new Role("Project Owner").save();
+			new Role("Project Admin").save();
+			new Role("Scrum Master").save();
+			new Role("Developer").save();
 
 			Project p1 = new Project( "Smartsoft", "The best company project ever!" ).save();
 			p1.user = users.get( 0 );
