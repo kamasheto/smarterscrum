@@ -1,0 +1,41 @@
+#{extends 'CRUD/layout.html' /}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<head>
+	<script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var ids = new Array();
+		function mark_all(){
+			$('.x').attr('checked',true);
+		}
+		function unmark_all(){
+			$('.x').attr('checked',false);
+		}
+		function showz(){
+			$('.x').each(function (){
+				if (this.checked)
+				ids.push(this.id);
+			})
+			//alert(ids);
+		}
+		function do_it(){
+			$.post('@{deleteUsers()}' ,{users:ids},function(){
+				window.location.reload();
+			});
+		}
+	</script>
+</head>
+<body>
+#{if !users.isEmpty()}
+	<h2>Users who requested deletion:</h2>
+<a onclick="mark_all();" href="#"> Check All? </a>&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="unmark_all();" href="#"> Uncheck all?</a><br /> <br />
+#{list items:users, as:'user'}
+<a id="user_${user.id}" href="/show/user?id=${user.id}">${user.name}</a>&nbsp;
+<INPUT TYPE="CHECKBOX"  style="position:absolute;left:30%;" id ="${user.id}" class = "x"><br /><br />
+#{/list}
+<button type="button" onclick="showz(); do_it();">Accept Deletion request and notify users</button>
+#{/if}
+#{else}
+<font color="red">No New System Deletion Requests at the moment</font>
+#{/else}
+</body>
+</html>
