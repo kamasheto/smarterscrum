@@ -230,6 +230,53 @@ $(function(){
 #{list items:users , as:'user'}
 <a id=${user.id} href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a>
 #{/list}
+<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_componentmeetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u><a/><br/><br />
+<span id="tzcd"></span>
+<a  href="javascript: extend(${users.meeting.id});"><b>extend another hour</b></a>
+<a  href="javascript: end(${users.meeting.id});"><b>end meeting</b></a>
+
+<script type="text/javascript" charset="utf-8"> 
+
+////////// CONFIGURE THE COUNTDOWN SCRIPT HERE //////////////////
+var date=${users.meeting.endTime};
+var tz =0;         //  
+var lab = 'tzcd';    //  The id of the page entry where the timezone countdown is to show
+
+displayTZCountDown(setTZCountDown(date,tz),lab);
+
+
+function setTZCountDown(date,tz) 
+{var toDate=new Date(date);
+
+var fromDate = new Date();
+fromDate.setMinutes(fromDate.getMinutes());
+var diffDate = new Date(0);
+diffDate.setMilliseconds(toDate - fromDate);
+return Math.floor(diffDate.valueOf()/1000);
+}
+function displayTZCountDown(countdown,tzcd) 
+{
+if (countdown < 0)  {
+	var answer=confirm('Meeting ended now ,the system will now automaticaly update the associated snapshot to the current view of the board!')
+		if (answer) {
+		take_componentmeetingsnapshot(${users.meeting.id});
+		replaceContent(current,'This Meeting has ended');
+	}
+}
+else {var secs = countdown % 60; 
+if (secs < 10) secs = '0'+secs;
+var countdown1 = (countdown - secs) / 60;
+var mins = countdown1 % 60; 
+if (mins < 10) mins = '0'+mins;
+countdown1 = (countdown1 - mins) / 60;
+var hours = countdown1 % 24;
+var days = (countdown1 - hours) / 24;
+document.getElementById(tzcd).innerHTML = days + " day" + (days == 1 ? '' : 's') + ' : ' +hours+ 'hours : ' +mins+ 'm : '+secs+'s';
+setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
+}
+}
+</script>
+
 #{/list}
 #{/else}
 <br/>
@@ -503,11 +550,36 @@ function swapCol(TheID)
 		$.post('/Columns/changeColumnPosition2' ,{id:gup('sprintID'),pos1:from-1, pos2:to-1});
 		}
 		function take_snap() {
+
+		$.post('@{snapshots.takecomponentsnapshot()}', {sprintID:${s.id},componentID:${comp.id}} ,function(){alert('saved!')});
+	
+
 		$.post('@{snapshots.takecomponentsnapshot()}', {sprintID:${s.id},componentID:${comp.id}} ,function(){alert(${c.id})});
+
+	}
+		function extend(id) {
+		$.post('/Meetings/extend', {meetingid:id}, function(){alert('extended!')});
+			
+	}
+	function replaceContent(id1,content) {
+ 
+     document.getElementById("current").innerHTML = content;
+ 
+}
+
+	function end(id) {
+		var ans=confirm('are you sure you want to end the meeting?');
+		if(ans){
+		$.post('/Meetings/end', {meetingid:id});
+	var answer=confirm('The system will now automaticaly update the associated snapshot to the current view of the board!')
+		if (answer) {
+		take_componentmeetingsnapshot(id);
+	replaceContent(current,'This Meeting has ended');
+	}}
 	
 	}
 	function take_componentmeetingsnapshot(id) {
-		$.post('/snapshots/takecomponentmeetingsnapshot', {sprintID:${s.id},componentID:${c.id},meetingID:id}, function(){alert('Saved!')});
+		$.post('/snapshots/takecomponentmeetingsnapshot', {sprintID:${s.id},componentID:${comp.id},meetingID:id}, function(){alert('Saved!')});
 	}
 	$(function(){
 		$('div.tiptipize').tipTip({delay:0});
