@@ -1,14 +1,14 @@
 #{extends 'main.html' /} #{set title:'Home' /}
 
 #{if noti.isEmpty()}
-<h1>Welcome to Smarter Scrum Tool !</h1>
-
+<h1>Smarter Scrum News Feed</h1>
 <p>Now you can search for a project & request to join. <a href="/show/projects"> Click here</a></p>
 <p>You can also search for users You may know & keep yourself updated about their latest activiteis. <a href = "/show/users"> Click here</a></p>
 
 #{/if}
 #{else}
-<h1>Smarter Scrum News Feed</h1>
+
+
 #{list items:noti, as:'notif'}
 #{set 'moreScripts'}
 <script type="text/javascript">
@@ -23,10 +23,10 @@
        		});
 </script>
 #{/set}
-<div style="padding:10px; border-top:1px solid #eee">
-<div class="left" style="width:60px; margin:-10px 10px 10px 0px">
-	<div class="notifYear"style="width:50px;background-color:#b7568d ;height:10px;padding:5px; text-align:center;">${notif.date}</div>
-	<div class="notifDM bottomCornersRounded" style="width:50px;background-color:#eee;padding:5px; text-align:center;">${notif.date}</div>
+<div class="notifHolder">
+<div class="left dateHolder">
+	<div class="notifYear proj">${notif.date}</div>
+	<div class="notifDM bottomCornersRounded">${notif.date}</div>
 </div>
 <div class="left" style="margin-bottom:10px;">
 <b>${notif.header}</b><br/>
@@ -34,13 +34,13 @@ ${notif.body}.
 </div>
 <div class="right">
 #{if notif.importance =-1}
-	<div class ="allCornersRounded"style="width:60px;background-color:red ;height:10px;padding:5px; text-align:center; color:white">High</div>
+	<div class ="allCornersRounded high">High</div>
 #{/if}
 #{elseif notif.importance =1}
-	<div class ="allCornersRounded"style="width:60px;background-color:#8ef13c ;height:10px;padding:5px; text-align:center; color:black">Low</div>
+	<div class ="allCornersRounded low">Low</div>
 #{/elseif}
 #{elseif notif.importance =0}
-	<div class ="allCornersRounded"style="width:60px;background-color:#FF9A00 ;height:10px;padding:5px; text-align:center; color:black">Medium</div>
+	<div class ="allCornersRounded medium">Medium</div>
 #{/elseif}
 </div>
 </div>

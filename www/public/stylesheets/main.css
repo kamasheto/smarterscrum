@@ -1,4 +1,4 @@
-/*************generic***************/
+/**generic**/
 body,html {
 	background: #333 url('') repeat top left;
 	font-family: Verdana;
@@ -42,26 +42,13 @@ a {
 	float: left;
 }
 
-.tiny_info {
-	font-size: 9px;
-}
-
-.colorBox {
-	background-image: url('images/sticky-bg.png');
-	background-position: top left;
-	background-repeat: no-repeat;
-	padding: 10px 10px 10px 10px;
-	width: 200px;
-	height: 200px;
-}
-
 .shadow {
 	box-shadow: 3px 3px 5px #333;
 	-moz-box-shadow: 3px 3px 5px #333;
 	-webkit-box-shadow: 3px 3px 5px #333;
 }
 
-/**************top bar******************/
+/**top bar**/
 .topper {
 	background: #111;
 	color: #eee;
@@ -77,7 +64,7 @@ a {
 	text-decoration: none;
 }
 
-/*************sideBar********************/
+/**sideBar**/
 .sideBar {
 	min-height: 400px;
 	min-width: 200px;
@@ -127,7 +114,7 @@ a {
 	margin-left: 10px;
 }
 
-/*********************footer*******************/
+/**footer**/
 .footer {
 	width: 98%;
 	min-width: 310px;
@@ -140,7 +127,7 @@ a {
 	display: block;
 }
 
-/*********************nav*************************/
+/**nav**/
 .aDIV:hover {
 	cursor: pointer;
 	position: relative;
@@ -167,7 +154,7 @@ a {
 	text-decoration: none !important;
 }
 
-/****************rounded corners**********************/
+/**rounded corners**/
 .allCornersRounded {
 	border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -210,7 +197,7 @@ a {
 	-webkit-border-top-left-radius: 5px;
 }
 
-/****************curly notchs*********************/
+/**curly notchs**/
 .curlyNotchBottomRight {
 	border-bottom-right-radius: 20px;
 	-moz-border-radius-bottomright: 20px;
@@ -243,7 +230,7 @@ a {
 	height: 20px;
 }
 
-/********************triangle notch**************************/
+/**triangle notch**/
 .notchBottom {
 	border-top: 15px solid #b7568d;
 	border-right: 15px solid transparent;
@@ -257,8 +244,9 @@ a {
 	_border-right-color: pink;
 	_border-left-color: pink;
 	margin-top: -2px;
-	_filter: chroma(color =                                                      
-		pink);
+	_filter: chroma(color =          
+		                                                          
+		               pink);
 }
 
 .notchBottom2 {
@@ -276,8 +264,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                      
-		pink);
+	_filter: chroma(color =          
+		                                                          
+		               pink);
 }
 
 .notchTop {
@@ -292,8 +281,9 @@ a {
 	margin-left: 30px;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                      
-		pink);
+	_filter: chroma(color =          
+		                                                          
+		               pink);
 }
 
 .notchRight {
@@ -310,8 +300,9 @@ a {
 	display: inline-block;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                      
-		pink);
+	_filter: chroma(color =          
+		                                                          
+		               pink);
 }
 
 .notchLeft {
@@ -326,11 +317,12 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                      
-		pink);
+	_filter: chroma(color =          
+		                                                          
+		               pink);
 }
 
-/*********form***********/
+/**form**/
 .search:focus {
 	border: 0px !important;
 }
@@ -371,7 +363,8 @@ a {
 	background: #444 !important;
 	background: -moz-linear-gradient(center bottom, #444 20%, #555 80%)
 		!important;
-	background: vertical-align :             middle;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #444),
+		color-stop(0.8, #555) ) !important;
 	height: 36px !important;
 	border-radius-bottom-left: 0px !important;
 	-moz-border-radius-bottomleft: 0px !important;
@@ -385,13 +378,6 @@ a {
 	border-radius-top-right: 3px !important;
 	-moz-border-radius-topright: 3px !important;
 	-webkit-border-top-right-radius: 3px !important;
-	/*-webkit-gradient(
-    linear,
-    left bottom,
-    left top,
-    color-stop(0.2, rgb(194,194,194)),
-    color-stop(0.8, rgb(143,143,143))
-)*/;
 	color: #fff;
 }
 
@@ -406,6 +392,8 @@ a {
 	background: #b7568d !important;
 	background: -moz-linear-gradient(center bottom, #87155f 20%, #b7568d 80%)
 		!important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #87155f),
+		color-stop(0.8, #b7568d) ) !important;
 }
 
 label {
@@ -417,7 +405,7 @@ button {
 	padding: 5px 10px 5px 10px !important
 }
 
-/*******************Messages Styles********************/
+/**Messages Styles**/
 #chatContainer {
 	vertical-align: top;
 	position: absolute;
@@ -491,7 +479,7 @@ button {
 	background: #60EC08;
 }
 
-/***************tables*******************/
+/**tables**/
 .myTables,.myTables td,.myTables tr,.myTables table {
 	border: 0px;
 	padding: 0px;
@@ -545,7 +533,7 @@ tr {
 	font-size: inherit !important;
 }
 
-/*************headings***********/
+/**headings**/
 h1,h2,h4,h5 {
 	font-family: Georgia, Serif !important;
 }
@@ -556,20 +544,25 @@ h1,h2,h4,h5 {
 	position: relative;
 }
 
-/** project links **/
+/
+** project links** /
 #boards a {
 	background: transparent !important;
 	padding: 0px !important;
 	border: 0px !important;
 	margin: 0px !important;
 	float: none !important;
-	font-size:10px!important;
-	text-align:left !important;
-	text-decoration:underline !important;
+	font-size: 10px !important;
+	text-align: left !important;
+	text-decoration: underline !important;
 }
 
 ul.project_links a {
-	background: -moz-linear-gradient(center bottom, #666 20%, #888 80%);
+	background: #666;
+	background: -moz-linear-gradient(center bottom, #666 20%, #888 80%)
+		!important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #666),
+		color-stop(0.8, #888) ) !important;
 	color: #000;
 	display: block;
 	float: left;
@@ -581,10 +574,22 @@ ul.project_links a {
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
+	background: -moz-linear-gradient(center bottom, #666 20%, #888 80%)
+		!important;
+}
+
+#boards a:hover {
+	box-shadow: 0px 0px 0px #9E3572;
+	-moz-box-shadow: 0px 0px 0px #9E3572;
+	-webkit-box-shadow: 0px 0px 0px #9E3572;
 }
 
 ul.project_links a:hover {
-	background: -moz-linear-gradient(center bottom, #999 20%, #888 80%);
+	background: #888;
+	background: -moz-linear-gradient(center bottom, #999 20%, #888 80%)
+		!important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #999),
+		color-stop(0.8, #888) ) !important;
 	box-shadow: 0px 0px 15px #9E3572;
 	-moz-box-shadow: 0px 0px 15px #9E3572;
 	-webkit-box-shadow: 0px 0px 15px #9E3572;
@@ -607,9 +612,65 @@ tr.deleted {
 	background-color: #b7568d;
 }
 
+.proj2 {
+	background-color: #9E3572;
+}
+
 .projDes {
 	padding: 10px;
 	background-color: #b7568d;
 	width: 300px;
 	overflow: auto
+}
+
+/**notifications**/
+.notifYear {
+	width: 50px;
+	height: 10px;
+	padding: 5px;
+	text-align: center;
+}
+
+.notifDM {
+	width: 50px;
+	background-color: #eee;
+	padding: 5px;
+	text-align: center;
+}
+
+.dateHolder {
+	width: 60px;
+	margin: -10px 10px 10px 0px
+}
+
+.notifHolder {
+	padding: 10px;
+	border-top: 1px solid #eee
+}
+
+.high {
+	width: 60px;
+	background-color: red;
+	height: 10px;
+	padding: 5px;
+	text-align: center;
+	color: white
+}
+
+.low {
+	width: 60px;
+	background-color: #8ef13c;
+	height: 10px;
+	padding: 5px;
+	text-align: center;
+	color: black
+}
+
+.medium {
+	width: 60px;
+	background-color: #FF9A00;
+	height: 10px;
+	padding: 5px;
+	text-align: center;
+	color: black
 }
