@@ -1,24 +1,19 @@
 #{extends 'main.html' /}
 #{set title:'My Projects' /}
 #{set 'moreLinks'}
-<p>
-	<a href="@{Requestreviewers.ListTypesOfReviewers()}">Request to be a reviewer in a project</a>
-</p>
-<p>
-			<a href="/requestDeletion">Request to be deleted from the system</a>
-</p>
+<p><a href="@{Requestreviewers.ListTypesOfReviewers()}">Request to be a reviewer in a project</a></p>
+<p><a href="/requestDeletion">Request to be deleted from the system</a></p>
 #{/set}
-
 <h1> My Projects</h1>
 #{if projects.isEmpty()}
-<br/>
-<b><font color="red">You are not currently involved in a project</font>
-<br/>
-if you want to request to join a project <a href="/show/projects"><font color = "blue"><u>Click Here</u></font></a> !
-</b>
-<br/> 
+#{note 'error'}
+	You are not in any project, if you want to request to join a project <a href="/show/projects">click here</a>
+#{/note}
 #{/if}
 #{if !projects.isEmpty()}
+#{note 'highlight'}
+	These are your projects. If you want to request to join another project, <a href="/show/projects">click here</a>
+#{/note}
 <ul id= "prequests">
 #{list items:projects, as:'pro'}
 #{ifnot pro.deleted}
