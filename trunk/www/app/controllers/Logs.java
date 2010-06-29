@@ -88,7 +88,7 @@ public class Logs extends SmartCRUD {
 			filter = null;
 			logs = Log.find("order by date desc").from(index).fetch(25);
 			redirect("/admin");
-		} else if (filter != null)
+		} else if (filter != null && !filter.isEmpty())
 			{
 			if(filter.charAt(0) == ' ' || filter.charAt(filter.length()-1) == ' ' || filter.contains("  "))
 			{
