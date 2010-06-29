@@ -62,15 +62,15 @@ if(isBefore('${sprint.format(sprint.startDate)}')==true){
 <strong>End Date:</strong> ${sprint.format(sprint.endDate)}
 <br />
 
-<h5>
-Sprint Component Backlogs</h5>
+<h2>
+Sprint Component Backlogs</h2>
 #{list items:sprint.project.components, as:'component'}
 <a title="Look @ ${component.name}'s sprint backlog?" href="@{SprintBacklog.index(component.id,sprint.id)}">${component.name}</a>
 <br/>
 <br/>
 #{/list}
-<h5>
-Task Boards</h5>
+<h2>
+Task Boards</h2>
 #{set 'onLoad'}
 #{if ended==true}
 #{if sprint.finalsnapshot==null }
