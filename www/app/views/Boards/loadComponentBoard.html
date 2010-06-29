@@ -49,6 +49,15 @@ $(document).ready(function(){
 				location.reload();
 			});
 		});
+		$('.b1').click(function()
+	{
+		$('.hidecol').css('display','inline-block');
+			
+	}); 
+	$('.b2').click(function()
+	{
+		$('.showcol').css('display','inline-block');	 
+	}); 
 		$('.ctask').click(function(){
 			$('#'+this.id+"_T").hide();
 			
@@ -169,6 +178,28 @@ $(function(){
 
 <table border="0"></table>
 #{set 'moreLinks'}
+<!-- view hidden Col by Hadeer -->
+#{if connected.in(p).can('ShowColumn')}
+<a href="#" class="b1 tiptitize" title="add hidden column?" type="button">Add Hidden Columns!</a><br/>	
+<select id="hadeer" onchange="showHiddenCol(hadeer.value)" style="display:none" class="hidecol">
+<option value="">view hiden columns</option>
+#{list items:hidencolumnsOfBoard, as:'c'}
+<option value= "${c.id}">${c.name}</option>
+#{/list}
+</select>
+#{/if}
+
+<!-- hide Col by Hadeer -->
+#{if connected.in(p).can('HideColumn')}
+<a href="#" class="b2 tiptitize" title="delete column?" type="button" >Delete Columns!</a><br/>
+
+<select id="hadeer2" onchange="hideCol(hadeer2.value)" style="display:none" class="showcol">
+<option value="">delete columns</option>
+#{list items:columnsOfBoard, as:'c'}
+<option value= "${c.id}">${c.name}</option>
+#{/list}
+</select>
+#{/if}
 
 <a href="" id="form">Swap Columns Settings</a>	
 <br>
