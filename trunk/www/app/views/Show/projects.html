@@ -2,15 +2,8 @@
 #{set title:'Project List' /}
 
 #{set 'moreLinks'}
-
-
-<a href="/admin/projects/new">Create a New Project</a><br />
-
-
-
+<p><a href="/admin/projects/new">Create a New Project</a></p>
 #{/set}
-
-
 #{set 'crumbs'}
 <li><a href="/show/projects">Projects</a></li>
 #{/set}
@@ -19,9 +12,9 @@
 <p class="success">&{flash.success}</p>
 #{/if}
 <h2>Project List</h2>
-    	    	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
-	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
-	<strong>NOTE: </strong>Click on a project's name to view its page<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
+#{note 'highlight'}
+	Click on a project's name to view its page
+#{/note}
 <p>Type to filter: <input type="text" id="search_term" onkeyup="search_users();" /> <img id="loading" style="display:none;" src="@{'/public/images/ajax-loader.gif'}" /></p>
 <div id="results" class="dark">
 #{list items:projects, as:'project'}
