@@ -490,11 +490,16 @@ public class Projects extends SmartCRUD
 		// User myUser=User.findById(userId);
 		User myUser = Security.getConnected();
 		Project myProject = Project.findById( id );
-		System.out.println( myProject );
-		Request x = new Request( myUser, myProject );
+		//System.out.println( myProject );
+		if(Request.find("isDeletion = true and user = "+myUser.id+" and project = "+myProject.id).first()==null)
+		{Request x = new Request( myUser, myProject );
 		flash.success( "your request has been sent" );
 		x.save();
-		Show.projects( 0 );
+		Show.projects( 0 );}
+		else{
+			flash.error("You have already made a deletion request in this project!");
+			Show.projects( 0 );
+		}
 		// Logs.addLog(myProject, "request to be deleted", "Request", x.id );
 		// Logs.addLog(Security.getConnected(), "request to be deleted",
 		// "Request", x.id, myProject, new Date());
