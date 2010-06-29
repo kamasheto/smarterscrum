@@ -4,6 +4,7 @@
 <hr />
 <p><a href="/admin/roles/new">Create new role</a></p>
 #{/set}
+#{note}These are the default roles. All projects created include these roles by default. Changes to these roles does NOT affect roles of projects already created.#{/note}
 #{list items:roles, as:'role'}
 	<p><a href="/admin/roles/${role.id}">${role.name}</a></p>
 #{/list}
