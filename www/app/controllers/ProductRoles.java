@@ -299,4 +299,16 @@ public class ProductRoles extends SmartCRUD {
 		Notifications.notifyUsers(productRoleObject.project, header, body, "deleteProductRole", new Byte((byte) -1));
 		flash.success("Product Role " + productRoleObject.name + " has been deleted.");
 	}
+	
+	/**
+	 * Overrides the CRUD list method that is invoked to list product roles
+	 * role, in order to in order not to allow users to view the crud list for the productroles.
+	 * 
+	 * @author Heba Elsherif
+	 * @sprint 3
+	 **/
+	public static void list( int page, String search, String searchFields, String orderBy, String order )
+	{
+		forbidden();
+	}
 }
