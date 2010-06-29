@@ -329,7 +329,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 	<td>Click here to toggle</td>
 	<span style="display:none"> ${count=0}</span>
 	#{list items:columnsOfBoard, as:'col'}
-	<td></td> <!-- creating empty cells in each row based on number default columns (onBoard=true) -->
+	<td class="col_${count}"></td> <!-- creating empty cells in each row based on number default columns (onBoard=true) -->
 	<span style="display:none"> ${count=count+1}</span>
 	#{/list}
 </tr>
