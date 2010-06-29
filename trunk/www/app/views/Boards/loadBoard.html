@@ -354,11 +354,11 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<div class="${task.taskStatus.column.name}" style="max-width:130px"></div>
 		<div style="max-width:130px" id="task-${task.id}_T" class="drag">
 		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor}; max-width:110px" border=0px id="${task.id}_small">
-		<a id="task-${task.id}" style="font-size:x-large;" border=0px class="ctask">-</a>T ${task.id} ${task.description}
+		<a id="task-${task.id}" style="font-size:x-large;cursor: pointer !important"" border=0px class="ctask">-</a>T ${task.id} ${task.description}
 		<a class="SmallSticky tiptitize" title="Edit task info?" style="cursor: pointer !important" id="${task.id}">view/edit info..</a>
 		</div>
 		</div>
-		<a id="task-${task.id}_hidden" style="display:none; font-size:large;" class="showtask">+</a>
+		<a id="task-${task.id}_hidden" style="display:none; font-size:large;cursor: pointer !important" class="showtask">+</a>
 		</p>
 		
 		<!-- big sticky note -->						
