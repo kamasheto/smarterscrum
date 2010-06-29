@@ -89,7 +89,7 @@ public class Logs extends SmartCRUD {
 			logs = Log.find("order by date desc").from(index).fetch(25);
 			render(logs, page);
 		} else if (filter != null)
-			logs = Log.find("user.name like '%" + filter + "%' or " + "action_type like '%" + filter + "%' or " + "resource_type like '%" + filter + "%' or " + "project.name like '%" + filter + "%' or " + "date like '%" + filter + "%' order by date desc").from(index).fetch(25);
+			logs = Log.find("LOWER(user.name) like '%" + filter.toLowerCase() + "%' or " + "LOWER(action_type) like '%" + filter.toLowerCase() + "%' or " + "LOWER(resource_type) like '%" + filter.toLowerCase() + "%' or " + "LOWER(project.name) like '%" + filter.toLowerCase() + "%' or " + "LOWER(date) like '%" + filter.toLowerCase() + "%' order by date desc").from(index).fetch(25);
 		else
 			logs = Log.find("order by date desc").from(index).fetch(25);
 		render(logs, page, filter);
