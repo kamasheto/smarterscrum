@@ -15,8 +15,8 @@
 <ul id= "prequests">
 #{list items:requests, as:'req'}
 	<li id="req_${req.id}">${req.user.name} has  requested to be ${req.role.name}
-	<a onclick="request_accept(${req.id}, '${req.hash}');" href="#">Accept  </a> &bull; 
-	<a onclick="request_ignore(${req.id}, '${req.hash}');" href="#">Decline  </a>
+	<a onclick="request_accept('${req.id}', '${req.hash}');" href="#">Accept  </a> &bull; 
+	<a onclick="request_ignore('${req.id}', '${req.hash}');" href="#">Decline  </a>
 	</li>
 #{/list}
 </ul>
@@ -35,12 +35,12 @@
 <ul id= "prequests">
 #{list items:drequests, as:'req'}
 	<li id="req_${req.id}"><a href="/show/user?id=${req.user.id}">${req.user.name}</a> has  requested to be deleted from the project.
-	<a onclick="request_accept2(${req.id}, '${req.hash}');" href="#">Accept  </a> &bull; 
-	<a onclick="show_comment(${req.id});" href = "#">Decline</a>
+	<a onclick="request_accept2('${req.id}', '${req.hash}');" href="#">Accept  </a> &bull; 
+	<a onclick="show_comment('${req.id}');" href = "#">Decline</a>
 	<div id = "comment_${req.id}" style="display:none">
 		<b>Dear ${req.user.name}, your request to be deleted from ${req.project.name} has been denied because ....</b>
 		<textarea id = "text_${req.id}" rows="2" cols="150"></textarea><br />
-		<a onclick="do_ignore(${req.id}, '${req.hash}');" href = "#"><font color="red"><b><u>Decline Request and Notify user</u></b></font></a>
+		<a onclick="do_ignore('${req.id}', '${req.hash}');" href = "#"><font color="red"><b><u>Decline Request and Notify user</u></b></font></a>
 		<br /> <br />
 	</div>
 	</li>
