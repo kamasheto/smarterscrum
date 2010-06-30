@@ -155,7 +155,10 @@ $(function()
 	$('.editDES').editable(function(value)
 		{var taskId 	= parseInt($('#lolid').closest("div").attr("id"));  
     	 $.post('@{Tasks.editTaskDesc2()}',{id:taskId, userId:selectedUser, desc:value});
-       	 return(value);   
+		 document.getElementById("desc_"+taskId).innerHTML = value;
+       	 document.getElementById(taskId+"_des").innerHTML = value;
+         document.getElementById(taskId+"_desc").innerHTML = value;
+		 return(value);   
     	},{indicator : 'Saving...',});
 
 	$('.editCOL').editable(function(value)
@@ -354,7 +357,8 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<div class="${task.taskStatus.column.name}" style="max-width:130px"></div>
 		<div style="max-width:130px" id="task-${task.id}_T" class="drag">
 		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor}; max-width:110px" border=0px id="${task.id}_small">
-		<a id="task-${task.id}" style="font-size:x-large;cursor: pointer !important"" border=0px class="ctask">-</a>T ${task.id} ${task.description}
+		<a id="task-${task.id}" style="font-size:x-large;cursor: pointer !important"" border=0px class="ctask">-</a>T ${task.id} 
+		<div id="desc_${task.id}">${task.description}</div>
 		<a class="SmallSticky tiptitize" title="Edit task info?" style="cursor: pointer !important" id="${task.id}">view/edit info..</a>
 		</div>
 		</div>
@@ -375,11 +379,11 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		#{/if}
 		#{if flag2 || controllers.Security.getConnected().equals(task.assignee)} <!-- if has permission (desc) or assignee -->
 		<div style="width:3cm" id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id} tiptitize" title="Edit description?">${task.description}</div>	
-		<div style="display:none" class="noedit noedit_${task.assignee.id}"id="${task.id}_des" border=0px >${task.description}</div>	
+		<div style="display:none" class="noedit noedit_${task.assignee.id}"id="${task.id}_desc" border=0px >${task.description}</div>	
 		#{/if}
 		#{else} <!-- if doesn't have have permission (desc) nor assignee -->
 		<div class="noedit noedit_${task.assignee.id}"id="${task.id}_des" border=0px >${task.description}</div>
-		<div style="display:none;width:3cm" id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id}" title="Edit description?">${task.description}</div>		
+		<div style="display:none;width:3cm" id="${task.id}_desc" border=0px class="editDES editdesc_${task.assignee.id}" title="Edit description?">${task.description}</div>		
 		#{/else}
 		
 		<!-- set flag for logged in user (edit assignee) -->								
@@ -427,7 +431,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<div id="types_${task.id}" class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${task.taskType.name}</div>
 		#{/else}
 		</p>
-		<a href="#" id="${task.id}_HiddenSticky">
+		<a href="javascript:;" id="${task.id}_HiddenSticky">
 		<span style="text-align:right; display:inline-block; width:3cm " title="Done Editing?" >Done</span></a>
 		</div>
 		</div>
@@ -672,7 +676,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 	}
 	
 		function extend(id) {
-		$.post('/Meetings/extend', {meetingid:id}, function(){alert('extended!')});
+		$.post('/Meetings/extend', {meetingid:id}, function(){alert('extended')});
 			
 	}
 
