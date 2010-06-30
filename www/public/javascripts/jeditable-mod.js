@@ -404,10 +404,11 @@
             defaults: {
                 element : function(settings, original) {
                     var input = $('<input type="hidden"></input>');                
+                    $(this).append(input);
                     return(input);
                 },
                 content : function(string, settings, original) {
-                    $(':input:first', this).val();
+                    $(':input:first', this).val(string);
                 },
                 reset : function(settings, original) {
                   original.reset(this);
@@ -460,8 +461,7 @@
                     if (settings.height != 'none') { input.height(settings.height); }
                     /* https://bugzilla.mozilla.org/show_bug.cgi?id=236791 */
                     //input[0].setAttribute('autocomplete','off');
-                    input.attr('autocomplete','on');
-                   
+                    input.attr('autocomplete','off');
                     $(this).append(input);
                     return(input);
                 }
