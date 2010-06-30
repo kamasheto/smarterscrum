@@ -80,6 +80,11 @@ label.style.color="red";
 		</li>
 	
 		#{/list}
+		#{else}
+			#{note 'error'}
+				There are no pending project requests.
+			#{/note}
+		#{/else}
 		
 
 	</div>
