@@ -34,5 +34,5 @@ The aim is to categorize these features and group them. We need to simplify the 
   * Request Deletion
   * Delete Project
   * Memebers  (*users in a project, can't it be like the list of users but filtered by project?*)
-  
+  * Tasks List
   
