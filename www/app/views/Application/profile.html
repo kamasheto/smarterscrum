@@ -4,12 +4,6 @@
 <li><a href="/show/users">Users</a></li>
 <li><a href="/show/user?id=${user.id}">${user.name}</a></li>
 #{/set}
-#{if flash.success}
-	<p>${flash.success}</p>
-#{/if}
-#{if flash.error}
-	<p>${flash.error}</p>
-#{/if}
 <h4>Edit profile</h4>
 <form action="@{Application.editProfile()}" method="post">
 	<input type="hidden" name="id" value="${user.id}" />
