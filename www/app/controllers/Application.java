@@ -150,7 +150,7 @@ public class Application extends SmartController
 	@Check( "systemAdmin" )
 	public static void adminIndexPage()
 	{
-		redirect("/roles/defaultRoles");
+		redirect("/projects/manageProjectRequests");
 	}
 
 	@Check( "systemAdmin" )
