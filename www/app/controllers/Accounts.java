@@ -95,8 +95,12 @@ public class Accounts extends SmartController {
 	public static void requestDeletion() {
 		if (!Security.isConnected()) {
 			Security.error("You are not registered, Please login if you haven't done so");
-
+			
 		}
+		else if(Security.getConnected().pendingDeletion)
+			{User user = Security.getConnected();
+			render(user);
+			}
 		render();
 	}
 
@@ -127,15 +131,17 @@ public class Accounts extends SmartController {
 				if(!userFound.pwdHash.equals(pwdHash))
 				{
 					flash.error("You have entered a wrong password!");
+					requestDeletion();
 				}
 				
 				else {
 					userFound.pendingDeletion = true;
 					userFound.save();
 					flash.success("your deletion request has been successfully sent!");
+					redirect("/");
 				}
 			}
-			requestDeletion();
+			
 		}
 	
 
@@ -161,6 +167,15 @@ public class Accounts extends SmartController {
 		} else
 			flash.error("This activation link is not valid or has expired. Activation Failed!");
 		Secure.login();
+	}
+	
+	public static void undoRequest()
+	{
+		User user = Security.getConnected();
+		user.pendingDeletion = false;
+		user.save();
+		flash.success("Your deletion request has been successfully undone !");
+		redirect("/");
 	}
 
 }
