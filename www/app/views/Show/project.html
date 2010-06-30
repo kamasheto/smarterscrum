@@ -4,10 +4,6 @@
 <li><a href="/show/projects">Projects</a></li>
 <li><a href="/show/project?id=${project.id}">${project.name}</a></li>
 #{/set}
-
-#{if flash.success}
-<p class="success">&{flash.success}</p>
-#{/if}
 <h2>${project.name}</h2>
 <div class="notchTop"></div>
 <div class="allCornersRounded projDes">
