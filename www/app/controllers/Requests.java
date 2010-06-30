@@ -67,7 +67,7 @@ public class Requests extends SmartCRUD {
 		}
 		x.user.save();
 		Notifications.notifyUsers(x.user, "Role Request Accepted", "Your Role request to be " + x.role.name + " in " + x.role.project.name + " has been accepted", (byte) 1);
-		User myUser = User.find("byEmail", Security.connected()).first();
+		User myUser = User.find("byName", Security.getConnected()).first();
 		Logs.addLog(myUser, "RequestAccept", "Request", x.id, y, new Date());
 		x.delete();
 	}
@@ -164,7 +164,7 @@ public class Requests extends SmartCRUD {
 				Notifications.notifyUsers(x.user, "deletion request from project denied", "Your deletion request from project " + x.project.name + " has been denied because " + b + ".", (byte) -1);
 			}
 		}
-		User myUser = User.find("byName", Security.connected()).first();
+		User myUser = User.find("byName", Security.getConnected()).first();
 		Date dd = new Date();
 		Logs.addLog(myUser, "RequestDeny", "Request", x.id, y, dd);
 		x.delete();
