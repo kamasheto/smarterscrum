@@ -1,0 +1,17 @@
+#labels Navigation
+= Introduction =
+
+Developers will use this page to list the links of all existing features of smarterscrum. 
+
+The aim is to categorize these features and group them. We need to simplify the navigation and hopefully make all the system's functionalities within maximum of 3 clicks away from the user.
+
+When listing the pages your are working on, it is helpful to write the name of the feature, a slash then the real page name. The following is just a sample
+
+
+= Pages =
+
+* Login    /login (This is the Tool Pre-login home)
+* Register /register
+* About US / about
+* Users    /users
+* Projects / project
