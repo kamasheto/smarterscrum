@@ -10,8 +10,8 @@ When listing the pages your are working on, it is helpful to write the name of t
 
 = Pages =
 
-  *Login    /login (This is the Tool Pre-login home)
-  *Register /register
-  *About US / about
-  *Users    /users
-  *Projects / project
+  * Login    /login (This is the Tool Pre-login home)
+  * Register /register
+  * About US / about
+  * Users    /users
+  * Projects / project
