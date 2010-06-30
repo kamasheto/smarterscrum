@@ -259,39 +259,19 @@ Please check the columns that you would like to hide. Columns not checked will b
          </a>
           </td>
           #{/else}        
-				
-	<!-- 	
-		<td  id=${story.id} class="editSsenario"><ul>
-		#{list items:story.succussSenario, as:'scenario'}
-		 <li>${scenario}</li>
-		#{/list}</ul></td>
-				
-		<td  id=${story.id} class="editFsenario"> 
-		#{list items:story.failureSenario, as:'scenario'}
-		 <li>${scenario}</li>
-		#{/list} </td>
-		 -->
 		#{ifnot story.succussSenario} 
-		<td class="editSsenario shSD">
-		 
-		  </td>
+		<td class="editSsenario shSD"></td>
 		  #{/ifnot}
 		 	
 		 	#{else}
-		 	<td  id="${story.id}" class="editSsenario shSD">
-			${story.succussSenario.raw()}
-		</td>
+		 	<td  id="${story.id}" class="editSsenario shSD">${story.succussSenario.raw()}</td>
 			#{/else}	
 			#{ifnot story.failureSenario.raw()} 
-		<td class="shFD editFsenario">
-		  
-		 </td>
+		<td class="shFD editFsenario"></td>
 		 #{/ifnot}
 		
 		#{else}
-		<td  id="${story.id}" class="editFsenario shFD">
-		 ${story.failureSenario.raw()}
-		</td>		
+		<td  id="${story.id}" class="editFsenario shFD">${story.failureSenario.raw()}</td>		
 		#{/else}
 
 	</tr>
