@@ -11,6 +11,9 @@
 		else
 		$('#delete').hide();
 	}
+	function undo_req(){
+		window.location.replace('@{undoRequest()}');
+	}
 </script>
 
 	
@@ -31,6 +34,7 @@
 			<p class="success">&{flash.success}</p>
 		#{/if}
 	<br /> <br />
+	#{if !user}
 	<h2><u> WARNING !!!</u></h2>
 	<p align="justify"><font color="red" size="4"><b>
 		By Requesting to be deleted from the system, you should be aware of the following:<br />
@@ -62,3 +66,9 @@
 	</form> 
 	
 </div>
+#{/if}
+#{else}
+<font size="4">
+	Hey ${user.name}, It seems like you have already filed a deletion request.<br />
+	<a href="#" onclick="undo_req();">Undo that Request?</a>
+#{/else}
