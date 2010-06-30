@@ -118,12 +118,17 @@ public class ProductRoles extends SmartCRUD {
 			}
 		} else {
 			object.save();
+			String header = "Product Role: " + "\'" + productRoleObject.name + "\'" + " has been added.";
+			String body = "Added to Project: " + "\'" + project.name + "\'" + "." + '\n'
+			+ " Added by: " + Security.getConnected().name + "." + '\n' 
+			+ " Added at: " + new Date(System.currentTimeMillis()) + ".";
+		  /*////Long Informative Notification message. Not suitable for online notification.
 			String header = "Product Role: " + "\'" + productRoleObject.name + "\'" + " has been added to Project: " + "\'" + project.name + "\'" + ".";
 			String body = "New Product Role has been added to Project " + "\'" + project.name + "\'" + "." + '\n' + '\n' 
 				+ "Product Role Name: " + productRoleObject.name +"."+ '\n' 
 				+ " Description: " + productRoleObject.description + "." + '\n' 
 				+ " Added by: " + Security.getConnected().name + "." + '\n' 
-				+ " Added at: " + new Date(System.currentTimeMillis()) + ".";
+				+ " Added at: " + new Date(System.currentTimeMillis()) + "."; */
 			Logs.addLog(Security.getConnected(), "Create", "ProductRole", productRoleObject.id, project, new Date(System.currentTimeMillis()));
 			Notifications.notifyUsers(project, header, body, "addProductRole", new Byte((byte) 1));
 			flash.success("Product Role " + productRoleObject.name + " has been created successfully.");
