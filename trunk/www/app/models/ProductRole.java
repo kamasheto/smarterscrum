@@ -62,7 +62,7 @@ public class ProductRole extends SmartModel {
 	public static boolean hasUniqueName(String name, long projectId) {
 		Project project = Project.findById(projectId);
 		for (int i = 0; i < project.productRoles.size(); i++) {
-			if (project.productRoles.get(i).name.equals(name) && !project.productRoles.get(i).deleted) {
+			if (project.productRoles.get(i).name.equalsIgnoreCase(name) && !project.productRoles.get(i).deleted) {
 				return false;
 			}
 		}
