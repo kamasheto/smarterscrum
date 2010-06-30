@@ -164,7 +164,7 @@ public class Requests extends SmartCRUD {
 				Notifications.notifyUsers(x.user, "deletion request from project denied", "Your deletion request from project " + x.project.name + " has been denied because " + b + ".", (byte) -1);
 			}
 		}
-		User myUser = User.find("byEmail", Security.connected()).first();
+		User myUser = User.find("byName", Security.connected()).first();
 		Date dd = new Date();
 		Logs.addLog(myUser, "RequestDeny", "Request", x.id, y, dd);
 		x.delete();
