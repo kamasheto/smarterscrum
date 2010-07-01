@@ -132,15 +132,11 @@ function showCol(c)
 }
 function showHiddenCol(colid)
 {
-	var answer=confirm('Are you sure u want to add this coulmn?')
-		
-		if (answer) 	
-	      {
 	$.post('@{showHiddenColumn()}' ,			
 			{cid:colid,uid:${connected.id}}, function(){
 		window.location.reload();
 		});
-		}
+		
 }
 function hideCol(colid)
 {
@@ -199,14 +195,12 @@ $(function()
 #{set 'moreLinks'}
 <!-- view hidden Col by Hadeer -->
 #{if connected.in(p).can('ShowColumn')}
-<a href="#" class="b1 tiptitize" title="add hidden column?" type="button">Add Hidden Columns!</a><br/>	
-<select id="hadeer" onchange="showHiddenCol(hadeer.value)" style="display:none" class="hidecol">
-
-#{if hidencolumnsOfBoard.size()==0}
-<option value="">None</option>
+#{if hidencolumnsOfBoard.isEmpty()}
 #{/if}
 #{else}
-<option value="">view columns</option>
+<a href="#" class="b1 tiptitize" title="add hidden column?" type="button">Add Columns!</a><br/>	
+<select id="hadeer" onchange="showHiddenCol(hadeer.value)" style="display:none" class="hidecol">
+<option value="">add columns</option>
 #{list items:hidencolumnsOfBoard, as:'c'}
 <option value= "${c.id}">${c.name}</option>
 #{/list}
@@ -217,21 +211,21 @@ $(function()
 
 <!-- hide Col by Hadeer -->
 #{if connected.in(p).can('HideColumn')}
-<a href="#" class="b2 tiptitize" title="delete column?" type="button" >Delete Columns!</a><br/>
-
-<select id="hadeer2" onchange="hideCol(hadeer2.value)" style="display:none" class="showcol">
-
-#{if columnsOfBoard.size()==0}
-<option value="">None</option>
+#{if hidencolumnsOfBoard.isEmpty()}
 #{/if}
 #{else}
-<option value="">delete columns</option>
+<a href="#" class="b2 tiptitize" title="delete column?" type="button" >Delete Columns!</a><br/>
+<span style="display:none"> </span>
+<select id="hadeer2" onchange="hideCol(hadeer2.value)" style="display:none" class="showcol">
 #{list items:columnsOfBoard, as:'c'}
 <option value= "${c.id}">${c.name}</option>
+<span style="display:none"></span>
 #{/list}
 #{/else}
 </select>
 #{/if}
+
+	
 
 <a class="titptitize" title="create meeting?" href="/admin/projects/${p.id}/meetings/new?object.infrontBoard=true">Create Meeting<a/><br/>	
 <a class="titptitize" title="view board snapshots?" href="@{Snapshots.index(s.id,p.name)}" >View snapshots</a><br/>
