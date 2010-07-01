@@ -1,13 +1,10 @@
 #{extends 'Application/adminIndex.html' /}
 #{set title: 'Manage Global Roles' /}
-#{set 'moreControls'}
-<hr />
-<p><a href="#" onclick="overlayOpen('/admin/roles/new')">Create new role</a></p>
-#{/set}
 #{note 'highlight'}These are the default roles. All projects created include these roles by default. Changes to these roles does NOT affect roles of projects already created.#{/note}
 #{list items:roles, as:'role'}
-	<p><a href="#" onclick="overlayOpen('/admin/roles/${role.id}')">${role.name}</a></p>
+	<p><a href="#" onclick="overlayOpen('/admin/roles/${role.id}')"><img src="@{'/public/images/famfam/pencil.png'}"></a> <a href="/roles/delete?id=${role.id}" onclick=""><img src="@{'/public/images/famfam/delete.png'}"></a> ${role.name}</p>
 #{/list}
+	<p><a href="#" onclick="overlayOpen('/admin/roles/new')"><img src="@{'/public/images/famfam/add.png'}"></a></p>
 #{else}
 #{note 'error'}
 	No default roles at the moment. <a href="/admin/roles/new">Create one?</a>

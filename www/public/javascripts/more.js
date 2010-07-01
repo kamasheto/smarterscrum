@@ -66,7 +66,6 @@ this.tmpl = function tmpl(str, data){
 function overlayOpen(href)
 {
 	$('#getOverlay').load(href, function(){
-		$("#breadCrumb").jBreadCrumb();
 		$('.formatDate').each(function(){
 			$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );
 		});
