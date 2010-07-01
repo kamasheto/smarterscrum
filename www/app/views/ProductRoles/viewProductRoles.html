@@ -3,7 +3,7 @@
 #{set title: projectName+ '\'s ProductRoles '/}
 #{set 'crumbs'}
 <li><a href="/show/projects"> Projects </a></li>
-<li><a href="/show/project?id=${id}"> ${name} </a></li>
+<li><a href="/show/project?id=${id}"> ${projectName} </a></li>
 <li><a href="/projects/${id}/productroles"> Product Roles </a></li>
 #{/set}
 #{set 'moreLinks'}
@@ -42,8 +42,9 @@
 
 
 #{if connected.in(project).can('addProductRole')}
-<a href="/admin/projects/${id}/productroles/new"> Add a new Product Role. </a>
+<p>
+<a onclick="overlayOpen('/admin/projects/${id}/productroles/new')"href="#"> Add a new Product Role. </a>
+</p>
 #{/if}
 
-<br/>
 <a href="/show/project?id=${id}">Back to ${projectName}</a>
