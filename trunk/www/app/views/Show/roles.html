@@ -6,11 +6,13 @@
 <li><a href="/show/project?id=${project.id}">${project.name}</a></li>
 #{/set}
 
-#{set 'moreLinks'}
-#{if connected.in(project).can('createRole')}<a href="/admin/roles/new?id=${project.id}">Create new role</a>#{/if}
-#{/set}
-<ul>
-#{list project.roles}
-	<li><a href="/admin/roles/${_.id}">${_.name}</a></li>
+#{note 'highlight'}These are your project roles. Members in a project may have more than one role at a time.#{/note}
+#{list project.roles, as:'role'}
+	<p><a href="#" onclick="overlayOpen('/admin/roles/${role.id}')"><img src="@{'/public/images/famfam/pencil.png'}"></a> <a href="/roles/delete?id=${role.id}" onclick=""><img src="@{'/public/images/famfam/delete.png'}"></a> ${role.name}</p>
 #{/list}
-</ul>
+	<p><a href="javascript:overlayOpen('/admin/roles/new?id=${project.id}')"><img src="@{'/public/images/famfam/add.png'}"></a></p>
+#{else}
+	#{note 'error'}
+		No default roles at the moment. <a href="javascript:overlayOpen('/admin/roles/new?id=${project.id}')">Create one?</a>
+	#{/note}
+#{/else}

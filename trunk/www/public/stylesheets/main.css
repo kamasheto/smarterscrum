@@ -708,3 +708,7 @@ tr.deleted {
 	text-align: center;
 	color: black
 }
+
+img {
+	vertical-align: middle;
+}
