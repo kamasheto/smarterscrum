@@ -8,10 +8,15 @@ The aim is to categorize these features and group them. We need to simplify the 
 = Pages =
 
   * Login     (This is the Tool Pre-login home)
+  * System Admin can
+    * Create Default Project Roles
+    * Edit/Delete Default project roles
   * Register 
   * About US 
   * Users    
   * Projects 
+    * Create Roles
+    * Edit/Delete Roles
   * Profile  
   * Admin Panel
   * Edit Profile
