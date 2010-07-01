@@ -48,4 +48,11 @@ The aim is to categorize these features and group them. We need to simplify the 
   * View Sprint Burn down chart
   * View Task Report
   * View Impediment Log
-  
+  * Meetings
+  * Add Meeting
+  * Edit Meeting
+  * Delete Meeting
+  * view Meeting
+  * Association page (users,tasks,artifacts,components) 
+  * Check Invitations for Meetings
+  * Set Attendance to invited Users
