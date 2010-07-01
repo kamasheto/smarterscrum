@@ -44,4 +44,8 @@ The aim is to categorize these features and group them. We need to simplify the 
   * Add Task to a Component Story
   * Start an estimation Game
   * Join an estimation Game
+  * View Product Burn down chart
+  * View Sprint Burn down chart
+  * View Task Report
+  * View Impediment Log
   
