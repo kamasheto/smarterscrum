@@ -1,10 +1,5 @@
-#{extends 'main.html' /}#{set title:'Select Dependent Tasks' /}
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
-<li><a href="@{ImpedimentTasks.index(project.id)}">Report Impediment</a></li>
-<li><a href="#">Select dependent tasks</a></li> 
-#{/set}
+#{extends 'overlay.html' /}#{set title:'Select Dependent Tasks' /}
+
 
 <h1>Select Dependent Tasks</h1>
 <div class="crudField">
