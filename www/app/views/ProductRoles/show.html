@@ -36,7 +36,7 @@
     #{if connected.in(project).can('deleteProductRole')}
 	#{form @delete(object.id)}
 		<p class="crudDelete">
-			<input type="button" value="&{'crud.delete', type.modelName}" onclick="deleteProductRole(${object.id}); overlayClose();" />
+		<a onclick="deleteProductRole(${object.id}); overlayClose();" ><img src="@{'/public/images/famfam/delete.png'}" title="Delete"></a>
 		</p>
 	#{/form}
 	#{/if}
