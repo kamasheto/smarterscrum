@@ -111,22 +111,24 @@
 								<a  href="/" title="Go back home?" id="TheLogo"></a>
 							</div>
 						</div>
-						<div class="topper">
+						<div class="topper" style="overflow:auto">
 						<div class="left">
 						#{if connected}
 							Hello ${connected.name}!&nbsp;&nbsp;|&nbsp;&nbsp;
 							<a href="/show/user?id=${controllers.Security.getConnected().id}">Profile</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 							<a href="#" id="chatlink"onclick="$('#chatroomList').slideToggle(200);$('#chatlink').toggleClass('topCornersRounded white')">Chatroom</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-							<a href="#" id="skinlink"onclick="$('#skinList').slideToggle(200);$('#skinlink').toggleClass('topCornersRounded white')">Change Color</a>&nbsp;&nbsp;
 						#{/if}
+							<a href="#" id="skinlink"onclick="$('#skinList').slideToggle(200);$('#skinlink').toggleClass('topCornersRounded white')">Change Color</a>&nbsp;&nbsp;
+						
 						#{ifnot connected}
 							<a href="@{Accounts.register}">|&nbsp;&nbsp;Register</a>
 						#{/ifnot}
+						</div>
 						#{if connected}
-							</div>
+							
 							<div class="right">
 							#{if connected}
-								<a href="/secure/logout" title="Logout from the system">[x] Logout</a>
+								<a href="/secure/logout" title="Logout from the system">Logout</a>
 						#{/if}
 							</div>
 							<br style="clear:both">
