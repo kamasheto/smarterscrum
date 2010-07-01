@@ -211,12 +211,18 @@ $(function()
 
 <!-- hide Col by Hadeer -->
 #{if connected.in(p).can('HideColumn')}
-#{if hidencolumnsOfBoard.isEmpty()}
+#{if columnsOfBoard.isEmpty()}
 #{/if}
 #{else}
 <a href="#" class="b2 tiptitize" title="delete column?" type="button" >Delete Columns!</a><br/>
 <span style="display:none"> </span>
 <select id="hadeer2" onchange="hideCol(hadeer2.value)" style="display:none" class="showcol">
+
+#{if columnsOfBoard.size()==0}
+<option value="">None</option>
+#{/if}
+
+<option value="">delete columns</option>
 #{list items:columnsOfBoard, as:'c'}
 <option value= "${c.id}">${c.name}</option>
 <span style="display:none"></span>
