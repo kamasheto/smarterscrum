@@ -69,3 +69,6 @@ The aim is to categorize these features and group them. We need to simplify the 
   * Remove column from board
   * Take snapshot of board
   * View snapshots of board
+  * Product Backlog
+  * Sprint Backlog
+  * Review Log (That is still under discussion, will it remain there or not?)
