@@ -257,11 +257,20 @@ return Math.floor(diffDate.valueOf()/1000);
 function displayTZCountDown(countdown,tzcd) 
 {
 if (countdown < 0)  {
-	var answer=confirm('Meeting ended now ,the system will now automaticaly update the associated snapshot to the current view of the board!')
+	var answer=confirm('Meeting time has ended now ,Do you want to extend for another hour?')
+		
 		if (answer) {
-		take_componentmeetingsnapshot(${users.meeting.id});
-		replaceContent(current,'This Meeting has ended');
+		extend(${users.meeting.id});
+location.reload();	
 	}
+	else{
+	var answera=confirm('Do you want to update the associated snapshot?')
+		if(answera){
+		take_componentmeetingsnapshot(${users.meeting.id});}
+location.reload();		
+	
+	}
+	
 }
 else {var secs = countdown % 60; 
 if (secs < 10) secs = '0'+secs;
@@ -579,7 +588,7 @@ function swapCol(TheID)
 	
 	}
 	function take_componentmeetingsnapshot(id) {
-		$.post('/snapshots/takecomponentmeetingsnapshot', {sprintID:${s.id},componentID:${comp.id},meetingID:id}, function(){alert('Saved!')});
+		$.post('/snapshots/takecomponentmeetingsnapshot', {sprintID:${s.id},componentID:${comp.id},meetingID:id}, function(){alert('Snapshot Associated!')});
 	}
 	$(function(){
 		$('div.tiptipize').tipTip({delay:0});
