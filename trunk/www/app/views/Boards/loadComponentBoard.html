@@ -1,5 +1,13 @@
 #{extends 'main.html' /}
-#{set title:'Component Task Board' /}
+#{set title:comp.name+' Task Board' /}
+
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${p.id}">${p.name}</a></li>
+<li><a href="/components/${comp.id}">${comp.name}</a></li>
+<li><a href="/boards/loadComponentBoard?sprintID=${s.id}&componentID=${comp.id}">${comp.name}'s Task Board</a></li>
+#{/set}
+
 #{set 'moreStyles'}
 <style type="text/css">
 	.drag{position: relative;}
@@ -133,38 +141,20 @@ eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,lo
  * This function is used to edit column names & tasks in place
  */
 $(function() {
-	
-	
- $('.editDES').editable(
-    	    function(value)
-    	    {
-    	        var taskId 	= parseInt($('#lolid').closest("div").attr("id"));
-    	       
-    	        $.post('@{Tasks.editTaskDesc()}',
-    	            {id:taskId, desc:value});
+	$('.editDES').editable(function(value)
+		{var taskId 	= parseInt($('#lolid').closest("div").attr("id"));  
+    	 $.post('@{Tasks.editTaskDesc2()}',{id:taskId, userId:selectedUser, desc:value});
+		 document.getElementById("desc_"+taskId).innerHTML = value;
+       	 document.getElementById(taskId+"_des").innerHTML = value;
+         document.getElementById(taskId+"_desc").innerHTML = value;
+		 return(value);   
+    	},{indicator : 'Saving...',});
 
-        	    return(value);
-    	        
-    	    },
-    	    {    
-    	        indicator : 'Saving...',
-    	    });
-
-
-$('.editCOL').editable(
-    	    function(value)
-    	    {
-    	        var colId 	= parseInt($('#lolid').closest("div").attr("id"));
-    	       
-    	        $.post('@{Columns.editColumnName}',
-    	            {id:colId, name:value , userId:selectedUser});
-
-        	    return(value);
-    	        
-    	    },
-    	    {    
-    	        indicator : 'Saving...',
-    	    });
+	$('.editCOL').editable(function(value)
+    	   {var colId 	= parseInt($('#lolid').closest("div").attr("id"));   
+    	    $.post('@{Columns.editColumnName}',{id:colId, name:value, userId:selectedUser});
+		    return(value);
+    	   },{indicator : 'Saving...',});
 });
 $(function(){
 		$('div.tiptipize').tipTip({delay:0});
@@ -172,7 +162,7 @@ $(function(){
 
    </script>
 
-<h1>Component Task Board</h1>
+<h1>${comp.name}'s Task Board</h1>
 <ul id="data" id="columnsOfBoard" >
 
 
@@ -369,7 +359,8 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<div class="${task.taskStatus.column.name}" style="max-width:130px"></div>
 		<div style="max-width:130px" id="task-${task.id}_T" class="drag">
 		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor}; max-width:110px" border=0px id="${task.id}_small">
-		<a id="task-${task.id}" style="font-size:x-large;" border=0px class="ctask">-</a>T ${task.id} ${task.description}
+		<a id="task-${task.id}" style="font-size:x-large;cursor: pointer !important"" border=0px class="ctask">-</a>S ${task.taskStory.id} 
+		<div id="desc_${task.id}">${task.description}</div>
 		<a class="SmallSticky tiptitize" title="Edit task info?" style="cursor: pointer !important" id="${task.id}">view/edit info..</a>
 		</div>
 		</div>
@@ -382,7 +373,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<div style="max-width:165px" id="tas-${task.id}_" >
 		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 15px" border=0px id="tas-${task.id}_T">
 		<p>
-		<div  border=0px align="center">T ${task.id}</div>
+		<div  border=0px align="center">S ${task.taskStory.id}</div>
 		
 		<!-- set flag for logged in user (edit description) -->
 		#{if connected.in(p).can('changeTaskDescreption')} 
@@ -390,8 +381,13 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		#{/if}
 		#{if flag2 || controllers.Security.getConnected().equals(task.assignee)} <!-- if has permission (desc) or assignee -->
 		<div style="width:3cm" id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id} tiptitize" title="Edit description?">${task.description}</div>	
-		<div style="display:none" class="noedit noedit_${task.assignee.id}"id="${task.id}_des" border=0px >${task.description}</div>	
+		<div style="display:none" class="noedit noedit_${task.assignee.id}"id="${task.id}_desc" border=0px >${task.description}</div>	
 		#{/if}
+		#{else} <!-- if doesn't have have permission (desc) nor assignee -->
+		<div class="noedit noedit_${task.assignee.id}"id="${task.id}_des" border=0px >${task.description}</div>
+		<div style="display:none;width:3cm" id="${task.id}_desc" border=0px class="editDES editdesc_${task.assignee.id}" title="Edit description?">${task.description}</div>		
+		#{/else}
+		
 		<!-- set flag for logged in user (edit reviewer) -->												
 		#{if connected.in(p).can('changeReviewer')}
 		<span style="display:none"> ${flag4=true}</span>
@@ -422,7 +418,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<div id="types_${task.id}" class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${task.taskType.name}</div>
 		#{/else}
 		</p>
-		<a href="#" id="${task.id}_HiddenSticky">
+		<a href="javascript:;" id="${task.id}_HiddenSticky">
 		<span style="text-align:right; display:inline-block; width:3cm " title="Done Editing?" >Done</span></a>
 		</div>
 		</div>

@@ -1,5 +1,11 @@
 #{extends 'main.html' /}
-#{set title:'Task Board' /}
+#{set title:p.name+' Task Board' /}
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${p.id}">${p.name}</a></li>
+<li><a href="/boards/loadboard?sprintID=${s.id}">${p.name}'s Task Board</a></li>
+#{/set}
+
 #{set 'moreStyles'}
 
 <style type="text/css">
@@ -187,7 +193,7 @@ $(function()
    
 <ul id="data" id="columnsOfBoard" >
 
-<h1>Task Board</h1>
+<h1>${p.name}'s Task Board</h1>
 
 <!--Tools-->
 #{set 'moreLinks'}
@@ -395,7 +401,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<div class="${task.taskStatus.column.name}" style="max-width:130px"></div>
 		<div style="max-width:130px" id="task-${task.id}_T" class="drag">
 		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor}; max-width:110px" border=0px id="${task.id}_small">
-		<a id="task-${task.id}" style="font-size:x-large;cursor: pointer !important"" border=0px class="ctask">-</a>T ${task.id} 
+		<a id="task-${task.id}" style="font-size:x-large;cursor: pointer !important"" border=0px class="ctask">-</a>S ${task.taskStory.id} 
 		<div id="desc_${task.id}">${task.description}</div>
 		<a class="SmallSticky tiptitize" title="Edit task info?" style="cursor: pointer !important" id="${task.id}">view/edit info..</a>
 		</div>
@@ -409,7 +415,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<div style="max-width:165px" id="tas-${task.id}_" >
 		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 15px" border=0px id="tas-${task.id}_T">
 		<p>
-		<div  border=0px align="center">T ${task.id}</div>
+		<div  border=0px align="center">S ${task.taskStory.id}</div>
 		
 		<!-- set flag for logged in user (edit description) -->
 		#{if connected.in(p).can('changeTaskDescreption')} 
