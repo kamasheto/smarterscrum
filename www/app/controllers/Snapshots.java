@@ -271,7 +271,8 @@ public class Snapshots extends SmartController {
 		Snapshot snap = Snapshot.findById(id);
 		ArrayList<String> Columnsofsnapshot = snap.Columnsofsnapshot;
 		ArrayList<ComponentRowh> data = snap.data;
-		render(Columnsofsnapshot, data,snap);
+		Project p= snap.board.project;
+		render(Columnsofsnapshot, data,snap,p);
 
 	}
 
@@ -288,7 +289,9 @@ public class Snapshots extends SmartController {
 	public static void index(long id, String type) {
 
 		List<Snapshot> snapshots = Snapshot.find("sprint.id = ? and type = ? ", id, type).fetch();
-		render(snapshots);
+		Project p=snapshots.get(0).board.project;
+		Sprint s=snapshots.get(0).sprint;
+		render(snapshots,p,s);
 
 	}
 
