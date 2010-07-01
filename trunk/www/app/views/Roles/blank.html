@@ -1,16 +1,4 @@
-#{if project}
-	#{extends 'main.html' /}
-#{/if}
-#{else}
-	#{extends 'Application/adminIndex.html' /}
-#{/else}
-#{set title: 'Create new role' /}
-#{set 'crumbs'}
-#{if project}
-	<li><a href="/show/projects">Projects</a></li>
-	<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
-#{/if}
-#{/set}
+#{extends 'overlay.html' /}
 <div id="crudBlank" class="${type.name}">
 	
 	<h2 id="crudBlankTitle">&{'crud.blank.title', type.modelName}</h2>
