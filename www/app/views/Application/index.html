@@ -21,11 +21,11 @@
 </style>
 #{/set}
 #{set 'moreLinks'}
-Create Project
+<p><a href="/admin/projects/new">Create new project</a></p>
 #{/set}
 <div  style="float:left;width:46%;overflow:hidden;margin:0 1%;">
 <div class="topCornersRounded" style="background-color:#666666;padding:10px 0px;width:100%; text-decoration:none;color:white;text-align:center;">
-Your Project Updates
+Your Project(s) Updates
 </div>
 <div id="notiHolder" style="padding:1%; background:#eee;height:340px;" class="bottomCornersRounded">
 <div style="overflow:auto">
@@ -76,7 +76,8 @@ ${notif.body}.
 <br style="clear:both"/>
 #{/list}
 <br/><br/><br/>
-<a href="@{Application.notificationsHistory()}"> See more </a>
+#{if noti.size() == 30}
+<a href="@{Application.notificationsHistory()}"> See more </a>#{/if}
 #{/else}
 </div>
 </div>
