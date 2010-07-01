@@ -16,6 +16,18 @@ import play.mvc.With;
  */
 @With (Secure.class)
 public class Roles extends SmartCRUD {
+	
+	public static void setBaseRole(long id) {
+		Role role = Role.findById(id);
+		Security.check(role.project, "manageRoles");
+		List<Role> roles = role.project == null ? 
+								Role.find("select r from Role r where r.project = null").<Role> fetch() : 
+								Role.find("byProject", role.project).<Role> fetch();
+		for (Role r : roles) {
+			r.baseRole = r == role;
+			r.save();
+		}
+	}
 	/**
 	 * Action to view and manage default roles (those assigned to all projects
 	 * by default)
@@ -158,7 +170,7 @@ public class Roles extends SmartCRUD {
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
 		Security.check(((Role) object).project, "deleteRole");
-		if (((Role) object).name.equalsIgnoreCase("project admin")) {
+		if (((Role) object).baseRole) {
 			flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
 			redirect("/show/roles?id=" + ((Role) object).project.id);
 		} else {

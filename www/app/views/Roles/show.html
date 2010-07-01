@@ -21,7 +21,7 @@
 		</p>
 	#{/form}
 	</div>
-	#{ifnot x.name.equalsIgnoreCase("project admin")}
+	#{ifnot x.baseRole}
 	#{form @delete(object.id)}
 		<p class="crudDelete">
 			<input type="submit" value="&{'crud.delete', type.modelName}" onclick="return confirm('Are you sure you want to delete this role');" />

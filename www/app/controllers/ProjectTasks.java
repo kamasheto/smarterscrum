@@ -28,8 +28,13 @@ public class ProjectTasks extends SmartController {
 		notFoundIfNull(role);
 		if (user.in(role.project).can("manageRequests")) {
 			user.roles.add(role);
-			if (!user.projects.contains(role.project))
+			if (!user.projects.contains(role.project)) {
 				user.projects.add(role.project);
+				Role baseRole = Role.find("byProjectAndBaseRole", role.project, true).first();
+				if (baseRole != role) {
+					user.roles.add(baseRole);
+				}	
+			}
 			user.save();
 			flash.success("Successfully added role: " + role.name);
 		} else {

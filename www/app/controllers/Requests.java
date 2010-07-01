@@ -63,6 +63,10 @@ public class Requests extends SmartCRUD {
 		x.user.roles.add(x.role);
 		if (!(y.users.contains(x.user))) {
 			x.user.projects.add(y);
+			Role baseRole = Role.find("byProjectAndBaseRole", y, true).first();
+			if (baseRole != x.role) {
+				x.user.roles.add(baseRole);
+			}
 			new UserNotificationProfile(x.user, y).save();
 		}
 		x.user.save();
