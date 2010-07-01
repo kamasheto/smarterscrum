@@ -7,7 +7,7 @@
 #{set 'moreLinks'}
 #{if user != me && connected.canInvite()}
 <p>
-	<a href="#" onclick="$('#roles').toggle()">Invite user to a project</a>
+	<a href="#" onclick="$('#roles').toggle()"><img src="@{'/public/images/famfam/add.png'}"/> Invite user to a project</a>
 	<div id="roles" style="display:none;" class="">
 		<input type="text" id="project_search" onkeyup="search_projects();" style="width:200px;opacity:0.5;" value="Start typing project name..." onfocus="if($(this).val()==$(this)[0].defaultValue) {$(this).css({opacity:1}); $(this).val('');}" onblur="if($(this).val()==''){$(this).val($(this)[0].defaultValue); $(this).css('opacity', 0.5);}" /> <img id="loading" style="display:none;" src="@{'/public/images/ajax-loader.gif'}" />
 		<div id="search_results" class="roles" style="display:none;"></div>
@@ -16,22 +16,22 @@
 #{/if}	
 		#{if connected.isAdmin}
 		<p>
-			<a href="/admin/users/${user.id}">Edit profile</a>
+			<a href="/admin/users/${user.id}"><img src="@{'/public/images/famfam/pencil.png'}"/> Edit profile</a>
 			</p>			
 		#{/if}
 		#{if user==me & !(connected.isAdmin)}
 			<p>
-				<a href="/accounts/profile?id=${user.id}">Edit profile</a>
+				<a href="/accounts/profile?id=${user.id}"><img src="@{'/public/images/famfam/pencil.png'}"/> Edit profile</a>
 			</p>#{/if}
 			#{if user == me}
 			<p>
-				<a href="/requestDeletion">Request Deletion From System</a>
+				<a href="/requestDeletion"><img src="@{'/public/images/famfam/delete.png'}"/> Request Deletion From System</a>
 			</p>
 		#{/if}
 		
 		#{if connected.isAdmin & user != me }
 <p>
-			<a href="@{Users.del(user.id)}" onclick="return confirm('Are you absolutely really sure?');">Delete this user</a>
+			<a href="@{Users.del(user.id)}" onclick="return confirm('Are you sure you want to delete ${user.name} completely from the system?');"><img src="@{'/public/images/famfam/delete.png'}"/> Delete this user</a>
 </p>
 		#{/if}
 #{/set}
