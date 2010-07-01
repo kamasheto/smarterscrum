@@ -34,6 +34,7 @@ public class TaskStatus extends SmartModel {
 		// Project p = this.project;
 		// Board b = p.board;
 		column = new Column(name, project.board).save();
+		this.save();
 		// col.board = project.board;
 		// column = new Column().save();
 		// System.out.println("Assigning board now: " + project.board);
