@@ -1,9 +1,4 @@
-#{extends 'CRUD/layout.html' /}
-#{set 'crumbs'}
-<li><a href="/show/projects"> Projects </a></li>
-<li><a href="/show/project?id=${project.id}"> ${project.name} </a></li>
-<li><a href="/projects/${project.id}/productroles"> Product Roles </a></li>
-#{/set}
+#{extends 'overlay.html' /}
 
 <div id="crudBlank" class="${type.name}">
 	
@@ -31,9 +26,9 @@
 		#{/crud.form}
 
 		<p class="crudButtons">
-			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
-			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
-			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" />
+			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" onclick="overlayClose()" />
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" onclick="overlayClose()" />
+			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" onclick="overlayClose()" />
 		</p>
 	#{/form}
 	<p style="color:red" size=""> <small>* Required Fields.</small></p>
