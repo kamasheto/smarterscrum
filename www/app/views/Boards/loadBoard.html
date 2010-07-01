@@ -205,7 +205,7 @@ $(function()
 #{/if}
 
 <a class="titptitize" title="create meeting?" href="/admin/projects/${p.id}/meetings/new?object.infrontBoard=true">Create Meeting<a/><br/>	
-<a class="titptitize" title="view board snapshots?" href="@{Snapshots.index(s.id,'board')}" >View snapshots</a><br/>
+<a class="titptitize" title="view board snapshots?" href="@{Snapshots.index(s.id,p.name)}" >View snapshots</a><br/>
 <a class="titptitize" title="take board snapshot?" href="javascript:take_snapshot();">Take Snapshot</a><br/><br/>
 <!-- asmaak89 Part-->
 <div id="current">
@@ -222,7 +222,7 @@ $(function()
 <div class="formatTime">${users.meeting.startTime}</div>
 <br />
 <u>End date</u>
-<div class="formatTime">${users.meeting.endTime}</div>
+<div id="amr" class="formatTime">${users.meeting.endTime}</div>
 <br/>
 <u>Attendees</u>
 #{list items:users , as:'user'}
@@ -234,7 +234,7 @@ $(function()
 <!--Amr Abdelwahab-->
 <a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u><a/><br/><br />
 <span id="tzcd"></span>
-<a  href="javascript: extend(${users.meeting.id});"><b>extend another hour</b></a>
+<a  href="javascript: extend(${users.meeting.id},${users.meeting.endTime});"><b>extend another hour</b></a>
 <a  href="javascript: end(${users.meeting.id});"><b>end meeting</b></a>
 
 <script type="text/javascript" charset="utf-8"> 
@@ -675,9 +675,11 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		$.post('/snapshots/takesnapshot', {sprintID:${s.id}}, function(){alert('Saved!')});
 	}
 	
-		function extend(id) {
+		function extend(id,date) {
 		$.post('/Meetings/extend', {meetingid:id}, function(){alert('extended')});
-			
+
+var newDate=new Date(date+1000*60*60);
+			document.getElementById("amr").innerHTML =newDate ;
 	}
 
 
