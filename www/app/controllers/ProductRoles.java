@@ -66,7 +66,7 @@ public class ProductRoles extends SmartCRUD {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Project project = Project.findById(id);
-		User user = User.find("byEmail", Security.connected()).first();
+		User user = Security.getConnected();
 		Security.check(user.in(project).can("addProductRole"));
 		try {
 			render(type, project);
@@ -96,7 +96,7 @@ public class ProductRoles extends SmartCRUD {
 		ProductRole productRoleObject = (ProductRole) object;
 		Project project = productRoleObject.project;
 		String message = "";
-		User user = User.find("byEmail", Security.connected()).first();
+		User user = Security.getConnected();
 		Security.check(user.in(project).can("addProductRole"));
 		if (validation.hasErrors()) {
 			message = "Please Fill in All The Required Fields.";
@@ -162,7 +162,7 @@ public class ProductRoles extends SmartCRUD {
 		Project project = productRoleObject.project;
 		boolean editable = !(productRoleObject.inSprint());
 		boolean deletable = (productRoleObject.stories.isEmpty());
-		User user = User.find("byEmail", Security.connected()).first();
+		User user = Security.getConnected();
 		Security.check(user.in(project).can("editProductRole"));
 		try {
 			render(type, object, project, editable, deletable);
@@ -194,7 +194,7 @@ public class ProductRoles extends SmartCRUD {
 		String message = "";
 		boolean editable = !(productRoleObject.inSprint());
 		boolean deletable = (productRoleObject.stories.isEmpty());
-		User user = User.find("byEmail", Security.connected()).first();
+		User user = Security.getConnected();
 		Security.check(user.in(project).can("editProductRole"));
 		if (validation.hasErrors()) {
 			message = "Please Fill in All The Required Fields.";
@@ -247,7 +247,7 @@ public class ProductRoles extends SmartCRUD {
 		productRoleObject.deleted = true;
 		boolean editable = !(productRoleObject.inSprint());
 		boolean deletable = (productRoleObject.stories.isEmpty());
-		User user = User.find("byEmail", Security.connected()).first();
+		User user = Security.getConnected();
 		Security.check(user.in(project).can("deleteProductRole"));
 		if (validation.hasErrors()) {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
@@ -290,7 +290,7 @@ public class ProductRoles extends SmartCRUD {
 	public static void deleteProductRole(long id) {
 		ProductRole productRoleObject = ProductRole.findById(id);
 		Project project = productRoleObject.project;
-		User user = User.find("byEmail", Security.connected()).first();
+		User user = Security.getConnected();
 		Security.check(user.in(project).can("deleteProductRole"));
 		productRoleObject.deleted = true;
 		productRoleObject.save();
