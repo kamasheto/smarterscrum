@@ -35,7 +35,8 @@ public class Column extends SmartModel {
 		this.name = name;
 		this.board = board;
 		this.sequence = board.columns.size();
-		if(this.name.equalsIgnoreCase( "new" )||this.name.equalsIgnoreCase( "verified" )||this.name.equalsIgnoreCase( "closed" ))
+		this.onBoard=true;
+		/*if(this.name.equalsIgnoreCase( "new" )||this.name.equalsIgnoreCase( "verified" )||this.name.equalsIgnoreCase( "closed" ))
 		{
 			
 			this.onBoard=true;
@@ -51,7 +52,7 @@ public class Column extends SmartModel {
 		{
 			this.onBoard=false;
 			this.sequence=-1;
-		}	
+		}	*/
 		board.columns.add(this);
 		
 	}
