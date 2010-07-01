@@ -20,6 +20,13 @@
 
 <p class="crudDelete">
 <h2> ${projectName}'s Product Roles </h2>
+
+#{if connected.in(project).can('addProductRole')}
+<p>
+<a onclick="overlayOpen('/admin/projects/${id}/productroles/new')"href="#"><img src="@{'/public/images/famfam/add.png'}" title="Add a Product Role"></a>
+</p>
+#{/if}
+
 <ul id="productRoles" >
 #{if !(noProductRoles)}
 #{list items:productRoles, as:'productRole'}
@@ -39,12 +46,5 @@
 #{/if}
 </ul>
 </p>
-
-
-#{if connected.in(project).can('addProductRole')}
-<p>
-<a onclick="overlayOpen('/admin/projects/${id}/productroles/new')"href="#"> Add a new Product Role. </a>
-</p>
-#{/if}
 
 <a href="/show/project?id=${id}">Back to ${projectName}</a>
