@@ -63,3 +63,12 @@ this.tmpl = function tmpl(str, data){
  return data ? fn( data ) : fn;
 };
 })();
+function overlayOpen(href)
+{
+	$('#getOverlay').load(href).show();
+}
+
+function overlayClose()
+{
+	$('#getOverlay').hide();
+}
