@@ -127,14 +127,15 @@ function showCol(c)
 function showHiddenCol(colid)
 {
 	$.post('@{showHiddenColumn()}' ,			
-			{cid:colid,uid:${connected.id}}, function(){
+			{cid:colid,uid:${connected.id}},function(){alert('ARE U SURE U WANT TO ADD THIS COLUMN??')}, function(){
 		window.location.reload();
 		});
 }
 function hideCol(colid)
 {
 	$.post('@{hideColumn()}' ,			
-			{cid:colid,uid:${connected.id}}, function(){
+			{cid:colid,uid:${connected.id}},function(){alert('ARE U SURE U WANT TO DELETE THIS COLUMN??')}
+			, function(){
 			window.location.reload();
 		});
 }
