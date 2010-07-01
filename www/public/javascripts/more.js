@@ -65,7 +65,33 @@ this.tmpl = function tmpl(str, data){
 })();
 function overlayOpen(href)
 {
-	$('#getOverlay').load(href).show();
+	$('#getOverlay').load(href, function(){
+		$("#breadCrumb").jBreadCrumb();
+		$('.formatDate').each(function(){
+			$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );
+		});
+		$('.formatTime').each(function(){
+			$(this).html( formatDate( new Date(Number($(this).html())), 'd MMM, yyyy hh:mma') );
+		});
+
+	    $("a").tipTip({delay:0});
+	    $("td").tipTip({delay:0});
+	    $("span").tipTip({delay:0});
+    
+	    $("button").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
+	    $("a button").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
+	    $("input[type='submit']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
+	    $("input[type='button']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
+	    $("input[type='ok']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
+	    $("input[type='add']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
+	    $("input[type='send']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
+	    $('div.crudField').each(function(){
+				if ($(this).html().trim() == '') {
+					$(this).remove();
+				}
+		    });
+	}).show();
+	
 }
 
 function overlayClose()
