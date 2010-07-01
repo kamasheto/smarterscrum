@@ -119,13 +119,24 @@ function showHiddenCol(colid)
 			{cid:colid,uid:${connected.id}}, function(){
 		window.location.reload();
 		});
+		
 }
 function hideCol(colid)
 {
+	var answer=confirm('Are you sure u want to delete this coulmn?')
+		
+		if (answer) 	
+	      {
 	$.post('@{hideColumn()}' ,			
 			{cid:colid,uid:${connected.id}}, function(){
 			window.location.reload();
 		});
+		
+	      }
+		  else{
+		  	var seloption = document.getElementById('hadeer2');
+	seloption.selectedIndex='x';
+		  }
 }
 
 function popUp(URL) 
@@ -170,24 +181,35 @@ $(function(){
 #{set 'moreLinks'}
 <!-- view hidden Col by Hadeer -->
 #{if connected.in(p).can('ShowColumn')}
-<a href="#" class="b1 tiptitize" title="add hidden column?" type="button">Add Hidden Columns!</a><br/>	
+#{if hidencolumnsOfBoard.isEmpty()}
+#{/if}
+#{else}
+<a href="#" class="b1 tiptitize" title="add hidden column?" type="button">Add Columns!</a><br/>	
 <select id="hadeer" onchange="showHiddenCol(hadeer.value)" style="display:none" class="hidecol">
-<option value="">view hidden columns</option>
+<option value="">add columns</option>
 #{list items:hidencolumnsOfBoard, as:'c'}
 <option value= "${c.id}">${c.name}</option>
 #{/list}
+#{/else}
+
 </select>
 #{/if}
 
 <!-- hide Col by Hadeer -->
 #{if connected.in(p).can('HideColumn')}
+#{if columnsOfBoard.isEmpty()}
+#{/if}
+#{else}
 <a href="#" class="b2 tiptitize" title="delete column?" type="button" >Delete Columns!</a><br/>
-
+<span style="display:none"> </span>
 <select id="hadeer2" onchange="hideCol(hadeer2.value)" style="display:none" class="showcol">
-<option value="">delete columns</option>
+
+<option id="x" value="">delete columns</option>
 #{list items:columnsOfBoard, as:'c'}
 <option value= "${c.id}">${c.name}</option>
+<span style="display:none"></span>
 #{/list}
+#{/else}
 </select>
 #{/if}
 
