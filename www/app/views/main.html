@@ -29,6 +29,15 @@
               <script src="@{'/public/javascripts/skinSwitcher.js'}" type="text/javascript" charset="utf-8"></script>
 		
         <script type="text/javascript">
+    	function overlayOpen(href)
+		{
+			$('#getOverlay').load(href).show();
+		}
+
+		function overlayClose()
+		{
+			$('#getOverlay').hide();
+		}
        		$(function(){
 
 				/**script to move the login panel to the sidebar**/
@@ -47,15 +56,6 @@
 					$('#theContent').css('padding','20px');
 				}
 				*/
-				function overlayOpen(href)
-				{
-					$('#getOverlay').load(href).show();
-				}
-
-				function overlayClose()
-				{
-					$('#getOverlay').hide();
-				}
 
        			$("#breadCrumb").jBreadCrumb();
        			$('.formatDate').each(function(){
