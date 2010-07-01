@@ -22,6 +22,7 @@ Please enter below the description of the impediment task.
 	@param id 
 			this is the id of the story he chose to report
 -->
+#{set 'moreScripts'}
 <script type="text/javascript">
 function report_impediment(id)
 {
@@ -32,9 +33,7 @@ function report_impediment(id)
 		   function(data)
 		   {var n =1;
 			//   window.location="/impedimenttasks/selectdependenttasks?itaskId="+data+"&projectId="+id;
-			
-			$('#getOverlay').load('/impedimenttasks/selectdependenttasks?itaskId='+data+'&projectId='+id);
-			$('#getOverlay').css('display','block');
+			overlayOpen('/impedimenttasks/selectdependenttasks?itaskId='+data+'&projectId='+id);
 		   }
 	);// end of .post	   
 	return false;
@@ -42,4 +41,4 @@ function report_impediment(id)
 
 
 
-</script>
+</script>#{/set}
