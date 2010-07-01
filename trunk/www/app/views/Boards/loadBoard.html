@@ -195,10 +195,17 @@ $(function()
 #{if connected.in(p).can('ShowColumn')}
 <a href="#" class="b1 tiptitize" title="add hidden column?" type="button">Add Hidden Columns!</a><br/>	
 <select id="hadeer" onchange="showHiddenCol(hadeer.value)" style="display:none" class="hidecol">
-<option value="">view hidden columns</option>
+
+#{if hidencolumnsOfBoard.size()==0}
+<option value="">None</option>
+#{/if}
+#{else}
+<option value="">view columns</option>
 #{list items:hidencolumnsOfBoard, as:'c'}
 <option value= "${c.id}">${c.name}</option>
 #{/list}
+#{/else}
+
 </select>
 #{/if}
 
@@ -207,10 +214,16 @@ $(function()
 <a href="#" class="b2 tiptitize" title="delete column?" type="button" >Delete Columns!</a><br/>
 
 <select id="hadeer2" onchange="hideCol(hadeer2.value)" style="display:none" class="showcol">
+
+#{if columnsOfBoard.size()==0}
+<option value="">None</option>
+#{/if}
+#{else}
 <option value="">delete columns</option>
 #{list items:columnsOfBoard, as:'c'}
 <option value= "${c.id}">${c.name}</option>
 #{/list}
+#{/else}
 </select>
 #{/if}
 
