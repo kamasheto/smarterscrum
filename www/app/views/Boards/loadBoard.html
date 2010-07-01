@@ -234,7 +234,7 @@ $(function()
 <!--Amr Abdelwahab-->
 <a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u><a/><br/><br />
 <span id="tzcd"></span>
-<a  href="javascript: extend(${users.meeting.id},${users.meeting.endTime});"><b>extend another hour</b></a>
+
 <a  href="javascript: end(${users.meeting.id});"><b>end meeting</b></a>
 
 <script type="text/javascript" charset="utf-8"> 
@@ -268,8 +268,11 @@ location.reload();
 	else{
 	var answera=confirm('Do you want to update the associated snapshot?')
 		if(answera){
-		take_meetingsnapshot(${users.meeting.id});}
-location.reload();		
+		take_meetingsnapshot(${users.meeting.id});
+		location.reload();
+		}
+		else{location.reload();}
+		
 	
 	}
 	
