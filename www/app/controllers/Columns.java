@@ -30,7 +30,6 @@ public class Columns extends SmartCRUD{
 	 */
 
 	public static void changeColumnPosition(long id, int pos1, int pos2, long userId) {
-		System.out.println(id + " " + pos1 + " " + pos2);
 		Sprint s = Sprint.findById(id);
 		Project p = s.project;
 		Security.check(p, "canEditColumnsPositions");
@@ -85,12 +84,14 @@ public class Columns extends SmartCRUD{
 			user_id = Security.getConnected().id;
 		}
 
+		
+		
 		Sprint s = Sprint.findById(id);
 		Project p = s.project;
 		Security.check(p, "editColumnsPositions");
 		Board b = p.board;
-		Column c1 = Column.find("bySequence", pos1).first();
-		Column c2 = Column.find("bySequence", pos2).first();
+		Column c1 = Column.find("bySequenceAndBoard", pos1,b).first();
+		Column c2 = Column.find("bySequenceAndBoard", pos2,b).first();
 		c1.sequence = pos2;
 		c2.sequence = pos1;
 		c1.save();
