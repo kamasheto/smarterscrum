@@ -39,7 +39,7 @@ public class Storys extends SmartCRUD {
 		boolean ok = true;
 		// We will add the story to a project .. We need to get that project
 		Project project = Project.findById(id);
-		User user = User.find("byEmail", Security.connected()).first();
+		User user = Security.getConnected();
 		Security.check(user.in(project).can("addStory"));
 		if (project == null)
 			ok = false;
@@ -98,7 +98,7 @@ public class Storys extends SmartCRUD {
 		// Whether everything is ok to edit the story
 		boolean ok = true;
 		Project project = temp.componentID.project;
-		User user = User.find("byEmail", Security.connected()).first();
+		User user = Security.getConnected();
 		Security.check(user.in(project).can("editStory"));
 		if (project == null)
 			ok = false;
@@ -177,7 +177,7 @@ public class Storys extends SmartCRUD {
 			 */
 			ArrayList<Story> projectStories = new ArrayList<Story>();
 			Project project = story.componentID.project;
-			User user = User.find("byEmail", Security.connected()).first();
+			User user = Security.getConnected();
 			Security.check(user.in(project).can("deleteStory"));
 			for (Component component : project.components) {
 				projectStories.addAll(component.componentStories);
@@ -231,7 +231,7 @@ public class Storys extends SmartCRUD {
 		// We will add the story to a project .. We need to get that project
 		Story storyObj = (Story) object;
 		Project project = storyObj.componentID.project;
-		User user = User.find("byEmail", Security.connected()).first();
+		User user = Security.getConnected();
 		Security.check(user.in(project).can("addStory"));
 		validation.valid(object.edit("object", params));
 		
@@ -258,7 +258,7 @@ public class Storys extends SmartCRUD {
 		}
 		Story toBeSaved = (Story) object;		
 		storyObj.description= "As a "+storyObj.productRole.name+", I can "+ storyObj.description;
-		toBeSaved.addedBy = User.find("byEmail", Security.connected()).first();
+		toBeSaved.addedBy = Security.getConnected();
 		object.save();
 		Logs.addLog(toBeSaved.addedBy, "Create", "Story", storyObj.id, project, new Date(System.currentTimeMillis()));
 		String header = "New Story has been added to Component: " + "\'" + storyObj.componentID.name + "\'" + " in Project: " + "\'" + project.name + "\'" + ".";
@@ -306,7 +306,7 @@ public class Storys extends SmartCRUD {
 		// We will add the story to a project .. We need to get that project
       
 		Project project = storyObj.componentID.project;
-		User user = User.find("byEmail", Security.connected()).first();
+		User user = Security.getConnected();
 		Security.check(user.in(project).can("editStory"));
 		validation.valid(object.edit("object", params));
 		// We can set the dependent stories .. We need to get a list of stories
@@ -561,7 +561,7 @@ public class Storys extends SmartCRUD {
 	public static void listStoriesandSprints(long PID) {
 		Date todayDate = new GregorianCalendar().getTime();
 		Project project = Project.findById(PID);
-		User user = User.find("byEmail", Security.connected()).first();
+		User user = Security.getConnected();
 		Security.check(user.in(project).can("assignStoryToSprint"));
 		ArrayList<Story> stories = new ArrayList<Story>();
 		List<Component> components = project.components;
@@ -676,7 +676,7 @@ public class Storys extends SmartCRUD {
 		ArrayList<String> succsses = new ArrayList();
 		ArrayList<String> failure = new ArrayList();
 		Project project = story1.componentID.project;
-		User user = User.find("byEmail", Security.connected()).first();
+		User user = Security.getConnected();
 		Security.check(user.in(project).can("editStory"));
 		if (story1.succussSenario != null) {
 			String[] s = story1.succussSenario.split("\n");
