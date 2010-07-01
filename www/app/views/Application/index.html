@@ -1,5 +1,34 @@
 #{extends 'main.html' /} #{set title:'Home' /}
+#{set 'moreStyles'}
+<style type="text/css">
+.twtr-doc, .twtr-widget .twtr-widget-profile {
+	font: inherit !important;
+	font-family:verdana !important;
+}
+.twtr-ft,.twtr-hd{
+	display: none;
+}
 
+.twtr-widget {
+	font: inherit !important;
+}
+
+.twtr-timeline,.twtr-widget .twtr-tweet {
+	border-radius: 0px !important;
+	-moz-border-radius: 0px !important;
+	-webkit-border-radius: 0px !important;
+}
+</style>
+#{/set}
+#{set 'moreLinks'}
+Create Project
+#{/set}
+<div  style="float:left;width:46%;overflow:hidden;margin:0 1%;">
+<div class="topCornersRounded" style="background-color:#666666;padding:10px 0px;width:100%; text-decoration:none;color:white;text-align:center;">
+Your Project Updates
+</div>
+<div id="notiHolder" style="padding:1%; background:#eee;height:340px;" class="bottomCornersRounded">
+<div style="overflow:auto">
 #{if noti.isEmpty()}
 <h1>Smarter Scrum News Feed</h1>
 <p>Now you can search for a project & request to join. <a href="/show/projects"> Click here</a></p>
@@ -47,6 +76,51 @@ ${notif.body}.
 <br style="clear:both"/>
 #{/list}
 <br/><br/><br/>
-<div id="moreNot" style="display:none"></div>
 <a href="@{Application.notificationsHistory()}"> See more </a>
 #{/else}
+</div>
+</div>
+</div>
+<div style="float:left;width:46%;overflow:hidden;margin:0 1%;">
+<div class="topCornersRounded" style="background-color:#666666;padding:10px 0px;width:100%; text-decoration:none;color:white;text-align:center;">
+<a style="text-decoration:none;color:white;text-align:center;" href="http://twitter.com/smarterscrum" title="follow us on twitter?">
+Smarter Scrum Updates
+</a>
+</div>
+<div style="padding:1%; background:#eee;height:340px;" class="bottomCornersRounded">
+
+<script src="http://widgets.twimg.com/j/2/widget.js"></script>
+<script type="text/javascript">
+var color = $('.ss').css('color');
+var w = $('#notiHolder').width();
+new TWTR.Widget({
+  version: 2,
+  type: 'profile',
+  rpp: 10,
+  interval: 6000,
+  width: w,
+  height: 320,
+  theme: {
+    shell: {
+      background: 'transparent',
+      color: '#ffffff'
+    },
+    tweets: {
+      background: 'transparent',
+      color: '#000000',
+      links: color
+    }
+  },
+  features: {
+    scrollbar: true,
+    loop: false,
+    live: true,
+    hashtags: true,
+    timestamp: true,
+    avatars: false,
+    behavior: 'all'
+  }
+}).render().setUser('smarterscrum').start();
+</script>
+</div>
+</div>
