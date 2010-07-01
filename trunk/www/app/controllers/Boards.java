@@ -180,6 +180,11 @@ public class Boards extends SmartCRUD {
 			}
 		}
 		}*/
+		for(int i=0;i<b.columns.size();i++)
+		{
+			System.out.println(b.columns.get(i).name+" "+b.columns.get(i).sequence);
+		}
+		
   ArrayList<ArrayList<User>> u=Meetingloadboard( p);
 		ArrayList ud = getDescPerm(p);
 		ArrayList ua = getAssiPerm(p);
@@ -447,7 +452,6 @@ public class Boards extends SmartCRUD {
 		{
 			if(c.board.columns.get(i).onBoard==true)
 				count++;
-			
 		}
 		c.sequence=count;
 		c.onBoard=true;
@@ -477,6 +481,16 @@ public class Boards extends SmartCRUD {
 		c.onBoard=false;
 		c.sequence=-1;
 		c.save();
+		int count=0;
+		for(int i=0;i<c.board.columns.size();i++)
+		{
+			if(c.board.columns.get(i).onBoard==true)
+			{
+				c.board.columns.get(i).sequence=count;
+				c.board.columns.get(i).save();
+				count++;
+			}
+		}
 		Calendar cal = new GregorianCalendar();
 		User u = User.findById(uid);
 		Logs.addLog(u, "hided", "Column", c.id, c.board.project, cal.getTime());
