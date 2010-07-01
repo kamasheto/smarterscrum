@@ -73,7 +73,7 @@ public class Application extends SmartController
 		if(notis.size()<30)
 			noti = notis;
 			else
-				noti = notis.subList(0, 30);		
+				noti = notis.subList(0, 29);		
 		//Notification nn = new Notification(Security.getConnected(), "Smarter Scrum","Smarter Scrum v.01 the very first product made by SmartSoft has been released!!!", (byte) 1);
 		//Notification n = new Notification(Security.getConnected(), "Hadeer Younis (Design)","Plum v.03 is up and running!! Note that it's still in beta phase, So please report any bugs straight away!!", (byte) 1);
 		//noti.add(n);noti.add(nn);
