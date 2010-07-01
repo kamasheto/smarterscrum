@@ -85,7 +85,7 @@ public class Snapshots extends SmartController {
 				}
 			}
 		}	
-		String type = "board";
+		String type = p.name;
 		Snapshot snap = new Snapshot();
 		snap.user = user;
 		snap.type = type;
@@ -157,7 +157,7 @@ public class Snapshots extends SmartController {
 				data.get(i).get(CS.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
 				}
 			}
-		}		String type = "sprint";
+		}		String type = "sprint "+s.id;
 		Snapshot snap = new Snapshot();
 		snap.user = user;
 		snap.type = type;
@@ -248,7 +248,7 @@ public class Snapshots extends SmartController {
 		}
 		Snapshot snap = new Snapshot();
 		snap.user = user;
-		snap.type = "Meeting";
+		snap.type =M.name+ "Meeting";
 		snap.board = b;
 		snap.sprint = s;
 		snap.data = data;
@@ -268,10 +268,10 @@ public class Snapshots extends SmartController {
 	 */
 
 	public static void LoadSnapShot(long id) {
-		Snapshot s = Snapshot.findById(id);
-		ArrayList<String> Columnsofsnapshot = s.Columnsofsnapshot;
-		ArrayList<ComponentRowh> data = s.data;
-		render(Columnsofsnapshot, data);
+		Snapshot snap = Snapshot.findById(id);
+		ArrayList<String> Columnsofsnapshot = snap.Columnsofsnapshot;
+		ArrayList<ComponentRowh> data = snap.data;
+		render(Columnsofsnapshot, data,snap);
 
 	}
 
@@ -455,7 +455,7 @@ public class Snapshots extends SmartController {
 
 		Snapshot snap = new Snapshot();
 		snap.user = user;
-		snap.type = "meeting";
+		snap.type =M.name+ "meeting";
 		snap.board = b;
 		snap.sprint = s;
 		snap.data = data;
