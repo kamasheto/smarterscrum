@@ -9,7 +9,7 @@
 #{set 'moreLinks'}
 #{if connected.in(project).can('addProductRole')}
 <p>
-<a href="/admin/projects/${id}/productroles/new"> Add a new Product Role. </a>
+<a onclick="overlayOpen('/admin/projects/${id}/productroles/new')"href="#"> Add a new Product Role </a>
 </p>
 #{/if}
 #{/set}
