@@ -72,9 +72,9 @@ public class Roles extends SmartCRUD {
 
 		List<Role> dups;
 		if (role.project == null) {
-			dups = Role.find("select r from Role r where LCASE(r.name) = ?1 and r.project = null", role.name.toLowerCase()).fetch();
+			dups = Role.find("select r from Role r where r.id != ? and LCASE(r.name) = ? and r.project = null", role.id, role.name.toLowerCase()).fetch();
 		} else {
-			dups = Role.find("select r from Role r where LCASE(r.name) = ?1 and r.project = ?2", role.name.toLowerCase(), role.project).fetch();
+			dups = Role.find("select r from Role r where r.id != ? and LCASE(r.name) = ? and r.project = ?", role.id, role.name.toLowerCase(), role.project).fetch();
 		}
 		if (dups.size() > 0) {
 			validation.addError("Name", "That name already exists");

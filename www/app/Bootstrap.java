@@ -60,6 +60,7 @@ public class Bootstrap extends Job
 			new Role("Project Admin").save();
 			new Role("Scrum Master").save();
 			new Role("Developer").save();
+			new Role("Project Member").save();
 
 			Project p1 = new Project( "Smartsoft", "The best company project ever!" ).save();
 			p1.user = users.get( 0 );

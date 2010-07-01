@@ -6,7 +6,7 @@
 	
 	<div class="objectForm">
 	#{form action:@save(object.id), enctype:'multipart/form-data'}
-		#{crud.form fields:['name', 'email', 'pwdHash', 'avatar', 'isAdmin', 'deleted', 'projects', 'isActivated', 'activationHash']}
+		#{crud.form fields:['name', 'email', 'pwdHash', 'avatar', 'isAdmin', 'deleted', 'isActivated', 'activationHash']}
 			#{crud.custom 'pwdHash'}
  	<label for="object_pwdHash">pwdRaw</label> 
 	<input id="object_pwdHash" class="" type="hidden" name="object.pwdHash" value="${object.pwdHash}" size="50" /> 

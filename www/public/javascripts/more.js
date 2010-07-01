@@ -4,11 +4,11 @@ function import_permissions(role_id) {
 		$('#loading').show();
 		$.post('/roles/getpermissions?id='+role_id,
 			function(data) {
-				$('select#object_permissions > option').each(function() {
+				$('select#object_permissions option').each(function() {
 					$(this).attr('selected', false);
 				});
 				$.each(data.permissions, function(index, item) {
-					$('select#object_permissions > option[value="'+item.id+'"]').attr('selected', true);
+					$('select#object_permissions option[value="'+item.id+'"]').attr('selected', true);
 				})
 				$('#loading').hide();
 			});
@@ -28,6 +28,10 @@ function uncheck_all_perms() {
 }
 
 
+$(document).keyup(function(e) {
+  if (e.keyCode == 27) { overlayClose() }   // esc
+});
+	
 //Simple JavaScript Templating
 //John Resig - http://ejohn.org/ - MIT Licensed
 (function(){
