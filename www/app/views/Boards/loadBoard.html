@@ -148,7 +148,12 @@ function hideCol(colid)
 			{cid:colid,uid:${connected.id}}, function(){
 			window.location.reload();
 		});
+		
 	      }
+		  else{
+		  	var seloption = document.getElementById('hadeer2');
+	seloption.selectedIndex='x';
+		  }
 }
 function popUp(URL) 
 {
@@ -218,11 +223,7 @@ $(function()
 <span style="display:none"> </span>
 <select id="hadeer2" onchange="hideCol(hadeer2.value)" style="display:none" class="showcol">
 
-#{if columnsOfBoard.size()==0}
-<option value="">None</option>
-#{/if}
-
-<option value="">delete columns</option>
+<option id="x" value="">delete columns</option>
 #{list items:columnsOfBoard, as:'c'}
 <option value= "${c.id}">${c.name}</option>
 <span style="display:none"></span>
