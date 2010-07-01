@@ -54,7 +54,7 @@ ${productRole.project}<br/><br/>
 <br/><br/>
 #{if editable}
 #{if connected.in(project).can('editProductRole')}
-<input type="button" value="Edit" onclick="overlayOpen('/admin/productroles/${productRole.id}')"href="#" />
+<a onclick="overlayOpen('/admin/productroles/${productRole.id}')"href="#"><img src="@{'/public/images/famfam/pencil.png'}" title="Edit"></a>
 #{/if}
 #{/if}
 
@@ -64,7 +64,7 @@ ${productRole.project}<br/><br/>
 
 #{if deletable}
 #{if connected.in(project).can('deleteProductRole')}
-<input type="button" value="Delete" onclick="deleteProductRole()"/>
+<a onclick="deleteProductRole()"><img src="@{'/public/images/famfam/delete.png'}" title="Delete"></a>
 #{/if}
 #{/if}
 
@@ -83,7 +83,7 @@ function deleteProductRole()
    	if (confirmation) {
    	   	$.post('@{deleteProductRole()}',{id:id},
     		function(){
-            window.location="/projects/${productRole.project.id}/productroles"
+                overlayOpen('/projects/${productRole.project.id}/productroles');
             });
    	}
 	return false;
