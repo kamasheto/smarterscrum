@@ -232,7 +232,7 @@ $(function(){
 #{/list}
 <a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_componentmeetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u><a/><br/><br />
 <span id="tzcd"></span>
-<a  href="javascript: extend(${users.meeting.id});"><b>extend another hour</b></a>
+
 <a  href="javascript: end(${users.meeting.id});"><b>end meeting</b></a>
 
 <script type="text/javascript" charset="utf-8"> 
@@ -266,8 +266,9 @@ location.reload();
 	else{
 	var answera=confirm('Do you want to update the associated snapshot?')
 		if(answera){
-		take_componentmeetingsnapshot(${users.meeting.id});}
-location.reload();		
+		take_componentmeetingsnapshot(${users.meeting.id});
+		location.reload();	}
+	else{location.reload();	}
 	
 	}
 	
@@ -570,11 +571,7 @@ function swapCol(TheID)
 		$.post('/Meetings/extend', {meetingid:id}, function(){alert('extended!')});
 			
 	}
-	function replaceContent(id1,content) {
- 
-     document.getElementById("current").innerHTML = content;
- 
-}
+	
 
 	function end(id) {
 		var ans=confirm('are you sure you want to end the meeting?');
@@ -583,7 +580,7 @@ function swapCol(TheID)
 	var answer=confirm('The system will now automaticaly update the associated snapshot to the current view of the board!')
 		if (answer) {
 		take_componentmeetingsnapshot(id);
-	replaceContent(current,'This Meeting has ended');
+location.reload();
 	}}
 	
 	}
