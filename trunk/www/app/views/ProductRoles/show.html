@@ -1,10 +1,4 @@
-#{extends 'CRUD/layout.html' /}
-#{set 'crumbs'}
-<li><a href="/show/projects"> Projects </a></li>
-<li><a href="/show/project?id=${project.id}"> ${project.name} </a></li>
-<li><a href="/projects/${project.id}/productroles"> Product Roles </a></li>
-<li><a href="/productroles/${object.id}"> ${object.name} </a></li>
-#{/set}
+#{extends 'overlay.html' /}
 
 <div id="crudShow" class="${type.name}">
 	
@@ -26,8 +20,8 @@
 		<p class="crudButtons">
 		#{if editable}
 		#{if connected.in(project).can('editProductRole')}
-			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
-			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" onclick="overlayClose() />
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" onclick="overlayClose() />
 		#{/if}
 		#{/if}
 		
@@ -42,7 +36,7 @@
     #{if connected.in(project).can('deleteProductRole')}
 	#{form @delete(object.id)}
 		<p class="crudDelete">
-			<input type="button" value="&{'crud.delete', type.modelName}" onclick="deleteProductRole(${object.id})" />
+			<input type="button" value="&{'crud.delete', type.modelName}" onclick="deleteProductRole(${object.id}); overlayClose();" />
 		</p>
 	#{/form}
 	#{/if}
