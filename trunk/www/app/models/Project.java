@@ -317,6 +317,7 @@ public class Project extends SmartModel {
 		for (Role role : roles) {
 			Role r = new Role();
 			r.name = role.name;
+			r.baseRole = role.baseRole;
 			r.project = this;
 			r.permissions.addAll(role.permissions);
 			r.save();

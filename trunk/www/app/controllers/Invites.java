@@ -50,7 +50,13 @@ public class Invites extends SmartController {
 		notFoundIfNull(invite);
 		if (what) {
 			invite.role.users.add(invite.user);
-			invite.user.projects.add(invite.role.project);
+			if (!invite.user.projects.contains(invite.role.project)) {
+				invite.user.projects.add(invite.role.project);
+				Role baseRole = Role.find("byProjectAndBaseRole", invite.role.project, true).first();
+				if (baseRole != invite.role) {
+					invite.user.roles.add(baseRole);
+				}
+			}
 			invite.user.save();
 			invite.role.save();
 		}

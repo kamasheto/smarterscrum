@@ -1,3 +1,14 @@
+
+function setBaseRole(role) {
+	$('p').each(function(){
+		$(this).removeClass('baseRole')
+	})	
+	$.post('/roles/setbaserole?id=' + role, function() {
+		$('#role_p_' + role).addClass('baseRole')
+		$.bar({message:'Base role updated successfully'})
+	})
+}
+
 function import_permissions(role_id) {
 	if (role_id > 0)
 	{

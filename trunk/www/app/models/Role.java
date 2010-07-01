@@ -28,6 +28,8 @@ public class Role extends SmartModel {
 	public List<User> users;
 
 	public boolean deleted;
+	
+	public boolean baseRole;
 
 	@ManyToMany
 	public List<Permission> permissions;
