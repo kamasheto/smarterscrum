@@ -40,7 +40,7 @@ public class Tasks extends SmartCRUD {
 	public static void blank(long id, long id2) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
-		User user = User.find("byEmail", Security.connected()).first();
+		User user = Security.getConnected();
 		Component component = Component.findById(id);
 		Story taskStory = Story.findById(id2);
 		Security.check(user.in(component.project).can("canAddTask"));
@@ -197,7 +197,7 @@ public class Tasks extends SmartCRUD {
 			}
 		}
 
-		tmp.reporter = User.find("byEmail", Security.connected()).first();
+		tmp.reporter = Security.getConnected();
 		System.out.println("here");
 		object.save();
 		tmp = (Task) object;
@@ -296,7 +296,7 @@ public class Tasks extends SmartCRUD {
 		List<User> users = tmp.taskStory.componentID.componentUsers;
 		List<TaskStatus> statuses = tmp.taskStory.componentID.project.taskStatuses;
 		List<TaskType> types = tmp.taskStory.componentID.project.taskTypes;
-		User myUser = User.find("byEmail", Security.connected()).first();
+		User myUser = Security.getConnected();
 		List<Requestreviewer> reviewers = Requestreviewer.find(
 				"byComponentAndAccepted", tmp.taskStory.componentID, true)
 				.fetch();
@@ -717,7 +717,7 @@ public class Tasks extends SmartCRUD {
 				+ " description is edited", (byte) 1);
 		Calendar cal = new GregorianCalendar();
 		Project y = task1.taskStory.componentID.project;
-		User myUser = User.find("byEmail", Security.connected()).first();
+		User myUser = Security.getConnected();
 		Logs.addLog(myUser, "EditDesc", "Task", id, y, cal.getTime());
 		renderJSON(one);
 
@@ -859,7 +859,7 @@ public class Tasks extends SmartCRUD {
 				+ " task type is edited", (byte) 1);
 		Calendar cal = new GregorianCalendar();
 		Project y = task1.taskStory.componentID.project;
-		User myUser = User.find("byEmail", Security.connected()).first();
+		User myUser = Security.getConnected();
 		Logs.addLog(myUser, "EditTasktype", "Task", id, y, cal.getTime());
 		renderJSON(one);
 
@@ -1170,7 +1170,7 @@ public class Tasks extends SmartCRUD {
 				+ " estimation points is edited", (byte) 1);
 		Calendar cal = new GregorianCalendar();
 		Project y = task1.taskStory.componentID.project;
-		User myUser = User.find("byEmail", Security.connected()).first();
+		User myUser = Security.getConnected();
 		Logs.addLog(myUser, "Edit task estimation", "Task", id, y, cal
 				.getTime());
 		renderJSON(one);
@@ -1248,7 +1248,7 @@ public class Tasks extends SmartCRUD {
 				+ " assignee is now changed to" + assignee.email, (byte) 1);
 		Calendar cal = new GregorianCalendar();
 		Project y = task1.taskStory.componentID.project;
-		User myUser = User.find("byEmail", Security.connected()).first();
+		User myUser = Security.getConnected();
 		Logs.addLog(myUser, "change  task assignee", "Task", id, y, cal
 				.getTime());
 		renderJSON(one);
@@ -1380,7 +1380,7 @@ public class Tasks extends SmartCRUD {
 				+ "reviewer is changed to " + reviewer.email, (byte) 1);
 		Calendar cal = new GregorianCalendar();
 		Project y = task1.taskStory.componentID.project;
-		User myUser = User.find("byEmail", Security.connected()).first();
+		User myUser = Security.getConnected();
 		Logs.addLog(myUser, "Edit task reviewer", "Task", id, y, cal.getTime());
 		renderJSON(one);
 	}
