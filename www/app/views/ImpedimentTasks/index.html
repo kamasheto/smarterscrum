@@ -31,7 +31,10 @@ function report_impediment(id)
 		   {description:  $('#desc').val(), projectId : id},
 		   function(data)
 		   {var n =1;
-			   window.location="/impedimenttasks/selectdependenttasks?itaskId="+data+"&projectId="+id;
+			//   window.location="/impedimenttasks/selectdependenttasks?itaskId="+data+"&projectId="+id;
+			
+			$('#getOverlay').load('/impedimenttasks/selectdependenttasks?itaskId='+data+'&projectId='+id);
+			$('#getOverlay').css('display','block');
 		   }
 	);// end of .post	   
 	return false;
