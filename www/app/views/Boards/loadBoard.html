@@ -259,13 +259,25 @@ return Math.floor(diffDate.valueOf()/1000);
 function displayTZCountDown(countdown,tzcd) 
 {
 if (countdown < 0)  {
-	var answer=confirm('Meeting ended now ,the system will now automaticaly update the associated snapshot to the current view of the board!')
+	var answer=confirm('Meeting time has ended now ,Do you want to extend for another hour?')
+		
 		if (answer) {
-		take_meetingsnapshot(${users.meeting.id});
-		replaceContent(current,'This Meeting has ended');
+		extend(${users.meeting.id});
+location.reload();	
 	}
+	else{
+	var answera=confirm('Do you want to update the associated snapshot?')
+		if(answera){
+		take_meetingsnapshot(${users.meeting.id});}
+location.reload();		
+	
+	}
+	
 }
-else {var secs = countdown % 60; 
+else {
+
+
+var secs = countdown % 60; 
 if (secs < 10) secs = '0'+secs;
 var countdown1 = (countdown - secs) / 60;
 var mins = countdown1 % 60; 
@@ -676,18 +688,12 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 	}
 	
 		function extend(id,date) {
-		$.post('/Meetings/extend', {meetingid:id}, function(){alert('extended')});
+		$.post('/Meetings/extend', {meetingid:id}, function(){alert('extended!')});
 
-var newDate=new Date(date+1000*60*60);
-			document.getElementById("amr").innerHTML =newDate ;
+
 	}
 
 
-function replaceContent(id1,content) {
- 
-     document.getElementById("current").innerHTML = content;
- 
-}
 
 	function end(id) {
 		var ans=confirm('are you sure you want to end the meeting?');
@@ -696,13 +702,13 @@ function replaceContent(id1,content) {
 	var answer=confirm('The system will now automaticaly update the associated snapshot to the current view of the board!')
 		if (answer) {
 		take_meetingsnapshot(id);
-	replaceContent(current,'This Meeting has ended');
+	
 	}}
 	
 	}
 	function take_meetingsnapshot(id) {
 	
-		$.post('/snapshots/takemeetingsnapshot', {sprintID:${s.id},id:id}, function(){alert('Saved!')});
+		$.post('/snapshots/takemeetingsnapshot', {sprintID:${s.id},id:id}, function(){alert('Snapshot Associated!')});
 	}
 
 </script>
