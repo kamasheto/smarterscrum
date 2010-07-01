@@ -61,3 +61,10 @@ The aim is to categorize these features and group them. We need to simplify the 
   * Association page (users,tasks,artifacts,components) 
   * Check Invitations for Meetings
   * Set Attendance to invited Users
+  * Associate snapshot of board to a meeting
+  * View project board
+  * View component board
+  * Add column to board
+  * Remove column from board
+  * Take snapshot of board
+  * View snapshots of board
