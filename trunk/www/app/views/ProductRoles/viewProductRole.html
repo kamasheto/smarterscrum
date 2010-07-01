@@ -10,7 +10,7 @@
 #{if connected.in(project).can('editProductRole')}
 #{if editable}
 <p>
-<a href="/admin/productroles/${productRole.id}"> Edit Product Role </a>
+<a onclick="overlayOpen('/admin/productroles/${productRole.id}')"href="#"> Edit Product Role </a>
 </p>
 #{/if}
 #{/if}
