@@ -61,17 +61,6 @@ Your Project(s) Updates
 <b>${notif.header}</b><br/>
 ${notif.body}.
 </div>
-<div class="right">
-#{if notif.importance =-1}
-	<div class ="allCornersRounded high">High</div>
-#{/if}
-#{elseif notif.importance =1}
-	<div class ="allCornersRounded low">Low</div>
-#{/elseif}
-#{elseif notif.importance =0}
-	<div class ="allCornersRounded medium">Medium</div>
-#{/elseif}
-</div>
 </div>
 <br style="clear:both"/>
 #{/list}
