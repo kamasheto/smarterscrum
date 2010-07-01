@@ -54,7 +54,7 @@ ${productRole.project}<br/><br/>
 <br/><br/>
 #{if editable}
 #{if connected.in(project).can('editProductRole')}
-<input type="button" value="Edit" onclick="window.location='/admin/productroles/${productRole.id}'" />
+<input type="button" value="Edit" onclick="overlayOpen('/admin/productroles/${productRole.id}')"href="#" />
 #{/if}
 #{/if}
 
