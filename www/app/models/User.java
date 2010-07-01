@@ -126,7 +126,8 @@ public class User extends SmartModel {
 	@OneToMany (mappedBy = "user")
 	public List<Request> requests;
 
-	public ArrayList<ChatRoom>openChats;
+	public ArrayList<ChatRoom> openChats;
+
 	public User () {
 		roles = new ArrayList<Role>();
 		openChats = new ArrayList<ChatRoom>();
@@ -206,7 +207,7 @@ public class User extends SmartModel {
 
 		openChats = new ArrayList<ChatRoom>();
 	}
-	
+
 	public String getEmail() {
 		return email.toLowerCase();
 	}
@@ -219,9 +220,11 @@ public class User extends SmartModel {
 	 * returns a role of all the roles this user has in this project
 	 * 
 	 * @param project
+	 * @param systemAdminOverride
+	 *            does being a system admin provide overriding permissions?
 	 * @return oring of all permissions of all roles
 	 */
-	public Role in(Project project) {
+	public Role in(Project project, boolean systemAdminOverride) {
 		List<Role> rs = this.roles;
 		List<Role> temp = new LinkedList<Role>();
 		for (Role r : rs) {
@@ -230,7 +233,7 @@ public class User extends SmartModel {
 			}
 		}
 		Role result = new Role(null);
-		result.systemAdmin = isAdmin;
+		result.systemAdmin = systemAdminOverride && isAdmin;
 
 		for (Role r : temp) {
 			for (Permission permission : r.permissions) {
@@ -238,6 +241,16 @@ public class User extends SmartModel {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * returns a role of all the roles this user has in this project
+	 * 
+	 * @param project
+	 * @return oring of all permissions of all roles
+	 */
+	public Role in(Project project) {
+		return in(project, true);
 	}
 
 	/**
@@ -255,7 +268,7 @@ public class User extends SmartModel {
 		} else
 			return attendance.get(0).status;
 	}
-	
+
 	public boolean canInvite() {
 		for (Project p : projects) {
 			if (this.in(p).can("invite")) {
@@ -321,28 +334,26 @@ public class User extends SmartModel {
 	public String getDisplayName(Project project) {
 		return projects.contains(project) ? name : "<span class='userNotInProject'>" + name + "</span>";
 	}
-	
+
 	/**
 	 * @author Moataz
-	 * @param project: the project we want to get the roles from
-	 * this method returns the list of roles of a user in a
-	 * specific project
+	 * @param project
+	 *            : the project we want to get the roles from this method
+	 *            returns the list of roles of a user in a specific project
 	 */
-	public String getUserRoles(Project project)
-	{
-		String res="";
-		for(int i = 0 ; i<this.roles.size() ; i++)
-		{
-			if(this.roles.get(i).project.id == project.id)
-				res += ", "+ this.roles.get(i).name;			
+	public String getUserRoles(Project project) {
+		String res = "";
+		for (int i = 0; i < this.roles.size(); i++) {
+			if (this.roles.get(i).project.id == project.id)
+				res += ", " + this.roles.get(i).name;
 		}
-		if(!res.isEmpty())
+		if (!res.isEmpty())
 			res = res.substring(1);
 		else
-			res= "No Role !!";
+			res = "No Role !!";
 		return res;
 	}
-	
+
 	public void removeRole(Role role) {
 		roles.remove(role);
 		if (roles.size() < 0) {
