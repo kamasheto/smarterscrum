@@ -248,7 +248,7 @@ public class Snapshots extends SmartController {
 		}
 		Snapshot snap = new Snapshot();
 		snap.user = user;
-		snap.type =M.name+ "Meeting";
+		snap.type =M.name+ " Meeting";
 		snap.board = b;
 		snap.sprint = s;
 		snap.data = data;
@@ -455,7 +455,7 @@ public class Snapshots extends SmartController {
 
 		Snapshot snap = new Snapshot();
 		snap.user = user;
-		snap.type =M.name+ "meeting";
+		snap.type =M.name+ " Meeting";
 		snap.board = b;
 		snap.sprint = s;
 		snap.data = data;
