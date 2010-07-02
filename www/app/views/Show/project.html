@@ -86,14 +86,14 @@ ${project.description?.nl2br()}
 <a id="sprint${sprint.id}" title="Take a look @ the full task board?" href="/boards/loadboard?sprintID=${sprint.id}">View Sprint ${sprint.id} Task Board</a>
 	#{/if}
 #{if sprint.ended!=true }
-<a href="javascript:st();" onclick="$('#c_${sprint.id}').toggle()" title="view components' boards?" style="margin-left:20px;float:left;width:200px;">View Components' Boards</a>
+<a href="javascript:" onclick="$('#c_${sprint.id}').toggle()" title="view components' boards?" style="margin-left:20px;float:left;width:200px;">View Components' Boards</a>
 	#{/if}
 		<div id="c_${sprint.id}" style="display:none; margin-left:40px">
 		#{list items:sprint.project.components, as:'component'}
 #{if sprint.ended==true}
 
 <script type="text/javascript">
-	function st()
+	
 	$.post('@{comp()}',{sprintID:${sprint.id},{componentID:${component.id},function(has){
 	if (has) 
 	{
@@ -106,7 +106,7 @@ alert(has);
 	$('#comp${component.id}').attr("href","/snapshots/loadsnapshot?id="+ID);
 
 }
-});}
+});
 </script>
 
 
