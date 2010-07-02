@@ -224,5 +224,8 @@ public class Application extends SmartController
 		}
 
 	}
-
+	
+	public static void overlayKiller() {
+		render();
+	}
 }

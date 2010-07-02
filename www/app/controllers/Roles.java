@@ -99,8 +99,7 @@ public class Roles extends SmartCRUD {
 		object.save();
 		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			Project project = ((Role) object).project;
-			redirect(project == null ? "/roles/defaultroles" : "/show/roles?id=" + ((Role) object).project.id);
+			Application.overlayKiller();
 		}
 		redirect(request.controller + ".show", object.getEntityId());
 	}
@@ -153,11 +152,7 @@ public class Roles extends SmartCRUD {
 		object.save();
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			if (id != 0) {
-				redirect("/show/roles?id=" + id);
-			} else {
-				redirect("/roles/defaultroles");
-			}
+			Application.overlayKiller();
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			redirect(request.controller + ".blank");
