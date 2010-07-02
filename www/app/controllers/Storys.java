@@ -340,6 +340,11 @@ public class Storys extends SmartCRUD {
 			}
 		}
 		storyObj.description= "As a "+storyObj.productRole.name+", I can "+ storyObj.description;
+		String header = "Story: 'S" +  storyObj.id + "\'" + " has been edited.";
+		String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' 
+			+ " In Component: " + "\'" + storyObj.componentID.name + "\'" + "." + '\n'
+			+ " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		/*////Long Informative Notification message. Not suitable for online notification.
 		String header = "A Story has been edited in Component: " + "\'" + storyObj.componentID.name + "\'" + " in Project: " + "\'" + project.name + "\'" + ".";
 		String body = "The Story:" + '\n' 
 		    + " " + "\'" + oldDescription + "\'" + '\n' 
@@ -350,8 +355,7 @@ public class Storys extends SmartCRUD {
 			+ " Succuss Senario: " + storyObj.succussSenario + "." + '\n'
 			+ " Failure Senario: " + storyObj.failureSenario + "." + '\n' 
 			+ " Notes: " + storyObj.notes + "." + '\n' 
-			+ " Added by: " + storyObj.addedBy.name + "." + '\n' 
-			+ " Added at: " + new Date(System.currentTimeMillis()) + ".";
+			+ " Added by: " + storyObj.addedBy.name + ".";*/
 		object.save();
 		/**********
 		 * Log and notification
