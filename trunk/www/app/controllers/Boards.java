@@ -185,12 +185,13 @@ public class Boards extends SmartCRUD {
 			System.out.println(b.columns.get(i).name+" "+b.columns.get(i).sequence);
 		}
 		
-  ArrayList<ArrayList<User>> u=Meetingloadboard( p);
+		ArrayList<ArrayList<User>> u=Meetingloadboard( p);
 		ArrayList ud = getDescPerm(p);
 		ArrayList ua = getAssiPerm(p);
 		ArrayList ur = getRevPerm(p);
 		ArrayList ut = getTypePerm(p);	
-		render(data, columnsOfBoard,hidencolumnsOfBoard, u, b, s, p,columns,ud,ua,ur,ut);	
+		ArrayList us = getStatusPerm(p);
+		render(data, columnsOfBoard,hidencolumnsOfBoard, u, b, s, p,columns,ud,ua,ur,ut,us);	
 		//render(data, columnsOfBoard,hidencolumnsOfBoard, b, s, p,columns,ud,ua,ur,ut);
 	}
 
@@ -333,7 +334,7 @@ public class Boards extends SmartCRUD {
 		render(data, columnsOfBoard,hidencolumnsOfBoard, u,b, s,comp, p);
 	
 	}
-	 /* 
+	 /** 
 	 * @param Project as P then loop to get all Running meeting of Project
 	 * and compare the logged in user's id in order to get which meeting he is 
 	 * confirmed in . if not then lost of empty meeting will be render to 
@@ -601,6 +602,32 @@ public class Boards extends SmartCRUD {
 		for(int i=0;i<users_type.size();i++)
 		{
 			User uu = users_type.get(i);
+			ut.add(uu.id);
+		}
+		return ut;
+	}
+	/**
+	 * This method takes project P & retrn a list of users 
+	 * who can edit task status in this project
+	 * 
+	 * @author Dina Helal
+	 * @param p 
+	 * 			Project p
+	 * */
+	public static ArrayList getStatusPerm (Project p) 
+	{
+		List <User> usrs = p.users;
+		List <User> users_status = new ArrayList();
+		for(int i=0;i<usrs.size();i++)
+		{
+				if(usrs.get(i).in(p).can("changeTaskStatus"))
+					users_status.add(usrs.get(i));
+
+		}	
+		ArrayList ut = new ArrayList (users_status.size());
+		for(int i=0;i<users_status.size();i++)
+		{
+			User uu = users_status.get(i);
 			ut.add(uu.id);
 		}
 		return ut;
