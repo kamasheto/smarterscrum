@@ -1350,32 +1350,38 @@ public class Tasks extends SmartCRUD {
 		task1.save();
 		assignee.tasks.add(task1);
 		assignee.save();
-		
-		String header = "A Task Assignee has been changed in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
+		String header = "Task: 'T" +  task1.id + "\'" + " has been edited.";	
+		//String header = "A Task Assignee has been changed in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
 		String body="";
 		if(userId == Security.getConnected().id)
 		{
-		body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' 
+			+ " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' 
+			+ " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' 
+			+ " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		/*body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
 				    + " in Story: " + task1.taskStory.description + '\n' 
 				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
 			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
 				    + " had Task Assignee: " + "\'" + oldAssignee + "\'" + ", and it has been changed." + '\n' + '\n'
-			        + "The New Estimation Points: " +  task1.assignee.name + "." 
-					+ " Edited by: " + user1.name + "." + '\n' 
-					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+			        + "The New Estimation Points: " +  task1.assignee.name + "." + '\n'
+					+ " Edited by: " + user1.name + ".";*/
 		}
 		else
 		{
-			body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' 
+			+ " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' 
+			+ " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' 
+			+ " Edited by: " + "\'" + Security.getConnected().name + "\'"
+			+ ", From "+Security.getConnected().name+"'s account.";
+			/*body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
 		    + " in Story: " + task1.taskStory.description + '\n' 
 		    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
 	        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
 		    + " had Task Assignee: " + "\'" + oldAssignee + "\'" + ", and it has been changed." + '\n' + '\n'
-	        + "The New Estimation Points: " +  task1.assignee.name + "." 
-			+ " Edited by: " + user1.name + "." + '\n' 
-			+ "From "+Security.getConnected().name+"'s account"
-			+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
-	
+	        + "The New Estimation Points: " +  task1.assignee.name + "." + '\n'
+			+ " Edited by: " + user1.name 
+			+ ", From "+Security.getConnected().name+"'s account.";*/
 		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
 		Logs.addLog(user1, "Edit", "Task Assignee", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
