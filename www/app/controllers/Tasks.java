@@ -757,6 +757,15 @@ public class Tasks extends SmartCRUD {
 		m.add(task1.assignee);
 		m.add(task1.reporter);
 		m.add(task1.reviewer);
+		String body="";
+		if(userId==Security.getConnected().id)
+		{
+			
+		}
+		else
+		{
+			body="from "+Security.getConnected().name+"'s account";
+		}
 		Notifications.notifyUsers(m, "TASk editing", "task " + id
 				+ " description is edited", (byte) 1);
 		Calendar cal = new GregorianCalendar();
@@ -799,8 +808,11 @@ public class Tasks extends SmartCRUD {
 		TaskType type = TaskType.findById(typeId);
 		task1.taskType = type;
 		task1.save();
+		String body="";
 		String header = "A Task Type has been edited in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
-		String body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+		if(userId==Security.getConnected().id)
+		{
+		body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
 				    + " in Story: " + task1.taskStory.description + '\n' 
 				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
 			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
@@ -808,6 +820,20 @@ public class Tasks extends SmartCRUD {
 			        + "The New Task Type: " +  task1.taskType.name + "." 
 					+ " Edited by: " + user1.name + "." + '\n' 
 					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+		}
+		else
+		{
+			body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+		    + " in Story: " + task1.taskStory.description + '\n' 
+		    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
+	        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
+		    + " had Type:  " + "\'" + oldType + "\'" + ", and it has been edited." + '\n' + '\n'
+	        + "The New Task Type: " +  task1.taskType.name + "." 
+			+ " Edited by: " + user1.name + "." + '\n' 
+			+ "From "+Security.getConnected().name+"'s account"
+			+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+
+		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
 		Logs.addLog(user1, "Edit", "Task Type", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 		return true;
@@ -1013,9 +1039,11 @@ public class Tasks extends SmartCRUD {
 		}
 		if (newStatus.name.equals("Reopened"))
 			task1.taskStory.done = false;
-		
+		String body="";
 		String header = "A Task Status has been edited in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
-		String body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+		if(userId==Security.getConnected().id)
+		{
+		body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
 				    + " in Story: " + task1.taskStory.description + '\n' 
 				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
 			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
@@ -1023,6 +1051,19 @@ public class Tasks extends SmartCRUD {
 			        + "The New Status: " +  task1.taskStatus.name + "."
 					+ " Edited by: " + user1.name + "." + '\n' 
 					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+		}
+		else
+		{
+			body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+		    + " in Story: " + task1.taskStory.description + '\n' 
+		    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
+	        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
+		    + " had Status:  " + "\'" + oldStatus + "\'" + ", and it has been edited." + '\n' + '\n'
+	        + "The New Status: " +  task1.taskStatus.name + "."
+			+ " Edited by: " + user1.name + "." + '\n' 
+			+ "From "+Security.getConnected().name+"'s account"
+			+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
 		Logs.addLog(user1, "Edit", "task status", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 		return true;
@@ -1295,7 +1336,10 @@ public class Tasks extends SmartCRUD {
 		assignee.save();
 		
 		String header = "A Task Assignee has been changed in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
-		String body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+		String body="";
+		if(userId == Security.getConnected().id)
+		{
+		body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
 				    + " in Story: " + task1.taskStory.description + '\n' 
 				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
 			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
@@ -1303,6 +1347,20 @@ public class Tasks extends SmartCRUD {
 			        + "The New Estimation Points: " +  task1.assignee.name + "." 
 					+ " Edited by: " + user1.name + "." + '\n' 
 					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+		}
+		else
+		{
+			body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+		    + " in Story: " + task1.taskStory.description + '\n' 
+		    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
+	        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
+		    + " had Task Assignee: " + "\'" + oldAssignee + "\'" + ", and it has been changed." + '\n' + '\n'
+	        + "The New Estimation Points: " +  task1.assignee.name + "." 
+			+ " Edited by: " + user1.name + "." + '\n' 
+			+ "From "+Security.getConnected().name+"'s account"
+			+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+	
+		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
 		Logs.addLog(user1, "Edit", "Task Assignee", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 		
@@ -1424,8 +1482,11 @@ public class Tasks extends SmartCRUD {
 		task1.save();
 		reviewer.tasks.add(task1);
 		reviewer.save();
+		String body="";
 		String header = "A Task Reviewer has been changed in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
-		String body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
+		if(userId==Security.getConnected().id)
+		{
+		body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
 				    + " in Story: " + task1.taskStory.description + '\n' 
 				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
 			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
@@ -1433,6 +1494,19 @@ public class Tasks extends SmartCRUD {
 			        + "The New Estimation Points: " +  task1.reviewer.name + "." 
 					+ " Edited by: " + user1.name + "." + '\n' 
 					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+		}
+		else
+		{
+			body="The Task:" + "\'" + task1.description + "\'" + '\n' 
+		    + " in Story: " + task1.taskStory.description + '\n' 
+		    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
+	        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
+		    + " had Task Assignee: " + "\'" + oldReviewer + "\'" + ", and it has been changed." + '\n' + '\n'
+	        + "The New Estimation Points: " +  task1.reviewer.name + "." 
+			+ " Edited by: " + user1.name + "." + '\n' 
+			+ "From "+Security.getConnected().name+"'s account"
+			+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
 		Logs.addLog(user1, "Edit", "Task Reviewer", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 		
