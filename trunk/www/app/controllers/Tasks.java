@@ -1533,20 +1533,32 @@ public class Tasks extends SmartCRUD {
 		reviewer.tasks.add(task1);
 		reviewer.save();
 		String body="";
-		String header = "A Task Reviewer has been changed in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
+		//String header = "A Task Reviewer has been changed in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
+		String header = "Task: 'T" +  task1.id + "\'" + " Reviewer has been edited.";
+		/*////Long Informative Notification message. Not suitable for online notification.*/
 		if(userId==Security.getConnected().id)
 		{
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' 
+			+ " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' 
+			+ " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' 
+			+ " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		/*////Long Informative Notification message. Not suitable for online notification.
 		body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
 				    + " in Story: " + task1.taskStory.description + '\n' 
 				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
 			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
 				    + " had Task Assignee: " + "\'" + oldReviewer + "\'" + ", and it has been changed." + '\n' + '\n'
 			        + "The New Estimation Points: " +  task1.reviewer.name + "." 
-					+ " Edited by: " + user1.name + "." + '\n' 
-					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+					+ " Edited by: " + user1.name + ".";*/
 		}
 		else
 		{
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' 
+			+ " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' 
+			+ " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' 
+			+ " Edited by: " + "\'" + Security.getConnected().name + "\'"
+			+ ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
+			/*////Long Informative Notification message. Not suitable for online notification.
 			body="The Task:" + "\'" + task1.description + "\'" + '\n' 
 		    + " in Story: " + task1.taskStory.description + '\n' 
 		    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
@@ -1554,8 +1566,7 @@ public class Tasks extends SmartCRUD {
 		    + " had Task Assignee: " + "\'" + oldReviewer + "\'" + ", and it has been changed." + '\n' + '\n'
 	        + "The New Estimation Points: " +  task1.reviewer.name + "." 
 			+ " Edited by: " + user1.name + "." + '\n' 
-			+ "From "+Security.getConnected().name+"'s account"
-			+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+			+ "From "+Security.getConnected().name+"'s account.";*/
 		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
 		Logs.addLog(user1, "Edit", "Task Reviewer", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
