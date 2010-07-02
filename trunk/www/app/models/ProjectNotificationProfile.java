@@ -33,6 +33,8 @@ public class ProjectNotificationProfile extends SmartModel {
 	//C3
 	public boolean assignStoryToSprint;
 	public boolean RequestToBeReviewer;
+	public boolean AcceptToBeReviewerRequest;
+	public boolean RejectToBeReviewerRequest;
 
 	/**
 	 * the constructor that's responsible for adding this profile to the DB
