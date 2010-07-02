@@ -354,6 +354,19 @@ public class User extends SmartModel {
 		return res;
 	}
 
+	public void addRole(Role role) {
+		if (!roles.contains(role)) {
+			roles.add(role);	
+			if (!projects.contains(role.project)) {
+				projects.add(role.project);
+				if (!role.baseRole) {
+					Role baseRole = Role.find("byProjectAndBaseRole", role.project, true).first();
+					roles.add(baseRole);
+				}
+			}
+			save();
+		}
+	}
 	public void removeRole(Role role) {
 		roles.remove(role);
 		if (roles.size() < 0) {

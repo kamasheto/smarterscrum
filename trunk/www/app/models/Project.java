@@ -316,6 +316,7 @@ public class Project extends SmartModel {
 		List<Role> roles = Role.find("select r from Role r where r.project = null").fetch();
 		for (Role role : roles) {
 			Role r = new Role();
+			this.roles.add(r);
 			r.name = role.name;
 			r.baseRole = role.baseRole;
 			r.project = this;
