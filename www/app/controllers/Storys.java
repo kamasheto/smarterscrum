@@ -729,7 +729,7 @@ public class Storys extends SmartCRUD {
 		    + " in Project: " + "\'" + story1.componentID.project.name + "\'" + "." + '\n' + '\n' 
 			+ "Succuss Senario: " +  story1.succussSenario + "." + '\n' 
 			+ " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";*/
-		Notifications.notifyUsers(story1.componentID.getUsers(), header, body, (byte) 1);
+		Notifications.notifyUsers(story1.componentID.getUsers(), header, body, (byte) 0);
 	}
 
 	/**
@@ -758,7 +758,7 @@ public class Storys extends SmartCRUD {
 		    + " in Project: " + "\'" + story1.componentID.project.name + "\'" + "." + '\n' + '\n' 
 			+ "Failure Senario: " +  story1.failureSenario + "." + '\n' 
 			+ " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";*/
-		Notifications.notifyUsers(story1.componentID.getUsers(), header, body, (byte) 1);
+		Notifications.notifyUsers(story1.componentID.getUsers(), header, body, (byte) 0);
 	}
 
 	public static void listStoriesInProject(long projectId, long storyId) {
