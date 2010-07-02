@@ -132,12 +132,12 @@ public class ProductRoles extends SmartCRUD {
 			Notifications.notifyUsers(project, header, body, "addProductRole", new Byte((byte) 1));
 			flash.success("Product Role " + productRoleObject.name + " has been created successfully.");
 			if (params.get("_save") != null) {
-				redirect("/projects/" + project.id + "/productroles");
+				redirect("/application/overlaykiller");
 			}
 			if (params.get("_saveAndAddAnother") != null) {
-				redirect("/admin/projects/" + project.id + "/productroles/new");
+				redirect("/application/overlaykiller");
 			}
-			redirect(request.controller + ".show", object.getEntityId());
+			redirect("/application/overlaykiller");
 		}
 	}
 
@@ -221,9 +221,9 @@ public class ProductRoles extends SmartCRUD {
 			Notifications.notifyUsers(project, header, body, "editProductRole", new Byte((byte) 0));
 			flash.success("Product Role " + productRoleObject.name + " has been edited.");
 			if (params.get("_save") != null) {
-				redirect("/productroles/" + productRoleObject.id);
+				redirect("/application/overlaykiller");
 			}
-			redirect(request.controller + ".show", object.getEntityId());
+			redirect("/application/overlaykiller");
 		}
 	}
 
@@ -273,7 +273,7 @@ public class ProductRoles extends SmartCRUD {
 			Logs.addLog(Security.getConnected(), "Delete", "ProductRole", productRoleObject.id, productRoleObject.project, new Date(System.currentTimeMillis()));
 			Notifications.notifyUsers(productRoleObject.project, header, body, "deleteProductRole", new Byte((byte) -1));
 			flash.success("Product Role " + productRoleObject.name + " has been deleted.");
-			redirect("/projects/" + project.id + "/productroles");
+			redirect("/application/overlaykiller");
 		}
 	}
 
