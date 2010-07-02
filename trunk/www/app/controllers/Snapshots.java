@@ -291,7 +291,15 @@ public class Snapshots extends SmartController {
 		List<Snapshot> snapshots = Snapshot.find("sprint.id = ? and type = ? ", id, type).fetch();
 		Project p=snapshots.get(0).board.project;
 		Sprint s=snapshots.get(0).sprint;
-		render(snapshots,p,s);
+		render(snapshots,p,s,type);
+
+	}
+	public static void indexuser(long id, String type) {
+
+		List<Snapshot> snapshots = Snapshot.find("sprint.id = ? and type = ? and user=? ", id, type,Security.getConnected()).fetch();
+		Project p=snapshots.get(0).board.project;
+		Sprint s=snapshots.get(0).sprint;
+		render(snapshots,p,s,type);
 
 	}
 
