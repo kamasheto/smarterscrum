@@ -394,7 +394,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		#{list items:col, as:'task'}
 		
 		<!-- small sticky note -->
-		#{if connected.in(p).can('changeTaskStatus') || connected.equals(task.assignee)}
+		#{if connected.in(p).can('changeTaskStatus') || connected.equals(task.assignee) || connected.equals(task.reviewer)}
 		<div id="task-${task.id}_T" class="drag status status_${task.id}">
 		<p>
 		<div class="${task.taskStatus.column.name}" style="max-width:130px"></div>
