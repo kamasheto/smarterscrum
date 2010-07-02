@@ -90,27 +90,7 @@ ${project.description?.nl2br()}
 	#{/if}
 		<div id="c_${sprint.id}" style="display:none; margin-left:40px">
 		#{list items:sprint.project.components, as:'component'}
-#{if sprint.ended==true}
 
-<script type="text/javascript">
-	
-	$.post('@{comp()}',{sprintID:${sprint.id},{componentID:${component.id},function(has){
-	if (has) 
-	{
-	
-	$.getJSON('/snapshots/TakeComponentSprintSnapshot', {sprintID:${sprint.id},{componentID:${component.id}},function( ID ){
-	$('#comp${component.id}').attr("href","/snapshots/loadsnapshot?id="+ID);
-}else{
-alert(has);
-	$.getJSON('@{getsnap()}', {sprintID:${sprint.id},{componentID:${component.id}},function( ID ){
-	$('#comp${component.id}').attr("href","/snapshots/loadsnapshot?id="+ID);
-
-}
-});
-</script>
-
-
-#{/if}
 
 #{if sprint.ended!=true }
 <a id="component${component.id} style="margin-left:20px" title="${component.name}'s sprint ${sprint.id} Task Board?"href="/boards/loadComponentBoard?sprintID=${sprint.id}&componentID=${component.id}">${component.name}</a>
