@@ -1,0 +1,39 @@
+#{extends 'main.html' /}
+#{set title:'snapshot List' /}
+#{set 'crumbs'}
+<li><a href="/show/projects">Projects</a></li>
+<li><a href="/show/project?id=${p.id}">${p.name}</a></li>
+<li><a href="/boards/loadboard?sprintID=${s.id}">${p.name}'s Task Board</a></li>
+<li><a  href="@{Snapshots.indexuser(s.id,type)}" >View my snapshots</a></li>
+#{/set}
+<h2>Snapshots List</h2>
+#{if (snapshots.size()==0)}
+Sorry, There are no snapshots to display now.<br/>
+#{/if}
+#{if (snapshots.size()!=0)}
+
+
+<ul>
+<table>
+
+
+
+		<thead>		
+		
+		<td ><b>Snapshot</b></td>
+		<td><b>Captured By</b></td>
+		<td><b>Date</b></td>
+				</thead>
+#{list items:snapshots, as:'snapshot'}
+
+		<tr>
+	<td>	
+<li><a href="@{Snapshots.loadsnapShot(snapshot.id)} ">Snapshot ${snapshot.id}</a></li>
+		</td>
+		<td>${snapshot.user.name}</td>
+		<td>${snapshot.date}</td>
+		</tr>
+#{/list}
+</table>
+</ul>
+#{/if}
