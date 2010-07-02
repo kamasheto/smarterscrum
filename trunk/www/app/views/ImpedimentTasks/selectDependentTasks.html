@@ -37,7 +37,8 @@ function add_tasks()
 			function()
 			{
 		
-				window.location="/ImpedimentTasks/viewimpedimentlog?Proj_id=${projectId}";
+				window.parent.location="/ImpedimentTasks/viewimpedimentlog?Proj_id=${projectId}";
+				overlayClose();
 				});
 
 }
