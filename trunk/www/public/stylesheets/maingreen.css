@@ -405,9 +405,9 @@ a {
 
 .searchBtn:hover {
 	background: #598527 !important;
-	background: -moz-linear-gradient(center bottom, #87155f 20%, #598527 80%)
+	background: -moz-linear-gradient(center bottom, #b60000 20%, #598527 80%)
 		!important;
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #87155f),
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #b60000),
 		color-stop(0.8, #598527) ) !important;
 }
 
@@ -666,7 +666,7 @@ tr.deleted {
 
 .notifDM {
 	width: 50px;
-	background-color: #eee;
+	background-color: #fff;
 	padding: 5px;
 	text-align: center;
 }
