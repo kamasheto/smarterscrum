@@ -57,10 +57,10 @@ public class ProjectNotificationProfile extends SmartModel {
 		onDeleteComponent = true;
 		addColumn=true;
 	    deleteColumn=true;
-	    assignStoryToSprint = true;
-		RequestToBeReviewer= true;
-		AcceptToBeReviewerRequest= true;
-		RejectToBeReviewerRequest= true;
+	    assignStoryToSprint=true;
+		RequestToBeReviewer=true;
+		AcceptToBeReviewerRequest=true;
+		RejectToBeReviewerRequest=true;
 	}
 
 	/**
