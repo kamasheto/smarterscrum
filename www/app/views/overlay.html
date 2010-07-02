@@ -11,6 +11,7 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/jquery.gritter.css"/>
 		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/jquery.jbar.css"/>
 		<link rel="shortcut icon" href="@{'public/images/favicon.ico'}" type="image/x-icon"/> 
+        		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/generic.css"/>
         #{get 'moreStyles' /}
  
         <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
@@ -37,15 +38,6 @@
    			    $("a").tipTip({delay:0});
    			    $("td").tipTip({delay:0});
    			    $("span").tipTip({delay:0});
-   			    
-   			    $("button").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-   			    $("a button").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-   			    $("input[type='submit']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-   			    $("input[type='button']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-   			    $("input[type='ok']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-   			    $("input[type='add']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-   			    $("input[type='send']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-
    			    $('div.crudField').each(function(){
 						if ($(this).html().trim() == '') {
 							$(this).remove();

@@ -1,0 +1,20 @@
+button,a button,input[type=submit],input[type=ok],input[type=send],input[type=button],input[type=send]
+	{
+	cursor: pointer;
+	display: inline-block;
+	margin-right: 0.1em;
+	overflow: visible;
+	position: relative;
+	text-align: center;
+	text-decoration: none !important;
+	padding: 0.4em 1em;
+	-moz-border-radius: 4px 4px 4px 4px;
+	-webkit-border-radius: 4px 4px 4px 4px;
+	border-radius: 4px 4px 4px 4px;
+	background: url("images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x
+		scroll 50% 50% #E6E6E6;
+	border: 1px solid #D3D3D3;
+	color: #555555;
+	font-weight: normal;
+	font-size: 1.1em;
+}
