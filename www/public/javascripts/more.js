@@ -13,8 +13,7 @@ function setBaseRole(role) {
 }
 
 function import_permissions(role_id) {
-	if (role_id > 0)
-	{
+	if (role_id > 0) {
 		$('#loading').show();
 		$.post('/roles/getpermissions?id='+role_id,
 			function(data) {
@@ -29,22 +28,11 @@ function import_permissions(role_id) {
 	}
 }
 
-function check_all_perms() {
+function check_all_perms(sel) {
 	$('select#object_permissions option').each(function(){
-		$(this).attr('selected', true);
+		$(this).attr('selected', sel);
 	});
 }
-
-function uncheck_all_perms() {
-	$('select#object_permissions option').each(function(){
-		$(this).attr('selected', false);
-	});
-}
-
-
-$(document).keyup(function(e) {
-  if (e.keyCode == 27) { overlayClose() }   // esc
-});
 	
 //Simple JavaScript Templating
 //John Resig - http://ejohn.org/ - MIT Licensed

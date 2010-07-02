@@ -3,7 +3,7 @@
 	<h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
 	<div class="objectForm">
 	#{form action:@save(object.id), enctype:'multipart/form-data'}
-		<a href="javascript:check_all_perms();">Check all</a>, <a href="javascript:uncheck_all_perms();">uncheck all</a> or
+		<a href="javascript:check_all_perms(true);">Check all</a>, <a href="javascript:check_all_perms(false);">uncheck all</a> or
 		import permissions from: <select id="inherit" onchange="import_permissions($('#inherit :selected').val());">
 			#{list project ? project.roles : roles}
 				<option value="${_.id}" ${_ == object ? 'selected' : ''}>${_.name}</option>
