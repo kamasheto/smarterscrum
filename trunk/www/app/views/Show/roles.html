@@ -8,9 +8,9 @@
 
 #{note 'highlight'}These are your project roles. Members in a project may have more than one role at a time. Whenever possible, avoid editing roles to limit confusion for developers. If you'd like to give a developer more access, add him to a new role. The number in brackets indicate the number of developers with that role (click the number to toggle the users). The base role is highlighted in bold. All members joining a project join the base role automatically. Click on a role to set it to be the base role.#{/note}
 #{list project.roles, as:'role'}
-	<p#{if role.baseRole} class="baseRole"#{/if} id="role_p_${role.id}"><a href="#" onclick="overlayOpen('/admin/roles/${role.id}')" title="Edit"><img src="@{'/public/images/famfam/pencil.png'}"></a> <a href="/roles/delete?id=${role.id}" title="Delete"><img src="@{'/public/images/famfam/delete.png'}"></a> <a href="javascript:setBaseRole(${role.id})">${role.name}</a> <a href="javascript:$('#role_${role.id}').toggle()">(${role.users.size()})</a> <span id="role_${role.id}" style="display:none;">${role.users.toString().substring(1, role.users.toString().length()-1)}</span></p>
+	<p#{if role.baseRole} class="baseRole"#{/if} id="role_p_${role.id}"><a href="#" onclick="overlayOpen('/admin/roles/${role.id}')" ><img src="@{'/public/images/famfam/pencil.png'}"></a> <a href="/roles/delete?id=${role.id}" ><img src="@{'/public/images/famfam/delete.png'}"></a> <a href="javascript:setBaseRole(${role.id})">${role.name}</a> <a href="javascript:$('#role_${role.id}').toggle()">(${role.users.size()})</a> <span id="role_${role.id}" style="display:none;">${role.users.toString().substring(1, role.users.toString().length()-1)}</span></p>
 #{/list}
-	<p><a href="javascript:overlayOpen('/admin/roles/new?id=${project.id}')" title="Create new"><img src="@{'/public/images/famfam/add.png'}"></a></p>
+	<p><a href="javascript:overlayOpen('/admin/roles/new?id=${project.id}')"><img src="@{'/public/images/famfam/add.png'}"></a></p>
 #{else}
 	#{note 'error'}
 		No default roles at the moment. <a href="javascript:overlayOpen('/admin/roles/new?id=${project.id}')">Create one?</a>

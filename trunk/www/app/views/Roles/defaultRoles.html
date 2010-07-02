@@ -2,11 +2,11 @@
 #{set title: 'Manage Global Roles' /}
 #{note 'highlight'}These are the default roles. All projects created include these roles by default. Changes to these roles does NOT affect roles of projects already created. The base role is highlighted in bold. All members joining a project join the base role automatically. Click on a role to set it to be the base role.#{/note}
 #{list items:roles, as:'role'}
-	<p#{if role.baseRole} class="baseRole"#{/if} id="role_p_${role.id}"><a href="#" title="Edit Role" onclick="overlayOpen('/admin/roles/${role.id}')"><img src="@{'/public/images/famfam/pencil.png'}"></a> <a title="Delete Role" href="/roles/delete?id=${role.id}" onclick=""><img src="@{'/public/images/famfam/delete.png'}"></a> <a href="javascript:setBaseRole(${role.id})">${role.name}</a></p>
+	<p#{if role.baseRole} class="baseRole"#{/if} id="role_p_${role.id}"><a href="#"  onclick="overlayOpen('/admin/roles/${role.id}')"><img src="@{'/public/images/famfam/pencil.png'}"></a> <a href="/roles/delete?id=${role.id}" onclick=""><img src="@{'/public/images/famfam/delete.png'}"></a> <a href="javascript:setBaseRole(${role.id})">${role.name}</a></p>
 #{/list}
-	<p><a href="#" onclick="overlayOpen('/admin/roles/new')" title="Create new role"><img src="@{'/public/images/famfam/add.png'}"></a></p>
+	<p><a href="#" onclick="overlayOpen('/admin/roles/new')" ><img src="@{'/public/images/famfam/add.png'}"></a></p>
 #{else}
 #{note 'error'}
-	No default roles at the moment. <a href="/admin/roles/new">Create one?</a>
+	No default roles at the moment. <a href="javascript: overlayOpen('/admin/roles/new')">Create one?</a>
 #{/note}
 #{/else}

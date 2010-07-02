@@ -9,12 +9,7 @@
 				<option value="${_.id}" ${_ == object ? 'selected' : ''}>${_.name}</option>
 			#{/list}
 		</select> <img id="loading" style="display:none;" src="/public/images/ajax-loader.gif" />
-		#{crud.form}
-			#{crud.custom 'users'}#{/crud.custom}
-			#{crud.custom 'project'}#{/crud.custom}
-			#{crud.custom 'deleted'}#{/crud.custom}
-			#{crud.custom 'systemAdmin'}#{/crud.custom}
-		#{/crud.form}
+		#{crud.form fields:['name', 'permissions'] /}
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
 			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
@@ -24,7 +19,7 @@
 	#{ifnot x.baseRole}
 	#{form @delete(object.id)}
 		<p class="crudDelete">
-			<input type="submit" value="&{'crud.delete', type.modelName}" onclick="return confirm('Are you sure you want to delete this role');" />
+			<input type="submit" value="&{'crud.delete', type.modelName}" onclick="return confirm('Are you sure you want to delete this role?');" />
 		</p>
 	#{/form}
 	#{/ifnot}

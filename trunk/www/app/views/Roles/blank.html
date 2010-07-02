@@ -11,12 +11,7 @@
 			#{/list}
 		</select> <img id="loading" style="display:none;" src="/public/images/ajax-loader.gif" />
 		</div>
-		#{crud.form}
-			#{crud.custom 'users'}#{/crud.custom}
-			#{crud.custom 'project'}#{/crud.custom}
-			#{crud.custom 'deleted'}#{/crud.custom}
-			#{crud.custom 'systemAdmin'}#{/crud.custom}
-		#{/crud.form}
+		#{crud.form fields:['name', 'permissions'] /}
 		<input type="hidden" name="object.project@id" value="${project?.id ?: 0}" />
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
