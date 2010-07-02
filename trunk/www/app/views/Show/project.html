@@ -64,6 +64,8 @@ ${project.description?.nl2br()}
 		
 #{if sprint.ended==true}
 #{if sprint.finalsnapshot==null }
+
+
 <script type="text/javascript">
 	
 	$.getJSON('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}},function( ID ){
@@ -71,6 +73,7 @@ ${project.description?.nl2br()}
 
 });
 </script>
+
 
 #{/if}
 
@@ -82,11 +85,37 @@ ${project.description?.nl2br()}
 #{if sprint.finalsnapshot==null }
 <a id="sprint${sprint.id}" title="Take a look @ the full task board?" href="/boards/loadboard?sprintID=${sprint.id}">View Sprint ${sprint.id} Task Board</a>
 	#{/if}
-
-<a href="javascript:;" onclick="$('#c_${sprint.id}').toggle()" title="view components' boards?" style="margin-left:20px;float:left;width:200px;">View Components' Boards</a>
+#{if sprint.ended!=true }
+<a href="javascript:st();" onclick="$('#c_${sprint.id}').toggle()" title="view components' boards?" style="margin-left:20px;float:left;width:200px;">View Components' Boards</a>
+	#{/if}
 		<div id="c_${sprint.id}" style="display:none; margin-left:40px">
 		#{list items:sprint.project.components, as:'component'}
-		<a style="margin-left:20px" title="${component.name}'s sprint ${sprint.id} Task Board?"href="/boards/loadComponentBoard?sprintID=${sprint.id}&componentID=${component.id}">${component.name}</a>
+#{if sprint.ended==true}
+
+<script type="text/javascript">
+	function st()
+	$.post('@{comp()}',{sprintID:${sprint.id},{componentID:${component.id},function(has){
+	if (has) 
+	{
+	
+	$.getJSON('/snapshots/TakeComponentSprintSnapshot', {sprintID:${sprint.id},{componentID:${component.id}},function( ID ){
+	$('#comp${component.id}').attr("href","/snapshots/loadsnapshot?id="+ID);
+}else{
+alert(has);
+	$.getJSON('@{getsnap()}', {sprintID:${sprint.id},{componentID:${component.id}},function( ID ){
+	$('#comp${component.id}').attr("href","/snapshots/loadsnapshot?id="+ID);
+
+}
+});}
+</script>
+
+
+#{/if}
+
+#{if sprint.ended!=true }
+<a id="component${component.id} style="margin-left:20px" title="${component.name}'s sprint ${sprint.id} Task Board?"href="/boards/loadComponentBoard?sprintID=${sprint.id}&componentID=${component.id}">${component.name}</a>
+		
+	#{/if}
 		#{/list}
 		</div>
 		</div>
