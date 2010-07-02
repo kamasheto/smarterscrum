@@ -1071,20 +1071,31 @@ public class Tasks extends SmartCRUD {
 		if (newStatus.name.equals("Reopened"))
 			task1.taskStory.done = false;
 		String body="";
-		String header = "A Task Status has been edited in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
+		//String header = "A Task Status has been edited in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
+		String header = "Task: 'T" +  task1.id + "\'" + " Task Status has been edited.";
 		if(userId==Security.getConnected().id)
 		{
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' 
+			+ " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' 
+			+ " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' 
+			+ " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		/*////Long Informative Notification message. Not suitable for online notification.
 		body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
 				    + " in Story: " + task1.taskStory.description + '\n' 
 				    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
 			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
 				    + " had Status:  " + "\'" + oldStatus + "\'" + ", and it has been edited." + '\n' + '\n'
 			        + "The New Status: " +  task1.taskStatus.name + "."
-					+ " Edited by: " + user1.name + "." + '\n' 
-					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+					+ " Edited by: " + user1.name;*/
 		}
 		else
 		{
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' 
+			+ " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' 
+			+ " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' 
+			+ " Edited by: " + "\'" + Security.getConnected().name + "\'"
+			+ ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
+			/*////Long Informative Notification message. Not suitable for online notification.
 			body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
 		    + " in Story: " + task1.taskStory.description + '\n' 
 		    + " in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + '\n' 
@@ -1092,8 +1103,7 @@ public class Tasks extends SmartCRUD {
 		    + " had Status:  " + "\'" + oldStatus + "\'" + ", and it has been edited." + '\n' + '\n'
 	        + "The New Status: " +  task1.taskStatus.name + "."
 			+ " Edited by: " + user1.name + "." + '\n' 
-			+ "From "+Security.getConnected().name+"'s account"
-			+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+			+ ", From "+Security.getConnected().name+"'s account.";*/
 		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
 		Logs.addLog(user1, "Edit", "task status", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
