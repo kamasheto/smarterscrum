@@ -21,7 +21,7 @@ public class Roles extends SmartCRUD {
 		Role role = Role.findById(id);
 		Security.check(role.project, "manageRoles");
 		List<Role> roles = role.project == null ? 
-								Role.find("select r from Role r where r.project = null").<Role> fetch() : 
+								Role.find("byProjectIsNull").<Role> fetch() : 
 								Role.find("byProject", role.project).<Role> fetch();
 		for (Role r : roles) {
 			r.baseRole = r == role;
@@ -34,7 +34,7 @@ public class Roles extends SmartCRUD {
 	 */
 	public static void defaultRoles() {
 		Security.check(Security.getConnected().isAdmin);
-		List<Role> roles = Role.find("select r from Role r where r.project = null").fetch();
+		List<Role> roles = Role.find("byProjectIsNull").fetch();
 		render(roles);
 	}
 
@@ -55,7 +55,7 @@ public class Roles extends SmartCRUD {
 		List<Role> roles = null;
 		if (project == null) {
 			Security.check(Security.getConnected().isAdmin);
-			roles = Role.find("select r from Role r where r.project = null").fetch();
+			roles = Role.find("byProjectIsNull").fetch();
 		} else {
 			Security.check(project, "editRoles");
 		}
@@ -84,7 +84,7 @@ public class Roles extends SmartCRUD {
 
 		List<Role> dups;
 		if (role.project == null) {
-			dups = Role.find("select r from Role r where r.id != ? and LCASE(r.name) = ? and r.project = null", role.id, role.name.toLowerCase()).fetch();
+			dups = Role.find("select r from Role r where r.id != ? and LCASE(r.name) = ? and r.project is null", role.id, role.name.toLowerCase()).fetch();
 		} else {
 			dups = Role.find("select r from Role r where r.id != ? and LCASE(r.name) = ? and r.project = ?", role.id, role.name.toLowerCase(), role.project).fetch();
 		}
@@ -111,7 +111,7 @@ public class Roles extends SmartCRUD {
 			Security.check(project, "canCreateRole");
 		else {
 			Security.check(Security.getConnected().isAdmin);
-			roles = Role.find("select r from Role r where r.project = null").fetch();
+			roles = Role.find("byProjectIsNull").fetch();
 		}
 
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -137,7 +137,7 @@ public class Roles extends SmartCRUD {
 		Role role = (Role) object;
 		List<Role> dups;
 		if (role.project == null) {
-			dups = Role.find("select r from Role r where LCASE(r.name) = ?1 and r.project = null", role.name.toLowerCase()).fetch();
+			dups = Role.find("select r from Role r where LCASE(r.name) = ?1 and r.project is null", role.name.toLowerCase()).fetch();
 		} else {
 			dups = Role.find("select r from Role r where LCASE(r.name) = ?1 and r.project = ?2", role.name.toLowerCase(), role.project).fetch();
 		}
