@@ -4,6 +4,7 @@
 #{set 'crumbs'}
 <li><a href="/show/projects">Projects</a></li>
 <li><a href="/show/project?id=${p.id}">${p.name}</a></li>
+<li><a href ="/projects/${comp.project.id}/components">Components</a></li>
 <li><a href="/components/${comp.id}">${comp.name}</a></li>
 <li><a href="/boards/loadComponentBoard?sprintID=${s.id}&componentID=${comp.id}">${comp.name}'s Task Board</a></li>
 #{/set}
