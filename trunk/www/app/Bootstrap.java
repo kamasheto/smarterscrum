@@ -859,7 +859,7 @@ public class Bootstrap extends Job
 			c1.componentMeetings.add( m2 );
 			m2.save();
 
-			Meeting m3 = new Meeting( "Scrum meeting", users.get( 0 ), "15 minute scrum meeting", new Date().getTime() + 6000000, new Date().getTime(), "board", "scrum", projects.get( 0 ), Sp1 );
+			Meeting m3 = new Meeting( "Scrum meeting", users.get( 0 ), "15 minute scrum meeting", new Date().getTime() + 1500000, new Date().getTime(), "board", "scrum", projects.get( 0 ), Sp1 );
 			m3.components.add( c2 );
 
 			c2.componentMeetings.add( m3 );
