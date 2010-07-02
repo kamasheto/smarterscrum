@@ -31,7 +31,7 @@ public class Invites extends SmartController {
 		Role role = Role.findById(id);
 		Security.check(role.project, "invite");
 		Invite invite = new Invite(user, role).save();
-		Notifications.notifyUsers(user, "Invitation to " + role.name, "Dear " + user.name + ", you have been invited to " + role.name + " in the project " + role.project.name + ".\n\nTo accept this invitation: " + Router.getFullUrl("Invites.respondInvite") + "?what=1&hash=" + invite.hash + "&id=" + invite.id + "\nTo decline this invitation: " + Router.getFullUrl("Invites.respondInvite") + "?what=0&hash=" + invite.hash + "&id=" + invite.id, (byte) 0);
+		Notifications.notifyUsers(user, "Invitation to " + role.name, String.format("Dear " + user.name + ", you have been invited to " + role.name + " in the project " + role.project.name + ".\n\nTo accept this invitation <a href='%s'>click here</a>. To decline this invitation <a href='%s'>click here</a>.", Router.getFullUrl("Invites.respondInvite") + "?what=1&hash=" + invite.hash + "&id=" + invite.id, Router.getFullUrl("Invites.respondInvite") + "?what=0&hash=" + invite.hash + "&id=" + invite.id), (byte) 0);
 		Logs.addLog(role.project, "invited " + user.name, "Invite", invite.id);
 	}
 
@@ -48,13 +48,13 @@ public class Invites extends SmartController {
 	public static void respondInvite(boolean what, String hash, long id) {
 		Invite invite = Invite.find("byHashAndId", hash, id).first();
 		notFoundIfNull(invite);
-		if (what) {
-			invite.role.users.add(invite.user);
+		if (what && !invite.user.roles.contains(invite.role)) {
+			invite.user.roles.add(invite.role);
 			if (!invite.user.projects.contains(invite.role.project)) {
 				invite.user.projects.add(invite.role.project);
-				Role baseRole = Role.find("byProjectAndBaseRole", invite.role.project, true).first();
-				if (baseRole != invite.role) {
-					invite.user.roles.add(baseRole);
+				if (!invite.role.baseRole) {
+					Role baseRole = Role.find("byProjectAndBaseRole", invite.role.project, true).first();
+					invite.user.roles.add(baseRole);	
 				}
 			}
 			invite.user.save();
@@ -62,6 +62,7 @@ public class Invites extends SmartController {
 		}
 		Logs.addLog(invite.role.project, "accepted invite to " + invite.role.name, "Invite", invite.id);
 		invite.delete();
+		flash.success("Invitation successfully accepted and role " + invite.role.name + " added");
 		Application.index();
 	}
 }
