@@ -350,13 +350,9 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 	
 	<!-- set flag based on logged in user -->
 	<span style="display:none"> ${count=0}</span>
-	#{list items:columnsOfBoard, as:'col'}
-	#{if connected.in(p).can('renameColumns')}
-	<span style="display:none"> ${flag=true}</span>
-    #{/if}
-		
+	#{list items:columnsOfBoard, as:'col'}	
 	<td style="text-align:center;" id="${columnsOfBoard.id} " class="col_${count}"> 	
-		#{if flag}<!-- if admin -->
+		#{if connected.in(p).can('renameColumns')}<!-- if admin -->
 		<div style="font-size:small;display:inline-block;width:3cm" class="${col.name} editCOL ccolumn" id="${col.id}" title="Edit the column name?">${col.name}</div>
 		#{/if}
 		#{else} <!-- if not admin -->
@@ -398,9 +394,18 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		#{list items:col, as:'task'}
 		
 		<!-- small sticky note -->
+		#{if connected.in(p).can('changeTaskStatus') || connected.equals(task.assignee)}
+		<div id="task-${task.id}_T" class="drag status status_${task.id}">
 		<p>
 		<div class="${task.taskStatus.column.name}" style="max-width:130px"></div>
-		<div style="max-width:130px" id="task-${task.id}_T" class="drag">
+		<div style="max-width:130px" id="task-${task.id}_T" class="drag status status_${task.id}">
+		#{/if}
+		#{else}
+		<div class="nostatus nostatus_${task.id}">
+		<p>
+		<div class="${task.taskStatus.column.name}" style="max-width:130px"></div>
+		<div style="max-width:130px" id="task-${task.id}_T" class="nostatus nostatus_${task.id}">
+		#{/else}
 		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor}; max-width:110px" border=0px id="${task.id}_small">
 		<a id="task-${task.id}" style="font-size:x-large;cursor: pointer !important"" border=0px class="ctask">-</a>S ${task.taskStory.id} 
 		<div id="desc_${task.id}">${task.description}</div>
@@ -418,24 +423,16 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<p>
 		<div  border=0px align="center">S ${task.taskStory.id}</div>
 		
-		<!-- set flag for logged in user (edit description) -->
-		#{if connected.in(p).can('changeTaskDescreption')} 
-		<span style="display:none"> ${flag2=true}</span>
-		#{/if}
-		#{if flag2 || controllers.Security.getConnected().equals(task.assignee)} <!-- if has permission (desc) or assignee -->
-		<div style="width:3cm" id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id} tiptitize" title="Edit description?">${task.description}</div>	
+		#{if connected.in(p).can('changeTaskDescreption') || connected.equals(task.assignee)} <!-- if has permission (desc) or assignee -->
+		<div style="width:3cm" id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id} tiptipize" title="Edit description?">${task.description}</div>	
 		<div style="display:none" class="noedit noedit_${task.assignee.id}"id="${task.id}_desc" border=0px >${task.description}</div>	
 		#{/if}
 		#{else} <!-- if doesn't have have permission (desc) nor assignee -->
 		<div class="noedit noedit_${task.assignee.id}"id="${task.id}_des" border=0px >${task.description}</div>
-		<div style="display:none;width:3cm" id="${task.id}_desc" border=0px class="editDES editdesc_${task.assignee.id}" title="Edit description?">${task.description}</div>		
+		<div style="display:none;width:3cm" id="${task.id}_desc" border=0px class="editDES editdesc_${task.assignee.id} tiptipize" title="Edit description?">${task.description}</div>		
 		#{/else}
 		
-		<!-- set flag for logged in user (edit assignee) -->								
-		#{if connected.in(p).can('changeAssignee')} 
-		<span style="display:none"> ${flag3=true}</span>
-		#{/if}
-		#{if flag3} <!-- if has permission (edit assignee) -->
+		#{if connected.in(p).can('changeAssignee')} <!-- if has permission (edit assignee) -->
 		<div><a title="Change Assignee?" value="dddd" class="hidesassi tiptitize" id="usr_${task.id}" href="javascript:popUp('/Tasks/chooseTaskAssi?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Assignee:${task.assignee}</a></div>
 		<div id="usrs_${task.id}" class="showdesc" style="display:none">Assignee:${task.assignee}</div>	
@@ -446,11 +443,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<div id="usrs_${task.id}" class="showdesc">Assignee:${task.assignee}</div>
 		#{/else}
 		
-		<!-- set flag for logged in user (edit reviewer) -->												
-		#{if connected.in(p).can('changeReviewer')}
-		<span style="display:none"> ${flag4=true}</span>
-		#{/if}
-		#{if flag4} <!-- if has permission (edit reviewer) -->
+		#{if connected.in(p).can('changeReviewer')} <!-- if has permission (edit reviewer) -->
 		<div><a id="rev_${task.id}" title="Change Reviewer?" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Reviewer:${task.reviewer}</a></div>
 		<div id="revs_${task.id}" class="showrev" style="display:none">Reviewer:${task.reviewer}</div>
@@ -461,11 +454,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<div id="revs_${task.id}" class="showrev">Reviewer:${task.reviewer}</div>
 		#{/else}
 		
-		<!-- set flag for logged in user (edit type) -->	
-		#{if connected.in(p).can('changeTaskType')}
-		<span style="display:none"> ${flag5=true}</span>
-		#{/if}
-		#{if flag5 || controllers.Security.getConnected().equals(task.assignee)} <!-- if has permission (type) or assignee -->
+		#{if connected.in(p).can('changeTaskType') || connected.equals(task.assignee)} <!-- if has permission (type) or assignee -->
 		<div><a id="type_${task.id}" title="Edit type?" class="tiptitize hidestype shows_${task.assignee.id}" HREF="javascript:popUp('/Tasks/chooseType?taskId=${task.id}&userId='+selectedUser)">
 		Type:${task.taskType.name}</a></div>
 		<div id="types_${task.id}" style="display:none" class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${task.taskType.name}</div>
@@ -482,6 +471,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		</div>
 		</div>
 		</p>
+		</div>
 		#{/list}
 	</td>
 	#{/list}
@@ -498,6 +488,9 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 
  function select_user(id, str) 
  {
+ 	// $('.status').css('display','none');
+	//  $('.nostatus').css('display','none');
+	 
  	 $('.editDES').css('display','none');
 	 $('.noedit').css('display','none');
 	 $('.shwtype').css('display','none');		
@@ -525,7 +518,28 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		$('.editdesc_'+id).css('display','inline-block');	
 	}
 	
-	 
+	 var statusList = ${us};
+	 var f_status = false;
+	for(var j=0; j<statusList.length; j++)
+    {
+     if(statusList[j]==id)
+	 {
+	 	f_status = true;
+	 }
+    }
+	if(f_status)
+	{
+	//	 $('.status').css('display','inline-block');
+	//	  $('.nostatus').css('display','none');		
+	}
+	else
+	{
+	//	 $('.status').css('display','none');
+	//	 $('.nostatus').css('display','inline-block');
+	// 	$('.nostatus_'+id).css('display','none');
+	//	$('.status_'+id).css('display','inline-block');	
+	}	
+		
 			
 	 var assiList = ${ua};
 	 var f_assi = false;
