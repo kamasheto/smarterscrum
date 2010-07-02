@@ -57,6 +57,10 @@ public class ProjectNotificationProfile extends SmartModel {
 		onDeleteComponent = true;
 		addColumn=true;
 	    deleteColumn=true;
+	    assignStoryToSprint = true;
+		RequestToBeReviewer= true;
+		AcceptToBeReviewerRequest= true;
+		RejectToBeReviewerRequest= true;
 	}
 
 	/**
@@ -93,7 +97,19 @@ public class ProjectNotificationProfile extends SmartModel {
 			return onEditComponent;
 		else if (action.equalsIgnoreCase("onDeleteComponent"))
 			return onDeleteComponent;
-		else
+		else if (action.equalsIgnoreCase("addColumn"))
+			return addColumn;
+		else if (action.equalsIgnoreCase("deleteColumn"))
+			return deleteColumn;
+		else if (action.equalsIgnoreCase("assignStoryToSprint"))
+			return assignStoryToSprint;
+		else if (action.equalsIgnoreCase("RequestToBeReviewer"))
+			return RequestToBeReviewer;
+		else if (action.equalsIgnoreCase("AcceptToBeReviewerRequest"))
+			return AcceptToBeReviewerRequest;
+		else if (action.equalsIgnoreCase("RejectToBeReviewerRequest"))
+			return RejectToBeReviewerRequest;
+		else			
 			return false;
 	}
 
