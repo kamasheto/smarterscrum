@@ -52,6 +52,18 @@
 						}
    	   			    });
        		});
+
+
+
+			/**
+			 * DO NOT REMOVE!
+			 * This will only work in overlay.html!
+			 */
+			window.parent.$(document).keyup(function(e) {
+				if (e.keyCode == 27) { 
+					window.parent.$('#getOverlay').hide();
+				}   // esc
+			});
         </script>
 <style type="text/css">
 body,html {
