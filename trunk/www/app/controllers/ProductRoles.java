@@ -118,9 +118,10 @@ public class ProductRoles extends SmartCRUD {
 			}
 		} else {
 			object.save();
-			String header = "Product Role: " + "\'" + productRoleObject.name + "\'" + " has been added.";
-			String body = "Added to Project: " + "\'" + project.name + "\'" + "." + '\n'
-			+ " Added by: " + "\'" + Security.getConnected().name + "\'" + "." + '\n';
+			String header = "A new Product Role has been added.";
+			String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n'
+			+ " Product Role name: " + "\'" + productRoleObject.name + "\'" +"." + '\n'
+			+ " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		  /*////Long Informative Notification message. Not suitable for online notification.
 			String header = "Product Role: " + "\'" + productRoleObject.name + "\'" + " has been added to Project: " + "\'" + project.name + "\'" + ".";
 			String body = "New Product Role has been added to Project " + "\'" + project.name + "\'" + "." + '\n' + '\n' 
@@ -206,12 +207,15 @@ public class ProductRoles extends SmartCRUD {
 				render("CRUD/show.html", type, object);
 			}
 		} else {
+			String header = "Product Role: " + "\'" + oldName + "\'" +  " has been edited.";
+			String body = "In Project " + "\'" + project.name + "\'" + "." + '\n'
+				+ " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
+			/*////Long Informative Notification message. Not suitable for online notification.
 			String header = "Product Role: " + "\'" + oldName + "\'" + " in Project " + "\'" + project.name + "\'" + " has been edited.";
 			String body = "The Product Role: " + "\'" + oldName + "\'" + " in Project " + "\'" + project.name + "\'" + " has been edited." + '\n' + '\n'
 				+ "Product Role Name: " + productRoleObject.name + "." + '\n' 
 				+ " Description: " + productRoleObject.description + "." + '\n' 
-				+ " Edited by: " + Security.getConnected().name + "." + '\n' 
-				+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+				+ " Edited by: " + Security.getConnected().name + ".";*/
 			object.save();
 			Logs.addLog(Security.getConnected(), "Edit", "ProductRole", productRoleObject.id, project, new Date(System.currentTimeMillis()));
 			Notifications.notifyUsers(project, header, body, "editProductRole", new Byte((byte) 0));

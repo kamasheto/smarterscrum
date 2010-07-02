@@ -645,9 +645,8 @@ public class Storys extends SmartCRUD {
 			}
 
 		}
-		String header = "A new Story has been assigned to Sprint: " + "\'" + sprint.sprintNumber + "\'"+".";
-		String body = "Story: 'S" + story.id + "\'" + "."+ '\n'
-			+ " In Project: " + "\'" +story.componentID.name + "\'" + "."+ '\n'
+		String header = "Story 'S" + story.id + "\'" + " has been assigned to Sprint: " + "\'" + sprint.sprintNumber + "\'"+".";
+		String body = "In Project: " + "\'" +story.componentID.name + "\'" + "."+ '\n'
 		    + " In Component: " + "\'" + sprint.project.name + "\'" + "."+ '\n'
 		    + " Assigned by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		/*////Long Informative Notification message. Not suitable for online notification.
@@ -719,9 +718,9 @@ public class Storys extends SmartCRUD {
 		story1.succussSenario = s;
 		story1.save();
 		Logs.addLog(Security.getConnected(), "Create", "Succuss Senario", story1.id, story1.componentID.project, new Date(System.currentTimeMillis()));
-		String header = "A new Succuss Senario has been added to a Story in Project: " + "\'" + story1.componentID.project.name + "\'" + ".";
-		String body = "Story: 'S" + story1.id + "\'"+ "." + '\n'
-			+" In Component: " + "\'" + story1.componentID.name + "\'"+ "." + '\n'
+		String header = "A new Succuss Senario has been added to Story 'S" + story1.id + "\'"+ ".";
+		String body = "In Project: " + "\'" + story1.componentID.project.name + "\'" + "." + '\n'
+		    +  " In Component: " + "\'" + story1.componentID.name + "\'"+ "." + '\n'
 		    + " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		/*////Long Informative Notification message. Not suitable for online notification.
 		String header = "New Succuss Senario has been added to a Story in Component: " + "\'" + story1.componentID.name + "\'" + " in Project: " + "\'" + story1.componentID.project.name + "\'" + ".";
@@ -748,9 +747,9 @@ public class Storys extends SmartCRUD {
 		story1.failureSenario = f;
 		story1.save();
 		Logs.addLog(Security.getConnected(), "Create", "Failure Senario", story1.id, story1.componentID.project, new Date(System.currentTimeMillis()));
-		String header = "New Failure Senario has been added to a Story in Project: " + "\'" + story1.componentID.project.name + "\'" + ".";
-		String body = "Story: 'S" + story1.id + "\'"+ "." + '\n'
-			+ " In Component: " + "\'" + story1.componentID.name + "\'" + '\n'
+		String header = "A new Failure Senario has been added to Story 'S" + story1.id + "\'"+ ".";
+		String body = "In Project: " + "\'" + story1.componentID.project.name + "\'" + "."+ '\n'
+		    + " In Component: " + "\'" + story1.componentID.name + "\'"+ "." + '\n'
 		    + " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		/*////Long Informative Notification message. Not suitable for online notification.
 		String header = "New Failure Senario has been added to a Story in Component: " + "\'" + story1.componentID.name + "\'" + " in Project: " + "\'" + story1.componentID.project.name + "\'" + ".";

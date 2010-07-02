@@ -203,6 +203,13 @@ public class Tasks extends SmartCRUD {
 		tmp = (Task) object;
 		Calendar cal = new GregorianCalendar();
 		Logs.addLog(tmp.reporter, "Create", "Task", tmp.id, tmp.taskStory.componentID.project, new Date(System.currentTimeMillis()));
+		String header = "A new Task has been added to Story: 'S" + tmp.taskStory.id + "\'" + ".";
+		String body = "In Project: " + "\'" + tmp.taskStory.componentID.project.name + "\'" + "." + '\n' 
+		            + " In Component: " + "\'" + tmp.taskStory.componentID.name + "\'" + "." + '\n' 
+					+ " Task: 'T" +  tmp.id + "\'" + "." + '\n'  
+					+ " Added by: " + "\'" + tmp.reporter.name + "\'" + ".";		
+		
+		/*////Long Informative Notification message. Not suitable for online notification.
 		String header = "New Task has been added to Component: " + "\'" + tmp.taskStory.componentID.name + "\'" + " in Project: " + "\'" + tmp.taskStory.componentID.project.name + "\'" + ".";
 		String body = "New Task has been added to Component: " + "\'" + tmp.taskStory.componentID.name + "\'" 
 				    + " in Project: " + "\'" + tmp.taskStory.componentID.project.name + "\'" + "." + '\n' + '\n' 
@@ -213,8 +220,7 @@ public class Tasks extends SmartCRUD {
 					+ " Assignee: " + tmp.assignee.name + "." + '\n' 
 					+ " Reporter: " + tmp.reporter.name + "." + '\n' 
 					+ " Reviewer: " + tmp.reviewer.name + "." + '\n' 
-					+ " Added by: " + tmp.reporter.name + "." + '\n' 
-					+ " Added at: " + new Date(System.currentTimeMillis()) + ".";		
+					+ " Added by: " + tmp.reporter.name + ".";*/
 		Notifications.notifyUsers(tmp.taskStory.componentID.componentUsers, header, body, (byte) 1);
 		// tmp.init();
 		flash.success(Messages.get("crud.created", type.modelName, object
@@ -403,6 +409,12 @@ public class Tasks extends SmartCRUD {
 				}
 			}
 		}
+		String header = "Task: 'T" +  tmp.id + "\'" + " has been edited.";
+		String body = "In Project: " + "\'" + tmp.taskStory.componentID.project.name + "\'" + "." + '\n' 
+			+ " In Component: " + "\'" + tmp.taskStory.componentID.name + "\'" + "." + '\n' 
+			+ " Story: 'S" + tmp.taskStory.id + "\'" + "." + '\n' 
+			+ " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";		
+		/*////Long Informative Notification message. Not suitable for online notification.
 		String header = "A Task has been edited in Component: " + "\'" + tmp.taskStory.componentID.name + "\'" + " in Project: " + "\'" + tmp.taskStory.componentID.project.name + "\'" + ".";
 		String body = "The Task:" + '\n' 
 				    + " " + "\'" + oldDescription + "\'" + '\n' 
@@ -415,8 +427,7 @@ public class Tasks extends SmartCRUD {
 					+ " Assignee: " + tmp.assignee.name + "." + '\n' 
 					+ " Reporter: " + tmp.reporter.name + "." + '\n' 
 					+ " Reviewer: " + tmp.reviewer.name + "." + '\n' 
-					+ " Edited by: " + tmp.reporter.name + "." + '\n' 
-					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+					+ " Edited by: " + tmp.reporter.name + ".";*/
 		object.save();
 		Logs.addLog(myUser, "Edit", "Task", tmp.id, tmp.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 		Notifications.notifyUsers(tmp.taskStory.componentID.componentUsers, header, body, (byte) 0);
@@ -447,13 +458,18 @@ public class Tasks extends SmartCRUD {
 		Task tmp = (Task) object;
 		try {
 			tmp.deleted = true;
+			String header = "Task: 'T" +  tmp.id + "\'" + " has been deleted.";
+			String body = "In Project: " + "\'" + tmp.taskStory.componentID.project.name + "\'" + "." + '\n' 
+				+ " In Component: " + "\'" + tmp.taskStory.componentID.name + "\'" + "." + '\n' 
+				+ " Story: 'S" + tmp.taskStory.id + "\'" + "." + '\n' 
+				+ " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";		
+			/*////Long Informative Notification message. Not suitable for online notification.
 			String header = "A Task in Component: " + "\'" + tmp.taskStory.componentID.name + "\'" + " in Project: " + "\'" + tmp.taskStory.componentID.project.name + "\'" + " has been deleted.";
 			String body = "The Task:" + '\n' 
 			    + " " + "\'" + tmp.description + "\'" + '\n' 
 				+ " in Component: " + "\'" + tmp.taskStory.componentID.name + "\'" + " in Project: " + "\'" + tmp.taskStory.componentID.project.name + "\'" + " has been deleted." + '\n' + '\n'  
 				+ " Story: " + tmp.taskStory.description + "." + '\n' 
-				+ " Deleted by: " + Security.getConnected().name + "." + '\n' 
-				+ " Deleted at: " + new Date(System.currentTimeMillis()) + ".";
+				+ " Deleted by: " + Security.getConnected().name + ".";*/
 			Logs.addLog(Security.getConnected(), "delete", "Task", tmp.id, tmp.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 			Notifications.notifyUsers(tmp.taskStory.componentID.componentUsers, header, body, (byte) -1);
 			object.save();

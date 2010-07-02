@@ -27,9 +27,12 @@ public class ProjectNotificationProfile extends SmartModel {
 	public boolean onCreateComponent;
 	public boolean onEditComponent;
 	public boolean onDeleteComponent;
+	//C5 
 	public boolean addColumn;
 	public boolean deleteColumn;
+	//C3
 	public boolean assignStoryToSprint;
+	public boolean RequestToBeReviewer;
 
 	/**
 	 * the constructor that's responsible for adding this profile to the DB
