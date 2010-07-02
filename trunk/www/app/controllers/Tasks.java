@@ -1200,6 +1200,12 @@ public class Tasks extends SmartCRUD {
 			return false;
 		task1.estimationPoints = estimation;
 		task1.save();
+		String header = "Task: 'T" +  task1.id + "\'" + " Estimation Points have been edited.";
+		String body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' 
+		+ " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' 
+		+ " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' 
+		+ " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		/*////Long Informative Notification message. Not suitable for online notification.
 		String header = "A Task Estimation has been edited in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
 		String body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
 				    + " in Story: " + "\'" + task1.taskStory.description + "\'" + '\n' 
@@ -1207,8 +1213,7 @@ public class Tasks extends SmartCRUD {
 			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
 				    + " had Estimation Points:  " + "\'" + oldEstimation + "\'" + ", and it has been edited." + '\n' + '\n'
 			        + "The New Estimation Points: " +  task1.estimationPoints + "." 
-					+ " Edited by: " + Security.getConnected().name + "." + '\n' 
-					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+					+ " Edited by: " + Security.getConnected().name + ".";*/
 		Logs.addLog(Security.getConnected(), "Edit", "Task estimation", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
 		return true;
