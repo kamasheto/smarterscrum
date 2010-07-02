@@ -692,6 +692,12 @@ public class Tasks extends SmartCRUD {
 		String oldDescription = task1.description;
 		task1.description = desc;
 		task1.save();
+		String header = "Task: 'T" +  task1.id + "\'" + " Description has been edited.";
+		String body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' 
+		+ " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' 
+		+ " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' 
+		+ " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		/*////Long Informative Notification message. Not suitable for online notification.
 		String header = "A Task Description has been edited in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
 		String body = "The Task:" + "\'" + task1.description + "\'" + '\n' 
 				    + " in Story: " + task1.taskStory.description + '\n' 
@@ -699,8 +705,7 @@ public class Tasks extends SmartCRUD {
 			        + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + '\n' 
 				    + " had Description:  " + "\'" + oldDescription + "\'" + ", and it has been edited." + '\n' + '\n'
 			        + "The New Description: " +  task1.description + "." 
-					+ " Edited by: " + Security.getConnected() + "." + '\n' 
-					+ " Edited at: " + new Date(System.currentTimeMillis()) + ".";
+					+ " Edited by: " + Security.getConnected() + ".";*/
 		Logs.addLog(Security.getConnected(), "Edit", "Task Description", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
 		return true;
