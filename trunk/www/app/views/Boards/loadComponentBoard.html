@@ -378,16 +378,25 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		#{list items:col, as:'task'}
 		
 		<!-- small sticky note -->
+		#{if connected.in(p).can('changeTaskStatus') || connected.equals(task.assignee) || connected.equals(task.reviewer)}
+		<div id="task-${task.id}_T" class="drag status status_${task.id}">
 		<p>
 		<div class="${task.taskStatus.column.name}" style="max-width:130px"></div>
-		<div style="max-width:130px" id="task-${task.id}_T" class="drag">
+		<div style="max-width:130px" id="task-${task.id}_T" class="drag status status_${task.id}">
+		#{/if}
+		#{else}
+		<div class="nostatus nostatus_${task.id}">
+		<p>
+		<div class="${task.taskStatus.column.name}" style="max-width:130px"></div>
+		<div style="max-width:130px" id="task-${task.id}_T" class="nostatus nostatus_${task.id}">
+		#{/else}
 		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor}; max-width:110px" border=0px id="${task.id}_small">
 		<a id="task-${task.id}" style="font-size:x-large;cursor: pointer !important"" border=0px class="ctask">-</a>S ${task.taskStory.id} 
 		<div id="desc_${task.id}">${task.description}</div>
 		<a class="SmallSticky tiptitize" title="Edit task info?" style="cursor: pointer !important" id="${task.id}">view/edit info..</a>
 		</div>
 		</div>
-		<a id="task-${task.id}_hidden" style="display:none; font-size:large;" class="showtask">+</a>
+		<a id="task-${task.id}_hidden" style="display:none; font-size:large;cursor: pointer !important" class="showtask">+</a>
 		</p>
 		
 		<!-- big sticky note -->						
