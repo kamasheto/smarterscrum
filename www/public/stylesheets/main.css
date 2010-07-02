@@ -714,6 +714,7 @@ img {
 }
 p.baseRole {
 	font-weight:bold;
-	background: url(/public/images/famfam/tick.png) no-repeat;
-	padding-left: 18px;
+}
+.hidden {
+	display: none;
 }
