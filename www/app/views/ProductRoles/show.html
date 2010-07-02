@@ -20,8 +20,8 @@
 		<p class="crudButtons">
 		#{if editable}
 		#{if connected.in(project).can('editProductRole')}
-			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" onclick="overlayClose() />
-			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" onclick="overlayClose() />
+			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
 		#{/if}
 		#{/if}
 		
@@ -36,7 +36,7 @@
     #{if connected.in(project).can('deleteProductRole')}
 	#{form @delete(object.id)}
 		<p class="crudDelete">
-		<a onclick="deleteProductRole(${object.id}); overlayClose();" ><img src="@{'/public/images/famfam/delete.png'}" title="Delete"></a>
+		<a onclick="deleteProductRole(${object.id})" ><img src="@{'/public/images/famfam/delete.png'}" title="Delete"></a>
 		</p>
 	#{/form}
 	#{/if}
