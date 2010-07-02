@@ -830,7 +830,7 @@ public class Tasks extends SmartCRUD {
 		task1.taskType = type;
 		task1.save();
 		String body="";
-		String header = "Task: 'T" +  task1.id + "\'" + " Description has been edited.";
+		String header = "Task: 'T" +  task1.id + "\'" + " Task Type has been edited.";
 		//String header = "A Task Type has been edited in Component: " + "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
 		if(userId==Security.getConnected().id)
 		{
