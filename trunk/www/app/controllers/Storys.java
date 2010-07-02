@@ -646,9 +646,9 @@ public class Storys extends SmartCRUD {
 
 		}
 		String header = "A new Story has been assigned to Sprint: " + "\'" + sprint.sprintNumber + "\'"+".";
-		String body = "In Project: " + "\'" + sprint.project.name + "\'" + "."+ '\n'
-		+ " Assigned by: " + Security.getConnected().name + "." + '\n' 
-		+ " Assigned at: " + new Date(System.currentTimeMillis()) + ".";
+		String body = "In Project: " + "\'" +story.componentID.name + "\'" + "."+ '\n'
+		+ " In Component: " + "\'" + sprint.project.name + "\'" + "."+ '\n'
+		+ " Assigned by: " + Security.getConnected().name + ".";
 		/*////Long Informative Notification message. Not suitable for online notification.
 		String header = "New Story has been assigned to Sprint: " + "\'" + sprint.sprintNumber + "\'" + " in Project: " + "\'" + sprint.project.name + "\'" + ".";
 		String body = "The Story: " + "\'" + story.description + "\'" + '\n' + " has been assigned to Sprint: " + "\'" + sprint.sprintNumber + "\'" + " in Project: " + "\'" + sprint.project.name + "\'" + "."+ '\n' + '\n' 
