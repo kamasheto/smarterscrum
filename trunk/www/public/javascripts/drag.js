@@ -398,11 +398,8 @@ REDIPS.drag = (function () {
 		if(row_source==row&&cell_source!=cell){
 		
 		$.post('/Tasks/changeTaskStatusHelper' ,			
-			{id:gup('sprintID'),columnSequence:cell-1, taskString:obj.id,user_id:selectedUser},
-			function()
-			{
-				window.location.reload();
-				});
+			{id:gup('sprintID'),columnSequence:cell-1, taskString:obj.id,user_id:selectedUser}
+		);
 		}
 		else if (row_source!=row && gup('componentID')==0)
 		{
@@ -412,11 +409,7 @@ REDIPS.drag = (function () {
 		{
 			
 			$.post('/Tasks/changeTaskStatusHelper' ,			
-					{id:gup('sprintID'),columnSequence:cell-1, taskString:obj.id,user_id:selectedUser},
-			function()
-			{
-				window.location.reload();
-				});
+					{id:gup('sprintID'),columnSequence:cell-1, taskString:obj.id,user_id:selectedUser});
 			$.post('/Tasks/changeTaskAssigneeHelper' ,			
 					{id:gup('componentID'),taskString:obj.id, user_id:selectedUser,row:(row/2)-1});
 			
@@ -424,11 +417,7 @@ REDIPS.drag = (function () {
 		else if (row_source!=row && gup('componentID')!=0)
 		{
 			$.post('/Tasks/changeTaskAssigneeHelper' ,			
-					{id:gup('componentID'),taskString:obj.id, user_id:selectedUser,row:(row/2)-1},
-			function()
-			{
-				window.location.reload();
-				});
+					{id:gup('componentID'),taskString:obj.id, user_id:selectedUser,row:(row/2)-1});
 			
 		}
 		
