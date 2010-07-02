@@ -5,13 +5,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import models.Board;
-import models.Project;
-import models.Request;
-import models.Role;
-import models.Story;
-import models.Task;
-import models.User;
+import models.*;
 import play.mvc.With;
 
 @With (Secure.class)
@@ -106,7 +100,8 @@ public class Show extends SmartController {
 	/**
 	 * this method takes the id of the project to be deleted and sets the deleted attribute to true and then 
 	 * sends notification e-mail to the project members that the project has been deleted
-	 * 
+	 * Also,When the project is deleted the associated Meetings,Sprints,Components,Roles,
+	 * ,Board,ChatRoom are deleted (deletion marker set to true).
 	 * @Author Ghada Fakhry
 	 * @param id
 	 */
@@ -115,6 +110,46 @@ public class Show extends SmartController {
 		if( Security.getConnected().in( project ).can( "deleteproject" ) )
 		{
 			project.deleted = true;
+			List <Meeting> meetings = project.meetings;
+			List <Component> components = project.components;
+			List <Sprint> sprints = project.sprints;
+			List <Request> requests = project.requests;
+		
+			Board board = project.board;
+			ChatRoom chatroom = project.chatroom;
+			
+			board.deleted = true;
+			board.save();
+			chatroom.deleted =true ;
+			chatroom.save();
+			
+			while( meetings.isEmpty() == false )
+			{
+				Meeting temp = (meetings.remove( 0 ));
+				temp.deleted = true ;
+				temp.save();
+			}
+			while( components.isEmpty() == false )
+			{
+				Component temp = (components.remove( 0 ));
+				temp.deleted = true ;
+				temp.save();
+			}
+			while( sprints.isEmpty() == false )
+			{
+				Sprint temp = (sprints.remove( 0 ));
+				temp.deleted = true ;
+				temp.save();
+			}
+			while( requests.isEmpty() == false )
+			{
+				Request temp = (requests.remove( 0 ));
+				temp.deleted = true ;
+				temp.save();
+			}
+			
+			
+			
 			project.save();
 			String body = "Please note that the project " + project.name + " has been deleted and all upcoming meetings and events are cancelled !";
 			String header = project.name + " deletion notification";
@@ -127,4 +162,7 @@ public class Show extends SmartController {
 			forbidden();
 		}
 	}
+	
+	
+	
 }
