@@ -80,6 +80,16 @@ public class Meetings extends SmartCRUD
 		Meeting M=Meeting.findById(meetingid);
 		M.endTime=new Date().getTime();
 		M.save();
+		Date D=new Date(M.endTime);
+		String header = "the Meeting "+ M.name+" has been ended"  ; 
+		String body = "The Meeting:" + "\'" + M.name + '\n' 
+				    + " in Project: " + "\'" + M.project.name + "\'" + '\n' +
+				    "by  "+Security.getConnected()+'\n'
+				   + "was ended  at "+ D.getHours()+":"+D.getMinutes()+":"+D.getSeconds();
+		List<MeetingAttendance> attendees = MeetingAttendance.find( "byMeeting.id", M.id ).fetch();
+		Logs.addLog(Security.getConnected(), "Ended", "Meeting", M.id, M.project, new Date(System.currentTimeMillis()));
+		for(int i=0;i<attendees.size();i++){
+		Notifications.notifyUsers(attendees.get(i).user, header, body, (byte) 0);}
 		}
 	/**
 	 * added this method to render the sprints with the page
