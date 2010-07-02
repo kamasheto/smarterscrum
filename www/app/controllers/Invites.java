@@ -49,16 +49,7 @@ public class Invites extends SmartController {
 		Invite invite = Invite.find("byHashAndId", hash, id).first();
 		notFoundIfNull(invite);
 		if (what && !invite.user.roles.contains(invite.role)) {
-			invite.user.roles.add(invite.role);
-			if (!invite.user.projects.contains(invite.role.project)) {
-				invite.user.projects.add(invite.role.project);
-				if (!invite.role.baseRole) {
-					Role baseRole = Role.find("byProjectAndBaseRole", invite.role.project, true).first();
-					invite.user.roles.add(baseRole);	
-				}
-			}
-			invite.user.save();
-			invite.role.save();
+			invite.user.addRole(invite.role);
 		}
 		Logs.addLog(invite.role.project, "accepted invite to " + invite.role.name, "Invite", invite.id);
 		invite.delete();

@@ -94,10 +94,8 @@ public class Bootstrap extends Job
 			// add more data below!
 
 			// adding in the users relation the Projects
-			for( User u : users )
-			{
-				u.projects.add( p1 );
-				u.save();
+			for( User u : users ) {
+				u.addRole(p1.roles.get(0));
 			}
 
 			// Components

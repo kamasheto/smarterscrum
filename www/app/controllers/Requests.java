@@ -60,16 +60,7 @@ public class Requests extends SmartCRUD {
 	public static void requestAccept(String hash) {
 		Request x = Request.find("byHash", hash).first();
 		Project y = x.project;
-		x.user.roles.add(x.role);
-		if (!(y.users.contains(x.user))) {
-			x.user.projects.add(y);
-			Role baseRole = Role.find("byProjectAndBaseRole", y, true).first();
-			if (baseRole != x.role) {
-				x.user.roles.add(baseRole);
-			}
-			new UserNotificationProfile(x.user, y).save();
-		}
-		x.user.save();
+		x.user.addRole(x.role);
 		Notifications.notifyUsers(x.user, "Role Request Accepted", "Your Role request to be " + x.role.name + " in " + x.role.project.name + " has been accepted", (byte) 1);
 		User myUser = Security.getConnected();
 		Logs.addLog(myUser, "RequestAccept", "Request", x.id, y, new Date());
