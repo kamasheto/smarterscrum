@@ -33,6 +33,12 @@ public class UserNotificationProfile extends SmartModel {
 	public boolean onCreateComponent;
 	public boolean onEditComponent;
 	public boolean onDeleteComponent;
+	public boolean addColumn;
+	public boolean deleteColumn;
+	public boolean assignStoryToSprint;
+	public boolean RequestToBeReviewer;
+	public boolean AcceptToBeReviewerRequest;
+	public boolean RejectToBeReviewerRequest;
 
 	// *********** List Of Action Types Ended ***********
 
@@ -65,6 +71,12 @@ public class UserNotificationProfile extends SmartModel {
 		this.onCreateComponent = project.notificationProfile.onCreateComponent;
 		this.onEditComponent = project.notificationProfile.onEditComponent;
 		this.onDeleteComponent = project.notificationProfile.onDeleteComponent;
+		this.addColumn=project.notificationProfile.addColumn;
+	    this.deleteColumn=project.notificationProfile.deleteColumn;
+	    this.assignStoryToSprint = project.notificationProfile.assignStoryToSprint;
+		this.RequestToBeReviewer= project.notificationProfile.RequestToBeReviewer;
+		this.AcceptToBeReviewerRequest= project.notificationProfile.AcceptToBeReviewerRequest;
+		this.RejectToBeReviewerRequest= project.notificationProfile.RejectToBeReviewerRequest;
 	}
 
 	/**
@@ -101,6 +113,18 @@ public class UserNotificationProfile extends SmartModel {
 			return onEditComponent;
 		else if (action.equalsIgnoreCase("onDeleteComponent"))
 			return onDeleteComponent;
+		else if (action.equalsIgnoreCase("addColumn"))
+			return addColumn;
+		else if (action.equalsIgnoreCase("deleteColumn"))
+			return deleteColumn;
+		else if (action.equalsIgnoreCase("assignStoryToSprint"))
+			return assignStoryToSprint;
+		else if (action.equalsIgnoreCase("RequestToBeReviewer"))
+			return RequestToBeReviewer;
+		else if (action.equalsIgnoreCase("AcceptToBeReviewerRequest"))
+			return AcceptToBeReviewerRequest;
+		else if (action.equalsIgnoreCase("RejectToBeReviewerRequest"))
+			return RejectToBeReviewerRequest;
 		else
 			return false;
 	}
