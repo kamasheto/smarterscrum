@@ -28,15 +28,6 @@ public class Roles extends SmartCRUD {
 			r.save();
 		}
 	}
-	/**
-	 * Action to view and manage default roles (those assigned to all projects
-	 * by default)
-	 */
-	public static void defaultRoles() {
-		Security.check(Security.getConnected().isAdmin);
-		List<Role> roles = Role.find("byProjectIsNull").fetch();
-		render(roles);
-	}
 
 	public static void getPermissions(long id) {
 		if (id == 0)

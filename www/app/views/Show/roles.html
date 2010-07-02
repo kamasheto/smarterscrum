@@ -1,18 +1,23 @@
-#{extends 'main.html' /}
-#{set title:'Manage roles for: '+project.name /}
-
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
-#{/set}
-
-#{note 'highlight'}These are your project roles. Members in a project may have more than one role at a time. Whenever possible, avoid editing roles to limit confusion for developers. If you'd like to give a developer more access, add him to a new role. The number in brackets indicate the number of developers with that role (click the number to toggle the users). The base role is highlighted in bold. All members joining a project join the base role automatically. Click on a role to set it to be the base role.#{/note}
-#{list project.roles, as:'role'}
-	<p#{if role.baseRole} class="baseRole"#{/if} id="role_p_${role.id}"><a href="#" onclick="overlayOpen('/admin/roles/${role.id}')" ><img src="@{'/public/images/famfam/pencil.png'}"></a> <span class="delete_img ${role.baseRole ? 'hidden' :''}"><a href="/roles/delete?id=${role.id}" ><img src="@{'/public/images/famfam/delete.png'}"></a> </span><span class="tick_img ${role.baseRole ? '' : 'hidden'}"><img src="/public/images/famfam/accept.png" alt=""> </span><a href="javascript:setBaseRole(${role.id})">${role.name}</a> <a href="javascript:$('#role_${role.id}').toggle()">(${role.users.size()})</a> <span id="role_${role.id}" style="display:none;">${role.users.toString().substring(1, role.users.toString().length()-1)}</span></p>
+#{if project}	
+	#{extends 'main.html' /}
+	#{set title:'Manage roles for: '+project.name /}
+	#{set 'crumbs'}
+	<li><a href="/show/projects">Projects</a></li>
+	<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
+	#{/set}
+	#{note 'highlight'}These are your project roles. Members in a project may have more than one role at a time. Whenever possible, avoid editing roles to limit confusion for developers. If you'd like to give a developer more access, add him to a new role. The number in brackets indicate the number of developers with that role (click the number to toggle the users). The base role is highlighted in bold. All members joining a project join the base role automatically. Click on a role to set it to be the base role.#{/note}
+#{/if}
+#{else}
+	#{extends 'Application/adminIndex.html' /}
+	#{set title: 'Manage Global Roles' /}
+	#{note 'highlight'}These are the default roles. All projects created include these roles by default. Changes to these roles does NOT affect roles of projects already created. The base role is highlighted in bold. All members joining a project join the base role automatically. Click on a role to set it to be the base role.#{/note}
+#{/else}
+#{list roles, as:'role'}
+	<p#{if role.baseRole} class="baseRole"#{/if} id="role_p_${role.id}"><a href="#" onclick="overlayOpen('/admin/roles/${role.id}')" ><img src="@{'/public/images/famfam/pencil.png'}"></a> <span class="delete_img ${role.baseRole ? 'hidden' :''}"><a href="/roles/delete?id=${role.id}" ><img src="@{'/public/images/famfam/delete.png'}"></a> </span><span class="tick_img ${role.baseRole ? '' : 'hidden'}"><img src="/public/images/famfam/accept.png" alt=""> </span><a href="javascript:setBaseRole(${role.id})">${role.name}</a>#{if project} <a href="javascript:$('#role_${role.id}').toggle()">(${role.users.size()})</a> <span id="role_${role.id}" style="display:none;">${role.users.toString().substring(1, role.users.toString().length()-1)}</span>#{/if}</p>
 #{/list}
-	<p><a href="javascript:overlayOpen('/admin/roles/new?id=${project.id}')"><img src="@{'/public/images/famfam/add.png'}"></a></p>
+	<p><a href="javascript:overlayOpen('/admin/roles/new?id=${project?.id}')"><img src="@{'/public/images/famfam/add.png'}"></a></p>
 #{else}
 	#{note 'error'}
-		No default roles at the moment. <a href="javascript:overlayOpen('/admin/roles/new?id=${project.id}')">Create one?</a>
+		There are currently no roles. <a href="javascript:overlayOpen('/admin/roles/new?id=${project?.id}')">Create one?</a>
 	#{/note}
 #{/else}

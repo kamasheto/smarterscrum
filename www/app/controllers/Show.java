@@ -17,10 +17,17 @@ import play.mvc.With;
 @With (Secure.class)
 public class Show extends SmartController {
 
-	@Check ("canManageRoles")
 	public static void roles(long id) {
 		Project project = Project.findById(id);
-		render(project);
+		List<Role> roles = null;
+		if (project == null) {
+			Security.check(Security.getConnected().isAdmin);
+			roles = Role.find("byProjectIsNull").fetch();
+		} else {
+			Security.check(project, "manageRoles");
+			roles = project.roles;
+		}
+		render(project, roles);
 	}
 
 	public static void index() {
