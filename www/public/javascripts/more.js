@@ -80,35 +80,50 @@ this.tmpl = function tmpl(str, data){
 })();
 function overlayOpen(href)
 {
-	$('#getOverlay').load(href, function(){
-		$('.formatDate').each(function(){
-			$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );
-		});
-		$('.formatTime').each(function(){
-			$(this).html( formatDate( new Date(Number($(this).html())), 'd MMM, yyyy hh:mma') );
-		});
-
-	    $("a").tipTip({delay:0});
-	    $("td").tipTip({delay:0});
-	    $("span").tipTip({delay:0});
-    
-	    $("button").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-	    $("a button").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-	    $("input[type='submit']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-	    $("input[type='button']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-	    $("input[type='ok']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-	    $("input[type='add']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-	    $("input[type='send']").addClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only",0);
-	    $('div.crudField').each(function(){
-				if ($(this).html().trim() == '') {
-					$(this).remove();
-				}
-		    });
-	}).show();
+	$('#theLoadedContent').attr('src',href);
+	//$('#getOverlay').css('height',$('body').height()+'px');
+	$('#getOverlay').slideDown();
 	
 }
 
 function overlayClose()
 {
-	$('#getOverlay').hide();
+	$('#getOverlay').slideUp();
 }
+
+/** auto iframe height do not remove **/
+function doIframe(){
+	o = document.getElementsByTagName('iframe');
+	for(i=0;i<o.length;i++){
+		if (/\bautoHeight\b/.test(o[i].className)){
+			setHeight(o[i]);
+			addEvent(o[i],'load', doIframe);
+		}
+	}
+}
+
+function setHeight(e){
+	if(e.contentDocument){
+		e.height = e.contentDocument.body.offsetHeight + 35;
+	} else {
+		e.height = e.contentWindow.document.body.scrollHeight;
+	}
+}
+
+function addEvent(obj, evType, fn){
+	if(obj.addEventListener)
+	{
+	obj.addEventListener(evType, fn,false);
+	return true;
+	} else if (obj.attachEvent){
+	var r = obj.attachEvent("on"+evType, fn);
+	return r;
+	} else {
+	return false;
+	}
+}
+
+if (document.getElementById && document.createTextNode){
+ addEvent(window,'load', doIframe);	
+}
+
