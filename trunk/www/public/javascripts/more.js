@@ -1,10 +1,13 @@
 
 function setBaseRole(role) {
-	$('p').each(function(){
-		$(this).removeClass('baseRole')
-	})	
+	$('p').removeClass('baseRole')
+	$('.delete_img').show();
+	$('.tick_img').hide();
+	
 	$.post('/roles/setbaserole?id=' + role, function() {
 		$('#role_p_' + role).addClass('baseRole')
+		$('#role_p_' + role + ' .delete_img').hide();
+		$('#role_p_' + role + ' .tick_img').show();
 		$.bar({message:'Base role updated successfully'})
 	})
 }
