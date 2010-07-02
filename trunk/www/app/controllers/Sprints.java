@@ -11,7 +11,6 @@ import java.util.List;
 import models.Meeting;
 import models.Project;
 import models.Sprint;
-import models.User;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
@@ -65,20 +64,22 @@ public class Sprints extends SmartCRUD
 	 */
 	public static void projectblank( long projectId )
 	{
-		if(Security.getConnected().in( (Project)Project.findById( projectId )).can( "addSprint" ) ){
-		ObjectType type = ObjectType.get( getControllerClass() );
-		notFoundIfNull( type );
-		try
+		if( Security.getConnected().in( (Project) Project.findById( projectId ) ).can( "addSprint" ) )
 		{
+			ObjectType type = ObjectType.get( getControllerClass() );
+			notFoundIfNull( type );
+			try
+			{
 
-			render( type, projectId );
+				render( type, projectId );
+			}
+			catch( TemplateNotFoundException e )
+			{
+				render( "CRUD/blank.html", type );
+			}
 		}
-		catch( TemplateNotFoundException e )
+		else
 		{
-			render( "CRUD/blank.html", type );
-		}
-		}
-		else{
 			forbidden();
 		}
 	}
@@ -91,180 +92,184 @@ public class Sprints extends SmartCRUD
 	 * @param projectId
 	 * @throws Exception
 	 */
-	
+
 	public static void projectcreate( long projectId ) throws Exception
 	{
-		if(Security.getConnected().in( (Project)Project.findById( projectId )).can( "addSprint" ) ){
-		ObjectType type = ObjectType.get( getControllerClass() );
-		notFoundIfNull( type );
-		Sprint object = (Sprint) type.entityClass.newInstance();
-		Project proj = Project.findById( projectId );
-		Date startDate=null;
-		Date endDate=null;
-		validation.valid( object.edit( "object", params ) );
-		if( validation.hasErrors() )
+		if( Security.getConnected().in( (Project) Project.findById( projectId ) ).can( "addSprint" ) )
 		{
-			renderArgs.put( "error", "Please Correct Date Format Error" );
-			try
+			ObjectType type = ObjectType.get( getControllerClass() );
+			notFoundIfNull( type );
+			Sprint object = (Sprint) type.entityClass.newInstance();
+			Project proj = Project.findById( projectId );
+			Date startDate = null;
+			Date endDate = null;
+			validation.valid( object.edit( "object", params ) );
+			if( validation.hasErrors() )
 			{
-				render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
-			}
-			catch( TemplateNotFoundException e )
-			{
-				render( "CRUD/blank.html", type );
-			}
-		}
-		else
-		{
-			String[] startdate = params.get( "object.startDate" ).split( "-" );
-			int startyear = Integer.parseInt( startdate[0] );
-			int startmonth = Integer.parseInt( startdate[1] );
-			int startday = Integer.parseInt( startdate[2] );
-			startDate=new GregorianCalendar( startyear, startmonth-1	, startday ).getTime();
-		
-			if( params.get( "object.endDate" ).length() < 2 )
-			{
-				int defaultDays = proj.sprintDuration;
-				System.out.println(defaultDays);
-				endDate=new GregorianCalendar().getTime();
-				endDate.setTime( startDate.getTime() + (86400000 * defaultDays) );
+				renderArgs.put( "error", "Please Correct Date Format Error" );
+				try
+				{
+					render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
+				}
+				catch( TemplateNotFoundException e )
+				{
+					render( "CRUD/blank.html", type );
+				}
 			}
 			else
 			{
-				String end = params.get( "object.endDate" );
-				String[] enddate = end.split( "-" );
-				int endyear = Integer.parseInt( enddate[0] );
-				int endmonth = Integer.parseInt( enddate[1] );
-				int endday = Integer.parseInt( enddate[2] );
-				endDate=new GregorianCalendar( endyear, endmonth-1, endday ).getTime();
+				String[] startdate = params.get( "object.startDate" ).split( "-" );
+				int startyear = Integer.parseInt( startdate[0] );
+				int startmonth = Integer.parseInt( startdate[1] );
+				int startday = Integer.parseInt( startdate[2] );
+				startDate = new GregorianCalendar( startyear, startmonth - 1, startday ).getTime();
+
+				if( params.get( "object.endDate" ).length() < 2 )
+				{
+					int defaultDays = proj.sprintDuration;
+					System.out.println( defaultDays );
+					endDate = new GregorianCalendar().getTime();
+					endDate.setTime( startDate.getTime() + (86400000 * defaultDays) );
+				}
+				else
+				{
+					String end = params.get( "object.endDate" );
+					String[] enddate = end.split( "-" );
+					int endyear = Integer.parseInt( enddate[0] );
+					int endmonth = Integer.parseInt( enddate[1] );
+					int endday = Integer.parseInt( enddate[2] );
+					endDate = new GregorianCalendar( endyear, endmonth - 1, endday ).getTime();
+				}
+				if( object.startDate == null )
+				{
+					renderArgs.put( "error", "Please Enter Missing Dates" );
+					render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
+				}
+				else if( startDate.after( endDate ) )
+				{
+					renderArgs.put( "error", "Sprint Start Date is after Sprint End Date" );
+					render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
+				}
+				else if( startDate.before( new Date() ) || endDate.before( new Date() ) )
+				{
+					renderArgs.put( "error", "Cant Create Sprint with Past Date" );
+					render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
+				}
+				else if( proj.inSprint( startDate, endDate ) )
+				{
+					renderArgs.put( "error", "Sprint Start Date and End Date are overlapping with other Sprint" );
+					render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
+				}
+				else
+				{
+					object = new Sprint( startDate, endDate, proj );
+					object.save();
+				}
 			}
-		if( object.startDate == null )
-		{
-			renderArgs.put( "error", "Please Enter Missing Dates" );
-			render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
-		}
-		else if( startDate.after( endDate ) )
-		{
-			renderArgs.put( "error", "Sprint Start Date is after Sprint End Date" );
-			render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
-		}
-		else if( startDate.before( new Date() ) || endDate.before( new Date() ) )
-		{
-			renderArgs.put( "error", "Cant Create Sprint with Past Date" );
-			render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
-		}
-		else if( proj.inSprint( startDate, endDate ) )
-		{
-			renderArgs.put( "error", "Sprint Start Date and End Date are overlapping with other Sprint" );
-			render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
+			flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
+			if( params.get( "_save" ) != null )
+			{
+				Logs.addLog( Security.getConnected(), "Create", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
+				redirect( "/show/project?id=" + projectId );
+			}
+			if( params.get( "_saveAndAddAnother" ) != null )
+			{
+				Logs.addLog( Security.getConnected(), "Create", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
+				redirect( "/sprints/projectblank?projectId=" + projectId );
+			}
+			redirect( request.controller + ".show", object.getEntityId() );
 		}
 		else
 		{
-			object = new Sprint( startDate,endDate, proj );
-			object.save();
-		}
-		}
-		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
-		if( params.get( "_save" ) != null )
-		{
-			Logs.addLog( (User) User.find( "byEmail", Security.connected() ).first(), "Create", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
-			redirect( "/show/project?id=" + projectId );
-		}
-		if( params.get( "_saveAndAddAnother" ) != null )
-		{
-			Logs.addLog( (User) User.find( "byEmail", Security.connected() ).first(), "Create", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
-			redirect( "/sprints/projectblank?projectId=" + projectId );
-		}
-		redirect( request.controller + ".show", object.getEntityId() );
-		}
-		else{
 			forbidden();
 		}
 	}
 
-	
 	public static void projectshow( long id, long projId )
 	{
-		if(Security.getConnected().in( (Project)Project.findById( projId )).can( "editSprint" ) ){
-		ObjectType type = ObjectType.get( getControllerClass() );
-		notFoundIfNull( type );
-		JPASupport object = type.findById( id );
-		Project p = Project.findById( projId );
-		List<Meeting> meetings = p.meetingsAssoccToEndOfSprint( (Sprint) object );
-		try
+		if( Security.getConnected().in( (Project) Project.findById( projId ) ).can( "editSprint" ) )
 		{
-			render( type, object, projId, meetings );
-		}
-		catch( TemplateNotFoundException e )
-		{
-			render( "Sprints/show.html", type, object );
-		}
-		}
-		else{
-			forbidden();
-		}
-	}
-
-	
-	public static void projectsave( long id, long projId ) throws Exception
-	{
-		if(Security.getConnected().in( (Project)Project.findById( projId )).can( "editSprint" ) ){
-		Project proj = Project.findById( projId );
-		ObjectType type = ObjectType.get( getControllerClass() );
-		notFoundIfNull( type );
-		Sprint object = (Sprint) type.findById( id );
-		validation.valid( object.edit( "object", params ) );
-		if( validation.hasErrors() )
-		{
-			renderArgs.put( "error", "Correct Date Format Errors" );
+			ObjectType type = ObjectType.get( getControllerClass() );
+			notFoundIfNull( type );
+			JPASupport object = type.findById( id );
+			Project p = Project.findById( projId );
+			List<Meeting> meetings = p.meetingsAssoccToEndOfSprint( (Sprint) object );
 			try
 			{
-				render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+				render( type, object, projId, meetings );
 			}
 			catch( TemplateNotFoundException e )
 			{
-				render( "CRUD/show.html", type, object );
+				render( "Sprints/show.html", type, object );
 			}
-		}
-		if( object.endDate == null || object.startDate == null )
-		{
-			renderArgs.put( "error", "Please Enter Missing Dates" );
-
-			render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
-		}
-		else if( object.startDate.after( object.endDate ) )
-		{
-			renderArgs.put( "error", "Sprint Start Date is after Sprint End Date" );
-
-			render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
-
-		}
-		else if( object.startDate.before( new Date() ) || object.endDate.before( new Date() ) )
-		{
-			renderArgs.put( "error", "Cant Create Sprint with Past Date" );
-
-			render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
-		}
-		else if( (proj.inSprint( object.startDate, object.endDate )) )
-		{
-			renderArgs.put( "error", "Sprint is Overlapping with other Sprint time" );
-
-			render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
 		}
 		else
 		{
-			object.save();
+			forbidden();
 		}
-		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
-		if( params.get( "_save" ) != null )
-		{
+	}
 
-			Logs.addLog( (User) User.find( "byEmail", Security.connected() ).first(), "Edit", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
-			redirect( "/show/project?id=" + projId );
+	public static void projectsave( long id, long projId ) throws Exception
+	{
+		if( Security.getConnected().in( (Project) Project.findById( projId ) ).can( "editSprint" ) )
+		{
+			Project proj = Project.findById( projId );
+			ObjectType type = ObjectType.get( getControllerClass() );
+			notFoundIfNull( type );
+			Sprint object = (Sprint) type.findById( id );
+			validation.valid( object.edit( "object", params ) );
+			if( validation.hasErrors() )
+			{
+				renderArgs.put( "error", "Correct Date Format Errors" );
+				try
+				{
+					render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+				}
+				catch( TemplateNotFoundException e )
+				{
+					render( "CRUD/show.html", type, object );
+				}
+			}
+			if( object.endDate == null || object.startDate == null )
+			{
+				renderArgs.put( "error", "Please Enter Missing Dates" );
+
+				render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+			}
+			else if( object.startDate.after( object.endDate ) )
+			{
+				renderArgs.put( "error", "Sprint Start Date is after Sprint End Date" );
+
+				render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+
+			}
+			else if( object.startDate.before( new Date() ) || object.endDate.before( new Date() ) )
+			{
+				renderArgs.put( "error", "Cant Create Sprint with Past Date" );
+
+				render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+			}
+			else if( (proj.inSprint( object.startDate, object.endDate )) )
+			{
+				renderArgs.put( "error", "Sprint is Overlapping with other Sprint time" );
+
+				render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+			}
+			else
+			{
+				object.save();
+			}
+			flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
+			if( params.get( "_save" ) != null )
+			{
+
+				Logs.addLog( Security.getConnected(), "Edit", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
+				redirect( "/show/project?id=" + projId );
+			}
+			redirect( request.controller + ".show", object.getEntityId() );
 		}
-		redirect( request.controller + ".show", object.getEntityId() );
-		}
-		else{
+		else
+		{
 			forbidden();
 		}
 	}
