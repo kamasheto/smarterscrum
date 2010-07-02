@@ -4,7 +4,7 @@
 <li><a href="/show/projects">Projects</a></li>
 <li><a href="/show/project?id=${p.id}">${p.name}</a></li>
 <li><a href="/boards/loadboard?sprintID=${s.id}">${p.name}'s Task Board</a></li>
-<li><a  href="@{Snapshots.index(s.id,p.name)}" >View snapshots</a></li>
+<li><a  href="@{Snapshots.index(s.id,type)}" >View snapshots</a></li>
 #{/set}
 <h2>Snapshots List</h2>
 #{if (snapshots.size()==0)}
@@ -12,7 +12,7 @@ Sorry, There are no snapshots to display now.<br/>
 #{/if}
 #{if (snapshots.size()!=0)}
 
-
+<a href="@{Snapshots.indexuser(s.id,type)}">Show my snapshots of this board</a>
 <ul>
 <table>
 
