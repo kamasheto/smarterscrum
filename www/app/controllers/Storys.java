@@ -193,13 +193,17 @@ public class Storys extends SmartCRUD {
 				// delete the tasks
 				t.DeleteTask();
 			}
+			String header = "Story: 'S" +  story.id + "\'" + " has been deleted.";
+			String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' 
+				+ " In Component: " + "\'" + story.componentID.name + "\'" + "." + '\n'
+				+ " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
+			/*////Long Informative Notification message. Not suitable for online notification.
 			String header = "A Story in Component: " + "\'" + story.componentID.name + "\'" + " in Project: " + "\'" + project.name + "\'" + " has been deleted.";
 			String body = "The Story:" + '\n' 
 			    + " " + "\'" + story.description + "\'" + '\n' 
 				+ " in Component: " + "\'" + story.componentID.name + "\'" + " in Project: " + "\'" + project.name + "\'" + " has been deleted." + '\n' + '\n'  
-				+ " Deleted by: " + story.addedBy.name + "." + '\n' 
-				+ " Deleted at: " + new Date(System.currentTimeMillis()) + ".";
-			// Now mark my story as deleted
+				+ " Deleted by: " + story.addedBy.name + ".";
+			// Now mark my story as deleted*/
 			story.deleted = true;
 			story.save();
 			Logs.addLog(story.addedBy, "Delete", "Story", story.id, project, new Date(System.currentTimeMillis()));
@@ -261,6 +265,12 @@ public class Storys extends SmartCRUD {
 		toBeSaved.addedBy = Security.getConnected();
 		object.save();
 		Logs.addLog(toBeSaved.addedBy, "Create", "Story", storyObj.id, project, new Date(System.currentTimeMillis()));
+		String header = "A new Story has been added.";
+		String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' 
+		            + " In Component: " + "\'" + storyObj.componentID.name + "\'" + "." + '\n' 
+					+ " Story: 'S" +  storyObj.id + "\'" + "." + '\n'  
+					+ " Added by: " + "\'" + toBeSaved.addedBy.name + "\'" + ".";		
+	  /*////Long Informative Notification message. Not suitable for online notification.
 		String header = "New Story has been added to Component: " + "\'" + storyObj.componentID.name + "\'" + " in Project: " + "\'" + project.name + "\'" + ".";
 		String body = "New Story has been added to Component: " + "\'" + storyObj.componentID.name + "\'" 
 		    + " in Project: " + "\'" + project.name + "\'" + "." + '\n' + '\n' 
@@ -270,8 +280,7 @@ public class Storys extends SmartCRUD {
 			+ " Succuss Senario: " + storyObj.succussSenario + "." + '\n'
 			+ " Failure Senario: " + storyObj.failureSenario + "." + '\n' 
 			+ " Notes: " + storyObj.notes + "." + '\n' 
-			+ " Added by: " + toBeSaved.addedBy.name + "." + '\n' 
-			+ " Added at: " + new Date(System.currentTimeMillis()) + ".";
+			+ " Added by: " + toBeSaved.addedBy.name + ".";*/
 		Notifications.notifyUsers(storyObj.componentID.getUsers(), header, body, (byte) 1);
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
