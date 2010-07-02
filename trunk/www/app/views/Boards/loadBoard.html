@@ -735,8 +735,10 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 	var answer=confirm('The system will now automaticaly update the associated snapshot to the current view of the board!')
 		if (answer) {
 		take_meetingsnapshot(id);
+	location.reload();
+	}
 	
-	}}
+	}
 	
 	}
 	function take_meetingsnapshot(id) {
