@@ -136,11 +136,9 @@ public class Requestreviewers extends SmartController {
 								Requestreviewer x = new Requestreviewer(user, project.components.get(z), task);
 								x.save();
 								String header = "User: " + "\'" + Security.getConnected().name + "\'" + " requested to be a " + "\'" + task.name + "\'" + " reviewer.";
-								String body = "User: " + "\'" + Security.getConnected().name + "\'" 
-								    + " requested to be a " + "\'" + task.name + "\'" + " reviewer." + '\n' 
-									+ " Requested at: " + new Date(System.currentTimeMillis()) + ".";
+								String body = "In Project: " + "\'" + project.name + "\'" + ".";
 								Logs.addLog(Security.getConnected(), "Request to be a reviewer", "Task Type", ID, project, new Date(System.currentTimeMillis()));
-								Notifications.notifyUsers(project, header, body, "Request To Be Reviewer",new Byte((byte) 0));
+								Notifications.notifyUsers(project, header, body, "RequestToBeReviewer",new Byte((byte) 0));
 								message = "The request for " + task.name +" has been sent succesfully";
 
 							}
