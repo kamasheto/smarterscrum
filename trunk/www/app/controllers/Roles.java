@@ -101,7 +101,7 @@ public class Roles extends SmartCRUD {
 		if (params.get("_save") != null) {
 			Application.overlayKiller();
 		}
-		redirect(request.controller + ".show", object.getEntityId());
+		redirect("/admin/roles/" + role.id);
 	}
 
 	public static void blank(long id) {
@@ -155,9 +155,9 @@ public class Roles extends SmartCRUD {
 			Application.overlayKiller();
 		}
 		if (params.get("_saveAndAddAnother") != null) {
-			redirect(request.controller + ".blank");
+			redirect("/admin/roles/new?id=" + id);
 		}
-		redirect(request.controller + ".show", object.getEntityId());
+		redirect("/admin/roles/" + role.id);
 	}
 
 	public static void delete(String id) {
