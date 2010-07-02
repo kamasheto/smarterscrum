@@ -67,7 +67,7 @@ body,html {
 			#{ifErrors}
 			<script type="text/javascript">
 				$(document).ready(function(){
-					$.bar({
+					window.parent.$.bar({
 						message : '${errors}'
 					});
 				})
@@ -76,7 +76,7 @@ body,html {
 			#{if flash.error}
 			<script type="text/javascript">
 			$(document).ready(function(){
-				$.bar({
+				window.parent.$.bar({
 					message : '&{flash.error}'
 				});
 			})
@@ -85,7 +85,7 @@ body,html {
 			#{if error}
 			<script type="text/javascript">
 			$(document).ready(function(){
-				$.bar({
+				window.parent.$.bar({
 					message : '&{error}'
 				});
 			})
@@ -95,7 +95,7 @@ body,html {
 			#{if flash.success}
 			<script type="text/javascript">
 			$(document).ready(function(){
-				$.bar({
+				window.parent.$.bar({
 					message : '&{flash.success}'
 				});
 			})

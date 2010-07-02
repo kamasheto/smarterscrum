@@ -81,14 +81,12 @@ this.tmpl = function tmpl(str, data){
 function overlayOpen(href)
 {
 	$('#theLoadedContent').attr('src',href);
-	//$('#getOverlay').css('height',$('body').height()+'px');
-	$('#getOverlay').slideDown();
-	
+	$('#getOverlay').show();	
 }
 
 function overlayClose()
 {
-	$('#getOverlay').slideUp();
+	$('#getOverlay').hide();
 }
 
 /** auto iframe height do not remove **/
