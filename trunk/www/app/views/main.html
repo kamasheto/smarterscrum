@@ -80,7 +80,19 @@
        		});
         </script>
 </head>
-<body onload="#{get 'onLoad' /}"><div id="getOverlay" style="position:absolute;top:0px;left:0px;width:100%;min-height:100%;display:none;z-index:9999;overflow:auto"></div>
+<body onload="#{get 'onLoad' /}">
+<div id="getOverlay" style="position:absolute;top:0px;left:0px;width:100%;min-height:100%;display:none;z-index:9999;overflow:auto">
+<div style="background-color:rgba(0,0,0,0.7);position:fixed;top:0px;left:0px;width:100%;height:100%;z-index:9997"></div>
+<div id ="overlayContent" style="width:80%;height:80%; padding:10%;overflow:auto;position:relative;z-index:9998">
+	<div id="overlayContentHolder" style="background-color:transparent;width:50%;height:50%;margin:auto auto auto auto;padding:10px;overflow:auto">
+	<div class="topCornersRounded left" style="padding:5px; width:70px;background-color:#fff;text-align:center"><a href="#" onclick="overlayClose()">close</a></div>
+	<br style="clear:both"/>
+	<iframe id="theLoadedContent" class="autoHeight" style="width:100%;border:0px;background:transparent !important;">
+	
+	</iframe>
+	</div>
+</div>
+</div>
 <div style="position:absolute; top:117px; right:10px">
 #{if connected?.isAdmin}
 	<a class="aDIV topCornersRounded" href="/admin" style="color: #E5A1A5;" title="View the admin panel">Admin Panel</a>
