@@ -116,7 +116,7 @@
 								<a  href="/" title="Go back home?" id="TheLogo"></a>
 							</div>
 						</div>
-						<div class="topper" style="overflow:auto">
+						<div class="topper">
 						<div class="left">
 						#{if connected}
 							Hello ${connected.name}!&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -129,14 +129,15 @@
 							<a href="@{Accounts.register}">|&nbsp;&nbsp;Register</a>
 						#{/ifnot}
 						</div>
-						#{if connected}
+						
 							
 							<div class="right">
 							#{if connected}
 								<a href="/secure/logout" title="Logout from the system">Logout</a>
 						#{/if}
 							</div>
-							<br style="clear:both">
+							<br style="clear:both"/>
+							#{if connected}
 							<div id="chatroomList">
  								<div class="allCornersRounded chatroomListHolder" >
  								#{list connected.projects, as:'proj'}
