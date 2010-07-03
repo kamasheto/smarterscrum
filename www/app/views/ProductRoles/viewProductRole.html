@@ -83,7 +83,7 @@ function deleteProductRole()
    	if (confirmation) {
    	   	$.post('@{deleteProductRole()}',{id:id},
     		function(){
-                overlayOpen('/projects/${productRole.project.id}/productroles');
+   	   	window.location="/projects/${productRole.project.id}/productroles"
             });
    	}
 	return false;

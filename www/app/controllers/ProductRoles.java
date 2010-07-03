@@ -135,9 +135,9 @@ public class ProductRoles extends SmartCRUD {
 				redirect("/application/overlaykiller");
 			}
 			if (params.get("_saveAndAddAnother") != null) {
-				redirect("/application/overlaykiller");
+				redirect("/admin/projects/" + project.id + "/productroles/new");
 			}
-			redirect("/application/overlaykiller");
+			redirect(request.controller + ".show", object.getEntityId());
 		}
 	}
 
@@ -223,7 +223,7 @@ public class ProductRoles extends SmartCRUD {
 			if (params.get("_save") != null) {
 				redirect("/application/overlaykiller");
 			}
-			redirect("/application/overlaykiller");
+			redirect(request.controller + ".show", object.getEntityId());
 		}
 	}
 
