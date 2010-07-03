@@ -59,7 +59,7 @@ function deleteProductRole(pid)
    		$.post('@{delete()}', {
 			id: pid
 		}, function(){
-			window.location="/projects/${object.project.id}/productroles"
+			window.location="/application/overlaykiller"
 		});
    	}
 	return true;
