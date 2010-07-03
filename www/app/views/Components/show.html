@@ -1,12 +1,6 @@
-#{extends 'CRUD/layout.html' /}
+#{extends 'overlay.html' /}
 
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${object.project.id}">${object.project.name}</a></li>
-<li><a href ="/projects/${object.project.id}/components">Components</a></li>
-<li><a href ="/components/${object.id}">${object.name}</a></li>
-<li>edit</li>
-#{/set}
+
 
 <div id="crudShow" class="${type.name}">
 	
@@ -43,7 +37,6 @@
 			<small style="color:red"> * Required Fields </small>
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
-			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
 		</p>
 	#{/form}
 	</div>
@@ -68,7 +61,8 @@ function delete_component(cid)
 		$.post('@{delete()}', {
 			id: cid
 		}, function(){
-			window.location = "/projects/${object.project.id}/components"
+			window.location = "/application/overlaykiller"
+			window.parent.location="/projects/${object.project.id}/components"
 		});
 	}
 	return true

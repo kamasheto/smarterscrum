@@ -6,7 +6,7 @@
 	<a href="/components/${component.id}/assignusers"> Assign developers </a>
 	<br/><br/>
 	#{if connected.in(component.project).can('editComponent')}
-	<a href="/admin/components/${component.id}"> Edit Component</a>
+	<a onClick="overlayOpen('/admin/components/${component.id}')"href="#"> Edit Component</a>
 	<br/><br/>
 	#{/if}
 	<a href="@{ProductBacklogs.index(component.id,1)}"> Component Backlog</a>

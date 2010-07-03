@@ -1,10 +1,5 @@
-#{extends 'CRUD/layout.html' /}
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${currentProject.id}">${currentProject.name}</a></li>
-<li><a href ="/projects/${currentProject.id}/components"> Components</a></li>
-<li>new</li>
-#{/set}
+#{extends 'overlay.html' /}
+
 
 <div id="crudBlank" class="${type.name}">
 	
@@ -39,8 +34,6 @@
 			<small style="color:red"> * Required Fields </small>
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
-			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
-			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" />
 		</p>
 	#{/form}
 	</div>

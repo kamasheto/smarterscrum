@@ -123,8 +123,13 @@ public class Application extends SmartController
 	{
 
 		Component component = Component.findById( id );
-		boolean inSprint = component.project.inSprint( new Date() );
-		render( component, inSprint );
+		if( !component.deleted )
+		{
+			boolean inSprint = component.project.inSprint( new Date() );
+			render( component, inSprint );
+		}
+		else
+			notFound();
 	}
 
 	/**
