@@ -21,13 +21,8 @@
 
 #{if connected.in(currentProject).can('addComponent')}
 #{if !inSprint}
-<a href="/admin/projects/${id}/components/new"> add a new component </a>
+<a onClick="overlayOpen('/admin/projects/${id}/components/new');"href="#"> add a new component </a>
 #{/if}
-
-#{if inSprint}
-Unfortunatily , you can not add a new component during a sprint.
-#{/if}
-
 #{/if}
 
 <br/>

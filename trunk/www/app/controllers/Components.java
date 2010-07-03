@@ -88,11 +88,7 @@ public class Components extends SmartCRUD
 			flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
 			if( params.get( "_save" ) != null )
 			{
-				redirect( "/projects/" + currentProject.id + "/components" );
-			}
-			if( params.get( "_saveAndAddAnother" ) != null )
-			{
-				redirect( "/admin/projects/" + currentProject.id + "/components/new" );
+				redirect( "/Application/overlayKiller" );
 			}
 			redirect( request.controller + ".show", object.getEntityId() );
 		}
@@ -137,7 +133,7 @@ public class Components extends SmartCRUD
 			flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
 			if( params.get( "_save" ) != null )
 			{
-				redirect( "/components/" + id );
+				redirect( "/Application/overlayKiller" );
 			}
 			redirect( request.controller + ".show", object.getEntityId() );
 		}
@@ -176,7 +172,7 @@ public class Components extends SmartCRUD
 				redirect( request.controller + ".show", object.getEntityId() );
 			}
 			flash.success( Messages.get( "crud.deleted", type.modelName, object.getEntityId() ) );
-			redirect( "/projects/" + component.project.id + "/components" );
+
 		}
 		else
 			forbidden();
