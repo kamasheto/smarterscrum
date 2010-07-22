@@ -24,85 +24,12 @@ import play.mvc.With;
 
 @With (Secure.class)
 public class Boards extends SmartCRUD {
-/*	public static void loadBoard1(long sprintID,long componentID)
+	
+	public static void loadboard1(long sprintID, long componentID)
 	{
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
 		Board b = p.board;
-		List<Component> components = p.getComponents();
-		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>();
-		List<Column> columns = b.columns;
-		Component c = Component.findById(componentID);
-		List<User> users = c.getUsers();
-		List<Column> columnsOfBoard=new ArrayList<Column>();
-		List<Column> hidencolumnsOfBoard=new ArrayList<Column>();
-		for( int i=0; i<columns.size();i++)
-		{
-			if(columns.get( i ).onBoard==true)
-			columnsOfBoard.add( columns.get( i ) );
-		}
-		columnsOfBoard = orderColumns(columnsOfBoard);
-		for( int i=0; i<columns.size();i++)
-		{
-			if(columns.get( i ).onBoard!=true)
-				hidencolumnsOfBoard.add( columns.get( i ) );
-		}
-		
-		for (int i = 0; i < components.size(); i++) {
-			data.add(null);
-			List<Task> tasks=new ArrayList<Task>();
-			if(componentID==-1)
-			{
-				data.set(i, new ComponentRow(components.get(i).id, components.get(i).name));
-			    tasks = components.get(i).returnComponentTasks(s);
-			}
-			else
-			{
-				data.set(i, new ComponentRow(users.get(i).id, users.get(i).name));
-			    tasks = users.get(i).returnUserTasks(s, componentID);
-			}
-			for (int j = 0; j < columnsOfBoard.size(); j++) {
-				data.get(i).add(null);
-				data.get(i).set(j, new ArrayList<Task>());
-			}
-			for (Task task : tasks) {
-				data.get(i).get(columns.indexOf(task.taskStatus.column)).add(task);
-			}
-		}
-	
-		long id=Security.getConnected().id;
-		boolean found=false;
-		LinkedList<Meeting> total = new LinkedList<Meeting>();
-		
-		if(componentID==-1)
-		{
-			//companyMetting
-		}
-		else
-		{
-			//componentMeeting
-		}
-	
-		//render(data, columnsOfBoard,hidencolumnsOfBoard, u, b, s, p,columns, total,ud,ua,ur,ut,componentID);
-		
-	}
-*/	
-	/**
-	 * Renders the data and the columnsOfBoard to be used by the views. this
-	 * method is used to fill the 2D array attribute in the board with the data
-	 * that should be represented in each column of the project board
-	 * (components and their tasks and stories for a specific sprint)
-	 * 
-	 * @author Hadeer_Diwan
-	 * @param SprintID
-	 *            the sprint id
-	 */
-
-	public static void loadBoard(long sprintID) {
-		Sprint s = Sprint.findById(sprintID);
-		Project p = s.project;
-		Board b = p.board;
-		List<Component> components = p.getComponents();
 		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>();
 		List<Column> columns = b.columns;
 		List<Column> columnsOfBoard=new ArrayList<Column>();
@@ -122,80 +49,59 @@ public class Boards extends SmartCRUD {
 				hidencolumnsOfBoard.add( columns.get( i ) );
 			}
 		}
-		for (int i = 0; i < components.size(); i++) {
-			data.add(null);
-			data.set(i, new ComponentRow(components.get(i).id, components.get(i).name));
-			List<Task> tasks = components.get(i).returnComponentTasks(s);
-
-			for (int j = 0; j < columnsOfBoard.size(); j++) {
-				data.get(i).add(null);
-				data.get(i).set(j, new ArrayList<Task>());
-			}
-			for (Task task : tasks) {
-				if(task.taskStatus.column.onBoard&&!task.taskStatus.column.deleted)
-				{
-				data.get(i).get(columnsOfBoard.indexOf(task.taskStatus.column)).add(task);
-				}
-			}
-		}
-
-		/**
-		 * * @author asmaak89
-		 * 
-		 * @param meetings
-		 *            list of project p is used code:- linkedList to save the
-		 *            meetings that it's time is in current time and then add to
-		 *            another Linkedlist users of all meetings running it render
-		 *            this list of Users in views-Boards- loadBoard.html
-		 */
-
-	/*	long id=Security.getConnected().id;
-		boolean found=false;
-		LinkedList<Meeting> total = new LinkedList<Meeting>();		
-		for (Meeting m : p.meetings) {
-			long now = new Date().getTime();
-			if (m.startTime <= now && m.endTime > now) {
-				for(int i=0;i<m.users.size();i++)
-				{
-					if(m.users.get(i).id==id)
-						if(m.users.get(i).checkConfirmed())
-						total.add(m);
-				       found=true;
-				}
-				
-			}
-		}
-
-		ArrayList<ArrayList<User>> u = new ArrayList<ArrayList<User>>();
-		if(found==true)
-		{
-		for (int i = 0; i < total.size(); i++) {
-			Meeting m = Meeting.findById(total.get(i).id);
-			u.add(new MeetingUsers(m));
-			for (MeetingAttendance k : m.users) {
-				if (k.status.equals("confirmed")) {
-					u.get(i).add(k.user);
-				}
-
-			}
-		}
-		}*/
-		for(int i=0;i<b.columns.size();i++)
-		{
-			System.out.println(b.columns.get(i).name+" "+b.columns.get(i).sequence);
-		}
-		
-		ArrayList<ArrayList<User>> u=Meetingloadboard( p);
 		ArrayList ud = getDescPerm(p);
 		ArrayList ua = getAssiPerm(p);
 		ArrayList ur = getRevPerm(p);
 		ArrayList ut = getTypePerm(p);	
 		ArrayList us = getStatusPerm(p);
-		render(data, columnsOfBoard,hidencolumnsOfBoard, u, b, s, p,columns,ud,ua,ur,ut,us);	
-		//render(data, columnsOfBoard,hidencolumnsOfBoard, b, s, p,columns,ud,ua,ur,ut);
-	}
+		if(componentID==0)
+		{
+			List<Component> components = p.getComponents();
+			for (int i = 0; i < components.size(); i++) {
+				data.add(null);
+				data.set(i, new ComponentRow(components.get(i).id, components.get(i).name));
+				List<Task> tasks = components.get(i).returnComponentTasks(s);
 
-	
+				for (int j = 0; j < columnsOfBoard.size(); j++) {
+					data.get(i).add(null);
+					data.get(i).set(j, new ArrayList<Task>());
+				}
+				for (Task task : tasks) {
+					if(task.taskStatus.column.onBoard&&!task.taskStatus.column.deleted)
+					{
+					data.get(i).get(columnsOfBoard.indexOf(task.taskStatus.column)).add(task);
+					}
+				}
+			}
+			ArrayList<ArrayList<User>> u=Meetingloadboard( p);
+			render(data, columnsOfBoard,hidencolumnsOfBoard, u, b, s, p,columns,ud,ua,ur,ut,us);
+		}
+		else
+		{
+			Component comp = Component.findById(componentID);
+			List<User> users = comp.getUsers();
+			for (int i = 0; i < users.size(); i++) {
+				data.add(null);
+				data.set(i, new ComponentRow(users.get(i).id, users.get(i).name));
+				List<Task> tasks = users.get(i).returnUserTasks(s, componentID);
+
+				for (int j = 0; j < columnsOfBoard.size(); j++) {
+					data.get(i).add(null);
+					data.get(i).set(j, new ArrayList<Task>());
+				}
+
+				for (Task task : tasks) {
+					if(task.taskStatus.column.onBoard==true&&!task.taskStatus.column.deleted)
+					{
+					data.get(i).get(columnsOfBoard.indexOf(task.taskStatus.column)).add(task);
+					}
+				}
+
+			}
+			ArrayList<ArrayList<User>> u=Meetingcomponent(comp);
+			render(data, columnsOfBoard,hidencolumnsOfBoard, u,b, s,comp, p,columns,ud,ua,ur,ut,us);
+		}
+	}	
 	
 	/**
 	 * order any list of columns and return the ordered list.
@@ -223,117 +129,6 @@ public class Boards extends SmartCRUD {
 		return cols;
 	}
 
-	/**
-	 * Renders the data and the cols to be used by the views. this method is
-	 * used to fill the 2D array attribute in the board with the data that
-	 * should be represented in each column of the component board (users and
-	 * their tasks and stories for a specific sprint)
-	 * 
-	 * @author Hadeer_Diwan
-	 * @param sprintID
-	 *            the sprint id
-	 * @param componentID
-	 *            the component id
-	 */
-	public static void loadComponentBoard(long sprintID, long componentID) {
-		Sprint s = Sprint.findById(sprintID);
-		Project p = s.project;
-		Board b = p.board;
-
-		Component comp = Component.findById(componentID);
-		List<User> users = comp.getUsers();
-		//ArrayList<User> u = new ArrayList<User>();
-		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>();
-		List<Column> columns = b.columns;
-		
-		List<Column> columnsOfBoard=new ArrayList<Column>();
-		List<Column> hidencolumnsOfBoard=new ArrayList<Column>();
-		for( int i=0; i<columns.size();i++)
-		{
-			if(columns.get( i ).onBoard&&!columns.get( i ).deleted)
-			{
-				columnsOfBoard.add( columns.get( i ) );
-			}
-		}
-		columnsOfBoard = orderColumns(columnsOfBoard);
-		for( int i=0; i<columns.size();i++)
-		{
-			if(!columns.get( i ).onBoard&&!columns.get( i ).deleted)
-			{
-				hidencolumnsOfBoard.add( columns.get( i ) );
-			}
-		}
-		for (int i = 0; i < users.size(); i++) {
-			data.add(null);
-			data.set(i, new ComponentRow(users.get(i).id, users.get(i).name));
-			List<Task> tasks = users.get(i).returnUserTasks(s, componentID);
-
-			for (int j = 0; j < columnsOfBoard.size(); j++) {
-				data.get(i).add(null);
-				data.get(i).set(j, new ArrayList<Task>());
-			}
-
-			for (Task task : tasks) {
-				if(task.taskStatus.column.onBoard==true&&!task.taskStatus.column.deleted)
-				{
-				data.get(i).get(columnsOfBoard.indexOf(task.taskStatus.column)).add(task);
-				//System.out.println(task.description);
-				//System.out.print( columns. );
-				}
-			}
-
-		}
-      
-		/**
-		 * next lines indicates how current Component meeting is held infront of
-		 * each component board . as it user Component c and it's list of Users
-		 * to search for which meeting running now and which User have status
-		 * Confirmed.
-		 * 
-		 * @param Component
-		 *            c (Used thought code lines), List of componentMeetings,
-		 *            List of Users for this Component .
-		 * @author asmaak89
-		 */
-		ArrayList<ArrayList<User>> u=Meetingcomponent(comp);
-	/*	long id=Security.getConnected().id;
-		boolean found =false;
-		LinkedList<Meeting> total = new LinkedList<Meeting>();
-
-		for (Meeting m : c.componentMeetings) {
-			long now = new Date().getTime();
-			if (m.startTime < now && m.endTime > now) 
-			{
-                for(int i=0;i<m.users.size();i++)
-                {
-                	if(m.users.get(i).id==id)
-                	{
-                		if(m.users.get(i).checkConfirmed())
-                		{
-                		total.add(m);
-                		found=true;
-                		}
-                	}
-                }
-				
-
-			}
-		}
-		for (int i = 0; i < total.size(); i++) {
-			Meeting m = Meeting.findById(total.get(i).id);
-
-			for (MeetingAttendance k : m.users) {
-				if (k.status.equals("confirmed")) {
-					u.add(k.user);
-				}
-			}
-
-		}*/
-//	long cid=c.id;
-//	String cname=c.name; 
-		render(data, columnsOfBoard,hidencolumnsOfBoard, u,b, s,comp, p);
-	
-	}
 	 /** 
 	 * @param Project as P then loop to get all Running meeting of Project
 	 * and compare the logged in user's id in order to get which meeting he is 
@@ -633,9 +428,9 @@ public class Boards extends SmartCRUD {
 		return ut;
 	}
 	
-	public static void show(String id) {
-		forbidden();
-	}
+//	public static void show(String id) {
+//		forbidden();
+//	}
 
 	public static void delete(String id) {
 		forbidden();
@@ -653,7 +448,7 @@ public class Boards extends SmartCRUD {
 		forbidden();
 	}
 
-	public static void list(int page, String search, String searchFields, String orderBy, String order) {
-		forbidden();
-	}
+//	public static void list(int page, String search, String searchFields, String orderBy, String order) {
+//		forbidden();
+//	}
 }

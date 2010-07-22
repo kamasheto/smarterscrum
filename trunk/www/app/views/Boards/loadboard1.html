@@ -1,12 +1,10 @@
 #{extends 'main.html' /}
+#{if comp==null}
 #{set title:p.name+' Task Board' /}
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${p.id}">${p.name}</a></li>
-<li><a href="/boards/loadboard?sprintID=${s.id}">${p.name}'s Task Board</a></li>
-#{/set}
-
-#{set 'moreStyles'}
+#{/if}
+#{else}
+#{set title:comp.name+' Task Board' /}
+#{/else}
 
 <style type="text/css">
 	.drag{position: relative;}
@@ -16,17 +14,15 @@
 }
 </style>
 
-<!--imported javascripts-->
-
-#{/set}
 #{set 'moreScripts'}
 <script  type="text/javascript" src="@{'/public/javascripts/tzcount.js/'}" ></script>
 <script  type="text/javascript" src="@{'/public/javascripts/dragtable.js/'}" ></script>
 <script  type="text/javascript" src="@{'/public/javascripts/jeditable.js/'}"  ></script>
 <script  type="text/javascript" src="@{'/public/javascripts/drag.js/'}"  ></script>
 #{/set}
-#{set 'onLoad'}REDIPS.drag.init()#{/set}
-
+#{set 'onLoad'}
+REDIPS.drag.init()
+#{/set}
 
 <script type="text/javascript" charset="utf-8"> 
 
@@ -179,8 +175,13 @@ $(function()
 });
 
 </script>
-   
+
+#{if comp==null}
 <h1>${p.name}'s Task Board</h1>
+#{/if}
+#{else}
+<h1>${comp.name}'s Task Board</h1>
+#{/else}
 
 <!--Tools-->
 #{set 'moreLinks'}
@@ -197,8 +198,6 @@ $(function()
 #{/list}
 </select>
 #{/else}
-
-
 #{/if}
 
 <!-- hide Col by Hadeer -->
@@ -216,15 +215,18 @@ $(function()
 #{/else}
 #{/if}
 
-	
-
-<a class="titptitize" title="create meeting?" href="/admin/projects/${p.id}/meetings/new?object.infrontBoard=true">Create Meeting</a><br/>	
+<a class="titptitize" title="create meeting?" href="/admin/projects/${p.id}/meetings/new">Create Meeting</a><br/>	
+#{if comp==null}
 <a class="titptitize" title="view board snapshots?" href="@{Snapshots.index(s.id,p.name)}" >View snapshots</a><br/>
 <a class="titptitize" title="take board snapshot?" href="javascript:take_snapshot();">Take Snapshot</a><br/><br/>
-<!-- asmaak89 Part-->
-<div id="current">
+#{/if}
+#{else}
+<a class="titptitize" title="view board snapshots?" href="@{Snapshots.index(s.id,comp.name)}" >View snapshots</a><br>
+<a class="titptitize" title="take board snapshot?" href="javascript:take_snap(${comp.id})">Take Snapshot</a><br/><br/>
+#{/else}
 
-<br/>
+<!-- asmaak89 Part-->
+<div id="current"><br/>
 #{if u.size()==0}
 <div><b style="font-size:small;" class="smartBarHeader" >There are no running meetings </b></div>
 #{/if}	
@@ -241,77 +243,75 @@ $(function()
 <u>Attendees</u>
 #{list items:users , as:'user'}
 <a id="${user.id}" href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a>
-#{/list}
+#{/list}<br/>
 
-<br/>
-<div id="myLayer"></div>
 <!--Amr Abdelwahab-->
+#{if comp==null}
 <a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u></a><br/><br />
 <span id="tzcd"></span>
-
+#{/if}
+#{else}
+<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_componentmeetingsnapshot(${users.meeting.id},${comp.id});"><u>Attach a SnapShot</u></a><br/><br />
+<span id="tzcd"></span>
+#{/else}
 <a  href="javascript: end(${users.meeting.id});"><b>end meeting</b></a>
 
 <script type="text/javascript" charset="utf-8"> 
-
 // CONFIGURE THE COUNTDOWN SCRIPT HERE
 var date=${users.meeting.endTime};
 var tz =0;         //  
 var lab = 'tzcd';    //  The id of the page entry where the timezone countdown is to show
-
 displayTZCountDown(setTZCountDown(date,tz),lab);
 
-
 function setTZCountDown(date,tz) 
-{var toDate=new Date(date);
-
-var fromDate = new Date();
-fromDate.setMinutes(fromDate.getMinutes());
-var diffDate = new Date(0);
-diffDate.setMilliseconds(toDate - fromDate);
-return Math.floor(diffDate.valueOf()/1000);
+{
+	var toDate=new Date(date);
+	var fromDate = new Date();
+	fromDate.setMinutes(fromDate.getMinutes());
+	var diffDate = new Date(0);
+	diffDate.setMilliseconds(toDate - fromDate);
+	return Math.floor(diffDate.valueOf()/1000);
 }
 function displayTZCountDown(countdown,tzcd) 
 {
-if (countdown < 0)  {
-	var answer=confirm('Meeting time has ended now ,Do you want to extend for another hour?')
-		
-		if (answer) {
-		extend(${users.meeting.id});
-location.reload();	
-	}
-	else{
-	var answera=confirm('Do you want to update the associated snapshot?')
-		if(answera){
-		take_meetingsnapshot(${users.meeting.id});
-		location.reload();
+	if (countdown < 0)  
+	{
+		var answer=confirm('Meeting time has ended now ,Do you want to extend for another hour?')
+		if (answer) 
+		{
+			extend(${users.meeting.id});
+			location.reload();	
 		}
-		else{location.reload();}
-		
-	
+		else
+		{
+			var answera=confirm('Do you want to update the associated snapshot?');
+			if(answera)
+			{
+				take_meetingsnapshot(${users.meeting.id});
+				location.reload();
+			}
+			else{location.reload();}
+		}	
 	}
-	
-}
-else {
-
-
-var secs = countdown % 60; 
-if (secs < 10) secs = '0'+secs;
-var countdown1 = (countdown - secs) / 60;
-var mins = countdown1 % 60; 
-if (mins < 10) mins = '0'+mins;
-countdown1 = (countdown1 - mins) / 60;
-var hours = countdown1 % 24;
-var days = (countdown1 - hours) / 24;
-document.getElementById(tzcd).innerHTML = days + " day" + (days == 1 ? '' : 's') + ' : ' +hours+ 'hours : ' +mins+ 'm : '+secs+'s';
-setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
-}
+	else 
+	{
+		var secs = countdown % 60; 
+		if (secs < 10) secs = '0'+secs;
+		var countdown1 = (countdown - secs) / 60;
+		var mins = countdown1 % 60; 
+		if (mins < 10) mins = '0'+mins;
+		countdown1 = (countdown1 - mins) / 60;
+		var hours = countdown1 % 24;
+		var days = (countdown1 - hours) / 24;
+		document.getElementById(tzcd).innerHTML = days + " day" + (days == 1 ? '' : 's') + ' : ' +hours+ 'hours : ' +mins+ 'm : '+secs+'s';
+		setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
+	}
 }
 </script>
 
 #{/list}
 #{/else}
 </div>
-<!-- asmaak89 Part-->
 #{/set}
 
 <a href="" id="ToggleBoard">Toggle Board</a>
@@ -423,6 +423,7 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<div style="display:none;width:3cm" id="${task.id}_desc" border=0px class="editDES editdesc_${task.assignee.id} tiptipize" title="Edit description?">${task.description}</div>		
 		#{/else}
 		
+		#{if comp==null}
 		#{if connected.in(p).can('changeAssignee')} <!-- if has permission (edit assignee) -->
 		<div><a title="Change Assignee?" value="dddd" class="hidesassi tiptitize" id="usr_${task.id}" href="javascript:popUp('/Tasks/chooseTaskAssi?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Assignee:${task.assignee}</a></div>
@@ -433,15 +434,28 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		Assignee:${task.assignee}</a></div>
 		<div id="usrs_${task.id}" class="showdesc">Assignee:${task.assignee}</div>
 		#{/else}
+		#{/if}
 		
 		#{if connected.in(p).can('changeReviewer')} <!-- if has permission (edit reviewer) -->
+		#{if comp==null}
 		<div><a id="rev_${task.id}" title="Change Reviewer?" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Reviewer:${task.reviewer}</a></div>
+		#{/if}
+		#{else}
+		<div><a id="rev_${task.id}" title="Change Reviewer?" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${comp.id}&userId='+selectedUser)">
+		Reviewer:${task.reviewer}</a></div>
+		#{/else}
 		<div id="revs_${task.id}" class="showrev" style="display:none">Reviewer:${task.reviewer}</div>
 		#{/if}
 		#{else} <!-- if doesn't have permission (edit reviewer) -->
+		#{if comp==null}
 		<div><a id="rev_${task.id}" title="Change Reviewer?" style="display:none" id="rev_${task.id}" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Reviewer:${task.reviewer}</a></div>
+		#{/if}
+		#{else}
+		<div><a id="rev_${task.id}" title="Change Reviewer?" style="display:none" id="rev_${task.id}" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${comp.id}&userId='+selectedUser)">
+		Reviewer:${task.reviewer}</a></div>
+		#{/else}
 		<div id="revs_${task.id}" class="showrev">Reviewer:${task.reviewer}</div>
 		#{/else}
 		
@@ -470,10 +484,6 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 #{/list}
 </table>
 </div>
-
-<!-- all bellow 
-	author: joseph hajj
--->
 
  <script type="text/javascript">
 
@@ -689,15 +699,10 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 			
 		}
 		else
-		{
-			
+		{	
 			col_from=id;
 			col_to=-1;
-
-			
 		}
-		
-		
 	}
 	/**
 	 * swapping with settings instead of drag and drop.
@@ -724,31 +729,33 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		function take_snapshot() {
 		$.post('/snapshots/takesnapshot', {sprintID:${s.id}}, function(){alert('Saved!')});
 	}
+			function take_snap(id) {
+				if(id!=null)
+			$.post('@{snapshots.takecomponentsnapshot()}', {sprintID:${s.id},componentID:id} ,function(){alert('saved!')});
 	
-		function extend(id,date) {
-		$.post('/Meetings/extend', {meetingid:id}, function(){alert('extended!')});
-
-
 	}
 
-
-
+		function extend(id,date) {
+		$.post('/Meetings/extend', {meetingid:id}, function(){alert('extended!')});
+	}
 	function end(id) {
-		var ans=confirm('are you sure you want to end the meeting?');
-		if(ans){
-		$.post('/Meetings/end', {meetingid:id});
+	var ans=confirm('are you sure you want to end the meeting?');
+	if(ans){
+	$.post('/Meetings/end', {meetingid:id});
 	var answer=confirm('The system will now automaticaly update the associated snapshot to the current view of the board!')
-		if (answer) {
-		take_meetingsnapshot(id);
+	if (answer) {
+	take_meetingsnapshot(id);
 	location.reload();
 	}
 	
 	}
-	
-	}
+		}
 	function take_meetingsnapshot(id) {
 	
 		$.post('/snapshots/takemeetingsnapshot', {sprintID:${s.id},id:id}, function(){alert('Snapshot Associated!')});
 	}
-
+function take_componentmeetingsnapshot(id,cid) {
+	if(cid!=null)
+		$.post('/snapshots/takecomponentmeetingsnapshot', {sprintID:${s.id},componentID:cid,meetingID:id}, function(){alert('Snapshot Associated!')});
+	}
 </script>

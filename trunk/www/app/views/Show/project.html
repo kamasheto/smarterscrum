@@ -83,7 +83,7 @@ ${project.description?.nl2br()}
 #{/if}
 #{/if}
 #{if sprint.finalsnapshot==null }
-<a id="sprint${sprint.id}" title="Take a look @ the full task board?" href="/boards/loadboard?sprintID=${sprint.id}">View Sprint ${sprint.id} Task Board</a>
+<a id="sprint${sprint.id}" title="Take a look @ the full task board?" href="/boards/loadboard1?sprintID=${sprint.id}">View Sprint ${sprint.id} Task Board</a>
 	#{/if}
 #{if sprint.ended!=true }
 <a href="javascript:" onclick="$('#c_${sprint.id}').toggle()" title="view components' boards?" style="margin-left:20px;float:left;width:200px;">View Components' Boards</a>
@@ -93,7 +93,7 @@ ${project.description?.nl2br()}
 
 
 #{if sprint.ended!=true }
-<a id="component${component.id} style="margin-left:20px" title="${component.name}'s sprint ${sprint.id} Task Board?"href="/boards/loadComponentBoard?sprintID=${sprint.id}&componentID=${component.id}">${component.name}</a>
+<a id="component${component.id} style="margin-left:20px" title="${component.name}'s sprint ${sprint.id} Task Board?"href="/boards/loadBoard1?sprintID=${sprint.id}&componentID=${component.id}">${component.name}</a>
 		
 	#{/if}
 		#{/list}
