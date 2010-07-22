@@ -227,7 +227,7 @@ public class Bootstrap extends Job
 
 			// Sprints
 			
-			Sprint Sp1 = new Sprint( 2010, 5, 1, 2010, 7, 20, p1 ).save();
+			Sprint Sp1 = new Sprint( 2010, 5, 1, 2010, 10, 20, p1 ).save();
 			Sprint Sp2 = new Sprint( 2010, 6, 1, 2010, 6, 15, p1 ).save();
 			Sprint Sp3 = new Sprint( 2010, 5, 1, 2010, 6, 16, p1 ).save();
 			p1.sprints.add( Sp1 );
