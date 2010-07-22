@@ -27,8 +27,6 @@
 #{/set}
 #{set 'onLoad'}REDIPS.drag.init()#{/set}
 
-<!------------------------>
-
 
 <script type="text/javascript" charset="utf-8"> 
 
@@ -107,16 +105,6 @@ $(document).ready(function(){
    		$('form').toggle(400);
  	});
   
-	$('.b1').click(function()
-	{
-		$('.hidecol').css('display','inline-block');
-			
-	}); 
-	$('.b2').click(function()
-	{
-		$('.showcol').css('display','inline-block');	 
-	});   
-
 	$('.hideCol').click(function()
 	{
 		var i =this.id;
@@ -151,7 +139,7 @@ function hideCol(colid)
 		
 	      }
 		  else{
-		  	var seloption = document.getElementById('hadeer2');
+		  	var seloption = document.getElementById('b2');
 	seloption.selectedIndex='x';
 		  }
 }
@@ -192,8 +180,6 @@ $(function()
 
 </script>
    
-<ul id="data" id="columnsOfBoard" >
-
 <h1>${p.name}'s Task Board</h1>
 
 <!--Tools-->
@@ -203,15 +189,16 @@ $(function()
 #{if hidencolumnsOfBoard.isEmpty()}
 #{/if}
 #{else}
-<a href="#" class="b1 tiptitize" title="add hidden column?" type="button">Add Columns!</a><br/>	
-<select id="hadeer" onchange="showHiddenCol(hadeer.value)" style="display:none" class="hidecol">
+<a href="#" class="tiptitize" onclick="$('#b1').slideToggle(400)" title="add hidden column?" type="button">Add Columns!</a><br/>	
+<select id="b1" onchange="showHiddenCol(b1.value)" style="display:none" class="hidecol">
 <option value="">add columns</option>
 #{list items:hidencolumnsOfBoard, as:'c'}
 <option value= "${c.id}">${c.name}</option>
 #{/list}
+</select>
 #{/else}
 
-</select>
+
 #{/if}
 
 <!-- hide Col by Hadeer -->
@@ -219,22 +206,19 @@ $(function()
 #{if columnsOfBoard.isEmpty()}
 #{/if}
 #{else}
-<a href="#" class="b2 tiptitize" title="delete column?" type="button" >Delete Columns!</a><br/>
-<span style="display:none"> </span>
-<select id="hadeer2" onchange="hideCol(hadeer2.value)" style="display:none" class="showcol">
-
+<a href="#" class="tiptitize" onclick="$('#b2').slideToggle(400)" title="delete column?" type="button" >Delete Columns!</a><br/>
+<select id="b2" onchange="hideCol(b2.value)" style="display:none" class="showcol">
 <option id="x" value="">delete columns</option>
 #{list items:columnsOfBoard, as:'c'}
 <option value= "${c.id}">${c.name}</option>
-<span style="display:none"></span>
 #{/list}
-#{/else}
 </select>
+#{/else}
 #{/if}
 
 	
 
-<a class="titptitize" title="create meeting?" href="/admin/projects/${p.id}/meetings/new?object.infrontBoard=true">Create Meeting<a/><br/>	
+<a class="titptitize" title="create meeting?" href="/admin/projects/${p.id}/meetings/new?object.infrontBoard=true">Create Meeting</a><br/>	
 <a class="titptitize" title="view board snapshots?" href="@{Snapshots.index(s.id,p.name)}" >View snapshots</a><br/>
 <a class="titptitize" title="take board snapshot?" href="javascript:take_snapshot();">Take Snapshot</a><br/><br/>
 <!-- asmaak89 Part-->
@@ -242,10 +226,10 @@ $(function()
 
 <br/>
 #{if u.size()==0}
-<b><div style="font-size:small;" class="smartBarHeader" >There are no running meetings </div></b>
+<div><b style="font-size:small;" class="smartBarHeader" >There are no running meetings </b></div>
 #{/if}	
 #{else}
-<b><div style="font-size:small;" class="smartBarHeader" >Running Meetings</div></b>
+<div><b style="font-size:small;" class="smartBarHeader" >Running Meetings</b></div>
 #{list items:u, as:'users'}
 <a href ="/meetings/${users.meeting.id}"> <b>Meeting: ${users.meeting.name}</b></a><br/>
 <u>Start date</u>
@@ -256,20 +240,20 @@ $(function()
 <br/>
 <u>Attendees</u>
 #{list items:users , as:'user'}
-<a id=${user.id} href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a>
+<a id="${user.id}" href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a>
 #{/list}
 
 <br/>
 <div id="myLayer"></div>
 <!--Amr Abdelwahab-->
-<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u><a/><br/><br />
+<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u></a><br/><br />
 <span id="tzcd"></span>
 
 <a  href="javascript: end(${users.meeting.id});"><b>end meeting</b></a>
 
 <script type="text/javascript" charset="utf-8"> 
 
-////////// CONFIGURE THE COUNTDOWN SCRIPT HERE //////////////////
+// CONFIGURE THE COUNTDOWN SCRIPT HERE
 var date=${users.meeting.endTime};
 var tz =0;         //  
 var lab = 'tzcd';    //  The id of the page entry where the timezone countdown is to show
@@ -333,12 +317,14 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 <a href="" id="ToggleBoard">Toggle Board</a>
 
 <!-- Show Col drop down list by Dina -->
-<span style="display:none"> ${count=0}</span>
+#{set count=0}
+#{/set}
 <select id="changeCol" onchange="showCol(changeCol.value)">
 <option id="d" value="d">View Hidden Columns</option>
 #{list items:columnsOfBoard, as:'c'}
 <option value= "${count}">${c.name}</option>
-<span style="display:none"> ${count=count+1}</span>
+#{set count=count+1}
+#{/set}
 #{/list}	
 </select>
 
@@ -349,9 +335,10 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 	<td>Headers</td>
 	
 	<!-- set flag based on logged in user -->
-	<span style="display:none"> ${count=0}</span>
+	#{set count=0}
+	#{/set}
 	#{list items:columnsOfBoard, as:'col'}	
-	<td style="text-align:center;" id="${columnsOfBoard.id} " class="col_${count}"> 	
+	<td style="text-align:center;" class="col_${count}"> 	
 		#{if connected.in(p).can('renameColumns')}<!-- if admin -->
 		<div style="font-size:small;display:inline-block;width:3cm" class="${col.name} editCOL ccolumn" id="${col.id}" title="Edit the column name?">${col.name}</div>
 		#{/if}
@@ -369,7 +356,8 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 		<a style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" class="ui-state-default ui-corner-all ">
 		<span title="hide column?" id="${count}" style="display:inline-block !important"class="tiptitize hideCol ui-icon ui-icon-hide "></span>
 		</span></a>
-		<span style="display:none"> ${count=count+1}</span>
+		#{set count=count+1}
+		#{/set}
 		</div>
 	</td>
 	#{/list}
@@ -378,21 +366,24 @@ setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 #{list items:data, as:'component'}  
 <tr id="com-${component.id}_hidden" style="display:none;" > <!-- empty rows of the board -->
 	<td>Click here to toggle</td>
-	<span style="display:none"> ${count=0}</span>
+	#{set count=0}
+	#{/set}
 	#{list items:columnsOfBoard, as:'col'}
 	<td class="col_${count}"></td> <!-- creating empty cells in each row based on number default columns (onBoard=true) -->
-	<span style="display:none"> ${count=count+1}</span>
+	#{set count=count+1}
+	#{/set}
 	#{/list}
 </tr>
 
-<tr id="com-${component.id}" style="height:100px"> <!-- filling rows with data --->
+<tr id="com-${component.id}" style="height:100px"> <!-- filling rows with data -->
 	<td id="com-${component.id}" class="component">${component.title}</td> <!-- 1st cell in each row with component name -->
-	<span style="display:none"> ${count=0}</span>
+	#{set count=0}
+	#{/set}
 	#{list items:component, as:'col'}
-	<td class="col_${count}">  <!--filling cells in each row with tasks -->
-		<span style="display:none"> ${count=count+1}</span>
+	<td class="col_${count}" style="max-width:5000px">  <!--filling cells in each row with tasks -->
+		#{set count=count+1}
+		#{/set}
 		#{list items:col, as:'task'}
-		
 		<!-- small sticky note -->
 		#{if connected.in(p).can('changeTaskStatus') || connected.equals(task.assignee) || connected.equals(task.reviewer)}
 		<div id="task-${task.id}_T" class="drag status status_${task.id}">
