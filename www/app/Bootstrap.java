@@ -31,7 +31,7 @@ public class Bootstrap extends Job
 	{
 		if( User.count() == 0 )
 		{
-			String[] perms = { "manageRoles", "createRole", "editRole", "deleteRole", "editProject", "editBacklog", "editProjectNotificationprofile", "editUserNotificationProfile", "addComponent", "editComponent", "deleteComponent", "addSprint", "editSprint", "editSprintBacklog", "addMeeting", "editMeeting", "deleteMeeting", "addStory", "editStory", "deleteStory", "changeEstimations", "changeTaskType", "changeTaskStatus", "changeTaskDescreption", "changeReviewer", "changeAssignee", "changeAssigneeInSprint", "invite", "manageRequests", "editColumn", "getComponentMembers", "chooseAssignee", "chooseReporter", "chooseReviewer", "addProductRole", "editProductRole", "deleteProductRole", "request", "setDependentStories", "editColumnsPositions", "assignStoryToSprint", "respond", "accept", "renameColumns", "addReviewLog", "canAddTask", "modifyTask", "changeStatus", "addTaskStatus", "editTaskStatus", "addTaskType", "editTaskType", "viewReviewLog", "startGame", "viewChat", "associateTaskToMeeting", "reportImpediment", "editTask", "setMeetingAttendance", "deleteProject", "ShowColumn", "HideColumn","AssociateArtifacts","AssociateSprinttoMeeting" };
+			String[] perms = { "manageRoles", "createRole", "editRole", "deleteRole", "editProject", "editBacklog", "editProjectNotificationprofile", "editUserNotificationProfile", "addComponent", "editComponent", "deleteComponent", "addSprint", "editSprint", "editSprintBacklog", "addMeeting", "editMeeting", "deleteMeeting", "addStory", "editStory", "deleteStory", "changeEstimations", "changeTaskType", "changeTaskStatus", "changeTaskDescreption", "changeReviewer", "changeAssignee", "changeAssigneeInSprint", "invite", "manageRequests", "editColumn", "getComponentMembers", "chooseAssignee", "chooseReporter", "chooseReviewer", "addProductRole", "editProductRole", "deleteProductRole", "request", "setDependentStories", "editColumnsPositions", "assignStoryToSprint", "respond", "accept", "renameColumns", "addReviewLog", "canAddTask", "modifyTask", "changeStatus", "addTaskStatus", "editTaskStatus", "addTaskType", "editTaskType", "viewReviewLog", "startGame", "viewChat", "associateTaskToMeeting", "reportImpediment", "editTask", "setMeetingAttendance", "deleteProject", "ShowColumn", "HideColumn", "AssociateArtifacts", "AssociateSprinttoMeeting", "joinMeeting" };
 			for( String perm : perms )
 			{
 				new Permission( perm, perm ).save();
@@ -55,12 +55,12 @@ public class Bootstrap extends Job
 				u.save();
 				users.add( u );
 			}
-			
-			new Role("Project Owner").save();
-			new Role("Project Admin").save();
-			new Role("Scrum Master").save();
-			new Role("Developer").save();
-			Role r = new Role("Project Member").save();
+
+			new Role( "Project Owner" ).save();
+			new Role( "Project Admin" ).save();
+			new Role( "Scrum Master" ).save();
+			new Role( "Developer" ).save();
+			Role r = new Role( "Project Member" ).save();
 			r.baseRole = true;
 			r.save();
 
@@ -94,8 +94,9 @@ public class Bootstrap extends Job
 			// add more data below!
 
 			// adding in the users relation the Projects
-			for( User u : users ) {
-				u.addRole(p1.roles.get(0));
+			for( User u : users )
+			{
+				u.addRole( p1.roles.get( 0 ) );
 			}
 
 			// Components
@@ -226,7 +227,7 @@ public class Bootstrap extends Job
 			S9.save();
 
 			// Sprints
-			
+
 			Sprint Sp1 = new Sprint( 2010, 5, 1, 2010, 10, 20, p1 ).save();
 			Sprint Sp2 = new Sprint( 2010, 6, 1, 2010, 6, 15, p1 ).save();
 			Sprint Sp3 = new Sprint( 2010, 5, 1, 2010, 6, 16, p1 ).save();
