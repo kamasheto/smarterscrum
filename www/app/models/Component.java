@@ -50,6 +50,8 @@ public class Component extends SmartModel {
 	// Relation with Board Entity
 	@OneToOne (mappedBy = "component")
 	public Board componentBoard;
+	
+	public int number;
 
 	public Component () {
 		componentUsers = new ArrayList<User>();
@@ -214,6 +216,17 @@ public class Component extends SmartModel {
 
 	public void init() {
 		componentBoard = new Board(this).save();
+		if(this.project==null){
+			this.number=1;
+		}else{
+			this.number = this.project.components.size();
+			for ( Component component : this.project.components){
+				if(component.number>= this.number && ! component.equals(this)){
+				this.number= component.number;
+				}
+			}
+		}
+		this.save();
 		// board.component = this;?
 		// board.save();
 	}

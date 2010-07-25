@@ -267,6 +267,7 @@ public class Storys extends SmartCRUD {
 		storyObj.description= "As a "+storyObj.productRole.name+", I can "+ storyObj.description;
 		toBeSaved.addedBy = Security.getConnected();
 		object.save();
+		storyObj.init();
 		Logs.addLog(toBeSaved.addedBy, "Create", "Story", storyObj.id, project, new Date(System.currentTimeMillis()));
 		String header = "A new Story has been added.";
 		String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' 
@@ -813,6 +814,19 @@ public class Storys extends SmartCRUD {
 			render(ok, message);
 		} else {
 			render(project, storyId, cId,ok);
+		}
+	}
+	public static List<Story> findStories(long projectId, long componentId){
+		if(componentId!=0){
+			Component component = Component.findById(componentId);
+			return component.componentStories;
+		}else{
+			Project project = Project.findById(projectId);
+			List<Story> stories = new ArrayList<Story>();
+			for(Component component : project.components){
+				stories.addAll(component.componentStories);
+			}
+			return stories;
 		}
 	}
 }
