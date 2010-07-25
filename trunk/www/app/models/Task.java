@@ -72,18 +72,33 @@ public class Task extends SmartModel {
 
 	@ManyToOne
 	public Sprint taskSprint;
+
+	
+	public int number;
+
 	
 	@OneToMany (mappedBy = "task")
 	public List<Comment> comments;
 	
 	public String comment;
 
+
 	// @ManyToOne
 	// public Column Status_on_Board;
 
 	// @ManyToMany
 	// public List<Day> taskDays;
-
+	
+	
+	public void init(){
+		this.number = this.taskStory.storiesTask.size();
+		for(Task task : this.taskStory.storiesTask){
+			if(task.number >= this.number && !this.equals(task)){
+				this.number=task.number+1;
+			}
+		}
+		this.save();
+	}
 	/**
 	 * Returns the effort points of a specific task in a specific day.
 	 * 

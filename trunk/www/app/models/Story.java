@@ -58,11 +58,31 @@ public class Story extends SmartModel {
 	public User addedBy;
 
 	public double estimate;
+	
+	public int number;
 
 	public static List<Task> GetTasks(long StoryId) {
 
 		Story Needed_Story = Story.findById(StoryId);
 		return Needed_Story.storiesTask;
+	}
+	
+	public void init(){
+		List<Component> components = this.componentID.project.components;
+		int total=0;
+		for(Component component : components){
+			total+= component.componentStories.size();
+		}
+		this.number = total;
+		
+		for(Component component: components){
+			for (Story story : component.componentStories){
+				if(story.number >= this.number && !story.equals(this)){
+					this.number= story.number+1;
+				}
+			}
+		}
+		this.save();
 	}
 
 	/**

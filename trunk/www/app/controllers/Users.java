@@ -292,4 +292,18 @@ public class Users extends SmartCRUD {
 	public static void delete() {
 		forbidden();
 	}
+	
+	public static List<User> findUsers(long projectId, long componentId, int all){
+		if(all == 1){
+			return User.findAll();
+		}else{
+			if(componentId !=0){
+				Component component = Component.findById(componentId);
+				return component.componentUsers;
+			}else{
+				Project project = Project.findById(projectId);
+				return project.users;
+			}
+		}
+	}
 }
