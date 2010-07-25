@@ -58,6 +58,7 @@ public class Meetings extends SmartCRUD
 		else
 			forbidden();
 	}
+
 	/**
 	 * added this method to extend a running meeting on board
 	 * 
@@ -65,32 +66,35 @@ public class Meetings extends SmartCRUD
 	 * @param meetingid
 	 */
 
-	public static void extend( long meetingid ){
-	Meeting M=Meeting.findById(meetingid);
-	M.endTime+=1000*60*60;
-	M.save();
+	public static void extend( long meetingid )
+	{
+		Meeting M = Meeting.findById( meetingid );
+		M.endTime += 1000 * 60 * 60;
+		M.save();
 	}
+
 	/**
 	 * added this method to end a running meeting on board
 	 * 
 	 * @author amr Abdelwahab
 	 * @param meetingid
 	 */
-	public static void end( long meetingid ){
-		Meeting M=Meeting.findById(meetingid);
-		M.endTime=new Date().getTime();
+	public static void end( long meetingid )
+	{
+		Meeting M = Meeting.findById( meetingid );
+		M.endTime = new Date().getTime();
 		M.save();
-		Date D=new Date(M.endTime);
-		String header = "the Meeting "+ M.name+" has been ended"  ; 
-		String body = "The Meeting:" + "\'" + M.name + '\n' 
-				    + " in Project: " + "\'" + M.project.name + "\'" + '\n' +
-				    "by  "+Security.getConnected()+'\n'
-				   + "was ended  at "+ D.getHours()+":"+D.getMinutes()+":"+D.getSeconds();
+		Date D = new Date( M.endTime );
+		String header = "the Meeting " + M.name + " has been ended";
+		String body = "The Meeting:" + "\'" + M.name + '\n' + " in Project: " + "\'" + M.project.name + "\'" + '\n' + "by  " + Security.getConnected() + '\n' + "was ended  at " + D.getHours() + ":" + D.getMinutes() + ":" + D.getSeconds();
 		List<MeetingAttendance> attendees = MeetingAttendance.find( "byMeeting.id", M.id ).fetch();
-		Logs.addLog(Security.getConnected(), "Ended", "Meeting", M.id, M.project, new Date(System.currentTimeMillis()));
-		for(int i=0;i<attendees.size();i++){
-		Notifications.notifyUsers(attendees.get(i).user, header, body, (byte) 0);}
+		Logs.addLog( Security.getConnected(), "Ended", "Meeting", M.id, M.project, new Date( System.currentTimeMillis() ) );
+		for( int i = 0; i < attendees.size(); i++ )
+		{
+			Notifications.notifyUsers( attendees.get( i ).user, header, body, (byte) 0 );
 		}
+	}
+
 	/**
 	 * added this method to render the sprints with the page
 	 * 
@@ -104,18 +108,20 @@ public class Meetings extends SmartCRUD
 		JPASupport object = type.findById( id );
 		Meeting meeting = (Meeting) object;
 		Project p = meeting.project;
-		if(Security.getConnected().in( p).can( "editMeeting" ) ){
-		List<Sprint> sprints = p.upcomingSprints();
-		try
+		if( Security.getConnected().in( p ).can( "editMeeting" ) )
 		{
-			render( type, object, sprints );
+			List<Sprint> sprints = p.upcomingSprints();
+			try
+			{
+				render( type, object, sprints );
+			}
+			catch( TemplateNotFoundException e )
+			{
+				render( "CRUD/show.html", type, object );
+			}
 		}
-		catch( TemplateNotFoundException e )
+		else
 		{
-			render( "CRUD/show.html", type, object );
-		}
-		}
-		else {
 			forbidden();
 		}
 	}
@@ -187,12 +193,7 @@ public class Meetings extends SmartCRUD
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
-			// redirect( request.controller + ".list" );
-			Meetings.viewMeetings( currentProject.id );
-		}
-		if( params.get( "_saveAndAddAnother" ) != null )
-		{
-			redirect( request.controller + ".blank" );
+			redirect( "/application/overlaykiller" );
 		}
 		redirect( request.controller + ".show", object.getEntityId() );
 	}
@@ -701,5 +702,35 @@ public class Meetings extends SmartCRUD
 		meeting.artifacts.add( n );
 		meeting.save();
 
+	}
+
+	/**
+	 * This method Used by C5 board in order to allow the user to directly join
+	 * the meeting.
+	 * 
+	 * @author Amr Hany.
+	 * @param meetingID
+	 */
+
+	public static void joinMeeting( long meetingID )
+	{
+		Meeting m = Meeting.findById( meetingID );
+		if( m.endTime > new Date().getTime() )
+		{
+			Security.check( m.project, "joinMeeting" );
+			MeetingAttendance ma = MeetingAttendance.find( "user = ?1 and meeting =?2", Security.getConnected(), m ).first();
+			if( ma != null )
+			{
+				ma.status = "confirmed";
+				ma.reason = "";
+				ma.save();
+			}
+			if( ma == null )
+			{
+				MeetingAttendance attendance = new MeetingAttendance( Security.getConnected(), m );
+				attendance.status = "confirmed";
+				attendance.save();
+			}
+		}
 	}
 }

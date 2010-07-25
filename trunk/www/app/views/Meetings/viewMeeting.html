@@ -46,6 +46,9 @@
 #{if connected.in(meeting.project).can('deleteMeeting')}
 <a href = "#"  name="deleteMeeting" onclick="delete_meeting(${meeting.id}, ${meeting.project.id})"  >Delete this meeting</a>
 #{/if}
+
+<a href="#" onclick="joinmeeting()">Join that meeting</a>
+
 #{/set}
 
 <script type="text/javascript"> 
@@ -54,6 +57,15 @@
 			collapsible: true
 		});
 	});
+	
+	function joinmeeting()
+	{
+		$.post('@{joinMeeting()}', {
+			meetingID:${meeting.id}
+		}, function(){
+			window.location.reload();
+		});
+	}
 
 
 	
