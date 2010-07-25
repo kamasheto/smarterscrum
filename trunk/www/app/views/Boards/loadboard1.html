@@ -32,7 +32,7 @@ var col_to = -1;
 		
 //Author Amr Abdelwahab A script used to toogle the board
 $(document).ready(function(){
-		
+
 	$('.component').click(function()
 	{
 		$('#'+this.id).toggle();
@@ -110,13 +110,14 @@ $(document).ready(function(){
 
 function showCol(c)
 {
+	//$('#desc_1').load('/boards/loadboard1?sprintID=1 #desc_1');
 	$('.col_'+c).css('display','table-cell');	
 	var seloption = document.getElementById('changeCol');
 	seloption.selectedIndex='d';
 }
 function showHiddenCol(colid)
 {
-	$.post('@{showHiddenColumn()}' ,			
+	$.post('/Boards/showHiddenColumn' ,			
 			{cid:colid,uid:${connected.id}}, function(){
 		window.location.reload();
 		});
@@ -128,7 +129,7 @@ function hideCol(colid)
 		
 		if (answer) 	
 	      {
-	$.post('@{hideColumn()}' ,			
+	$.post('/Boards/hideColumn' ,			
 			{cid:colid,uid:${connected.id}}, function(){
 			window.location.reload();
 		});
@@ -190,8 +191,8 @@ $(function()
 #{if hidencolumnsOfBoard.isEmpty()}
 #{/if}
 #{else}
-<a href="#" class="tiptitize" onclick="$('#b1').slideToggle(400)" title="add hidden column?" type="button">Add Columns!</a><br/>	
-<select id="b1" onchange="showHiddenCol(b1.value)" style="display:none" class="hidecol">
+<a href="#" class="tiptitize" onclick="$('#b1').slideToggle()" title="add hidden column?" type="button">Add Columns!</a><br/>	
+<select id="b1" onchange="javascript: showHiddenCol(b1.value);" style="display:none" class="hidecol">
 <option value="">add columns</option>
 #{list items:hidencolumnsOfBoard, as:'c'}
 <option value= "${c.id}">${c.name}</option>
@@ -217,11 +218,11 @@ $(function()
 
 <a class="titptitize" title="create meeting?" href="/admin/projects/${p.id}/meetings/new">Create Meeting</a><br/>	
 #{if comp==null}
-<a class="titptitize" title="view board snapshots?" href="@{Snapshots.index(s.id,p.name)}" >View snapshots</a><br/>
+<a class="titptitize" title="view board snapshots?" href="/snapshots/index?id=${s.id}&type=${p.name}" >View snapshots</a><br/>
 <a class="titptitize" title="take board snapshot?" href="javascript:take_snapshot();">Take Snapshot</a><br/><br/>
 #{/if}
 #{else}
-<a class="titptitize" title="view board snapshots?" href="@{Snapshots.index(s.id,comp.name)}" >View snapshots</a><br>
+<a class="titptitize" title="view board snapshots?" href="/snapshots/index?id=${s.id}&type=${comp.name}" >View snapshots</a><br>
 <a class="titptitize" title="take board snapshot?" href="javascript:take_snap(${comp.id})">Take Snapshot</a><br/><br/>
 #{/else}
 
@@ -244,7 +245,7 @@ $(function()
 #{list items:users , as:'user'}
 <a id="${user.id}" href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a>
 #{/list}<br/>
-
+<div id="myLayer"></div>
 <!--Amr Abdelwahab-->
 #{if comp==null}
 <a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u></a><br/><br />
@@ -397,8 +398,8 @@ function displayTZCountDown(countdown,tzcd)
 		<div class="${task.taskStatus.column.name}" style="max-width:130px"></div>
 		<div style="max-width:130px" id="task-${task.id}_T" class="nostatus nostatus_${task.id}">
 		#{/else}
-		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor}; max-width:110px" border=0px id="${task.id}_small">
-		<a id="task-${task.id}" style="font-size:x-large;cursor: pointer !important"" border=0px class="ctask">-</a>S ${task.taskStory.id} 
+		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor}; max-width:110px;border=0px"  id="${task.id}_small">
+		<a id="task-${task.id}" style="font-size:x-large;cursor: pointer !important;border=0px" class="ctask">-</a>S ${task.taskStory.id} 
 		<div id="desc_${task.id}">${task.description}</div>
 		<a class="SmallSticky tiptitize" title="Edit task info?" style="cursor: pointer !important" id="${task.id}">view/edit info..</a>
 		</div>
@@ -410,9 +411,9 @@ function displayTZCountDown(countdown,tzcd)
 		<p> 
 		<div style="display:none;"  id="${task.id}Large" style="border:hidden">
 		<div style="max-width:165px" id="tas-${task.id}_" >
-		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 15px" border=0px id="tas-${task.id}_T">
+		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 15px;border=0px" id="tas-${task.id}_T">
 		<p>
-		<div  border=0px align="center">S ${task.taskStory.id}</div>
+		<div  style="border=0px" align="center">S ${task.taskStory.id}</div>
 		
 		#{if connected.in(p).can('changeTaskDescreption') || connected.equals(task.assignee)} <!-- if has permission (desc) or assignee -->
 		<div style="width:3cm" id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id} tiptipize" title="Edit description?">${task.description}</div>	
