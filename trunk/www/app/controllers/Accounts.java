@@ -49,9 +49,8 @@ public class Accounts extends SmartController {
 			register();
 		} else {
 			try {
-				User existingUser = User.find("name like '"+name+"' or "+"email like '"+email+"'").first();
-				if(existingUser != null)
-				{
+				User existingUser = User.find("name like '" + name + "' or " + "email like '" + email + "'").first();
+				if (existingUser != null) {
 					flash.error("Oops, that user already exists!" + "\t" + "Please choose another user name and/or email.");
 					register();
 				}
@@ -64,10 +63,11 @@ public class Accounts extends SmartController {
 				Mail.send("se.smartsoft@gmail.com", user.email, subject, body);
 				flash.success("You have been registered. An Activation link has been sent to your Email Address");
 				Secure.login();
-			} /*catch (PersistenceException e) {
-				flash.error("Oops, that user already exists!" + "\t" + "Please choose another user name and/or email.");
-				register();
-			}*/ catch (Throwable e) {
+			} /*
+			 * catch (PersistenceException e) {
+			 * flash.error("Oops, that user already exists!" + "\t" +
+			 * "Please choose another user name and/or email."); register(); }
+			 */catch (Throwable e) {
 				e.printStackTrace();
 			}
 
@@ -95,12 +95,11 @@ public class Accounts extends SmartController {
 	public static void requestDeletion() {
 		if (!Security.isConnected()) {
 			Security.error("You are not registered, Please login if you haven't done so");
-			
-		}
-		else if(Security.getConnected().pendingDeletion)
-			{User user = Security.getConnected();
+
+		} else if (Security.getConnected().pendingDeletion) {
+			User user = Security.getConnected();
 			render(user);
-			}
+		}
 		render();
 	}
 
@@ -120,7 +119,7 @@ public class Accounts extends SmartController {
 	 */
 
 	public static void deletionRequest(@Required String pwd) {
-
+		Security.check(Security.isConnected());
 		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
@@ -128,22 +127,18 @@ public class Accounts extends SmartController {
 		} else {
 			User userFound = Security.getConnected();
 			String pwdHash = Application.hash(pwd);
-				if(!userFound.pwdHash.equals(pwdHash))
-				{
-					flash.error("You have entered a wrong password!");
-					requestDeletion();
-				}
-				
-				else {
-					userFound.pendingDeletion = true;
-					userFound.save();
-					flash.success("your deletion request has been successfully sent!");
-					redirect("/");
-				}
+			if (!userFound.pwdHash.equals(pwdHash)) {
+				flash.error("You have entered a wrong password!");
+				requestDeletion();
+			} else {
+				userFound.pendingDeletion = true;
+				userFound.save();
+				flash.success("your deletion request has been successfully sent!");
+				redirect("/");
 			}
-			
 		}
-	
+
+	}
 
 	/**
 	 * This method activates a user with an activation hash "hash" when that
@@ -168,9 +163,9 @@ public class Accounts extends SmartController {
 			flash.error("This activation link is not valid or has expired. Activation Failed!");
 		Secure.login();
 	}
-	
-	public static void undoRequest()
-	{
+
+	public static void undoRequest() {
+		Security.check(Security.isConnected());
 		User user = Security.getConnected();
 		user.pendingDeletion = false;
 		user.save();

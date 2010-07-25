@@ -21,10 +21,9 @@ import play.mvc.With;
 /**
  * @author ghadafakhry
  */
-@With( Secure.class )
+@With (Secure.class)
 // @Check( "admin" ) will be un-done in late stages
-public class Meetings extends SmartCRUD
-{
+public class Meetings extends SmartCRUD {
 	/**
 	 * This method Overrides the CRUD.blank() method that is executed on adding
 	 * a new meeting, Because the project ID is needed in order to allow the
@@ -34,29 +33,21 @@ public class Meetings extends SmartCRUD
 	 * @param projectID
 	 */
 	// @Check ("canAddMeeting")
-	public static void blank( long id )
-	{
-		ObjectType type = ObjectType.get( getControllerClass() );
-		notFoundIfNull( type );
-		Project currentProject = Project.findById( id );
+	public static void blank(long id) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		Project currentProject = Project.findById(id);
 		List<Sprint> sprints = currentProject.upcomingSprints();
 		User creator = Security.getConnected();
 		List<String> types = currentProject.meetingTypes();
 
-		if( Security.getConnected().in( currentProject ).can( "addMeeting" ) )
-		{
-			try
-			{
+		Security.check(Security.getConnected().in(currentProject).can("addMeeting"));
+		try {
 
-				render( type, currentProject, creator, sprints, types );
-			}
-			catch( TemplateNotFoundException e )
-			{
-				render( "CRUD/blank.html", type );
-			}
+			render(type, currentProject, creator, sprints, types);
+		} catch (TemplateNotFoundException e) {
+			render("CRUD/blank.html", type);
 		}
-		else
-			forbidden();
 	}
 
 	/**
@@ -66,9 +57,17 @@ public class Meetings extends SmartCRUD
 	 * @param meetingid
 	 */
 
-	public static void extend( long meetingid )
-	{
-		Meeting M = Meeting.findById( meetingid );
+	public static void extend(long meetingid) {
+		Meeting M = Meeting.findById(meetingid);
+		boolean mem = false;
+		for (MeetingAttendance att : M.users) {
+			if (att.user == Security.getConnected()) {
+				mem = true;
+			}
+		}
+		if (!mem && !Security.getConnected().isAdmin) {
+			forbidden();
+		}
 		M.endTime += 1000 * 60 * 60;
 		M.save();
 	}
@@ -79,19 +78,26 @@ public class Meetings extends SmartCRUD
 	 * @author amr Abdelwahab
 	 * @param meetingid
 	 */
-	public static void end( long meetingid )
-	{
-		Meeting M = Meeting.findById( meetingid );
+	public static void end(long meetingid) {
+		Meeting M = Meeting.findById(meetingid);
+		boolean mem = false;
+		for (MeetingAttendance att : M.users) {
+			if (att.user == Security.getConnected()) {
+				mem = true;
+			}
+		}
+		if (!mem && !Security.getConnected().isAdmin) {
+			forbidden();
+		}
 		M.endTime = new Date().getTime();
 		M.save();
-		Date D = new Date( M.endTime );
+		Date D = new Date(M.endTime);
 		String header = "the Meeting " + M.name + " has been ended";
 		String body = "The Meeting:" + "\'" + M.name + '\n' + " in Project: " + "\'" + M.project.name + "\'" + '\n' + "by  " + Security.getConnected() + '\n' + "was ended  at " + D.getHours() + ":" + D.getMinutes() + ":" + D.getSeconds();
-		List<MeetingAttendance> attendees = MeetingAttendance.find( "byMeeting.id", M.id ).fetch();
-		Logs.addLog( Security.getConnected(), "Ended", "Meeting", M.id, M.project, new Date( System.currentTimeMillis() ) );
-		for( int i = 0; i < attendees.size(); i++ )
-		{
-			Notifications.notifyUsers( attendees.get( i ).user, header, body, (byte) 0 );
+		List<MeetingAttendance> attendees = MeetingAttendance.find("byMeeting.id", M.id).fetch();
+		Logs.addLog(Security.getConnected(), "Ended", "Meeting", M.id, M.project, new Date(System.currentTimeMillis()));
+		for (int i = 0; i < attendees.size(); i++) {
+			Notifications.notifyUsers(attendees.get(i).user, header, body, (byte) 0);
 		}
 	}
 
@@ -101,28 +107,18 @@ public class Meetings extends SmartCRUD
 	 * @author minazaki
 	 * @param id
 	 */
-	public static void show( String id )
-	{
-		ObjectType type = ObjectType.get( getControllerClass() );
-		notFoundIfNull( type );
-		JPASupport object = type.findById( id );
+	public static void show(String id) {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		JPASupport object = type.findById(id);
 		Meeting meeting = (Meeting) object;
 		Project p = meeting.project;
-		if( Security.getConnected().in( p ).can( "editMeeting" ) )
-		{
-			List<Sprint> sprints = p.upcomingSprints();
-			try
-			{
-				render( type, object, sprints );
-			}
-			catch( TemplateNotFoundException e )
-			{
-				render( "CRUD/show.html", type, object );
-			}
-		}
-		else
-		{
-			forbidden();
+		Security.check(Security.getConnected().in(p).can("editMeeting"));
+		List<Sprint> sprints = p.upcomingSprints();
+		try {
+			render(type, object, sprints);
+		} catch (TemplateNotFoundException e) {
+			render("CRUD/show.html", type, object);
 		}
 	}
 
@@ -136,38 +132,32 @@ public class Meetings extends SmartCRUD
 	 * @author Ghada Fakhry
 	 * @throws Exception
 	 */
-	public static void create() throws Exception
-	{
-		ObjectType type = ObjectType.get( getControllerClass() );
-		notFoundIfNull( type );
+	public static void create() throws Exception {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
 		JPASupport object = type.entityClass.newInstance();
-		validation.valid( object.edit( "object", params ) );
+		validation.valid(object.edit("object", params));
 		Meeting temp = (Meeting) object;
 		Project currentProject = temp.project;
+		Security.check(Security.getConnected().in(currentProject).can("addMeeting"));
 		User creator = Security.getConnected();
 		Date currentDate = new Date();
 		long longCurrentDate = currentDate.getTime();
-		if( validation.hasErrors() )
-		{
-			renderArgs.put( "error", Messages.get( "crud.hasErrors" ) );
-			try
-			{
+		if (validation.hasErrors()) {
+			renderArgs.put("error", Messages.get("crud.hasErrors"));
+			try {
 				// Here is the only difference,, in order to make validation
 				// redirect to the same page without giving error and with the
 				// same project
 
-				render( "Meetings/blank.html", type, currentProject, creator );
+				render("Meetings/blank.html", type, currentProject, creator);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/blank.html", type);
 			}
-			catch( TemplateNotFoundException e )
-			{
-				render( "CRUD/blank.html", type );
-			}
-		}
-		else if( !(temp.startTime > longCurrentDate && temp.startTime < temp.endTime) )
-		{
+		} else if (!(temp.startTime > longCurrentDate && temp.startTime < temp.endTime)) {
 
-			renderArgs.put( "error", "Please fix Meeting date" );
-			render( "Meetings/blank.html", type, currentProject, creator );
+			renderArgs.put("error", "Please fix Meeting date");
+			render("Meetings/blank.html", type, currentProject, creator);
 			// render( request.controller.replace( ".", "/" ) + "/blank.html",
 			// type );
 		}
@@ -175,33 +165,28 @@ public class Meetings extends SmartCRUD
 		 * adding the selected sprint to the meeting
 		 * @author minazaki
 		 */
-		if( !params.get( "object.sprintid" ).equals( "none" ) )
-		{
-			Sprint sprint = Sprint.findById( Long.parseLong( params.get( "object.sprintid" ) ) );
-			sprint.meetings.add( temp );
+		if (!params.get("object.sprintid").equals("none")) {
+			Sprint sprint = Sprint.findById(Long.parseLong(params.get("object.sprintid")));
+			sprint.meetings.add(temp);
 			sprint.save();
 			temp.sprint = sprint;
 		}
-		if( params.get( "object.type" ) != null )
-		{
-			temp.type = params.get( "object.type" );
+		if (params.get("object.type") != null) {
+			temp.type = params.get("object.type");
 		}
 
 		object.save();
-		if( params.get( "attending" ) != null )
-		{
-			MeetingAttendance ma = new MeetingAttendance( temp.creator, temp );
-			ma.status = "confirmed";
-			ma.save();
-		}
 
-		Logs.addLog( Security.getConnected(), "create", "Meeting", temp.id, temp.project, new Date( System.currentTimeMillis() ) );
-		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
-		if( params.get( "_save" ) != null )
-		{
-			redirect( "/application/overlaykiller" );
+		Logs.addLog(Security.getConnected(), "create", "Meeting", temp.id, temp.project, new Date(System.currentTimeMillis()));
+		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
+		if (params.get("_save") != null) {
+			// redirect( request.controller + ".list" );
+			Meetings.viewMeetings(currentProject.id);
 		}
-		redirect( request.controller + ".show", object.getEntityId() );
+		if (params.get("_saveAndAddAnother") != null) {
+			redirect(request.controller + ".blank");
+		}
+		redirect(request.controller + ".show", object.getEntityId());
 	}
 
 	/**
@@ -212,37 +197,33 @@ public class Meetings extends SmartCRUD
 	 * @param projectID
 	 */
 
-	public static void viewMeetings( long id )
-	{
+	public static void viewMeetings(long id) {
 		/*
 		 * View meetings controller which takes a projectID as an ID and returns
 		 * the meeting to use it in the model view
 		 */
 		Date currDate = new Date();
-		Project project = Project.findById( id );
-		List<Meeting> meetings = Meeting.find( "byProject.idAndDeleted", id, false ).fetch();
+		Project project = Project.findById(id);
+		List<Meeting> meetings = Meeting.find("byProject.idAndDeleted", id, false).fetch();
 		List<Meeting> upcoming = new ArrayList<Meeting>();
 		List<Meeting> past = new ArrayList<Meeting>();
-		while( meetings.isEmpty() == false )
-		{
-			Meeting temp = (meetings.remove( 0 ));
-			Date tempEnd = new Date( temp.endTime );
-			if( tempEnd.before( currDate ) )
-				past.add( temp );
+		while (meetings.isEmpty() == false) {
+			Meeting temp = (meetings.remove(0));
+			Date tempEnd = new Date(temp.endTime);
+			if (tempEnd.before(currDate))
+				past.add(temp);
 			else
-
-				upcoming.add( temp );
-
+				upcoming.add(temp);
 		}
 		boolean pastIsEmpty = false;
 		boolean upcomingIsEmpty = false;
-		if( past.isEmpty() )
+		if (past.isEmpty())
 			pastIsEmpty = true;
-		if( upcoming.isEmpty() )
+		if (upcoming.isEmpty())
 			upcomingIsEmpty = true;
-		Logs.addLog( Security.getConnected(), "view", "Meetings", project.id, project, new Date( System.currentTimeMillis() ) );
+		Logs.addLog(Security.getConnected(), "view", "Meetings", project.id, project, new Date(System.currentTimeMillis()));
 		String projectName = project.name;
-		render( meetings, id, projectName, past, upcoming, upcomingIsEmpty, pastIsEmpty, project );
+		render(meetings, id, projectName, past, upcoming, upcomingIsEmpty, pastIsEmpty, project);
 
 	}
 
@@ -267,24 +248,20 @@ public class Meetings extends SmartCRUD
 	 *@author Behairy
 	 */
 
-	@Check( "canEditMeeting" )
-	public static void saveChanges( long id, String name, String description, long startTime, long endTime, String location, String sprintId )
-	{
-		Meeting m = Meeting.findById( id );
+	// @Check ("canEditMeeting")
+	public static void saveChanges(long id, String name, String description, long startTime, long endTime, String location, String sprintId) {
+		Meeting m = Meeting.findById(id);
+		Security.check(Security.getConnected().in(m.project).can("editMeeting"));
 		Date currentDate = new Date();
 		long longCurrentDate = currentDate.getTime();
 		boolean timeFlag = false;
 
 		// Check Time Validity
-		if( startTime > longCurrentDate && startTime < endTime )
-		{
-
+		if (startTime > longCurrentDate && startTime < endTime) {
 			timeFlag = true;
-
 		}
 
-		if( timeFlag )
-		{
+		if (timeFlag) {
 			m.startTime = startTime;
 			m.endTime = endTime;
 			m.description = description;
@@ -295,54 +272,42 @@ public class Meetings extends SmartCRUD
 			 * 
 			 * @author minazaki
 			 */
-			if( !sprintId.equals( "none" ) )
-			{
-				Sprint sprint = Sprint.findById( Long.parseLong( sprintId ) );
-				sprint.meetings.add( m );
+			if (!sprintId.equals("none")) {
+				Sprint sprint = Sprint.findById(Long.parseLong(sprintId));
+				sprint.meetings.add(m);
 				sprint.save();
 				m.sprint = sprint;
 			}
-			Logs.addLog( Security.getConnected(), "Edit", "Meeting", m.id, m.project, new Date( System.currentTimeMillis() ) );
+			Logs.addLog(Security.getConnected(), "Edit", "Meeting", m.id, m.project, new Date(System.currentTimeMillis()));
 			m.save();
 		}
-
-		renderJSON( timeFlag );
-
+		renderJSON(timeFlag);
 	}
 
-	public static void associations( long id )
-	{
-
+	public static void associations(long id) {
 		// amr hany part :
-		User currentUser = User.find( "byEmail", Security.connected() ).first();
+		User currentUser = User.find("byEmail", Security.connected()).first();
 		// here will go our tasks
 		// ghada();
 		// behairy();
 		// hossam();
 		// mina();
-		Meeting meeting = Meeting.findById( id );
-		if( Security.getConnected().in( meeting.project ).can( "manageMeetingAssociations" ) || Security.getConnected().equals( meeting.creator ) )
-		{
-			List<Artifact> temp = Artifact.findAll();
-			List<Artifact> artifacts = new ArrayList<Artifact>();
-			for( int i = 0; i < temp.size(); i++ )
-			{
-				if( !temp.get( i ).meetingsArtifacts.contains( meeting ) )
-				{
-					artifacts.add( temp.get( i ) );
-				}
+		Meeting meeting = Meeting.findById(id);
+		Security.check(Security.getConnected().in(meeting.project).can("manageMeetingAssociations") || Security.getConnected().equals(meeting.creator));
+		List<Artifact> temp = Artifact.findAll();
+		List<Artifact> artifacts = new ArrayList<Artifact>();
+		for (int i = 0; i < temp.size(); i++) {
+			if (!temp.get(i).meetingsArtifacts.contains(meeting)) {
+				artifacts.add(temp.get(i));
 			}
-			List<Task> temp2 = Task.findAll();
-			List<Task> tasks = new ArrayList<Task>();
-			for( int i = 0; i < temp2.size(); i++ )
-			{
-				if( !temp2.get( i ).meeting.contains( meeting ) )
-					tasks.add( temp2.get( i ) );
-			}
-			render( meeting, currentUser, artifacts, tasks );
 		}
-		else
-			forbidden();
+		List<Task> temp2 = Task.findAll();
+		List<Task> tasks = new ArrayList<Task>();
+		for (int i = 0; i < temp2.size(); i++) {
+			if (!temp2.get(i).meeting.contains(meeting))
+				tasks.add(temp2.get(i));
+		}
+		render(meeting, currentUser, artifacts, tasks);
 	}
 
 	/**
@@ -352,13 +317,12 @@ public class Meetings extends SmartCRUD
 	 * @param id
 	 * @param artifact
 	 */
-	public static void addArtifact( long id, long artifact )
-	{
-
-		Artifact temp = Artifact.findById( artifact );
-		Meeting meeting = Meeting.findById( id );
-		meeting.artifacts.add( temp );
-		temp.meetingsArtifacts.add( meeting );
+	public static void addArtifact(long id, long artifact) {
+		Artifact temp = Artifact.findById(artifact);
+		Meeting meeting = Meeting.findById(id);
+		Security.check(Security.getConnected().in(meeting.project).can("AssociateArtifacts"));
+		meeting.artifacts.add(temp);
+		temp.meetingsArtifacts.add(meeting);
 		meeting.save();
 		temp.save();
 	}
@@ -370,12 +334,12 @@ public class Meetings extends SmartCRUD
 	 * @param tas
 	 *            - the task id this method to add the task to the meeting
 	 */
-	public static void addTask( long id, long task )
-	{
-		Task temp = Task.findById( task );
-		Meeting meeting = Meeting.findById( id );
-		meeting.tasks.add( temp );
-		temp.meeting.add( meeting );
+	public static void addTask(long id, long task) {
+		Task temp = Task.findById(task);
+		Meeting meeting = Meeting.findById(id);
+		Security.check(Security.getConnected().in(meeting.project).can("associateTaskToMeeting"));
+		meeting.tasks.add(temp);
+		temp.meeting.add(meeting);
 		meeting.save();
 		temp.save();
 	}
@@ -387,12 +351,12 @@ public class Meetings extends SmartCRUD
 	 * @param id
 	 * @param artifact
 	 */
-	public static void removeArtifact( long id, long artifact )
-	{
-		Artifact temp = Artifact.findById( artifact );
-		Meeting meeting = Meeting.findById( id );
-		meeting.artifacts.remove( temp );
-		temp.meetingsArtifacts.remove( temp );
+	public static void removeArtifact(long id, long artifact) {
+		Artifact temp = Artifact.findById(artifact);
+		Meeting meeting = Meeting.findById(id);
+		Security.check(Security.getConnected().in(meeting.project).can("AssociateArtifacts"));
+		meeting.artifacts.remove(temp);
+		temp.meetingsArtifacts.remove(temp);
 		meeting.save();
 		temp.save();
 	}
@@ -404,12 +368,12 @@ public class Meetings extends SmartCRUD
 	 * @param task
 	 *            - task id this method to remove the task from the meeting
 	 */
-	public static void removetask( long id, long task )
-	{
-		Task temp = Task.findById( task );
-		Meeting meeting = Meeting.findById( id );
-		meeting.tasks.remove( temp );
-		temp.meeting.remove( temp );
+	public static void removetask(long id, long task) {
+		Task temp = Task.findById(task);
+		Meeting meeting = Meeting.findById(id);
+		Security.check(Security.getConnected().in(meeting.project).can("associateTaskToMeeting"));
+		meeting.tasks.remove(temp);
+		temp.meeting.remove(temp);
 		meeting.save();
 		temp.save();
 	}
@@ -423,24 +387,22 @@ public class Meetings extends SmartCRUD
 	 * @param meetingID
 	 */
 
-	public static void viewMeeting( long id )
-	{
-
-		Meeting meeting = Meeting.findById( id );
-		List<MeetingAttendance> attendees = MeetingAttendance.find( "byMeeting.idAndDeleted", id, false ).fetch();
+	public static void viewMeeting(long id) {
+		Meeting meeting = Meeting.findById(id);
+		List<MeetingAttendance> attendees = MeetingAttendance.find("byMeeting.idAndDeleted", id, false).fetch();
 		User user = Security.getConnected();
-		List<MeetingAttendance> theUser = MeetingAttendance.find( "byMeeting.idAndUser.id", id, user.id ).fetch();
+		List<MeetingAttendance> theUser = MeetingAttendance.find("byMeeting.idAndUser.id", id, user.id).fetch();
 		Date currentDate = new Date();
 		long longCurrentDate = currentDate.getTime();
 		boolean noteFlag = false;
-		if( theUser == null || theUser.isEmpty() )
-			render( meeting, attendees, noteFlag );
+		if (theUser == null || theUser.isEmpty())
+			render(meeting, attendees, noteFlag);
 
-		if( (theUser.get( 0 ).status.equals( "confirmed" )) && (meeting.endTime < longCurrentDate) )
+		if ((theUser.get(0).status.equals("confirmed")) && (meeting.endTime < longCurrentDate))
 			noteFlag = true;
-		System.out.println( noteFlag );
-		Logs.addLog( Security.getConnected(), "view", "Meeting", meeting.id, meeting.project, new Date( System.currentTimeMillis() ) );
-		render( meeting, attendees, noteFlag, id );
+		System.out.println(noteFlag);
+		Logs.addLog(Security.getConnected(), "view", "Meeting", meeting.id, meeting.project, new Date(System.currentTimeMillis()));
+		render(meeting, attendees, noteFlag, id);
 	}
 
 	/**
@@ -455,54 +417,47 @@ public class Meetings extends SmartCRUD
 	 * @param id
 	 */
 	// @Check ("canDeleteMeeting")
-	public static void deleteMeeting( long id )
-	{
-		Meeting meeting = Meeting.findById( id );
+	public static void deleteMeeting(long id) {
+		Meeting meeting = Meeting.findById(id);
 		Project currentProject = meeting.project;
 		long longTempStart = meeting.startTime;
-		if( Security.getConnected().in( currentProject ).can( "deleteMeeting" ) )
-		{
-			meeting.deleted = true;
-			String message = "";
-			Date currDate = new Date();
-			long longCurrDate = currDate.getTime();
-			List<MeetingAttendance> attendees = MeetingAttendance.find( "byMeeting.id", meeting.id ).fetch();
-			List<User> users = new ArrayList<User>();
-			while( attendees.isEmpty() == false )
-			{
-				users.add( attendees.remove( 0 ).user );
-			}
-
-			if( longCurrDate < longTempStart )
-			{
-				meeting.status = false;
-				if( users.isEmpty() == false )
-					message = "unfortunately " + meeting.name + " meeting that you've been invited to is cancelled";
-				Notifications.notifyUsers( users, "Meeting Canceled", message );
-			}
-
-			List<Artifact> artifacts = meeting.artifacts;
-			boolean flag = false;
-			while( artifacts.isEmpty() == false )
-			{
-				Artifact temp = artifacts.remove( 0 );
-				String type = temp.type;
-				if( type.equals( "Notes" ) )
-					flag = true;
-			}
-			if( flag )
-			{
-				if( users.isEmpty() == false )
-					message = "unfortunately " + meeting.name + " meeting notes are deleted :(";
-				Notifications.notifyUsers( users, "Meeting Notes deleted", message );
-			}
-			Logs.addLog( Security.getConnected(), "delete", "Meeting", meeting.id, meeting.project, new Date( System.currentTimeMillis() ) );
-			meeting.save();
-			redirect( "/projects/" + meeting.project.id + "/meetings" );
-
+		Security.check(Security.getConnected().in(currentProject).can("deleteMeeting"));
+		meeting.deleted = true;
+		String message = "";
+		Date currDate = new Date();
+		long longCurrDate = currDate.getTime();
+		List<MeetingAttendance> attendees = MeetingAttendance.find("byMeeting.id", meeting.id).fetch();
+		List<User> users = new ArrayList<User>();
+		while (attendees.isEmpty() == false) {
+			users.add(attendees.remove(0).user);
 		}
-		else
-			forbidden();
+
+		if (longCurrDate < longTempStart) {
+			meeting.status = false;
+			if (users.isEmpty() == false)
+				message = "unfortunately " + meeting.name + " meeting that you've been invited to is cancelled";
+			Notifications.notifyUsers(users, "Meeting Canceled", message);
+		}
+
+		List<Artifact> artifacts = meeting.artifacts;
+		boolean flag = false;
+		while (artifacts.isEmpty() == false) {
+			Artifact temp = artifacts.remove(0);
+			String type = temp.type;
+			if (type.equals("Notes"))
+				flag = true;
+		}
+		if (flag) {
+			if (users.isEmpty() == false)
+				message = "unfortunately " + meeting.name + " meeting notes are deleted :(";
+			Notifications.notifyUsers(users, "Meeting Notes deleted", message);
+		}
+		Logs.addLog(Security.getConnected(), "delete", "Meeting", meeting.id, meeting.project, new Date(System.currentTimeMillis()));
+		meeting.save();
+		redirect("/projects/" + meeting.project.id + "/meetings");
+		//
+		// } else
+		// forbidden();
 
 	}
 
@@ -514,29 +469,24 @@ public class Meetings extends SmartCRUD
 	 * @param userID
 	 */
 
-	public static void inviteUser( long meetingID, long userID )
-	{
-		Meeting currentMeeting = Meeting.findById( meetingID );
-		if( Security.getConnected().in( currentMeeting.project ).can( "manageMeetingAssociations" ) || Security.getConnected().equals( currentMeeting.creator ) )
-		{
-			User invitedUser = User.findById( userID );
-			MeetingAttendance attendance = new MeetingAttendance( invitedUser, currentMeeting );
-			attendance.save();
-			List<User> userList = new LinkedList<User>();
-			userList.add( invitedUser );
-			String meetingHash = attendance.meetingHash;
-			String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
-			String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
-			String header = "Invitation to Meeting in " + currentMeeting.project.name + " project";
-			String body1 = "Hello " + invitedUser.name;
-			String body2 = "You have been invited to attend " + currentMeeting.name + " ";
-			String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
-			String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
-			String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-			Notifications.notifyUsers( userList, header, body );
-		}
-		else
-			forbidden();
+	public static void inviteUser(long meetingID, long userID) {
+		Meeting currentMeeting = Meeting.findById(meetingID);
+		Security.check(Security.getConnected().in(currentMeeting.project).can("manageMeetingAssociations") || Security.getConnected().equals(currentMeeting.creator));
+		User invitedUser = User.findById(userID);
+		MeetingAttendance attendance = new MeetingAttendance(invitedUser, currentMeeting);
+		attendance.save();
+		List<User> userList = new LinkedList<User>();
+		userList.add(invitedUser);
+		String meetingHash = attendance.meetingHash;
+		String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
+		String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
+		String header = "Invitation to Meeting in " + currentMeeting.project.name + " project";
+		String body1 = "Hello " + invitedUser.name;
+		String body2 = "You have been invited to attend " + currentMeeting.name + " ";
+		String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
+		String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
+		String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
+		Notifications.notifyUsers(userList, header, body);
 
 	}
 
@@ -549,43 +499,34 @@ public class Meetings extends SmartCRUD
 	 * @param meetingID
 	 */
 
-	public static void inviteAllMembers( long meetingID )
-	{
-		Meeting meeting = Meeting.findById( meetingID );
+	public static void inviteAllMembers(long meetingID) {
+		Meeting meeting = Meeting.findById(meetingID);
 		List<User> projectMembers = meeting.project.users;
-		if( Security.getConnected().in( meeting.project ).can( "manageMeetingAssociations" ) || Security.getConnected().equals( meeting.creator ) )
-		{
-			for( User invitedUser : projectMembers )
-			{
-				if( invitedUser.deleted == false )
-				{
-					if( invitedUser.meetingStatus( meetingID ).equals( "notInvited" ) )
-					{
-						MeetingAttendance attendance = new MeetingAttendance( invitedUser, meeting );
-						attendance.save();
-						List<User> userList = new LinkedList<User>();
-						userList.add( invitedUser );
-						String meetingHash = attendance.meetingHash;
-						String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
-						String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
-						String header = "Invitation to Meeting in " + meeting.project.name + " project";
-						String body1 = "Hello " + invitedUser.name;
-						String body2 = "You have been invited to attend " + meeting.name + " ";
-						String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
-						String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
-						String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-						Notifications.notifyUsers( userList, header, body );
-					}
+		Security.check(Security.getConnected().in(meeting.project).can("manageMeetingAssociations") || Security.getConnected().equals(meeting.creator));
+		for (User invitedUser : projectMembers) {
+			if (invitedUser.deleted == false) {
+				if (invitedUser.meetingStatus(meetingID).equals("notInvited")) {
+					MeetingAttendance attendance = new MeetingAttendance(invitedUser, meeting);
+					attendance.save();
+					List<User> userList = new LinkedList<User>();
+					userList.add(invitedUser);
+					String meetingHash = attendance.meetingHash;
+					String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
+					String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
+					String header = "Invitation to Meeting in " + meeting.project.name + " project";
+					String body1 = "Hello " + invitedUser.name;
+					String body2 = "You have been invited to attend " + meeting.name + " ";
+					String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
+					String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
+					String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
+					Notifications.notifyUsers(userList, header, body);
 				}
 			}
-			for( Component c : meeting.project.components )
-			{
-				meeting.components.add( c );
-				meeting.save();
-			}
 		}
-		else
-			forbidden();
+		for (Component c : meeting.project.components) {
+			meeting.components.add(c);
+			meeting.save();
+		}
 	}
 
 	/**
@@ -597,45 +538,35 @@ public class Meetings extends SmartCRUD
 	 * @param meetingID
 	 * @param componentID
 	 */
-	public static void inviteComponent( long meetingID, long componentID )
-	{
-		Meeting meeting = Meeting.findById( meetingID );
-		Component component = Component.findById( componentID );
+	public static void inviteComponent(long meetingID, long componentID) {
+		Meeting meeting = Meeting.findById(meetingID);
+		Component component = Component.findById(componentID);
 
-		if( Security.getConnected().in( meeting.project ).can( "manageMeetingAssociations" ) || Security.getConnected().equals( meeting.creator ) )
-		{
-			if( !component.deleted )
-			{
-				for( User user : component.componentUsers )
-				{
-					if( !user.deleted )
-					{
-						if( user.meetingStatus( meetingID ).equals( "notInvited" ) )
-						{
-							MeetingAttendance attendance = new MeetingAttendance( user, meeting );
-							attendance.save();
-							List<User> userList = new LinkedList<User>();
-							userList.add( user );
-							String meetingHash = attendance.meetingHash;
-							String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
-							String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
-							String header = "Invitation to Meeting in " + meeting.project.name + " project";
-							String body1 = "Hello " + user.name;
-							String body2 = "You have been invited to attend " + meeting.name + " ";
-							String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
-							String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
-							String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-							Notifications.notifyUsers( userList, header, body );
-						}
+		Security.check(Security.getConnected().in(meeting.project).can("manageMeetingAssociations") || Security.getConnected().equals(meeting.creator));
+		if (!component.deleted) {
+			for (User user : component.componentUsers) {
+				if (!user.deleted) {
+					if (user.meetingStatus(meetingID).equals("notInvited")) {
+						MeetingAttendance attendance = new MeetingAttendance(user, meeting);
+						attendance.save();
+						List<User> userList = new LinkedList<User>();
+						userList.add(user);
+						String meetingHash = attendance.meetingHash;
+						String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
+						String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
+						String header = "Invitation to Meeting in " + meeting.project.name + " project";
+						String body1 = "Hello " + user.name;
+						String body2 = "You have been invited to attend " + meeting.name + " ";
+						String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
+						String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
+						String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
+						Notifications.notifyUsers(userList, header, body);
 					}
 				}
-				meeting.components.add( component );
-				meeting.save();
 			}
+			meeting.components.add(component);
+			meeting.save();
 		}
-
-		else
-			forbidden();
 	}
 
 	/**
@@ -645,22 +576,19 @@ public class Meetings extends SmartCRUD
 	 * @param meetingID
 	 *            , taskID
 	 */
-	@Check( "canAssociateTaskToMeeting" )
-	public static void toggleTask( long meetingID, long taskID )
-	{
-		Meeting M = Meeting.findById( meetingID );
-		Task T = Task.findById( taskID );
+	public static void toggleTask(long meetingID, long taskID) {
+		Meeting M = Meeting.findById(meetingID);
+		Task T = Task.findById(taskID);
+		Security.check(Security.getConnected().in(M.project).can("AssociateTaskToMeeting"));
 		boolean B = false;
-		if( M.tasks.contains( T ) )
-		{
-			M.tasks.remove( T );
+		if (M.tasks.contains(T)) {
+			M.tasks.remove(T);
 			B = true;
-		}
-		else
-			M.tasks.add( T );
+		} else
+			M.tasks.add(T);
 		M.save();
-		Logs.addLog( Security.getConnected(), "Associated task to meeting", "task", meetingID, M.project, new Date() );
-		renderText( B );
+		Logs.addLog(Security.getConnected(), "Associated task to meeting", "task", meetingID, M.project, new Date());
+		renderText(B);
 	}
 
 	/**
@@ -670,24 +598,21 @@ public class Meetings extends SmartCRUD
 	 * @param id
 	 * @author Behairy
 	 */
-	public static void notifyUsersWithModifications( long id )
-	{
+	public static void notifyUsersWithModifications(long id) {
 		boolean flag = false;
-		Meeting meeting = Meeting.findById( id );
-		List<MeetingAttendance> attendees = MeetingAttendance.find( "byMeeting.id", meeting.id ).fetch();
+		Meeting meeting = Meeting.findById(id);
+		List<MeetingAttendance> attendees = MeetingAttendance.find("byMeeting.id", meeting.id).fetch();
 		List<User> users = new ArrayList<User>();
-		while( attendees.isEmpty() == false )
-		{
-			users.add( attendees.remove( 0 ).user );
+		while (attendees.isEmpty() == false) {
+			users.add(attendees.remove(0).user);
 		}
 		String message = "This is to Notify you that the Meeting " + meeting.name + " has been modified.";
 
-		if( users.isEmpty() == false )
-		{
-			Notifications.notifyUsers( users, " " + meeting.name + " Meeting Modification", message );
+		if (users.isEmpty() == false) {
+			Notifications.notifyUsers(users, " " + meeting.name + " Meeting Modification", message);
 			flag = true;
 		}
-		renderJSON( flag );
+		renderJSON(flag);
 	}
 
 	/**
@@ -700,15 +625,15 @@ public class Meetings extends SmartCRUD
 	 * @author menna_ghoneim
 	 */
 
-	public static void addNote( long id, String note )
-	{
-		Artifact n = new Artifact( "Notes", note );
+	public static void addNote(long id, String note) {
+		Artifact n = new Artifact("Notes", note);
 		n.save();
-		Meeting meeting = Meeting.findById( id );
-		meeting.artifacts.add( n );
+		Meeting meeting = Meeting.findById(id);
+		meeting.artifacts.add(n);
 		meeting.save();
 
 	}
+	
 
 	/**
 	 * This method Used by C5 board in order to allow the user to directly join
