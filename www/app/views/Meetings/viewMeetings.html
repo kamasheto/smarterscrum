@@ -10,7 +10,7 @@
 #{set 'moreLinks'}
 
 #{if connected.in(project).can('addMeeting') }
-<a href="/admin/projects/${id}/meetings/new"> New meeting </a>
+<a onClick="overlayOpen('/admin/projects/${id}/meetings/new')"href="#"> New meeting </a>
 <br>
 <br>
 #{/if}
