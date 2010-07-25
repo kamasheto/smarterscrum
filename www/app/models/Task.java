@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import play.data.validation.MaxSize;
@@ -71,6 +72,11 @@ public class Task extends SmartModel {
 
 	@ManyToOne
 	public Sprint taskSprint;
+	
+	@OneToMany (mappedBy = "task")
+	public List<Comment> comments;
+	
+	public String comment;
 
 	// @ManyToOne
 	// public Column Status_on_Board;
