@@ -188,6 +188,12 @@ public class Meetings extends SmartCRUD
 		}
 
 		object.save();
+		if( params.get( "attending" ) != null )
+		{
+			MeetingAttendance ma = new MeetingAttendance( temp.creator, temp );
+			ma.status = "confirmed";
+			ma.save();
+		}
 
 		Logs.addLog( Security.getConnected(), "create", "Meeting", temp.id, temp.project, new Date( System.currentTimeMillis() ) );
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
