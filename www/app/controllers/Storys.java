@@ -29,7 +29,7 @@ public class Storys extends SmartCRUD {
 	 * @author Galal Aly
 	 * @return void
 	 **/
-	//@Check ("canAddStory")
+	// @Check ("canAddStory")
 	public static void blank(long id) {
 		boolean roles, components, priorities = true;
 		roles = components = priorities;
@@ -59,13 +59,13 @@ public class Storys extends SmartCRUD {
 			}
 		}
 		if (project.priorities == null || project.priorities.isEmpty()) {
-			//ok = false;
-			//priorities = false;
+			// ok = false;
+			// priorities = false;
 		}
 		if (!ok)
 			render("Storys/error.html", priorities, components, roles);
 		// Sort the priorities according to their priority
-	//	Collections.sort(project.priorities);
+		// Collections.sort(project.priorities);
 		try {
 			render(type, stories, project);
 		} catch (TemplateNotFoundException e) {
@@ -84,8 +84,8 @@ public class Storys extends SmartCRUD {
 	 * @author Galal Aly
 	 * @return void
 	 **/
-	//@Check ("canEditStory")
-	public static void show(String id) {		
+	// @Check ("canEditStory")
+	public static void show(String id) {
 		boolean roles, components, priorities = true;
 		roles = components = priorities;
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -95,8 +95,8 @@ public class Storys extends SmartCRUD {
 		Story temp = (Story) object;
 		if(temp.productRole != null)
 		{
-			int formatt= 13+temp.productRole.name.length();
-			temp.description= temp.description.substring(formatt);
+		int formatt = 13 + temp.productRole.name.length();
+		temp.description = temp.description.substring(formatt);
 		}
 		// Whether everything is ok to edit the story
 		boolean ok = true;
@@ -127,10 +127,10 @@ public class Storys extends SmartCRUD {
 		// Sort the priorities according to their priority (how priorities are
 		// compared is specified in the model Priority.java)
 		if (project.priorities == null || project.priorities.isEmpty()) {
-			//ok = false;
+			// ok = false;
 			priorities = false;
 		}
-		//Collections.sort(project.priorities);
+		// Collections.sort(project.priorities);
 
 		if (!ok)
 			render("Storys/error.html", priorities, components, roles);
@@ -166,7 +166,7 @@ public class Storys extends SmartCRUD {
 	 * @author Galal Aly
 	 * @return void
 	 **/
-	//@Check ("canDeleteStory")
+	// @Check ("canDeleteStory")
 	public static void delete(String id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -196,17 +196,21 @@ public class Storys extends SmartCRUD {
 				// delete the tasks
 				t.DeleteTask();
 			}
-			String header = "Story: 'S" +  story.id + "\'" + " has been deleted.";
+			String header = "Story: 'S" + story.id + "\'" + " has been deleted.";
 			String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' 
 				+ " In Component: " + "\'" + story.componentID.name + "\'" + "." + '\n'
 				+ " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
-			/*////Long Informative Notification message. Not suitable for online notification.
-			String header = "A Story in Component: " + "\'" + story.componentID.name + "\'" + " in Project: " + "\'" + project.name + "\'" + " has been deleted.";
-			String body = "The Story:" + '\n' 
-			    + " " + "\'" + story.description + "\'" + '\n' 
-				+ " in Component: " + "\'" + story.componentID.name + "\'" + " in Project: " + "\'" + project.name + "\'" + " has been deleted." + '\n' + '\n'  
-				+ " Deleted by: " + story.addedBy.name + ".";
-			// Now mark my story as deleted*/
+			/*
+			 * ////Long Informative Notification message. Not suitable for
+			 * online notification. String header = "A Story in Component: " +
+			 * "\'" + story.componentID.name + "\'" + " in Project: " + "\'" +
+			 * project.name + "\'" + " has been deleted."; String body =
+			 * "The Story:" + '\n' + " " + "\'" + story.description + "\'" +
+			 * '\n' + " in Component: " + "\'" + story.componentID.name + "\'" +
+			 * " in Project: " + "\'" + project.name + "\'" +
+			 * " has been deleted." + '\n' + '\n' + " Deleted by: " +
+			 * story.addedBy.name + "."; // Now mark my story as deleted
+			 */
 			story.deleted = true;
 			story.save();
 			Logs.addLog(story.addedBy, "Delete", "Story", story.id, project, new Date(System.currentTimeMillis()));
@@ -229,7 +233,7 @@ public class Storys extends SmartCRUD {
 	 * @return void
 	 **/
 	@SuppressWarnings ("deprecation")
-	//@Check ("canAddStory")
+	// @Check ("canAddStory")
 	public static void create() throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -241,7 +245,7 @@ public class Storys extends SmartCRUD {
 		User user = Security.getConnected();
 		Security.check(user.in(project).can("addStory"));
 		validation.valid(object.edit("object", params));
-		
+
 		// We can set the dependent stories .. We need to get a list of stories
 		// in a project to list them so that we can set the dependency
 		ArrayList<Story> stories = new ArrayList<Story>();
@@ -263,28 +267,32 @@ public class Storys extends SmartCRUD {
 				render("CRUD/blank.html", type);
 			}
 		}
-		Story toBeSaved = (Story) object;		
-		storyObj.description= "As a "+storyObj.productRole.name+", I can "+ storyObj.description;
+		Story toBeSaved = (Story) object;
+		storyObj.description = "As a " + storyObj.productRole.name + ", I can " + storyObj.description;
 		toBeSaved.addedBy = Security.getConnected();
 		object.save();
-		storyObj.init();
 		Logs.addLog(toBeSaved.addedBy, "Create", "Story", storyObj.id, project, new Date(System.currentTimeMillis()));
 		String header = "A new Story has been added.";
 		String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' 
 		            + " In Component: " + "\'" + storyObj.componentID.name + "\'" + "." + '\n' 
 					+ " Story: 'S" +  storyObj.id + "\'" + "." + '\n'  
 					+ " Added by: " + "\'" + toBeSaved.addedBy.name + "\'" + ".";		
-	  /*////Long Informative Notification message. Not suitable for online notification.
-		String header = "New Story has been added to Component: " + "\'" + storyObj.componentID.name + "\'" + " in Project: " + "\'" + project.name + "\'" + ".";
-		String body = "New Story has been added to Component: " + "\'" + storyObj.componentID.name + "\'" 
-		    + " in Project: " + "\'" + project.name + "\'" + "." + '\n' + '\n' 
-			+ "Story Description: " +  storyObj.description + "." + '\n' 
-			+ " Priority: " + storyObj.priority + "." + '\n' 
-			+ " Estimate points: " + storyObj.estimate + "." + '\n' 
-			+ " Succuss Senario: " + storyObj.succussSenario + "." + '\n'
-			+ " Failure Senario: " + storyObj.failureSenario + "." + '\n' 
-			+ " Notes: " + storyObj.notes + "." + '\n' 
-			+ " Added by: " + toBeSaved.addedBy.name + ".";*/
+		/*
+		 * ////Long Informative Notification message. Not suitable for online
+		 * notification. String header =
+		 * "New Story has been added to Component: " + "\'" +
+		 * storyObj.componentID.name + "\'" + " in Project: " + "\'" +
+		 * project.name + "\'" + "."; String body =
+		 * "New Story has been added to Component: " + "\'" +
+		 * storyObj.componentID.name + "\'" + " in Project: " + "\'" +
+		 * project.name + "\'" + "." + '\n' + '\n' + "Story Description: " +
+		 * storyObj.description + "." + '\n' + " Priority: " + storyObj.priority
+		 * + "." + '\n' + " Estimate points: " + storyObj.estimate + "." + '\n'
+		 * + " Succuss Senario: " + storyObj.succussSenario + "." + '\n' +
+		 * " Failure Senario: " + storyObj.failureSenario + "." + '\n' +
+		 * " Notes: " + storyObj.notes + "." + '\n' + " Added by: " +
+		 * toBeSaved.addedBy.name + ".";
+		 */
 		Notifications.notifyUsers(storyObj.componentID.getUsers(), header, body, (byte) 1);
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
@@ -307,17 +315,17 @@ public class Storys extends SmartCRUD {
 	 * @author Galal Aly
 	 * @return void
 	 **/
-	//@Check ("canEditStory")
-	public static void save(String id) throws Exception {	
+	// @Check ("canEditStory")
+	public static void save(String id) throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
 		validation.valid(object.edit("object", params));
 		Story storyObj = (Story) object;
 		String oldDescription = storyObj.description;
-		storyObj.description= "As a "+storyObj.productRole.name+", I can "+ storyObj.description;
+		storyObj.description = "As a " + storyObj.productRole.name + ", I can " + storyObj.description;
 		// We will add the story to a project .. We need to get that project
-      
+
 		Project project = storyObj.componentID.project;
 		User user = Security.getConnected();
 		Security.check(user.in(project).can("editStory"));
@@ -343,23 +351,27 @@ public class Storys extends SmartCRUD {
 				render("CRUD/show.html", type, object);
 			}
 		}
-		storyObj.description= "As a "+storyObj.productRole.name+", I can "+ storyObj.description;
-		String header = "Story: 'S" +  storyObj.id + "\'" + " has been edited.";
+		storyObj.description = "As a " + storyObj.productRole.name + ", I can " + storyObj.description;
+		String header = "Story: 'S" + storyObj.id + "\'" + " has been edited.";
 		String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' 
 			+ " In Component: " + "\'" + storyObj.componentID.name + "\'" + "." + '\n'
 			+ " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
-		/*////Long Informative Notification message. Not suitable for online notification.
-		String header = "A Story has been edited in Component: " + "\'" + storyObj.componentID.name + "\'" + " in Project: " + "\'" + project.name + "\'" + ".";
-		String body = "The Story:" + '\n' 
-		    + " " + "\'" + oldDescription + "\'" + '\n' 
-	        + " has been edited in Component: " + "\'" + storyObj.componentID.name + "\'" + " in Project: " + "\'" + project.name + "\'" + "." + '\n' + '\n'  
-			+ "Story Description: " +  storyObj.description + "." + '\n' 
-			+ " Priority: " + storyObj.priority + "." + '\n' 
-			+ " Estimate points: " + storyObj.estimate + "." + '\n' 
-			+ " Succuss Senario: " + storyObj.succussSenario + "." + '\n'
-			+ " Failure Senario: " + storyObj.failureSenario + "." + '\n' 
-			+ " Notes: " + storyObj.notes + "." + '\n' 
-			+ " Added by: " + storyObj.addedBy.name + ".";*/
+		/*
+		 * ////Long Informative Notification message. Not suitable for online
+		 * notification. String header =
+		 * "A Story has been edited in Component: " + "\'" +
+		 * storyObj.componentID.name + "\'" + " in Project: " + "\'" +
+		 * project.name + "\'" + "."; String body = "The Story:" + '\n' + " " +
+		 * "\'" + oldDescription + "\'" + '\n' +
+		 * " has been edited in Component: " + "\'" + storyObj.componentID.name
+		 * + "\'" + " in Project: " + "\'" + project.name + "\'" + "." + '\n' +
+		 * '\n' + "Story Description: " + storyObj.description + "." + '\n' +
+		 * " Priority: " + storyObj.priority + "." + '\n' + " Estimate points: "
+		 * + storyObj.estimate + "." + '\n' + " Succuss Senario: " +
+		 * storyObj.succussSenario + "." + '\n' + " Failure Senario: " +
+		 * storyObj.failureSenario + "." + '\n' + " Notes: " + storyObj.notes +
+		 * "." + '\n' + " Added by: " + storyObj.addedBy.name + ".";
+		 */
 		object.save();
 		/**********
 		 * Log and notification
@@ -574,10 +586,11 @@ public class Storys extends SmartCRUD {
 	 * @sprint 2
 	 */
 
-	//@Check ("canassignStorytoSprint")
+	// @Check ("canassignStorytoSprint")
 	public static void listStoriesandSprints(long PID) {
 		Date todayDate = new GregorianCalendar().getTime();
 		Project project = Project.findById(PID);
+		// System.out.println(project);
 		User user = Security.getConnected();
 		Security.check(user.in(project).can("assignStoryToSprint"));
 		ArrayList<Story> stories = new ArrayList<Story>();
@@ -662,14 +675,21 @@ public class Storys extends SmartCRUD {
 			}
 
 		}
-		String header = "Story 'S" + story.id + "\'" + " has been assigned to Sprint: " + "\'" + sprint.sprintNumber + "\'"+".";
+		String header = "Story 'S" + story.id + "\'" + " has been assigned to Sprint: " + "\'" + sprint.sprintNumber + "\'" + ".";
 		String body = "In Project: " + "\'" +story.componentID.name + "\'" + "."+ '\n'
 		    + " In Component: " + "\'" + sprint.project.name + "\'" + "."+ '\n'
 		    + " Assigned by: " + "\'" + Security.getConnected().name + "\'" + ".";
-		/*////Long Informative Notification message. Not suitable for online notification.
-		String header = "New Story has been assigned to Sprint: " + "\'" + sprint.sprintNumber + "\'" + " in Project: " + "\'" + sprint.project.name + "\'" + ".";
-		String body = "The Story: " + "\'" + story.description + "\'" + '\n' + " has been assigned to Sprint: " + "\'" + sprint.sprintNumber + "\'" + " in Project: " + "\'" + sprint.project.name + "\'" + "."+ '\n' + '\n' 
-			+ " Assigned by: " + "\'" + Security.getConnected().name + "\'" + ".";*/
+		/*
+		 * ////Long Informative Notification message. Not suitable for online
+		 * notification. String header =
+		 * "New Story has been assigned to Sprint: " + "\'" +
+		 * sprint.sprintNumber + "\'" + " in Project: " + "\'" +
+		 * sprint.project.name + "\'" + "."; String body = "The Story: " + "\'"
+		 * + story.description + "\'" + '\n' + " has been assigned to Sprint: "
+		 * + "\'" + sprint.sprintNumber + "\'" + " in Project: " + "\'" +
+		 * sprint.project.name + "\'" + "."+ '\n' + '\n' + " Assigned by: " +
+		 * "\'" + Security.getConnected().name + "\'" + ".";
+		 */
 		Notifications.notifyUsers(sprint.project, header, body, "assignStoryToSprint", new Byte((byte) 0));
 		Logs.addLog(Security.getConnected(), "Assign", "Story To Sprint", story.id, sprint.project, new Date(System.currentTimeMillis()));
 		story.save();
@@ -685,7 +705,7 @@ public class Storys extends SmartCRUD {
 	 *            the id of the story edited
 	 * @return void
 	 */
-	//@Check ("canEditStory")
+	// @Check ("canEditStory")
 	public static void editScenario(long id) {
 
 		Story story1 = Story.findById(id);
@@ -715,8 +735,8 @@ public class Storys extends SmartCRUD {
 		int succssesNum = succsses.size();
 		int failureNum = failure.size();
 		long storyId = id;
-		Long projectId=story1.componentID.project.id;
-		render(succsses, failure, succssesNum, failureNum, storyId,projectId);
+		Long projectId = story1.componentID.project.id;
+		render(succsses, failure, succssesNum, failureNum, storyId, projectId);
 
 	}
 
@@ -735,17 +755,23 @@ public class Storys extends SmartCRUD {
 		story1.succussSenario = s;
 		story1.save();
 		Logs.addLog(Security.getConnected(), "Create", "Succuss Senario", story1.id, story1.componentID.project, new Date(System.currentTimeMillis()));
-		String header = "A new Succuss Senario has been added to Story 'S" + story1.id + "\'"+ ".";
+		String header = "A new Succuss Senario has been added to Story 'S" + story1.id + "\'" + ".";
 		String body = "In Project: " + "\'" + story1.componentID.project.name + "\'" + "." + '\n'
 		    +  " In Component: " + "\'" + story1.componentID.name + "\'"+ "." + '\n'
 		    + " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
-		/*////Long Informative Notification message. Not suitable for online notification.
-		String header = "New Succuss Senario has been added to a Story in Component: " + "\'" + story1.componentID.name + "\'" + " in Project: " + "\'" + story1.componentID.project.name + "\'" + ".";
-		String body = "New Succuss Senario has been added to a Story: " + "\'" + story1.description + "\'"
-		    + " in Component: " + "\'" + story1.componentID.name + "\'" 
-		    + " in Project: " + "\'" + story1.componentID.project.name + "\'" + "." + '\n' + '\n' 
-			+ "Succuss Senario: " +  story1.succussSenario + "." + '\n' 
-			+ " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";*/
+		/*
+		 * ////Long Informative Notification message. Not suitable for online
+		 * notification. String header =
+		 * "New Succuss Senario has been added to a Story in Component: " + "\'"
+		 * + story1.componentID.name + "\'" + " in Project: " + "\'" +
+		 * story1.componentID.project.name + "\'" + "."; String body =
+		 * "New Succuss Senario has been added to a Story: " + "\'" +
+		 * story1.description + "\'" + " in Component: " + "\'" +
+		 * story1.componentID.name + "\'" + " in Project: " + "\'" +
+		 * story1.componentID.project.name + "\'" + "." + '\n' + '\n' +
+		 * "Succuss Senario: " + story1.succussSenario + "." + '\n' +
+		 * " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		 */
 		Notifications.notifyUsers(story1.componentID.getUsers(), header, body, (byte) 0);
 	}
 
@@ -764,17 +790,23 @@ public class Storys extends SmartCRUD {
 		story1.failureSenario = f;
 		story1.save();
 		Logs.addLog(Security.getConnected(), "Create", "Failure Senario", story1.id, story1.componentID.project, new Date(System.currentTimeMillis()));
-		String header = "A new Failure Senario has been added to Story 'S" + story1.id + "\'"+ ".";
+		String header = "A new Failure Senario has been added to Story 'S" + story1.id + "\'" + ".";
 		String body = "In Project: " + "\'" + story1.componentID.project.name + "\'" + "."+ '\n'
 		    + " In Component: " + "\'" + story1.componentID.name + "\'"+ "." + '\n'
 		    + " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
-		/*////Long Informative Notification message. Not suitable for online notification.
-		String header = "New Failure Senario has been added to a Story in Component: " + "\'" + story1.componentID.name + "\'" + " in Project: " + "\'" + story1.componentID.project.name + "\'" + ".";
-		String body = "New Failure Senario has been added to a Story: " + "\'" + story1.description + "\'"
-		    + " in Component: " + "\'" + story1.componentID.name + "\'" 
-		    + " in Project: " + "\'" + story1.componentID.project.name + "\'" + "." + '\n' + '\n' 
-			+ "Failure Senario: " +  story1.failureSenario + "." + '\n' 
-			+ " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";*/
+		/*
+		 * ////Long Informative Notification message. Not suitable for online
+		 * notification. String header =
+		 * "New Failure Senario has been added to a Story in Component: " + "\'"
+		 * + story1.componentID.name + "\'" + " in Project: " + "\'" +
+		 * story1.componentID.project.name + "\'" + "."; String body =
+		 * "New Failure Senario has been added to a Story: " + "\'" +
+		 * story1.description + "\'" + " in Component: " + "\'" +
+		 * story1.componentID.name + "\'" + " in Project: " + "\'" +
+		 * story1.componentID.project.name + "\'" + "." + '\n' + '\n' +
+		 * "Failure Senario: " + story1.failureSenario + "." + '\n' +
+		 * " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		 */
 		Notifications.notifyUsers(story1.componentID.getUsers(), header, body, (byte) 0);
 	}
 
@@ -808,22 +840,23 @@ public class Storys extends SmartCRUD {
 		}
 		if (noStories) {
 			ok = false;
-			message += "<li>No Stories in this project</li>";
+			message += "<p>No Stories in this project</p>";
 		}
 		if (!ok) {
-			render(ok, message);
+			render(ok, message, project);
 		} else {
-			render(project, storyId, cId,ok);
+			render(project, storyId, cId, ok);
 		}
 	}
+	
 	public static List<Story> findStories(long projectId, long componentId){
-		if(componentId!=0){
+		if (componentId != 0) {
 			Component component = Component.findById(componentId);
 			return component.componentStories;
-		}else{
+		} else {
 			Project project = Project.findById(projectId);
 			List<Story> stories = new ArrayList<Story>();
-			for(Component component : project.components){
+			for (Component component : project.components) {
 				stories.addAll(component.componentStories);
 			}
 			return stories;

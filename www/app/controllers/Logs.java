@@ -55,15 +55,12 @@ public class Logs extends SmartCRUD {
 	 * @Task C1S1
 	 */
 	public static boolean addLog(User user, String action_type, String resource_type, long resource_id, Project project, Date date) {
-
 		Log newLog = new Log(user, action_type, resource_type, resource_id, project, date);
 		if (user.isAdmin)
 			newLog.madeBySysAdmin = true;
 
 		newLog.save(); /* Save That Log Entry */
-
 		return true;
-
 	}
 
 	/**
@@ -88,10 +85,8 @@ public class Logs extends SmartCRUD {
 			filter = null;
 			logs = Log.find("order by date desc").from(index).fetch(25);
 			redirect("/admin");
-		} else if (filter != null && !filter.isEmpty())
-			{
-			if(filter.charAt(0) == ' ' || filter.charAt(filter.length()-1) == ' ' || filter.contains("  "))
-			{
+		} else if (filter != null && !filter.isEmpty()) {
+			if (filter.charAt(0) == ' ' || filter.charAt(filter.length() - 1) == ' ' || filter.contains("  ")) {
 				flash.error("Please Remove any extra Spaces !!");
 				filter = null;
 				logs = Log.find("order by date desc").from(index).fetch(25);
@@ -100,50 +95,51 @@ public class Logs extends SmartCRUD {
 			String filter2 = "('" + filter + "')";
 			filter2 = filter2.replaceAll(" ", "','");
 			filter2 = filter2.toLowerCase();
-			//System.out.println(filter2);
-			//logs = Log.find("LOWER(user.name) in "+filter2 +" and LOWER(action_type) in " + filter2 + " and LOWER(resource_type) in " + filter2 + " and LOWER(project.name) in " + filter2 + " and LOWER(date) in " + filter2 + " order by date desc").from(index).fetch(25);
-			//System.out.println(smartFilter(filter2)+" <<there");
-			if(!smartFilter(filter2).isEmpty())
+			// System.out.println(filter2);
+			// logs = Log.find("LOWER(user.name) in "+filter2
+			// +" and LOWER(action_type) in " + filter2 +
+			// " and LOWER(resource_type) in " + filter2 +
+			// " and LOWER(project.name) in " + filter2 + " and LOWER(date) in "
+			// + filter2 + " order by date desc").from(index).fetch(25);
+			// System.out.println(smartFilter(filter2)+" <<there");
+			if (!smartFilter(filter2).isEmpty())
 				logs = Log.find(smartFilter(filter2)).from(index).fetch(25);
-			}
-		else
+		} else
 			logs = Log.find("order by date desc").from(index).fetch(25);
 		render(logs, page, filter);
 	}
-	
-	public static String smartFilter(String filter)
-	{
-		String query="";
-		if(User.find("LOWER(name) in "+ filter).first() != null)
-			query = query + "LOWER(user.name) in "+filter;
-		if(Log.find("LOWER(action_type) in "+filter).first()!=null)
-			if(!query.isEmpty())
+
+	public static String smartFilter(String filter) {
+		String query = "";
+		if (User.find("LOWER(name) in " + filter).first() != null)
+			query = query + "LOWER(user.name) in " + filter;
+		if (Log.find("LOWER(action_type) in " + filter).first() != null)
+			if (!query.isEmpty())
 				query = query + " and LOWER(action_type) in " + filter;
 			else
 				query = query + "LOWER(action_type) in " + filter;
-		if(Log.find("LOWER(resource_type) in " + filter).first()!=null)
-			if(!query.isEmpty())
+		if (Log.find("LOWER(resource_type) in " + filter).first() != null)
+			if (!query.isEmpty())
 				query = query + " and LOWER(resource_type) in " + filter;
 			else
 				query = query + "LOWER(resource_type) in " + filter;
-		if(Project.find("LOWER(name) in "+filter).first()!=null)
-			if(!query.isEmpty())
+		if (Project.find("LOWER(name) in " + filter).first() != null)
+			if (!query.isEmpty())
 				query = query + " and LOWER(project.name) in " + filter;
 			else
 				query = query + "LOWER(project.name) in " + filter;
-		if(Log.find("LOWER(date) in "+filter).first()!=null)
-			if(!query.isEmpty())
+		if (Log.find("LOWER(date) in " + filter).first() != null)
+			if (!query.isEmpty())
 				query = query + " and LOWER(date) in " + filter;
 			else
 				query = query + "LOWER(date) in " + filter;
-		if(query.isEmpty())
+		if (query.isEmpty())
 			return query;
-		else
-		{
+		else {
 			query = query + " order by date desc";
 			return query;
 		}
-				
+
 	}
 
 	public static void show(String id) {

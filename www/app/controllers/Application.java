@@ -20,61 +20,49 @@ import play.mvc.With;
  * 
  * @author mahmoudsakr
  */
-@With( Secure.class )
-public class Application extends SmartController
-{
-	public static String hash( String str )
-	{
+@With (Secure.class)
+public class Application extends SmartController {
+	public static String hash(String str) {
 		String res = "";
-		try
-		{
-			MessageDigest algorithm = MessageDigest.getInstance( "MD5" );
+		try {
+			MessageDigest algorithm = MessageDigest.getInstance("MD5");
 			algorithm.reset();
-			algorithm.update( str.getBytes() );
+			algorithm.update(str.getBytes());
 			byte[] md5 = algorithm.digest();
 			String tmp = "";
-			for( int i = 0; i < md5.length; i++ )
-			{
-				tmp = (Integer.toHexString( 0xFF & md5[i] ));
-				if( tmp.length() == 1 )
-				{
+			for (int i = 0; i < md5.length; i++) {
+				tmp = (Integer.toHexString(0xFF & md5[i]));
+				if (tmp.length() == 1) {
 					res += "0" + tmp;
-				}
-				else
-				{
+				} else {
 					res += tmp;
 				}
 			}
-		}
-		catch( NoSuchAlgorithmException ex )
-		{
+		} catch (NoSuchAlgorithmException ex) {
 		}
 		return res;
 	}
 
-	public static String randomHash()
-	{
-		return randomHash( 32 );
+	public static String randomHash() {
+		return randomHash(32);
 	}
 
-	public static String randomHash( int length )
-	{
-		return hash( System.currentTimeMillis() * Math.random() + "" ).substring( 0, length );
+	public static String randomHash(int length) {
+		return hash(System.currentTimeMillis() * Math.random() + "").substring(0, length);
 	}
 
 	/**
 	 *@author Moataz this method retrieves the latest 30 notifications to the
 	 *         home page
 	 */
-	public static void index()
-	{
+	public static void index() {
 		User user = Security.getConnected();
-		List<Notification> notis = Notification.find( "user = " + user.id + "order by id desc" ).fetch();
+		List<Notification> notis = Notification.find("user = " + user.id + "order by id desc").fetch();
 		List<Notification> noti;
-		if( notis.size() < 30 )
+		if (notis.size() < 30)
 			noti = notis;
 		else
-			noti = notis.subList( 0, 29 );
+			noti = notis.subList(0, 29);
 		// Notification nn = new Notification(Security.getConnected(),
 		// "Smarter Scrum","Smarter Scrum v.01 the very first product made by SmartSoft has been released!!!",
 		// (byte) 1);
@@ -82,14 +70,13 @@ public class Application extends SmartController
 		// "Hadeer Younis (Design)","Plum v.03 is up and running!! Note that it's still in beta phase, So please report any bugs straight away!!",
 		// (byte) 1);
 		// noti.add(n);noti.add(nn);
-		render( noti );
+		render(noti);
 	}
 
-	public static void notificationsHistory()
-	{
+	public static void notificationsHistory() {
 		User user = Security.getConnected();
-		List<Notification> notis = Notification.find( "user = " + user.id + "order by id desc" ).fetch();
-		render( notis );
+		List<Notification> notis = Notification.find("user = " + user.id + "order by id desc").fetch();
+		render(notis);
 	}
 
 	/**
@@ -100,16 +87,13 @@ public class Application extends SmartController
 	 * @author Amr Hany
 	 * @param ProjectID
 	 */
-	public static void viewComponents( long id )
-	{
-
-		Project currentProject = Project.findById( id );
-		boolean inSprint = (currentProject.inSprint( new Date() ));
+	public static void viewComponents(long id) {
+		Project currentProject = Project.findById(id);
+		boolean inSprint = (currentProject.inSprint(new Date()));
 		String projectName = currentProject.name;
-		List<Component> components = Component.find( "byProject.idAnddeleted", id, false ).fetch();
+		List<Component> components = Component.find("byProject.idAnddeleted", id, false).fetch();
 
-		render( components, id, projectName, inSprint, currentProject );
-
+		render(components, id, projectName, inSprint, currentProject);
 	}
 
 	/**
@@ -119,17 +103,10 @@ public class Application extends SmartController
 	 * @author Amr Hany
 	 * @param componentID
 	 */
-	public static void viewComponent( long id )
-	{
-
-		Component component = Component.findById( id );
-		if( !component.deleted )
-		{
-			boolean inSprint = component.project.inSprint( new Date() );
-			render( component, inSprint );
-		}
-		else
-			notFound();
+	public static void viewComponent(long id) {
+		Component component = Component.findById(id);
+		boolean inSprint = component.project.inSprint(new Date());
+		render(component, inSprint);
 	}
 
 	/**
@@ -138,34 +115,26 @@ public class Application extends SmartController
 	 * @author Amr Hany
 	 * @param componentID
 	 */
-
-	// @Check( "canDeleteComponent" )
-	public static void deleteComponent( long id )
-	{
-		Component c = Component.findById( id );
-		if( Security.getConnected().in( c.project ).can( "deleteComponent" ) )
-		{
-			c.deleteComponent();
-			Logs.addLog( Security.getConnected(), "Delete", "Component", c.id, c.project, new Date( System.currentTimeMillis() ) );
-		}
-		else
-			forbidden();
+	public static void deleteComponent(long id) {
+		Component c = Component.findById(id);
+		Security.check(Security.getConnected().in(c.project).can("deleteComponent"));
+		c.deleteComponent();
+		Logs.addLog(Security.getConnected(), "Delete", "Component", c.id, c.project, new Date(System.currentTimeMillis()));
 	}
 
-	public static void md5( String str )
-	{
-		renderText( hash( str ) );
+	public static void md5(String str) {
+		renderText(hash(str));
 	}
 
-	@Check( "systemAdmin" )
-	public static void adminIndexPage()
-	{
-		redirect( "/projects/manageProjectRequests" );
+//	@Check ("systemAdmin")
+	public static void adminIndexPage() {
+		Security.check(Security.getConnected().isAdmin);
+		redirect("/projects/manageProjectRequests");
 	}
 
-	@Check( "systemAdmin" )
-	public static void adminIndex()
-	{
+//	@Check ("systemAdmin")
+	public static void adminIndex() {
+	Security.check(Security.getConnected().isAdmin);
 		render();
 	}
 
@@ -176,16 +145,13 @@ public class Application extends SmartController
 	 *            user id
 	 */
 
-	public static void profile( long id )
-	{
-
-		if( id == 0 )
-		{
+	public static void profile(long id) {
+		if (id == 0) {
 			id = Security.getConnected().id;
 		}
-		User user = User.findById( id );
-		Security.check( Security.getConnected().equals( user ) );
-		render( user );
+		User user = User.findById(id);
+		Security.check(Security.getConnected().equals(user));
+		render(user);
 	}
 
 	/**
@@ -198,39 +164,34 @@ public class Application extends SmartController
 	 * @param id
 	 *            user id
 	 */
-	public static void editProfile( @Required( message = "You must enter a name" ) String name, String pwd1, String pwd2, @Required( message = "You must enter an email" ) @Email( message = "You must enter a valid email" ) String email, long id )
-	{
-		User usr = User.findById( id );
-		Security.check( Security.getConnected().equals( usr ) );
-		if( Validation.hasErrors() || (pwd1.length() > 0 && !pwd1.equals( pwd2 )) )
-		{
-			flash.error( "An error has occured" );
-			profile( id );
+	public static void editProfile(@Required (message = "You must enter a name") String name, String pwd1, String pwd2, @Required (message = "You must enter an email") @Email (message = "You must enter a valid email") String email, long id) {
+		User usr = User.findById(id);
+		Security.check(Security.getConnected().equals(usr));
+		if (Validation.hasErrors() || (pwd1.length() > 0 && !pwd1.equals(pwd2))) {
+			flash.error("An error has occured");
+			profile(id);
 		}
 		String oldEmail = usr.email;
 		usr.name = name;
-		if( pwd1.length() > 0 )
-			usr.pwdHash = Application.hash( pwd1 );
+		if (pwd1.length() > 0)
+			usr.pwdHash = Application.hash(pwd1);
 		usr.email = email;
 		usr.save();
 		// Added By Wallas in Sprint 2.
-		if( !usr.email.equals( oldEmail ) )
-		{
-			usr.activationHash = Application.randomHash( 32 );
+		if (!usr.email.equals(oldEmail)) {
+			usr.activationHash = Application.randomHash(32);
 			usr.isActivated = false;
 			usr.save();
-			session.put( "username", email ); // Update the session cookie by
+			session.put("username", email); // Update the session cookie by
 			// setting the new Email.
 			String subject = "Your SmartSoft new Email activation requires your attention";
 			String body = "Dear " + usr.name + ", You have requested to change the Email Address associated with your account. Please click the following link to activate your account: " + "http://localhost:9000/accounts/doActivation?hash=" + usr.activationHash;
-			Mail.send( "se.smartsoft@gmail.com", usr.email, subject, body );
-			flash.success( "Successfully saved your data! , please check your new Email and follow the instructions sent by us to confirm your new Email." );
-			profile( id );
-		}
-		else
-		{
-			flash.success( "Successfully saved your data!" );
-			profile( id );
+			Mail.send("se.smartsoft@gmail.com", usr.email, subject, body);
+			flash.success("Successfully saved your data! , please check your new Email and follow the instructions sent by us to confirm your new Email.");
+			profile(id);
+		} else {
+			flash.success("Successfully saved your data!");
+			profile(id);
 		}
 
 	}
@@ -240,8 +201,7 @@ public class Application extends SmartController
 	 * 
 	 * @author Hadeer younis
 	 */
-	public static void overlayKiller()
-	{
+	public static void overlayKiller() {
 		render();
 	}
 }
