@@ -278,7 +278,7 @@ public class Projects extends SmartCRUD
 	 * @author Behairy
 	 */
 
-	public static void addTaskStatus( long id, String taskStatus )
+	public static void addTaskStatus( long id, String taskStatus, String indicator )
 	{
 
 		Project p = Project.findById( id );
@@ -287,7 +287,12 @@ public class Projects extends SmartCRUD
 			TaskStatus t = new TaskStatus();
 			t.project = p;
 			t.name = taskStatus;
-
+			t.pending = false;
+			t.closed = false;
+			if(indicator.equalsIgnoreCase("Pending"))
+				t.pending = true;
+			if(indicator.equalsIgnoreCase("Closed"))
+				t.closed = true;
 			p.save();
 			t.save();
 			t.init();

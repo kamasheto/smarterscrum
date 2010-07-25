@@ -29,6 +29,10 @@ public class TaskStatus extends SmartModel {
 
 	@OneToOne
 	public Column column;
+	
+	public boolean pending;
+	
+	public boolean closed;
 
 	public void init() {
 		// Project p = this.project;
@@ -48,6 +52,8 @@ public class TaskStatus extends SmartModel {
 	}
 
 	public TaskStatus () {
+		this.pending = false;
+		this.closed = false;
 		Tasks = new ArrayList<Task>();
 	}
 
