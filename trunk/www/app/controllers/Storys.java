@@ -93,8 +93,11 @@ public class Storys extends SmartCRUD {
 		JPASupport object = type.findById(id);
 		// We added the story to a project .. We need to get that project
 		Story temp = (Story) object;
-		int formatt= 13+temp.productRole.name.length();
-		temp.description= temp.description.substring(formatt);
+		if(temp.productRole != null)
+		{
+			int formatt= 13+temp.productRole.name.length();
+			temp.description= temp.description.substring(formatt);
+		}
 		// Whether everything is ok to edit the story
 		boolean ok = true;
 		Project project = temp.componentID.project;
