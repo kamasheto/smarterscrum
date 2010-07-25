@@ -74,7 +74,8 @@ public class Boards extends SmartCRUD {
 				}
 			}
 			ArrayList<ArrayList<User>> u=Meetingloadboard( p);
-			render(data, columnsOfBoard,hidencolumnsOfBoard, u, b, s, p,columns,ud,ua,ur,ut,us);
+			ArrayList<ArrayList<User>> uAdmin=MeetingloadboardAdmin( p);
+			render(data, columnsOfBoard,hidencolumnsOfBoard, u, uAdmin, b, s, p,columns,ud,ua,ur,ut,us);
 		}
 		else
 		{
@@ -155,12 +156,11 @@ public class Boards extends SmartCRUD {
 						if(m.users.get(i).user.id==id)
 							if(m.users.get(i).checkConfirmed())
 							total.add(m);
-					  
 					}
 					
 				}
 			}
-
+			
 			for (int i = 0; i < total.size(); i++) 
 			{
 				Meeting m = Meeting.findById(total.get(i).id);
@@ -171,12 +171,57 @@ public class Boards extends SmartCRUD {
 					{
 						u.get(i).add(k.user);
 					}
-
+					
 				}
 			}
 			return u;
 			
 	
+	}
+	public static ArrayList<ArrayList<User>> MeetingloadboardAdmin(Project p)
+	{
+		long id=Security.getConnected().id;
+		LinkedList<Meeting> totalAdmin = new LinkedList<Meeting>();		
+		ArrayList<ArrayList<User>> uAdmin = new ArrayList<ArrayList<User>>();
+		boolean flag=false;
+		for (Meeting m : p.meetings) 
+		{
+			flag=false;
+			long now = new Date().getTime();
+			if (m.startTime <= now && m.endTime > now) 
+			{
+				for(int i=0;i<m.users.size();i++)
+				{
+					if(m.users.get(i).user.id==id)
+						if(m.users.get(i).checkConfirmed())
+						flag=true;
+				}
+				
+				
+				
+				if(Security.getConnected().isAdmin)
+				{
+					if(!flag)
+					totalAdmin.add(m);
+				}		
+			}
+		}
+		
+		for (int i = 0; i < totalAdmin.size(); i++) 
+		{
+			Meeting m = Meeting.findById(totalAdmin.get(i).id);
+			uAdmin.add(new MeetingUsers(m));
+			for (MeetingAttendance k : m.users) 
+			{
+				if (k.status.equals("confirmed")) 
+				{
+					uAdmin.get(i).add(k.user);
+				}
+				
+			}
+		}
+		return uAdmin;
+
 	}
 	 /* @param Component as c  
 	  * given componenet to loop to get all componenets meetings that is running 
