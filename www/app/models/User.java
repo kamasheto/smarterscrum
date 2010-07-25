@@ -125,7 +125,10 @@ public class User extends SmartModel {
 
 	@OneToMany (mappedBy = "user")
 	public List<Request> requests;
-
+	
+	//@OneToMany (mappedBy = "author")
+	//public List<Comment> allComments;
+	
 	public ArrayList<ChatRoom> openChats;
 
 	public User () {
