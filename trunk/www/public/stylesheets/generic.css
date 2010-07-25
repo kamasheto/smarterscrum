@@ -184,6 +184,9 @@ img {
 }
 
 .bottomCornersRounded {
+		border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
 	border-bottom-right-radius: 5px;
 	-moz-border-radius-bottomright: 5px;
 	-webkit-border-bottom-right-radius: 5px;
@@ -193,6 +196,10 @@ img {
 }
 
 .leftCornersRounded {
+	
+		border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
 	border-bottom-left-radius: 5px;
 	-moz-border-radius-bottomleft: 5px;
 	-webkit-border-bottom-left-radius: 5px;
@@ -202,6 +209,10 @@ img {
 }
 
 .rightCornersRounded {
+	
+		border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
 	border-bottom-right-radius: 5px;
 	-moz-border-radius-bottomright: 5px;
 	-webkit-border-bottom-right-radius: 5px;
@@ -211,6 +222,10 @@ img {
 }
 
 .topCornersRounded {
+	
+		border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
 	border-top-right-radius: 5px;
 	-moz-border-radius-topright: 5px;
 	-webkit-border-top-right-radius: 5px;
@@ -425,11 +440,7 @@ table {
 	border-collapse: collapse;
 }
 
-#content table thead,#content table thead tr:hover {
-	background-color: #999 !important;
-	color: #333;
-	font-size: 10px;
-}
+
 
 #content tr,#content td,#content table {
 	border: 1px #999 solid;
@@ -449,10 +460,6 @@ table {
 
 tr {
 	margin: 0px !important;
-}
-
-#content table tbody tr:hover {
-	background-color: #efefef !important;
 }
 
 #sprint td form input,#Pstories td form input,#impedimentLog td form input
@@ -558,44 +565,16 @@ p.baseRole {
 	overflow: auto
 }
 
-ul.project_links a img {
-	border: 0 none;
-	display: block;
-	margin: 0 auto;
-	vertical-align: middle;
-	height: 100px;
-	margin-bottom: 5px;
-}
 
 tr.deleted {
 	background: #FFA8A8;
 }
 
-ul.project_links a:hover {
-	background: #888;
-	background: -moz-linear-gradient(center bottom, #999 20%, #888 80%)
-		!important;
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #999),
-		color-stop(0.8, #888) ) !important;
+ul.project_links a{
+display:block;
 }
 
-ul.project_links a {
-	background: #666;
-	background: -moz-linear-gradient(center bottom, #666 20%, #888 80%)
-		!important;
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #666),
-		color-stop(0.8, #888) ) !important;
-	color: #000;
-	display: block;
-	float: left;
-	font-size: 12px;
-	margin: 10px;
-	padding: 10px;
-	text-align: center;
-	text-decoration: none;
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-}
+
 
 .chatContainerHeader {
 	background-color: #b7568d;

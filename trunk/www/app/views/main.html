@@ -4,15 +4,10 @@
         <title>#{get 'title' /}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/generic.css"/>
-        <link rel="stylesheet" type="text/css" media="screen" title="original" href="@{'/public/stylesheets/main.css'}"/>
-		<link rel="alternate stylesheet" type="text/css" media="screen" title="blue" href="@{'/public/stylesheets/mainblue.css'}" />
-		<link rel="alternate stylesheet" type="text/css" media="screen" title="red" href="@{'/public/stylesheets/mainred.css'}" />
-		<link rel="alternate stylesheet" type="text/css" media="screen" title="green" href="@{'/public/stylesheets/maingreen.css'}" />
+  		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/m.css"/>
 		<link rel="stylesheet" type="text/css" media="screen"href="@{'/public/stylesheets/tipTip.css'}"/>
         <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jquery-ui-1.8.custom.css'}"/>
-		<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/BreadCrumb.css'}"/>
-		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/jquery.gritter.css"/>
-		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/jquery.jbar.css"/>	
+	
 		<link rel="shortcut icon" href="@{'public/images/favicon.ico'}" type="image/x-icon"/> 
         #{get 'moreStyles' /}
  
@@ -26,10 +21,13 @@
        	<script src="@{'/public/javascripts/more.js'}" type="text/javascript"charset="utf-8"></script>
 		<script type="text/javascript" src="/public/javascripts/jquery.gritter.min.js"></script>
         <script src="@{'/public/javascripts/jquery.bar.js'}" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="@{'/public/javascripts/functions.js'}" type="text/javascript" charset="utf-8"></script>
         #{get 'moreScripts' /}
               <script src="@{'/public/javascripts/skinSwitcher.js'}" type="text/javascript" charset="utf-8"></script>
 		
         <script type="text/javascript">
+       
        		$(function(){
 
 				/**script to move the login panel to the sidebar**/
@@ -42,11 +40,7 @@
 				#{/else}
 
 				/* Script to remove sidebar	
-				if($('.sideBarElements').html()=='')
-				{
-					$('#theSide').remove();
-					$('#theContent').css('padding','20px');
-				}
+				
 				*/
 
        			$("#breadCrumb").jBreadCrumb();
@@ -290,7 +284,7 @@
 										
 							
 							#{/if}
-							<div id="content"style="margin-top:35px;">
+							<div id="container"style="margin-top:35px;">
 							#{doLayout /}
 							</div>
 						</div>
