@@ -626,14 +626,15 @@ public class Meetings extends SmartCRUD {
 	 */
 
 	public static void addNote(long id, String note) {
+
+		Meeting meeting = Meeting.findById(id);
+		Security.check(Security.getConnected().in(meeting.project).can("addNote"));
 		Artifact n = new Artifact("Notes", note);
 		n.save();
-		Meeting meeting = Meeting.findById(id);
 		meeting.artifacts.add(n);
 		meeting.save();
 
 	}
-	
 
 	/**
 	 * This method Used by C5 board in order to allow the user to directly join
@@ -643,22 +644,18 @@ public class Meetings extends SmartCRUD {
 	 * @param meetingID
 	 */
 
-	public static void joinMeeting( long meetingID )
-	{
-		Meeting m = Meeting.findById( meetingID );
-		if( m.endTime > new Date().getTime() )
-		{
-			Security.check( m.project, "joinMeeting" );
-			MeetingAttendance ma = MeetingAttendance.find( "user = ?1 and meeting =?2", Security.getConnected(), m ).first();
-			if( ma != null )
-			{
+	public static void joinMeeting(long meetingID) {
+		Meeting m = Meeting.findById(meetingID);
+		if (m.endTime > new Date().getTime()) {
+			Security.check(m.project, "joinMeeting");
+			MeetingAttendance ma = MeetingAttendance.find("user = ?1 and meeting =?2", Security.getConnected(), m).first();
+			if (ma != null) {
 				ma.status = "confirmed";
 				ma.reason = "";
 				ma.save();
 			}
-			if( ma == null )
-			{
-				MeetingAttendance attendance = new MeetingAttendance( Security.getConnected(), m );
+			if (ma == null) {
+				MeetingAttendance attendance = new MeetingAttendance(Security.getConnected(), m);
 				attendance.status = "confirmed";
 				attendance.save();
 			}
