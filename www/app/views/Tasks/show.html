@@ -19,7 +19,7 @@
 	<div class="objectForm">
 	#{form action:@save(object.id), enctype:'multipart/form-data'}
 	#{crud.form fields:['taskStory','description', 'taskType', 'taskStatus', 'estimationPoints', 'reporter',
-	  'dependentTasks','taskSprint', 'assignee', 'reviewer']}	
+	  'dependentTasks','taskSprint', 'assignee', 'reviewer', 'comment']}	
 			
 			
 			#{crud.custom 'taskStory'}
@@ -177,6 +177,20 @@
  			<label for="object_description"><font color = "green">Sprint${object.taskSprint.sprintNumber}</font></label>
  			#{/else}
 			#{/crud.custom }
+			
+			#{crud.custom 'comment'}
+				<label for="object_comment">Comments and Actions</label>
+				<input type="hidden" name="object.comment@id" value="" />
+				<textarea id="object_comment" name="object.comment"></textarea>
+				<table>
+				#{list items:comments, as:'comment'}
+					<tr>
+						<td><b>${comment.author}</b></td>
+						<td>${comment.comment}</td>
+					</tr>
+				#{/list}
+				</table>
+			#{/crud.custom}
 			
 		#{/crud.form }
 			
