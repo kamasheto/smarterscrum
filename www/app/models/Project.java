@@ -1,5 +1,6 @@
 package models;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -471,8 +472,10 @@ public class Project extends SmartModel {
 	 * @param projectname
 	 * @return boolean
 	 * @author behairy
+	 * @throws UnsupportedEncodingException 
 	 */
-	public static boolean userRequstedProjectBefore(Long userId, String projectname) {
+	public static boolean userRequstedProjectBefore(Long userId, String projectname) throws UnsupportedEncodingException {
+		//String projectname2 = java.net.URLEncoder.encode(projectname, "UTF-8");
 		List<Project> p = Project.find("name='" + projectname + "' and " + " user.id='" + userId + "' and approvalStatus=false and deleted=false").fetch();
 
 		if (p.isEmpty())
