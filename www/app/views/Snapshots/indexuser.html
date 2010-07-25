@@ -1,14 +1,8 @@
 #{extends 'main.html' /}
 #{set title:'My snapshots' /}
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${p.id}">${p.name}</a></li>
-<li><a href="/boards/loadboard?sprintID=${s.id}">${p.name}'s Task Board</a></li>
-<li><a  href="@{Snapshots.indexuser(s.id,type)}" >View my snapshots</a></li>
-#{/set}
 <h2>My Snapshots of ${type} board </h2>
 #{if (snapshots.size()==0)}
-Sorry, There are no snapshots to display now.<br/>
+You haven't taken any snapshots of this board before.<br/>
 #{/if}
 #{if (snapshots.size()!=0)}
 
