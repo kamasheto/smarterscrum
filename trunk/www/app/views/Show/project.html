@@ -10,17 +10,17 @@
 ${project.description?.nl2br()}
 </div><div>
 <ul class="project_links">
-<a  href="@{Projects.getProjectMembers(project.id)}"><img src="@{'/public/images/users.png'}"/>Members</a>
+<a  href="@{Projects.getProjectMembers(project.id)}"><img src="@{'/public/images/users.png'}"/>Members(${memberscount})</a>
 
-<a  href="tasks?id=${project.id}"><img src="@{'/public/images/TASKS.png'}"/>Tasks</a>
+<a  href="tasks?id=${project.id}"><img src="@{'/public/images/TASKS.png'}"/>Tasks(${taskscount})</a>
 <!-- adding component's link by Amr Hany -->
-<a  href="/projects/${project.id}/components"><img src="@{'/public/images/SOFTWARE.png'}"/>Components</a>
+<a  href="/projects/${project.id}/components"><img src="@{'/public/images/SOFTWARE.png'}"/>Components(${componentscount})</a>
 
 <!-- adding sprints' link by minazaki -->
-<a  href="@{Sprints.showsprints(project.id)}" ><img src="@{'/public/images/sprint.png'}"/>Sprints</a>
+<a  href="@{Sprints.showsprints(project.id)}" ><img src="@{'/public/images/sprint.png'}"/>Sprints(${sprintscount})</a>
 
 <!-- adding meetings link @author ghadafakhry -->
-<a  href="/projects/${project.id}/meetings"><img src="@{'/public/images/cal.png'}"/>Meetings</a>
+<a  href="/projects/${project.id}/meetings"><img src="@{'/public/images/cal.png'}"/>Meetings(${meetingscount})</a>
 
 <!-- adding meetings link @author ahmedKhaled7 -->
 <a  href="/productbacklog/${project.id}/0"><img src="@{'/public/images/FILE - EXECUTABLE.png'}"/>Product Backlog</a>
@@ -33,7 +33,7 @@ ${project.description?.nl2br()}
 
 
 <!--  Stories : Galal Aly -->
-<a  href="@{Storys.listStoriesInProject(project.id)}"><img src="@{'/public/images/BOOK.png'}"/>Stories</a>
+<a  href="@{Storys.listStoriesInProject(project.id)}"><img src="@{'/public/images/BOOK.png'}"/>Stories(${storiescount})</a>
 <!--  End Of Stories --><div class="left">
 <a href="javascript:;" onclick="$('#boards').css('display','none');$('#roles').slideToggle(400)"><img src="@{'/public/images/addrole.png'}"/>Request Roles</a>
 <br style="clear:both"/>
