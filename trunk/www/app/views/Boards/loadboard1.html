@@ -228,9 +228,10 @@ $(function()
 
 <!-- asmaak89 Part-->
 <div id="current"><br/>
-#{if u.size()==0}
+#{if u.size()==0 && uAdmin.size()==0}
 <div><b style="font-size:small;" class="smartBarHeader" >There are no running meetings </b></div>
-#{/if}	
+#{/if}
+
 #{else}
 <div><b style="font-size:small;" class="smartBarHeader" >Running Meetings</b></div>
 #{list items:u, as:'users'}
@@ -311,7 +312,34 @@ function displayTZCountDown(countdown,tzcd)
 </script>
 
 #{/list}
+
+#{list items:uAdmin, as:'users'}
+<a href ="/meetings/${users.meeting.id}"> <b>Meeting: ${users.meeting.name}</b></a><br/>
+<u>Start date</u>
+<div class="formatTime">${users.meeting.startTime}</div>
+<br />
+<u>End date</u>
+<div id="amr" class="formatTime">${users.meeting.endTime}</div>
+<br/>
+<u>Attendees</u>
+#{list items:users , as:'user'}
+<a id="${user.id}" href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a>
+#{/list}<br/>
+<div id="myLayer"></div>
+<!--Amr Abdelwahab-->
+#{if comp==null}
+<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u></a>
+<span id="tzcd"></span>
+#{/if}
+#{else}
+<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_componentmeetingsnapshot(${users.meeting.id},${comp.id});"><u>Attach a SnapShot</u></a>
+<span id="tzcd"></span>
 #{/else}
+<a  href="javascript: join(${users.meeting.id});">join</a>
+#{/list}
+</div>
+#{/else}	
+
 </div>
 #{/set}
 
@@ -750,6 +778,13 @@ function displayTZCountDown(countdown,tzcd)
 	}
 	
 	}
+		}
+		function join(id)
+		{
+			$.post('/Meetings/joinMeeting', {meetingID:id},function()
+			{
+				window.location.reload();
+				});
 		}
 	function take_meetingsnapshot(id) {
 	
