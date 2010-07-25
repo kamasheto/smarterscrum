@@ -78,8 +78,26 @@ public class Show extends SmartController {
 		for (Request request : requests) {
 			requestedRoles.add(request.role);
 		}
+		List<User>members=project.users;
+		int memberscount=members.size();
+		List<Sprint>sprints=project.sprints;
+		int sprintscount=sprints.size();
+		int taskscount=0;
+		for(int i=0;i<sprintscount;i++){
+		List<Task>tasks=sprints.get(i).tasks;
+		taskscount+=tasks.size();
+		}
+		List<Meeting>meetings=project.meetings;
+		int meetingscount=meetings.size();
+		List<Component>components=project.components;
+		int componentscount=components.size();
+		int storiescount=0;
+		for(int i=0;i<componentscount;i++){
+			List<Story>stories=components.get(i).componentStories;
+			storiescount+=stories.size();
+			}
 		User connectedUser = Security.getConnected();
-		render(project, requestedRoles, connectedUser);
+		render(storiescount,taskscount,componentscount,project, meetingscount,requestedRoles,memberscount,sprintscount, connectedUser);
 	}
 
 	public static void tasks(long id) {
