@@ -89,50 +89,36 @@ To Create a Project , You Must Enter a name and a description. Make sure that th
 		
 		
 		<div class="crudField"> 
- 
-	
-	
-						<label for="object_name"> 
-		Name:  
-	</label> 
-
-	
-	<input id="object_name" class="" type="text" name="object.name" value="" size="50" /> 
-					
-		
-    <span class="crudHelp" style="color:red"> 
-        
-							*
-						<br/><br/>
+			<label for="object_name"> 
+			Name:  
+			</label> 
+			<input id="object_name" class="" type="text" name="object.name" value="" size="50" /> 			
+    		<span class="crudHelp" style="color:red"> *	<br/><br/>
 			<input type="button" name="_available" value="Check Availability" onclick="checkAvailability()" />
 			<b><label id="isAvailable" name="isAvailable" value=""></label>
 			</b>
-			    </span> 
-
-	
-</div> 
-  <br>
- 
-	
-<div class="crudField"> 
- 
-	
-	
-						<label for="object_description"> 
-		Description:  <br>
-	</label> 
-	
-	<TextArea id="object_description" class="" type="text" name="object.description" cols="53" rows="5" value="" /></TextArea>
-	
-    <span class="crudHelp" style="color:red">
-    * 
-   </span> 
- 
-	
-</div> 
+			</span>
+		</div> 
+  		<br>
+		<div class="crudField">
+			<label for="object_description"> 
+				Description:  <br>
+			</label> 
+			<TextArea id="object_description" class="" type="text" name="object.description" cols="53" rows="5" value="" /></TextArea>
+    		<span class="crudHelp" style="color:red">
+    			* 
+   			</span> 
+		</div>
+		
+		<div class="crudField">
+			<label for="object_isPrivate">
+				Private:
+			</label>
+			<input type="checkbox" name="object_isPrivate"/>
+		</div>
+		
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="Create Project"  onclick=""/>
-			
 		</p>
 		
 	#{/form}
