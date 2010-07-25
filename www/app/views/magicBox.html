@@ -1,0 +1,34 @@
+#{set id:controllers.Application.randomHash() /}
+<script type="text/javascript">
+$(function(){
+	$("##{get 'id' /}_content div[name]").each(function(){	
+
+		$(this).load($(this).attr('name'),function(){
+
+			$(this).find('.draggable').addClass('draggableChild');
+			$(this).find('.draggable').removeClass('draggable');
+			$(this).replaceWith($(this).html());
+			
+			});
+		//alert($(this).attr('class'));
+	});	
+});
+</script>
+<div  id="#{get 'id' /}" class="ui-widget-content draggable">
+	<div class="ui-widget-header">
+		#{get 'title'/}
+		<span class="revertFrom ui-state-default ui-corner-all">
+			<span class="ui-icon ui-icon-circle-close"></span>
+		</span>
+			<span class="min ui-state-default ui-corner-all" onclick="$(this).children().toggle();">
+			<span class="ui-icon ui-icon-circle-triangle-s" style="display: none;"></span>
+			<span class="ui-icon ui-icon-circle-triangle-n"></span>
+		</span>
+
+			</div>
+			
+	
+	<div id="#{get 'id'/}_content" class="ui-widget-content" >
+	#{doLayout /}
+	</div>
+</div>
