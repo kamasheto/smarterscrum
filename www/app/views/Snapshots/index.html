@@ -1,11 +1,6 @@
 #{extends 'main.html' /}
 #{set title:'snapshot List' /}
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${p.id}">${p.name}</a></li>
-<li><a href="/boards/loadboard?sprintID=${s.id}">${p.name}'s Task Board</a></li>
-<li><a  href="@{Snapshots.index(s.id,type)}" >View snapshots</a></li>
-#{/set}
+
 <h2>Snapshots of ${type} board </h2>
 #{if (snapshots.size()==0)}
 Sorry, There are no snapshots to display now.<br/>
@@ -30,7 +25,7 @@ Sorry, There are no snapshots to display now.<br/>
 	<td>	
 <li><a href="@{Snapshots.loadsnapShot(snapshot.id)} ">Snapshot ${snapshot.id}</a></li>
 		</td>
-		<td>${snapshot.user.getDisplayName(p)}</td>
+		<td>${snapshot.user.getDisplayName(p).raw()}</td>
 		<td>${snapshot.date}</td>
 		</tr>
 #{/list}
