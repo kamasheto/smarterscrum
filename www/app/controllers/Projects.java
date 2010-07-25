@@ -34,7 +34,6 @@ public class Projects extends SmartCRUD
 		Project projectObject = (Project) object;
 		User user = Security.getConnected();
 		validation.valid( object.edit( "object", params ) );
-
 		if( validation.hasErrors() )
 		{
 
@@ -49,10 +48,10 @@ public class Projects extends SmartCRUD
 				render( "CRUD/blank.html", type );
 			}
 		}
-		else if( Project.userRequstedProjectBefore( user.id, projectObject.name ) )
+		else if( Project.userRequstedProjectBefore( user.id, java.net.URLEncoder.encode(projectObject.name, "UTF-8" ) ))
 		{
 
-			flash.error( Messages.get( "You Have Already Created a Projcet with the Same Name :'" + projectObject.name + "'. You Will Be notified Upon Approval." ) );
+			flash.error( Messages.get( "You Have Already Created a Project with the Same Name :'" + projectObject.name + "'. You Will Be notified Upon Approval." ) );
 
 			try
 			{
@@ -63,7 +62,7 @@ public class Projects extends SmartCRUD
 				render( "CRUD/blank.html", type );
 			}
 		}
-		else if( Project.isUnique( (projectObject.name) ) )
+		else if( Project.isUnique( (java.net.URLEncoder.encode(projectObject.name, "UTF-8" )) ) )
 		{
 
 			flash.error( "Project Name is Already Taken." );
