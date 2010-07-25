@@ -8,6 +8,7 @@ import java.util.List;
 
 import models.Board;
 import models.Column;
+import models.Comment;
 import models.Component;
 import models.Log;
 import models.Project;
@@ -252,6 +253,9 @@ public class Tasks extends SmartCRUD {
 		List<TaskStatus> statuses = tmp.taskStory.componentID.project.taskStatuses;
 		List<TaskType> types = tmp.taskStory.componentID.project.taskTypes;
 		List<Task> dependencies = new ArrayList<Task>();
+		List<Comment> comments = Comment.find("byTask", tmp).fetch();
+		if(comments == null)
+			comments = new ArrayList<Comment>();
 		String message2 = "Are you Sure you want to delete the task ?!";
 		List<Requestreviewer> reviewers = Requestreviewer.find(
 				"byComponentAndAccepted", tmp.taskStory.componentID, true)
@@ -279,7 +283,7 @@ public class Tasks extends SmartCRUD {
 
 		try {
 			render(type, object, users, statuses, types, dependencies,
-					message2, deletable, reviewers, id2, isReporter, isAssignee, isReviewer);
+					message2, deletable, reviewers, id2, isReporter, isAssignee, isReviewer, comments);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -293,11 +297,13 @@ public class Tasks extends SmartCRUD {
 	 * @category C3 17.1
 	 */
 	public static void save(String id) throws Exception {
+		String changes="";
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
 		Task tmp = (Task) object;
 		String oldDescription = tmp.description;
+		
 		validation.valid(object.edit("object", params));
 		List<User> users = tmp.taskStory.componentID.componentUsers;
 		List<TaskStatus> statuses = tmp.taskStory.componentID.project.taskStatuses;
@@ -307,6 +313,9 @@ public class Tasks extends SmartCRUD {
 				"byComponentAndAccepted", tmp.taskStory.componentID, true)
 				.fetch();
 		List<Task> dependencies = new ArrayList<Task>();
+		List<Comment> comments = Comment.find("byTask", tmp).fetch();
+		if(comments == null)
+			comments = new ArrayList<Comment>();
 		String message = "";
 		String message2 = "Are you Sure you want to delete the task ?!";
 		boolean deletable = tmp.isDeletable();
@@ -340,7 +349,7 @@ public class Tasks extends SmartCRUD {
 
 				render(request.controller.replace(".", "/") + "/show.html",
 						type, object, users, statuses, types, dependencies,
-						message2, deletable, reviewers, message, isReporter, isReviewer, isAssignee);
+						message2, deletable, reviewers, message, isReporter, isReviewer, isAssignee, comments);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/show.html", type);
 			}
@@ -350,7 +359,7 @@ public class Tasks extends SmartCRUD {
 			try {
 				render(request.controller.replace(".", "/") + "/show.html",
 						type, object, users, statuses, types, dependencies,
-						message2, deletable, reviewers, message, isReporter, isReviewer, isAssignee);
+						message2, deletable, reviewers, message, isReporter, isReviewer, isAssignee, comments);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/show.html", type);
 			}
@@ -359,7 +368,7 @@ public class Tasks extends SmartCRUD {
 			try {
 				render(request.controller.replace(".", "/") + "/show.html",
 						type, object, users, statuses, types, dependencies,
-						message2, deletable, reviewers, message, isReporter, isReviewer, isAssignee);
+						message2, deletable, reviewers, message, isReporter, isReviewer, isAssignee, comments);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/show.html", type);
 			}
@@ -373,7 +382,7 @@ public class Tasks extends SmartCRUD {
 				try {
 					render(request.controller.replace(".", "/") + "/show.html",
 							type, object, users, statuses, types, dependencies,
-							message2, deletable, reviewers, message, isReporter, isReviewer, isAssignee);
+							message2, deletable, reviewers, message, isReporter, isReviewer, isAssignee, comments);
 				} catch (TemplateNotFoundException e) {
 					render("CRUD/show.html", type);
 				}
@@ -389,7 +398,7 @@ public class Tasks extends SmartCRUD {
 						render(request.controller.replace(".", "/")
 								+ "/show.html", type, object, users, statuses,
 								types, dependencies, message2, deletable,
-								reviewers, message, isReporter, isReviewer, isAssignee);
+								reviewers, message, isReporter, isReviewer, isAssignee, comments);
 					} catch (TemplateNotFoundException e) {
 						render("CRUD/show.html", type);
 					}
@@ -402,7 +411,7 @@ public class Tasks extends SmartCRUD {
 						render(request.controller.replace(".", "/")
 								+ "/show.html", type, object, users, statuses,
 								types, dependencies, message2, deletable,
-								reviewers, message, isReporter, isReviewer, isAssignee);
+								reviewers, message, isReporter, isReviewer, isAssignee, comments);
 					} catch (TemplateNotFoundException e) {
 						render("CRUD/show.html", type);
 					}
@@ -429,6 +438,8 @@ public class Tasks extends SmartCRUD {
 					+ " Reviewer: " + tmp.reviewer.name + "." + '\n' 
 					+ " Edited by: " + tmp.reporter.name + ".";*/
 		object.save();
+		Comment comment = new Comment(Security.getConnected(), tmp.id, tmp.comment);
+		comment.save();
 		Logs.addLog(myUser, "Edit", "Task", tmp.id, tmp.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 		Notifications.notifyUsers(tmp.taskStory.componentID.componentUsers, header, body, (byte) 0);
 		flash.success(Messages.get("crud.saved", type.modelName, object
