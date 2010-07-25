@@ -3,8 +3,6 @@ package controllers;
 import java.util.Date;
 import java.util.List;
 
-import models.Column;
-
 import models.Priority;
 import models.Project;
 import models.ProjectNotificationProfile;
@@ -48,7 +46,7 @@ public class Projects extends SmartCRUD
 				render( "CRUD/blank.html", type );
 			}
 		}
-		else if( Project.userRequstedProjectBefore( user.id, java.net.URLEncoder.encode(projectObject.name, "UTF-8" ) ))
+		else if( Project.userRequstedProjectBefore( user.id, java.net.URLEncoder.encode( projectObject.name, "UTF-8" ) ) )
 		{
 
 			flash.error( Messages.get( "You Have Already Created a Project with the Same Name :'" + projectObject.name + "'. You Will Be notified Upon Approval." ) );
@@ -62,7 +60,7 @@ public class Projects extends SmartCRUD
 				render( "CRUD/blank.html", type );
 			}
 		}
-		else if( Project.isUnique( (java.net.URLEncoder.encode(projectObject.name, "UTF-8" )) ) )
+		else if( Project.isUnique( (java.net.URLEncoder.encode( projectObject.name, "UTF-8" )) ) )
 		{
 
 			flash.error( "Project Name is Already Taken." );
@@ -87,6 +85,10 @@ public class Projects extends SmartCRUD
 			}
 
 			projectObject.user = user;
+			if( params.get( "object_isPrivate" ) != null )
+			{
+				projectObject.isPrivate = true;
+			}
 			object.save();
 			((Project) object).init();
 
@@ -336,7 +338,7 @@ public class Projects extends SmartCRUD
 		taskStatus.deleted = true;
 
 		taskStatus.save();
-		taskStatus.column.deleted=true;
+		taskStatus.column.deleted = true;
 		taskStatus.column.save();
 		Logs.addLog( Security.getConnected(), "Remove", "Project Default Task Status ", taskStatus.id, taskStatus.project, new Date( System.currentTimeMillis() ) );
 		renderJSON( true );
@@ -494,14 +496,17 @@ public class Projects extends SmartCRUD
 		// User myUser=User.findById(userId);
 		User myUser = Security.getConnected();
 		Project myProject = Project.findById( id );
-		//System.out.println( myProject );
-		if(Request.find("isDeletion = true and user = "+myUser.id+" and project = "+myProject.id).first()==null)
-		{Request x = new Request( myUser, myProject );
-		flash.success( "your request has been sent" );
-		x.save();
-		Show.projects( 0 );}
-		else{
-			flash.error("You have already made a deletion request in this project!");
+		// System.out.println( myProject );
+		if( Request.find( "isDeletion = true and user = " + myUser.id + " and project = " + myProject.id ).first() == null )
+		{
+			Request x = new Request( myUser, myProject );
+			flash.success( "your request has been sent" );
+			x.save();
+			Show.projects( 0 );
+		}
+		else
+		{
+			flash.error( "You have already made a deletion request in this project!" );
 			Show.projects( 0 );
 		}
 		// Logs.addLog(myProject, "request to be deleted", "Request", x.id );
