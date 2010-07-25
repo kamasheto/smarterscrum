@@ -3,11 +3,12 @@
 $(function(){
 	$("##{get 'id' /}_content div[name]").each(function(){	
 
-		$(this).load($(this).attr('name'),function(){
+		$(this).load($(this).attr('name')+' .ui-widget-header',function(){
 
-			$(this).find('.draggable').addClass('draggableChild');
-			$(this).find('.draggable').removeClass('draggable');
-			$(this).replaceWith($(this).html());
+			$(this).addClass('ui-widget-content draggableChild');
+			var id = $(this).children().first().attr('id');
+			$(this).attr('id',id);
+			$(this).append('<div id="'+id+'_content" class="ui-widget-content" ></div>');
 			
 			});
 		//alert($(this).attr('class'));
@@ -15,7 +16,7 @@ $(function(){
 });
 </script>
 <div  id="#{get 'id' /}" class="ui-widget-content draggable">
-	<div class="ui-widget-header">
+	<div  id="#{get 'id' /}_header"class="ui-widget-header">
 		#{get 'title'/}
 		<span class="revertFrom ui-state-default ui-corner-all">
 			<span class="ui-icon ui-icon-circle-close"></span>
@@ -28,7 +29,7 @@ $(function(){
 			</div>
 			
 	
-	<div id="#{get 'id'/}_content" class="ui-widget-content" >
+	<div id="#{get 'id'/}_content" class="ui-widget-content actual" >
 	#{doLayout /}
 	</div>
 </div>
