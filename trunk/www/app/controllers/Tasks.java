@@ -303,7 +303,12 @@ public class Tasks extends SmartCRUD {
 		JPASupport object = type.findById(id);
 		Task tmp = (Task) object;
 		String oldDescription = tmp.description;
-		
+		long oldTaskType = tmp.taskType.id;
+		long oldTaskStatus = tmp.taskStatus.id;
+		double oldEstPoints = tmp.estimationPoints;
+		long oldAssignee = tmp.assignee.id;
+		long oldReviewer = tmp.reviewer.id;
+		ArrayList<Task> oldDependents = (ArrayList<Task>) tmp.dependentTasks;
 		validation.valid(object.edit("object", params));
 		List<User> users = tmp.taskStory.componentID.componentUsers;
 		List<TaskStatus> statuses = tmp.taskStory.componentID.project.taskStatuses;
@@ -438,8 +443,10 @@ public class Tasks extends SmartCRUD {
 					+ " Reviewer: " + tmp.reviewer.name + "." + '\n' 
 					+ " Edited by: " + tmp.reporter.name + ".";*/
 		object.save();
-		Comment comment = new Comment(Security.getConnected(), tmp.id, tmp.comment);
-		comment.save();
+		if(tmp.comment.trim().length()>0){
+			Comment comment = new Comment(Security.getConnected(), tmp.id, tmp.comment);
+			comment.save();
+		}
 		Logs.addLog(myUser, "Edit", "Task", tmp.id, tmp.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 		Notifications.notifyUsers(tmp.taskStory.componentID.componentUsers, header, body, (byte) 0);
 		flash.success(Messages.get("crud.saved", type.modelName, object
