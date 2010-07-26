@@ -73,10 +73,10 @@ public class Boards extends SmartCRUD {
 					}
 				}
 			}
-			ArrayList<ArrayList<User>> u=Meetingloadboard( p);
-			ArrayList<ArrayList<User>> uAdmin=MeetingloadboardAdmin( p);
+			ArrayList<ArrayList<User>> u=Meetingloadboard( p,componentID);
+			ArrayList<ArrayList<User>> uAdmin=MeetingloadboardAdmin( p, componentID);
 			render(data, columnsOfBoard,hidencolumnsOfBoard, u, uAdmin, b, s, p,columns,ud,ua,ur,ut,us);
-		}
+			}
 		else
 		{
 			Component comp = Component.findById(componentID);
@@ -99,8 +99,10 @@ public class Boards extends SmartCRUD {
 				}
 
 			}
-			ArrayList<ArrayList<User>> u=Meetingcomponent(comp);
-			render(data, columnsOfBoard,hidencolumnsOfBoard, u,b, s,comp, p,columns,ud,ua,ur,ut,us);
+			ArrayList<ArrayList<User>> u=Meetingloadboard( p,componentID);
+			ArrayList<ArrayList<User>> uAdmin=MeetingloadboardAdmin( p, componentID);
+			render(data, columnsOfBoard,hidencolumnsOfBoard, u, uAdmin,b, s,comp, p,columns,ud,ua,ur,ut,us);
+		
 		}
 	}	
 	
@@ -140,13 +142,15 @@ public class Boards extends SmartCRUD {
 	 * @author asmaak89
 	 */
 	
-	public static ArrayList<ArrayList<User>> Meetingloadboard(Project p)
+	public static ArrayList<ArrayList<User>> Meetingloadboard(Project p, long cid)
 	{
 		
 			long id=Security.getConnected().id;
 			LinkedList<Meeting> total = new LinkedList<Meeting>();		
 			ArrayList<ArrayList<User>> u = new ArrayList<ArrayList<User>>();
-			for (Meeting m : p.meetings) 
+		
+			if(cid==0)
+			{for (Meeting m : p.meetings) 
 			{
 				long now = new Date().getTime();
 				if (m.startTime <= now && m.endTime > now) 
@@ -159,8 +163,27 @@ public class Boards extends SmartCRUD {
 					}
 					
 				}
-			}
-			
+			}}
+			else{
+				Component c = Component.findById(cid);
+			for (Meeting m : c.componentMeetings) 
+			{
+				long now = new Date().getTime();
+				if (m.startTime <= now && m.endTime > now) 
+				{
+	                
+					for(int i=0;i<m.users.size();i++)
+					{
+						if(m.users.get(i).user.id==id)
+						{
+							if(m.users.get(i).checkConfirmed())
+							{
+								total.add(m);
+							}
+						}
+					}
+			     }
+			}}
 			for (int i = 0; i < total.size(); i++) 
 			{
 				Meeting m = Meeting.findById(total.get(i).id);
@@ -178,12 +201,13 @@ public class Boards extends SmartCRUD {
 			
 	
 	}
-	public static ArrayList<ArrayList<User>> MeetingloadboardAdmin(Project p)
+	public static ArrayList<ArrayList<User>> MeetingloadboardAdmin(Project p, long cid)
 	{
 		long id=Security.getConnected().id;
 		LinkedList<Meeting> totalAdmin = new LinkedList<Meeting>();		
 		ArrayList<ArrayList<User>> uAdmin = new ArrayList<ArrayList<User>>();
 		boolean flag=false;
+		if(cid==0){
 		for (Meeting m : p.meetings) 
 		{
 			flag=false;
@@ -206,7 +230,33 @@ public class Boards extends SmartCRUD {
 				}		
 			}
 		}
-		
+		}
+		else
+		{
+			Component c = Component.findById(cid);
+			for (Meeting m : c.componentMeetings) 
+			{
+				flag=false;
+				long now = new Date().getTime();
+				if (m.startTime <= now && m.endTime > now) 
+				{
+					for(int i=0;i<m.users.size();i++)
+					{
+						if(m.users.get(i).user.id==id)
+							if(m.users.get(i).checkConfirmed())
+							flag=true;
+					}
+					
+					
+					
+					if(Security.getConnected().isAdmin)
+					{
+						if(!flag)
+						totalAdmin.add(m);
+					}		
+				}
+			}
+		}
 		for (int i = 0; i < totalAdmin.size(); i++) 
 		{
 			Meeting m = Meeting.findById(totalAdmin.get(i).id);
@@ -223,57 +273,8 @@ public class Boards extends SmartCRUD {
 		return uAdmin;
 
 	}
-	 /* @param Component as c  
-	  * given componenet to loop to get all componenets meetings that is running 
-	  * and the logged in user is confirmed in it.
-	  * and i made them list of list as for further enhancment if it will have more than one 
-	  * meeting to one componenet.
-	  *
-	  *   
-	  * @author asmaak89
-	  */
-	
-	public static ArrayList<ArrayList<User>> Meetingcomponent(Component c)
-	{
-		long id=Security.getConnected().id;
-		LinkedList<Meeting> total = new LinkedList<Meeting>();
-		ArrayList<ArrayList<User>> u = new ArrayList<ArrayList<User>>();
-		for (Meeting m : c.componentMeetings) 
-		{
-			long now = new Date().getTime();
-			if (m.startTime <= now && m.endTime > now) 
-			{
-                
-			for(int i=0;i<m.users.size();i++)
-             {
-             if(m.users.get(i).user.id==id)
-             {
-              if(m.users.get(i).checkConfirmed())
-             {
-              total.add(m);
-             }
-             }
-             }
-		     }
-		}
-		for (int i = 0; i < total.size(); i++) 
-		{
-			Meeting m = Meeting.findById(total.get(i).id);
-			u.add(new MeetingUsers(m));
-			for (MeetingAttendance k : m.users) 
-			{
-				if (k.status.equals("confirmed")) 
-				{
-					u.get(i).add(k.user);
-				}
 
-			}
-		}
-		return u;
-	
-	}
-	
-	/**
+/**
 	 * this method is used to search for a specific column and change the value
 	 * of the boolean variable of it called onBoard to true
 	 * so as to let this column appear on the board
