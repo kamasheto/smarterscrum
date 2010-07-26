@@ -25,7 +25,7 @@ public class Snapshots extends SmartController {
 	 * @author Amr Abdelwahab
 	 * @param sprintID
 	 */
-/*	public static void TakeSnapshot(long sprintID) {
+	public static void TakeSnapshot(long sprintID) {
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
 		Board b = p.board;
@@ -79,9 +79,18 @@ public class Snapshots extends SmartController {
 			}
 
 			for (Task task : tasks) {
-				if(task.taskStatus.column.onBoard==true)
+				Column pcol = new Column();
+				for(int k=0;k<task.taskStatus.columns.size();k++)
 				{
-				data.get(i).get(CS.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+					pcol = task.taskStatus.columns.get(k);
+					if(pcol.board.id==b.id)
+					{
+						break;
+					}
+				}
+				if(pcol.onBoard==true&&!pcol.deleted)
+				{
+				data.get(i).get(CS.indexOf(pcol)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
 				}
 			}
 		}	
@@ -98,8 +107,8 @@ public class Snapshots extends SmartController {
 		Logs.addLog(user, "Took", "Snapshot", snap.id, p, cal.getTime());
 
 	}
-*/
-	/*public static void TakeSprintSnapshot(long sprintID) {
+
+		public static void TakeSprintSnapshot(long sprintID) {
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
 		Board b = p.board;
@@ -153,12 +162,23 @@ public class Snapshots extends SmartController {
 			}
 
 			for (Task task : tasks) {
-				if(task.taskStatus.column.onBoard==true)
+				Column pcol = new Column();
+				for(int k=0;k<task.taskStatus.columns.size();k++)
 				{
-				data.get(i).get(CS.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+					pcol = task.taskStatus.columns.get(k);
+					if(pcol.board.id==b.id)
+					{
+						break;
+					}
+				}
+			
+				if(pcol.onBoard&&!pcol.deleted)
+				{
+				data.get(i).get(CS.indexOf(pcol)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
 				}
 			}
-		}		String type = "sprint "+s.id;
+		}		
+		String type = "sprint "+s.id;
 		Snapshot snap = new Snapshot();
 		snap.user = user;
 		snap.type = type;
@@ -173,7 +193,7 @@ public class Snapshots extends SmartController {
 		renderJSON(ID);
 		
 	}
-*/
+
 	/**
 	 * Takes the sprint ID and load the same things needed to load the board
 	 * then start changing the dynamic variables like tasks into strings
@@ -186,7 +206,7 @@ public class Snapshots extends SmartController {
 	 * @param meetingID
 	 *            the id of the meeting the snapshot shall be associated to
 	 */
-/*	public static void TakeMeetingSnapshot(long sprintID, long id) {
+	public static void TakeMeetingSnapshot(long sprintID, long id) {
 		Meeting M = Meeting.findById(id);
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
@@ -241,9 +261,18 @@ public class Snapshots extends SmartController {
 			}
 
 			for (Task task : tasks) {
-				if(task.taskStatus.column.onBoard==true)
+				Column pcol = new Column();
+				for(int k=0;k<task.taskStatus.columns.size();k++)
 				{
-				data.get(i).get(CS.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+					pcol = task.taskStatus.columns.get(k);
+					if(pcol.board.id==b.id)
+					{
+						break;
+					}
+				}
+				if(pcol.onBoard==true&&!pcol.deleted)
+				{
+				data.get(i).get(CS.indexOf(pcol)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
 				}
 			}
 		}
@@ -314,7 +343,7 @@ public class Snapshots extends SmartController {
 	 * @param componentID
 	 *            the id of the component the snapshot is taken for its board
 	 */
-/*	public static void TakeComponentSnapshot(long sprintID, long componentID) {
+	public static void TakeComponentSnapshot(long sprintID, long componentID) {
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
 		Board b = p.board;
@@ -368,9 +397,18 @@ public class Snapshots extends SmartController {
 			}
 
 			for (Task task : tasks) {
-				if(task.taskStatus.column.onBoard==true)
+				Column pcol = new Column();
+				for(int k=0;k<task.taskStatus.columns.size();k++)
 				{
-				data.get(i).get(CS.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+					pcol = task.taskStatus.columns.get(k);
+					if(pcol.board.id==b.id)
+					{
+						break;
+					}
+				}
+				if(pcol.onBoard==true&&!pcol.deleted)
+				{
+				data.get(i).get(CS.indexOf(pcol)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
 				}
 			}
 		}	User user = Security.getConnected();
@@ -401,7 +439,7 @@ public class Snapshots extends SmartController {
 	 * @param meetingID
 	 *            the id of the meeting the snapshot shall be associated to
 	 */
-/*	public static void TakeComponentMeetingsnapshot(long sprintID, long componentID, long meetingID) {
+	public static void TakeComponentMeetingsnapshot(long sprintID, long componentID, long meetingID) {
 		Meeting M = Meeting.findById(meetingID);
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
@@ -456,9 +494,18 @@ public class Snapshots extends SmartController {
 			}
 
 			for (Task task : tasks) {
-				if(task.taskStatus.column.onBoard==true)
+				Column pcol = new Column();
+				for(int k=0;k<task.taskStatus.columns.size();k++)
 				{
-				data.get(i).get(CS.indexOf(task.taskStatus.column)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+					pcol = task.taskStatus.columns.get(k);
+					if(pcol.board.id==b.id)
+					{
+						break;
+					}
+				}
+				if(pcol.onBoard==true&&!pcol.deleted)
+				{
+				data.get(i).get(CS.indexOf(pcol)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
 				}
 			}
 		}	User user = Security.getConnected();
@@ -476,5 +523,5 @@ public class Snapshots extends SmartController {
 		Calendar cal = new GregorianCalendar();
 		Logs.addLog(user, "Attached a snapshot", "Meeting", M.id, p, cal.getTime());
 	}
-*/
+
 }
