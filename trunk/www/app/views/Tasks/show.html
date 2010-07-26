@@ -186,7 +186,7 @@
 				#{list items:comments, as:'comment'}
 					<tr>
 						<td><b>${comment.author}</b></td>
-						<td>${comment.comment}</td>
+						<td>${comment.comment.raw()}</td>
 					</tr>
 				#{/list}
 				</table>
