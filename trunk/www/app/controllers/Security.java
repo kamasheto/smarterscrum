@@ -114,6 +114,7 @@ public class Security extends Secure.Security
 		if( u == null )
 		{
 			flash.error( "This username/Email does not exist" );
+			Logs.addLog( "A guest tried to recover a password of the username " + username + " but the username was not found" );
 			Security.forgotPassword();
 		}
 		else
@@ -123,7 +124,8 @@ public class Security extends Secure.Security
 			String subject = "Your SmarterScrum account password recovery";
 			String body = "Dear " + u.name + ", Please click the following link to recover your password: " + "http://localhost:9000/security/passwordRecovery?h=" + u.recoveryHash;
 			Mail.send( "se.smartsoft@gmail.com", u.email, subject, body );
-			flash.success( "An email was sent to you email address." );
+			Logs.addLog( "A guest tried to recover a password of the username " + username );
+			flash.success( "An email was sent to your email address." );
 			try
 			{
 				Secure.login();
@@ -161,6 +163,7 @@ public class Security extends Secure.Security
 			u.recoveryHash = "";
 			u.save();
 			flash.success( "Password changed successfully" );
+			Logs.addLog( u.name + " forgot his/her password and recovered it successfully" );
 			try
 			{
 				Secure.login();
