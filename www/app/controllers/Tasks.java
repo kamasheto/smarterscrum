@@ -303,14 +303,17 @@ public class Tasks extends SmartCRUD {
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
 		Task tmp = (Task) object;
-		String oldDescription = tmp.description;
-		long oldTaskType = tmp.taskType.id;
-		long oldTaskStatus = tmp.taskStatus.id;
-		double oldEstPoints = tmp.estimationPoints;
-		long oldAssignee = tmp.assignee.id;
-		long oldReviewer = tmp.reviewer.id;
-		//ArrayList<Task> oldDependents = (ArrayList<Task>) tmp.dependentTasks;
-		//loop ba2a w zabbat
+		String oldDescription = tmp.description;//done
+		long oldTaskType = tmp.taskType.id;//done
+		long oldTaskStatus = tmp.taskStatus.id;//done
+		double oldEstPoints = tmp.estimationPoints;//done
+		long oldAssignee = tmp.assignee.id;//done
+		long oldReviewer = tmp.reviewer.id;//done
+		ArrayList<Task> oldDependencies = new ArrayList<Task>();
+		for(Task current:tmp.dependentTasks)
+		{
+			oldDependencies.add(current);
+		}
 		validation.valid(object.edit("object", params));
 		List<User> users = tmp.taskStory.componentID.componentUsers;
 		List<TaskStatus> statuses = tmp.taskStory.componentID.project.taskStatuses;
@@ -444,7 +447,53 @@ public class Tasks extends SmartCRUD {
 					+ " Reporter: " + tmp.reporter.name + "." + '\n' 
 					+ " Reviewer: " + tmp.reviewer.name + "." + '\n' 
 					+ " Edited by: " + tmp.reporter.name + ".";*/
+
 		object.save();
+/*********** Changes as Comment by Galal Aly **************/
+		
+		if(!(tmp.description.equals(oldDescription)))
+			changes+="Description changed from <i>"+oldDescription+"</i> to <i>"+tmp.description+"</i><br>";
+		if(tmp.taskType.id != oldTaskType)
+		{
+			TaskType temp = TaskType.findById(oldTaskType);
+			changes+="Task's Type was changed from <i>"+temp.name+"</i> to <i>"+tmp.taskType.name+"</i><br>";
+		}
+		if(tmp.taskStatus.id != oldTaskStatus)
+		{
+			TaskStatus temp = TaskStatus.findById(oldTaskStatus);
+			changes+="Task's status was changed from <i>"+temp.name+"</i> to <i>"+tmp.taskStatus.name+"</i><br>";
+		}
+		if(tmp.estimationPoints != oldEstPoints)
+			changes+="Estimation points for the task were changed from <i>"+oldEstPoints+"</i> to <i>"+tmp.estimationPoints+"</i><br>";
+		if(tmp.assignee.id != oldAssignee)
+		{
+			User temp = User.findById(oldAssignee);
+			changes+="Task's assignee was changed from <i>"+temp.name+"</i> to <i>"+tmp.assignee.name+"</i><br>";
+		}
+		if(tmp.reviewer.id != oldReviewer)
+		{
+			User temp = User.findById(oldReviewer);
+			changes+="Task's reviewer was changed from <i>"+temp.name+"</i> to <i>"+tmp.reviewer.name+"</i><br>";
+		}
+		for(Task oldTask:oldDependencies)
+		{
+			if(!(tmp.dependentTasks.contains(oldTask)))
+			{
+				changes+="Task "+oldTask.number+" was removed from Dependent tasks.<br>";
+			}
+		}
+		for(Task newTask:tmp.dependentTasks)
+		{
+			if(!(oldDependencies.contains(newTask)))
+			{
+				changes+="Task "+newTask.number+" was added to dependent tasks.<br>";
+			}
+		}
+		
+		//Now finally save the comment
+		Comment changesComment = new Comment(Security.getConnected(), tmp.id, changes);
+		changesComment.save();
+		/********** End of Changes as Comment ********/
 		if(tmp.comment.trim().length()>0){
 			Comment comment = new Comment(Security.getConnected(), tmp.id, tmp.comment);
 			comment.save();
