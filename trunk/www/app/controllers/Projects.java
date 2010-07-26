@@ -7,6 +7,7 @@ import models.Priority;
 import models.Project;
 import models.ProjectNotificationProfile;
 import models.Request;
+import models.Role;
 import models.TaskStatus;
 import models.TaskType;
 import models.User;
@@ -65,7 +66,7 @@ public class Projects extends SmartCRUD {
 			object.save();			
 			Project pro = (Project) object; 
 			pro.init(projectObject.isScrum);
-			Role proAdmin=Role.find("name= projectAdmin & project =" +pro.id).first();
+			Role proAdmin = Role.find("name= projectAdmin & project =" +pro.id).first();
 			user.roles.add(proAdmin);
 
 			Logs.addLog(Security.getConnected(), "Create", "Project", projectObject.id, projectObject, new Date(System.currentTimeMillis()));
