@@ -36,11 +36,16 @@ If you typed a user name and a project name that do not exist on the system, The
 	<div id="list">
 		<br />
 	#{list items:logs, as:'log'}
+		 #{if !(log.user&&log.project)}
+		 <font color="green">[${log.date}]:  ${log.action_type}</font><br />
+		 #{/if}
+		 #{else}
 	     #{if log.madeBySysAdmin}
 		 <font color="red"><b>[${log.date}]:  (SysAdmin) <a href = "/show/user?id=${log.user.id}">${log.user.name}</a> has performed action (${log.action_type}) using resource (${log.resource_type}) in project <a href="/show/project?id=${log.project.id}">${log.project.name}</a></b></font> <br /> 
 		 #{/if}
 		 #{else}
 		 [${log.date}]:  <a href = "/show/user?id=${log.user.id}">${log.user.name}</a> has performed action (${log.action_type}) using resource (${log.resource_type}) in project <a href="/show/project?id=${log.project.id}">${log.project.name}</a> <br />
+		 #{/else}
 		 #{/else}
 	#{/list}
 	</div>
