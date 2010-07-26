@@ -59,8 +59,11 @@ public class Projects extends SmartCRUD {
 			if (params.get("object_isPrivate") != null) {
 				projectObject.isPrivate = true;
 			}
+			if (params.get("object_isScrum") != null) {
+				projectObject.isScrum = true;
+			}
 			object.save();
-			((Project) object).init();
+			((Project) object).init(projectObject.isScrum);
 
 			Logs.addLog(Security.getConnected(), "Create", "Project", projectObject.id, projectObject, new Date(System.currentTimeMillis()));
 			if (Security.getConnected().isAdmin) {
