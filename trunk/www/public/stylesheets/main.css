@@ -165,3 +165,6 @@ ul.project_links a:hover {
 .projDes {
 	background-color: #b7568d;
 }
+.draggable {
+	cursor: move;
+}
