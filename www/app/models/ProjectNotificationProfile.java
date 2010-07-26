@@ -13,7 +13,7 @@ import play.data.validation.Required;
 public class ProjectNotificationProfile extends SmartModel {
 	@OneToOne
 	public Project project;
-
+	public boolean deleted;
 	public boolean setMeeting;
 	public boolean setSprint;
 	public boolean addRole;
