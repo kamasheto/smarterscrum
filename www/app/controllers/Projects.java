@@ -273,8 +273,8 @@ public class Projects extends SmartCRUD {
 		Security.check(Security.getConnected().in(taskStatus.project).can("editProject"));
 		taskStatus.deleted = true;
 		taskStatus.save();
-		taskStatus.column.deleted = true;
-		taskStatus.column.save();
+//		taskStatus.column.deleted = true;
+//		taskStatus.column.save();
 		String header = "Task Status: " + "\'" + taskStatus.name + "\'" +  " has been deleted.";
 		String body = "In Project " + "\'" + taskStatus.project.name + "\'" + "." + '\n'
 				+ " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
