@@ -113,19 +113,20 @@ function loadBox(url,el)
 
 function magic(id)
 {
+	
+	
+	
 	$("#"+id+"_content div[name]").each(function(){	
-		if($(this).attr('name')!=null)
-		{
-		$(this).load($(this).attr('name')+' .ui-widget-header',function(){
+	
+		var id2 ="ui"+Math.ceil(Math.random()*100);
+		var head ='<div class="ui-widget-header">'+$(this).html()+'<span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span></span><span class="min"onclick="$(this).children().toggle();"><span class="ui-icon ui-icon-circle-triangle-s" style="display: none;"></span><span class="ui-icon ui-icon-circle-triangle-n"></span></span></div>';
+		$(this).html(head);
+		$(this).addClass('ui-widget-content draggableChild');
 
-			$(this).addClass('ui-widget-content draggableChild');
-			var id = $(this).children().first().attr('id');
-			$(this).attr('id',id);
-			$(this).append('<div id="'+id+'_content" class="ui-widget-content" ></div>');
-			
-			});
-		//alert($(this).attr('class'));
-		}
-	});		
+		$(this).attr('id',id2);
+		$(this).append('<div id="'+id2+'_content" class="ui-widget-content" ></div>');
+	
+});
+	
 }
 

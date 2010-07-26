@@ -19,18 +19,25 @@ button,a button,input[type=submit],input[type=ok],input[type=send],input[type=bu
 	font-size: 1.1em;
 	font-family: verdana;
 }
-.nav a
-{
-padding:5px;
-}
-.nav
-{
 
-text-align:center;
-font-size:18px;
+.nav a {
+	padding: 5px;
 }
-body,html {
-	background: #333 url('') repeat top left;
+
+.topper {
+	background: none repeat scroll 0 0 #111111;
+	color: #EEEEEE;
+	padding: 5px 1%;
+	position: relative;
+	width: 98%;
+	z-index: 99;
+}
+
+.nav {
+	border-bottom: 2px solid #222222 !important;
+	font-size: 12px;
+	text-align: center; body ,html { background : #333
+	url('img/workspace.png') repeat top left;
 	font-family: Verdana;
 	font-size: 10px;
 	margin: 0px;
@@ -97,17 +104,7 @@ img {
 	display: inline-block;
 }
 
-.topper {
-	background: #111;
-	color: #eee;
-	margin-top: -4px;
-	padding: 5px 1% 5px 1%;
-	width: 98%;
-	position: relative;
-	z-index: 99;
-}
-
-.topper a,.topper a:hover {
+.topper a,.topper{
 	color: #eee;
 	text-decoration: none;
 }
@@ -163,27 +160,27 @@ img {
 	cursor: pointer;
 	position: relative;
 	z-index: 9;
-	margin-top:5px;
+	margin-top: 5px;
 	padding-bottom: 10px;
 }
 
 .aDIV {
-	color: #eee !important;
-	padding: 5px;
-	margin-top: 10px;
-	font-family: Verdana;
-	font-size: 14px;
-	font-variant: small-caps;
-	text-transform: lowercase;
-	min-width: 100px;
-	display: inline-block;
-
-	text-align: center;
-	background-color: #111;
-	overflow: hidden;
-	margin-right: 10px;
-	text-decoration: none !important;
-}
+background-color:#111111;
+border-bottom:2px solid #222222;
+color:#EEEEEE !important;
+display:inline-block;
+font-family:Verdana;
+font-size:14px;
+font-variant:small-caps;
+margin-bottom:-2px;
+margin-right:10px;
+margin-top:10px;
+min-width:100px;
+overflow:hidden;
+padding:5px;
+text-align:center;
+text-decoration:none !important;
+text-transform:lowercase;
 
 /**rounded corners**/
 .allCornersRounded {
@@ -193,7 +190,7 @@ img {
 }
 
 .bottomCornersRounded {
-		border-radius: 0px;
+	border-radius: 0px;
 	-moz-border-radius: 0px;
 	-webkit-border-radius: 0px;
 	border-bottom-right-radius: 5px;
@@ -205,8 +202,7 @@ img {
 }
 
 .leftCornersRounded {
-	
-		border-radius: 0px;
+	border-radius: 0px;
 	-moz-border-radius: 0px;
 	-webkit-border-radius: 0px;
 	border-bottom-left-radius: 5px;
@@ -218,8 +214,7 @@ img {
 }
 
 .rightCornersRounded {
-	
-		border-radius: 0px;
+	border-radius: 0px;
 	-moz-border-radius: 0px;
 	-webkit-border-radius: 0px;
 	border-bottom-right-radius: 5px;
@@ -231,8 +226,7 @@ img {
 }
 
 .topCornersRounded {
-	
-		border-radius: 0px;
+	border-radius: 0px;
 	-moz-border-radius: 0px;
 	-webkit-border-radius: 0px;
 	border-top-right-radius: 5px;
@@ -449,8 +443,6 @@ table {
 	border-collapse: collapse;
 }
 
-
-
 #content tr,#content td,#content table {
 	border: 1px #999 solid;
 }
@@ -574,23 +566,20 @@ p.baseRole {
 	overflow: auto
 }
 
-
 tr.deleted {
 	background: #FFA8A8;
 }
 
-ul.project_links a{
-display:block;
+ul.project_links a {
+	display: block;
 }
-
-
 
 .chatContainerHeader {
 	background-color: #b7568d;
 	padding: 7px;
 	color: #ffffff;
 }
-body
-{
-background:transparent url('img/workspace.png') repeat top left scroll;
+
+body {
+	background: transparent url('img/workspace.png') repeat top left scroll;
 }

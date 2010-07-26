@@ -20,15 +20,19 @@ function isBefore(date){
 #{else}
 	#{list items:sprints, as:'sprint'}
 		#{if (sprint.id==runningSprint) }
-			<div class="running" name="@{showsprint(sprint.id,sprint.project.id)}">Sprint ${sprint.id}</div>
+			<div class="running" name="sprints/showsprint?id=${sprint.id}&projectId=${sprint.project.id}">Sprint ${sprint.id}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+			</div>
 		#{/if}
 		#{else}
-			<div class="p" name="@{showsprint(sprint.id,sprint.project.id)}">Sprint ${sprint.id}</div>
+			<div class="past" name="sprints/showsprint?id=${sprint.id}&projectId=${sprint.project.id}">Sprint ${sprint.id}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+			</div>
+		
 		#{/else}
+
 <!-- 
 				Start Date: ${sprint.format(sprint.startDate)}<br/>
 				End Date: ${sprint.format(sprint.endDate)}<br/>
-			<a href="@{showsprint(sprint.id,sprint.project.id)}">More Info</a>-->
+			<a href="sprints/showsprint?id=${sprint.id}&projectId=${sprint.project.id}">More Info</a>-->
 
 
 

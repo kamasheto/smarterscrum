@@ -1,6 +1,5 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}Sprint ${sprint.id}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
-#{/set}
+#{set 'title'}Sprint ${sprint.id}#{/set}
 <script type="text/javascript">
 function isBefore(date){
 	var now=new Date();

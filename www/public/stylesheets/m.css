@@ -1,34 +1,4 @@
 /*generic template css*/
-html,body {
-	margin: 0;
-	padding: 0;
-	height: 100%;
-	border: none;
-	font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
-table#body {
-	width: 100%;
-}
-
-.loading {
-	margin: 0px auto;
-}
-
-#body thead,#body tfoot {
-	height: 50px;
-	color: white !important;
-	background-color: #000;
-}
-
-#body thead a,#body tfoot a {
-	color: white !important;
-}
-
-#body tbody {
-	height: 490px;
-}
-
 .ui-widget-content {
 	border: 0px !important;
 }
@@ -41,31 +11,12 @@ table#body {
 	width: 100%;
 }
 
-.draggableChild .ui-widget-content {
-	display: none;
-}
-
 .draggable {
 	width: 300px;
 }
-
-.draggable div,.draggableChild div {
-	padding: 0px;
-	margin: 0px;
-}
-
 .draggableChild {
 	position: relative;
 	display: block;
-}
-
-table td,table tr,table div,table div div {
-	vertical-align: top;
-}
-
-.static {
-	position: static !important;
-	float: left;
 }
 
 .ui-widget-header {
@@ -85,7 +36,7 @@ table td,table tr,table div,table div div {
 .draggable .ui-widget-header {
 	background: transparent;
 	font-family: Georgia, "Times New Roman", Times, serif;
-	font-size: 20px;
+	font-size: 14px;
 	font-style: italic;
 	font-weight: normal;
 	letter-spacing: -1px;
@@ -107,19 +58,25 @@ table td,table tr,table div,table div div {
 	font-weight: normal;
 	border: 0px;
 	margin:0px;
-	padding:10px 0px;
+	padding:5px;
 }
 
 .clone {
 	font-size: 12px;
-	background: #eee;
-	color: #aaa ;
-	font-family :   verdana;
+	background: #eee !important;
+	background: -moz-linear-gradient(center bottom, #eee 20%, #ddd 80%)
+		!important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #ddd),
+		color-stop(0.8, #eee) ) !important;
+	color: #ccc;
+	font-family: verdana;
 	font-style: normal;
 	font-weight: normal;
 	border: 0px;
+	margin:0px;
+	padding:5px;
 }
-.clone img
+.clone img, .clone span
 {
 	display:none;
 }
@@ -140,4 +97,8 @@ table td,table tr,table div,table div div {
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #87155f),
 		color-stop(0.8, #b7568d) ) !important;
 		padding:5px;
+}
+.draggable img, .draggable span, .draggableChild img, .draggableChild span
+{
+cursor:pointer;
 }
