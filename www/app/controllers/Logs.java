@@ -79,6 +79,8 @@ public class Logs extends SmartCRUD
 	 *            The custom log message you want to be displayed in the logs
 	 *            view.
 	 * @return <code>true</code> if the log entry was successfully saved.
+	 * @see models.Log
+	 * @since Sprint4
 	 */
 	public static boolean addLog( String logMessage )
 	{
