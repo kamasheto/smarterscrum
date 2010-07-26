@@ -1,16 +1,4 @@
-#{extends 'main.html' /}
-
-
-#{set 'crumbs'}
-
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${temp.project.id}">${pName}</a></li>
-<li><a href="/sprints/showsprints?projectId=${temp.project.id}">Sprints</a></li>
-<li><a href="@{Sprints.showsprint(temp.id,temp.project.id)}" >Sprint ${sNum}</a></li>
-<li><a href="@{SprintBacklog.index(componentID,temp.project.id)}">Sprint backlog</a></li>
-#{/set}
-
-
+#{extends 'overlay.html' /}
 #{set title:'Sprint Burndown Chart' /}
 #{ifnot Data}
 	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 

@@ -103,7 +103,7 @@ magic(el);
 
 function loadBox(url,el)
 {
-	$('#'+el).append('<br style="clear:both"/><div id="myTemp"></div>');
+	$('#'+el).append('<div style="position:absolute"id="myTemp"></div>');
 	
 	$('#'+el+' #myTemp').load(url,function(){
 
@@ -114,7 +114,8 @@ function loadBox(url,el)
 function magic(id)
 {
 	$("#"+id+"_content div[name]").each(function(){	
-
+		if($(this).attr('name')!=null)
+		{
 		$(this).load($(this).attr('name')+' .ui-widget-header',function(){
 
 			$(this).addClass('ui-widget-content draggableChild');
@@ -124,6 +125,7 @@ function magic(id)
 			
 			});
 		//alert($(this).attr('class'));
+		}
 	});		
 }
 
