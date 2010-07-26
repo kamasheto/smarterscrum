@@ -309,7 +309,8 @@ public class Tasks extends SmartCRUD {
 		double oldEstPoints = tmp.estimationPoints;
 		long oldAssignee = tmp.assignee.id;
 		long oldReviewer = tmp.reviewer.id;
-		ArrayList<Task> oldDependents = (ArrayList<Task>) tmp.dependentTasks;
+		//ArrayList<Task> oldDependents = (ArrayList<Task>) tmp.dependentTasks;
+		//loop ba2a w zabbat
 		validation.valid(object.edit("object", params));
 		List<User> users = tmp.taskStory.componentID.componentUsers;
 		List<TaskStatus> statuses = tmp.taskStory.componentID.project.taskStatuses;
