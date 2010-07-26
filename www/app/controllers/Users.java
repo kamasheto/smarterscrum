@@ -293,16 +293,21 @@ public class Users extends SmartCRUD {
 		forbidden();
 	}
 	
-	public static List<User> findUsers(long projectId, long componentId, int all){
+	/**
+	 * @author Monayri
+	 * Issue : 228
+	 * Sprint : 4
+	 */
+	public static void findUsers(long projectId, long componentId, int all){
 		if(all == 1){
-			return User.findAll();
+			render(User.findAll());
 		}else{
 			if(componentId !=0){
 				Component component = Component.findById(componentId);
-				return component.componentUsers;
+				render(component.componentUsers);
 			}else{
 				Project project = Project.findById(projectId);
-				return project.users;
+				render(project.users);
 			}
 		}
 	}
