@@ -859,6 +859,14 @@ public class Storys extends SmartCRUD {
 			render(stories);
 		}
 	}
+	
+	public static void viewStory(long storyId)
+	{
+		Story story = Story.findById(storyId);
+		String[] success = story.succussSenario.split("/n");
+		String[] failure = story.failureSenario.split("/n");
+		render(story,success,failure);
+	}
 
 	/**
 	 * Forbids access to listing all stories!
