@@ -771,43 +771,9 @@ public class Projects extends SmartCRUD {
 		forbidden();
 	}
 
-	/**
-	 * 
-	 * @author Monayri
-	 * Sprint 4
-	 * Issue 218
-	 *   
-	 */
 	public static void myTasks(long projectId){
-		User user = Security.getConnected();
 		Project project = Project.findById(projectId);
-		Component component=null;
-		for(Component comp: user.components){
-			if(comp.project.equals(project)){
-				component = comp;
-			}
-		}
-		List<Task> tasks = new ArrayList<Task>();
-		List<Task> reviews = new ArrayList<Task>();
-		if(component!=null){
-			for(Story story : component.componentStories){
-				System.out.println(story.number);
-				for(Task task : story.storiesTask){
-					if(task.assignee.equals(user)){
-						tasks.add(task);
-					}
-					if(task.reviewer.equals(user)){
-						reviews.add(task);
-					}
-				}
-			}
-			}
-		System.out.println("here");
-		render(tasks, reviews);
+		render(project);
 	}
-	/*
-	 * 
-	 */
-
 
 }

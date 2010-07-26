@@ -1,0 +1,36 @@
+#{extends 'magicBox.html' /}
+#{set 'title'}${title}#{/set}
+
+
+		#{if task !=null}
+		#{if task.size()==0}
+		<label> No Tasks</label>
+		#{/if}
+		#{list items:task ,as :'Task'}
+			<div class="ui-widget-content actual" name="/storys/magicShow?taskId=${Task.id}"></div>
+		#{/list}
+		#{/if}
+		
+		#{if task1!=null}
+			#{if connected.in(project).can('editTask')}
+				<a href="javascript:overlayOpen('/admin/tasks/${task1.id}')"><img src="@{'/public/images/famfam/pencil.png'}"></a><br>
+			#{/if}
+		<br>
+		${task1.description}
+		<br>
+		<br>
+		<b>Assignee</b>
+		${task1.assignee.name}
+		<br>
+		<b>Reviewer</b>
+		${task1.reviewer.name}
+		<br>
+		<b>Estimation Points</b>
+		${task1.estimationPoints}
+		<br>
+		<b>Task Status</b>
+		${task1.taskStatus.name}
+		<br>
+		<b>Task Type</b>
+		${task1.taskType.name}
+		#{/if}

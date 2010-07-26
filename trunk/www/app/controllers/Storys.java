@@ -846,18 +846,83 @@ public class Storys extends SmartCRUD {
 	 * Sprint : 4
 	 */
 
-	public static void findStories(long projectId, long componentId){
+	public static void magicShow(long projectId, long componentId, int reviewer, int assignee, long taskId, int tasks){
+		String title;
 		if (componentId != 0) {
 			Component component = Component.findById(componentId);
-			render(component.componentStories);
+			if(tasks==1){
+				title="Component "+component.number+" Tasks";
+			}else
+				title="Component "+component.number+" Stories";
+			
+			render(component.componentStories, title);
 		} else {
-			Project project = Project.findById(projectId);
-			List<Story> stories = new ArrayList<Story>();
-			for (Component component : project.components) {
-				stories.addAll(component.componentStories);
+			if(taskId!=0){
+				Task task1 = Task.findById(taskId);
+				title ="S"+task1.taskStory.number+ " Task"+task1.number;
+				render(task1, title);
+			}else{
+				if(reviewer==1){
+					title="As reviewer";
+					User user = Security.getConnected();
+					Project project = Project.findById(projectId);
+					Component component=null;
+					for(Component comp: user.components){
+						if(comp.project.equals(project)){
+							component = comp;
+						}
+					}
+					List<Task> task = new ArrayList<Task>();
+					if(component!=null){
+						for(Story story : component.componentStories){
+							for(Task task2 : story.storiesTask){
+								if(task2.reviewer.equals(user)){
+									task.add(task2);
+								}
+							}
+						}
+						}
+					System.out.println(task);
+					render(task, title);
+				}else{
+					if(assignee==1){
+						title="As assignee";
+						User user = Security.getConnected();
+						Project project = Project.findById(projectId);
+						Component component=null;
+						for(Component comp: user.components){
+							if(comp.project.equals(project)){
+								component = comp;
+							}
+						}
+						List<Task> task = new ArrayList<Task>();
+						if(component!=null){
+							for(Story story : component.componentStories){
+								for(Task task2 : story.storiesTask){
+									if(task2.assignee.equals(user)){
+										task.add(task2);
+									}
+								}
+							}
+							}
+						
+						render(task, title);
+					}else{
+						if(projectId!=0){
+							title="Project Tasks";
+							Project project = Project.findById(projectId);
+							List<Story> stories = new ArrayList<Story>();
+							for (Component component : project.components) {
+								stories.addAll(component.componentStories);
+							}
+							render(stories, title);
+						}
+					}
+				}
 			}
-			render(stories);
 		}
+		 title="bla";
+		render(title);
 	}
 	
 	public static void viewStory(long storyId)

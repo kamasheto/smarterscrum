@@ -2,13 +2,14 @@
 #{set 'title'}Story: ${story.number}#{/set}
 #{if connected.in(project).can('editStory')}
 <a href="javascript:overlayOpen('/admin/storys/1')"><img src="@{'/public/images/famfam/pencil.png'}"></a><br>
-	${story.description}<br>
-	<b>Success Scenarios</b>
-	#{list items:success, as:'suc'}
-		<br>${suc}
-	#{/list}
-	<br><b>Failure Scenarios</b>
-	#{list items:failure, as:'fail'}
+	${task1.description}<br>
+	<b>Assignee</b>
+	${task1.assignee.name}
+	<br>
+	<b>Reviewer</b>
+	${task1.reviewer.name}
+	<br>
+	<b>Estimation Points</b>
 		<br>${fail}
 	#{/list}<br>
 	#{list items:story.storiesTask, as:'task'}
