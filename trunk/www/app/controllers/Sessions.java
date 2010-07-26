@@ -13,24 +13,21 @@ import play.mvc.With;
  * 
  * @author mahmoudsakr
  */
-@With( Secure.class )
-public class Sessions extends SmartController
-{
+@With (Secure.class)
+public class Sessions extends SmartController {
 	/**
 	 * pings the server, updates the session of the current user
 	 */
-	public static void ping()
-	{
+	public static void ping() {
 		Session.update();
 
-		List<Session> sessions = Session.find( "order by lastClick desc" ).fetch();
+		List<Session> sessions = Session.find("order by lastClick desc").fetch();
 
 		List<User.Object> users = new ArrayList<User.Object>();
-		for( Session session : sessions )
-		{
-			users.add( new User.Object( session.user.id, session.user.name, session.lastClick, session.user.isAdmin ) );
+		for (Session session : sessions) {
+			users.add(new User.Object(session.user.id, session.user.name, session.lastClick, session.user.isAdmin));
 		}
-		renderJSON( users );
+		renderJSON(users);
 	}
 
 	/**
@@ -41,19 +38,16 @@ public class Sessions extends SmartController
 	 * @author Amr Hany
 	 */
 
-	public static void getOnline( long id )
-	{
-		Session.update();
-
-		List<Session> sessions = Session.find( "order by lastClick desc" ).fetch();
-
+	public static void getOnline(long id) {
+		// Session.update();
+		List<Session> sessions = Session.find("order by lastClick desc").fetch();
 		List<User.Object> onlineUsers = new ArrayList<User.Object>();
-		for( Session session : sessions )
-		{
-			if( session.user.projects.contains( Project.findById( id ) ) )
-				onlineUsers.add( new User.Object( session.user.id, session.user.name, session.lastClick, session.user.isAdmin ) );
+
+		for (Session session : sessions) {
+			if (session.user.projects.contains(Project.findById(id)))
+				onlineUsers.add(new User.Object(session.user.id, session.user.name, session.lastClick, session.user.isAdmin));
 		}
-		renderJSON( onlineUsers );
+		renderJSON(onlineUsers);
 	}
 
 	/**
@@ -62,10 +56,9 @@ public class Sessions extends SmartController
 	 * 
 	 * @throws Throwable
 	 */
-	public static void logout() throws Throwable
-	{
-		Session.delete( "user = ?", Security.getConnected() );
-		Security.getConnected().openChats=null;
+	public static void logout() throws Throwable {
+		Session.delete("user = ?", Security.getConnected());
+		Security.getConnected().openChats = null;
 		Security.getConnected().save();
 		Secure.logout();
 	}

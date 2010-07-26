@@ -7,7 +7,6 @@ import models.Priority;
 import models.Project;
 import models.ProjectNotificationProfile;
 import models.Request;
-import models.Sprint;
 import models.TaskStatus;
 import models.TaskType;
 import models.User;
@@ -180,37 +179,7 @@ public class Projects extends SmartCRUD {
 		// forbidden();
 		// }
 	}
-
-	/**
-	 * This action method adds a task type to the array list of task types in
-	 * project specified by the parameter id.
-	 * 
-	 * @param id
-	 *            long
-	 * @param taskType
-	 *            String
-	 * @author Behairy
-	 */
-
-	public static void addTaskType(long id, String taskType) {
-		Project p = Project.findById(id);
-		// if () {
-		Security.check(Security.getConnected().in(p).can("editProject"));
-		TaskType t = new TaskType();
-		t.project = p;
-		t.name = taskType;
-
-		p.save();
-		t.save();
-		Logs.addLog(Security.getConnected(), "Add", "Project Default Task Types ", t.id, p, new Date(System.currentTimeMillis()));
-		renderJSON(t.id);
-		// } else {
-		// forbidden();
-		// }
-
-	}
-
-	/**
+/**
 	 * This action method adds a task status to the list of task statuses in
 	 * project specified by the parameter id.
 	 * 
@@ -313,7 +282,35 @@ public class Projects extends SmartCRUD {
 		Notifications.notifyUsers(taskStatus.project, header, body, "deleteTaskStatus", new Byte((byte) -1));
 		renderJSON(true);
 	}
-	
+	/**
+	 * This action method adds a task type to the array list of task types in
+	 * project specified by the parameter id.
+	 * 
+	 * @param id
+	 *            long
+	 * @param taskType
+	 *            String
+	 * @author Behairy
+	 */
+
+	public static void addTaskType(long id, String taskType) {
+		Project p = Project.findById(id);
+		// if () {
+		Security.check(Security.getConnected().in(p).can("editProject"));
+		TaskType t = new TaskType();
+		t.project = p;
+		t.name = taskType;
+
+		p.save();
+		t.save();
+		Logs.addLog(Security.getConnected(), "Add", "Project Default Task Types ", t.id, p, new Date(System.currentTimeMillis()));
+		renderJSON(t.id);
+		// } else {
+		// forbidden();
+		// }
+
+	}
+
 	/**
 	 * This action method removes a task type from the array list of task types
 	 * in project.
@@ -741,10 +738,7 @@ public class Projects extends SmartCRUD {
 	}
 
 	public static void list() {
-
+		forbidden();
 	}
-	/*
-	 * 
-	 */
 
 }
