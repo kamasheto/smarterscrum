@@ -314,6 +314,119 @@ public class Project extends SmartModel
 	 * 
 	 * @author mahmoudsakr
 	 */
+	public void init() {
+		// this.save();
+		board = new Board(this).save();
+
+		// chat room added by amr hany
+		chatroom = new ChatRoom(this).save();
+
+		List<Role> roles = Role.find("select r from Role r where r.project = null").fetch();
+		for (Role role : roles) {
+			Role r = new Role();
+			this.roles.add(r);
+			r.name = role.name;
+			r.baseRole = role.baseRole;
+			r.project = this;
+			r.permissions.addAll(role.permissions);
+			r.save();
+		}
+
+		// automatically create a project notification profile once the project
+		// is created
+		this.notificationProfile = new ProjectNotificationProfile(this).save();
+
+		// username = Security.getConnected() != null ?
+		// Security.getConnected().email : "";
+
+		meetingsTypes = new ArrayList<String>();
+		meetingsTypesInSprint = new ArrayList<Boolean>();
+
+		TaskType t1 = new TaskType();
+		t1.project = this;
+		t1.name = "Documentation";
+		t1.save();
+		taskTypes.add(t1);
+
+		TaskType t2 = new TaskType();
+		t2.project = this;
+		t2.name = "Impediment";
+		t2.save();
+		taskTypes.add(t2);
+
+		TaskType t3 = new TaskType();
+		t3.project = this;
+		t3.name = "Implementation";
+		t3.save();
+		taskTypes.add(t3);
+
+		TaskType t4 = new TaskType();
+		t4.project = this;
+		t4.name = "Test";
+		t4.save();
+		taskTypes.add(t4);
+
+		TaskType t5 = new TaskType();
+		t5.project = this;
+		t5.name = "Other";
+		t5.save();
+		taskTypes.add(t5);
+
+		TaskType t6 = new TaskType();
+		t6.project = this;
+		t6.name = "Impediment";
+		t6.save();
+		taskTypes.add(t6);
+
+		TaskStatus s1 = new TaskStatus();
+		s1.project = this;
+		s1.name = "New";
+		s1.save();
+		s1.init();
+		taskStatuses.add(s1);
+
+		TaskStatus s2 = new TaskStatus();
+		s2.project = this;
+		s2.name = "Started";
+		s2.save();
+		s2.init();
+		taskStatuses.add(s2);
+
+		TaskStatus s3 = new TaskStatus();
+		s3.project = this;
+		s3.name = "Pending";
+		s3.pending = true;
+		s3.closed = false;
+		s3.save();
+		s3.init();
+		taskStatuses.add(s3);
+
+		TaskStatus s4 = new TaskStatus();
+		s4.project = this;
+		s4.name = "Reopened";
+		s4.save();
+		s4.init();
+		taskStatuses.add(s4);
+
+		TaskStatus s5 = new TaskStatus();
+		s5.project = this;
+		s5.name = "Verified";
+		s5.closed = true;
+		s5.pending = false;
+		s5.save();
+		s5.init();
+		taskStatuses.add(s5);
+
+		meetingsTypes.add("Scrum Meeting");
+		meetingsTypes.add("Plan Meeting");
+
+		meetingsTypesInSprint.add(true);
+		meetingsTypesInSprint.add(true);
+
+		sprintDuration = 14;
+		this.save();
+	}
+	
 	public void init(boolean isScrum) {
 		// this.save();
 		board = new Board(this).save();
