@@ -417,7 +417,11 @@ function displayTZCountDown(countdown,tzcd)
 		#{if connected.in(p).can('changeTaskStatus') || connected.equals(task.assignee) || connected.equals(task.reviewer)}
 		<div id="task-${task.id}_T" class="drag status status_${task.id}">
 		<p>
-		<div class="${task.taskStatus.column.name}" style="max-width:130px"></div>
+			
+			
+		
+		
+		
 		<div style="max-width:130px" id="task-${task.id}_T" class="drag status status_${task.id}">
 		#{/if}
 		#{else}
@@ -760,7 +764,10 @@ function displayTZCountDown(countdown,tzcd)
 	}
 			function take_snap(id) {
 				if(id!=null)
-			$.post('@{snapshots.takecomponentsnapshot()}', {sprintID:${s.id},componentID:id} ,function(){alert('saved!')});
+
+
+
+
 	
 	}
 

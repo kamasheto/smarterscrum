@@ -31,7 +31,15 @@ public class Boards extends SmartCRUD {
 		Project p = s.project;
 		Board b = p.board;
 		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>();
-		List<Column> columns = b.columns;
+		List<Column> columns = new ArrayList<Column>();
+		if(componentID==0)
+		columns = b.columns;
+		else
+		{
+			Component comp = Component.findById(componentID);
+			columns = comp.componentBoard.columns;
+		}
+				
 		List<Column> columnsOfBoard=new ArrayList<Column>();
 		List<Column> hidencolumnsOfBoard=new ArrayList<Column>();
 		for( int i=0; i<columns.size();i++)
@@ -67,9 +75,19 @@ public class Boards extends SmartCRUD {
 					data.get(i).set(j, new ArrayList<Task>());
 				}
 				for (Task task : tasks) {
-					if(task.taskStatus.column.onBoard&&!task.taskStatus.column.deleted)
+					Column pcol = new Column();
+					for(int k=0;k<task.taskStatus.columns.size();k++)
 					{
-					data.get(i).get(columnsOfBoard.indexOf(task.taskStatus.column)).add(task);
+						pcol = task.taskStatus.columns.get(k);
+						if(pcol.board.id==b.id)
+						{
+							break;
+						}
+					}
+					System.out.println(pcol.name);
+					if(pcol.onBoard&&!pcol.deleted)
+					{
+					data.get(i).get(columnsOfBoard.indexOf(pcol)).add(task);
 					}
 				}
 			}
@@ -92,11 +110,21 @@ public class Boards extends SmartCRUD {
 				}
 
 				for (Task task : tasks) {
-					if(task.taskStatus.column.onBoard==true&&!task.taskStatus.column.deleted)
+					Column pcmp = new Column();
+					for(int k=0;k<task.taskStatus.columns.size();k++)
 					{
-					data.get(i).get(columnsOfBoard.indexOf(task.taskStatus.column)).add(task);
+						pcmp = task.taskStatus.columns.get(k);
+						if(pcmp.board.id==comp.componentBoard.id)
+						{
+							break;
+						}
 					}
-				}
+					System.out.println(pcmp.name);
+					if(pcmp.onBoard&&!pcmp.deleted)
+					{
+					data.get(i).get(columnsOfBoard.indexOf(pcmp)).add(task);
+					}
+					}
 
 			}
 			ArrayList<ArrayList<User>> u=Meetingloadboard( p,componentID);
@@ -494,7 +522,7 @@ public class Boards extends SmartCRUD {
 		forbidden();
 	}
 
-//	public static void list(int page, String search, String searchFields, String orderBy, String order) {
-//		forbidden();
-//	}
+	public static void list(int page, String search, String searchFields, String orderBy, String order) {
+		forbidden();
+	}
 }
