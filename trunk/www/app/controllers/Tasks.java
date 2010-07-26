@@ -66,8 +66,8 @@ public class Tasks extends SmartCRUD {
 				for (Task task2 : story2.storiesTask) {
 					tasks.add(task2);
 				}
-
 			}
+			tasks.addAll(story.storiesTask);
 		}
 		for (int i = 0; i < component.project.sprints.size(); i++) {
 			Sprint sprint = component.project.sprints.get(i);
@@ -258,7 +258,7 @@ public class Tasks extends SmartCRUD {
 				dependencies.add(tmp.taskStory.dependentStories.get(i).storiesTask.get(j));
 			}
 		}
-
+		dependencies.addAll(tmp.taskStory.storiesTask);
 		try {
 			render(type, object, users, statuses, types, dependencies, message2, deletable, reviewers, isReporter, isAssignee, isReviewer, comments);
 		} catch (TemplateNotFoundException e) {
