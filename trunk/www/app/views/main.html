@@ -213,5 +213,130 @@
 </div>
 </div>
 #{/list}
+#{if !connected}
+<div class="topper">
+						<div class="left">
+						#{if connected}
+							Hello ${connected.name}!&nbsp;&nbsp;|&nbsp;&nbsp;
+							<a href="/show/user?id=${controllers.Security.getConnected().id}">Profile</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+							<a href="#" id="chatlink"onclick="$('#chatroomList').slideToggle(200);$('#chatlink').toggleClass('topCornersRounded white')">Chatroom</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+						#{/if}
+							<a href="#" id="skinlink"onclick="$('#skinList').slideToggle(200);$('#skinlink').toggleClass('topCornersRounded white')">Change Color</a>&nbsp;&nbsp;
+						
+						#{ifnot connected}
+							<a href="@{Accounts.register}">|&nbsp;&nbsp;Register</a>
+						#{/ifnot}
+						</div>
+						
+							
+							<div class="right">
+							#{if connected}
+								<a href="/secure/logout" title="Logout from the system">Logout</a>
+						#{/if}
+							</div>
+							<br style="clear:both"/>
+							#{if connected}
+							<div id="chatroomList">
+ 								<div class="allCornersRounded chatroomListHolder" >
+ 								#{list connected.projects, as:'proj'}
+ 									<a href="#" onclick="$('#chatContainer_${proj.name}').slideToggle(400);#{ifnot connected.openChats.contains(proj.chatroom)}signIn(${proj.chatroom.id});getMessages${proj.id}();#{/ifnot}">${proj.name}</a>
+ 									<br/> 	
+							 	#{/list}
+								</div>
+							</div>
+							<div id="skinList">
+ 								<div class="allCornersRounded skinListHolder" >
+ 									<a href="javascript:"onclick="chooseStyle('blue', 60)">Blue</a>
+ 									<br/>
+ 									<a href="javascript:"onclick="chooseStyle('green', 60)">Green</a>
+ 									<br/>
+ 									<a href="javascript:"onclick="chooseStyle('red', 60);$('#theLogoImage').attr('src','@{'/public/images/smartsoftred.png'}');">Red</a>
+ 									<br/>
+ 									<a checked="checked"href="javascript:"onclick="chooseStyle('original', 60)">Purple</a>
+								</div>
+							</div>
+						</div>
+						<div id="chatContainer">
+						#{list connected.projects, as:'proj'}
+							<div id="chatContainer_${proj.name}"style="width:225px;#{ifnot connected.openChats.contains(proj.chatroom)}display:none;#{/ifnot}">
+								<div class="chatContainerHeader">
+									${proj.name} Chat 
+									<a id="${proj.name}_min"class="right"href="#" title="minimize?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);$('#${proj.name}_max').slideToggle(400);$('#${proj.name}_min').slideToggle(400);" style="text-decoration:none; color:#fff">[-]</a>
+									<a id="${proj.name}_max"class="right"href="#" title="minimize?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);$('#${proj.name}_max').slideToggle(400);$('#${proj.name}_min').slideToggle(400);" style="display:none;text-decoration:none; color:#fff">[+]</a>
+									<a class="right"href="#" title="signout?" onclick="signOut(${proj.chatroom.id});$('#chatContainer_${proj.name}').slideToggle(400);" style="text-decoration:none; color:#fff">[x]</a>
+								</div>
+								<div id="chatHolder_${proj.name}">
+									<div id="thread_${proj.name}" class="thread">
+										<script type="text/html" id="message_tmpl">
+											<div class="<%= message.author == 'notice' ? 'notice allCornersRounded' : message.author == '${connected.name}' ? 'you' : 'them' %>">		
+												<strong class="title" style="<%= message.author == 'notice' ? 'display:none !important' : '' %>"><%= message.author%></strong> 
+												<%= message.message.replace('\n', '<br/>') %>
+											</div>
+										</script>
+										<div id ="threader_${proj.name}"></div>
+									</div>
+									<div id="newMessage" class="chatboxinput">	
+										<textarea id="message_${proj.name}" name="message_${proj.name}" class="chatboxtextarea"></textarea>
+									</div>	
+									<script type="text/javascript">
+									function signIn(id)
+									{
+										$.post('/ChatSystem/enterChat',{id:id});
+									}
+									
+									function signOut(id)
+									{
+										$.post('/ChatSystem/leaveChat',{id:id});
+									}
+									#{if connected.openChats.contains(proj.chatroom)}
+									$(function()
+									{
+										retrieve${proj.id}();
+										getMessages${proj.id}();
+									});
+									#{/if}								
+									$('#message_${proj.name}').keypress(function(event)
+									{
+										if (event.keyCode == '13')
+										{		var message = $('#message_${proj.name}').val();
+										$('#message_${proj.name}').val('');
+										$.post('@{ChatSystem.addMessage()}', {message: message , id:${proj.chatroom.id}}); 
+										$('#message_${proj.name}').focus(); }
+									});
+									// Retrieve new messages
+									var getMessages${proj.id} = function() {
+										$.getJSON('/ChatSystem/newMessages',{id:${proj.chatroom.id}}, function(messages) {
+											$(messages).each(function() {
+												display${proj.id}(this);
+											});
+											setTimeout('getMessages${proj.id}();', 1000);
+										});
+									}
+									// Retrieve all messages
+									var retrieve${proj.id} = function() {
+										$.getJSON('/ChatSystem/retrieveSinceLastLogin',{userId:${connected.id},roomId:${proj.chatroom.id}}, function(messages) {
+											$(messages).each(function() {
+												display${proj.id}(this);
+											});
+										});
+									}
+									// Display a message
+									var display${proj.id} = function(message) {
+										$('#threader_${proj.name}').append(tmpl('message_tmpl', {message: message}));
+										var obj = document.getElementById('thread_${proj.name}');
+										obj.scrollTop = obj.scrollHeight;
+									}
+									</script>
+								</div>
+							</div>
+						#{/list}
+						</div>
+						#{/if}
+</div>
+<div class="workspaceContainer"id="container">
+#{doLayout/}
+</div>
+#{/if}
+
 </body>
 </html>
