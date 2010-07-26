@@ -6,7 +6,7 @@
 			var h = $(this).height();
 			var w = $(this).width();
 			$(this).resizable({
-				containment: '#container',
+				containment: '',
 				minHeight: h,
 				minWidth: w,
 				autoHide: true
@@ -36,8 +36,8 @@
 	    				marginTop: 0,
 	    				top: pos2.top+pos.top, 
 	    				left: pos2.left+pos.left 
-	    			});		
-					$("#container").append($(this));
+	    			});	
+	    			$(this).closest('.workspaceContainer').append($(this));
 				}
 				$(this).draggable({start:function(event,ui){},stop:function(event,ui){}});
 				$(this).children().show();
@@ -97,17 +97,33 @@ function load(url,el)
 		$('#'+el+'_content').children().show();
 		$('#'+el+' .loading').first().hide();
 		$('#'+el+'_content').slideDown(400);
-
+magic(el);
 	});
 }
 
 function loadBox(url,el)
 {
-	$('#container').append('<br style="clear:both"/><div id="myTemp"></div>');
+	$('#'+el).append('<br style="clear:both"/><div id="myTemp"></div>');
 	
-	$('#container #myTemp').load(url,function(){
+	$('#'+el+' #myTemp').load(url,function(){
 
-		$('#container #myTemp').attr('id','');
+		$('#'+el+' #myTemp').attr('id','');
 	});
+}
+
+function magic(id)
+{
+	$("#"+id+"_content div[name]").each(function(){	
+
+		$(this).load($(this).attr('name')+' .ui-widget-header',function(){
+
+			$(this).addClass('ui-widget-content draggableChild');
+			var id = $(this).children().first().attr('id');
+			$(this).attr('id',id);
+			$(this).append('<div id="'+id+'_content" class="ui-widget-content" ></div>');
+			
+			});
+		//alert($(this).attr('class'));
+	});		
 }
 
