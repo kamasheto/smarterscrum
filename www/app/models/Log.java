@@ -17,21 +17,20 @@ import play.data.validation.Required;
  * @Task C1S3
  */
 @Entity
-public class Log extends SmartModel {
+public class Log extends SmartModel
+{
 
 	@ManyToOne
-	@Required
 	public User user;
-	@Required
+
 	public String action_type;
-	@Required
+
 	public String resource_type;
-	@Required
+
 	public long resource_id;
 	@ManyToOne
-	@Required
 	public Project project;
-	@Required
+
 	public Date date;
 	boolean deleted;
 	public boolean madeBySysAdmin;
@@ -59,7 +58,8 @@ public class Log extends SmartModel {
 	 * @Task C1S3
 	 */
 
-	public Log (@Required User user, @Required String action_type, @Required String resource_type, @Required long resource_id, @Required Project project, @Required Date date) {
+	public Log( @Required User user, @Required String action_type, @Required String resource_type, @Required long resource_id, @Required Project project, @Required Date date )
+	{
 		this.user = user;
 		this.action_type = action_type;
 		this.resource_type = resource_type;
@@ -77,8 +77,9 @@ public class Log extends SmartModel {
 	 *         less than or equal to the date of the log this method is invoked
 	 *         on.
 	 */
-	public Log next() {
-		return Log.find("date <= ? order by date desc", date).first();
+	public Log next()
+	{
+		return Log.find( "date <= ? order by date desc", date ).first();
 	}
 
 	/**
@@ -89,8 +90,9 @@ public class Log extends SmartModel {
 	 *         greater than or equal to the date of the log this method is
 	 *         invoked on.
 	 */
-	public Log prev() {
-		return Log.find("date >= ? order by date asc", date).first();
+	public Log prev()
+	{
+		return Log.find( "date >= ? order by date asc", date ).first();
 	}
 
 }
