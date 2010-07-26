@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -21,10 +23,13 @@ public class Comment extends SmartModel{
 	
 	public byte type;
 	
+	public long timeOfComment;
+	
 	public Comment(User user, long taskId, String comment){
 		this.comment = comment;
 		task = Task.findById(taskId);
 		author = user;
 		//this.type = type;
+		timeOfComment = new Date().getTime();
 	}
 }
