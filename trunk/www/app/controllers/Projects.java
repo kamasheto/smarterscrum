@@ -62,8 +62,11 @@ public class Projects extends SmartCRUD {
 			if (params.get("object_isScrum") != null) {
 				projectObject.isScrum = true;
 			}
-			object.save();
-			((Project) object).init(projectObject.isScrum);
+			object.save();			
+			Project pro = (Project) object; 
+			pro.init(projectObject.isScrum);
+			Role proAdmin=Role.find("name= projectAdmin & project =" +pro.id).first();
+			user.roles.add(proAdmin);
 
 			Logs.addLog(Security.getConnected(), "Create", "Project", projectObject.id, projectObject, new Date(System.currentTimeMillis()));
 			if (Security.getConnected().isAdmin) {
