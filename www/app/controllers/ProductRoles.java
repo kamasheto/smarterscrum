@@ -61,7 +61,7 @@ public class ProductRoles extends SmartCRUD {
 	 * @task C3 S1
 	 * @sprint 2
 	 **/
-	//@Check ("canAddProductRole")
+	// @Check ("canAddProductRole")
 	public static void blank(long id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -87,7 +87,7 @@ public class ProductRoles extends SmartCRUD {
 	 * @task C3 S1
 	 * @sprint 2
 	 **/
-	//@Check ("canAddProductRole")
+	// @Check ("canAddProductRole")
 	public static void create() throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -119,15 +119,18 @@ public class ProductRoles extends SmartCRUD {
 		} else {
 			object.save();
 			String header = "A new Product Role has been added.";
-			String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n'
-			+ " Product Role name: " + "\'" + productRoleObject.name + "\'" +"." + '\n'
-			+ " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
-		  /*////Long Informative Notification message. Not suitable for online notification.
-			String header = "Product Role: " + "\'" + productRoleObject.name + "\'" + " has been added to Project: " + "\'" + project.name + "\'" + ".";
-			String body = "New Product Role has been added to Project " + "\'" + project.name + "\'" + "." + '\n' + '\n' 
-				+ "Product Role Name: " + productRoleObject.name +"."+ '\n' 
-				+ " Description: " + productRoleObject.description + "." + '\n' 
-				+ " Added by: " + "\'" + Security.getConnected().name + "\'" + "."; */
+			String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' + " Product Role name: " + "\'" + productRoleObject.name + "\'" + "." + '\n' + " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
+			/*
+			 * ////Long Informative Notification message. Not suitable for
+			 * online notification. String header = "Product Role: " + "\'" +
+			 * productRoleObject.name + "\'" + " has been added to Project: " +
+			 * "\'" + project.name + "\'" + "."; String body =
+			 * "New Product Role has been added to Project " + "\'" +
+			 * project.name + "\'" + "." + '\n' + '\n' + "Product Role Name: " +
+			 * productRoleObject.name +"."+ '\n' + " Description: " +
+			 * productRoleObject.description + "." + '\n' + " Added by: " + "\'"
+			 * + Security.getConnected().name + "\'" + ".";
+			 */
 			Logs.addLog(Security.getConnected(), "Create", "ProductRole", productRoleObject.id, project, new Date(System.currentTimeMillis()));
 			Notifications.notifyUsers(project, header, body, "addProductRole", new Byte((byte) 1));
 			flash.success("Product Role " + productRoleObject.name + " has been created successfully.");
@@ -152,17 +155,17 @@ public class ProductRoles extends SmartCRUD {
 	 * @task C3 S2 & S3
 	 * @sprint 2
 	 **/
-	//@Check ("canEditProductRole")
+	// @Check ("canEditProductRole")
 	public static void show(String id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
 		ProductRole productRoleObject = (ProductRole) object;
 		Project project = productRoleObject.project;
-		boolean editable = !(productRoleObject.inSprint());
-		boolean deletable = (productRoleObject.stories.isEmpty());
 		User user = Security.getConnected();
 		Security.check(user.in(project).can("editProductRole"));
+		boolean editable = !(productRoleObject.inSprint());
+		boolean deletable = (productRoleObject.stories.isEmpty());
 		try {
 			render(type, object, project, editable, deletable);
 		} catch (TemplateNotFoundException e) {
@@ -181,20 +184,20 @@ public class ProductRoles extends SmartCRUD {
 	 * @task C3 S2
 	 * @sprint 2
 	 **/
-	//@Check ("canEditProductRole")
+	// @Check ("canEditProductRole")
 	public static void save(String id) throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
 		ProductRole productRoleObject = (ProductRole) object;
+		Project project = productRoleObject.project;
+		User user = Security.getConnected();
+		Security.check(user.in(project).can("editProductRole"));
 		String oldName = productRoleObject.name;
 		validation.valid(object.edit("object", params));
-		Project project = productRoleObject.project;
 		String message = "";
 		boolean editable = !(productRoleObject.inSprint());
 		boolean deletable = (productRoleObject.stories.isEmpty());
-		User user = Security.getConnected();
-		Security.check(user.in(project).can("editProductRole"));
 		if (validation.hasErrors()) {
 			message = "Please Fill in All The Required Fields.";
 			if (productRoleObject.name.equals("")) {
@@ -207,15 +210,19 @@ public class ProductRoles extends SmartCRUD {
 				render("CRUD/show.html", type, object);
 			}
 		} else {
-			String header = "Product Role: " + "\'" + oldName + "\'" +  " has been edited.";
-			String body = "In Project " + "\'" + project.name + "\'" + "." + '\n'
-				+ " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
-			/*////Long Informative Notification message. Not suitable for online notification.
-			String header = "Product Role: " + "\'" + oldName + "\'" + " in Project " + "\'" + project.name + "\'" + " has been edited.";
-			String body = "The Product Role: " + "\'" + oldName + "\'" + " in Project " + "\'" + project.name + "\'" + " has been edited." + '\n' + '\n'
-				+ "Product Role Name: " + productRoleObject.name + "." + '\n' 
-				+ " Description: " + productRoleObject.description + "." + '\n' 
-				+ " Edited by: " + Security.getConnected().name + ".";*/
+			String header = "Product Role: " + "\'" + oldName + "\'" + " has been edited.";
+			String body = "In Project " + "\'" + project.name + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
+			/*
+			 * ////Long Informative Notification message. Not suitable for
+			 * online notification. String header = "Product Role: " + "\'" +
+			 * oldName + "\'" + " in Project " + "\'" + project.name + "\'" +
+			 * " has been edited."; String body = "The Product Role: " + "\'" +
+			 * oldName + "\'" + " in Project " + "\'" + project.name + "\'" +
+			 * " has been edited." + '\n' + '\n' + "Product Role Name: " +
+			 * productRoleObject.name + "." + '\n' + " Description: " +
+			 * productRoleObject.description + "." + '\n' + " Edited by: " +
+			 * Security.getConnected().name + ".";
+			 */
 			object.save();
 			Logs.addLog(Security.getConnected(), "Edit", "ProductRole", productRoleObject.id, project, new Date(System.currentTimeMillis()));
 			Notifications.notifyUsers(project, header, body, "editProductRole", new Byte((byte) 0));
@@ -239,18 +246,18 @@ public class ProductRoles extends SmartCRUD {
 	 * @task C3 S3
 	 * @sprint 2
 	 **/
-	//@Check ("canDeleteProductRole")
+	// @Check ("canDeleteProductRole")
 	public static void delete(String id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
 		ProductRole productRoleObject = (ProductRole) object;
 		Project project = productRoleObject.project;
+		User user = Security.getConnected();
+		Security.check(user.in(project).can("deleteProductRole"));
 		productRoleObject.deleted = true;
 		boolean editable = !(productRoleObject.inSprint());
 		boolean deletable = (productRoleObject.stories.isEmpty());
-		User user = Security.getConnected();
-		Security.check(user.in(project).can("deleteProductRole"));
 		if (validation.hasErrors()) {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
 			try {
@@ -266,9 +273,8 @@ public class ProductRoles extends SmartCRUD {
 				render("CRUD/show.html", type, object);
 			}
 		} else {
-			String header = "Product Role: " + "\'" + productRoleObject.name + "\'" +  " has been deleted.";
-			String body = "In Project " + "\'" + project.name + "\'" + "." + '\n'
-				+ " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
+			String header = "Product Role: " + "\'" + productRoleObject.name + "\'" + " has been deleted.";
+			String body = "In Project " + "\'" + project.name + "\'" + "." + '\n' + " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
 			object.save();
 			Logs.addLog(Security.getConnected(), "Delete", "ProductRole", productRoleObject.id, productRoleObject.project, new Date(System.currentTimeMillis()));
 			Notifications.notifyUsers(productRoleObject.project, header, body, "deleteProductRole", new Byte((byte) -1));
@@ -286,7 +292,7 @@ public class ProductRoles extends SmartCRUD {
 	 * @task C3 S3
 	 * @sprint 2
 	 **/
-	//@Check ("canDeleteProductRole")
+	// @Check ("canDeleteProductRole")
 	public static void deleteProductRole(long id) {
 		ProductRole productRoleObject = ProductRole.findById(id);
 		Project project = productRoleObject.project;
@@ -294,24 +300,23 @@ public class ProductRoles extends SmartCRUD {
 		Security.check(user.in(project).can("deleteProductRole"));
 		productRoleObject.deleted = true;
 		productRoleObject.save();
-		
-		String header = "Product Role: " + "\'" + productRoleObject.name + "\'" +  " has been deleted.";
-		String body = "In Project " + "\'" + project.name + "\'" + "." + '\n'
-			+ " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
+
+		String header = "Product Role: " + "\'" + productRoleObject.name + "\'" + " has been deleted.";
+		String body = "In Project " + "\'" + project.name + "\'" + "." + '\n' + " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		Logs.addLog(Security.getConnected(), "Delete", "ProductRole", productRoleObject.id, productRoleObject.project, new Date(System.currentTimeMillis()));
 		Notifications.notifyUsers(productRoleObject.project, header, body, "deleteProductRole", new Byte((byte) -1));
 		flash.success("Product Role " + productRoleObject.name + " has been deleted.");
 	}
-	
+
 	/**
 	 * Overrides the CRUD list method that is invoked to list product roles
-	 * role, in order to in order not to allow users to view the crud list for the productroles.
+	 * role, in order to in order not to allow users to view the crud list for
+	 * the productroles.
 	 * 
 	 * @author Heba Elsherif
 	 * @sprint 3
 	 **/
-	public static void list( int page, String search, String searchFields, String orderBy, String order )
-	{
+	public static void list(int page, String search, String searchFields, String orderBy, String order) {
 		forbidden();
 	}
 }

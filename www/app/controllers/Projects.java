@@ -15,121 +15,82 @@ import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 import play.mvc.With;
 
-@With( Secure.class )
-// @Check ("systemAdmin")
-public class Projects extends SmartCRUD
-{
+@With (Secure.class)
+public class Projects extends SmartCRUD {
 	/**
 	 * overriden to init roles by default from CRUD
 	 * 
 	 * @throws Exception
 	 */
-	public static void create() throws Exception
-	{
-		ObjectType type = ObjectType.get( getControllerClass() );
-		notFoundIfNull( type );
+	public static void create() throws Exception {
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
 		JPASupport object = type.entityClass.newInstance();
 		Project projectObject = (Project) object;
 		User user = Security.getConnected();
-		validation.valid( object.edit( "object", params ) );
-		if( validation.hasErrors() )
-		{
-
-			flash.error( Messages.get( "Please Fill in All The Required Fields." ) );
-
-			try
-			{
-				render( request.controller.replace( ".", "/" ) + "/blank.html", type );
+		validation.valid(object.edit("object", params));
+		if (validation.hasErrors()) {
+			flash.error(Messages.get("Please Fill in All The Required Fields."));
+			try {
+				render(request.controller.replace(".", "/") + "/blank.html", type);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/blank.html", type);
 			}
-			catch( TemplateNotFoundException e )
-			{
-				render( "CRUD/blank.html", type );
+		} else if (Project.userRequstedProjectBefore(user.id, java.net.URLEncoder.encode(projectObject.name, "UTF-8"))) {
+			flash.error(Messages.get("You Have Already Created a Project with the Same Name :'" + projectObject.name + "'. You Will Be notified Upon Approval."));
+			try {
+				render(request.controller.replace(".", "/") + "/blank.html", type);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/blank.html", type);
 			}
-		}
-		else if( Project.userRequstedProjectBefore( user.id, java.net.URLEncoder.encode( projectObject.name, "UTF-8" ) ) )
-		{
-
-			flash.error( Messages.get( "You Have Already Created a Project with the Same Name :'" + projectObject.name + "'. You Will Be notified Upon Approval." ) );
-
-			try
-			{
-				render( request.controller.replace( ".", "/" ) + "/blank.html", type );
+		} else if (Project.isUnique((java.net.URLEncoder.encode(projectObject.name, "UTF-8")))) {
+			flash.error("Project Name is Already Taken.");
+			try {
+				render(request.controller.replace(".", "/") + "/blank.html", type);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/blank.html", type);
 			}
-			catch( TemplateNotFoundException e )
-			{
-				render( "CRUD/blank.html", type );
-			}
-		}
-		else if( Project.isUnique( (java.net.URLEncoder.encode( projectObject.name, "UTF-8" )) ) )
-		{
-
-			flash.error( "Project Name is Already Taken." );
-
-			try
-			{
-				render( request.controller.replace( ".", "/" ) + "/blank.html", type );
-			}
-			catch( TemplateNotFoundException e )
-			{
-				render( "CRUD/blank.html", type );
-			}
-
-		}
-
-		else
-		{
-			if( Security.getConnected().isAdmin )
-			{
+		} else {
+			if (Security.getConnected().isAdmin) {
 
 				projectObject.approvalStatus = true;
 			}
-
 			projectObject.user = user;
-			if( params.get( "object_isPrivate" ) != null )
-			{
+			if (params.get("object_isPrivate") != null) {
 				projectObject.isPrivate = true;
 			}
 			object.save();
 			((Project) object).init();
 
-			Logs.addLog( Security.getConnected(), "Create", "Project", projectObject.id, projectObject, new Date( System.currentTimeMillis() ) );
-			if( Security.getConnected().isAdmin )
-			{
+			Logs.addLog(Security.getConnected(), "Create", "Project", projectObject.id, projectObject, new Date(System.currentTimeMillis()));
+			if (Security.getConnected().isAdmin) {
 
-				flash.success( "' " + projectObject.name + " '" + " Project Has Been Successfully Created." );
-				redirect( request.controller + ".show", object.getEntityId() );
+				flash.success("' " + projectObject.name + " '" + " Project Has Been Successfully Created.");
+				redirect(request.controller + ".show", object.getEntityId());
+			} else {
+				flash.success("Your Project Request Has Been Sent.You Will Be Notified Upon Approval");
+				redirect("/show/projects");
 			}
-			else
-			{
-				flash.success( "Your Project Request Has Been Sent.You Will Be Notified Upon Approval" );
-				redirect( "/show/projects" );
-			}
-
 		}
 	}
 
-	public static void list( int page, String search, String searchFields, String orderBy, String order )
-	{
-		ObjectType type = ObjectType.get( getControllerClass() );
-		notFoundIfNull( type );
-		if( page < 1 )
-		{
+	public static void list(int page, String search, String searchFields, String orderBy, String order) {
+		Security.check(Security.getConnected().isAdmin);
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		if (page < 1) {
 			page = 1;
 		}
 		// List<JPASupport> objects = type.findPage(page, search, searchFields,
 		// orderBy, order, (String) request.args.get("where"));
-		List<Project> objects = Project.find( "approvalStatus=true AND deleted=false" ).fetch();
+		List<Project> objects = Project.find("approvalStatus=true AND deleted=false").fetch();
 		Long totalCount = (long) objects.size();
 		Long count = (long) objects.size();
 
-		try
-		{
-
-			render( type, objects, count, totalCount, page, orderBy, order );
-		}
-		catch( TemplateNotFoundException e )
-		{
-			render( "CRUD/list.html", type, objects, count, totalCount, page, orderBy, order );
+		try {
+			render(type, objects, count, totalCount, page, orderBy, order);
+		} catch (TemplateNotFoundException e) {
+			render("CRUD/list.html", type, objects, count, totalCount, page, orderBy, order);
 		}
 	}
 
@@ -140,13 +101,9 @@ public class Projects extends SmartCRUD
 	 * @param name
 	 * @author behairy
 	 */
-	public static void checkAvailability( String name )
-	{
-
-		boolean flag = !Project.isUnique( name );
-
-		renderJSON( flag );
-
+	public static void checkAvailability(String name) {
+		boolean flag = !Project.isUnique(name);
+		renderJSON(flag);
 	}
 
 	/**
@@ -160,24 +117,19 @@ public class Projects extends SmartCRUD
 	 * @author Behairy
 	 */
 
-	public static void addMeetingType( long id, String meetingType, boolean inSprint )
-	{
-		if( Security.getConnected().in( (Project) Project.findById( id ) ).can( "editProject" ) )
-		{
-			Project p = Project.findById( id );
-			p.meetingsTypes.add( meetingType );
-			p.meetingsTypesInSprint.add( inSprint );
+	public static void addMeetingType(long id, String meetingType, boolean inSprint) {
+		Security.check(Security.getConnected().in((Project) Project.findById(id)).can("editProject"));
 
-			p.save();
+		Project p = Project.findById(id);
+		p.meetingsTypes.add(meetingType);
+		p.meetingsTypesInSprint.add(inSprint);
+		p.save();
 
-			Logs.addLog( Security.getConnected(), "Add", "Project Defualt Meeting Types", p.id, p, new Date( System.currentTimeMillis() ) );
-			renderJSON( true );
-		}
-		else
-		{
-			forbidden();
-		}
-
+		Logs.addLog(Security.getConnected(), "Add", "Project Defualt Meeting Types", p.id, p, new Date(System.currentTimeMillis()));
+		renderJSON(true);
+		// } else {
+		// forbidden();
+		// }
 	}
 
 	/**
@@ -191,22 +143,19 @@ public class Projects extends SmartCRUD
 	 * @author Behairy
 	 */
 
-	public static void removeMeetingType( long id, String meetingType )
-	{
-		Project p = Project.findById( id );
-		if( Security.getConnected().in( p ).can( "editProject" ) )
-		{
-			int index = p.meetingsTypes.indexOf( meetingType );
-			p.meetingsTypes.remove( meetingType );
-			p.meetingsTypesInSprint.remove( index );
-			p.save();
-			Logs.addLog( Security.getConnected(), "Remove", "Project Default Meeting Types ", p.id, p, new Date( System.currentTimeMillis() ) );
-			renderJSON( true );
-		}
-		else
-		{
-			forbidden();
-		}
+	public static void removeMeetingType(long id, String meetingType) {
+		Project p = Project.findById(id);
+		// if () {
+		Security.check(Security.getConnected().in(p).can("editProject"));
+		int index = p.meetingsTypes.indexOf(meetingType);
+		p.meetingsTypes.remove(meetingType);
+		p.meetingsTypesInSprint.remove(index);
+		p.save();
+		Logs.addLog(Security.getConnected(), "Remove", "Project Default Meeting Types ", p.id, p, new Date(System.currentTimeMillis()));
+		renderJSON(true);
+		// } else {
+		// forbidden();
+		// }
 	}
 
 	/**
@@ -218,20 +167,17 @@ public class Projects extends SmartCRUD
 	 * @author Behairy
 	 */
 
-	public static void isMeetingTypeAssociatedToSprint( long id, String meetingType )
-	{
-		Project p = Project.findById( id );
-		if( Security.getConnected().in( p ).can( "editProject" ) )
-		{
-			int index = p.meetingsTypes.indexOf( meetingType );
-			boolean inSprint = p.meetingsTypesInSprint.get( index );
+	public static void isMeetingTypeAssociatedToSprint(long id, String meetingType) {
+		Project p = Project.findById(id);
+		// if () {
+		Security.check(Security.getConnected().in(p).can("editProject"));
+		int index = p.meetingsTypes.indexOf(meetingType);
+		boolean inSprint = p.meetingsTypesInSprint.get(index);
 
-			renderJSON( inSprint );
-		}
-		else
-		{
-			forbidden();
-		}
+		renderJSON(inSprint);
+		// } else {
+		// forbidden();
+		// }
 	}
 
 	/**
@@ -245,25 +191,21 @@ public class Projects extends SmartCRUD
 	 * @author Behairy
 	 */
 
-	public static void addTaskType( long id, String taskType )
-	{
+	public static void addTaskType(long id, String taskType) {
+		Project p = Project.findById(id);
+		// if () {
+		Security.check(Security.getConnected().in(p).can("editProject"));
+		TaskType t = new TaskType();
+		t.project = p;
+		t.name = taskType;
 
-		Project p = Project.findById( id );
-		if( Security.getConnected().in( p ).can( "editProject" ) )
-		{
-			TaskType t = new TaskType();
-			t.project = p;
-			t.name = taskType;
-
-			p.save();
-			t.save();
-			Logs.addLog( Security.getConnected(), "Add", "Project Default Task Types ", t.id, p, new Date( System.currentTimeMillis() ) );
-			renderJSON( t.id );
-		}
-		else
-		{
-			forbidden();
-		}
+		p.save();
+		t.save();
+		Logs.addLog(Security.getConnected(), "Add", "Project Default Task Types ", t.id, p, new Date(System.currentTimeMillis()));
+		renderJSON(t.id);
+		// } else {
+		// forbidden();
+		// }
 
 	}
 
@@ -278,31 +220,28 @@ public class Projects extends SmartCRUD
 	 * @author Behairy
 	 */
 
-	public static void addTaskStatus( long id, String taskStatus, String indicator )
-	{
+	public static void addTaskStatus(long id, String taskStatus, String indicator) {
 
-		Project p = Project.findById( id );
-		if( Security.getConnected().in( p ).can( "editProject" ) )
-		{
-			TaskStatus t = new TaskStatus();
-			t.project = p;
-			t.name = taskStatus;
-			t.pending = false;
-			t.closed = false;
-			if(indicator.equalsIgnoreCase("Pending"))
-				t.pending = true;
-			if(indicator.equalsIgnoreCase("Closed"))
-				t.closed = true;
-			p.save();
-			t.save();
-			t.init();
-			Logs.addLog( Security.getConnected(), "Add", "Project Default Task Status", t.id, p, new Date( System.currentTimeMillis() ) );
-			renderJSON( t.id );
-		}
-		else
-		{
-			forbidden();
-		}
+		Project p = Project.findById(id);
+		// if () {
+		Security.check(Security.getConnected().in(p).can("editProject"));
+		TaskStatus t = new TaskStatus();
+		t.project = p;
+		t.name = taskStatus;
+		t.pending = false;
+		t.closed = false;
+		if (indicator.equalsIgnoreCase("Pending"))
+			t.pending = true;
+		if (indicator.equalsIgnoreCase("Closed"))
+			t.closed = true;
+		p.save();
+		t.save();
+		t.init();
+		Logs.addLog(Security.getConnected(), "Add", "Project Default Task Status", t.id, p, new Date(System.currentTimeMillis()));
+		renderJSON(t.id);
+		// } else {
+		// forbidden();
+		// }
 	}
 
 	/**
@@ -314,16 +253,15 @@ public class Projects extends SmartCRUD
 	 * @author Behairy
 	 */
 	// 3ayzen id
-	@Check( "canEditProject" )
-	public static void removetaskType( long taskID )
-	{
-
-		TaskType taskType = TaskType.findById( taskID );
+	// @Check ("canEditProject")
+	public static void removetaskType(long taskID) {
+		TaskType taskType = TaskType.findById(taskID);
+		Security.check(Security.getConnected().in(taskType.project).can("editProject"));
 		taskType.deleted = true;
 
 		taskType.save();
-		Logs.addLog( Security.getConnected(), "Remove", "Project Default Task Type", taskType.id, taskType.project, new Date( System.currentTimeMillis() ) );
-		renderJSON( true );
+		Logs.addLog(Security.getConnected(), "Remove", "Project Default Task Type", taskType.id, taskType.project, new Date(System.currentTimeMillis()));
+		renderJSON(true);
 	}
 
 	/**
@@ -335,18 +273,18 @@ public class Projects extends SmartCRUD
 	 * @author Behairy
 	 */
 	// 3ayzeen id
-	@Check( "canEditProject" )
-	public static void removeTaskStatus( long statusID )
-	{
+	// @Check ("canEditProject")
+	public static void removeTaskStatus(long statusID) {
 
-		TaskStatus taskStatus = TaskStatus.findById( statusID );
+		TaskStatus taskStatus = TaskStatus.findById(statusID);
+		Security.check(Security.getConnected().in(taskStatus.project).can("editProject"));
 		taskStatus.deleted = true;
 
 		taskStatus.save();
 		taskStatus.column.deleted = true;
 		taskStatus.column.save();
-		Logs.addLog( Security.getConnected(), "Remove", "Project Default Task Status ", taskStatus.id, taskStatus.project, new Date( System.currentTimeMillis() ) );
-		renderJSON( true );
+		Logs.addLog(Security.getConnected(), "Remove", "Project Default Task Status ", taskStatus.id, taskStatus.project, new Date(System.currentTimeMillis()));
+		renderJSON(true);
 	}
 
 	/**
@@ -360,26 +298,23 @@ public class Projects extends SmartCRUD
 	 * @author Behairy
 	 */
 
-	public static void addStoryType( long id, String storyType, String unit )
-	{
-		Project p = Project.findById( id );
-		if( Security.getConnected().in( p ).can( "editProject" ) )
-		{
-			Priority x = new Priority();
-			x.project = p;
-			x.title = storyType;
-			x.priority = Integer.parseInt( unit );
+	public static void addStoryType(long id, String storyType, String unit) {
+		Project p = Project.findById(id);
+		// if () {
+		Security.check(Security.getConnected().in(p).can("editProject"));
+		Priority x = new Priority();
+		x.project = p;
+		x.title = storyType;
+		x.priority = Integer.parseInt(unit);
 
-			x.save();
+		x.save();
 
-			p.save();
-			Logs.addLog( Security.getConnected(), "Add", "Project Default Story Priroity ", x.id, x.project, new Date( System.currentTimeMillis() ) );
-			renderJSON( x.id );
-		}
-		else
-		{
-			forbidden();
-		}
+		p.save();
+		Logs.addLog(Security.getConnected(), "Add", "Project Default Story Priroity ", x.id, x.project, new Date(System.currentTimeMillis()));
+		renderJSON(x.id);
+		// } else {
+		// forbidden();
+		// }
 	}
 
 	/**
@@ -391,16 +326,16 @@ public class Projects extends SmartCRUD
 	 * @author Behairy
 	 */
 	// 3ayzen id
-	@Check( "canEditProject" )
-	public static void removeStoryType( long priorityID )
-	{
+	// @Check ("canEditProject")
+	public static void removeStoryType(long priorityID) {
 
-		Priority priorityInstance = Priority.findById( priorityID );
+		Priority priorityInstance = Priority.findById(priorityID);
+		Security.getConnected().in(priorityInstance.project).can("editProject");
 		priorityInstance.deleted = true;
 
 		priorityInstance.save();
-		Logs.addLog( Security.getConnected(), "Remove", "Project Default Story Priroity ", priorityInstance.id, priorityInstance.project, new Date( System.currentTimeMillis() ) );
-		renderJSON( true );
+		Logs.addLog(Security.getConnected(), "Remove", "Project Default Story Priroity ", priorityInstance.id, priorityInstance.project, new Date(System.currentTimeMillis()));
+		renderJSON(true);
 	}
 
 	/**
@@ -414,20 +349,17 @@ public class Projects extends SmartCRUD
 	 * @author Behairy
 	 */
 
-	public static void changeAutoRescheduleStatus( long id, boolean autoReschedule )
-	{
-		Project p = Project.findById( id );
-		if( Security.getConnected().in( p ).can( "editProject" ) )
-		{
-			p.autoReschedule = autoReschedule;
-			p.save();
-			Logs.addLog( Security.getConnected(), "Edit", "Project Default Auto Meeting Reschedule Option ", p.id, p, new Date( System.currentTimeMillis() ) );
-			renderJSON( true );
-		}
-		else
-		{
-			forbidden();
-		}
+	public static void changeAutoRescheduleStatus(long id, boolean autoReschedule) {
+		Project p = Project.findById(id);
+		Security.getConnected().in(p).can("editProject");
+		// if (Security.getConnected().in(p).can("editProject")) {
+		p.autoReschedule = autoReschedule;
+		p.save();
+		Logs.addLog(Security.getConnected(), "Edit", "Project Default Auto Meeting Reschedule Option ", p.id, p, new Date(System.currentTimeMillis()));
+		renderJSON(true);
+		// } else {
+		// forbidden();
+		// }
 	}
 
 	/**
@@ -441,20 +373,17 @@ public class Projects extends SmartCRUD
 	 * @author Behairy
 	 */
 
-	public static void setDefaultSprintDuartion( long id, String duration )
-	{
-		Project p = Project.findById( id );
-		if( Security.getConnected().in( p ).can( "editProject" ) )
-		{
-			p.sprintDuration = Integer.parseInt( duration );
-			p.save();
-			Logs.addLog( Security.getConnected(), "Edit", "Project Default Sprint Duration ", p.id, p, new Date( System.currentTimeMillis() ) );
-			renderJSON( true );
-		}
-		else
-		{
-			forbidden();
-		}
+	public static void setDefaultSprintDuartion(long id, String duration) {
+		Project p = Project.findById(id);
+		Security.getConnected().in(p).can("editProject");
+		// if (Security.getConnected().in(p).can("editProject")) {
+		p.sprintDuration = Integer.parseInt(duration);
+		p.save();
+		Logs.addLog(Security.getConnected(), "Edit", "Project Default Sprint Duration ", p.id, p, new Date(System.currentTimeMillis()));
+		renderJSON(true);
+		// } else {
+		// forbidden();
+		// }
 	}
 
 	/**
@@ -467,26 +396,23 @@ public class Projects extends SmartCRUD
 	 * @author Behairy
 	 */
 
-	public static void setEffortEstimationUnit( long id, String unit )
-	{
-		Project p = Project.findById( id );
-		if( Security.getConnected().in( p ).can( "editProject" ) )
-		{
-			int selectedUnit;
-			if( unit == "Hours" )
-				selectedUnit = 0;
-			else
-				selectedUnit = 1;
-
-			p.effortEstimationUnit = selectedUnit;
-			p.save();
-			Logs.addLog( Security.getConnected(), "Edit", "Project Default Effort Estimation Unit", p.id, p, new Date( System.currentTimeMillis() ) );
-			renderJSON( true );
-		}
+	public static void setEffortEstimationUnit(long id, String unit) {
+		Project p = Project.findById(id);
+		Security.getConnected().in(p).can("editProject");
+		// if (Security.getConnected().in(p).can("editProject")) {
+		int selectedUnit;
+		if (unit == "Hours")
+			selectedUnit = 0;
 		else
-		{
-			forbidden();
-		}
+			selectedUnit = 1;
+
+		p.effortEstimationUnit = selectedUnit;
+		p.save();
+		Logs.addLog(Security.getConnected(), "Edit", "Project Default Effort Estimation Unit", p.id, p, new Date(System.currentTimeMillis()));
+		renderJSON(true);
+		// } else {
+		// forbidden();
+		// }
 	}
 
 	/**
@@ -495,24 +421,20 @@ public class Projects extends SmartCRUD
 	 * @param userId
 	 * @param id
 	 */
-	public static void RequestDeleted( long id )
-	{
+	public static void RequestDeleted(long id) {
 
 		// User myUser=User.findById(userId);
 		User myUser = Security.getConnected();
-		Project myProject = Project.findById( id );
+		Project myProject = Project.findById(id);
 		// System.out.println( myProject );
-		if( Request.find( "isDeletion = true and user = " + myUser.id + " and project = " + myProject.id ).first() == null )
-		{
-			Request x = new Request( myUser, myProject );
-			flash.success( "your request has been sent" );
+		if (Request.find("isDeletion = true and user = " + myUser.id + " and project = " + myProject.id).first() == null) {
+			Request x = new Request(myUser, myProject);
+			flash.success("your request has been sent");
 			x.save();
-			Show.projects( 0 );
-		}
-		else
-		{
-			flash.error( "You have already made a deletion request in this project!" );
-			Show.projects( 0 );
+			Show.projects(0);
+		} else {
+			flash.error("You have already made a deletion request in this project!");
+			Show.projects(0);
 		}
 		// Logs.addLog(myProject, "request to be deleted", "Request", x.id );
 		// Logs.addLog(Security.getConnected(), "request to be deleted",
@@ -531,26 +453,21 @@ public class Projects extends SmartCRUD
 	 * @throws ClassNotFoundException
 	 */
 	// @Check ("canEditProjectNotificationProfile")
-	public static void manageNotificationProfile( long projectId ) throws ClassNotFoundException
-	{
-		Project currentProject = Project.findById( projectId );
-		Security.check( currentProject, "editProjectNotificationProfile" );
+	public static void manageNotificationProfile(long projectId) throws ClassNotFoundException {
+		Project currentProject = Project.findById(projectId);
+		Security.check(currentProject, "editProjectNotificationProfile");
 		ProjectNotificationProfile currentNotificationProfile = currentProject.notificationProfile;
-		ObjectType type = ObjectType.get( ProjectNotificationProfiles.class );
-		notFoundIfNull( type );
-		if( currentNotificationProfile == null )
-			error( "Could not find a notification profile for this project" );
-		else
-		{
-			JPASupport object = type.findById( currentNotificationProfile.id );
-			try
-			{
+		ObjectType type = ObjectType.get(ProjectNotificationProfiles.class);
+		notFoundIfNull(type);
+		if (currentNotificationProfile == null)
+			error("Could not find a notification profile for this project");
+		else {
+			JPASupport object = type.findById(currentNotificationProfile.id);
+			try {
 
-				render( currentNotificationProfile, type, object );
-			}
-			catch( TemplateNotFoundException e )
-			{
-				render( "CRUD/show.html", type, object );
+				render(currentNotificationProfile, type, object);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/show.html", type, object);
 			}
 		}
 	}
@@ -566,32 +483,26 @@ public class Projects extends SmartCRUD
 	 *            notification profile
 	 * @throws Exception
 	 */
-	public static void saveNotificationProfile( String id ) throws Exception
-	{
-		ObjectType type = ObjectType.get( ProjectNotificationProfiles.class );
-		notFoundIfNull( type );
-		JPASupport object = type.findById( id );
-		Security.check( ((ProjectNotificationProfile) object).project, "editProjectNotificationProfile" );
-		validation.valid( object.edit( "object", params ) );
-		if( validation.hasErrors() )
-		{
-			renderArgs.put( "error", Messages.get( "crud.hasErrors" ) );
-			try
-			{
-				render( request.controller.replace( ".", "/" ) + "/show.html", type, object );
-			}
-			catch( TemplateNotFoundException e )
-			{
-				render( "CRUD/show.html", type, object );
+	public static void saveNotificationProfile(String id) throws Exception {
+		ObjectType type = ObjectType.get(ProjectNotificationProfiles.class);
+		notFoundIfNull(type);
+		JPASupport object = type.findById(id);
+		Security.check(((ProjectNotificationProfile) object).project, "editProjectNotificationProfile");
+		validation.valid(object.edit("object", params));
+		if (validation.hasErrors()) {
+			renderArgs.put("error", Messages.get("crud.hasErrors"));
+			try {
+				render(request.controller.replace(".", "/") + "/show.html", type, object);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/show.html", type, object);
 			}
 		}
 		object.save();
-		flash.success( "The Project Notificaton Profile modifications have been saved" );
-		if( params.get( "_save" ) != null )
-		{
-			redirect( "/projects/managenotificationprofile?projectId=" + id );
+		flash.success("The Project Notificaton Profile modifications have been saved");
+		if (params.get("_save") != null) {
+			redirect("/projects/managenotificationprofile?projectId=" + id);
 		}
-		redirect( request.controller + ".show", object.getEntityId() );
+		redirect(request.controller + ".show", object.getEntityId());
 	}
 
 	/**
@@ -600,22 +511,20 @@ public class Projects extends SmartCRUD
 	 *            : the id of the project this method renders the list of
 	 *            project members to the html page
 	 */
-	public static void getProjectMembers( long id )
-	{
-		Project pro = Project.findById( id );
+	public static void getProjectMembers(long id) {
+		Project pro = Project.findById(id);
 		List<User> users = pro.users;
-		render( users, pro );
+		render(users, pro);
 	}
 
 	/**
 	 * @author mahmoudsakr this method renders the projects of the connected
 	 *         user
 	 */
-	public static void myProjects()
-	{
+	public static void myProjects() {
 		User user = Security.getConnected();
 		List<Project> projects = user.projects;
-		render( projects );
+		render(projects);
 	}
 
 	/**
@@ -624,11 +533,10 @@ public class Projects extends SmartCRUD
 	 * 
 	 * @author Behairy
 	 */
-	public static void manageProjectRequests()
-	{
-		Security.check( Security.getConnected().isAdmin );
-		List<Project> pendingProjects = Project.find( "approvalStatus=false AND deleted=false" ).fetch();
-		render( pendingProjects );
+	public static void manageProjectRequests() {
+		Security.check(Security.getConnected().isAdmin);
+		List<Project> pendingProjects = Project.find("approvalStatus=false AND deleted=false").fetch();
+		render(pendingProjects);
 	}
 
 	/**
@@ -639,14 +547,14 @@ public class Projects extends SmartCRUD
 	 *            projectID
 	 * @author Behairy
 	 */
-	public static void approveRequest( long id, String message )
-	{
-		Project p = Project.findById( id );
+	public static void approveRequest(long id, String message) {
+		Security.check(Security.getConnected().isAdmin);
+		Project p = Project.findById(id);
 		p.approvalStatus = true;
-		List<User> users = User.find( "id=" + p.user.id ).fetch();
-		Notifications.notifyUsers( users, p.name + " Project Request", "This is to Kindly Inform you that your request for Project " + p.name + " has been Approved. \n \n Message From Admin:" + message, (byte) 1 );
+		List<User> users = User.find("id=" + p.user.id).fetch();
+		Notifications.notifyUsers(users, p.name + " Project Request", "This is to Kindly Inform you that your request for Project " + p.name + " has been Approved. \n \n Message From Admin:" + message, (byte) 1);
 		p.save();
-		renderJSON( true );
+		renderJSON(true);
 	}
 
 	/**
@@ -658,14 +566,14 @@ public class Projects extends SmartCRUD
 	 *            projectID
 	 * @author Behairy
 	 */
-	public static void declineRequest( long id, String message )
-	{
-		Project p = Project.findById( id );
+	public static void declineRequest(long id, String message) {
+		Security.check(Security.getConnected().isAdmin);
+		Project p = Project.findById(id);
 		p.deleted = true;
-		List<User> users = User.find( "id=" + p.user.id ).fetch();
-		Notifications.notifyUsers( users, p.name + " Project Request", "This is to Kindly Inform you that your request for Project " + p.name + " has been Declined. We Apologize for Any inconvenience. \n \n Message From Admin:" + message, (byte) -1 );
+		List<User> users = User.find("id=" + p.user.id).fetch();
+		Notifications.notifyUsers(users, p.name + " Project Request", "This is to Kindly Inform you that your request for Project " + p.name + " has been Declined. We Apologize for Any inconvenience. \n \n Message From Admin:" + message, (byte) -1);
 		p.save();
-		renderJSON( true );
+		renderJSON(true);
 	}
 
 	/**
@@ -676,19 +584,16 @@ public class Projects extends SmartCRUD
 	 * @param id
 	 * @param type
 	 */
-	public static void meetingTypesCheck( long id, String type )
-	{
-		Project p = Project.findById( id );
+	public static void meetingTypesCheck(long id, String type) {
+		Project p = Project.findById(id);
 		boolean typeExists = false;
-		for( String meetingType : p.meetingsTypes )
-		{
-			if( meetingType.equalsIgnoreCase( type ) )
-			{
+		for (String meetingType : p.meetingsTypes) {
+			if (meetingType.equalsIgnoreCase(type)) {
 				typeExists = true;
 				break;
 			}
 		}
-		renderJSON( typeExists );
+		renderJSON(typeExists);
 	}
 
 	/**
@@ -699,22 +604,18 @@ public class Projects extends SmartCRUD
 	 * @param id
 	 * @param type
 	 */
-	public static void taskTypesCheck( long id, String type )
-	{
-		Project p = Project.findById( id );
+	public static void taskTypesCheck(long id, String type) {
+		Project p = Project.findById(id);
 		boolean typeExists = false;
-		for( TaskType taskType : p.taskTypes )
-		{
-			if( taskType.deleted == false )
-			{
-				if( taskType.name.equalsIgnoreCase( type ) )
-				{
+		for (TaskType taskType : p.taskTypes) {
+			if (taskType.deleted == false) {
+				if (taskType.name.equalsIgnoreCase(type)) {
 					typeExists = true;
 					break;
 				}
 			}
 		}
-		renderJSON( typeExists );
+		renderJSON(typeExists);
 	}
 
 	/**
@@ -725,22 +626,18 @@ public class Projects extends SmartCRUD
 	 * @param id
 	 * @param status
 	 */
-	public static void taskStatusCheck( long id, String status )
-	{
-		Project p = Project.findById( id );
+	public static void taskStatusCheck(long id, String status) {
+		Project p = Project.findById(id);
 		boolean typeExists = false;
-		for( TaskStatus taskStatus : p.taskStatuses )
-		{
-			if( taskStatus.deleted == false )
-			{
-				if( taskStatus.name.equalsIgnoreCase( status ) )
-				{
+		for (TaskStatus taskStatus : p.taskStatuses) {
+			if (taskStatus.deleted == false) {
+				if (taskStatus.name.equalsIgnoreCase(status)) {
 					typeExists = true;
 					break;
 				}
 			}
 		}
-		renderJSON( typeExists );
+		renderJSON(typeExists);
 	}
 
 	/**
@@ -751,23 +648,34 @@ public class Projects extends SmartCRUD
 	 * @param id
 	 * @param pName
 	 */
-	public static void storyPriorityCheck( long id, String pName )
-	{
-		Project p = Project.findById( id );
+	public static void storyPriorityCheck(long id, String pName) {
+		Project p = Project.findById(id);
 		boolean typeExists = false;
-		for( Priority priority : p.priorities )
-		{
-			if( priority.deleted == false )
-			{
-				if( priority.title.equalsIgnoreCase( pName ) )
-				{
+		for (Priority priority : p.priorities) {
+			if (priority.deleted == false) {
+				if (priority.title.equalsIgnoreCase(pName)) {
 
 					typeExists = true;
 					break;
 				}
 			}
 		}
-		renderJSON( typeExists );
+		renderJSON(typeExists);
 	}
+
+	public static void delete() {
+		forbidden();
+	}
+
+	public static void save() {
+		forbidden();
+	}
+
+	public static void list() {
+
+	}
+	/*
+	 * 
+	 */
 
 }
