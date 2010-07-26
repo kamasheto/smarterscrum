@@ -111,7 +111,7 @@ public class Security extends Secure.Security
 		{
 			u = User.find( "byName", username ).first();
 		}
-		if( u == null )
+		if( u == null || u.deleted==true)
 		{
 			flash.error( "This username/Email does not exist" );
 			Logs.addLog( "A guest tried to recover a password of the username " + username + " but the username was not found" );
