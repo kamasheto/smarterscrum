@@ -4,7 +4,7 @@ $(function(){
 	$("##{get 'id' /}_content div[name]").each(function(){	
 	
 			if($(this).attr('name')!=null)
-			{alert('2');
+			{
 		$(this).load($(this).attr('name')+' .ui-widget-header',function(){
 
 			$(this).addClass('ui-widget-content draggableChild');
@@ -15,7 +15,7 @@ $(function(){
 			});
 		//alert($(this).attr('class'));}
 		}
-	else{alert('1');}
+	else{}
 	});	
 });
 </script>
