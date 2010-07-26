@@ -337,6 +337,42 @@
 #{doLayout/}
 </div>
 #{/if}
-
+			#{ifErrors}
+			<script type="text/javascript">
+				$(document).ready(function(){
+					$.bar({
+						message : '${errors}'
+					});
+				})
+			</script>
+			#{/ifErrors}
+			#{if flash.error}
+			<script type="text/javascript">
+			$(document).ready(function(){
+				$.bar({
+					message : '&{flash.error}'
+				});
+			})
+			</script>
+			#{/if}
+			#{if error}
+			<script type="text/javascript">
+			$(document).ready(function(){
+				$.bar({
+					message : '&{error}'
+				});
+			})
+			</script>
+			#{/if}
+			
+			#{if flash.success}
+			<script type="text/javascript">
+			$(document).ready(function(){
+				$.bar({
+					message : '&{flash.success}'
+				});
+			})
+			</script>
+			#{/if}
 </body>
 </html>
