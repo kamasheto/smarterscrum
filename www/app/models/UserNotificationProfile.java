@@ -19,6 +19,7 @@ public class UserNotificationProfile extends SmartModel {
 	public User user;
 	@ManyToOne
 	public Project project;
+	public boolean deleted;
 	// *********** List Of Action Types Below ***********
 	public boolean setMeeting;
 	public boolean setSprint;
