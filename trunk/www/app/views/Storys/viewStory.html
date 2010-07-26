@@ -1,0 +1,17 @@
+#{extends 'magicBox.html' /}
+#{set 'title'}Story: ${story.number}#{/set}
+#{if connected.in(project).can('editStory')}
+<a href="javascript:overlayOpen('/admin/storys/1')"><img src="@{'/public/images/famfam/pencil.png'}"></a><br>
+	${story.description}<br>
+	<b>Success Scenarios</b>
+	#{list items:success, as:'suc'}
+		<br>${suc}
+	#{/list}
+	<br><b>Failure Scenarios</b>
+	#{list items:failure, as:'fail'}
+		<br>${fail}
+	#{/list}<br>
+	#{list items:story.storiesTask, as:'task'}
+		<div name="/tasks/magicshow?taskId=${task.id}">T:${task.number} ${task.description}</div>
+	#{/list}
+#{/if}
