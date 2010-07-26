@@ -75,12 +75,10 @@
 #{/if}
 	<a class="aDIV topCornersRounded" href="@{About.index}" title="read aboout SmartSoft?">About Us</a>  #{if connected}
 	#{list connected.projects, as:'proj'}
-	<a class="aDIV topCornersRounded right" href="#"onclick="
-		loadBox('@{Projects.myTasks(proj.id)}','workspace_${proj.id}');$('#normal').hide();$('.workspaceContainerHeader').show();$('.workspaces').hide();$('.workspacesContainer').hide();$('#workspace_${proj.id}').show();$('#${proj.id}_con').show();" style="width: 120px !important" title="Want to see your projects?">
+	<a class="aDIV topCornersRounded right" href="#"onclick="loadBox('@{Projects.myTasks(proj.id)}','workspace_${proj.id}');$('#normal').hide();$('.workspaceContainerHeader').show();$('.workspaces').hide();$('.workspacesContainer').hide();$('#workspace_${proj.id}').show();$('#${proj.id}_con').show();" style="width: 120px !important" title="Want to see your projects?">
 	${proj.name}</a> 
 	#{/list}
 #{/if}
-
 </div>
 <div class="workspaceContainerHeader" style="display:none;">
 #{list connected?.projects, as:'proj'}
