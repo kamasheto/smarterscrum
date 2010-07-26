@@ -15,6 +15,7 @@ import models.Sprint;
 import models.Story;
 import models.Task;
 import models.User;
+import models.UserNotificationProfile;
 import play.mvc.With;
 
 @With (Secure.class)
@@ -142,7 +143,8 @@ public class Show extends SmartController {
 
 		project.chatroom.deleted = true;
 		project.chatroom.save();
-
+		project.notificationProfile.deleted=true;
+		project.notificationProfile.save();
 		for (Meeting temp : project.meetings) {
 			temp.deleted = true;
 			temp.save();
@@ -159,6 +161,11 @@ public class Show extends SmartController {
 		}
 
 		for (Request temp : project.requests) {
+			temp.deleted = true;
+			temp.save();
+		}
+		
+		for (UserNotificationProfile temp : project.userNotificationProfiles) {
 			temp.deleted = true;
 			temp.save();
 		}
