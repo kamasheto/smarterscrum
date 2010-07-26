@@ -185,7 +185,7 @@
 				<table>
 				#{list items:comments, as:'comment'}
 					<tr>
-						<td><b>${comment.author}</b></td>
+						<td><b>${comment.author} (<i><span class="formatTime">${comment.timeOfComment}</span></i>)</b></td>
 						<td>${comment.comment.raw()}</td>
 					</tr>
 				#{/list}
