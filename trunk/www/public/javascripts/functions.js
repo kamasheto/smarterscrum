@@ -101,8 +101,11 @@ function load(url,el)
 
 function loadBox(url,el)
 {
-	$('#container').load(url,function(){
-		$('#'+el+' .loading').first().hide();
+	$('#container').append('<br style="clear:both"/><div id="myTemp"></div>');
+	
+	$('#container #myTemp').load(url,function(){
+
+		$('#container #myTemp').attr('id','');
 	});
 }
 
