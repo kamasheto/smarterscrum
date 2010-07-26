@@ -39,7 +39,7 @@
 		<li> - <a href="#" onclick="viewHide(${story.id},${component.id}, ${count})">${story.description}</a></li>
 		<div id="story_${story.id}" #{if storyId} #{ifnot storyId == story.id} style="display:none" #{/ifnot} #{/if} #{ifnot storyId}style="display:none"#{/ifnot}>
 			<a href="@{Storys.show(story.id)}"><img src="@{'/public/images/edit_story.gif'}" title="edit"></a>
-			<a href="@{Tasks.blank(component.id,story.id)}"><img src="@{'/public/images/add_task.gif'}" title="add task"></a>
+			<a href="@{Tasks.blank(component.id)}"><img src="@{'/public/images/add_task.gif'}" title="add task"></a>
 			<a href="@{Storys.editScenario(story.id)}"><img src="@{'/public/images/editSce.gif'}" title="Edit Scenarios"></a>
 			#{if story.storiesTask}
 			<ul>
