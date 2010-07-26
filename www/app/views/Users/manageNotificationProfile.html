@@ -1,20 +1,14 @@
-#{extends 'main.html' /}
-#{set title:'Manage Notifications' /}
-#{extends 'CRUD/layout.html' /}
-<!--Author: Amr Tj.Wallas-->
-<!--Task: C1S33-->
-<head>
-	
-</head>
-<!-- Show a certain UserNotificationProfile view CRUD Style =D -->
-<!--Task: C1S33-->
+#{extends 'overlay.html' /}
 <div id="crudShow" class="${type.name}">
 	
 	<h2 id="crudShowTitle">manage notifications for Project: ${currentNotificationProfile.project}</h2>
 	<h3> Please Notify me when: </h3>
 	<div id="mnf"class="objectForm">
 	#{form action:@saveNotificationProfile(object.id), enctype:'multipart/form-data'}
-		#{crud.form /}
+	#{crud.form}
+		#{crud.custom 'user'}#{/crud.custom}
+		#{crud.custom 'project'}#{/crud.custom}
+	#{/crud.form}
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
 			
@@ -23,11 +17,3 @@
 	</div>
 		
 </div>
-<script type="text/javascript">
-		
-		var user = document.getElementsByClassName('crudField')[0];
-		var project = document.getElementsByClassName('crudField')[1];
-		(user.parentNode).removeChild(user);
-		(project.parentNode).removeChild(project);
-		
-</script>
