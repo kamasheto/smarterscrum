@@ -359,28 +359,33 @@ public class Tasks extends SmartCRUD {
 			}
 
 		} else {
-			if (!Security.check(tmp.taskStory.componentID.project, "changeTaskStatus")) {
-				message = "Only Task Assignee can set the task to this status";
-				// boolean Check = Security.check("CanSetStatusTo" +
-				// tmp.taskStatus.name);
-				// if (!Check) {
+			if (tmp.estimationPoints > 100) {
+				message = "An estimation greater than 100 is a total nonsense";
 				try {
 					render(request.controller.replace(".", "/") + "/show.html", type, object, users, statuses, types, dependencies, message2, deletable, reviewers, message, isReporter, isReviewer, isAssignee, comments);
 				} catch (TemplateNotFoundException e) {
 					render("CRUD/show.html", type);
 				}
-				// }
-
-			} else {
-				if (tmp.estimationPoints > 100) {
-					message = "An estimation greater than 100 is a total nonsense";
-					try {
-						render(request.controller.replace(".", "/") + "/show.html", type, object, users, statuses, types, dependencies, message2, deletable, reviewers, message, isReporter, isReviewer, isAssignee, comments);
-					} catch (TemplateNotFoundException e) {
-						render("CRUD/show.html", type);
-					}
-				}
 			}
+			// if (!Security.check(tmp.taskStory.componentID.project,
+			// "changeTaskStatus")) {
+			// message = "Only Task Assignee can set the task to this status";
+			// // boolean Check = Security.check("CanSetStatusTo" +
+			// // tmp.taskStatus.name);
+			// // if (!Check) {
+			// try {
+			// render(request.controller.replace(".", "/") + "/show.html", type,
+			// object, users, statuses, types, dependencies, message2,
+			// deletable, reviewers, message, isReporter, isReviewer,
+			// isAssignee, comments);
+			// } catch (TemplateNotFoundException e) {
+			// render("CRUD/show.html", type);
+			// }
+			// // }
+			//
+			// } else {
+			// // removed from here
+			// }
 		}
 		String header = "Task: 'T" + tmp.id + "\'" + " has been edited.";
 		String body = "In Project: " + "\'" + tmp.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + tmp.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + tmp.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
