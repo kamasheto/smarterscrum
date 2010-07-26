@@ -7,6 +7,7 @@ import models.Priority;
 import models.Project;
 import models.ProjectNotificationProfile;
 import models.Request;
+import models.Sprint;
 import models.TaskStatus;
 import models.TaskType;
 import models.User;
@@ -662,7 +663,25 @@ public class Projects extends SmartCRUD {
 		}
 		renderJSON(typeExists);
 	}
-
+	/**
+	 * @author Hadeer Younis
+	 * @param id
+	 **/
+	public static void events(long id)
+	{
+	//	Project temp = Project.findById( id );
+	//	List sprints = temp.sprints;
+	//	List meetings = temp.meetings;
+		render(id);
+	}
+	
+	/**
+	 * @author Hadeer Younis
+	 */
+	public static void settings(long id)
+	{
+		render(id);
+	}
 	public static void delete() {
 		forbidden();
 	}

@@ -15,13 +15,13 @@ $(function(){
 	});	
 });
 </script>
-<div  id="#{get 'id' /}" class="ui-widget-content draggable">
+<div  id="#{get 'id' /}" class="ui-widget-content draggable allCornersRounded">
 	<div  id="#{get 'id' /}_header"class="ui-widget-header">
 		#{get 'title'/}
-		<span class="revertFrom ui-state-default ui-corner-all">
+		<span class="revertFrom">
 			<span class="ui-icon ui-icon-circle-close"></span>
 		</span>
-			<span class="min ui-state-default ui-corner-all" onclick="$(this).children().toggle();">
+			<span class="min"onclick="$(this).children().toggle();">
 			<span class="ui-icon ui-icon-circle-triangle-s" style="display: none;"></span>
 			<span class="ui-icon ui-icon-circle-triangle-n"></span>
 		</span>
