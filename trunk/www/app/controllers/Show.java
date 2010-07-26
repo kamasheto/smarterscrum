@@ -173,5 +173,9 @@ public class Show extends SmartController {
 		// forbidden();
 		// }
 	}
-
+	
+	public static void role(long id) {
+		Role role = Role.findById(id);
+		render(role);
+	}
 }
