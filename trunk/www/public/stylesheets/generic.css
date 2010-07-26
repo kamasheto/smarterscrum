@@ -36,7 +36,9 @@ button,a button,input[type=submit],input[type=ok],input[type=send],input[type=bu
 .nav {
 	border-bottom: 2px solid #222222 !important;
 	font-size: 12px;
-	text-align: center; body ,html { background : #333
+	text-align: center;
+	
+	} body ,html { background : #333
 	url('img/workspace.png') repeat top left;
 	font-family: Verdana;
 	font-size: 10px;
@@ -181,7 +183,7 @@ padding:5px;
 text-align:center;
 text-decoration:none !important;
 text-transform:lowercase;
-
+}
 /**rounded corners**/
 .allCornersRounded {
 	border-radius: 5px;
