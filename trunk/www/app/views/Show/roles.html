@@ -1,5 +1,5 @@
+#{extends 'magicBox.html' /}
 #{if project}	
-	#{extends 'magicBox.html' /}
 	#{set 'title'}
 	Roles <a href="javascript:overlayOpen('/admin/roles/new?id=${project?.id}')"><img src="@{'/public/images/famfam/add.png'}"></a>
 	#{/set}
@@ -7,10 +7,9 @@
 	<li><a href="/show/projects">Projects</a></li>
 	<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
 	#{/set}
-	#{note}These are your project roles. Members in a project may have more than one role at a time. Whenever possible, avoid editing roles to limit confusion for developers. If you'd like to give a developer more access, add him to a new role. The number in brackets indicate the number of developers with that role (click the number to toggle the users). The base role is highlighted in bold. All members joining a project join the base role automatically. Click on a role to set it to be the base role.#{/note}
+	#{note 'highlight'}These are your project roles. Members in a project may have more than one role at a time. Whenever possible, avoid editing roles to limit confusion for developers. If you'd like to give a developer more access, add him to a new role. All members joining a project join the base role automatically. Click on a role to set it to be the base role.#{/note}
 #{/if}
 #{else}
-	#{extends 'magicBox.html' /}
 	#{set title: 'Global Roles' /}
 	#{note}These are the default roles. All projects created include these roles by default. Changes to these roles does NOT affect roles of projects already created. The base role is highlighted in bold. All members joining a project join the base role automatically. Click on a role to set it to be the base role.#{/note}
 #{/else}
