@@ -163,7 +163,7 @@ img {
 	cursor: pointer;
 	position: relative;
 	z-index: 9;
-	top: -10px;
+	margin-top:5px;
 	padding-bottom: 10px;
 }
 
