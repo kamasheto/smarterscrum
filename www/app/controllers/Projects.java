@@ -226,9 +226,7 @@ public class Projects extends SmartCRUD {
 	 */
 	public static void addTaskStatus( long id, String taskStatus, String indicator )
 	{
-
 		Project p = Project.findById(id);
-		// if () {
 		Security.check(Security.getConnected().in(p).can("editProject"));
 		TaskStatus t = new TaskStatus();
 		t.project = p;
@@ -242,11 +240,13 @@ public class Projects extends SmartCRUD {
 		p.save();
 		t.save();
 		t.init();
-		Logs.addLog(Security.getConnected(), "Add", "Project Default Task Status", t.id, p, new Date(System.currentTimeMillis()));
+		String header = "A new Task Status has been added.";
+		String body = "In Project: " + "\'" + p.name + "\'" + "." + '\n'
+		+ " Task Status name: " + "\'" + t.name + "\'" +"." + '\n'
+		+ " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		Logs.addLog(Security.getConnected(), "Create", "TaskStatus", t.id, p, new Date(System.currentTimeMillis()));
+		Notifications.notifyUsers(p, header, body, "addTaskStatus", new Byte((byte) 1));
 		renderJSON(t.id);
-		// } else {
-		// forbidden();
-		// }
 	}
 	
 	/**
@@ -267,24 +267,51 @@ public class Projects extends SmartCRUD {
 	public static void editTaskStatus( long statusID, String newName, String indicator )
 	{
 		TaskStatus taskStatus = TaskStatus.findById( statusID );
+		String oldName = taskStatus.name;
 		Project p = Project.findById( taskStatus.project.id );
-		if( Security.getConnected().in( p ).can( "editProject" ) )
-		{
-			taskStatus.name = newName;
-			taskStatus.pending = false;
-			taskStatus.closed = false;
-			if(indicator.equalsIgnoreCase("Pending"))
-				taskStatus.pending = true;
-			if(indicator.equalsIgnoreCase("Closed"))
-				taskStatus.closed = true;
-			taskStatus.save();
-			Logs.addLog( Security.getConnected(), "Remove", "Project Default Task Status ", taskStatus.id, taskStatus.project, new Date( System.currentTimeMillis() ) );
-			renderJSON( true );
-		}
-		else
-		{
-			forbidden();
-		}
+		Security.check(Security.getConnected().in(p).can("editProject"));
+		taskStatus.name = newName;
+		taskStatus.pending = false;
+		taskStatus.closed = false;
+		if(indicator.equalsIgnoreCase("Pending"))
+			taskStatus.pending = true;
+		if(indicator.equalsIgnoreCase("Closed"))
+			taskStatus.closed = true;
+		taskStatus.save();
+		String header = "Task Status: " + "\'" + oldName + "\'" +  " has been edited.";
+		String body = "In Project " + "\'" + p.name + "\'" + "." + '\n'
+				+ " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		Logs.addLog(Security.getConnected(), "Edit", "TaskStatus", taskStatus.id, p, new Date(System.currentTimeMillis()));
+		Notifications.notifyUsers(p, header, body, "editTaskStatus", new Byte((byte) 0));
+		renderJSON( true );
+	}
+	
+	/**
+	 * This method removes a task status from the list of task statuses
+	 * in project.
+	 * 
+	 * @author Behairy, Heba Elsherif
+	 * @param statusID
+	 *             the id of the selected Task Status.
+	 * @return void
+	 * @issue 236
+	 * @sprint 2, 4
+	 */
+	@Check( "canEditProject" )
+	public static void removeTaskStatus( long statusID )
+	{
+		TaskStatus taskStatus = TaskStatus.findById(statusID);
+		Security.check(Security.getConnected().in(taskStatus.project).can("editProject"));
+		taskStatus.deleted = true;
+		taskStatus.save();
+		taskStatus.column.deleted = true;
+		taskStatus.column.save();
+		String header = "Task Status: " + "\'" + taskStatus.name + "\'" +  " has been deleted.";
+		String body = "In Project " + "\'" + taskStatus.project.name + "\'" + "." + '\n'
+				+ " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		Logs.addLog(Security.getConnected(), "Delete", "TaskStatus", taskStatus.id, taskStatus.project, new Date(System.currentTimeMillis()));
+		Notifications.notifyUsers(taskStatus.project, header, body, "deleteTaskStatus", new Byte((byte) -1));
+		renderJSON(true);
 	}
 	
 	/**
@@ -304,29 +331,6 @@ public class Projects extends SmartCRUD {
 
 		taskType.save();
 		Logs.addLog(Security.getConnected(), "Remove", "Project Default Task Type", taskType.id, taskType.project, new Date(System.currentTimeMillis()));
-		renderJSON(true);
-	}
-
-	/**
-	 * This action method removes a task status from the list of task statuses
-	 * in project.
-	 * 
-	 * @param statusID
-	 *            long
-	 * @author Behairy
-	 */
-	@Check( "canEditProject" )
-	public static void removeTaskStatus( long statusID )
-	{
-
-		TaskStatus taskStatus = TaskStatus.findById(statusID);
-		Security.check(Security.getConnected().in(taskStatus.project).can("editProject"));
-		taskStatus.deleted = true;
-
-		taskStatus.save();
-		taskStatus.column.deleted = true;
-		taskStatus.column.save();
-		Logs.addLog(Security.getConnected(), "Remove", "Project Default Task Status ", taskStatus.id, taskStatus.project, new Date(System.currentTimeMillis()));
 		renderJSON(true);
 	}
 
