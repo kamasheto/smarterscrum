@@ -84,11 +84,11 @@
 <div class="workspaceContainerHeader" style="display:none;">
 #{list connected?.projects, as:'proj'}
 <div id="${proj.id}_con" class="workspaces topper nav">
-<a href="#" onclick="loadBox('@{Projects.settings(proj.id)}','workspace_${proj.id}')">Settings</a> 
-<a  href="#"onclick="loadBox('@{Projects.events(proj.id)}','workspace_${proj.id}')">Events</a>  
-<a href="#" onclick="">Users</a> 
-<a href="#" onclick="">Stroies</a>
+<a href="#" onclick="">Stories</a>	
 <a  href="#"onclick="loadBox('/projects/${proj.id}/components','workspace_${proj.id}')">Components</a>
+	<a href="#" onclick="">Users</a>
+	<a  href="#"onclick="loadBox('@{Projects.events(proj.id)}','workspace_${proj.id}')">Events</a>
+<a href="#" onclick="loadBox('@{Projects.settings(proj.id)}','workspace_${proj.id}')">Settings</a> 
 </div>
 #{/list}
 </div>

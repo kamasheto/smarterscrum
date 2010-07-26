@@ -1,23 +1,18 @@
 #{if project}	
-	#{extends 'main.html' /}
-	#{set title:'Manage roles for: '+project.name /}
+	#{extends 'magicBox.html' /}
+	#{set title:'Roles' /}
 	#{set 'crumbs'}
 	<li><a href="/show/projects">Projects</a></li>
 	<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
 	#{/set}
-	#{note 'highlight'}These are your project roles. Members in a project may have more than one role at a time. Whenever possible, avoid editing roles to limit confusion for developers. If you'd like to give a developer more access, add him to a new role. The number in brackets indicate the number of developers with that role (click the number to toggle the users). The base role is highlighted in bold. All members joining a project join the base role automatically. Click on a role to set it to be the base role.#{/note}
+	#{note}These are your project roles. Members in a project may have more than one role at a time. Whenever possible, avoid editing roles to limit confusion for developers. If you'd like to give a developer more access, add him to a new role. The number in brackets indicate the number of developers with that role (click the number to toggle the users). The base role is highlighted in bold. All members joining a project join the base role automatically. Click on a role to set it to be the base role.#{/note}
 #{/if}
 #{else}
-	#{extends 'Application/adminIndex.html' /}
-	#{set title: 'Manage Global Roles' /}
-	#{note 'highlight'}These are the default roles. All projects created include these roles by default. Changes to these roles does NOT affect roles of projects already created. The base role is highlighted in bold. All members joining a project join the base role automatically. Click on a role to set it to be the base role.#{/note}
+	#{extends 'magicBox.html' /}
+	#{set title: 'Global Roles' /}
+	#{note}These are the default roles. All projects created include these roles by default. Changes to these roles does NOT affect roles of projects already created. The base role is highlighted in bold. All members joining a project join the base role automatically. Click on a role to set it to be the base role.#{/note}
 #{/else}
 #{list roles, as:'role'}
-	<p#{if role.baseRole} class="baseRole"#{/if} id="role_p_${role.id}"><a href="#" onclick="overlayOpen('/admin/roles/${role.id}')" ><img src="@{'/public/images/famfam/pencil.png'}"></a> <span class="delete_img ${role.baseRole ? 'hidden' :''}"><a href="/roles/delete?id=${role.id}" onclick="return confirm('Are you sure you want to delete this role?')"><img src="@{'/public/images/famfam/delete.png'}"></a> </span><span class="tick_img ${role.baseRole ? '' : 'hidden'}"><img src="/public/images/famfam/accept.png" alt=""> </span><a href="#sbr${role.id}" onclick="javascript:setBaseRole(${role.id}); return false;">${role.name}</a>#{if project} <a href="#srm${role.id}" onclick="$('#role_${role.id}').toggle(); return false;">(${role.users.size()})</a> <span id="role_${role.id}" style="display:none;">${role.users.toString().substring(1, role.users.toString().length()-1)}</span>#{/if}</p>
+	<div#{if role.baseRole} class="baseRole"#{/if} id="role_p_${role.id}" name="/show/role?id=${role.id}"><a href="#" onclick="overlayOpen('/admin/roles/${role.id}')" ><img src="@{'/public/images/famfam/pencil.png'}"></a> <span class="delete_img ${role.baseRole ? 'hidden' :''}"><a href="/roles/delete?id=${role.id}" onclick="return confirm('Are you sure you want to delete this role?')"><img src="@{'/public/images/famfam/delete.png'}"></a> </span><span class="tick_img ${role.baseRole ? '' : 'hidden'}"><img src="/public/images/famfam/accept.png" alt=""> </span><a href="#sbr${role.id}" onclick="javascript:setBaseRole(${role.id}); return false;">${role.name}</a>#{if project} <a href="#srm${role.id}" onclick="$('#role_${role.id}').toggle(); return false;">(${role.users.size()})</a> <span id="role_${role.id}" style="display:none;">${role.users.toString().substring(1, role.users.toString().length()-1)}</span>#{/if}</div>
 #{/list}
-	<p><a href="javascript:overlayOpen('/admin/roles/new?id=${project?.id}')"><img src="@{'/public/images/famfam/add.png'}"></a></p>
-#{else}
-	#{note 'error'}
-		There are currently no roles. <a href="javascript:overlayOpen('/admin/roles/new?id=${project?.id}')">Create one?</a>
-	#{/note}
-#{/else}
+	<div><a href="javascript:overlayOpen('/admin/roles/new?id=${project?.id}')"><img src="@{'/public/images/famfam/add.png'}"></a></div>

@@ -1,40 +1,21 @@
-#{extends 'main.html' /}
+#{extends 'magicBox.html' /}
 #{set title:'Requests' /}
 
-<h1>Requests  for ${pro.name}</h1>
-
-<div id="accordion">
-	<h6><a>Role requests</a></h6>
-	<div>
-#{if requests.isEmpty()}
-<br/>
-#{note 'error'}There are no new role requests in ${pro.name} #{/note}
-<br/> 
-#{/if}
-#{else}
-<ul id= "prequests">
 #{list items:requests, as:'req'}
-	<li id="req_${req.id}">${req.user.name} has  requested to be ${req.role.name}
-	<a onclick="request_accept('${req.id}', '${req.hash}');" href="#">Accept  </a> &bull; 
-	<a onclick="request_ignore('${req.id}', '${req.hash}');" href="#">Decline  </a>
-	</li>
+	<div name="/requests/show?id=${req.id}" id="req_${req.id}">
+		<div class="item_imgs">
+			<a onclick="request_accept('${req.id}', '${req.hash}');" href="#"><img src="/public/images/famfam/tick.png"></a><a onclick="request_ignore('${req.id}', '${req.hash}');" href="#"><img src="/public/images/famfam/cross.png"></a>
+		</div>
+		${req.user.name} has  requested to be ${req.role.name}
+	
+	</div>
 #{/list}
-</ul>
-#{/else}
-</div>
-
-<h6><a>Deletion requests</a></h6>
-	<div>
-#{if drequests.isEmpty()}
-<br/>
-#{note 'error'}There are no new deletion requests in ${pro.name}#{/note}
-<br/> 
-#{/if}
-
 #{else}
-<ul id= "prequests">
+	#{note 'error'}There are no new role requests#{/note}		
+#{/else}
+
 #{list items:drequests, as:'req'}
-	<li id="req_${req.id}"><a href="/show/user?id=${req.user.id}">${req.user.name}</a> has  requested to be deleted from the project.
+	<div name="/requests/show?id=${req.id}" id="req_${req.id}" class="delete_request"><a href="/show/user?id=${req.user.id}">${req.user.name}</a> has  requested to be deleted from the project.
 	<a onclick="request_accept2('${req.id}', '${req.hash}');" href="#">Accept  </a> &bull; 
 	<a onclick="show_comment('${req.id}');" href = "#">Decline</a>
 	<div id = "comment_${req.id}" style="display:none">
@@ -43,17 +24,20 @@
 		<a onclick="do_ignore('${req.id}', '${req.hash}');" href = "#"><font color="red"><b><u>Decline Request and Notify user</u></b></font></a>
 		<br /> <br />
 	</div>
-	</li>
-	
+	</div>
+
 
 #{/list}
+#{else}
+	#{note 'error'}There are no new deletion requests in ${pro.name}#{/note}
 #{/else}
-</ul>
-</div>
+
 #{set 'crumbs'}
+<!-- deprecated -->
 <li><a href="/show/projects">Projects</a></li>
 <li><a href="/show/project?id=${pro.id}">${pro.name}</a></li>
 #{/set}
+
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#accordion").accordion({ autoHeight:false } );

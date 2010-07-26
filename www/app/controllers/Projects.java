@@ -721,7 +721,8 @@ public class Projects extends SmartCRUD {
 	 **/
 	public static void events( long id )
 	{
-		render( id );
+		Project project = Project.findById(id);
+		render(project);
 	}
 
 	/**
@@ -733,8 +734,18 @@ public class Projects extends SmartCRUD {
 	 */
 	public static void settings( long id )
 	{
-		render( id );
+		Project project = Project.findById(id);
+		render(project);
 	}
+	
+	/**
+	 * shows requests in this project
+	 */
+	public static void requests(long id) {
+		Project project = Project.findById(id);
+		render(project);
+	}
+	
 	public static void delete() {
 		forbidden();
 	}
