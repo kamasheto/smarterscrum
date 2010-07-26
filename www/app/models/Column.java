@@ -10,32 +10,19 @@ public class Column extends SmartModel {
 	@ManyToOne
 	public Board board;
 	public boolean onBoard;
-	// @OneToMany( mappedBy = "Status_on_Board" )
-	// public List<Task> task;
-
-	// @Column( unique = true )
-	// public long colRowNumber;
-
 	public String name;
-
-	// if 0 then column if 1 then row
-	// public int type;
-
 	public int sequence;
-
-	// public double startDimension;
-	// public double endDimension;
-
-	@OneToOne (mappedBy = "column")
+	@ManyToOne
 	public TaskStatus taskStatus;
 
 	public boolean deleted;
 
-	public Column (String name, Board board) {
+	public Column (String name, Board board, TaskStatus taskstatus) {
 		this.name = name;
 		this.board = board;
 		this.sequence = board.columns.size();
 		this.onBoard=true;
+		this.taskStatus=taskstatus;
 		/*if(this.name.equalsIgnoreCase( "new" )||this.name.equalsIgnoreCase( "verified" )||this.name.equalsIgnoreCase( "closed" ))
 		{
 			
@@ -53,11 +40,11 @@ public class Column extends SmartModel {
 			this.onBoard=false;
 			this.sequence=-1;
 		}	*/
+		this.save();
 		board.columns.add(this);
-		
 	}
-	// public String toString()
-	// {
-	// return name + "  " + "board" + board.id;
-	// }
+
+	public Column() {
+		}
+	
 }

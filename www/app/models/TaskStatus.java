@@ -27,34 +27,30 @@ public class TaskStatus extends SmartModel {
 	@OneToMany (mappedBy = "taskStatus", cascade = CascadeType.ALL)
 	public List<Task> Tasks;
 
-	@OneToOne
-	public Column column;
+	@OneToMany (mappedBy = "taskStatus", cascade = CascadeType.ALL)
+	public List <Column> columns;
 	
 	public boolean pending;
 	
 	public boolean closed;
 
 	public void init() {
-		// Project p = this.project;
-		// Board b = p.board;
-		column = new Column(name, project.board).save();
-		this.save();
-		// col.board = project.board;
-		// column = new Column().save();
-		// System.out.println("Assigning board now: " + project.board);
-		// column.board = project.board;
-		// col = this;
-		// this.column = col;
-		// column.name = name;
-		// column.save();
-
-		// this.save();
+		Column column = new Column(name, project.board, this).save();
+			for(int i=0;i<project.components.size();i++)
+		{
+			Board b = project.components.get(i).componentBoard;
+			Column c = new Column(name,b,this);
+			c.save();
+		}
+			columns.add(column);
+			this.save();
 	}
 
 	public TaskStatus () {
 		this.pending = false;
 		this.closed = false;
 		Tasks = new ArrayList<Task>();
+		columns = new ArrayList<Column>();
 	}
 
 }
