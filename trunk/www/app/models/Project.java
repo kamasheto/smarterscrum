@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import controllers.Security;
+
 import play.data.validation.Required;
 
 /**
@@ -36,6 +38,8 @@ public class Project extends SmartModel
 	public boolean deleted;
 
 	public boolean isPrivate;
+	
+	public boolean isScrum;
 
 	public boolean approvalStatus = false;
 
@@ -310,7 +314,7 @@ public class Project extends SmartModel
 	 * 
 	 * @author mahmoudsakr
 	 */
-	public void init() {
+	public void init(boolean isScrum) {
 		// this.save();
 		board = new Board(this).save();
 
@@ -420,7 +424,22 @@ public class Project extends SmartModel
 		meetingsTypesInSprint.add(true);
 
 		sprintDuration = 14;
-
+		
+		
+		if(!isScrum){
+			//Default creations in case not a scrum project
+			Story defaultStory = new Story("default","default", "default", 1, "default", Security.getConnected().id);
+			Component defaultComponent = new Component();
+			defaultStory.componentID = defaultComponent;
+			defaultComponent.name = "default component";
+			defaultComponent.project = this;
+			Sprint defaultSprint = new Sprint();
+			defaultSprint.project = this;
+			defaultStory.save();
+			defaultComponent.save();
+			defaultSprint.save();
+		}
+		
 		this.save();
 	}
 
