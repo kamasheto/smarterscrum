@@ -72,11 +72,11 @@ public class Logs extends SmartCRUD
 	 * a project
 	 * <p>
 	 * <b><font color="red">ADD THE EXACT LOG MESSAGE WITH ALL HTML TAGS EXACTLY
-	 * AS IF YOU ARE IN A VIEW</font></bold>
+	 * AS IF YOU ARE IN A VIEW</font></b>
 	 * </p>
 	 * 
 	 * @param logMessage
-	 *            : The custom log message you want to be displayed in the logs
+	 *            The custom log message you want to be displayed in the logs
 	 *            view.
 	 * @return <code>true</code> if the log entry was successfully saved.
 	 */
