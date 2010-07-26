@@ -41,10 +41,10 @@ public class Requests extends SmartCRUD {
 	public static void requestRespond(long id) {
 		Project pro = Project.findById(id);
 		Security.check(pro, "manageRequests");
-		List<Request> requests = Request.find("isDeletion = false and project = " + pro.id + " order by id desc").fetch();		
+		List<Request> requests = Request.find("isDeletion = false and project = " + pro.id + " order by id desc").fetch();
 		List<Request> drequests = Request.find("isDeletion = true and project = " + pro.id + " order by id desc").fetch();
 		render(requests, drequests, pro);
-	}	
+	}
 
 	/**
 	 * belongs to s15
@@ -147,10 +147,16 @@ public class Requests extends SmartCRUD {
 		if (!x.isDeletion) {
 			Notifications.notifyUsers(x.user, "Role Request Denied", "Your Role request to be " + x.role.name + " in " + y.name + " has been denied", (byte) -1);
 		} else {
-			/*if (body == null)
-				Notifications.notifyUsers(x.user, "deletion request from project denied", "Your deletion request from project " + x.project.name + " has been denied.", (byte) -1);
-			else
-				Notifications.notifyUsers(x.user, "deletion request from project denied", "You deletion request from project " + x.project.name + " has been denied because " + body + ".", (byte) -1);*/
+			/*
+			 * if (body == null) Notifications.notifyUsers(x.user,
+			 * "deletion request from project denied",
+			 * "Your deletion request from project " + x.project.name +
+			 * " has been denied.", (byte) -1); else
+			 * Notifications.notifyUsers(x.user,
+			 * "deletion request from project denied",
+			 * "You deletion request from project " + x.project.name +
+			 * " has been denied because " + body + ".", (byte) -1);
+			 */
 			{
 				String b = body.replace('+', ' ');
 				int i = body.indexOf('&');
@@ -184,33 +190,30 @@ public class Requests extends SmartCRUD {
 		// Logs.addLog(myComponent, "request to be deleted", "Request", x.id );
 
 	}
-	
-	public static void list()
-	{
+
+	public static void list() {
 		Security.check(Security.getConnected().isAdmin);
 		List<User> users = User.find("pendingDeletion = true").fetch();
 		render(users);
 	}
-	
-	public static void deleteUsers(int [] users)
-	{
-		for(int i=0; i<users.length; i++)
-		{
-			User currentUser = User.find("id = "+ users[i]).first();
-			currentUser.deleted=true;
+
+	public static void deleteUsers(int[] users) {
+		for (int i = 0; i < users.length; i++) {
+			User currentUser = User.find("id = " + users[i]).first();
+			currentUser.deleted = true;
 			currentUser.pendingDeletion = false;
 			currentUser.save();
-			Notifications.notifyUsers(currentUser, "Your deletion request from our system has been approved.", "Dear "+currentUser.name+", your deletion request from our system has been approved by a system admin. we hope to see you back again!", (byte) -1);
+			Notifications.notifyUsers(currentUser, "Your deletion request from our system has been approved.", "Dear " + currentUser.name + ", your deletion request from our system has been approved by a system admin. we hope to see you back again!", (byte) -1);
 		}
-		flash.success( "Users are now deactivated ");
+		flash.success("Users are now deactivated ");
 		redirect("/admin/requests");
 	}
-	
-	public static void show(String id) {
+
+	public static void show() {
 		forbidden();
 	}
 
-	public static void save(String id) {
+	public static void save() {
 		forbidden();
 	}
 
@@ -222,7 +225,7 @@ public class Requests extends SmartCRUD {
 		forbidden();
 	}
 
-	public static void delete(String id) {
+	public static void delete() {
 		forbidden();
 	}
 

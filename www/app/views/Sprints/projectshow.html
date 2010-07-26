@@ -32,11 +32,11 @@ for(i=1;i<meetings.length-1;i++){
 	
 	
 	<div class="objectForm">
-	#{form action:@projectsave(object.id,projId), enctype:'multipart/form-data'}
+	#{form action:@projectsave(object.id), enctype:'multipart/form-data'}
 		#{crud.form }
 		#{crud.custom 'sprintNumber'}
 		#{/crud.custom }
-			#{crud.custom 'startDate'}	
+		#{crud.custom 'startDate'}	
 	
 				
 

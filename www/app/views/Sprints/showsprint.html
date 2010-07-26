@@ -29,7 +29,7 @@ function isBefore(date){
 <script type="text/javascript">
 
 	if(isBefore('${sprint.format(sprint.startDate)}')==true){
-	document.write('<a id="button"href="@{projectshow(sprint.id,sprint.project.id)}">Edit</a>');
+	document.write('<a id="button"href="@{projectshow(sprint.id)}">Edit</a>');
 		}
 	else{
 	document.write('<div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all"> <p><span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> <strong>This is a past sprint. You cannot edit it.</strong></p></div>');

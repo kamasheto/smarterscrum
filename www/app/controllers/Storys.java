@@ -93,10 +93,9 @@ public class Storys extends SmartCRUD {
 		JPASupport object = type.findById(id);
 		// We added the story to a project .. We need to get that project
 		Story temp = (Story) object;
-		if(temp.productRole != null)
-		{
-		int formatt = 13 + temp.productRole.name.length();
-		temp.description = temp.description.substring(formatt);
+		if (temp.productRole != null) {
+			int formatt = 13 + temp.productRole.name.length();
+			temp.description = temp.description.substring(formatt);
 		}
 		// Whether everything is ok to edit the story
 		boolean ok = true;
@@ -197,9 +196,7 @@ public class Storys extends SmartCRUD {
 				t.DeleteTask();
 			}
 			String header = "Story: 'S" + story.id + "\'" + " has been deleted.";
-			String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' 
-				+ " In Component: " + "\'" + story.componentID.name + "\'" + "." + '\n'
-				+ " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
+			String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' + " In Component: " + "\'" + story.componentID.name + "\'" + "." + '\n' + " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
 			/*
 			 * ////Long Informative Notification message. Not suitable for
 			 * online notification. String header = "A Story in Component: " +
@@ -232,7 +229,6 @@ public class Storys extends SmartCRUD {
 	 * @author Galal Aly
 	 * @return void
 	 **/
-	@SuppressWarnings ("deprecation")
 	// @Check ("canAddStory")
 	public static void create() throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -273,10 +269,7 @@ public class Storys extends SmartCRUD {
 		object.save();
 		Logs.addLog(toBeSaved.addedBy, "Create", "Story", storyObj.id, project, new Date(System.currentTimeMillis()));
 		String header = "A new Story has been added.";
-		String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' 
-		            + " In Component: " + "\'" + storyObj.componentID.name + "\'" + "." + '\n' 
-					+ " Story: 'S" +  storyObj.id + "\'" + "." + '\n'  
-					+ " Added by: " + "\'" + toBeSaved.addedBy.name + "\'" + ".";		
+		String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' + " In Component: " + "\'" + storyObj.componentID.name + "\'" + "." + '\n' + " Story: 'S" + storyObj.id + "\'" + "." + '\n' + " Added by: " + "\'" + toBeSaved.addedBy.name + "\'" + ".";
 		/*
 		 * ////Long Informative Notification message. Not suitable for online
 		 * notification. String header =
@@ -353,9 +346,7 @@ public class Storys extends SmartCRUD {
 		}
 		storyObj.description = "As a " + storyObj.productRole.name + ", I can " + storyObj.description;
 		String header = "Story: 'S" + storyObj.id + "\'" + " has been edited.";
-		String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' 
-			+ " In Component: " + "\'" + storyObj.componentID.name + "\'" + "." + '\n'
-			+ " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' + " In Component: " + "\'" + storyObj.componentID.name + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		/*
 		 * ////Long Informative Notification message. Not suitable for online
 		 * notification. String header =
@@ -397,6 +388,7 @@ public class Storys extends SmartCRUD {
 	 **/
 	public static void editDes(long id, String desc) {
 		Story s = Story.findById(id);
+		Security.check(Security.getConnected().in(s.componentID.project).can("editStory"));
 		s.description = desc;
 		s.save();
 	}
@@ -414,6 +406,7 @@ public class Storys extends SmartCRUD {
 
 	public static void editSuccess(long id, String succ) {
 		Story s = Story.findById(id);
+		Security.check(Security.getConnected().in(s.componentID.project).can("editStory"));
 		s.succussSenario = succ;
 		s.save();
 	}
@@ -431,6 +424,7 @@ public class Storys extends SmartCRUD {
 
 	public static void editFailure(long id, String fail) {
 		Story s = Story.findById(id);
+		Security.check(Security.getConnected().in(s.componentID.project).can("editStory"));
 		s.failureSenario = fail;
 		s.save();
 	}
@@ -448,6 +442,7 @@ public class Storys extends SmartCRUD {
 
 	public static void editNotes(long id, String n) {
 		Story s = Story.findById(id);
+		Security.check(Security.getConnected().in(s.componentID.project).can("editStory"));
 		s.notes = n;
 		s.save();
 	}
@@ -464,7 +459,10 @@ public class Storys extends SmartCRUD {
 	 **/
 
 	public static void editComponent(long id, Component c) {
+		// seen so2al
+		// ezay ba3etly Component? o.O
 		Story s = Story.findById(id);
+		Security.check(Security.getConnected().in(s.componentID.project).can("editStory") && s.componentID.project == c.project);
 		s.componentID = c;
 		s.save();
 	}
@@ -482,6 +480,7 @@ public class Storys extends SmartCRUD {
 
 	public static void editPriority(long id, int p) {
 		Story s = Story.findById(id);
+		Security.check(Security.getConnected().in(s.componentID.project).can("editStory"));
 		s.priority = p;
 		s.save();
 	}
@@ -501,6 +500,7 @@ public class Storys extends SmartCRUD {
 
 	public static void addRemoveDependentStories(long storyId, Story toBeAddedOrRemoved, boolean remove) {
 		Story s = Story.findById(storyId);
+		Security.check(Security.getConnected().in(s.componentID.project).can("editStory"));
 		if (remove) {
 			s.dependentStories.remove(s.dependentStories.indexOf(toBeAddedOrRemoved));
 		} else {
@@ -521,30 +521,26 @@ public class Storys extends SmartCRUD {
 
 	public static boolean editDependentStories(long storyId, ArrayList<Story> newList) {
 		Story s = Story.findById(storyId);
+		// no security checks to perform here, this method is not accessible via
+		// usual requests
 		s.dependentStories = newList;
 		s.save();
 		return true;
 	}
 
 	public static boolean fromIdToStory(long storyId, String[] idList) {
-
 		ArrayList<Story> newList = new ArrayList<Story>();
-
 		long id;
 		if (idList == null)
 			return false;
 
 		for (int i = 0; i < idList.length; i++) {
-
 			id = Long.parseLong(idList[i]);
-
 			Story story = Story.findById(id);
-
 			newList.add(story);
 		}
 
 		editDependentStories(storyId, newList);
-
 		return true;
 
 	}
@@ -557,23 +553,20 @@ public class Storys extends SmartCRUD {
 	 */
 	public static void chooseDependentStories(long id) {
 		Story s = Story.findById(id);
+		Security.check(Security.getConnected().in(s.componentID.project).can("setDependentStories"));
 		List<Story> storys = new ArrayList<Story>();
 
 		for (Component comp : s.componentID.project.components) {
 			storys.addAll(comp.componentStories);
 		}
 		storys.remove(s);
-
 		List<String> sIds = new ArrayList<String>();
 
 		for (int i = 0; i < storys.size(); i++) {
-
 			sIds.add(storys.get(i).id + "");
-
 		}
 
 		render(id, storys, sIds);
-
 	}
 
 	/**
@@ -638,6 +631,8 @@ public class Storys extends SmartCRUD {
 		String message = "";
 		Story story = Story.findById(storyID);
 		Sprint sprint = Sprint.findById(sprintID);
+		User user = Security.getConnected();
+		Security.check(user.in(story.componentID.project).can("assignStoryToSprint") && user.in(sprint.project).can("assignStoryToSprint"));
 
 		if (story == null) {
 			message = "invalid story ID";
@@ -676,9 +671,7 @@ public class Storys extends SmartCRUD {
 
 		}
 		String header = "Story 'S" + story.id + "\'" + " has been assigned to Sprint: " + "\'" + sprint.sprintNumber + "\'" + ".";
-		String body = "In Project: " + "\'" +story.componentID.name + "\'" + "."+ '\n'
-		    + " In Component: " + "\'" + sprint.project.name + "\'" + "."+ '\n'
-		    + " Assigned by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		String body = "In Project: " + "\'" + story.componentID.name + "\'" + "." + '\n' + " In Component: " + "\'" + sprint.project.name + "\'" + "." + '\n' + " Assigned by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		/*
 		 * ////Long Informative Notification message. Not suitable for online
 		 * notification. String header =
@@ -707,7 +700,6 @@ public class Storys extends SmartCRUD {
 	 */
 	// @Check ("canEditStory")
 	public static void editScenario(long id) {
-
 		Story story1 = Story.findById(id);
 		ArrayList<String> succsses = new ArrayList();
 		ArrayList<String> failure = new ArrayList();
@@ -752,13 +744,12 @@ public class Storys extends SmartCRUD {
 	 */
 	public static void saveSuccsses(long id, String s) {
 		Story story1 = Story.findById(id);
+		Security.check(Security.getConnected().in(story1.componentID.project).can("editStory"));
 		story1.succussSenario = s;
 		story1.save();
 		Logs.addLog(Security.getConnected(), "Create", "Succuss Senario", story1.id, story1.componentID.project, new Date(System.currentTimeMillis()));
 		String header = "A new Succuss Senario has been added to Story 'S" + story1.id + "\'" + ".";
-		String body = "In Project: " + "\'" + story1.componentID.project.name + "\'" + "." + '\n'
-		    +  " In Component: " + "\'" + story1.componentID.name + "\'"+ "." + '\n'
-		    + " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		String body = "In Project: " + "\'" + story1.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + story1.componentID.name + "\'" + "." + '\n' + " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		/*
 		 * ////Long Informative Notification message. Not suitable for online
 		 * notification. String header =
@@ -787,13 +778,12 @@ public class Storys extends SmartCRUD {
 	 */
 	public static void saveFailure(long id, String f) {
 		Story story1 = Story.findById(id);
+		Security.check(Security.getConnected().in(story1.componentID.project).can("editStory"));
 		story1.failureSenario = f;
 		story1.save();
 		Logs.addLog(Security.getConnected(), "Create", "Failure Senario", story1.id, story1.componentID.project, new Date(System.currentTimeMillis()));
 		String header = "A new Failure Senario has been added to Story 'S" + story1.id + "\'" + ".";
-		String body = "In Project: " + "\'" + story1.componentID.project.name + "\'" + "."+ '\n'
-		    + " In Component: " + "\'" + story1.componentID.name + "\'"+ "." + '\n'
-		    + " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		String body = "In Project: " + "\'" + story1.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + story1.componentID.name + "\'" + "." + '\n' + " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		/*
 		 * ////Long Informative Notification message. Not suitable for online
 		 * notification. String header =
@@ -849,7 +839,7 @@ public class Storys extends SmartCRUD {
 		}
 	}
 
-	
+
 	/**
 	 * @author Monayri
 	 * Issue : 227
@@ -868,5 +858,14 @@ public class Storys extends SmartCRUD {
 			}
 			render(stories);
 		}
+	}
+
+	/**
+	 * Forbids access to listing all stories!
+	 * 
+	 * @author mahmoudsakr
+	 */
+	public static void list() {
+		forbidden();
 	}
 }

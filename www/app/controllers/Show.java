@@ -5,7 +5,16 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import models.*;
+import models.Board;
+import models.Component;
+import models.Meeting;
+import models.Project;
+import models.Request;
+import models.Role;
+import models.Sprint;
+import models.Story;
+import models.Task;
+import models.User;
 import play.mvc.With;
 
 @With (Secure.class)
@@ -61,13 +70,10 @@ public class Show extends SmartController {
 		}
 		User me = Security.getConnected();
 		List<Project> myProjects = new LinkedList<Project>();
-		if (me.isAdmin)
-			myProjects = Project.findAll();
-		else
-			for (Project project : me.projects) {
-				if (me.in(project).can("invite"))
-					myProjects.add(project);
-			}
+		for (Project project : Project.<Project> findAll()) {
+			if (me.in(project).can("invite"))
+				myProjects.add(project);
+		}
 		render(user, myProjects, me);
 	}
 
@@ -78,26 +84,26 @@ public class Show extends SmartController {
 		for (Request request : requests) {
 			requestedRoles.add(request.role);
 		}
-		List<User>members=project.users;
-		int memberscount=members.size();
-		List<Sprint>sprints=project.sprints;
-		int sprintscount=sprints.size();
-		int taskscount=0;
-		for(int i=0;i<sprintscount;i++){
-		List<Task>tasks=sprints.get(i).tasks;
-		taskscount+=tasks.size();
+		List<User> members = project.users;
+		int memberscount = members.size();
+		List<Sprint> sprints = project.sprints;
+		int sprintscount = sprints.size();
+		int taskscount = 0;
+		for (int i = 0; i < sprintscount; i++) {
+			List<Task> tasks = sprints.get(i).tasks;
+			taskscount += tasks.size();
 		}
-		List<Meeting>meetings=project.meetings;
-		int meetingscount=meetings.size();
-		List<Component>components=project.components;
-		int componentscount=components.size();
-		int storiescount=0;
-		for(int i=0;i<componentscount;i++){
-			List<Story>stories=components.get(i).componentStories;
-			storiescount+=stories.size();
-			}
+		List<Meeting> meetings = project.meetings;
+		int meetingscount = meetings.size();
+		List<Component> components = project.components;
+		int componentscount = components.size();
+		int storiescount = 0;
+		for (int i = 0; i < componentscount; i++) {
+			List<Story> stories = components.get(i).componentStories;
+			storiescount += stories.size();
+		}
 		User connectedUser = Security.getConnected();
-		render(storiescount,taskscount,componentscount,project, meetingscount,requestedRoles,memberscount,sprintscount, connectedUser);
+		render(storiescount, taskscount, componentscount, project, meetingscount, requestedRoles, memberscount, sprintscount, connectedUser);
 	}
 
 	public static void tasks(long id) {
@@ -114,73 +120,58 @@ public class Show extends SmartController {
 
 		render(project, tasks);
 	}
-	
+
 	/**
-	 * this method takes the id of the project to be deleted and sets the deleted attribute to true and then 
-	 * sends notification e-mail to the project members that the project has been deleted
-	 * Also,When the project is deleted the associated Meetings,Sprints,Components,Roles,
+	 * this method takes the id of the project to be deleted and sets the
+	 * deleted attribute to true and then sends notification e-mail to the
+	 * project members that the project has been deleted Also,When the project
+	 * is deleted the associated Meetings,Sprints,Components,Roles,
 	 * ,Board,ChatRoom are deleted (deletion marker set to true).
+	 * 
 	 * @Author Ghada Fakhry
 	 * @param id
 	 */
 	public static void deleteProject(long id) {
 		Project project = Project.findById(id);
-		if( Security.getConnected().in( project ).can( "deleteproject" ) )
-		{
-			project.deleted = true;
-			List <Meeting> meetings = project.meetings;
-			List <Component> components = project.components;
-			List <Sprint> sprints = project.sprints;
-			List <Request> requests = project.requests;
-		
-			Board board = project.board;
-			ChatRoom chatroom = project.chatroom;
-			
-			board.deleted = true;
-			board.save();
-			chatroom.deleted =true ;
-			chatroom.save();
-			
-			while( meetings.isEmpty() == false )
-			{
-				Meeting temp = (meetings.remove( 0 ));
-				temp.deleted = true ;
-				temp.save();
-			}
-			while( components.isEmpty() == false )
-			{
-				Component temp = (components.remove( 0 ));
-				temp.deleted = true ;
-				temp.save();
-			}
-			while( sprints.isEmpty() == false )
-			{
-				Sprint temp = (sprints.remove( 0 ));
-				temp.deleted = true ;
-				temp.save();
-			}
-			while( requests.isEmpty() == false )
-			{
-				Request temp = (requests.remove( 0 ));
-				temp.deleted = true ;
-				temp.save();
-			}
-			
-			
-			
-			project.save();
-			String body = "Please note that the project " + project.name + " has been deleted and all upcoming meetings and events are cancelled !";
-			String header = project.name + " deletion notification";
-			List<User> projectMembers = project.users;
-			Notifications.notifyUsers(projectMembers, header, body, (byte) -1);
-			Logs.addLog(Security.getConnected(), "Deleted Project", "project", id, project, new Date());	
+		Security.check(Security.getConnected().in(project).can("deleteproject"));
+		// if (Security.getConnected().in(project).can("deleteproject")) {
+		project.deleted = true;
+
+		project.board.deleted = true;
+		project.board.save();
+
+		project.chatroom.deleted = true;
+		project.chatroom.save();
+
+		for (Meeting temp : project.meetings) {
+			temp.deleted = true;
+			temp.save();
 		}
-		else
-		{
-			forbidden();
+
+		for (Component temp : project.components) {
+			temp.deleted = true;
+			temp.save();
 		}
+
+		for (Sprint temp : project.sprints) {
+			temp.deleted = true;
+			temp.save();
+		}
+
+		for (Request temp : project.requests) {
+			temp.deleted = true;
+			temp.save();
+		}
+
+		project.save();
+		String body = "Please note that the project " + project.name + " has been deleted and all upcoming meetings and events are cancelled !";
+		String header = project.name + " deletion notification";
+		List<User> projectMembers = project.users;
+		Notifications.notifyUsers(projectMembers, header, body, (byte) -1);
+		Logs.addLog(Security.getConnected(), "Deleted Project", "project", id, project, new Date());
+		// } else {
+		// forbidden();
+		// }
 	}
-	
-	
-	
+
 }
