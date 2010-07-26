@@ -142,7 +142,7 @@ public class Users extends SmartCRUD {
 		UserNotificationProfile currentNotificationProfile = UserNotificationProfile.find("user = " + currentUser.id + " and project = " + currentProject.id).first();
 		ObjectType type = ObjectType.get(UserNotificationProfiles.class);
 		notFoundIfNull(type);
-		if (currentNotificationProfile == null)
+		if (currentNotificationProfile == null || currentNotificationProfile.deleted)
 			error("Could not find a notification profile for this user in this project");
 		else {
 			JPASupport object = type.findById(currentNotificationProfile.id);
