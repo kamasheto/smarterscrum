@@ -84,7 +84,6 @@ public class Boards extends SmartCRUD {
 							break;
 						}
 					}
-					System.out.println(pcol.name);
 					if(pcol.onBoard&&!pcol.deleted)
 					{
 					data.get(i).get(columnsOfBoard.indexOf(pcol)).add(task);
@@ -502,9 +501,9 @@ public class Boards extends SmartCRUD {
 		return ut;
 	}
 	
-//	public static void show(String id) {
-//		forbidden();
-//	}
+	public static void show(String id) {
+		forbidden();
+	}
 
 	public static void delete(String id) {
 		forbidden();
