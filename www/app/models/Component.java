@@ -216,6 +216,11 @@ public class Component extends SmartModel {
 
 	public void init() {
 		componentBoard = new Board(this).save();
+		for(int i=0;i<project.board.columns.size();i++)
+		{
+			Column c = new Column(project.board.columns.get(i).name,componentBoard,project.board.columns.get(i).taskStatus);
+			c.save();
+		}
 		if(this.project==null){
 			this.number=1;
 		}else{
@@ -232,9 +237,9 @@ public class Component extends SmartModel {
 		uncategorized.componentID=this;
 		
 		this.save();
+
 		uncategorized.save();
-		// board.component = this;?
-		// board.save();
+		
 	}
 
 	public static class ComponentRowh extends ArrayList<ArrayList<String>> {
