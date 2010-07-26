@@ -5,6 +5,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/generic.css"/>
   		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/m.css"/>
+  		
+        <link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/main.css"/>
 		<link rel="stylesheet" type="text/css" media="screen"href="@{'/public/stylesheets/tipTip.css'}"/>
         <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jquery-ui-1.8.custom.css'}"/>
         <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jquery.jbar.css'}"/>
@@ -81,37 +83,24 @@
 	</div>
 </div>
 </div>
-<div style="position:absolute; top:117px; right:10px">
+<div class="topBar">
 #{if connected?.isAdmin}
 	<a class="aDIV topCornersRounded" href="/admin" style="color: #E5A1A5;" title="View the admin panel">Admin Panel</a>
 #{/if}
 	<a class="aDIV topCornersRounded" href="@{About.index}" title="read aboout SmartSoft?">About Us</a>  #{if connected}
-	<a class="aDIV topCornersRounded" href="@{Projects.myProjects()}" style="width: 120px !important" title="Want to see your projects?">My Projects</a> 
+	#{list connected.projects, as:'proj'}
+	<a class="aDIV topCornersRounded right" href="#"onclick="$('.workspaces').hide();$('#${proj.id}_workspace').show();" style="width: 120px !important" title="Want to see your projects?">
+	${proj.name}</a> 
+	#{/list}
 #{/if}
 </div>
-<div style="position:absolute; top:0px; right:10px">
-	<div class="inline-block right" style="background-color:#111; width: 20px; height: 20px;">
-		<div class="curlyNotchTopLeft makeTransparent"></div>
-	</div>
-	<div class="bottomCornersRounded right" style="padding: 10px 10px 10px 10px; background-color: #111; overflow: auto;">
-		<input class="search" type="text" /><input class="searchBtn" type="button" value="search" />
-	</div>	
-	<div class="inline-block right" style="background-color:#111; width: 20px; height: 20px;">
-		<div class="curlyNotchTopRight makeTransparent"></div>
-	</div>
+
+#{list connected.projects, as:'proj'}
+<div id="#${proj.id}_workspace" class="workspaces">
+<div class="topper nav">
+<a class="allCornersRounded" href="#" onclick="loadBox('@{Projects.settings(proj.id)}','smartsoft')">Settings</a> <a class="allCornersRounded" href="#" onclick="">Events</a>  <a class="allCornersRounded"href="#" onclick="">Users</a> <a class="allCornersRounded"href="#" onclick="">Stroies</a>
 </div>
-<table cellpadding="0" style="width: 100%" class="myTables">
-	<tr>
-		<td>
-			<table cellpadding="0" style="width: 100%" class="myTables">
-				<tr>
-					<td>
-						<div class="logoHolder">
-							<div class="left">
-								<a  href="/" title="Go back home?" id="TheLogo"></a>
-							</div>
-						</div>
-						<div class="topper">
+<div class="topper">
 						<div class="left">
 						#{if connected}
 							Hello ${connected.name}!&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -229,173 +218,10 @@
 						#{/list}
 						</div>
 						#{/if}
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<table cellpadding="0" class="myTables" style="width: 100%; overflow: auto">
-				<tr>
-					<td style="width: 47px">
-						<img alt="" src="@{'/public/images/topleft.png'}" />
-					</td>
-					<td>
-						<div class="left" style="position:relative;z-index:0;background: url('@{'/public/images/topcenter.png'}') repeat-x scroll left top; height: 43px; width: 100%"></div>
-					</td>
-				<td style="width: 47px">
-				<img alt="" src="@{'/public/images/topright.png'}" /></td>
-			</tr>
-		</table>
-		</td>
-	</tr>
-	<tr>
-		<td>
-		<div style="padding: 0px 14px 0px 14px; vertical-align: top">
-			<div style="background-color: #fff; overflow: auto;">
-				<table style="width: 100%" class="myTables">
-					<tr>
-						<td id="theSide"style="width: 200px; vertical-align: top; border-right:1px #ddd solid">
-						<div id="logger" style="padding-left:20px">
+<div class="workspaceContainer"id="container">
+#{doLayout/}
 </div>
-						
-						
-						#{if connected}
-						<div class="sideBar" style="vertical-align: top">
-							<div class="block">
-								<div class="left inline-block ss">{</div>
-								<div class="sideBarHeading inline-block left">Tools</div>		
-								<div class="left inline-block ss">}</div>
-							</div>
-							<br style="clear:both"/>
-							<div class="sideBarElements">#{get 'moreLinks' /}#{get 'moreControls'/}</div>
-						</div>
-						#{/if}
-						</td>
-						<td id="theContent"style="vertical-align: top; padding: 10px;">
-						<div class="left" style=" vertical-align: top;width:100%">
-							#{if connected}
-							<div id="breadCrumb" class="breadCrumb module">
-								<ul>
-									<li><a href="/">Home</a></li>
-									#{get 'crumbs' /} 
-								</ul>
-							</div>
-										
-							
-							#{/if}
-							<div id="container"style="margin-top:35px;">
-							#{doLayout /}
-							</div>
-						</div>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		</td>
-	</tr>
-	<tr>
-		<td>
-		<table class="myTables"cellpadding="0" class="myTables" style="width: 100%; overflow: auto">
-			<tr>
-				<td style="width: 43px">
-				<img alt="" src="@{'/public/images/bottomleft.png'}" /></td>
-				<td>
-				<div class="left" style="position:relative;z-index:0;background: url('@{'/public/images/bottomcenter.png'}') repeat-x scroll left top; height: 43px; width: 100%">
-				</div>
-				</td>
-				<td style="width: 43px">
-				<img alt="" src="@{'/public/images/bottomright.png'}" /></td>
-			</tr>
-		</table>
-		</td>
-	</tr>
-</table>
-
-
-<div style="text-align: center; font-size: 9px; display: block;padding:10px;background:#fff; margin:10px auto 10px auto; width:320px" class="allCornersRounded">
-
-made with <span style="font-size: 10px!important;	margin-top: 0px !important;	"class="ss">♥</span> (lots and lots of it)<br />Powered by smarterscrum</div>		
-
-<script type="text/javascript">
-		var getNotifications = function() {
-				$.getJSON('/notificationtasks/getlatestnews',
-					function(data) {
-						$(data).each(function(){
-							$.gritter.add({
-								title: this.madeBySysAdmin? '[SysAdmin] '+this.header : this.header,
-								text: this.body,
-								image: this.importance > 0 ? '/public/images/tick.png' : this.importance < 0 ? '/public/images/cross.png' : '/public/images/error.png',
-								sticky: false,
-								time: ''
-							});
-							return true;
-						});
-					setTimeout('getNotifications();', 1000);
-					});
-				}
-var ping = function() {
-				$.getJSON('/sessions/ping',
-					function(data) {
-						str = '';
-						$(data).each(function() {
-							// users?
-							if (this.isAdmin) {
-								this.name = '<span class="isAdmin">' + this.name + '</span>';
-							}
-							str += '<a href="/show/user?id='+this.id+'">' + this.name + '</a>, ';
-						});
-						
-						$('#onlineUsers').html(str.substring(0,str.length-2));
-						setTimeout('ping()', 1000*30);
-					});
-				}
-
-			 $.extend($.gritter.options, { 
-				fade_in_speed: 50, // how fast notifications fade in (string or int)
-				fade_out_speed: 300, // how fast the notices fade out
-				time: 5000 // hang on the screen for...
-			});
-			</script>
-
-			#{ifErrors}
-			<script type="text/javascript">
-				$(document).ready(function(){
-					$.bar({
-						message : '${errors}'
-					});
-				})
-			</script>
-			#{/ifErrors}
-			#{if flash.error}
-			<script type="text/javascript">
-			$(document).ready(function(){
-				$.bar({
-					message : '&{flash.error}'
-				});
-			})
-			</script>
-			#{/if}
-			#{if error}
-			<script type="text/javascript">
-			$(document).ready(function(){
-				$.bar({
-					message : '&{error}'
-				});
-			})
-			</script>
-			#{/if}
-			
-			#{if flash.success}
-			<script type="text/javascript">
-			$(document).ready(function(){
-				$.bar({
-					message : '&{flash.success}'
-				});
-			})
-			</script>
-			#{/if}
+</div>
+#{/list}
 </body>
 </html>
