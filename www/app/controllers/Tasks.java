@@ -316,6 +316,7 @@ public class Tasks extends SmartCRUD {
 				dependencies.add(tmp.taskStory.dependentStories.get(i).storiesTask.get(j));
 			}
 		}
+		dependencies.addAll(tmp.taskStory.storiesTask);
 		if (validation.hasErrors()) {
 			if (tmp.description.equals("") || tmp.description.equals(null)) {
 				message = "A Task must have a description";
