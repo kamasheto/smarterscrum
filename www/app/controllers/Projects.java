@@ -706,23 +706,27 @@ public class Projects extends SmartCRUD {
 		renderJSON(typeExists);
 	}
 	/**
+	 * Passes along the project id to the settings page
+	 * 
 	 * @author Hadeer Younis
 	 * @param id
+	 *            the project id
 	 **/
-	public static void events(long id)
+	public static void events( long id )
 	{
-	//	Project temp = Project.findById( id );
-	//	List sprints = temp.sprints;
-	//	List meetings = temp.meetings;
-		render(id);
+		render( id );
 	}
-	
+
 	/**
+	 * Passes along the project id to the settings page
+	 * 
 	 * @author Hadeer Younis
+	 * @param the
+	 *            project
 	 */
-	public static void settings(long id)
+	public static void settings( long id )
 	{
-		render(id);
+		render( id );
 	}
 	public static void delete() {
 		forbidden();
