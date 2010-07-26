@@ -1820,20 +1820,6 @@ public class Tasks extends SmartCRUD {
 
 	}
 	
-	public static List<Task> findTasks(long projectId, long componentId){
-		List<Task> tasks = new ArrayList<Task>();
-		if (componentId!=0){
-			Component component = Component.findById(componentId);
-			for(Story story : component.componentStories){
-				tasks.addAll(story.storiesTask);
-			}
-			return tasks;
-		}else{
-			Project project = Project.findById(projectId);
-			for(Component component : project.components){
-				tasks.addAll(findTasks(0, component.id));
-			}
-			return tasks;
-		}
-	}
+	
+	
 }

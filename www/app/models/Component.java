@@ -226,6 +226,11 @@ public class Component extends SmartModel {
 				}
 			}
 		}
+		Story uncategorized = new Story();
+		uncategorized.description="unCategorized";
+		uncategorized.uncategorized=true;
+		uncategorized.componentID=this;
+		uncategorized.save();
 		this.save();
 		// board.component = this;?
 		// board.save();

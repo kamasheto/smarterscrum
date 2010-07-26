@@ -60,6 +60,8 @@ public class Story extends SmartModel {
 	public double estimate;
 	
 	public int number;
+	
+	public boolean uncategorized;
 
 	public static List<Task> GetTasks(long StoryId) {
 
@@ -127,6 +129,15 @@ public class Story extends SmartModel {
 		this.productRole = null;
 		this.componentID = null;
 		this.storiesTask = new ArrayList<Task>();
+	}
+	
+	/**
+	 * @author Monayri
+	 * Issue : 227
+	 * Sprint : 4
+	 */
+	public Story(){
+		
 	}
 
 	/**

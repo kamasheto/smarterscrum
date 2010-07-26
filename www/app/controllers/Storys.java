@@ -848,18 +848,25 @@ public class Storys extends SmartCRUD {
 			render(project, storyId, cId, ok);
 		}
 	}
+
 	
-	public static List<Story> findStories(long projectId, long componentId){
+	/**
+	 * @author Monayri
+	 * Issue : 227
+	 * Sprint : 4
+	 */
+
+	public static void findStories(long projectId, long componentId){
 		if (componentId != 0) {
 			Component component = Component.findById(componentId);
-			return component.componentStories;
+			render(component.componentStories);
 		} else {
 			Project project = Project.findById(projectId);
 			List<Story> stories = new ArrayList<Story>();
 			for (Component component : project.components) {
 				stories.addAll(component.componentStories);
 			}
-			return stories;
+			render(stories);
 		}
 	}
 }
