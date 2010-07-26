@@ -21,19 +21,20 @@ import controllers.Application;
  * @version 670
  */
 @Entity
-public class User extends SmartModel {
+public class User extends SmartModel
+{
 	/**
 	 * username
 	 */
 	@Required
-	@MaxSize (25)
-	@Column (unique = true)
+	@MaxSize( 25 )
+	@Column( unique = true )
 	public String name;
 
 	/**
 	 * email
 	 */
-	@Column (unique = true)
+	@Column( unique = true )
 	@Required
 	@Email
 	public String email;
@@ -71,6 +72,12 @@ public class User extends SmartModel {
 	public String activationHash;
 
 	/**
+	 * @author Amr Hany
+	 * @Description password recovery hash
+	 */
+	public String recoveryHash;
+
+	/**
 	 * @author Amr Tj.Wallas
 	 * @Description did this user confirm his Account?
 	 */
@@ -85,7 +92,7 @@ public class User extends SmartModel {
 	/**
 	 * meeting attendances
 	 */
-	@OneToMany (mappedBy = "user")
+	@OneToMany( mappedBy = "user" )
 	public List<MeetingAttendance> attendantusers;
 
 	/**
@@ -103,35 +110,36 @@ public class User extends SmartModel {
 	/**
 	 * user logs
 	 */
-	@OneToMany (mappedBy = "user")
+	@OneToMany( mappedBy = "user" )
 	public List<Log> logs;
 
 	/**
 	 * tasks
 	 */
-	@OneToMany (mappedBy = "userTask")
+	@OneToMany( mappedBy = "userTask" )
 	public List<Task> tasks;
 
 	/**
 	 * UserNotificationProfiles
 	 */
-	@OneToMany (mappedBy = "user")
+	@OneToMany( mappedBy = "user" )
 	public List<UserNotificationProfile> userNotificationProfiles;
 	/**
 	 * Notifications
 	 */
-	@OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany( mappedBy = "user", cascade = CascadeType.ALL )
 	public List<Notification> notifications;
 
-	@OneToMany (mappedBy = "user")
+	@OneToMany( mappedBy = "user" )
 	public List<Request> requests;
-	
-	//@OneToMany (mappedBy = "author")
-	//public List<Comment> allComments;
-	
+
+	// @OneToMany (mappedBy = "author")
+	// public List<Comment> allComments;
+
 	public ArrayList<ChatRoom> openChats;
 
-	public User () {
+	public User()
+	{
 		roles = new ArrayList<Role>();
 		openChats = new ArrayList<ChatRoom>();
 		attendantusers = new ArrayList<MeetingAttendance>();
@@ -158,11 +166,12 @@ public class User extends SmartModel {
 	 * @param isAdmin
 	 *            to specify if this user a systemAdmin or not
 	 */
-	public User (String name, String email, String pass, String avatar, boolean isAdmin) {
-		this(name, email, pass);
+	public User( String name, String email, String pass, String avatar, boolean isAdmin )
+	{
+		this( name, email, pass );
 		this.avatar = avatar;
 		this.isAdmin = isAdmin;
-		this.activationHash = Application.randomHash(32);
+		this.activationHash = Application.randomHash( 32 );
 
 		openChats = new ArrayList<ChatRoom>();
 	}
@@ -173,7 +182,8 @@ public class User extends SmartModel {
 	 * @param avatar
 	 *            given a String will be stored as string
 	 */
-	public void setAvatar(String avatar) {
+	public void setAvatar( String avatar )
+	{
 		this.avatar = avatar.toString();
 	}
 
@@ -183,7 +193,8 @@ public class User extends SmartModel {
 	 * 
 	 * @return : List of user's projects
 	 */
-	public List<Project> getProjects() {
+	public List<Project> getProjects()
+	{
 		return projects;
 	}
 
@@ -200,22 +211,25 @@ public class User extends SmartModel {
 	 *            password of that new user
 	 * @Task C1S4
 	 */
-	public User (String name, String email, String password) {
+	public User( String name, String email, String password )
+	{
 		this();
 		this.name = name;
 		this.email = email.toLowerCase();
-		this.pwdHash = Application.hash(password);
+		this.pwdHash = Application.hash( password );
 		this.avatar = "";
-		this.activationHash = Application.randomHash(32);
+		this.activationHash = Application.randomHash( 32 );
 
 		openChats = new ArrayList<ChatRoom>();
 	}
 
-	public String getEmail() {
+	public String getEmail()
+	{
 		return email.toLowerCase();
 	}
 
-	public String toString() {
+	public String toString()
+	{
 		return name;
 	}
 
@@ -227,20 +241,25 @@ public class User extends SmartModel {
 	 *            does being a system admin provide overriding permissions?
 	 * @return oring of all permissions of all roles
 	 */
-	public Role in(Project project, boolean systemAdminOverride) {
+	public Role in( Project project, boolean systemAdminOverride )
+	{
 		List<Role> rs = this.roles;
 		List<Role> temp = new LinkedList<Role>();
-		for (Role r : rs) {
-			if (r.project == project) {
-				temp.add(r);
+		for( Role r : rs )
+		{
+			if( r.project == project )
+			{
+				temp.add( r );
 			}
 		}
-		Role result = new Role(null);
+		Role result = new Role( null );
 		result.systemAdmin = systemAdminOverride && isAdmin;
 
-		for (Role r : temp) {
-			for (Permission permission : r.permissions) {
-				result.permissions.add(permission);
+		for( Role r : temp )
+		{
+			for( Permission permission : r.permissions )
+			{
+				result.permissions.add( permission );
 			}
 		}
 		return result;
@@ -252,8 +271,9 @@ public class User extends SmartModel {
 	 * @param project
 	 * @return oring of all permissions of all roles
 	 */
-	public Role in(Project project) {
-		return in(project, true);
+	public Role in( Project project )
+	{
+		return in( project, true );
 	}
 
 	/**
@@ -264,24 +284,31 @@ public class User extends SmartModel {
 	 * @author Amr Hany
 	 */
 
-	public String meetingStatus(long meetingID) {
-		List<MeetingAttendance> attendance = MeetingAttendance.find("byMeeting.idAndUser.idAnddeleted", meetingID, this.id, false).fetch();
-		if (attendance.size() == 0) {
+	public String meetingStatus( long meetingID )
+	{
+		List<MeetingAttendance> attendance = MeetingAttendance.find( "byMeeting.idAndUser.idAnddeleted", meetingID, this.id, false ).fetch();
+		if( attendance.size() == 0 )
+		{
 			return "notInvited";
-		} else
-			return attendance.get(0).status;
+		}
+		else
+			return attendance.get( 0 ).status;
 	}
 
-	public boolean canInvite() {
-		for (Project p : projects) {
-			if (this.in(p).can("invite")) {
+	public boolean canInvite()
+	{
+		for( Project p : projects )
+		{
+			if( this.in( p ).can( "invite" ) )
+			{
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public static class Object {
+	public static class Object
+	{
 
 		long id;
 
@@ -290,13 +317,15 @@ public class User extends SmartModel {
 
 		boolean isAdmin;
 
-		public Object (long id, String username) {
+		public Object( long id, String username )
+		{
 			this.id = id;
 			this.name = username;
 		}
 
-		public Object (long id, String username, long lastClick, boolean isAdmin) {
-			this(id, username);
+		public Object( long id, String username, long lastClick, boolean isAdmin )
+		{
+			this( id, username );
 			this.lastClick = lastClick;
 			this.isAdmin = isAdmin;
 		}
@@ -312,15 +341,17 @@ public class User extends SmartModel {
 	 * @return : List of tasks in this sprint of this component of that user
 	 */
 
-	@SuppressWarnings ("null")
-	public List<Task> returnUserTasks(Sprint s, long componentID) {
-		Component c = Component.findById(componentID);
-		List<Task> tasks = c.returnComponentTasks(s);
+	@SuppressWarnings( "null" )
+	public List<Task> returnUserTasks( Sprint s, long componentID )
+	{
+		Component c = Component.findById( componentID );
+		List<Task> tasks = c.returnComponentTasks( s );
 		List<Task> userTasks = new ArrayList<Task>();
 
-		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).assignee.equals(this))
-				userTasks.add(tasks.get(i));
+		for( int i = 0; i < tasks.size(); i++ )
+		{
+			if( tasks.get( i ).assignee.equals( this ) )
+				userTasks.add( tasks.get( i ) );
 		}
 		return userTasks;
 
@@ -334,8 +365,9 @@ public class User extends SmartModel {
 	 *            project to display name in
 	 * @return String of dimmed username
 	 */
-	public String getDisplayName(Project project) {
-		return projects.contains(project) ? name : "<span class='userNotInProject'>" + name + "</span>";
+	public String getDisplayName( Project project )
+	{
+		return projects.contains( project ) ? name : "<span class='userNotInProject'>" + name + "</span>";
 	}
 
 	/**
@@ -344,36 +376,45 @@ public class User extends SmartModel {
 	 *            : the project we want to get the roles from this method
 	 *            returns the list of roles of a user in a specific project
 	 */
-	public String getUserRoles(Project project) {
+	public String getUserRoles( Project project )
+	{
 		String res = "";
-		for (int i = 0; i < this.roles.size(); i++) {
-			if (this.roles.get(i).project.id == project.id)
-				res += ", " + this.roles.get(i).name;
+		for( int i = 0; i < this.roles.size(); i++ )
+		{
+			if( this.roles.get( i ).project.id == project.id )
+				res += ", " + this.roles.get( i ).name;
 		}
-		if (!res.isEmpty())
-			res = res.substring(1);
+		if( !res.isEmpty() )
+			res = res.substring( 1 );
 		else
 			res = "No Role !!";
 		return res;
 	}
 
-	public void addRole(Role role) {
-		if (!roles.contains(role)) {
-			roles.add(role);	
-			if (!projects.contains(role.project)) {
-				projects.add(role.project);
-				if (!role.baseRole) {
-					Role baseRole = Role.find("byProjectAndBaseRole", role.project, true).first();
-					roles.add(baseRole);
+	public void addRole( Role role )
+	{
+		if( !roles.contains( role ) )
+		{
+			roles.add( role );
+			if( !projects.contains( role.project ) )
+			{
+				projects.add( role.project );
+				if( !role.baseRole )
+				{
+					Role baseRole = Role.find( "byProjectAndBaseRole", role.project, true ).first();
+					roles.add( baseRole );
 				}
 			}
 			save();
 		}
 	}
-	public void removeRole(Role role) {
-		roles.remove(role);
-		if (roles.size() < 0) {
-			projects.remove(role.project);
+
+	public void removeRole( Role role )
+	{
+		roles.remove( role );
+		if( roles.size() < 0 )
+		{
+			projects.remove( role.project );
 		}
 		save();
 	}
