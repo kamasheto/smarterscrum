@@ -214,14 +214,18 @@ public class Projects extends SmartCRUD {
 	 * This action method adds a task status to the list of task statuses in
 	 * project specified by the parameter id.
 	 * 
+	 * @author Behairy, Heba Elsherif
 	 * @param id
-	 *            long
+	 *         the id of the project which the Task Status is added to.
 	 * @param taskStatus
-	 *            String
-	 * @author Behairy
+	 *                 the name of the Task Status.
+	 * @parm indicator
+	 *             an indicator to indicate weather the Task Status indicates pending or closed.
+	 * @issue 219
+	 * @sprint 2, 4
 	 */
-
-	public static void addTaskStatus(long id, String taskStatus, String indicator) {
+	public static void addTaskStatus( long id, String taskStatus, String indicator )
+	{
 
 		Project p = Project.findById(id);
 		// if () {
@@ -244,7 +248,45 @@ public class Projects extends SmartCRUD {
 		// forbidden();
 		// }
 	}
-
+	
+	/**
+	 * This method edits a selected Task Status from the list of the task statuses in
+	 * a specific project.
+	 * 
+	 * @author Heba Elsherif
+	 * @parm statusID 
+	 *             the id of the selected Task Status.
+	 * @parm newName
+	 *             the new name of the selected Task Status.
+	 * @parm indicator
+	 *             an indicator to indicate weather the Task Status indicates pending or closed.
+	 * @return void
+	 * @issue 224
+	 * @sprint 4
+	 */
+	public static void editTaskStatus( long statusID, String newName, String indicator )
+	{
+		TaskStatus taskStatus = TaskStatus.findById( statusID );
+		Project p = Project.findById( taskStatus.project.id );
+		if( Security.getConnected().in( p ).can( "editProject" ) )
+		{
+			taskStatus.name = newName;
+			taskStatus.pending = false;
+			taskStatus.closed = false;
+			if(indicator.equalsIgnoreCase("Pending"))
+				taskStatus.pending = true;
+			if(indicator.equalsIgnoreCase("Closed"))
+				taskStatus.closed = true;
+			taskStatus.save();
+			Logs.addLog( Security.getConnected(), "Remove", "Project Default Task Status ", taskStatus.id, taskStatus.project, new Date( System.currentTimeMillis() ) );
+			renderJSON( true );
+		}
+		else
+		{
+			forbidden();
+		}
+	}
+	
 	/**
 	 * This action method removes a task type from the array list of task types
 	 * in project.
@@ -273,9 +315,9 @@ public class Projects extends SmartCRUD {
 	 *            long
 	 * @author Behairy
 	 */
-	// 3ayzeen id
-	// @Check ("canEditProject")
-	public static void removeTaskStatus(long statusID) {
+	@Check( "canEditProject" )
+	public static void removeTaskStatus( long statusID )
+	{
 
 		TaskStatus taskStatus = TaskStatus.findById(statusID);
 		Security.check(Security.getConnected().in(taskStatus.project).can("editProject"));
