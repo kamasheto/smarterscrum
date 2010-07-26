@@ -95,7 +95,7 @@
 #{/if}
 </div>
 
-#{list connected.projects, as:'proj'}
+#{list connected?.projects, as:'proj'}
 <div id="#${proj.id}_workspace" class="workspaces">
 <div class="topper nav">
 <a href="#" onclick="loadBox('@{Projects.settings(proj.id)}','workspace_${proj.id}')">Settings</a> 
