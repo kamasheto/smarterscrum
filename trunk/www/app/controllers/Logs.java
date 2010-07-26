@@ -16,8 +16,9 @@ import play.mvc.With;
  * @Task C1S1
  * @Task C1S3
  */
-@With (Secure.class)
-public class Logs extends SmartCRUD {
+@With( Secure.class )
+public class Logs extends SmartCRUD
+{
 	/**
 	 * Shortcut to more general Logs.addLog
 	 * 
@@ -28,8 +29,9 @@ public class Logs extends SmartCRUD {
 	 * @return
 	 * @see Logs.addLog(User, String, String, long, Project, Date)
 	 */
-	public static boolean addLog(Project project, String action_type, String resource_type, long resource_id) {
-		addLog(Security.getConnected(), action_type, resource_type, resource_id, project, new Date());
+	public static boolean addLog( Project project, String action_type, String resource_type, long resource_id )
+	{
+		addLog( Security.getConnected(), action_type, resource_type, resource_id, project, new Date() );
 		return true;
 	}
 
@@ -54,12 +56,33 @@ public class Logs extends SmartCRUD {
 	 * @see models.Log
 	 * @Task C1S1
 	 */
-	public static boolean addLog(User user, String action_type, String resource_type, long resource_id, Project project, Date date) {
-		Log newLog = new Log(user, action_type, resource_type, resource_id, project, date);
-		if (user.isAdmin)
+	public static boolean addLog( User user, String action_type, String resource_type, long resource_id, Project project, Date date )
+	{
+		Log newLog = new Log( user, action_type, resource_type, resource_id, project, date );
+		if( user.isAdmin )
 			newLog.madeBySysAdmin = true;
 
 		newLog.save(); /* Save That Log Entry */
+		return true;
+	}
+
+	/**
+	 * This log method should be only used in case of adding system logs or
+	 * custom logs. For example logs that are not related to a certain user nor
+	 * a project
+	 * <p>
+	 * <b><font color="red">ADD THE EXACT LOG MESSAGE WITH ALL HTML TAGS EXACTLY
+	 * AS IF YOU ARE IN A VIEW</font></bold>
+	 * </p>
+	 * 
+	 * @param logMessage
+	 *            : The custom log message you want to be displayed in the logs
+	 *            view.
+	 * @return <code>true</code> if the log entry was successfully saved.
+	 */
+	public static boolean addLog( String logMessage )
+	{
+		new Log( null, logMessage, "", -1, null, new Date() ).save();
 		return true;
 	}
 
@@ -75,25 +98,30 @@ public class Logs extends SmartCRUD {
 	 * @see views/Logs/list.html
 	 * @Task C1S3
 	 */
-	public static void list(int page, String filter) {
-		Security.check(Security.getConnected().isAdmin);
+	public static void list( int page, String filter )
+	{
+		Security.check( Security.getConnected().isAdmin );
 		int index = page * 25;
 		List<Log> logs = null;
 		// List<ObjectField> fields = ObjectType.get( Logs.class ).getFields();
-		if (filter != null && filter.contains("'")) {
-			flash.error("ILLEGAL CHARACTER !!");
+		if( filter != null && filter.contains( "'" ) )
+		{
+			flash.error( "ILLEGAL CHARACTER !!" );
 			filter = null;
-			logs = Log.find("order by date desc").from(index).fetch(25);
-			redirect("/admin");
-		} else if (filter != null && !filter.isEmpty()) {
-			if (filter.charAt(0) == ' ' || filter.charAt(filter.length() - 1) == ' ' || filter.contains("  ")) {
-				flash.error("Please Remove any extra Spaces !!");
+			logs = Log.find( "order by date desc" ).from( index ).fetch( 25 );
+			redirect( "/admin" );
+		}
+		else if( filter != null && !filter.isEmpty() )
+		{
+			if( filter.charAt( 0 ) == ' ' || filter.charAt( filter.length() - 1 ) == ' ' || filter.contains( "  " ) )
+			{
+				flash.error( "Please Remove any extra Spaces !!" );
 				filter = null;
-				logs = Log.find("order by date desc").from(index).fetch(25);
-				redirect("/admin");
+				logs = Log.find( "order by date desc" ).from( index ).fetch( 25 );
+				redirect( "/admin" );
 			}
 			String filter2 = "('" + filter + "')";
-			filter2 = filter2.replaceAll(" ", "','");
+			filter2 = filter2.replaceAll( " ", "','" );
 			filter2 = filter2.toLowerCase();
 			// System.out.println(filter2);
 			// logs = Log.find("LOWER(user.name) in "+filter2
@@ -102,63 +130,71 @@ public class Logs extends SmartCRUD {
 			// " and LOWER(project.name) in " + filter2 + " and LOWER(date) in "
 			// + filter2 + " order by date desc").from(index).fetch(25);
 			// System.out.println(smartFilter(filter2)+" <<there");
-			if (!smartFilter(filter2).isEmpty())
-				logs = Log.find(smartFilter(filter2)).from(index).fetch(25);
-		} else
-			logs = Log.find("order by date desc").from(index).fetch(25);
-		render(logs, page, filter);
+			if( !smartFilter( filter2 ).isEmpty() )
+				logs = Log.find( smartFilter( filter2 ) ).from( index ).fetch( 25 );
+		}
+		else
+			logs = Log.find( "order by date desc" ).from( index ).fetch( 25 );
+		render( logs, page, filter );
 	}
 
-	public static String smartFilter(String filter) {
+	public static String smartFilter( String filter )
+	{
 		String query = "";
-		if (User.find("LOWER(name) in " + filter).first() != null)
+		if( User.find( "LOWER(name) in " + filter ).first() != null )
 			query = query + "LOWER(user.name) in " + filter;
-		if (Log.find("LOWER(action_type) in " + filter).first() != null)
-			if (!query.isEmpty())
+		if( Log.find( "LOWER(action_type) in " + filter ).first() != null )
+			if( !query.isEmpty() )
 				query = query + " and LOWER(action_type) in " + filter;
 			else
 				query = query + "LOWER(action_type) in " + filter;
-		if (Log.find("LOWER(resource_type) in " + filter).first() != null)
-			if (!query.isEmpty())
+		if( Log.find( "LOWER(resource_type) in " + filter ).first() != null )
+			if( !query.isEmpty() )
 				query = query + " and LOWER(resource_type) in " + filter;
 			else
 				query = query + "LOWER(resource_type) in " + filter;
-		if (Project.find("LOWER(name) in " + filter).first() != null)
-			if (!query.isEmpty())
+		if( Project.find( "LOWER(name) in " + filter ).first() != null )
+			if( !query.isEmpty() )
 				query = query + " and LOWER(project.name) in " + filter;
 			else
 				query = query + "LOWER(project.name) in " + filter;
-		if (Log.find("LOWER(date) in " + filter).first() != null)
-			if (!query.isEmpty())
+		if( Log.find( "LOWER(date) in " + filter ).first() != null )
+			if( !query.isEmpty() )
 				query = query + " and LOWER(date) in " + filter;
 			else
 				query = query + "LOWER(date) in " + filter;
-		if (query.isEmpty())
+		if( query.isEmpty() )
 			return query;
-		else {
+		else
+		{
 			query = query + " order by date desc";
 			return query;
 		}
 
 	}
 
-	public static void show(String id) {
-		list(0, null);
+	public static void show( String id )
+	{
+		list( 0, null );
 	}
 
-	public static void save(String id) {
-		list(0, null);
+	public static void save( String id )
+	{
+		list( 0, null );
 	}
 
-	public static void blank() {
-		list(0, null);
+	public static void blank()
+	{
+		list( 0, null );
 	}
 
-	public static void create() {
-		list(0, null);
+	public static void create()
+	{
+		list( 0, null );
 	}
 
-	public static void delete(String id) {
-		list(0, null);
+	public static void delete( String id )
+	{
+		list( 0, null );
 	}
 }
