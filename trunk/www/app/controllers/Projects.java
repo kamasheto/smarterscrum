@@ -612,6 +612,9 @@ public class Projects extends SmartCRUD {
 		List<User> users = User.find("id=" + p.user.id).fetch();
 		Notifications.notifyUsers(users, p.name + " Project Request", "This is to Kindly Inform you that your request for Project " + p.name + " has been Approved. \n \n Message From Admin:" + message, (byte) 1);
 		p.save();
+		p.init();
+		Role proAdmin = Role.find("name= projectAdmin & project =" +p.id).first();
+		Security.getConnected().roles.add(proAdmin);
 		renderJSON(true);
 	}
 
