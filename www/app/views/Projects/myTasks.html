@@ -1,49 +1,8 @@
 #{extends 'magicBox.html' /}
 #{set 'title'}my Tasks#{/set}
 
-<div class="ui-widget-content draggableChild allCornersRounded">
-<div  id="Assignee Header"class="ui-widget-header">
-		As Assignee
-		<span class="revertFrom">
-			<span class="ui-icon ui-icon-circle-close"></span>
-		</span>
-			<span class="min"onclick="$(this).children().toggle();">
-			<span class="ui-icon ui-icon-circle-triangle-s" style="display: none;"></span>
-			<span class="ui-icon ui-icon-circle-triangle-n"></span>
-		</span>
-		
-</div>
-<div id="Assignee_content" class="ui-widget-content actual" >
-	<ul>
-		#{if tasks.size()==0}
-		<label> You have no assigned tasks</label>
-		#{/if}
-		#{list items:tasks ,as :'Task'}
-			<li><a href="/tasks/getreport?id=${Task.id}">S${Task.taskStory.number} ${Task.description}</a></li>
-		#{/list}
-	</ul>
-</div>
 
-<div  id="Reviewer Header"class="ui-widget-header">
-		As Reviewer
-		<span class="revertFrom">
-			<span class="ui-icon ui-icon-circle-close"></span>
-		</span>
-			<span class="min"onclick="$(this).children().toggle();">
-			<span class="ui-icon ui-icon-circle-triangle-s" style="display: none;"></span>
-			<span class="ui-icon ui-icon-circle-triangle-n"></span>
-		</span>
-		
-</div>
-<div id="Reviewer_content" class="ui-widget-content actual" >
-		#{if reviews.size()==0}
-		<label> You have no tasks to review</label>
-		#{/if}
-		#{list items:reviews ,as :'Task'}
-		<div name="/tasks/getreport?id=${Task.id}" id="Task_${Task.id}">S${Task.taskStory.number} ${Task.description}</div>
-		#{/list}
+<div name="/storys/magicShow?projectId=${project.id}&assignee=1">As Assignee</div>
 
-</div>
+<div name="/storys/magicShow?projectId=${project.id}&reviewer=1">As Reviewer</div>
 
-
-</div>

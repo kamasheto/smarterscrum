@@ -1593,21 +1593,17 @@ public class Tasks extends SmartCRUD {
 		User user = Security.getConnected();
 		render(taskId, states, user);
 	}
-
-	public static List<Task> findTasks(long projectId, long componentId) {
-		List<Task> tasks = new ArrayList<Task>();
-		if (componentId != 0) {
-			Component component = Component.findById(componentId);
-			for (Story story : component.componentStories) {
-				tasks.addAll(story.storiesTask);
-			}
-			return tasks;
-		} else {
-			Project project = Project.findById(projectId);
-			for (Component component : project.components) {
-				tasks.addAll(findTasks(0, component.id));
-			}
-			return tasks;
-		}
+	
+	/**
+	 * 
+	 * @author Monayri
+	 * Sprint 4
+	 * Issue 218
+	 *   
+	 */
+	public static void magicShow(long taskId){
+		Task task = Task.findById(taskId);
+		render(task);
 	}
-}
+	
+	}
