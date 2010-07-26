@@ -519,7 +519,7 @@ public class Projects extends SmartCRUD {
 		ProjectNotificationProfile currentNotificationProfile = currentProject.notificationProfile;
 		ObjectType type = ObjectType.get(ProjectNotificationProfiles.class);
 		notFoundIfNull(type);
-		if (currentNotificationProfile == null)
+		if (currentNotificationProfile == null || currentNotificationProfile.deleted)
 			error("Could not find a notification profile for this project");
 		else {
 			JPASupport object = type.findById(currentNotificationProfile.id);
