@@ -1,13 +1,6 @@
-#{extends 'main.html' /}
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${proj.id}">${proj.name}</a></li>
-<li><a href="/sprints/showsprints?projectId=${proj.id}">${proj.name} Sprints</a>
-<li><a href="/sprints/showsprint?id=${sprint.id}&projectId={proj.id}">Sprint ${sprint.sprintNumber}</a>
-
+#{extends 'magicBox.html' /}
+#{set 'title'}Sprint ${sprint.id}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 #{/set}
- 
-#{set 'moreScripts'}
 <script type="text/javascript">
 function isBefore(date){
 	var now=new Date();
@@ -19,12 +12,12 @@ function isBefore(date){
 	return false;
 		}
 }</script>
-#{/set}
-#{set 'moreLinks'}
-<a href="@{SprintBacklog.showGraph(sprint.id,0)}" title="view the burndown chart?">View the burndown chart</a>
-#{/set}
 
-<h1>Sprint ${sprint.id}</h1>
+
+
+<div name="@{Sprints.backlogs(sprint.id)}">Backlogs</div>
+<div name="@{Sprints.charts(sprint.id)}">Charts</div>
+
 #{if (!running)}
 <script type="text/javascript">
 
@@ -62,15 +55,8 @@ if(isBefore('${sprint.format(sprint.startDate)}')==true){
 <strong>End Date:</strong> ${sprint.format(sprint.endDate)}
 <br />
 
-<h2>
-Sprint Component Backlogs</h2>
-#{list items:sprint.project.components, as:'component'}
-<a title="Look @ ${component.name}'s sprint backlog?" href="@{SprintBacklog.index(component.id,sprint.id)}">${component.name}</a>
-<br/>
-<br/>
-#{/list}
-<h2>
-Task Boards</h2>
+
+<h2>Task Boards</h2>
 #{set 'onLoad'}
 #{if ended==true}
 #{if sprint.finalsnapshot==null }
@@ -91,6 +77,3 @@ $.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}});
 #{if sprint.finalsnapshot!=null }
 <div><a title="Take a look @ the full task board?" href="@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)} ">View Sprint ${sprint.id} Task Board</a>
 #{/if}
-<body>
-
-</body>

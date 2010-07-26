@@ -79,6 +79,29 @@ public class Sprints extends SmartCRUD {
 	}
 
 	/**
+	 * Renders the sprint to the backlogs page
+	 * @author Hadeer Younis
+	 * @param id
+	 *            The sprint id
+	 */
+	public static void backlogs( long id )
+	{
+		Sprint sprint = Sprint.findById( id );
+		render(sprint);
+	}
+	/**
+	 * Renders the sprint to the charts page
+	 * @author Hadeer Younis
+	 * @param id
+	 *            The sprint id
+	 */
+	public static void charts( long id )
+	{
+		Sprint sprint = Sprint.findById( id );
+		render(sprint);
+	}
+
+	/**
 	 * to be called from the sprint creation page inside a certain project thats
 	 * not to let the user choose the project
 	 * 

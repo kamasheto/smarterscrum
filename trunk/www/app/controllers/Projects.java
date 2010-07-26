@@ -710,7 +710,7 @@ public class Projects extends SmartCRUD {
 		renderJSON(typeExists);
 	}
 	/**
-	 * Passes along the project id to the settings page
+	 * Passes along the project id to the events page
 	 * 
 	 * @author Hadeer Younis
 	 * @param id
