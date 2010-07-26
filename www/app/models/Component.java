@@ -230,8 +230,9 @@ public class Component extends SmartModel {
 		uncategorized.description="unCategorized";
 		uncategorized.uncategorized=true;
 		uncategorized.componentID=this;
-		uncategorized.save();
+		
 		this.save();
+		uncategorized.save();
 		// board.component = this;?
 		// board.save();
 	}
