@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -111,9 +112,10 @@ public class Projects extends SmartCRUD {
 	 * 
 	 * @param name
 	 * @author behairy
+	 * @throws UnsupportedEncodingException 
 	 */
-	public static void checkAvailability(String name) {
-		boolean flag = !Project.isUnique(name);
+	public static void checkAvailability(String name) throws UnsupportedEncodingException {
+		boolean flag = !Project.isUnique(java.net.URLEncoder.encode(name, "UTF-8"));
 		renderJSON(flag);
 	}
 
