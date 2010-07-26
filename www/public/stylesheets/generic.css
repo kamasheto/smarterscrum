@@ -22,11 +22,10 @@ button,a button,input[type=submit],input[type=ok],input[type=send],input[type=bu
 .nav a
 {
 padding:5px;
-background:rgba(255,255,255,0.5);
 }
 .nav
 {
-	height:60px !important;
+
 text-align:center;
 font-size:18px;
 }
