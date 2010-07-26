@@ -123,9 +123,9 @@ table td,table tr,table div,table div div {
 {
 	display:none;
 }
-.ui-widget-header img,.ui-widget-header span
+.ui-widget-header span
 {
-float:right;
+	float:right;
 }
 
 .draggable.ui-widget-content {
