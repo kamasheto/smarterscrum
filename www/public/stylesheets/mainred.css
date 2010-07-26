@@ -1,5 +1,5 @@
 /**generic**/
-.logoHolder {
+.logoHolder,.topBar {
 	background: url('/public/images/bg2red.png') repeat-x scroll left top;
 
 }

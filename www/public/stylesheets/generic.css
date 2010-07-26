@@ -19,7 +19,17 @@ button,a button,input[type=submit],input[type=ok],input[type=send],input[type=bu
 	font-size: 1.1em;
 	font-family: verdana;
 }
-
+.nav a
+{
+padding:5px;
+background:rgba(255,255,255,0.5);
+}
+.nav
+{
+	height:60px !important;
+text-align:center;
+font-size:18px;
+}
 body,html {
 	background: #333 url('') repeat top left;
 	font-family: Verdana;
@@ -161,14 +171,14 @@ img {
 .aDIV {
 	color: #eee !important;
 	padding: 5px;
-	margin-top: -22px;
+	margin-top: 10px;
 	font-family: Verdana;
 	font-size: 14px;
 	font-variant: small-caps;
 	text-transform: lowercase;
 	min-width: 100px;
 	display: inline-block;
-	float: left;
+
 	text-align: center;
 	background-color: #111;
 	overflow: hidden;
@@ -580,4 +590,8 @@ display:block;
 	background-color: #b7568d;
 	padding: 7px;
 	color: #ffffff;
+}
+body
+{
+background:transparent url('img/workspace.png') repeat top left scroll;
 }
