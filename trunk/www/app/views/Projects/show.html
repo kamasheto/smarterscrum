@@ -453,14 +453,8 @@ hideLoader('addES','loaderES');
 </script>
 	
 	<h2 id="crudShowTitle">Edit "&{object.name}" Defaults and Settings </h2>
-	
-	
 <p>	&{object.description}</p> 
-	
 	<div class="objectForm">
-	#{form action:@save(object.id), enctype:'multipart/form-data'}
-
-
 <div id="accordion">
 #{if connected.in(object).can('editProject') }
 	<h3><a href="#">Default Sprint Duration:</a></h3>
@@ -644,6 +638,4 @@ hideLoader('addES','loaderES');
 
 		</div>
 	#{/if}
-	<br>
-	#{/form}
 </div>

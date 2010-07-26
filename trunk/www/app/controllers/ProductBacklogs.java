@@ -11,7 +11,7 @@ import models.Story;
 import models.User;
 import play.mvc.With;
 
-@With(Secure.class)
+@With (Secure.class)
 public class ProductBacklogs extends SmartController {
 	/**
 	 * Gets the list of stories in the project or the component that has the id
@@ -29,15 +29,12 @@ public class ProductBacklogs extends SmartController {
 	 * @see list of user stories
 	 */
 	public static void index(long id, int isComp) {
-
 		User user = Security.getConnected();
-
 		boolean inproj = user.isAdmin;
 		String name = "";
 		if (isComp == 0) {
 			Project project = Project.findById(id);
-			Security.check(project.users.contains(Security.getConnected())
-					|| Security.getConnected().isAdmin);
+			Security.check(project.users.contains(Security.getConnected()) || Security.getConnected().isAdmin);
 			name = project.name;
 			List<List<Story>> stories = new LinkedList<List<Story>>();
 			List<Sprint> sprints = project.sprints;
@@ -53,17 +50,10 @@ public class ProductBacklogs extends SmartController {
 				stories.add(new LinkedList<Story>());
 				for (Story story : component.componentStories) {
 					stories.get(i).add(story);
-
 				}
 				i++;
 			}
 
-			// for (int i = 0; i < user.roles.size(); i++) {
-			// if (user.roles.get(i).project.equals(project)) {
-			// inproj = user.roles.get(i).canEditBacklog;
-			// break;
-			// }
-			// }
 			inproj = user.in(project).can("editBacklog");
 			if (!(project.users.contains(user) || inproj)) {
 				stories = null;
@@ -74,15 +64,12 @@ public class ProductBacklogs extends SmartController {
 
 			for (int a = 0; a < stories.size(); a++) {
 				for (int j = 0; j < stories.get(a).size(); j++) {
-					String[] tempS = stories.get(a).get(j).succussSenario
-							.split("/n");
+					String[] tempS = stories.get(a).get(j).succussSenario.split("/n");
 					String tempS1 = "";
 					for (int k = 0; k < tempS.length; k++)
 						tempS1 = tempS1 + tempS[k] + " <br/> ";
 					stories.get(a).get(j).succussSenario = tempS1;
-
-					String[] tempF = stories.get(a).get(j).failureSenario
-							.split("/n");
+					String[] tempF = stories.get(a).get(j).failureSenario.split("/n");
 					String tempS2 = "";
 					for (int k = 0; k < tempF.length; k++)
 						tempS2 = tempS2 + tempF[k] + " <br/> ";
@@ -94,9 +81,7 @@ public class ProductBacklogs extends SmartController {
 
 		} else {
 			Component component = Component.findById(id);
-			Security.check(component.componentUsers.contains(Security
-					.getConnected())
-					|| Security.getConnected().isAdmin);
+			Security.check(component.componentUsers.contains(Security.getConnected()) || Security.getConnected().isAdmin);
 			name = component.name;
 			Long compId = component.id;
 			List<List<Story>> stories = new LinkedList<List<Story>>();
@@ -113,12 +98,7 @@ public class ProductBacklogs extends SmartController {
 				if (currentDate >= sprintStart && currentDate <= sprintEnd)
 					running = true;
 			}
-			// for (int i = 0; i < user.roles.size(); i++) {
-			// if (user.roles.get(i).project.equals(project)) {
-			// inproj = user.roles.get(i).canEditBacklog;
-			// break;
-			// }
-			// }
+
 			inproj = user.in(project).can("editBacklog");
 			if (!(user.components.contains(component) || inproj)) {
 				stories = null;
@@ -128,8 +108,7 @@ public class ProductBacklogs extends SmartController {
 			}
 
 			for (int j = 0; j < component.componentStories.size(); j++) {
-				String[] temp = component.componentStories.get(j).succussSenario
-						.split("/n");
+				String[] temp = component.componentStories.get(j).succussSenario.split("/n");
 				String temp1 = "";
 				for (int k = 0; k < temp.length; k++)
 					temp1 = temp1 + temp[k] + " <br/> ";
@@ -157,7 +136,6 @@ public class ProductBacklogs extends SmartController {
 
 	public static void showGraph(long id, long componentId) {
 		Project temp = Project.findById(id);
-
 		Security.check(Security.getConnected().projects.contains(temp));
 		Component myComponent = Component.findById(componentId);
 		String Data = temp.fetchData(componentId);
@@ -168,8 +146,7 @@ public class ProductBacklogs extends SmartController {
 				SprintsInProject.remove(i);
 			else {
 				for (int j = 0; j < SprintsInProject.size(); j++) {
-					if (SprintsInProject.get(j).getDuration() >= SprintsInProject
-							.get(i).getDuration())
+					if (SprintsInProject.get(j).getDuration() >= SprintsInProject.get(i).getDuration())
 						maxDays = SprintsInProject.get(j).getDuration();
 				}
 			}
