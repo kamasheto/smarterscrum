@@ -1,5 +1,5 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}Story: ${story.number}<a href="javascript:overlayOpen('/admin/storys/${story.id}')"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/set}
+#{set 'title'}Story: ${story.number}<a href="javascript:overlayOpen('/admin/storys/${story.id}')"><img src="@{'/public/images/famfam/pencil.png'}"></a><a href="javascript:overlayOpen('/storys/editScenario?id=${story.id}')"><img src="@{'/public/images/editsce.gif'}"></a>#{/set}
 #{if connected.in(project).can('editStory')}
 	${story.description}<br>
 	<b>Success Scenarios</b><br>
