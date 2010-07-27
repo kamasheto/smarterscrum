@@ -2,6 +2,12 @@
 #{set 'title'}Components#{/set}
 #{if connected.in(project).can('editStory')}
 	#{list items:components, as:'component'}
-		<div name="/components/viewTheComponent?componentId=${component.id}">C${component.number}: ${component.name}</div>
+		<div name="/components/viewTheComponent?componentId=${component.id}">C${component.number}: ${component.name}<a class="right" onclick="javascript:deleteTheComponent(${component.id});"><img src="@{'/public/images/famfam/delete.png'}"></a></div>
 	#{/list}
 #{/if}
+<script type="text/javascript">
+function deleteTheComponent(cId){
+	$.post('@{Components.delete()}', {id:cId}, function(data){ javascript:$.bar({message:data});
+	;});
+}
+</script>
