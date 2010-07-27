@@ -11,6 +11,23 @@ function isBefore(date){
 	return false;
 		}
 }</script>
+#{if (running)} 
+<div style="margin-top: 20px; padding: 0pt 0.7em;" class="ui-state-highlight ui-corner-all"> 
+					<p><span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+					<strong>The sprint is currently running</strong></p>
+				</div>
+
+#{/if}
+#{note}
+<strong>Sprint Number:</strong> ${sprint.sprintNumber}
+<br />
+<strong>Project:</strong> ${proj.name}
+<br />
+<strong>Start Date: </strong>${sprint.format(sprint.startDate)}
+<br />
+<strong>End Date:</strong> ${sprint.format(sprint.endDate)}
+<br />
+#{/note}
 
 
 
@@ -46,14 +63,7 @@ if(isBefore('${sprint.format(sprint.startDate)}')==true){
 		}
 </script>
 <br/>
-<strong>Sprint Number:</strong> ${sprint.sprintNumber}
-<br />
-<strong>Project:</strong> ${proj.name}
-<br />
-<strong>Start Date: </strong>${sprint.format(sprint.startDate)}
-<br />
-<strong>End Date:</strong> ${sprint.format(sprint.endDate)}
-<br />
+
 
 
 <h2>Task Boards</h2>
