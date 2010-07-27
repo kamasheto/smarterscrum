@@ -111,12 +111,13 @@
 });
 
 function load(url, el) {
-	//if($.inArray(myDivs,url)){
-		//alert();
+
+	if($.inArray(url,myDivs)==-1){
 	var pUrl = $('#'+el).attr('name');
-	$('#'+el+'_header').load(pUrl+' .mainH');
-	//alert(pUrl);
-	//alert(el);
+	$('#'+el+'_header').load(pUrl+' .mainH', function(){
+		
+		$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
+	});
 	$('#' + el + '_content').load(url, function() {
 		$('#' + el + ' .min').first().show();
 		$('#' + el + '_content').children().show();
@@ -124,20 +125,20 @@ function load(url, el) {
 		$('#' + el + ' .loading').first().hide();
 		$('#' + el + '_content').slideDown(400);
 		magic(el);
-
 		myDivs.push(url);
+
 	});
-}
+}}
 
 function removeMe(me)
 {
-	$(me).parent().parent().remove();
+	$(me).closest('.ui-widget-content').remove();
 }
 
 
 function loadBox(url, el) {
-	//alert($.inArray(myDivs,url));
-	//if(!$.inArray(myDivs,url)){
+	alert(url);
+	if($.inArray(url,myDivs)==-1){
 	$('#' + el).append('<div style="position:absolute"id="myTemp"></div>');
 	
 	$('#' + el + ' #myTemp').load(url, function() {
@@ -145,7 +146,7 @@ function loadBox(url, el) {
 		$('#' + el + ' #myTemp').attr('id', '');
 		myDivs.push(url);
 	});
-	//}
+	}
 }
 
 function magic(id) {
