@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.List;
 
+import models.Permission;
 import models.Project;
 import models.Role;
 import play.db.jpa.JPASupport;
@@ -174,5 +175,12 @@ public class Roles extends SmartCRUD {
 
 	public static void list() {
 		forbidden();
+	}
+	
+	public static void removePermission(long roleId, long permId) {
+		Role role = Role.findById(roleId);
+		Security.check(Security.getConnected().in(role.project).can("editRole"));
+		role.permissions.remove(Permission.<Permission> findById(permId));
+		role.save();
 	}
 }

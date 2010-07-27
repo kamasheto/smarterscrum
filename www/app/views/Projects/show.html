@@ -1,4 +1,4 @@
-#{extends 'main.html' /}
+#{extends 'overlay.html' /}
 
 #{set 'crumbs'}
 <li><a href="/show/projects">Projects</a></li>
@@ -12,9 +12,8 @@
 <script type="text/javascript">
 
 $(function(){
-	$("#accordion").accordion({autoHeight:false });
-	
-	});
+	$("#accordion").accordion({autoHeight:false });	
+});
 	
 function showLoader(id,select){
 var element=document.getElementById(id);
