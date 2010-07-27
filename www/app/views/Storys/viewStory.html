@@ -3,13 +3,13 @@
 #{if connected.in(project).can('editStory')}
 <a href="javascript:overlayOpen('/admin/storys/${story.id}')"><img src="@{'/public/images/famfam/pencil.png'}"></a><br>
 	${story.description}<br>
-	<b>Success Scenarios</b>
+	<b>Success Scenarios</b><br>
 	#{list items:success, as:'suc'}
-		<br>${suc}
+		${suc}<br>
 	#{/list}
-	<br><b>Failure Scenarios</b>
+	<br><b>Failure Scenarios</b><br>
 	#{list items:failure, as:'fail'}
-		<br>${fail}
+		${fail}<br>
 	#{/list}<br>
 	#{list items:story.storiesTask, as:'task'}
 		<div name="/storys/magicShow?taskId=${task.id}">S:${story.number} ${task.description}</div>
