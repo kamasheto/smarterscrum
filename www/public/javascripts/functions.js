@@ -137,7 +137,7 @@ function removeMe(me)
 
 
 function loadBox(url, el) {
-	alert(url);
+	
 	if($.inArray(url,myDivs)==-1){
 	$('#' + el).append('<div style="position:absolute"id="myTemp"></div>');
 	
