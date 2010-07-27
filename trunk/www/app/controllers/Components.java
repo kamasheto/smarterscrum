@@ -178,7 +178,7 @@ public class Components extends SmartCRUD {
 			if(c.deleted == false)
 				components.add(c);
 		}
-		render(components);
+		render(components, projectId);
 	}
 	
 	public static void viewTheComponent(long componentId){
