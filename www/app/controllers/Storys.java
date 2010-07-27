@@ -852,10 +852,16 @@ public class Storys extends SmartCRUD {
 			Component component = Component.findById(componentId);
 			if(tasks==1){
 				title="Component "+component.number+" Tasks";
-			}else
+				List<Task> task = new ArrayList<Task>();
+				for(Story story : component.componentStories){
+					task.addAll(story.storiesTask);
+				}
+				render(task, title);
+			}else{
 				title="Component "+component.number+" Stories";
-			
-			render(component.componentStories, title);
+				List<Story> stories = component.componentStories;
+				render(stories, title);
+			}
 		} else {
 			if(taskId!=0){
 				Task task1 = Task.findById(taskId);
@@ -882,7 +888,6 @@ public class Storys extends SmartCRUD {
 							}
 						}
 						}
-					System.out.println(task);
 					render(task, title);
 				}else{
 					if(assignee==1){
@@ -909,7 +914,7 @@ public class Storys extends SmartCRUD {
 						render(task, title);
 					}else{
 						if(projectId!=0){
-							title="Project Tasks";
+							title="Project Stories";
 							Project project = Project.findById(projectId);
 							List<Story> stories = new ArrayList<Story>();
 							for (Component component : project.components) {

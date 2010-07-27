@@ -85,7 +85,7 @@
 <div id="myHeaders" style="display:none;">
 #{list connected?.projects, as:'proj'}
 <div id="header_${proj.id}" class="workspaces topper nav">
-<a href="#" onclick="">Stories</a>	
+<a href="#" onclick="loadBox('/storys/magicShow?projectId=${proj.id}','workspace_${proj.id}')">Stories</a>	
 <a  href="#"onclick="loadBox('/components/listComponentsInProject?projectId=${proj.id}','workspace_${proj.id}')">Components</a>
 	<a href="#" onclick="">Users</a>
 	<a  href="#"onclick="loadBox('@{Projects.events(proj.id)}','workspace_${proj.id}')">Events</a>

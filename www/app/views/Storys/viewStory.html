@@ -12,6 +12,6 @@
 		<br>${fail}
 	#{/list}<br>
 	#{list items:story.storiesTask, as:'task'}
-		<div name="/tasks/magicshow?taskId=${task.id}">T:${task.number} ${task.description}</div>
+		<div name="/storys/magicShow?taskId=${task.id}">S:${story.number} ${task.description}</div>
 	#{/list}
 #{/if}
