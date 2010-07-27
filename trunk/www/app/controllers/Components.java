@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -139,11 +140,13 @@ public class Components extends SmartCRUD {
 			Logs.addLog(Security.getConnected(), "Delete", "Component", component.id, component.project, new Date(System.currentTimeMillis()));
 			Notifications.notifyUsers(component.project, "Component", "Component " + component.name + " was deleted", "onDeleteComponent", (byte) -1);
 		} catch (Exception e) {
-			flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
-			redirect(request.controller + ".show", object.getEntityId());
+			//flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
+			//redirect(request.controller + ".show", object.getEntityId());
+			renderText("couldn't delete the component");
 		}
-		flash.success(Messages.get("crud.deleted", type.modelName, object.getEntityId()));
-		redirect("/projects/" + component.project.id + "/components");
+		//flash.success(Messages.get("crud.deleted", type.modelName, object.getEntityId()));
+		//redirect("/projects/" + component.project.id + "/components");
+		renderText("deleted successfully");
 	}
 
 	/**
@@ -170,9 +173,11 @@ public class Components extends SmartCRUD {
 	
 	public static void listComponentsInProject(long projectId){
 		Project project = Project.findById(projectId);
-		if(project == null)
-			System.out.println("NULLLLLLLLLLLLLLLLLL");
-		List<Component> components = project.components;
+		List<Component> components = new ArrayList<Component>();
+		for(Component c:project.components){
+			if(c.deleted == false)
+				components.add(c);
+		}
 		render(components);
 	}
 	
