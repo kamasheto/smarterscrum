@@ -927,9 +927,16 @@ public class Storys extends SmartCRUD {
 	
 	public static void viewStory(long storyId)
 	{
+		String[] success, failure;
 		Story story = Story.findById(storyId);
-		String[] success = story.succussSenario.split("/n");
-		String[] failure = story.failureSenario.split("/n");
+		if(!(story.succussSenario == null))
+			success = story.succussSenario.split("/n");
+		else
+			success = new String[1];
+		if(!(story.failureSenario == null))
+			 failure = story.failureSenario.split("/n");
+		else
+			 failure = new String[1];
 		render(story,success,failure);
 	}
 
