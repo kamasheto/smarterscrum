@@ -32,7 +32,6 @@
         <script type="text/javascript">
        
        		$(function(){
-       			$("#breadCrumb").jBreadCrumb();
        			$('.formatDate').each(function(){
 					$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );
 				});
@@ -43,6 +42,8 @@
    			    $("a").tipTip({delay:0});
    			    $("td").tipTip({delay:0});
    			    $("span").tipTip({delay:0});
+   			 $("div").tipTip({delay:0});
+   			 $("img").tipTip({delay:0});
    			    $('div.crudField').each(function(){
 						if ($(this).html().trim() == '') {
 							$(this).remove();
@@ -75,14 +76,14 @@
 #{/if}
 	<a class="aDIV topCornersRounded" href="@{About.index}" title="read aboout SmartSoft?">About Us</a>  #{if connected}
 	#{list connected.projects, as:'proj'}
-	<a class="aDIV topCornersRounded right" href="#"onclick="loadBox('@{Projects.myTasks(proj.id)}','workspace_${proj.id}');$('#normal').hide();$('.workspaceContainerHeader').show();$('.workspaces').hide();$('.workspacesContainer').hide();$('#workspace_${proj.id}').show();$('#${proj.id}_con').show();" style="width: 120px !important" title="Want to see your projects?">
+	<a class="aDIV topCornersRounded right" href="#"onclick="loadBox('@{Projects.myTasks(proj.id)}','workspace_${proj.id}'); show('${proj.id}');" style="width: 120px !important" title="Want to see your projects?">
 	${proj.name}</a> 
 	#{/list}
 #{/if}
 </div>
-<div class="workspaceContainerHeader" style="display:none;">
+<div id="myHeaders" style="display:none;">
 #{list connected?.projects, as:'proj'}
-<div id="${proj.id}_con" class="workspaces topper nav">
+<div id="header_${proj.id}" class="workspaces topper nav">
 <a href="#" onclick="">Stories</a>	
 <a  href="#"onclick="loadBox('/projects/${proj.id}/components','workspace_${proj.id}')">Components</a>
 	<a href="#" onclick="">Users</a>
@@ -210,12 +211,13 @@
 						</div>
 						#{/if}
 </div>
+<div id="myWorkspaces">
 #{list connected?.projects, as:'proj'}
 <div class="workspaceContainer" id="workspace_${proj.id}" style="display:none">
 
 </div>
 #{/list}
-
+</div>
 <div id="normal">
 #{doLayout/}
 </div>

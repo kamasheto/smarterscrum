@@ -1,15 +1,17 @@
 ﻿$(function() {
 	$('.draggable').live('mouseover', function() {
-
+		var con = $(this).closest('.workspaceContainer').attr('id');
 		$(this).data('init', 1);
 		$(this).draggable( {
 			handle : '.ui-widget-header',
-			cancel : 'img'
+			cancel : 'img',
+			stack  : '.draggable',
+			containment: '#'+con,
 		});
 		var h = $(this).height();
 		var w = $(this).width();
 		$(this).resizable( {
-			containment : '',
+			containment: '#'+con,
 			minHeight : h,
 			minWidth : w,
 			autoHide : true
@@ -109,15 +111,21 @@
 });
 
 function load(url, el) {
-
+	//if($.inArray(myDivs,url)){
+		//alert();
+	var pUrl = $('#'+el).attr('name');
+	$('#'+el+'_header').load(pUrl+' .mainH');
+	//alert(pUrl);
+	//alert(el);
 	$('#' + el + '_content').load(url, function() {
 		$('#' + el + ' .min').first().show();
 		$('#' + el + '_content').children().show();
+		//$('#' + el + '_content').find('ui-widget-header').first().load
 		$('#' + el + ' .loading').first().hide();
 		$('#' + el + '_content').slideDown(400);
 		magic(el);
 
-		myDivs.push(el);
+		myDivs.push(url);
 	});
 }
 
@@ -128,15 +136,16 @@ function removeMe(me)
 
 
 function loadBox(url, el) {
-	
-	//if()
+	//alert($.inArray(myDivs,url));
+	//if(!$.inArray(myDivs,url)){
 	$('#' + el).append('<div style="position:absolute"id="myTemp"></div>');
+	
 	$('#' + el + ' #myTemp').load(url, function() {
 
 		$('#' + el + ' #myTemp').attr('id', '');
-		myDivs.push(el);
+		myDivs.push(url);
 	});
-
+	//}
 }
 
 function magic(id) {
@@ -146,7 +155,7 @@ function magic(id) {
 					function() {
 
 						var id2 = "ui" + Math.ceil(Math.random() * 100);
-						var head = '<div class="ui-widget-header">' + $(this)
+						var head = '<div id="'+id2+'_header" class="ui-widget-header mainH">' + $(this)
 								.html() + '<span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span></span><span class="min"onclick="$(this).children().toggle();"><span class="ui-icon ui-icon-circle-triangle-s" style="display: none;"></span><span class="ui-icon ui-icon-circle-triangle-n"></span></span></div>';
 						$(this).html(head);
 						$(this).addClass('ui-widget-content draggableChild');
