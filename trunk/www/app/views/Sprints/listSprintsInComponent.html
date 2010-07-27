@@ -4,7 +4,7 @@
 #{set 'title'}C${component.number} Boards#{/set}
 #{if connected.in(project).can('manageComponents')}
 	#{list items:sprints, as:'sprint'}
-	<div class="overlay" name="/boards/loadboard1?sprintID=${sprint.id}&componentID=${component.id}"<a href="#" onclick="overlayOpen('/boards/loadboard1?sprintID=${sprint.id}&componentID=${component.id}')" >Sprint ${sprint.id} Task Board</a></div>
+	<div class="overlay" name="/boards/loadboard1?sprintID=${sprint.id}&componentID=${component.id}">Sprint ${sprint.id} Task Board</a></div>
 
 	#{/list}
 #{/if}
