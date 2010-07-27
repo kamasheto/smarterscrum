@@ -62,10 +62,10 @@ body,html {
 #theLoadedContent{background-color:#fff;padding:10px}
 </style>
 </head>
-<body onload="$('#theLoadedContent').show(); #{get 'onLoad'/}">
-<div id="theLoadedContent" style="display:none;">
+<body onload="#{get 'onLoad'/}">
+
 #{doLayout /}
-</div>
+
 			#{ifErrors}
 			<script type="text/javascript">
 				$(document).ready(function(){
