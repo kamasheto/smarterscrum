@@ -37,6 +37,13 @@
 		
 		#{if stories !=null}
 		#{list items:stories ,as :'Story'}
-			<div name="/storys/viewStory?storyId=${Story.id}">Story ${Story.number}</div>
+			#{if Story.uncategorized}
+				#{list items:Story.storiesTask ,as :'Task'}
+				<div name="/storys/magicShow?taskId=${Task.id}">T${Task.number} ${Task.description}</div>
+				#{/list}
+			#{/if}
+			#{else}
+			<div name="/storys/viewStory?storyId=${Story.id}">Story: ${Story.number}</div>
+			#{/else}		
 		#{/list}
 		#{/if}
