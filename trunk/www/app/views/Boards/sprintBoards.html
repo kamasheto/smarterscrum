@@ -1,0 +1,9 @@
+#{extends 'magicBox.html' /}
+#{set 'title'}
+Boards
+#{/set}
+<div class="overlay" name="/boards/loadboard1?sprintID=sprintID"<a href="#" onclick="overlayOpen('/boards/loadboard1?sprintID=1')" >${p.name}'s Task Board</a></div>
+
+#{list boards, as:'board'}
+<div class="overlay" name="/boards/loadboard1?sprintID=sprintID&componentID=board.component.componentBoard.id"<a href="#" onclick="overlayOpen('/boards/loadboard1?sprintID=1&componentID=${board.component.id}')" >${board.component.name}'s Task Board</a></div>
+#{/list}
