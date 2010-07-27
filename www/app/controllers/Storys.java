@@ -935,11 +935,11 @@ public class Storys extends SmartCRUD {
 		String[] success, failure;
 		Story story = Story.findById(storyId);
 		if(!(story.succussSenario == null))
-			success = story.succussSenario.split("/n");
+			success = story.succussSenario.split("" +"\n");
 		else
 			success = new String[1];
 		if(!(story.failureSenario == null))
-			 failure = story.failureSenario.split("/n");
+			 failure = story.failureSenario.split("\n");
 		else
 			 failure = new String[1];
 		render(story,success,failure);
