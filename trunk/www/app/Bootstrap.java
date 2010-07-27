@@ -884,8 +884,8 @@ public class Bootstrap extends Job {
 			T1.setEffortOfDay(1, 2);
 			T1.setEffortOfDay(3, 5);
 			T1.save();
-			S1.failureSenario = " S1 :Failure Scenario 1/n S1 :Failure Scenario 2";
-			S1.succussSenario = "S1: Siccess Scenario/nS1 :Success Scenario 2";
+			S1.failureSenario = " S1 :Failure Scenario 1\n S1 :Failure Scenario 2";
+			S1.succussSenario = "S1: Siccess Scenario\nS1 :Success Scenario 2";
 			S1.save();
 			S3.failureSenario = "S3 :Failure Scenario 1/n S3 :Failure Scenario 2";
 			S3.succussSenario = "S1: Siccess Scenario/nS1 :Success Scenario 2";
