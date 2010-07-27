@@ -8,10 +8,10 @@
 		#{/if}
 		#{list items:task ,as :'Task'}
 			#{if !Task.deleted}
-			<div name="/storys/magicShow?taskId=${Task.id}">S${Task.taskStory.number} ${Task.description}<div class="item_imgs">#{if connected.in(project).can('editTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="deleteTask(${Task.id},this)"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div></div>
+			<div name="/storys/magicShow?taskId=${Task.id}">S${Task.taskStory.number} ${Task.description}<div class="item_imgs">#{if connected.in(project).can('editTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div></div>
 			#{/if}
 		#{/list}
-		#{/if}
+	#{/if}
 		
 		#{if task1!=null}
 			#{if connected.in(project).can('editTask')}
@@ -49,12 +49,13 @@
 			#{/else}		
 		#{/list}
 		#{/if}
-		
+#{set 'moreScripts'}
 <script type="text/javascript">
-function deleteTask(cId, box){
-	$.post('@{Tasks.delete()}', {id:cId}, function(data){ $.bar({message:data}
+function deleteTheTask(tId, box){
+	$.post('@{Tasks.delete()}', {id:tId}, function(data){ $.bar({message:data}
 	);
 	removeMe(box);
 	;});
 }
 </script>
+#{/set}
