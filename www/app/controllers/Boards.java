@@ -118,7 +118,6 @@ public class Boards extends SmartCRUD {
 							break;
 						}
 					}
-					System.out.println(pcmp.name);
 					if(pcmp.onBoard&&!pcmp.deleted)
 					{
 					data.get(i).get(columnsOfBoard.indexOf(pcmp)).add(task);
