@@ -591,6 +591,21 @@ ul.project_links a {
 	padding: 7px;
 	color: #ffffff;
 }
+h1,h2,h3,h4,h5,h6,h7
+{
+background: #ddd;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 20px;
+	font-style: italic;
+	font-weight: normal;
+	letter-spacing: -1px;
+	color: #111;
+	border: 0px;
+	margin-bottom:5px;
+	margin-top:0px;
+
+
+}
 
 body {
 	background: transparent url('img/workspace.png') repeat top left scroll;
