@@ -374,7 +374,8 @@ dragtable = {
 			{id:gup('sprintID'),						
 			pos1:sIdx, 
 			pos2:fIdx,
-			userId:selectedUser},
+			userId:selectedUser,
+			cid:gup('componentID')},
 			function()
 			{
 				window.location.reload();

@@ -674,7 +674,7 @@ $('.component').click(function()
 			col_from--;
 
 			$.post('/Columns/changeColumnPosition2' ,			
-					{id:gup('sprintID'),pos1:col_from, pos2:col_to,user_id : selectedUser},
+					{id:gup('sprintID'),pos1:col_from, pos2:col_to,user_id : selectedUser,cid:gup('componentID')},
 					function()
 					{
 						location.reload();
@@ -724,8 +724,6 @@ $('.component').click(function()
 			table.rows[i].cells[from].innerHTML = table.rows[i].cells[to].innerHTML;
 			table.rows[i].cells[to].innerHTML = temp ;
 		}
-		$.post('/Columns/changeColumnPosition2' ,			
-				{id:gup('sprintID'),pos1:from-1, pos2:to-1});
 		}
 		function take_snapshot() {
 		$.post('/snapshots/takesnapshot', {sprintID:${s.id}}, function(){alert('Saved!')});

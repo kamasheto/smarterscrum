@@ -6,6 +6,7 @@ import java.util.List;
 
 import models.Board;
 import models.Column;
+import models.Component;
 import models.Project;
 import models.Sprint;
 import models.User;
@@ -25,11 +26,18 @@ public class Columns extends SmartController {
 	 *            : finishing position of column Story 17
 	 */
 
-	public static void changeColumnPosition(long id, int pos1, int pos2, long userId) {
+	public static void changeColumnPosition(long id, int pos1, int pos2, long userId,long cid) {
 		Sprint s = Sprint.findById(id);
 		Project p = s.project;
 		Security.check(p, "EditColumnsPositions");
-		Board b = p.board;
+		Board b;
+		if(cid==0)
+		b = p.board;
+		else
+		{
+			Component c = Component.findById(cid);
+			b=c.componentBoard;
+		}
 		if (userId == 0)
 			userId = Security.getConnected().id;
 		Calendar cal = new GregorianCalendar();
@@ -75,7 +83,7 @@ public class Columns extends SmartController {
 	 * @param pos2
 	 *            : finishing position of column Story 17
 	 */
-	public static void changeColumnPosition2(long id, int pos1, int pos2, long user_id) {
+	public static void changeColumnPosition2(long id, int pos1, int pos2, long user_id, long cid) {
 		if (user_id == 0) {
 			user_id = Security.getConnected().id;
 		}
@@ -84,7 +92,14 @@ public class Columns extends SmartController {
 		Project p = s.project;
 		User user = User.findById(user_id);
 		Security.check(user.in(p).can("editColumnsPositions"));
-		Board b = p.board;
+		Board b;
+		if(cid==0)
+			b = p.board;
+			else
+			{
+				Component c = Component.findById(cid);
+				b=c.componentBoard;
+			}
 		Column c1 = Column.find("bySequenceAndBoard", pos1, b).first();
 		Column c2 = Column.find("bySequenceAndBoard", pos2, b).first();
 		c1.sequence = pos2;
