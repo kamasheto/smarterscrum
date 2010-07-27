@@ -139,11 +139,12 @@ function removeMe(me)
 function loadBox(url, el) {
 	
 	if($.inArray(url,myDivs)==-1){
-	$('#' + el).append('<div style="position:absolute"id="myTemp"></div>');
+	$('#' + el).append('<div style="position:absolute;z-index:0"id="myTemp"></div>');
 	
 	$('#' + el + ' #myTemp').load(url, function() {
 
-		$('#' + el + ' #myTemp').attr('id', '');
+		$('#' + el + ' #myTemp').children().css('position','absolute!important');
+		$('#' + el + ' #myTemp').replaceWith($('#' + el + ' #myTemp').html());
 		myDivs.push(url);
 	});
 	}
