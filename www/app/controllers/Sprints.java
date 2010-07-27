@@ -264,10 +264,10 @@ public class Sprints extends SmartCRUD {
 		// }
 	}
 	
-	public static void listSprintsInComponent(long componentId){
+	public static void listSprintsInComponent(long componentId, byte type){
 		Component component = ((Component) Component.findById(componentId));
 		List<Sprint> sprints = component.project.sprints;
-		render(sprints, component);
+		render(sprints, component, type);
 	}
 
 	public static void show() {
