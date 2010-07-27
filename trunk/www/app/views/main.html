@@ -87,7 +87,7 @@
 <div id="header_${proj.id}" class="workspaces topper nav">
 <a href="#" onclick="loadBox('/storys/magicShow?projectId=${proj.id}','workspace_${proj.id}')">Stories</a>	
 <a  href="#"onclick="loadBox('/components/listComponentsInProject?projectId=${proj.id}','workspace_${proj.id}')">Components</a>
-	<a href="#" onclick="">Users</a>
+	<a href="#" onclick="loadBox('/users/findUsers?projectId=${proj.id}','workspace_${proj.id}')">Users</a>
 	<a  href="#"onclick="loadBox('@{Projects.events(proj.id)}','workspace_${proj.id}')">Events</a>
 	
 <a href="#" onclick="loadBox('@{Projects.settings(proj.id)}','workspace_${proj.id}')">Settings</a> 

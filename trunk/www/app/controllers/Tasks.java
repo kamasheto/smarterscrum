@@ -1594,16 +1594,5 @@ public class Tasks extends SmartCRUD {
 		render(taskId, states, user);
 	}
 	
-	/**
-	 * 
-	 * @author Monayri
-	 * Sprint 4
-	 * Issue 218
-	 *   
-	 */
-	public static void magicShow(long taskId){
-		Task task = Task.findById(taskId);
-		render(task);
-	}
 	
 	}
