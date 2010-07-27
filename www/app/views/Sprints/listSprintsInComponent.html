@@ -1,7 +1,12 @@
-<!--  USED FOR LISTING ALL THE BOARDS IN A COMPONENT -->
+<!--  USED FOR LISTING ALL THE BOARDS/CHARTS IN A COMPONENT -->
 
 #{extends 'magicBox.html' /}
-#{set 'title'}C${component.number} Boards#{/set}
+#{set 'title'}C${component.number} #{if type == 1}Boards#{/if}#{else}Charts#{/else}#{/set}
 	#{list items:sprints, as:'sprint'}
-	<div class="overlay" name="/boards/loadboard1?sprintID=${sprint.id}&componentID=${component.id}">Sprint ${sprint.id} Task Board</a></div>
+	#{if type == 1}
+		<div class="overlay" name="/boards/loadboard1?sprintID=${sprint.id}&componentID=${component.id}">Sprint ${sprint.sprintNumber} Task Board</a></div>
+	#{/if}
+	#{else}
+		<div class="overlay"name="@{SprintBacklog.showGraph(sprint.id,component.id)}" title="view the burndown chart?">Sprint ${sprint.sprintNumber} Chart</div>
+	#{/else}
 	#{/list}
