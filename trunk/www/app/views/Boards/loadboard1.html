@@ -18,15 +18,9 @@
 REDIPS.drag.init()
 #{/set}
 
-#{if comp==null}
-<h1>${p.name}'s Task Board</h1>
-#{/if}
-#{else}
-<h1>${comp.name}'s Task Board</h1>
-#{/else}
 
 <!--Tools-->
-#{set 'moreLinks'}
+<div style="float:left">
 <!-- view hidden Col by Hadeer -->
 #{if connected.in(p).can('ShowColumn')}
 #{if hidencolumnsOfBoard.isEmpty()}
@@ -182,7 +176,14 @@ function displayTZCountDown(countdown,tzcd)
 #{/else}	
 
 </div>
-#{/set}
+
+#{if comp==null}
+<h1>${p.name}'s Task Board</h1>
+#{/if}
+#{else}
+<h1>${comp.name}'s Task Board</h1>
+#{/else}
+
 
 <a href="" id="ToggleBoard">Toggle Board</a>
 
