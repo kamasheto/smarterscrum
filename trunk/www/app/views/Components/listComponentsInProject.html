@@ -1,0 +1,7 @@
+#{extends 'magicBox.html' /}
+#{set 'title'}Components#{/set}
+#{if connected.in(project).can('editStory')}
+	#{list items:components, as:'component'}
+		<div name="/components/viewTheComponent?componentId=${component.id}">C${component.number}: ${component.name}</div>
+	#{/list}
+#{/if}
