@@ -1,33 +1,36 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
-    		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/generic.css"/>
-        <link rel="stylesheet" type="text/css" media="screen" title="original" href="@{'/public/stylesheets/main.css'}"/>
-		<link rel="alternate stylesheet" type="text/css" media="screen" title="blue" href="@{'/public/stylesheets/mainblue.css'}" />
-		<link rel="alternate stylesheet" type="text/css" media="screen" title="red" href="@{'/public/stylesheets/mainred.css'}" />
-		<link rel="alternate stylesheet" type="text/css" media="screen" title="green" href="@{'/public/stylesheets/maingreen.css'}" />
+        <title>#{get 'title' /}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/generic.css"/>
+  		
+        <link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/main.css"/>
 		<link rel="stylesheet" type="text/css" media="screen"href="@{'/public/stylesheets/tipTip.css'}"/>
         <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jquery-ui-1.8.custom.css'}"/>
-		<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/BreadCrumb.css'}"/>
-		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/jquery.gritter.css"/>
-		<link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/jquery.jbar.css"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jquery.jbar.css'}"/>
+	
 		<link rel="shortcut icon" href="@{'public/images/favicon.ico'}" type="image/x-icon"/> 
         #{get 'moreStyles' /}
  
         <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" src="@{'public/javascripts/jquery-ui-1.8.custom.min.js'}"> </script>
 		<script type="text/javascript" src="@{'public/javascripts/timepicker.js'}"> </script>
+		<script type="text/javascript" src="@{'public/javascripts/jquery.jBreadCrumb.1.1.js'}"> </script>
         <script src="@{'/public/javascripts/date.js'}" type="text/javascript" charset="utf-8"></script>
        	<script src="@{'/public/javascripts/jquery.tipTip.js'}" type="text/javascript"charset="utf-8"></script>
        	<script src="@{'/public/javascripts/md5.js'}" type="text/javascript"charset="utf-8"></script>
        	<script src="@{'/public/javascripts/more.js'}" type="text/javascript"charset="utf-8"></script>
 		<script type="text/javascript" src="/public/javascripts/jquery.gritter.min.js"></script>
         <script src="@{'/public/javascripts/jquery.bar.js'}" type="text/javascript" charset="utf-8"></script>
+        
         #{get 'moreScripts' /}
+              <script src="@{'/public/javascripts/skinSwitcher.js'}" type="text/javascript" charset="utf-8"></script>
 		
         <script type="text/javascript">
-       		$(function(){
 
+               
+       		$(function(){
        			$('.formatDate').each(function(){
 					$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );
 				});
@@ -38,25 +41,20 @@
    			    $("a").tipTip({delay:0});
    			    $("td").tipTip({delay:0});
    			    $("span").tipTip({delay:0});
+   			 $("div").tipTip({delay:0});
+   			 $("img").tipTip({delay:0});
    			    $('div.crudField').each(function(){
 						if ($(this).html().trim() == '') {
 							$(this).remove();
 						}
    	   			    });
+   			    #{if connected}
+	 			getNotifications();
+				ping();
+   			    #{/if}
        		});
-
-
-
-			/**
-			 * DO NOT REMOVE!
-			 * This will only work in overlay.html!
-			 */
-			window.parent.$(document).keyup(function(e) {
-				if (e.keyCode == 27) { 
-					window.parent.$('#getOverlay').hide();
-				}   // esc
-			});
         </script>
+
 <style type="text/css">
 body,html {
 	background: transparent !important;
@@ -64,7 +62,7 @@ body,html {
 #theLoadedContent{background-color:#fff;padding:10px}
 </style>
 </head>
-<body onload="$('#theLoadedContent').show()">
+<body onload="$('#theLoadedContent').show(); #{get 'onLoad'}">
 <div id="theLoadedContent" style="display:none;">
 #{doLayout /}
 </div>
