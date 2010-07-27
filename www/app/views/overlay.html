@@ -64,7 +64,8 @@ body,html {
 #theLoadedContent{background-color:#fff;padding:10px}
 </style>
 </head>
-<body onload="$('#theLoadedContent').show();#{get 'onLoad'/} ">
+<body onload="$('#theLoadedContent').show();#{get 'onLoad'/};   $('#overlayClose',parent.document.body).show() ">
+
 <div id="theLoadedContent">
 #{doLayout /}
 </div>

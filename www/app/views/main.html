@@ -17,6 +17,7 @@
         <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" src="@{'public/javascripts/jquery-ui-1.8.custom.min.js'}"> </script>
 		<script type="text/javascript" src="@{'public/javascripts/timepicker.js'}"> </script>
+		<script type="text/javascript" src="@{'public/javascripts/jsDatePick.min.1.1.js'}"> </script>
 		<script type="text/javascript" src="@{'public/javascripts/jquery.jBreadCrumb.1.1.js'}"> </script>
         <script src="@{'/public/javascripts/date.js'}" type="text/javascript" charset="utf-8"></script>
        	<script src="@{'/public/javascripts/jquery.tipTip.js'}" type="text/javascript"charset="utf-8"></script>
@@ -62,9 +63,11 @@
 <div style="background-color:rgba(0,0,0,0.7);position:fixed;top:0px;left:0px;width:100%;height:100%;z-index:9997"></div>
 <div id ="overlayContent" style="width:80%;height:80%; padding:10%;overflow:auto;position:relative;z-index:9998">
 	<div id="overlayContentHolder" style="background-color:transparent;width:auto;height:auto;margin:auto auto auto auto;padding:10px;overflow:auto">
-	<div class="topCornersRounded left" style="padding:5px; width:70px;background-color:#fff;text-align:center">
-	<a href="#" onclick="$('#getOverlay').hide()">close</a></div>
-	<br style="clear:both"/>
+	<div id="overlayClose" style="display:none;background:none repeat scroll 0 0 white;padding:5px;text-align:right;">
+<a title="close?"href="#"onclick="Javascript:$('#getOverlay').hide();">
+<img src="@{'public/images/close.gif'}"/>
+</a>
+</div>
 	<iframe id="theLoadedContent" class="autoHeight" style="width:100%;border:0px;background:transparent !important;">
 	
 	</iframe>
