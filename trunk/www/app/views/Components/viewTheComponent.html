@@ -1,0 +1,10 @@
+#{extends 'magicBox.html' /}
+#{set 'title'}C${component.number}: ${component.name}#{/set}
+#{if connected.in(project).can('manageComponents')}
+<a href="javascript:overlayOpen('/admin/storys/1')"><img src="@{'/public/images/famfam/pencil.png'}"></a><br>
+		<div name="Monayri's link">Users</div>
+		<div name="/stories/magicshow?componentId=${component.id}">Stories</div>
+		<div name="Hadeer's link">Charts</div>
+		<div name="My link">Sprint Backlog</div>
+		<div name="/sprints/listSprintsInComponent?componentId=${component.id}">Sprint Board</div>
+#{/if}
