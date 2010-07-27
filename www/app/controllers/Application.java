@@ -103,11 +103,13 @@ public class Application extends SmartController {
 	 * @author Amr Hany
 	 * @param componentID
 	 */
-	public static void viewComponent(long id) {
-		Component component = Component.findById(id);
-		boolean inSprint = component.project.inSprint(new Date());
-		render(component, inSprint);
-	}
+//	public static void viewComponent(long id) {
+//		Component component = Component.findById(id);
+//		if(component == null)
+//			System.out.println("NULL YA AMR YA HANY");
+//		boolean inSprint = component.project.inSprint(new Date());
+//		render(component);
+	//}
 
 	/**
 	 * This method is used to Delete a component by calling the model's method.
