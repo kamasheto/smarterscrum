@@ -13,6 +13,7 @@
 
 .draggable {
 	width: 300px;
+	position:absolute !important;
 }
 .draggableChild {
 	position: relative;
