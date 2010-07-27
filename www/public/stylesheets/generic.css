@@ -19,7 +19,13 @@ button,a button,input[type=submit],input[type=ok],input[type=send],input[type=bu
 	font-size: 1.1em;
 	font-family: verdana;
 }
+#myWorkspaces,.workspaceContainer,body,html
+{
+width:100%;
+height:100%;
+position:fixed;
 
+}
 .nav a {
 	padding: 5px;
 }
