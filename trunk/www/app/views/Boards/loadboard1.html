@@ -51,7 +51,6 @@ REDIPS.drag.init()
 #{/else}
 #{/if}
 
-<a class="titptitize" title="create meeting?" href="/admin/projects/${p.id}/meetings/new">Create Meeting</a><br/>	
 #{if comp==null}
 <a class="titptitize" title="view board snapshots?" href="/snapshots/index?id=${s.id}&type=${p.name}" >View snapshots</a><br/>
 <a class="titptitize" title="take board snapshot?" href="javascript:take_snapshot();">Take Snapshot</a><br/><br/>
@@ -70,28 +69,26 @@ REDIPS.drag.init()
 #{else}
 <div><b style="font-size:small;" class="smartBarHeader" >Running Meetings</b></div>
 #{list items:u, as:'users'}
-<a href ="/meetings/${users.meeting.id}"> <b>Meeting: ${users.meeting.name}</b></a><br/>
+<b>Meeting: ${users.meeting.name}</b><br/>
 <u>Start date</u>
 <div class="formatTime">${users.meeting.startTime}</div>
-<br />
 <u>End date</u>
 <div id="amr" class="formatTime">${users.meeting.endTime}</div>
-<br/>
-<u>Attendees</u>
+<u>Attendees</u><br/>
 #{list items:users , as:'user'}
-<a id="${user.id}" href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a>
+<a id="${user.id}" href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a><br/>
 #{/list}<br/>
 <div id="myLayer"></div>
 <!--Amr Abdelwahab-->
 #{if comp==null}
 <a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u></a><br/><br />
-<span id="tzcd"></span>
+<span id="tzcd"></span><br/>
 #{/if}
 #{else}
 <a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_componentmeetingsnapshot(${users.meeting.id},${comp.id});"><u>Attach a SnapShot</u></a><br/><br />
-<span id="tzcd"></span>
+<span id="tzcd"></span><br/>
 #{/else}
-<a  href="javascript: end(${users.meeting.id});"><b>end meeting</b></a>
+<a  href="javascript: end(${users.meeting.id});"><b>end meeting</b></a><br/>
 
 <script type="text/javascript" charset="utf-8"> 
 // CONFIGURE THE COUNTDOWN SCRIPT HERE
@@ -164,13 +161,14 @@ function displayTZCountDown(countdown,tzcd)
 <!--Amr Abdelwahab-->
 #{if comp==null}
 <a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u></a>
-<span id="tzcd"></span>
+<span id="tzcd"></span><br/>
 #{/if}
 #{else}
 <a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_componentmeetingsnapshot(${users.meeting.id},${comp.id});"><u>Attach a SnapShot</u></a>
-<span id="tzcd"></span>
+<span id="tzcd"></span><br/>
 #{/else}
 <a  href="javascript: join(${users.meeting.id});">join</a>
+<br/><br/>
 #{/list}
 </div>
 #{/else}	
