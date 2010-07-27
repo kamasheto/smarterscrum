@@ -55,7 +55,7 @@
 
 function save()
 {
-	var confirmation=confirm("Do you want to save the new Scenarios?");
+	var confirmation=confirm("Do you want to update the Scenarios?");
 	if(confirmation)
 	{
 	var succsses=$("textarea[name='succssesName1']");
@@ -66,9 +66,8 @@ function save()
 		ss=ss+succsses[i].value +"\n";
 	}
 	
-	 $.post('@{Storys.saveSuccsses()}',
-	  		  {id:${storyId},s:ss},
-	  		  function(){});
+	 
+$.post('/Storys/saveSuccsses', {id:${storyId},s:ss});
 
 	
 		var failure=$("[name='failureName1']");
@@ -79,11 +78,11 @@ function save()
 		ff=ff+failure[i].value +"\n";
 	}
 	
-	 $.post('@{Storys.saveFailure()}',
-	  		  {id:${storyId},f:ff},
-	  		  function(){});
+	
+	 
+$.post('/Storys/saveFailure', {id:${storyId},f:ff}, function(){	window.location="http://localhost:9000/storys/liststoriesinproject?projectId="+${projectId};
+});
 	}
-	window.location="http://localhost:9000/storys/liststoriesinproject?projectId="+${projectId};
 	  		  }
 
 function addSuccsses() {
