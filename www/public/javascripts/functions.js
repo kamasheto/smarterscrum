@@ -149,14 +149,23 @@ function loadBox(url, el) {
 	});
 	}
 }
-
+var num =1;
 function magic(id) {
 
 	$("#" + id + "_content div[name]")
 			.each(
 					function() {
+						if($(this).attr('class')=='overlay')
+						{
+							var id2 = "ui" +num;
+							num++;
+							var head = '<div id="'+id2+'_header" onclick="overlayOpen('+$(this).attr('name')+')" class="ui-widget-header">' + $(this).html() + '</div>';
+							$(this).html(head);
+							$(this).attr('id', id2);
+						}
+						else{
 
-						var id2 = "ui" + Math.ceil(Math.random() * 100);
+						var id2 = "ui" +num++;
 						var head = '<div id="'+id2+'_header" class="ui-widget-header mainH">' + $(this)
 								.html() + '<span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span></span><span class="min"onclick="$(this).children().toggle();"><span class="ui-icon ui-icon-circle-triangle-s" style="display: none;"></span><span class="ui-icon ui-icon-circle-triangle-n"></span></span></div>';
 						$(this).html(head);
@@ -166,7 +175,7 @@ function magic(id) {
 						$(this)
 								.append(
 										'<div id="' + id2 + '_content" class="ui-widget-content" ></div>');
-
+						}
 					});
 
 }
