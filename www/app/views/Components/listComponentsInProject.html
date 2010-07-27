@@ -1,10 +1,8 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}Components#{/set}
-#{if connected.in(project).can('editStory')}
+#{set 'title'}Components #{if connected.in(project).can('addComponent')}<a href="javascript:overlayOpen('/admin/components/new?id=${projectId}')"><img src="@{'/public/images/famfam/add.png'}"></a>#{/if}#{/set}
 	#{list items:components, as:'component'}
 		<div name="/components/viewTheComponent?componentId=${component.id}">C${component.number}: ${component.name}<div class="item_imgs"><a onclick="javascript:deleteTheComponent(${component.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a></div></div>
 	#{/list}
-#{/if}
 <script type="text/javascript">
 function deleteTheComponent(cId, box){
 	$.post('@{Components.delete()}', {id:cId}, function(data){ $.bar({message:data}
