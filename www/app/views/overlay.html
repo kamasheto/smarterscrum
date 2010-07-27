@@ -52,8 +52,8 @@
 	 			getNotifications();
 				ping();
    			    #{/if}
-
-   			    	#{get 'onLoad'/}
+#{get 'onLoad2' /}
+   			    	
    		       		});
         </script>
 
@@ -64,7 +64,7 @@ body,html {
 #theLoadedContent{background-color:#fff;padding:10px}
 </style>
 </head>
-<body onload="$('#theLoadedContent').show(); ">
+<body onload="$('#theLoadedContent').show();#{get 'onLoad'/} ">
 <div id="theLoadedContent">
 #{doLayout /}
 </div>
