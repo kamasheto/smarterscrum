@@ -52,7 +52,9 @@
 	 			getNotifications();
 				ping();
    			    #{/if}
-       		});
+
+   			    	#{get 'onLoad'/}
+   		       		});
         </script>
 
 <style type="text/css">
@@ -62,10 +64,10 @@ body,html {
 #theLoadedContent{background-color:#fff;padding:10px}
 </style>
 </head>
-<body onload="#{get 'onLoad'/}">
-
+<body onload="$('#theLoadedContent').show(); ">
+<div id="theLoadedContent">
 #{doLayout /}
-
+</div>
 			#{ifErrors}
 			<script type="text/javascript">
 				$(document).ready(function(){
