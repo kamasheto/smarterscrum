@@ -107,6 +107,11 @@
 			$('#' + theId).addClass('draggableChild');
 			$('#' + theSecondId).replaceWith($('#' + theId));
 		}
+		url = $(this).parent().parent().attr('name');
+		myDivs = $.grep(myDivs, function(value) {
+	
+		    return value != url;
+		});
 	});
 });
 
@@ -142,8 +147,10 @@ function loadBox(url, el) {
 	$('#' + el).append('<div style="position:absolute;z-index:0"id="myTemp"></div>');
 	
 	$('#' + el + ' #myTemp').load(url, function() {
-
+		$('#' + el + ' #myTemp').children().attr('name',url);
 		$('#' + el + ' #myTemp').children().css('position','absolute!important');
+
+		$('#' + el + ' #myTemp').children().css('z-index','4');
 		$('#' + el + ' #myTemp').replaceWith($('#' + el + ' #myTemp').html());
 		myDivs.push(url);
 	});
