@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import models.Component;
 import models.Meeting;
 import models.Project;
 import models.Sprint;
@@ -261,6 +262,12 @@ public class Sprints extends SmartCRUD {
 		// {
 		// forbidden();
 		// }
+	}
+	
+	public static void listSprintsInComponent(long componentId){
+		Component component = ((Component) Component.findById(componentId));
+		List<Sprint> sprints = component.project.sprints;
+		render(sprints, component);
 	}
 
 	public static void show() {
