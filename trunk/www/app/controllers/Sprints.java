@@ -264,7 +264,7 @@ public class Sprints extends SmartCRUD {
 		// }
 	}
 	
-	public static void listSprintsInComponent(long componentId, byte type){
+	public static void listSprintsInComponent(long componentId, int type){
 		Component component = ((Component) Component.findById(componentId));
 		List<Sprint> sprints = component.project.sprints;
 		render(sprints, component, type);
