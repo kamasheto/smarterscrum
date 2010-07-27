@@ -142,11 +142,11 @@ public class Components extends SmartCRUD {
 		} catch (Exception e) {
 			//flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
 			//redirect(request.controller + ".show", object.getEntityId());
-			renderText("couldn't delete the component");
+			renderText("Couldn't delete the component. Please try again later.");
 		}
 		//flash.success(Messages.get("crud.deleted", type.modelName, object.getEntityId()));
 		//redirect("/projects/" + component.project.id + "/components");
-		renderText("deleted successfully");
+		renderText("Component deleted successfully.");
 	}
 
 	/**
