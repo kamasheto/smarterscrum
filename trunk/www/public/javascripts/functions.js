@@ -166,9 +166,10 @@ function magic(id) {
 						{
 							var id2 = "ui" +num;
 							num++;
-							var head = '<div id="'+id2+'_header" onclick="overlayOpen('+$(this).attr('name')+')" class="ui-widget-header">' + $(this).html() + '</div>';
+							var head = '<div id="'+id2+'_header" onclick="overlayOpen(\''+$(this).attr('name')+'\')" class="ui-widget-header">' + $(this).html() + '</div>';
 							$(this).html(head);
 							$(this).attr('id', id2);
+							$(this).addClass('ui-widget-content');
 						}
 						else{
 

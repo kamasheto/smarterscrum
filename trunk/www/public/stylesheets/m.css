@@ -46,7 +46,7 @@
 	margin-bottom:5px;
 }
 
-.draggableChild .ui-widget-header {
+.draggableChild .ui-widget-header, .overlay .ui-widget-header {
 	font-size: 12px;
 	background: #ddd !important;
 	background: -moz-linear-gradient(center bottom, #eee 20%, #ddd 80%)
@@ -60,6 +60,9 @@
 	border: 0px;
 	margin:0px;
 	padding:5px;
+}
+.overlay .ui-widget-header {
+cursor:pointer;
 }
 
 .clone {
