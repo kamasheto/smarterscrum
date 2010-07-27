@@ -1,8 +1,16 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}C${component.number}: ${component.name} #{if connected.in(project).can('editComponent')}<a href="javascript:overlayOpen('/admin/components/${component.id}')"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{/set}
+#{set 'title'}C${component.number}: ${component.name} #{if connected.in(project).can('editComponent')}<a href="javascript:overlayOpen('/admin/components/${component.id}')"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if connected.in(project).can('deleteComponent')}<a onclick="javascript:deleteTheComponent(${component.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{/set}
 ${component.description}
 		<div name="/users/findUsers?componentId=${component.id}">Users</div>
 		<div name="/storys/magicshow?componentId=${component.id}">Stories</div>
 		<div name="/sprints/listSprintsInComponent?componentId=${component.id}&type=2">Charts</div>
 		<div name="Hadeer's link">Sprint Backlog</div>
 		<div name="/sprints/listSprintsInComponent?componentId=${component.id}&type=1">Boards</div>
+<script type="text/javascript">
+function deleteTheComponent(cId, box){
+	$.post('@{Components.delete()}', {id:cId}, function(data){ $.bar({message:data}
+	);
+	removeMe(box);
+	;});
+}
+</script>
