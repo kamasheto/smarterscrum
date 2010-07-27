@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.Date;
+import java.util.List;
 
 import models.Component;
 import models.Project;
@@ -163,6 +164,21 @@ public class Components extends SmartCRUD {
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
+	}
+	
+	/**** Magic Box ****/
+	
+	public static void listComponentsInProject(long projectId){
+		Project project = Project.findById(projectId);
+		if(project == null)
+			System.out.println("NULLLLLLLLLLLLLLLLLL");
+		List<Component> components = project.components;
+		render(components);
+	}
+	
+	public static void viewTheComponent(long componentId){
+		Component component = Component.findById(componentId);
+		render(component);
 	}
 
 	public static void list() {
