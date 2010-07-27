@@ -174,7 +174,7 @@ var myDivs = new Array();
 function show(id) {
 	$('#normal').hide();
 	$('#myHeaders').show();
-	$('#myWrkspaces').show();
+	$('#myWorkspaces').show();
 	$('#myWorkspaces').children().each(function() {
 		if ($(this).attr('id') == ('workspace_' + id)) {
 			$(this).show();
