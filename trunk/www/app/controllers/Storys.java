@@ -636,7 +636,6 @@ public class Storys extends SmartCRUD {
 
 		if (story == null) {
 			message = "invalid story ID";
-
 		} else {
 			if (story.storiesTask == null) {
 				message = "no tasks  inside this story";
@@ -851,14 +850,14 @@ public class Storys extends SmartCRUD {
 		if (componentId != 0) {
 			Component component = Component.findById(componentId);
 			if(tasks==1){
-				title="Component "+component.number+" Tasks";
+				title="C"+component.number+": Tasks";
 				List<Task> task = new ArrayList<Task>();
 				for(Story story : component.componentStories){
 					task.addAll(story.storiesTask);
 				}
 				render(task, title);
 			}else{
-				title="Component "+component.number+" Stories";
+				title="C"+component.number+": Stories";
 				List<Story> stories = component.componentStories;
 				render(stories, title);
 			}
@@ -869,7 +868,7 @@ public class Storys extends SmartCRUD {
 				render(task1, title);
 			}else{
 				if(reviewer==1){
-					title="As reviewer";
+					title="As Reviewer";
 					User user = Security.getConnected();
 					Project project = Project.findById(projectId);
 					Component component=null;
@@ -891,7 +890,7 @@ public class Storys extends SmartCRUD {
 					render(task, title);
 				}else{
 					if(assignee==1){
-						title="As assignee";
+						title="As Assignee";
 						User user = Security.getConnected();
 						Project project = Project.findById(projectId);
 						Component component=null;
@@ -952,5 +951,10 @@ public class Storys extends SmartCRUD {
 	 */
 	public static void list() {
 		forbidden();
+	}
+	
+	public static void choose(long projectId){
+		Project project = Project.findById(projectId);
+		render(project);
 	}
 }

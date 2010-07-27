@@ -11,7 +11,7 @@
 		#{/if}
 		
 		#{if user!=null}
-		<img src="${user.avatar}></img>
+		<img src="${user.avatar}"></img>
 			#{if connected.in(project).can('editUser')}
 				<a href="javascript:overlayOpen('/admin/users/${user.id}')"><img src="@{'/public/images/famfam/pencil.png'}"></a><br>
 			#{/if}

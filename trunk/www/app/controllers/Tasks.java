@@ -472,6 +472,7 @@ public class Tasks extends SmartCRUD {
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
 		Task tmp = (Task) object;
+		System.out.println("here");
 		Security.check(Security.getConnected().in(tmp.taskStory.componentID.project).can("modifyTask"));
 		try {
 			tmp.deleted = true;
@@ -480,6 +481,9 @@ public class Tasks extends SmartCRUD {
 			Logs.addLog(Security.getConnected(), "delete", "Task", tmp.id, tmp.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 			Notifications.notifyUsers(tmp.taskStory.componentID.componentUsers, header, body, (byte) -1);
 			object.save();
+			String text="The Task was deleted successfully";
+			System.out.println("here");
+			render(text);
 		} catch (Exception e) {
 			flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
 			redirect(request.controller + ".show", object.getEntityId());

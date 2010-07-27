@@ -4,7 +4,7 @@
 -->
 
 
-#{extends 'CRUD/layout.html' /}
+#{extends 'overlay.html' /}
 #{set 'crumbs'}
 <li><a href="/show/projects">Projects</a></li>
 <li><a href="/show/project?id=${component.project.id}">${component.project.name}</a></li>
@@ -26,8 +26,12 @@
 					<select id="Story" name="object.taskStory@id"
 					 onChange = "change_dependency2();">
 								#{list items:stories ,as :'Story'}
-									
+									#{if Story.uncategorized}
+									<option value="${Story.id}"#{if Story == taskStory} selected#{/if}>No Story</option>
+									#{/if}
+									#{else}
 									<option value="${Story.id}"#{if Story == taskStory} selected#{/if}>${Story.description}</option>	
+									#{/else}
 								#{/list}		
 					</select>
 		    <span class="crudHelp"><font color="Red">*</font></span>

@@ -314,7 +314,7 @@ public class Users extends SmartCRUD {
 			if(componentId !=0){
 				Component component = Component.findById(componentId);
 				users = component.componentUsers;
-				title = "Component "+ component.number+ "Users";
+				title = "C"+ component.number+ ": Users";
 				render(users, title);
 			}else{
 				Project project = Project.findById(projectId);
