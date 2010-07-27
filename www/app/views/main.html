@@ -30,7 +30,8 @@
               <script src="@{'/public/javascripts/skinSwitcher.js'}" type="text/javascript" charset="utf-8"></script>
 		
         <script type="text/javascript">
-       
+
+               
        		$(function(){
        			$('.formatDate').each(function(){
 					$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );
@@ -88,7 +89,10 @@
 <a  href="#"onclick="loadBox('/components/listComponentsInProject?projectId=${proj.id}','workspace_${proj.id}')">Components</a>
 	<a href="#" onclick="">Users</a>
 	<a  href="#"onclick="loadBox('@{Projects.events(proj.id)}','workspace_${proj.id}')">Events</a>
+	
 <a href="#" onclick="loadBox('@{Projects.settings(proj.id)}','workspace_${proj.id}')">Settings</a> 
+
+	<a  href="#"onclick="$('#chatContainer_${proj.id}').slideToggle(400);#{ifnot connected.openChats.contains(proj.chatroom)}signIn(${proj.chatroom.id});getMessages${proj.id}();#{/ifnot}">Chatroom</a>
 </div>
 #{/list}
 </div>
@@ -97,7 +101,6 @@
 						#{if connected}
 							Hello ${connected.name}!&nbsp;&nbsp;|&nbsp;&nbsp;
 							<a href="/show/user?id=${controllers.Security.getConnected().id}">Profile</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-							<a href="#" id="chatlink"onclick="$('#chatroomList').slideToggle(200);$('#chatlink').toggleClass('topCornersRounded white')">Chatroom</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 						#{/if}
 							<a href="#" id="skinlink"onclick="$('#skinList').slideToggle(200);$('#skinlink').toggleClass('topCornersRounded white')">Change Color</a>&nbsp;&nbsp;
 						
@@ -113,15 +116,8 @@
 						#{/if}
 							</div>
 							<br style="clear:both"/>
-							#{if connected}
-							<div id="chatroomList">
- 								<div class="allCornersRounded chatroomListHolder" >
- 								#{list connected.projects, as:'proj'}
- 									<a href="#" onclick="$('#chatContainer_${proj.name}').slideToggle(400);#{ifnot connected.openChats.contains(proj.chatroom)}signIn(${proj.chatroom.id});getMessages${proj.id}();#{/ifnot}">${proj.name}</a>
- 									<br/> 	
-							 	#{/list}
-								</div>
-							</div>
+							
+							
 							<div id="skinList">
  								<div class="allCornersRounded skinListHolder" >
  									<a href="javascript:"onclick="chooseStyle('blue', 60)">Blue</a>
@@ -134,9 +130,12 @@
 								</div>
 							</div>
 						</div>
-						<div id="chatContainer">
-						#{list connected.projects, as:'proj'}
-							<div id="chatContainer_${proj.name}"style="width:225px;#{ifnot connected.openChats.contains(proj.chatroom)}display:none;#{/ifnot}">
+
+<div id="myWorkspaces">
+#{list connected?.projects, as:'proj'}
+<div class="workspaceContainer" id="workspace_${proj.id}" style="display:none">
+
+							<div class="draggable"id="chatContainer_${proj.id}"style="position:absolute;right:0px;top:0px;width:225px;#{ifnot connected.openChats.contains(proj.chatroom)}display:none;#{/ifnot}">
 								<div class="chatContainerHeader">
 									${proj.name} Chat 
 									<a id="${proj.name}_min"class="right"href="#" title="minimize?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);$('#${proj.name}_max').slideToggle(400);$('#${proj.name}_min').slideToggle(400);" style="text-decoration:none; color:#fff">[-]</a>
@@ -207,14 +206,7 @@
 									</script>
 								</div>
 							</div>
-						#{/list}
-						</div>
-						#{/if}
-</div>
-<div id="myWorkspaces">
-#{list connected?.projects, as:'proj'}
-<div class="workspaceContainer" id="workspace_${proj.id}" style="display:none">
-
+		
 </div>
 #{/list}
 </div>
