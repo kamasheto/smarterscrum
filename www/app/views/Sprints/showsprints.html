@@ -1,5 +1,6 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}Sprints <a href="Javascript:overlayOpen('@{projectblank(project.id)}')"><img src="@{'public/images/famfam/add.png'}" alt=[+]/></a>#{/set}
+
+#{set 'title'}Sprints <a onClick="overlayOpen('/Sprints/projectblank?id=${project.id}')"href="#" ><img src="@{'public/images/famfam/add.png'}" alt=[+]/></a>#{/set}
 <script type="text/javascript">
 function isBefore(date){
 	var now=new Date();
