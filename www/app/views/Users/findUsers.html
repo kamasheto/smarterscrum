@@ -1,0 +1,33 @@
+#{extends 'magicBox.html' /}
+#{set 'title'}${title}#{/set}
+
+#{if users !=null}
+		#{if users.size()==0}
+		<label> No Users</label>
+		#{/if}
+		#{list items:users ,as :'User'}
+			<div name="/users/findUsers?userId=${User.id}">${User.name}</div>
+		#{/list}
+		#{/if}
+		
+		#{if user!=null}
+		<img src="${user.avatar}></img>
+			#{if connected.in(project).can('editUser')}
+				<a href="javascript:overlayOpen('/admin/users/${user.id}')"><img src="@{'/public/images/famfam/pencil.png'}"></a><br>
+			#{/if}
+		<br>
+		<b>${user.name}</b>
+		<br>
+		%{count =0;}%
+		#{list items:user.projects ,as :'project'}
+			#{if count ==0}
+			${project.name}
+			#{/if}
+			#{else}
+			, ${project.name}
+			#{/else}
+			%{count =count+1;}%
+		#{/list}
+		<br>
+		#{/if}
+		
