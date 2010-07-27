@@ -1,4 +1,4 @@
-#{extends 'main.html' /} #{set title:'Sprint Backlog' /} 
+#{extends 'overlay.html' /} #{set title:'Sprint Backlog' /} 
 #{set 'moreStyles'}
 <style type="text/css">
 thead
@@ -152,13 +152,7 @@ $(function()
 	in the table, in addition to an option to edit if the user is a scrum master  and the 
 	sprint is not in progress 
 -->
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${projectId}">${pName}</a></li>
-<li><a href="/sprints/showsprints?projectId=${projectId}">Sprints</a></li>
-<li><a href="@{Sprints.showsprint(id,projectId)}" >Sprint ${sNum}</a></li>
-<li><a href="@{SprintBacklog.index(componentID,id)}">Sprint backlog</a></li>
-#{/set}
+
 <div id="sprint">
 #{ifnot taskOfStory}
 #{if incomp}
@@ -217,12 +211,7 @@ function hideOrShow(c)
 
 #{list items:taskOfStory, as:'storyTask'}
 
-<h3><a href="#" title="hide me? show me?"
-	onclick="$('#stroy_${storyTask.get(0).taskStory.id}').toggle();">
-Story ${storyTask.get(0).taskStory.id} :
-${storyTask.get(0).taskStory.description}</a></h3>
-<div style="margin-left: 10px;"
-	id="stroy_${storyTask.get(0).taskStory.id}">
+
 
 
 <table class="draggable sortable">
@@ -439,4 +428,3 @@ function customize_columns()
 }
 
 </script>
-</div>

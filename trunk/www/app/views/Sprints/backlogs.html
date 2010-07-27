@@ -2,6 +2,6 @@
 #{set 'title'}Component Backlogs#{/set}
 
 #{list items:sprint.project.components, as:'component'}
-<div name="@{SprintBacklog.index(component.id,sprint.id)}">${component.name}</div>
+<div class="overlay" name="@{SprintBacklog.index(component.id,sprint.id)}">${component.name}</div>
 #{/list}
 
