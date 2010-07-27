@@ -376,6 +376,19 @@ public class Boards extends SmartCRUD {
 	 * @param p 
 	 * 			Project p
 	 * */
+	
+	public static void sprintBoards(long sprintID)
+	{
+		Sprint s = Sprint.findById(sprintID);
+		Project p = s.project;
+		List <Board> boards = new ArrayList <Board>();
+		for(int i=0;i<p.components.size();i++)
+		{
+			boards.add(p.components.get(i).componentBoard);
+		}
+		render(boards,sprintID,p);
+	}
+	
 	public static ArrayList getDescPerm (Project p)
 	{
 		List <User> usrs = p.users;

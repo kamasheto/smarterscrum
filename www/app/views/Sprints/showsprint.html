@@ -16,7 +16,8 @@ function isBefore(date){
 
 <div name="@{Sprints.backlogs(sprint.id)}">Backlogs</div>
 <div name="@{Sprints.charts(sprint.id)}">Charts</div>
-
+<div name="@{Boards.sprintBoards(sprint.id)}">Boards</div>
+<!--
 #{if (!running)}
 <script type="text/javascript">
 
@@ -76,3 +77,4 @@ $.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}});
 #{if sprint.finalsnapshot!=null }
 <div><a title="Take a look @ the full task board?" href="@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)} ">View Sprint ${sprint.id} Task Board</a>
 #{/if}
+-->
