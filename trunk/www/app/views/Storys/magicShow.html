@@ -7,7 +7,7 @@
 		<label> No Tasks</label>
 		#{/if}
 		#{list items:task ,as :'Task'}
-			<div class="ui-widget-content actual" name="/storys/magicShow?taskId=${Task.id}"></div>
+			<div name="/storys/magicShow?taskId=${Task.id}">S${Task.taskStory.number} ${Task.description}</div>
 		#{/list}
 		#{/if}
 		
@@ -33,4 +33,10 @@
 		<br>
 		<b>Task Type</b>
 		${task1.taskType.name}
+		#{/if}
+		
+		#{if stories !=null}
+		#{list items:stories ,as :'Story'}
+			<div name="/storys/viewStory?storyId=${Story.id}">Story ${Story.number}</div>
+		#{/list}
 		#{/if}
