@@ -1,0 +1,6 @@
+#{extends 'overlay.html' /}
+#{set 'title'}Story or Task ?!#{/set}
+
+<a href="javascript:overlayOpen('/admin/tasks/new?id2=${project.components.get(0).id}')" onclick="javascript:window.close()"><img src="@{'/public/images/TASKS.png'}"/></a>
+
+<a href="#"><img src="@{'/public/images/BOOK.png'}"/></a>
