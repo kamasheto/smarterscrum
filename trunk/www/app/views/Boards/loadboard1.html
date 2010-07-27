@@ -26,7 +26,7 @@ REDIPS.drag.init()
 #{if hidencolumnsOfBoard.isEmpty()}
 #{/if}
 #{else}
-<a href="#" class="tiptitize" onclick="$('#b1').slideToggle()" title="add hidden column?" type="button">Add Columns!</a><br/>	
+<a href="#;" class="tiptitize" onclick="$('#b1').slideToggle()" title="add hidden column?" type="button">Add Columns!</a><br/>	
 <select id="b1" onchange="javascript: showHiddenCol(b1.value);" style="display:none" class="hidecol">
 <option value="">add columns</option>
 #{list items:hidencolumnsOfBoard, as:'c'}
@@ -41,7 +41,7 @@ REDIPS.drag.init()
 #{if columnsOfBoard.isEmpty()}
 #{/if}
 #{else}
-<a href="#" class="tiptitize" onclick="$('#b2').slideToggle(400)" title="delete column?" type="button" >Delete Columns!</a><br/>
+<a href="#;" class="tiptitize" onclick="$('#b2').slideToggle(400)" title="delete column?" type="button" >Delete Columns!</a><br/>
 <select id="b2" onchange="hideCol(b2.value)" style="display:none" class="showcol">
 <option id="x" value="">delete columns</option>
 #{list items:columnsOfBoard, as:'c'}
