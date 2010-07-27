@@ -2,7 +2,7 @@
 #{set 'title'}Sprint ${sprint.sprintNumber} Charts <a class="right">lol</a>#{/set}
 #{list items:sprint.project.components, as:'component'}
 
-<div name="Javascript:overlayOpen('@{SprintBacklog.showGraph(sprint.id,component.id)}');" title="view the burndown chart?">
+<div class="overlay"name="@{SprintBacklog.showGraph(sprint.id,component.id)}" title="view the burndown chart?">
 Component ${component.id}'s chart
 </div>
 #{/list}
