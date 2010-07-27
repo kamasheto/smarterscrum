@@ -173,46 +173,55 @@ public class Bootstrap extends Job {
 			Story S1 = new Story("As a System Admin I can view all System logs", "", "", 1, "", 1);
 			S1.componentID = c1;
 			c1.componentStories.add(S1);
+			S1.init();
 			S1.save();
 
 			Story S2 = new Story("As a Project Admin I can create one or more new roles in one or more of my projects.", "", "", 1, "", 1);
 			S2.componentID = c1;
 			c1.componentStories.add(S2);
+			S2.init();
 			S2.save();
 
 			Story S3 = new Story("As a System Admin I can edit details of users on the system", "", "", 1, "", 1);
 			S3.componentID = c1;
 			c1.componentStories.add(S3);
+			S3.init();
 			S3.save();
 
 			Story S4 = new Story("As a Registered User I can Request to Create a Project", "", "", 1, "", 1);
 			S4.componentID = c2;
 			c2.componentStories.add(S4);
+			S4.init();
 			S4.save();
 
 			Story S5 = new Story("As a Project Admin I Can Edit the default properties of the project", "", "", 1, "", 1);
 			S5.componentID = c2;
 			c2.componentStories.add(S5);
+			S5.init();
 			S5.save();
 
 			Story S6 = new Story("As a Project Admin, I can create product roles in a project.", "", "", 1, "", 1);
 			S6.componentID = c3;
 			c3.componentStories.add(S6);
+			S6.init();
 			S6.save();
 
 			Story S7 = new Story("As a Project Admin, I can assign specific stories to a specific sprint.", "", "", 1, "", 1);
 			S7.componentID = c3;
 			c3.componentStories.add(S7);
+			S7.init();
 			S7.save();
 
 			Story S8 = new Story("As a Project Admin, I can drag and drop a task", "", "", 1, "", 1);
 			S8.componentID = c5;
 			c5.componentStories.add(S8);
+			S8.init();
 			S8.save();
 
 			Story S9 = new Story("As a Project Admin, I can estimate effort points", "", "", 1, "", 1);
 			S9.componentID = c4;
 			c4.componentStories.add(S9);
+			S9.init();
 			S9.save();
 
 			// Sprints
@@ -238,6 +247,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T1);
 			S1.componentID.project.taskStatuses.get(0).Tasks.add(T1);
 			S1.storiesTask.add(T1);
+			T1.init();
 			T1.save();
 
 			Task T2 = new Task();
@@ -254,6 +264,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T2);
 			S1.componentID.project.taskStatuses.get(0).Tasks.add(T2);
 			S1.storiesTask.add(T2);
+			T2.init();
 			T2.save();
 
 			Task T3 = new Task();
@@ -270,6 +281,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T3);
 			S4.componentID.project.taskStatuses.get(0).Tasks.add(T3);
 			S4.storiesTask.add(T3);
+			T3.init();
 			T3.save();
 
 			Task T4 = new Task();
@@ -286,6 +298,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T4);
 			S4.componentID.project.taskStatuses.get(0).Tasks.add(T4);
 			S4.storiesTask.add(T4);
+			T4.init();
 			T4.save();
 
 			Task T5 = new Task();
@@ -302,6 +315,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T5);
 			S6.componentID.project.taskStatuses.get(0).Tasks.add(T5);
 			S6.storiesTask.add(T5);
+			T5.init();
 			T5.save();
 
 			Task T6 = new Task();
@@ -318,6 +332,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T6);
 			S6.componentID.project.taskStatuses.get(0).Tasks.add(T6);
 			S6.storiesTask.add(T6);
+			T6.init();
 			T6.save();
 
 			Task T7 = new Task();
@@ -334,6 +349,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T7);
 			S7.componentID.project.taskStatuses.get(0).Tasks.add(T7);
 			S7.storiesTask.add(T7);
+			T7.init();
 			T7.save();
 
 			Task T8 = new Task();
@@ -350,6 +366,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T8);
 			S7.componentID.project.taskStatuses.get(0).Tasks.add(T8);
 			S7.storiesTask.add(T8);
+			T8.init();
 			T8.save();
 
 			Task T9 = new Task();
@@ -366,6 +383,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T9);
 			S4.componentID.project.taskStatuses.get(0).Tasks.add(T9);
 			S4.storiesTask.add(T9);
+			T9.init();
 			T9.save();
 
 			Task T10 = new Task();
@@ -381,6 +399,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T10);
 			S1.componentID.project.taskStatuses.get(0).Tasks.add(T10);
 			S1.storiesTask.add(T10);
+			T10.init();
 			T10.save();
 
 			Task T11 = new Task();
@@ -396,6 +415,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T11);
 			S8.componentID.project.taskStatuses.get(0).Tasks.add(T11);
 			S8.storiesTask.add(T11);
+			T11.init();
 			T11.save();
 
 			Task T12 = new Task();
@@ -411,6 +431,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T12);
 			S8.componentID.project.taskStatuses.get(0).Tasks.add(T12);
 			S8.storiesTask.add(T12);
+			T12.init();
 			T12.save();
 
 			Task T13 = new Task();
@@ -426,6 +447,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T13);
 			S9.componentID.project.taskStatuses.get(0).Tasks.add(T13);
 			S9.storiesTask.add(T13);
+			T13.init();
 			T13.save();
 
 			Task T14 = new Task();
@@ -441,6 +463,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T14);
 			S9.componentID.project.taskStatuses.get(0).Tasks.add(T14);
 			S9.storiesTask.add(T14);
+			T14.init();
 			T14.save();
 
 			Task T15 = new Task();
@@ -456,6 +479,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T15);
 			S9.componentID.project.taskStatuses.get(0).Tasks.add(T15);
 			S9.storiesTask.add(T15);
+			T15.init();
 			T15.save();
 
 			Task T16 = new Task();
@@ -471,6 +495,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T16);
 			S9.componentID.project.taskStatuses.get(0).Tasks.add(T16);
 			S9.storiesTask.add(T16);
+			T16.init();
 			T16.save();
 
 			Task T17 = new Task();
@@ -486,6 +511,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T17);
 			S9.componentID.project.taskStatuses.get(0).Tasks.add(T17);
 			S9.storiesTask.add(T17);
+			T17.init();
 			T17.save();
 
 			Task T18 = new Task();
@@ -501,6 +527,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T18);
 			S9.componentID.project.taskStatuses.get(0).Tasks.add(T18);
 			S9.storiesTask.add(T18);
+			T18.init();
 			T18.save();
 
 			Task T19 = new Task();
@@ -516,6 +543,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T19);
 			S9.componentID.project.taskStatuses.get(0).Tasks.add(T19);
 			S9.storiesTask.add(T19);
+			T19.init();
 			T19.save();
 
 			Task T20 = new Task();
@@ -531,6 +559,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T20);
 			S9.componentID.project.taskStatuses.get(0).Tasks.add(T20);
 			S9.storiesTask.add(T20);
+			T20.init();
 			T20.save();
 
 			Task T21 = new Task();
@@ -546,6 +575,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T21);
 			S1.componentID.project.taskStatuses.get(0).Tasks.add(T21);
 			S1.storiesTask.add(T21);
+			T21.init();
 			T21.save();
 
 			Task T22 = new Task();
@@ -561,6 +591,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T22);
 			S1.componentID.project.taskStatuses.get(0).Tasks.add(T22);
 			S1.storiesTask.add(T22);
+			T22.init();
 			T22.save();
 
 			Task T23 = new Task();
@@ -576,6 +607,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T23);
 			S1.componentID.project.taskStatuses.get(0).Tasks.add(T23);
 			S1.storiesTask.add(T23);
+			T23.init();
 			T23.save();
 
 			Task T24 = new Task();
@@ -591,6 +623,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T24);
 			S1.componentID.project.taskStatuses.get(0).Tasks.add(T24);
 			S1.storiesTask.add(T24);
+			T24.init();
 			T24.save();
 
 			Task T25 = new Task();
@@ -606,6 +639,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T25);
 			S1.componentID.project.taskStatuses.get(0).Tasks.add(T25);
 			S1.storiesTask.add(T25);
+			T25.init();
 			T25.save();
 
 			Task T26 = new Task();
@@ -621,6 +655,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T26);
 			S8.componentID.project.taskStatuses.get(0).Tasks.add(T26);
 			S8.storiesTask.add(T26);
+			T26.init();
 			T26.save();
 
 			Task T27 = new Task();
@@ -636,6 +671,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T27);
 			S8.componentID.project.taskStatuses.get(0).Tasks.add(T27);
 			S8.storiesTask.add(T27);
+			T27.init();
 			T27.save();
 
 			Task T28 = new Task();
@@ -651,6 +687,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T28);
 			S8.componentID.project.taskStatuses.get(0).Tasks.add(T28);
 			S8.storiesTask.add(T28);
+			T28.init();
 			T28.save();
 
 			Task T29 = new Task();
@@ -666,6 +703,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T29);
 			S8.componentID.project.taskStatuses.get(0).Tasks.add(T29);
 			S8.storiesTask.add(T29);
+			T29.init();
 			T29.save();
 
 			Task T30 = new Task();
@@ -681,6 +719,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T30);
 			S8.componentID.project.taskStatuses.get(0).Tasks.add(T30);
 			S8.storiesTask.add(T30);
+			T30.init();
 			T30.save();
 
 			Task T31 = new Task();
@@ -697,6 +736,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T31);
 			S4.componentID.project.taskStatuses.get(0).Tasks.add(T31);
 			S4.storiesTask.add(T31);
+			T31.init();
 			T31.save();
 
 			Task T32 = new Task();
@@ -713,6 +753,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T32);
 			S4.componentID.project.taskStatuses.get(0).Tasks.add(T32);
 			S4.storiesTask.add(T32);
+			T32.init();
 			T32.save();
 
 			Task T33 = new Task();
@@ -729,6 +770,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T33);
 			S4.componentID.project.taskStatuses.get(0).Tasks.add(T33);
 			S4.storiesTask.add(T33);
+			T33.init();
 			T33.save();
 
 			Task T34 = new Task();
@@ -745,6 +787,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T34);
 			S4.componentID.project.taskStatuses.get(0).Tasks.add(T34);
 			S4.storiesTask.add(T34);
+			T34.init();
 			T34.save();
 
 			Task T35 = new Task();
@@ -761,6 +804,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T35);
 			S7.componentID.project.taskStatuses.get(0).Tasks.add(T35);
 			S7.storiesTask.add(T35);
+			T35.init();
 			T35.save();
 
 			Task T36 = new Task();
@@ -777,6 +821,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T36);
 			S7.componentID.project.taskStatuses.get(0).Tasks.add(T36);
 			S7.storiesTask.add(T36);
+			T36.init();
 			T36.save();
 
 			Task T37 = new Task();
@@ -793,6 +838,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T37);
 			S7.componentID.project.taskStatuses.get(0).Tasks.add(T37);
 			S7.storiesTask.add(T37);
+			T37.init();
 			T37.save();
 
 			Task T38 = new Task();
@@ -809,6 +855,7 @@ public class Bootstrap extends Job {
 			Sp1.tasks.add(T38);
 			S7.componentID.project.taskStatuses.get(0).Tasks.add(T38);
 			S7.storiesTask.add(T38);
+			T38.init();
 			T38.save();
 
 			// ************ LOGS BEGIN ************
