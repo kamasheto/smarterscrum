@@ -18,159 +18,6 @@
 REDIPS.drag.init()
 #{/set}
 
-<script type="text/javascript" charset="utf-8"> 
-
-var selectedUser = 0;
-var col_from = -1;
-var col_to = -1;
-		
-//Author Amr Abdelwahab A script used to toogle the board
-$(document).ready(function(){
-
-	$('.component').click(function()
-	{
-		$('#'+this.id).toggle();
-		original = '#'+this.id;
-		$('#'+this.id+"_hidden").toggle();
-		$('#'+this.id+'_hidden').click(function(){
-		var splittedC 	= this.id.split("_");
-		var i= splittedC[0];
-		originalC = '#'+i;
-		$(originalC).show();
-		$(this).hide();
-	});
-	});
-	
-	$('.SmallSticky').click(function()
-	{		
-		$('#'+this.id+"_small").hide();
-		$('#'+this.id+"_HiddenSticky").show();
-		$('#'+this.id+"Large").toggle();
-		$('#'+this.id+'_HiddenSticky').click(function(){
-		var splittedST 	= this.id.split("_");
-		var F= splittedST[0];
-		originalST = '#'+F;
-		$('#'+F+"_small").show();
-		$(originalST+"Large").hide();
-		$(this).hide();
-	
-	});
-	});
-		
-	$('.ctask').click(function()
-	{
-		$('#'+this.id+"_T").hide();	
-		$('#'+this.id+"_hidden").show();
-		$('.showtask').click(function(){
-		var splittedT 	= this.id.split("_");
-		var j= splittedT[0];
-		originalT = '#'+j+"_T";
-		$(originalT).show();
-		$(this).hide();
-	});
-	});
-		
-	$('.cstory').click(function()
-	{
-		$('#'+this.id+"_S").hide();	
-		$('#'+this.id+"_hidden").show();
-		$('.showstory').click(function(){
-		var splittedS	= this.id.split("_");
-		var k= splittedS[0];
-		originalS = '#'+k+"_S";
-		$(originalS).show();
-		$(this).hide();		
-	});
-	});
-		
-	$('#ToggleBoard').click(function(event)
-	{
-   		event.preventDefault();
-   		$('#mainBoard').toggle();
- 	});
- 	
-	$('#form').click(function(event)
-	{
-   		event.preventDefault();
-   		$('form').toggle(400);
- 	});
-  
-	$('.hideCol').click(function()
-	{
-		var i =this.id;
-		$('.col_'+i).css('display','none');
-	});    
-	});
-
-function showCol(c)
-{
-	//$('#desc_1').load('/boards/loadboard1?sprintID=1 #desc_1');
-	$('.col_'+c).css('display','table-cell');	
-	var seloption = document.getElementById('changeCol');
-	seloption.selectedIndex='d';
-}
-function showHiddenCol(colid)
-{
-	$.post('/Boards/showHiddenColumn' ,			
-			{cid:colid,uid:${connected.id}}, function(){
-		window.location.reload();
-		});
-		
-}
-function hideCol(colid)
-{
-	var answer=confirm('Are you sure u want to delete this coulmn?')
-		
-		if (answer) 	
-	      {
-	$.post('/Boards/hideColumn' ,			
-			{cid:colid,uid:${connected.id}}, function(){
-			window.location.reload();
-		});
-		
-	      }
-		  else{
-		  	var seloption = document.getElementById('b2');
-	seloption.selectedIndex='x';
-		  }
-}
-function popUp(URL) 
-{
-day = new Date();
-id = day.getTime();
-eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=200,height=400,left = 583,top = 184');");
-}
-
-
-/**
- * @Author: Dine Helal
- * This function is used to edit column names & tasks in place
- */
-$(function() 
-{
-	$('.editDES').editable(function(value)
-		{var taskId 	= parseInt($('#lolid').closest("div").attr("id"));  
-    	 $.post('@{Tasks.editTaskDesc2()}',{id:taskId, userId:selectedUser, desc:value});
-		 document.getElementById("desc_"+taskId).innerHTML = value;
-       	 document.getElementById(taskId+"_des").innerHTML = value;
-         document.getElementById(taskId+"_desc").innerHTML = value;
-		 return(value);   
-    	},{indicator : 'Saving...',});
-
-	$('.editCOL').editable(function(value)
-    	   {var colId 	= parseInt($('#lolid').closest("div").attr("id"));   
-    	    $.post('@{Columns.editColumnName}',{id:colId, name:value, userId:selectedUser});
-		    return(value);
-    	   },{indicator : 'Saving...',});
-});
-
-$(function()
-{
-	$('div.tiptipize').tipTip({delay:0});
-});
-
-</script>
-
 #{if comp==null}
 <h1>${p.name}'s Task Board</h1>
 #{/if}
@@ -509,6 +356,137 @@ function displayTZCountDown(countdown,tzcd)
 </div>
 
  <script type="text/javascript">
+
+var selectedUser = 0;
+var col_from = -1;
+var col_to = -1;
+
+function showCol(c)
+{
+	//$('#desc_1').load('/boards/loadboard1?sprintID=1 #desc_1');
+	$('.col_'+c).css('display','table-cell');	
+	var seloption = document.getElementById('changeCol');
+	seloption.selectedIndex='d';
+}
+function showHiddenCol(colid)
+{
+	$.post('/Boards/showHiddenColumn' ,{cid:colid,uid:${connected.id}}, function(){window.location.reload();});
+		
+}
+function hideCol(colid)
+{
+	var answer=confirm('Are you sure u want to delete this coulmn?')
+		
+		if (answer) 	
+	      {
+	$.post('/Boards/hideColumn' ,			
+			{cid:colid,uid:${connected.id}}, function(){
+			window.location.reload();
+		});
+		
+	      }
+		  else{
+		  	var seloption = document.getElementById('b2');
+	seloption.selectedIndex='x';
+		  }
+}
+function popUp(URL) 
+{
+day = new Date();
+id = day.getTime();
+eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=200,height=400,left = 583,top = 184');");
+}
+
+
+$('.SmallSticky').click(function()
+	{		
+		$('#'+this.id+"_small").hide();
+		$('#'+this.id+"_HiddenSticky").show();
+		$('#'+this.id+"Large").toggle();
+		$('#'+this.id+'_HiddenSticky').click(function(){
+		var splittedST 	= this.id.split("_");
+		var F= splittedST[0];
+		originalST = '#'+F;
+		$('#'+F+"_small").show();
+		$(originalST+"Large").hide();
+		$(this).hide();
+	
+	});
+	});
+	
+$('.component').click(function()
+	{
+		$('#'+this.id).toggle();
+		original = '#'+this.id;
+		$('#'+this.id+"_hidden").toggle();
+		$('#'+this.id+'_hidden').click(function(){
+		var splittedC 	= this.id.split("_");
+		var i= splittedC[0];
+		originalC = '#'+i;
+		$(originalC).show();
+		$(this).hide();
+	});
+	});
+	
+		
+	$('.ctask').click(function()
+	{
+		$('#'+this.id+"_T").hide();	
+		$('#'+this.id+"_hidden").show();
+		$('.showtask').click(function(){
+		var splittedT 	= this.id.split("_");
+		var j= splittedT[0];
+		originalT = '#'+j+"_T";
+		$(originalT).show();
+		$(this).hide();
+	});
+	});
+		
+	$('.cstory').click(function()
+	{
+		$('#'+this.id+"_S").hide();	
+		$('#'+this.id+"_hidden").show();
+		$('.showstory').click(function(){
+		var splittedS	= this.id.split("_");
+		var k= splittedS[0];
+		originalS = '#'+k+"_S";
+		$(originalS).show();
+		$(this).hide();		
+	});
+	});
+		
+	$('#ToggleBoard').click(function(event)
+	{
+   		event.preventDefault();
+   		$('#mainBoard').toggle();
+ 	});
+ 	
+	$('#form').click(function(event)
+	{
+   		event.preventDefault();
+   		$('form').toggle(400);
+ 	});
+  
+	$('.hideCol').click(function()
+	{
+		var i =this.id;
+		$('.col_'+i).css('display','none');
+	});    
+	$('.editDES').editable(function(value)
+		{var taskId 	= parseInt($('#lolid').closest("div").attr("id"));  
+    	 $.post('@{Tasks.editTaskDesc2()}',{id:taskId, userId:selectedUser, desc:value});
+		 document.getElementById("desc_"+taskId).innerHTML = value;
+       	 document.getElementById(taskId+"_des").innerHTML = value;
+         document.getElementById(taskId+"_desc").innerHTML = value;
+		 return(value);   
+    	},{indicator : 'Saving...',});
+
+	$('.editCOL').editable(function(value)
+    	   {var colId 	= parseInt($('#lolid').closest("div").attr("id"));   
+    	    $.post('@{Columns.editColumnName}',{id:colId, name:value, userId:selectedUser});
+		    return(value);
+    	   },{indicator : 'Saving...',});
+	$('div.tiptipize').tipTip({delay:0});
 
  function select_user(id, str) 
  {
