@@ -1,5 +1,5 @@
 #{extends 'magicBox.html'/}
-#{set 'title'}Sprint ${sprint.sprintNumber} Charts <a class="right">lol</a>#{/set}
+#{set 'title'}Sprint ${sprint.sprintNumber} Charts <a class="right"></a>#{/set}
 #{list items:sprint.project.components, as:'component'}
 
 <div class="overlay"name="@{SprintBacklog.showGraph(sprint.id,component.id)}" title="view the burndown chart?">
