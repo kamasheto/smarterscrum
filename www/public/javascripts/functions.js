@@ -263,19 +263,22 @@ function removeMe(me)
 
 
 function loadBox(url, el) {
-	
-	if($.inArray(url,myDivs)==-1){
+
+//	if($.inArray(url,myDivs)==-1){
 	$('#' + el).append('<div style="position:absolute;z-index:0"id="myTemp"></div>');
-	
+
 	$('#' + el + ' #myTemp').load(url, function() {
 		$('#' + el + ' #myTemp').children().attr('name',url);
 		$('#' + el + ' #myTemp').children().css('position','absolute!important');
 
 		$('#' + el + ' #myTemp').children().css('z-index','4');
+	//	alert($('#' + el + ' #myTemp').html());
+	//alert($('#' + el + ' #myTemp').attr('id'));
 		$('#' + el + ' #myTemp').replaceWith($('#' + el + ' #myTemp').html());
 		myDivs.push(url);
+	
 	});
-	}
+	//}
 }
 var num =1;
 function magic(id) {
