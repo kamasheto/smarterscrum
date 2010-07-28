@@ -32,7 +32,7 @@
 	#{/if}
 	#{/set}
 	
-<div name="@{Meetings.notes(meeting.id)}">Notes</div>
+
 
 <b> Starts  at</b> :   <span class="formatTime">${meeting.startTime}</span> 
 <br> <br>
@@ -43,8 +43,10 @@
 <b> Meeting Type </b>:  ${meeting.type} 
 <br> <br>
 
-<script type="text/javascript">
-</script>
+<div name="@{Meetings.invitedMembers(meeting.id)}">Attendees</div>
+<div name="@{Meetings.notes(meeting.id)}">Notes</div>
+<div name="@{Meetings.meetingTasks(meeting.id)}">Tasks</div>
+
 
 
 

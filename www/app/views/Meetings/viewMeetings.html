@@ -26,17 +26,17 @@
 
 	#{list items:current, as:'current'}
 		#{if !current.deleted}
-		<div name="/meetings/viewmeeting?id=${current.id}">${current.name}#{if (connected.in(project).can('editMeeting') ||connceted.equals(current.creator)) }<a href="javascript:overlayOpen('/admin/meetings/${current.id}');" title="edit"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(current.creator)) } <div class="item_imgs"><a onclick="javascript:delete_meeting(${current.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a></div>#{/if}</div>
+		<div name="/meetings/viewmeeting?id=${current.id}">${current.name}#{if (connected.in(project).can('editMeeting') ||connceted.equals(current.creator)) }<a href="javascript:overlayOpen('/admin/meetings/${current.id}');" title="edit"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(current.creator)) } <a onclick="javascript:delete_meeting(${current.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div>
 		#{/if}
 	#{/list}
 	#{list items:upcoming, as:'current'}
 		#{if !current.deleted}
-		<div name="/meetings/viewmeeting?id=${current.id}">${current.name}#{if (connected.in(project).can('editMeeting') ||connceted.equals(current.creator)) }<a href="javascript:overlayOpen('/admin/meetings/${current.id}');" title="edit"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(current.creator)) } <div class="item_imgs"><a onclick="javascript:delete_meeting${current.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a></div>#{/if}</div>
+		<div name="/meetings/viewmeeting?id=${current.id}">${current.name}#{if (connected.in(project).can('editMeeting') ||connceted.equals(current.creator)) }<a href="javascript:overlayOpen('/admin/meetings/${current.id}');" title="edit"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(current.creator)) } <a onclick="javascript:delete_meeting${current.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div>
 		#{/if}
 	#{/list}
 	#{list items:past, as:'current'}
 		#{if !current.deleted}
-		<div name="/meetings/viewmeeting?id=${current.id}">${current.name}#{if (connected.in(project).can('editMeeting') ||connceted.equals(current.creator)) }<a href="javascript:overlayOpen('/admin/meetings/${current.id}');" title="edit"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(current.creator)) } <div class="item_imgs"><a onclick="javascript:delete_meeting(${current.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a></div>#{/if}</div>
+		<div name="/meetings/viewmeeting?id=${current.id}">${current.name}#{if (connected.in(project).can('editMeeting') ||connceted.equals(current.creator)) }<a href="javascript:overlayOpen('/admin/meetings/${current.id}');" title="edit"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(current.creator)) } <a onclick="javascript:delete_meeting(${current.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div>
 		#{/if}
 	#{/list}
 	

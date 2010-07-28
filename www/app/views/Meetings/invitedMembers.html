@@ -1,0 +1,8 @@
+#{extends 'magicBox.html' /}	
+	#{set 'title'}
+	Attendees.
+	#{/set}
+	
+	#{list items:invitedMembers, as:'attendance'}
+	<div name="/Meetings/viewAttendeeStatus?id=${attendance.id}">${attendance.user.name}</div>
+	#{/list}

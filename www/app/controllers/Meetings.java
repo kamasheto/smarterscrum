@@ -799,4 +799,78 @@ public class Meetings extends SmartCRUD
 			}
 		}
 	}
+	
+	public static void invitedMembers(long meetingId)
+	{
+		List<MeetingAttendance> attendance= MeetingAttendance.find("byMeeting.idAndDeleted",meetingId,false).fetch();
+		List<MeetingAttendance> invitedMembers= new ArrayList<MeetingAttendance>();
+		for(MeetingAttendance att:attendance)
+		{
+			if(att.user.equals(Security.getConnected()));
+			invitedMembers.add(att);
+		}
+		
+		for(MeetingAttendance att:attendance)
+		{
+			if(att.status.equals("confirmed"))
+			invitedMembers.add(att);
+		}
+		for(MeetingAttendance att:attendance)
+		{
+			if(att.status.equals("waiting"))
+			invitedMembers.add(att);
+		}
+		for(MeetingAttendance att:attendance)
+		{
+			if(att.status.equals("declined"))
+			invitedMembers.add(att);
+		}
+		render(invitedMembers);
+		
+	}
+	
+	public static void meetingTasks(long meetingId)
+	{
+		render();
+	}
+	
+	public static void viewAttendeeStatus(long id)
+	{
+		MeetingAttendance attendance= MeetingAttendance.findById(id);
+		boolean past= (attendance.meeting.endTime<new Date().getTime());
+		String status="";
+		if(past)
+		{
+			if(attendance.status.equals("waiting"))
+			{
+				status="awaiting reply";
+			}
+			if(attendance.status.equals("confirmed"))
+			{
+				status="attending";
+			}
+			if(attendance.status.equals("declined"))
+			{
+				status="not attending";
+			}
+			
+		}
+		else
+		{
+			if(attendance.status.equals("waiting"))
+			{
+				status="did not reply";
+			}
+			if(attendance.status.equals("confirmed"))
+			{
+				status="attended";
+			}
+			if(attendance.status.equals("declined"))
+			{
+				status="did not attend";
+			}
+		}
+		
+		render(attendance,past,status);
+	}
 }
