@@ -141,6 +141,10 @@ public class Security extends Secure.Security
 	public static void passwordRecovery( String h )
 	{
 		User user = User.find( "byRecoveryHash", h ).first();
+		if(user==null)
+		{
+			notFound();
+		}
 		render( user );
 	}
 
