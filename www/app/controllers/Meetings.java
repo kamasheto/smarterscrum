@@ -802,6 +802,7 @@ public class Meetings extends SmartCRUD
 	
 	public static void invitedMembers(long meetingId)
 	{
+		Meeting meeting= Meeting.findById(meetingId);
 		List<MeetingAttendance> attendance= MeetingAttendance.find("byMeeting.idAndDeleted",meetingId,false).fetch();
 		List<MeetingAttendance> invitedMembers= new ArrayList<MeetingAttendance>();
 		for(MeetingAttendance att:attendance)
@@ -825,7 +826,7 @@ public class Meetings extends SmartCRUD
 			if(att.status.equals("declined"))
 			invitedMembers.add(att);
 		}
-		render(invitedMembers);
+		render(invitedMembers,meeting);
 		
 	}
 	
