@@ -301,7 +301,7 @@ function removeMe(me)
 
 function loadBox(url, el) {
 	
-//	if($.inArray(url,myDivs)==-1){
+if($.inArray(url,myDivs)==-1){
 	$('#' + el).append('<div style="position:absolute;z-index:0"id="myTemp"></div>');
 	
 	$('#' + el + ' #myTemp').load(url, function() {
@@ -312,7 +312,7 @@ function loadBox(url, el) {
 		$('#' + el + ' #myTemp').replaceWith($('#' + el + ' #myTemp').html());
 		myDivs.push(url);
 	});
-	//}
+	}
 }
 var num =1;
 function magic(id) {
