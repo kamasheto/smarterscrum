@@ -167,6 +167,7 @@ public class Storys extends SmartCRUD {
 	 **/
 	// @Check ("canDeleteStory")
 	public static void delete(String id) {
+		System.out.println("da5al el delete");
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
@@ -218,7 +219,8 @@ public class Storys extends SmartCRUD {
 			redirect(request.controller + ".show", object.getEntityId());
 		}
 		flash.success(Messages.get("crud.deleted", type.modelName, object.getEntityId()));
-		listStoriesInProject(story.componentID.project.id, 0);
+		//listStoriesInProject(story.componentID.project.id, 0);
+		renderText("Story deleted.");
 	}
 
 	/**
@@ -941,9 +943,19 @@ public class Storys extends SmartCRUD {
 			 failure = story.failureSenario.split("\n");
 		else
 			 failure = new String[1];
-		render(story,success,failure);
+		
+		boolean inSprint = story.inSprint();
+		boolean hasDependency = story.hasDependency();
+		String message = "";
+		
+		if(inSprint)
+		{
+			message+="The story can not be edited or deleted because it's in a sprint.";
+		}
+		
+		render(story,success,failure, inSprint, hasDependency, message);
 	}
-
+	
 	/**
 	 * Forbids access to listing all stories!
 	 * 
