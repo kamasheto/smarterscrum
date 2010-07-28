@@ -215,7 +215,7 @@ public class Meetings extends SmartCRUD
 		if( params.get( "_save" ) != null )
 		{
 			// redirect( request.controller + ".list" );
-			//Meetings.viewMeetings( currentProject.id );
+			// Meetings.viewMeetings( currentProject.id );
 			redirect( "/Application/overlayKiller" );
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
@@ -244,21 +244,20 @@ public class Meetings extends SmartCRUD
 		List<Meeting> meetings = Meeting.find( "byProject.idAndDeleted", id, false ).fetch();
 		List<Meeting> upcoming = new ArrayList<Meeting>();
 		List<Meeting> past = new ArrayList<Meeting>();
-		List<Meeting> current= new ArrayList<Meeting>();
+		List<Meeting> current = new ArrayList<Meeting>();
 		while( meetings.isEmpty() == false )
 		{
 			Meeting temp = (meetings.remove( 0 ));
-			Date tempStart= new Date(temp.startTime);
+			Date tempStart = new Date( temp.startTime );
 			Date tempEnd = new Date( temp.endTime );
-			if( currDate.after(tempEnd) )
+			if( currDate.after( tempEnd ) )
 				past.add( temp );
-			else
-			if(currDate.before(tempStart))
+			else if( currDate.before( tempStart ) )
 				upcoming.add( temp );
 			else
-				current.add(temp);
+				current.add( temp );
 		}
-		
+
 		String projectName = project.name;
 		render( meetings, id, projectName, past, upcoming, current, project );
 
@@ -439,38 +438,34 @@ public class Meetings extends SmartCRUD
 	public static void viewMeeting( long id )
 	{
 		Meeting meeting = Meeting.findById( id );
-		MeetingAttendance ma= MeetingAttendance.find("byMeetingAndUserAndDeleted",meeting,Security.getConnected(),false).first();
-		boolean invited=false;
-		boolean attending=false;
-		boolean declined=false;
-		if(ma==null)
+		MeetingAttendance ma = MeetingAttendance.find( "byMeetingAndUserAndDeleted", meeting, Security.getConnected(), false ).first();
+		boolean invited = false;
+		boolean attending = false;
+		boolean declined = false;
+		if( ma == null )
 		{
-			invited=false;
+			invited = false;
 		}
-		else
-		if(ma.status.equals("confirmed"))
+		else if( ma.status.equals( "confirmed" ) )
 		{
-			invited=true;
-			attending=true;
+			invited = true;
+			attending = true;
 		}
-		else
-		if(ma.status.equals("declined"))
+		else if( ma.status.equals( "declined" ) )
 		{
-			invited=true;
-			declined=true;
+			invited = true;
+			declined = true;
 		}
-		else
-		if(ma.status.equals("waiting"))
+		else if( ma.status.equals( "waiting" ) )
 		{
-			invited=true;
+			invited = true;
 		}
-		
-		boolean past=false;
-		if(meeting.endTime<new Date().getTime())
-			past=true;
-		
-		
-		render( meeting,invited,attending,declined,past);
+
+		boolean past = false;
+		if( meeting.endTime < new Date().getTime() )
+			past = true;
+
+		render( meeting, invited, attending, declined, past );
 	}
 
 	/**
@@ -527,7 +522,7 @@ public class Meetings extends SmartCRUD
 		}
 		Logs.addLog( Security.getConnected(), "delete", "Meeting", meeting.id, meeting.project, new Date( System.currentTimeMillis() ) );
 		meeting.save();
-		//redirect( "/projects/" + meeting.project.id + "/meetings" );
+		// redirect( "/projects/" + meeting.project.id + "/meetings" );
 		//
 		// } else
 		// forbidden();
@@ -724,6 +719,50 @@ public class Meetings extends SmartCRUD
 		n.save();
 		meeting.artifacts.add( n );
 		meeting.save();
+		flash.success("The note has been added successfully!");
+
+	}
+	/**
+	 * Passes on the meeting id to the add a note page.
+	 * @author Hadeer Younis
+	 * @param id, meeting id
+	 */
+	public static void newNote(long id)
+	{
+		render(id);
+	}
+
+	/**
+	 * Renders a note.
+	 * 
+	 * @author Hadeer Younis
+	 * @param id
+	 *            , note id
+	 */
+	public static void note( long id, int i, boolean noteFlag )
+	{
+		Artifact note = Artifact.findById( id );
+		render( note,i,noteFlag );
+	}
+
+	/**
+	 * Renders a page listing all the notes found in a certain meeting.
+	 * 
+	 * @param id
+	 *            , meeting id
+	 */
+	public static void notes( long id )
+	{
+		Meeting myMeeting = Meeting.findById( id );
+		boolean noteFlag = false;
+		long longCurrentDate = new Date().getTime();
+		List notes = myMeeting.artifacts;
+
+		User theUser = Security.getConnected();
+		if( (theUser.meetingStatus( id ).equals( "confirmed" )) && (myMeeting.endTime > longCurrentDate) )
+			noteFlag = true;
+
+		render( noteFlag, notes, id, myMeeting );
 
 	}
 

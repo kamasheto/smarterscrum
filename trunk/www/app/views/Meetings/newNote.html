@@ -1,0 +1,10 @@
+#{extends 'magicBox.html' /}
+#{set 'title'}New Note#{/set}
+<div class="crudField">
+<textarea id="noteBody" style="width:100%;"></textarea>
+</div>
+
+<div class="crudField">
+<button onclick="$.post('@{Meetings.addNote()}',{id:'${id}',note:$('#noteBody').val()});">Add</button>
+</div>
+
