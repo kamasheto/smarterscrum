@@ -4,11 +4,38 @@
 	${story.description}<br>
 	<b>Success Scenarios</b><br>
 	#{list items:success, as:'suc'}
-		${suc}<br>
+		%{ 
+		int s=0;
+		if (suc.trim().length() == 0)
+		{
+			s++;
+		}
+		else
+		{
+			out.print(suc+"<br>");
+		}	
+		if(s == success.length)
+		{
+			out.print("No success scenarios are defined for this story.<br>");
+		}
+	}%
 	#{/list}
 	<br><b>Failure Scenarios</b><br>
 	#{list items:failure, as:'fail'}
-		${fail}<br>
+	%{ int i=0;
+		if (fail.trim().length() == 0)
+		{
+			i++;
+		}
+		else
+		{
+			out.print(fail+"<br>");
+		}	
+		if(i == failure.length)
+		{
+			out.print("No failure scenarios are defined for this story.<br>");
+		}
+	}%
 	#{/list}<br>
 	#{list items:story.storiesTask, as:'task'}
 		<div name="/storys/magicShow?taskId=${task.id}">S:${story.number} ${task.description}</div>
