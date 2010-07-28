@@ -31,6 +31,43 @@
 
                
        		$(function(){
+       			$('a').live('click',function(){
+
+           			var o = window.parent.document.getElementsByTagName('iframe');
+           			for(i=0;i<o.length;i++){
+           				if (/\bautoHeight\b/.test(o[i].className)){
+           					setHeight(o[i]);
+           					addEvent(o[i],'load', doIframe);
+           				}
+           			}	$('button').live('click',function(){
+
+               			var o = window.parent.document.getElementsByTagName('iframe');
+               			for(i=0;i<o.length;i++){
+               				if (/\bautoHeight\b/.test(o[i].className)){
+               					setHeight(o[i]);
+               					addEvent(o[i],'load', doIframe);
+               				}
+               			}
+               			$('input[type=button]').live('click',function(){
+
+                   			var o = window.parent.document.getElementsByTagName('iframe');
+                   			for(i=0;i<o.length;i++){
+                   				if (/\bautoHeight\b/.test(o[i].className)){
+                   					setHeight(o[i]);
+                   					addEvent(o[i],'load', doIframe);
+                   				}
+                   			}$('input[type=submit]').live('click',function(){
+
+                       			var o = window.parent.document.getElementsByTagName('iframe');
+                       			for(i=0;i<o.length;i++){
+                       				if (/\bautoHeight\b/.test(o[i].className)){
+                       					setHeight(o[i]);
+                       					addEvent(o[i],'load', doIframe);
+                       				}
+                       			}
+
+
+               		});
        			$('.formatDate').each(function(){
 					$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );
 				});
