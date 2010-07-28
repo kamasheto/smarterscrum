@@ -71,8 +71,8 @@ public class Projects extends SmartCRUD {
 			object.save();			
 			Project pro = (Project) object; 
 			pro.init(projectObject.isScrum);
-			Role proAdmin = Role.find("name= 'ProjectCreator' and project =" +pro.id).first();
-			user.roles.add(proAdmin);
+			Role proAdmin = Role.find("name= 'Project Creator' and project =" +pro.id).first();
+			user.addRole(proAdmin);
 
 			Logs.addLog(Security.getConnected(), "Create", "Project", projectObject.id, projectObject, new Date(System.currentTimeMillis()));
 			if (Security.getConnected().isAdmin) {
@@ -668,8 +668,12 @@ public class Projects extends SmartCRUD {
 		Notifications.notifyUsers(users, p.name + " Project Request", "This is to Kindly Inform you that your request for Project " + p.name + " has been Approved. \n \n Message From Admin:" + message, (byte) 1);
 		p.save();
 		p.init();
-		Role proAdmin = Role.find("name= 'ProjectCreator' and project =" +p.id).first();
-		Security.getConnected().addRole(proAdmin);
+		System.out.println(p.roles);
+		Role proAdmin = Role.find("name= 'Project Creator' and project =" +p.id).first();
+		System.out.println(proAdmin);
+		User temp = Security.getConnected();
+		temp.addRole(proAdmin);
+		temp.save();
 		renderJSON(true);
 	}
 
