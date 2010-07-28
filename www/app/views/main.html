@@ -31,6 +31,42 @@
 		
         <script type="text/javascript">
 
+		function signIn(id)
+		{
+			$.post('/ChatSystem/enterChat',{id:id});
+		}
+		
+		function signOut(id)
+		{
+			$.post('/ChatSystem/leaveChat',{id:id});
+		}
+							#{if connected}		
+	
+		// Retrieve new messages
+		function getMessages(id,cId) {
+			$.getJSON('/ChatSystem/newMessages',{id:cId}, function(messages) {
+				$(messages).each(function() {
+					display(id,this);
+				});
+				setTimeout('getMessages('+id+','+cId+');', 1000);
+			});
+		}
+		// Retrieve all messages
+		function retrieve(id,cId) {
+			$.getJSON('/ChatSystem/retrieveSinceLastLogin',{userId:${connected.id},roomId:cId}, function(messages) {
+				$(messages).each(function() {
+					display(id,this);
+				});
+			});
+		}
+
+		function display(id,message)
+		{
+			$('#threader_'+id).append(tmpl('message_tmpl', {message: message}));
+			var obj = document.getElementById('thread_'+id);
+			obj.scrollTop = obj.scrollHeight;
+		}
+#{/if}
                
        		$(function(){
        			$('.formatDate').each(function(){
@@ -78,7 +114,7 @@
 	<a class="aDIV topCornersRounded" href="/admin" style="color: #E5A1A5;" title="View the admin panel">Admin Panel</a>
 #{/if}
 	<a class="aDIV topCornersRounded" href="@{About.index}" title="read aboout SmartSoft?">About Us</a>  #{if connected}
-	<a href="#" title="Create new project" onclick="overlayOpen('/projects/blank')" class="right" style="vertical-align: baseline; padding-top: 3px; margin-left: -7px;"><img alt="[+]" src="/public/images/95.png" style="width: 35px;"/></a>
+	<a href="#" title="Create new project" onclick="overlayOpen('')" class="right" style="vertical-align: baseline; padding-top: 3px; margin-left: -7px;"><img alt="[+]" src="/public/images/95.png" style="width: 35px;"/></a>
 	#{list topProjects, as:'proj'}
 	<a class="aDIV topCornersRounded right" href="#"onclick="loadBox('@{Projects.myTasks(proj.id)}','workspace_${proj.id}'); show('${proj.id}');" style="width: 120px !important" title="Want to see your projects?">
 	${proj.name}</a> 
@@ -95,7 +131,7 @@
 	
 <a href="#" onclick="loadBox('@{Projects.settings(proj.id)}','workspace_${proj.id}')">Settings</a> 
 
-	<a  href="#"onclick="$('#chatContainer_${proj.id}').slideToggle(400);#{ifnot connected.openChats.contains(proj.chatroom)}signIn(${proj.chatroom.id});getMessages${proj.id}();#{/ifnot}">Chatroom</a>
+	<a  href="#"onclick="$('#chatContainer_${proj.id}').slideToggle(400);#{ifnot connected.openChats.contains(proj.chatroom)}signIn(${proj.chatroom.id});getMessages(${proj.id},${proj.chatroom.id});#{/ifnot}">Chatroom</a>
 </div>
 #{/list}
 </div>
@@ -146,66 +182,33 @@
 									<a class="right"href="#" title="signout?" onclick="signOut(${proj.chatroom.id});$('#chatContainer_${proj.name}').slideToggle(400);" style="text-decoration:none; color:#fff">[x]</a>
 								</div>
 								<div id="chatHolder_${proj.name}">
-									<div id="thread_${proj.name}" class="thread">
+									<div id="thread_${proj.id}" class="thread">
 										<script type="text/html" id="message_tmpl">
 											<div class="<%= message.author == 'notice' ? 'notice allCornersRounded' : message.author == '${connected.name}' ? 'you' : 'them' %>">		
 												<strong class="title" style="<%= message.author == 'notice' ? 'display:none !important' : '' %>"><%= message.author%></strong> 
 												<%= message.message.replace('\n', '<br/>') %>
 											</div>
 										</script>
-										<div id ="threader_${proj.name}"></div>
+										<div id ="threader_${proj.id}"></div>
 									</div>
 									<div id="newMessage" class="chatboxinput">	
 										<textarea id="message_${proj.name}" name="message_${proj.name}" class="chatboxtextarea"></textarea>
 									</div>	
 									<script type="text/javascript">
-									function signIn(id)
-									{
-										$.post('/ChatSystem/enterChat',{id:id});
-									}
-									
-									function signOut(id)
-									{
-										$.post('/ChatSystem/leaveChat',{id:id});
-									}
-									#{if connected.openChats.contains(proj.chatroom)}
-									$(function()
-									{
-										retrieve${proj.id}();
-										getMessages${proj.id}();
-									});
-									#{/if}								
-									$('#message_${proj.name}').keypress(function(event)
-									{
-										if (event.keyCode == '13')
-										{		var message = $('#message_${proj.name}').val();
-										$('#message_${proj.name}').val('');
-										$.post('@{ChatSystem.addMessage()}', {message: message , id:${proj.chatroom.id}}); 
-										$('#message_${proj.name}').focus(); }
-									});
-									// Retrieve new messages
-									var getMessages${proj.id} = function() {
-										$.getJSON('/ChatSystem/newMessages',{id:${proj.chatroom.id}}, function(messages) {
-											$(messages).each(function() {
-												display${proj.id}(this);
-											});
-											setTimeout('getMessages${proj.id}();', 1000);
+										#{if connected.openChats.contains(proj.chatroom)}
+										$(function()
+										{
+											retrieve(${proj.id},${proj.chatroom.id});
+											getMessages(${proj.id},${proj.chatroom.id});
 										});
-									}
-									// Retrieve all messages
-									var retrieve${proj.id} = function() {
-										$.getJSON('/ChatSystem/retrieveSinceLastLogin',{userId:${connected.id},roomId:${proj.chatroom.id}}, function(messages) {
-											$(messages).each(function() {
-												display${proj.id}(this);
-											});
+										#{/if}
+										$('#message_${proj.name}').keypress(function(event){
+											if (event.keyCode == '13')
+											{		var message = $('#message_${proj.name}').val();
+											$('#message_${proj.name}').val('');
+											$.post('@{ChatSystem.addMessage()}', {message: message , id:${proj.chatroom.id}}); 
+											$('#message_${proj.name}').focus(); }
 										});
-									}
-									// Display a message
-									var display${proj.id} = function(message) {
-										$('#threader_${proj.name}').append(tmpl('message_tmpl', {message: message}));
-										var obj = document.getElementById('thread_${proj.name}');
-										obj.scrollTop = obj.scrollHeight;
-									}
 									</script>
 								</div>
 							</div>
