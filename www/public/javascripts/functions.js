@@ -1,5 +1,4 @@
-﻿
-function delete_meeting(id, pId)
+﻿function delete_meeting(id, pId)
 {
 	var confirmation= confirm("Are you sure you want to delete this meeting ?");
 	
@@ -244,8 +243,7 @@ function magic(id) {
 						else{
 
 						var id2 = "ui" +num++;
-						var head = '<div id="'+id2+'_header" class="ui-widget-header mainH">' + $(this)
-								.html() + '<span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span></span><span class="min"onclick="$(this).children().toggle();"><span class="ui-icon ui-icon-circle-triangle-s" style="display: none;"></span><span class="ui-icon ui-icon-circle-triangle-n"></span></span></div>';
+						var head = '<div id="'+id2+'_header" class="ui-widget-header mainH"><span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span></span><span class="min"onclick="$(this).children().toggle();"><span class="ui-icon ui-icon-circle-triangle-n" style="display: none;"></span><span class="ui-icon ui-icon-circle-triangle-s"></span></span>' + $(this).html() + '</div>';
 						$(this).html(head);
 						$(this).addClass('ui-widget-content draggableChild');
 
