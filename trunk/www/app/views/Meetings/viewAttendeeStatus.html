@@ -2,8 +2,12 @@
 	#{set 'title'}
 	${attendance.user.name}
 	#{/set}
-	<b>Attendance Status : </b> 
+	<br>
+	<b>Attendance to ${attendance.meeting.name} Status : </b> 
+	<br>
 	${status}
 	#{if attendance.status.equals("declined")}
-	<b>Reason : </b> ${attendance.reason}
+	<br>
+	<b>Reason : </b> 
+	<br>${attendance.reason}
 	#{/if}
