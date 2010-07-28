@@ -882,7 +882,7 @@ public class Bootstrap extends Job {
 			a1.save();
 			Artifact a2 = new Artifact("Notes", "Second note");
 			a2.save();
-			Meeting M = new Meeting("ERD", users.get(0), "anything", new Date().getTime() + 1000000000, new Date().getTime(), "C1", "meeting", p1, null);
+			Meeting M = new Meeting("ERD", users.get(0), "anything", new Date().getTime() + 60000, new Date().getTime(), "C1", "meeting", p1, null);
 			M.artifacts.add(a1);
 			M.artifacts.add(a2);
 			a1.meetingsArtifacts.add(M);
