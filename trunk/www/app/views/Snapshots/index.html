@@ -1,34 +1,18 @@
-#{extends 'main.html' /}
-#{set title:'snapshot List' /}
+#{extends 'magicBox.html' /}
+#{set 'title'}
+Snapshots of ${type} board #{/set}
 
-<h2>Snapshots of ${type} board </h2>
+
 #{if (snapshots.size()==0)}
 Sorry, There are no snapshots to display now.<br/>
 #{/if}
 #{if (snapshots.size()!=0)}
 
-<a href="@{Snapshots.indexuser(s.id,type)}">Show my snapshots of this board</a>
-<ul>
-<table>
-
-
-
-		<thead>		
 		
-		<td ><b>Snapshot</b></td>
-		<td><b>Captured By</b></td>
-		<td><b>Date</b></td>
-				</thead>
+		
 #{list items:snapshots, as:'snapshot'}
-
-		<tr>
-	<td>	
-<li><a href="@{Snapshots.loadsnapShot(snapshot.id)} ">Snapshot ${snapshot.id}</a></li>
-		</td>
-		<td>${snapshot.user.getDisplayName(p).raw()}</td>
-		<td>${snapshot.date}</td>
-		</tr>
+<div class="overlay" name="/snapshots/loadsnapShot?id=${snapshot.id}">
+Snapshot ${snapshot.id}</div>		
 #{/list}
-</table>
-</ul>
+
 #{/if}
