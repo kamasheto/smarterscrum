@@ -165,7 +165,7 @@ public class Story extends SmartModel {
 		for (Task task : storiesTask) {
 			if (task == null)
 				continue;
-			if (task.taskSprint.startDate.before(now) && task.taskSprint.endDate.after(now)) {
+			if (task.taskSprint!=null && task.taskSprint.startDate.before(now) && task.taskSprint.endDate.after(now)) {
 				return true;
 			}
 		}

@@ -227,7 +227,7 @@ public class Component extends SmartModel {
 			this.number = this.project.components.size();
 			for ( Component component : this.project.components){
 				if(component.number>= this.number && ! component.equals(this)){
-				this.number= component.number;
+				this.number= component.number+1;
 				}
 			}
 		}

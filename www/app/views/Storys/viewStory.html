@@ -1,5 +1,8 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}Story: ${story.number}#{if connected.in(project).can('editStory')}#{ifnot inSprint}<a href="javascript:overlayOpen('/admin/storys/${story.id}')"><img title="Edit Scenarios" src="@{'/public/images/famfam/pencil.png'}"></a><a href="javascript:overlayOpen('/storys/editScenario?id=${story.id}')"><img title="Edit" src="@{'/public/images/editsce.gif'}"></a>#{/ifnot}#{/if}#{ifnot inSprint}#{if connected.in(project).can('deleteStory')}<a href="#"onclick="deleteStory(${story.id}, this, ${hasDependency});"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{/ifnot}#{/set}
+
+#{set 'title'}Story: ${story.number}#{if connected.in(project).can('editStory')}#{ifnot inSprint}<a href="javascript:overlayOpen('/admin/storys/${story.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a><a href="javascript:overlayOpen('/storys/editScenario?id=${story.id}')"><img title="Edit Scenarios" src="@{'/public/images/editsce.gif'}"></a>#{/ifnot}#{/if}#{ifnot inSprint}#{if connected.in(project).can('deleteStory')}<a href="javascript:deleteStory(${story.id}, this, ${hasDependency});"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>
+<a onclick="javascript:overlayOpen('/admin/tasks/new?id2=${story.id}')"><img title="Add Task" src="@{'/public/images/add_task.gif'}"></a>#{/if}#{/ifnot}#{/set}
+
 #{if connected.in(project).can('editStory')}
 #{ifnot message.length() == 0}
 	#{note}${message}#{/note}
@@ -41,6 +44,6 @@
 	}%
 	#{/list}<br>
 	#{list items:story.storiesTask, as:'task'}
-		<div name="/storys/magicShow?taskId=${task.id}">S:${story.number} ${task.description}</div>
+		<div name="/storys/magicShow?taskId=${task.id}">S${story.number} ${task.description}<div class="item_imgs">#{if connected.in(project).can('modifyTask')}#{if !task.checkUnderImpl()}<a onclick="javascript:overlayOpen('/admin/tasks/${task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div><div  title="Type: ${task.taskType.name}" style="background:${task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; position:relative;" ></div></div>
 	#{/list}
 #{/if}
