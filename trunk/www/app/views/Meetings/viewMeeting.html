@@ -18,15 +18,15 @@
 	#{/if}
 	#{if meeting.endTime> new Date().getTime()}
 	#{if (invited&&!attending&&!declined) }
-	<span id="accept" style="display:block"><a onClick="javascript:set_confirmed(${meeting.id});" title="accept invitation"><img src="@{'/public/images/famfam/application_add.png'}"></a></span>
-	<span id="decline" style="display:block"><a onClick="javascript:set_declined(${meeting.id});" title="decline invitation"><img src="@{'/public/images/famfam/application_delete.png'}"></a></span>
-	<span id="confirmed" style="display:none"><img src="@{'/public/images/famfam/accept.png'}" title="you are attending this meeting"></img></span>
-	<span id="declined" style="display:none"><img src="@{'/public/images/famfam/exclamation.png'}"} title="you are not attending this meeting"></img></span>
+	<span id="accept_${meeting.id}" style="display:block"><a onClick="javascript:set_confirmed(${meeting.id});" title="accept invitation"><img src="@{'/public/images/famfam/application_add.png'}"></a></span>
+	<span id="decline_${meeting.id}" style="display:block"><a onClick="javascript:set_declined(${meeting.id});" title="decline invitation"><img src="@{'/public/images/famfam/application_delete.png'}"></a></span>
+	<span id="confirmed_${meeting.id}" style="display:none"><img src="@{'/public/images/famfam/accept.png'}" title="you are attending this meeting"></img></span>
+	<span id="declined_${meeting.id}" style="display:none"><img src="@{'/public/images/famfam/exclamation.png'}"} title="you are not attending this meeting"></img></span>
 	#{/if}
 	#{if !invited}
 	#{if connected.in(meeting.project).can('joinMeeting')}
-	<span id="accepts" style="display:block;"><a href="#" onClick="javascript:join_meeting(${meeting.id})"title="join meeting"><img src="@{'/public/images/famfam/go.png'}"></img></a></span>
-	<span id="confirmedd" style="display:none;"><img src="@{'/public/images/famfam/accept.png'}" title="you are attending this meeting"></img></span>
+	<span id="accepts_${meeting.id}" style="display:block;"><a href="#" onClick="javascript:join_meeting(${meeting.id})"title="join meeting"><img src="@{'/public/images/famfam/go.png'}"></img></a></span>
+	<span id="confirmedd_${meeting.id}" style="display:none;"><img src="@{'/public/images/famfam/accept.png'}" title="you are attending this meeting"></img></span>
 	#{/if}
 	#{/if}
 	#{/if}

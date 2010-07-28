@@ -258,8 +258,11 @@ public class Meetings extends SmartCRUD
 				current.add( temp );
 		}
 
+		List<MeetingAttendance> invitations=MeetingAttendance.find("meeting.project = ?1 and user = ?2 and deleted = ?3 and meeting.endTime > ?4 and status LIKE ?5",project,Security.getConnected(),false,new Date().getTime(),"waiting").fetch();
+		
+		
 		String projectName = project.name;
-		render( meetings, id, projectName, past, upcoming, current, project );
+		render( meetings, id, projectName, past, upcoming, current, project ,invitations);
 
 	}
 

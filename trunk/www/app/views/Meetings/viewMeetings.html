@@ -3,11 +3,26 @@
 	Meetings
 	#{if connected.in(project).can('addMeeting') }
 	<a href="javascript:overlayOpen('/admin/projects/${id}/meetings/new');" title="add"><img src="@{'/public/images/famfam/add.png'}"></a>
-	<a href="#" title="check my invitations"><img src="@{'/public/images/famfam/date.png'}"></a>
 	#{/if}
 	#{/set}
 	
-	<b>My invitations</b>
+	<b>My invitations:</b>
+	#{if invitations.size>0}
+	#{list items:invitations, as:'invitation'}
+	<br/>
+	<span id="inv_${invitation.meeting.id}">
+	
+		<b>${invitation.meeting.name}  :</b>
+		<br>
+		<a onclick="confirm_me(${invitation.meeting.id})" title="accept"><img src="@{'/public/images/famfam/application_add.png'}"></img></a>
+		&nbsp&nbsp<a onclick="decline_me(${invitation.meeting.id})" title="decline"><img src="@{'/public/images/famfam/application_delete.png'}"></img></a>
+		
+	</span>
+	#{/list}
+	#{/if}
+	#{else}
+	Currently there are no invitations.
+	#{/else}
 
 	#{list items:current, as:'current'}
 		#{if !current.deleted}
