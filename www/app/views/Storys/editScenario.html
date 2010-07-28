@@ -7,17 +7,18 @@
 
  <div id="succssesDiv">
             <h3> Succsses Scenarios </h3>    
-            #{list items:succsses, as:'Scenario'}
+          #{if (!successflag)}
+           #{list items:succsses, as:'Scenario'}
            
               <TEXTAREA style="width:90%" NAME="succssesName1" id="succsses${Scenario_index}"  ROWS="2" COLS="40">${Scenario}</TEXTAREA>
               <br id="brs{Scenario_index}"/> 
              <input type="button"  value="delete the scenario above" id="bs${Scenario_index}"  onclick="removeSuccsses(${Scenario_index});"/> 
              <br id="br2s${Scenario_index}"/> 
                
-            #{/list}
+            #{/list}#{/if}
           
         
-       
+     
        
         </div>
  <div><input type="button" id="add" value="Add new scenario" onclick="addSuccsses();" /> </div>
@@ -26,7 +27,7 @@
 <td valign="top">
  <div id="failureDiv">
             <h3> Failure Scenarios </h3>
-                  
+                  #{if (!failureflag)}
             #{list items:failure, as:'Scenario'}
            
               <TEXTAREA style="width:90%" NAME="failureName1" id="failure${Scenario_index}"  ROWS="2" COLS="40">${Scenario}</TEXTAREA>
@@ -35,7 +36,7 @@
              <br id="br2f${Scenario_index}"/> 
                
             #{/list}
-          
+     #{/if}     
         </div>
  <div><input type="button" id="add"  value="Add new scenario" onclick="addFailure();" /> </div>
 
@@ -80,7 +81,7 @@ $.post('/Storys/saveSuccsses', {id:${storyId},s:ss});
 	
 	
 	 
-$.post('/Storys/saveFailure', {id:${storyId},f:ff}, function(){	window.location="http://localhost:9000/storys/liststoriesinproject?projectId="+${projectId};
+$.post('/Storys/saveFailure', {id:${storyId},f:ff}, function(){	Application.overlayKiller();
 });
 	}
 	  		  }
