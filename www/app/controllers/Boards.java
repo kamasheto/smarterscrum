@@ -36,21 +36,21 @@ public class Boards extends SmartCRUD {
 
 	public static void loadboard1(long sprintID, long componentID)
 	{
-		Sprint s = Sprint.findById(sprintID);
-		Project p = s.project;
-		Board b = p.board;
-		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>();
-		List<Column> columns = new ArrayList<Column>();
+		Sprint s = Sprint.findById(sprintID);  //sprint
+		Project p = s.project;                 //project
+		Board b = p.board;					   //project board
+		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>();     //tasks
+		List<Column> columns = new ArrayList<Column>();     //columns
 		if(componentID==0)
-		columns = b.columns;
+		columns = b.columns;				   //columns of project board
 		else
 		{
 			Component comp = Component.findById(componentID);
-			columns = comp.componentBoard.columns;
+			columns = comp.componentBoard.columns;  //columns of component board
 		}
 				
-		List<Column> columnsOfBoard=new ArrayList<Column>();
-		List<Column> hidencolumnsOfBoard=new ArrayList<Column>();
+		List<Column> columnsOfBoard=new ArrayList<Column>();       //columns that should appear on the board with boolean onBoard=true
+		List<Column> hidencolumnsOfBoard=new ArrayList<Column>();  //columns that shouldn't appear on the board with boolean onBoard=false
 		for( int i=0; i<columns.size();i++)
 		{
 			if(columns.get( i ).onBoard&&!columns.get( i ).deleted)
@@ -66,14 +66,14 @@ public class Boards extends SmartCRUD {
 				hidencolumnsOfBoard.add( columns.get( i ) );
 			}
 		}
-		ArrayList ud = getDescPerm(p);
-		ArrayList ua = getAssiPerm(p);
-		ArrayList ur = getRevPerm(p);
-		ArrayList ut = getTypePerm(p);	
-		ArrayList us = getStatusPerm(p);
+		ArrayList ud = getDescPerm(p);    //list of users with permission to edit task description
+		ArrayList ua = getAssiPerm(p);	  //list of users with permission to edit task assignee
+		ArrayList ur = getRevPerm(p);     //list of users with permission to edit task reviewer
+		ArrayList ut = getTypePerm(p);    //list of users with permission to edit task type
+		ArrayList us = getStatusPerm(p);  //list of users with permission to edit task status
 		if(componentID==0)
 		{
-			List<Component> components = p.getComponents();
+			List<Component> components = p.getComponents();     //component of project p
 			for (int i = 0; i < components.size(); i++) {
 				data.add(null);
 				data.set(i, new ComponentRow(components.get(i).id, components.get(i).name));
@@ -87,7 +87,7 @@ public class Boards extends SmartCRUD {
 					Column pcol = new Column();
 					for(int k=0;k<task.taskStatus.columns.size();k++)
 					{
-						pcol = task.taskStatus.columns.get(k);
+						pcol = task.taskStatus.columns.get(k);     //task column in project
 						if(pcol.board.id==b.id)
 						{
 							break;
@@ -99,14 +99,14 @@ public class Boards extends SmartCRUD {
 					}
 				}
 			}
-			ArrayList<ArrayList<User>> u=Meetingloadboard( p,componentID);
-			ArrayList<ArrayList<User>> uAdmin=MeetingloadboardAdmin( p, componentID);
+			ArrayList<ArrayList<User>> u=Meetingloadboard( p,componentID);     //list of users attending meeting infront of board (not admins)
+			ArrayList<ArrayList<User>> uAdmin=MeetingloadboardAdmin( p, componentID);   //list of users attending meeting infront of board (admins)
 			render(data, columnsOfBoard,hidencolumnsOfBoard, u, uAdmin, b, s, p,columns,ud,ua,ur,ut,us);
 			}
 		else
 		{
-			Component comp = Component.findById(componentID);
-			List<User> users = comp.getUsers();
+			Component comp = Component.findById(componentID);    //component
+			List<User> users = comp.getUsers();                  //usres in component
 			for (int i = 0; i < users.size(); i++) {
 				data.add(null);
 				data.set(i, new ComponentRow(users.get(i).id, users.get(i).name));
@@ -118,7 +118,7 @@ public class Boards extends SmartCRUD {
 				}
 
 				for (Task task : tasks) {
-					Column pcmp = new Column();
+					Column pcmp = new Column();                //task column in component
 					for(int k=0;k<task.taskStatus.columns.size();k++)
 					{
 						pcmp = task.taskStatus.columns.get(k);
@@ -134,8 +134,8 @@ public class Boards extends SmartCRUD {
 					}
 
 			}
-			ArrayList<ArrayList<User>> u=Meetingloadboard( p,componentID);
-			ArrayList<ArrayList<User>> uAdmin=MeetingloadboardAdmin( p, componentID);
+			ArrayList<ArrayList<User>> u=Meetingloadboard( p,componentID);    //list of users attending meeting infront of board (not admins)
+			ArrayList<ArrayList<User>> uAdmin=MeetingloadboardAdmin( p, componentID);   //list of users attending meeting infront of board (admins)
 			render(data, columnsOfBoard,hidencolumnsOfBoard, u, uAdmin,b, s,comp, p,columns,ud,ua,ur,ut,us);
 		
 		}
