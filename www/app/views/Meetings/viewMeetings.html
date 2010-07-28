@@ -1,46 +1,31 @@
 #{extends 'magicBox.html' /}	
 	#{set 'title'}
-	Meetings00
+	Meetings
 	#{if connected.in(project).can('addMeeting') }
 	<a href="javascript:overlayOpen('/admin/projects/${id}/meetings/new');" title="add"><img src="@{'/public/images/famfam/add.png'}"></a>
 	<a href="#" title="check my invitations"><img src="@{'/public/images/famfam/date.png'}"></a>
 	#{/if}
 	#{/set}
+	
+	<b>My invitations</b>
 
 	#{list items:current, as:'current'}
 		#{if !current.deleted}
-		<div name="/meetings/viewmeeting?id=${current.id}">${current.name}#{if (connected.in(project).can('editMeeting') ||connceted.equals(current.creator)) }<a href="javascript:overlayOpen('/admin/meetings/${current.id}');" title="edit"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(current.creator)) } <div class="item_imgs"><a onclick="javascript:deleteTheMeeting(${current.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a></div>#{/if}</div>
+		<div name="/meetings/viewmeeting?id=${current.id}">${current.name}#{if (connected.in(project).can('editMeeting') ||connceted.equals(current.creator)) }<a href="javascript:overlayOpen('/admin/meetings/${current.id}');" title="edit"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(current.creator)) } <div class="item_imgs"><a onclick="javascript:delete_meeting(${current.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a></div>#{/if}</div>
 		#{/if}
 	#{/list}
 	#{list items:upcoming, as:'current'}
 		#{if !current.deleted}
-		<div name="/meetings/viewmeeting?id=${current.id}">${current.name}#{if (connected.in(project).can('editMeeting') ||connceted.equals(current.creator)) }<a href="javascript:overlayOpen('/admin/meetings/${current.id}');" title="edit"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(current.creator)) } <div class="item_imgs"><a onclick="javascript:deleteTheMeeting(${current.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a></div>#{/if}</div>
+		<div name="/meetings/viewmeeting?id=${current.id}">${current.name}#{if (connected.in(project).can('editMeeting') ||connceted.equals(current.creator)) }<a href="javascript:overlayOpen('/admin/meetings/${current.id}');" title="edit"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(current.creator)) } <div class="item_imgs"><a onclick="javascript:delete_meeting${current.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a></div>#{/if}</div>
 		#{/if}
 	#{/list}
 	#{list items:past, as:'current'}
 		#{if !current.deleted}
-		<div name="/meetings/viewmeeting?id=${current.id}">${current.name}#{if (connected.in(project).can('editMeeting') ||connceted.equals(current.creator)) }<a href="javascript:overlayOpen('/admin/meetings/${current.id}');" title="edit"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(current.creator)) } <div class="item_imgs"><a onclick="javascript:deleteTheMeeting(${current.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a></div>#{/if}</div>
+		<div name="/meetings/viewmeeting?id=${current.id}">${current.name}#{if (connected.in(project).can('editMeeting') ||connceted.equals(current.creator)) }<a href="javascript:overlayOpen('/admin/meetings/${current.id}');" title="edit"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(current.creator)) } <div class="item_imgs"><a onclick="javascript:delete_meeting(${current.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a></div>#{/if}</div>
 		#{/if}
 	#{/list}
 	
-	<script type="text/javascript">
-
-	alert("AMROTTO");
-		function deleteTheMeeting(id,b)
-		{
-			var confirmation= confirm("Are you sure you want to delete this meeting ?");
-			
-			if (confirmation) {
-				$.post('@{deleteMeeting()}', {
-					id:id
-				}, function(){
-					removeMe(b);
-				});
-			}
-	}
 	
-		
-	</script>
 	
 
 

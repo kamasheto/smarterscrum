@@ -522,12 +522,12 @@ public class Meetings extends SmartCRUD
 		if( flag )
 		{
 			if( users.isEmpty() == false )
-				message = "unfortunately " + meeting.name + " meeting notes are deleted :(";
+				message = "unfortunately " + meeting.name + " meeting notes are deleted.";
 			Notifications.notifyUsers( users, "Meeting Notes deleted", message );
 		}
 		Logs.addLog( Security.getConnected(), "delete", "Meeting", meeting.id, meeting.project, new Date( System.currentTimeMillis() ) );
 		meeting.save();
-		redirect( "/projects/" + meeting.project.id + "/meetings" );
+		//redirect( "/projects/" + meeting.project.id + "/meetings" );
 		//
 		// } else
 		// forbidden();
