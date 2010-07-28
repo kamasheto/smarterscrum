@@ -2,6 +2,9 @@
 
 #{extends 'magicBox.html' /}
 #{set 'title'}C${component.number} #{if type == 1}Boards#{/if}#{elseif type == 2}Charts#{/elseif}#{else}Backlogs#{/else}#{/set}
+	#{if type == 2}
+		<div class="overlay"name="@{ProductBacklogs.showGraph(component.project.id,component.id)}" title="view the overall chart?">Overall Chart</div>
+	#{/if}
 	#{list items:sprints, as:'sprint'}
 	#{if type == 1}
 		<div class="overlay" name="/boards/loadboard1?sprintID=${sprint.id}&componentID=${component.id}">Sprint ${sprint.sprintNumber} Task Board</a></div>
