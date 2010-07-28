@@ -15,10 +15,9 @@ function delete_role(role_id, that) {
 		})
 	}
 }
-function setBaseRole(role) {
-	$('.all-roles').removeClass('baseRole')
-	
+function setBaseRole(role, project) {
 	$.post('/roles/setbaserole?id=' + role, function() {
+		$('.all-roles-'+project).removeClass('baseRole')
 		$('.role-div-' + role).addClass('baseRole')
 		$.bar({message:'Base role updated successfully'})
 	})
