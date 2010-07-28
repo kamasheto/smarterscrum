@@ -51,11 +51,16 @@ public class Bootstrap extends Job {
 				users.add(u);
 			}
 
+			Role r = new Role("Project Creator").save();
+			for (Permission p : Permission.<Permission> findAll()) {
+				r.permissions.add(p);
+			}
+			r.save();
 			new Role("Project Owner").save();
 			new Role("Project Admin").save();
 			new Role("Scrum Master").save();
 			new Role("Developer").save();
-			Role r = new Role("Project Member").save();
+			r = new Role("Project Member").save();
 			r.baseRole = true;
 			r.save();
 
