@@ -1,0 +1,18 @@
+#{extends 'magicBox.html' /}
+#{set 'title'}
+${myMeeting.name} Notes
+		#{if noteFlag}
+	<a href="#" onclick="overlayOpen()"><img src="@{'public/images/famfam/add.png'}" alt="[+]"/></a>
+	#{/if}
+#{/set}
+%{int i =0;}%
+#{list items:notes, as:'note'}
+#{if !note.deleted }
+%{i++}%
+	<div name="@{Meetings.note(note.id,i,noteFlag)}">Note #%{i; out.print(i)}% #{if noteFlag}
+	<a href="#" onclick="overlayOpen('')"><img src="@{'public/images/famfam/delete.png'}" alt="[-]"/></a>
+	<a href="#" onclick="overlayOpen('')"><img src="@{'public/images/famfam/pencil.png'}" alt="[e]"/></a>
+#{/if}</div> 
+#{/if}
+#{/list}
+
