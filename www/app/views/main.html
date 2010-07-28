@@ -78,6 +78,7 @@
 	<a class="aDIV topCornersRounded" href="/admin" style="color: #E5A1A5;" title="View the admin panel">Admin Panel</a>
 #{/if}
 	<a class="aDIV topCornersRounded" href="@{About.index}" title="read aboout SmartSoft?">About Us</a>  #{if connected}
+	<a href="/projects/blank" class="right" style="vertical-align: baseline; padding-top: 3px; margin-left: -7px;"><img alt="[+]" src="/public/images/95.png" style="width: 35px;"/></a>
 	#{list connected.projects, as:'proj'}
 	<a class="aDIV topCornersRounded right" href="#"onclick="loadBox('@{Projects.myTasks(proj.id)}','workspace_${proj.id}'); show('${proj.id}');" style="width: 120px !important" title="Want to see your projects?">
 	${proj.name}</a> 
