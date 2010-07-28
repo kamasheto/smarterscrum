@@ -25,6 +25,15 @@ import play.mvc.With;
 @With (Secure.class)
 public class Boards extends SmartCRUD {
 	
+	/**
+	 * @author Dina Helal
+	 * @param sprintID: sprint id
+	 * @param componentID: component id
+	 * 
+	 * this method is used to generate the project board 
+	 * & the component board for a certain sprint
+	 */
+
 	public static void loadboard1(long sprintID, long componentID)
 	{
 		Sprint s = Sprint.findById(sprintID);
