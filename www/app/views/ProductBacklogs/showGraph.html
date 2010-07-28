@@ -1,14 +1,6 @@
-#{extends 'main.html' /}
-#{set title:'Project Burndown Chart' /}
+#{extends 'overlay.html' /}
+#{set title: pName+' \'sBurndown Chart' /}
 
-
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${temp.id}">${pName}</a></li>
-<li><a href="/productbacklog/${temp.id}/${componentId}">Product Backlog</a></li>
-
-<li><a href="/productbacklogs/showgraph?id=${temp.id}&componentId=${componentId}">Product Backlog Burndown Chart</a></li>
-#{/set}
 #{ifnot Data}
 <div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
 	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
@@ -18,10 +10,7 @@
 
 
 #{set 'onLoad'}${Data};
- #{list items:SprintsInProject, as:'sprint'}
-$('#sprint_${sprint.id}').toggle();
-
-#{/list}
+ 
 #{/set}
 
 
@@ -57,51 +46,9 @@ function isBefore(date){
     #{/set}
     	    	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
 	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
-	<strong>NOTE: </strong>To zoom in on a graph, simply click and drag and let go. To zoom out just double click the graph!
+	<strong>NOTE: </strong>If your graph has too much data then not all points will be shown, to view more day specific statistics then you will have to zoom in. To zoom in on a graph, simply click and drag and let go. To zoom out just double click the graph!
 	<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
     
-<div id="project">    
-    <h2>Project Burndown Chart</h2>
-
     <div class="jqplot" id="c_FULL" style="width:100%;height:300px;"></div>
-</div>  
-       
-    
-       
-         #{list items:SprintsInProject, as:'sprint'} 
-
-  
-         <div id="sprint_${sprint.id}">
-             <h2>Sprint ${sprint.id} Burndown Chart</h2>
-        <div class="jqplot" id="c_${sprint.id}" style="width:100%;height:300px;"></div>
-        </div>
-                <script type="text/javascript">
-
-if(isBefore('${sprint.format(sprint.startDate)}')==true){
-	$('#sprint_${sprint.id}').css('display','none');
-		}
-
-</script>    
-
-        #{/list}
-
-   
-       #{set 'moreLinks'}
-       
-                  <a href="#" onclick="$('#project').toggle();">View project chart</a><br/><br/>
-    
-         #{list items:SprintsInProject, as:'sprint'}
-   
-           <a id="${sprint.id}_9"href="#" onclick="$('#sprint_${sprint.id}').toggle();">View sprint ${sprint.id} chart<br/><br/></a>
-
-                    <script type="text/javascript">
-
-if(isBefore('${sprint.format(sprint.startDate)}')==true){
-	$('#${sprint.id}_9').css('display','none');
-		}
-
-</script>  
-        #{/list}
-       
-        #{/set}
+ 
          #{/else}

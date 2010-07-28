@@ -54,8 +54,7 @@ function GenerateGraph(data,xTicks,yTicks,xLabel,yLabel,title,xMax,yMax,divName)
 	plot1 = $.jqplot(divName, [data,estimated], 
 	{
 		title: 
-		{
-			text: title, 
+		{ 
 			show: true,
 		},
 		axes:
@@ -97,16 +96,11 @@ function GenerateGraph(data,xTicks,yTicks,xLabel,yLabel,title,xMax,yMax,divName)
 		grid: 
 		{
 			drawGridLines: true,       
-			gridLineColor: '#777777',    
-			background: '#F2f2f2',      
-			borderColor: '#999999',     
+			gridLineColor: '#ccc',    
+			background: '#efefef',      
+			borderColor: '#ccc',     
 			borderWidth: 2.0,           
-			shadow: true,               
-			shadowAngle: 45,            
-			shadowOffset: 1.5,          
-			shadowWidth: 3,             
-			shadowDepth: 3,             
-			shadowAlpha: 0.07,          
+        
 			renderer: $.jqplot.CanvasGridRenderer,     
 		},cursor: {tooltipLocation:'sw',zoom:true, clickReset:true}, 
 		series: 
@@ -114,30 +108,18 @@ function GenerateGraph(data,xTicks,yTicks,xLabel,yLabel,title,xMax,yMax,divName)
 			show: true,     
 			xaxis: 'xaxis',
 			yaxis: 'yaxis',
-			label: 'Actual Remaining Points per day',  
-			color: '#777777',    
+			label: 'Actual Remaining Points per day',      
 			lineWidth: 5,
-			shadow: true,  
-			shadowAngle: 45,  
-			shadowOffset: 1.25, 
-			shadowDepth: 3,     
-			shadowAlpha: 0.1,  
 			showLine: true,    
 			showMarker: true,  
 			renderer: $.jqplot.LineRenderer,    
 			markerRenderer: $.jqplot.MarkerRenderer,
 			markerOptions: 
 			{ 
-				show: true, 
-				style: 'square', 
+				show: true,  
 				lineWidth: 3,  
-				size: 15,        
-				color: '#222222',
-				shadow: true,  
-				shadowAngle: 45,    
-				shadowOffset: 1,
-				shadowDepth: 3,
-				shadowAlpha: 0.07 
+				size: 7,        
+				color: '#666'
 			}
 		},
 		{
@@ -146,12 +128,7 @@ function GenerateGraph(data,xTicks,yTicks,xLabel,yLabel,title,xMax,yMax,divName)
 			yaxis: 'yaxis',
 			label: 'Estimated Remaining Points per day',  
 			color: 'red',    
-			lineWidth: 4,
-			shadow: true,  
-			shadowAngle: 45,  
-			shadowOffset: 1.25, 
-			shadowDepth: 3,     
-			shadowAlpha: 0.1,  
+			lineWidth: 2,
 			showLine: true,    
 			showMarker: false,
 			renderer: $.jqplot.LineRenderer,    
@@ -185,12 +162,7 @@ var xinterval=1;
 		series:names,
 		seriesDefaults:
 		{
-			markerOptions:{style:'circle',size:10}
-		},
-		title: 
-		{
-			text: 'Project Progress', 
-			show: true,
+			markerOptions:{size:7,color:'#666'}
 		},
 		axes:
 		{
@@ -228,9 +200,9 @@ var xinterval=1;
 		grid: 
 		{
 			drawGridLines: true,       
-			gridLineColor: '#333333',    
-			background: '#f2f2f2',      
-			borderColor: '#999999',     
+			gridLineColor: '#ccc',    
+			background: '#efefef',      
+			borderColor: '#ccc',     
 			borderWidth: 2.0,           
 			shadow: true,               
 			shadowAngle: 45,            
