@@ -298,31 +298,41 @@ public class Users extends SmartCRUD {
 	 * Issue : 228
 	 * Sprint : 4
 	 */
-	public static void findUsers(long projectId, long componentId, int all, long userId){
+	public static void findUsers(long projectId, long componentId, int all, long userId)
+	{
 		String title;
-		if(userId!=0){
+		if(userId!=0)
+		{
 			User user = User.findById(userId);
 			title= user.name;
 			render(user, title);
-		}else{
+		}
+		else
+		{
 			List<User> users = new ArrayList<User>();
-			if(all == 1){
+			if(all == 1)
+			{
 				users= User.findAll();
 				title = "All Users";
 				render(users, title);
-		}else{
-			if(componentId !=0){
-				Component component = Component.findById(componentId);
-				users = component.componentUsers;
-				title = "C"+ component.number+ ": Users";
-				render(users, title);
-			}else{
-				Project project = Project.findById(projectId);
-				users= project.users;
-				title= "Project Users";
-				render(users, title);
+			}
+			else
+			{
+				if(componentId !=0)
+				{
+					Component component = Component.findById(componentId);
+					users = component.componentUsers;
+					title = "C"+ component.number+ ": Users";
+					render(users, title);
+				}
+				else
+				{
+					Project project = Project.findById(projectId);
+					users= project.users;
+					title= "Project Users";
+					render(users, title);
+				}
 			}
 		}
-	}
 	}
 }
