@@ -1,82 +1,37 @@
-#{extends 'main.html' /}
-#{set title: 'Showing meeting :' + meeting.name /}
-
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${meeting.project.id}">${meeting.project.name}</a></li>
-<li><a href="/projects/${meeting.project.id}/meetings"> Meetings and Events</a> </li>
-
-
-#{/set}
-
-#{set 'moreLinks'}
-#{if connected.in(meeting.project).can('manageMeetingAssociations')}
-<a href="@{associations(meeting.id)}">Manage Associations</a>
-<br>
-#{/if}
-#{else}
-#{if meeting.creator.equals(controllers.Security.getConnected())}
-<a href="@{associations(meeting.id)}">Manage Associations</a>
-<br>
-#{/if}
-#{/else}
-
-#{if meeting.endTime < new Date().getTime()}
-#{if connected.in(meeting.project).can('setMeetingAttendance')}
-<br/>
-<a href="@{MeetingAttendances.setAttendance(meeting.id)}"> Set Attendance </a>
-<br/>
-#{/if}
-
-#{else}
-#{if meeting.creator.equals(controllers.Security.getConnected())}
-<br/>
-<a href="@{MeetingAttendances.setAttendance(meeting.id)}"> Set Attendance </a>
-<br/>
-#{/if}
-#{/else}
-
-#{/if}
-
-
-#{if meeting.snapshot!=null }
-<a href="@{Snapshots.loadsnapShot(meeting.snapshot.id)} " >View associated Snapshot</a>
-#{/if}
-<br>
-#{if connected.in(meeting.project).can('deleteMeeting')}
-<a href = "#"  name="deleteMeeting" onclick="delete_meeting(${meeting.id}, ${meeting.project.id})"  >Delete this meeting</a>
-#{/if}
-
-<a href="#" onclick="joinmeeting()">Join that meeting</a>
-
-#{/set}
-
-<script type="text/javascript"> 
-	$(function() {
-		$("#accordion").accordion({
-			collapsible: true
-		});
-	});
+#{extends 'magicBox.html' /}	
+	#{set 'title'}
+	${meeting.name}
 	
-	function joinmeeting()
-	{
-		$.post('@{joinMeeting()}', {
-			meetingID:${meeting.id}
-		}, function(){
-			window.location.reload();
-		});
-	}
-
-
+	#{if (connected.in(project).can('editMeeting') ||connceted.equals(meeting.creator)) }
+	<a href="javascript:overlayOpen('/admin/meetings/${meeting.id}');" title="edit">
+	<img src="@{'/public/images/famfam/pencil.png'}"></a>
+	#{/if}
+	#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(current.creator)) } 
+	<a href="#" onclick="javascript:delete_meeting(${meeting.id},this);" title="delete">
+	<img src="@{'/public/images/famfam/delete.png'}"></img></a>
+	#{/if}
+	#{if (invited&&attending)}
+	<img src="@{'/public/images/famfam/accept.png'}" title="you ${past ? 'attended':'are attending'} this meeting"></img>
+	#{/if}
+	#{if (invited&&declined)}
+	<img src="@{'/public/images/famfam/exclamation.png'}"} title="you ${past ? 'did not attend':'are not attending'} this meeting"></img>
+	#{/if}
+	#{if meeting.endTime> new Date().getTime()}
+	#{if (invited&&!attending&&!declined) }
+	<span id="accept" style="display:block"><a onClick="javascript:set_confirmed(${meeting.id});" title="accept invitation"><img src="@{'/public/images/famfam/application_add.png'}"></a></span>
+	<span id="decline" style="display:block"><a onClick="javascript:set_declined(${meeting.id});" title="decline invitation"><img src="@{'/public/images/famfam/application_delete.png'}"></a></span>
+	<span id="confirmed" style="display:none"><img src="@{'/public/images/famfam/accept.png'}" title="you are attending this meeting"></img></span>
+	<span id="declined" style="display:none"><img src="@{'/public/images/famfam/exclamation.png'}"} title="you are not attending this meeting"></img></span>
+	#{/if}
+	#{if !invited}
+	#{if connected.in(meeting.project).can('joinMeeting')}
+	<span id="accepts" style="display:block;"><a href="#" onClick="javascript:join_meeting(${meeting.id})"title="join meeting"><img src="@{'/public/images/famfam/go.png'}"></img></a></span>
+	<span id="confirmedd" style="display:none;"><img src="@{'/public/images/famfam/accept.png'}" title="you are attending this meeting"></img></span>
+	#{/if}
+	#{/if}
+	#{/if}
+	#{/set}
 	
-	</script> 
-
-<h3>${meeting.name}</h3>
-
-<br/>
-
-${meeting.description}
-<br> <br>
 
 <b> Starts  at</b> :   <span class="formatTime">${meeting.startTime}</span> 
 <br> <br>
@@ -87,130 +42,7 @@ ${meeting.description}
 <b> Meeting Type </b>:  ${meeting.type} 
 <br> <br>
 
-
-<div id="accordion"> 
-	<h6> <a href="#">Meeting Attendees</a> </h6>  
-	<div style=> 
-		<br>
-#{list items:attendees, as:'user'}
-	#{if !user.deleted }
-	<li>
-		<a href="@{Show.user(user.user.id)}">${user.user.name}</a>
-		 #{if user.status.equals("confirmed")}
-		 <span style="font-style: italic; font-size :85%; color:green;" >${user.status} </span>
-		 #{/if}
-		 #{if user.status.equals("waiting")}
-		 <span style="font-style: italic; font-size :85%; color:blue;" > awaiting reply </span>
-		 #{/if}
-		 #{if user.status.equals("declined")}
-		 <span style="font-style: italic; font-size :85%; color:red;" >${user.status} </span>
-		 <a href="#" onclick="reason('span_${user.reason}');"> ?</a>
-		    <span id="span_${user.reason}" style="display: none; ">
-		     ${user.reason}
-		      </span>
-		 #{/if}
-		 <br>
-	</li> 
-	#{/if}
-#{/list}
-   
-	</div> 
-	
-	 <h6> <a href="#">Associated Artifacts</a> </h6> 
-	<div> 
-		#{list items:meeting.artifacts, as:'artifact'}
-		#{if !artifact.deleted }
-	<li>
-		${artifact.description}
-	</li> 
-	#{/if}
-#{/list}
-	</div> 
-	
-	<h6> <a href="#">Associated Tasks</a> </h6>
-	<div> 
-		#{list items:meeting.tasks, as:'task'}
-		#{if !task.deleted }
-		 <a href="@{Tasks.getReport(task.id)}">${task.description}</a>
-		 <br />
-	#{/if}
-#{/list}
-	</div> 
-	<h6><a href="#">Associated Components </a></h6>
-	<div> 
-		#{list items:meeting.components, as:'component'}
-		#{if !component.deleted }
-	<li>
-		<a href="@{Application.viewComponent(component.id)}">${component.name}</a>
-		
-	</li> 
-	#{/if}
-#{/list} 
-	</div> 
-	
-	#{if noteFlag}
-	<h6><a href="#">Add Note </a></h6>
-	<div> 
-		<textarea id="note"></textarea>
-		<input type="button" value="Add"onclick="add_note(${meeting.id})"></button>
-	</div> 
-	#{/if}
-</div> 
-
-
-<br>
-<br>
-
-
-
-
-<br>
-<br>
-
-
-
-
-
 <script type="text/javascript">
-function delete_meeting(id, pId)
-{
-	var confirmation= confirm("Are you sure you want to delete this meeting ?");
-	
-	if (confirmation) {
-		$.post('@{deleteMeeting()}', {
-			id:id
-		}, function(){
-			window.location = "/projects/${meeting.project.id}/meetings"
-		});
-	}
-	else
-		window.location = "/projects/${meeting.project.id}/meetings"
-	return true
-	;		
-}
-
-
-
-
-function reason(id) {
-    var e = document.getElementById(id);
-    if(e.style.display == 'block')
-       e.style.display = 'none';
-    else
-       e.style.display = 'block';
-
-}
-
-function add_note(id)
-{
-	 var note= $('#note').val();
-	 $.post('@{addNote()}',
-			 {id:id , note:note}, function(){
-					window.location.reload();
-				});
-	 return true;
-}
-
 </script>
 
 

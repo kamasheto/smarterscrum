@@ -208,5 +208,35 @@ public class MeetingAttendances extends SmartController {
 		String body2 = "Your attendance to " + ma.meeting.name + " was changed to NOT attended.";
 		Notifications.notifyUsers(ma.user, header, body + body2, (byte) 1);
 	}
+	/**
+	 * this method takes the meeting Id and change the status of the connected user in this meeting to attended
+	 * @param meetingId
+	 */
+	public static void confirmAttendance(long meetingId) {
+		Meeting m = Meeting.findById(meetingId);
+		MeetingAttendance ma= MeetingAttendance.find("byMeetingAndUserAndDeleted",m,Security.getConnected(),false).first();
+		ma.status = "confirmed";
+		ma.reason = "";
+		ma.save();
+		String header = "Attendance to " + ma.meeting.name;
+		String body = "Dear " + ma.user.getDisplayName(ma.meeting.project) + "\n";
+		String body2 = "Your attendance to " + ma.meeting.name + " was confirmed.";
+		Notifications.notifyUsers(ma.user, header, body + body2, (byte) 1);
+	}
 
+	/**
+	 * this method takes the meeting Id and change the status of the connected user in this meeting to not attended
+	 * @param meetingId
+	 */
+	public static void declineAttendance(long meetingId,String reason) {
+		Meeting m = Meeting.findById(meetingId);
+		MeetingAttendance ma= MeetingAttendance.find("byMeetingAndUserAndDeleted",m,Security.getConnected(),false).first();
+		ma.status = "declined";
+		ma.reason = "";
+		ma.save();
+		String header = "Attendance to " + ma.meeting.name;
+		String body = "Dear " + ma.user.getDisplayName(ma.meeting.project) + "\n";
+		String body2 = "You Declined the attendance to "+ma.meeting.name+".";
+		Notifications.notifyUsers(ma.user, header, body + body2, (byte) 1);
+	}
 }
