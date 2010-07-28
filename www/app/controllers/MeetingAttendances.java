@@ -232,7 +232,7 @@ public class MeetingAttendances extends SmartController {
 		Meeting m = Meeting.findById(meetingId);
 		MeetingAttendance ma= MeetingAttendance.find("byMeetingAndUserAndDeleted",m,Security.getConnected(),false).first();
 		ma.status = "declined";
-		ma.reason = "";
+		ma.reason = reason;
 		ma.save();
 		String header = "Attendance to " + ma.meeting.name;
 		String body = "Dear " + ma.user.getDisplayName(ma.meeting.project) + "\n";

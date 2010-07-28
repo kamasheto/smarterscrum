@@ -13,13 +13,14 @@
 
 function set_confirmed(id)
 {
-	if(confirm("Change you status to attending??"))
+	if(confirm("Change your status to attending?"))
 	$.post('/MeetingAttendances/confirmAttendance',{meetingId: id}
 	,function()
 	{
-		$('#accept').hide();
-		$('#decline').hide();
-		$('#confirmed').show();
+		$('#accept_'+id).hide();
+		$('#decline_'+id).hide();
+		$('#confirmed_'+id).show();
+		$('#inv_'+id).hide();
 	})
 }
 
@@ -36,9 +37,10 @@ function set_declined(id)
 		$.post('/MeetingAttendances/declineAttendance',{meetingId:id , reason:reno},
 		function()
 		{
-			$('#declined').show();
-			$('#accept').hide();
-			$('#decline').hide();
+			$('#declined_'+id).show();
+			$('#accept_'+id).hide();
+			$('#decline_'+id).hide();
+			$('#inv_'+id).hide();
 			
 		}
 		);
@@ -47,20 +49,55 @@ function set_declined(id)
 
 function join_meeting(id)
 {
-	if(confirm("Change you status to attending??"))
+	if(confirm("Join meeting?"))
 	$.post('/Meetings/joinMeeting',{meetingID: id}
 	,function()
 	{
-		$('#accepts').hide();
-		$('#confirmedd').show();
+		$('#accepts_'+id).hide();
+		$('#confirmedd_'+id).show();
 	})
 }
 
+function confirm_me(id)
+{
+	if(confirm("Change your status to attending?"))
+	$.post('/MeetingAttendances/confirmAttendance',{meetingId: id}
+	,function()
+	{
+		$.bar({
+			message : 'You accepted the invitation.'
+		});
+		$('#inv_'+id).hide();
+		$('#accept_'+id).hide();
+		$('#decline_'+id).hide();
+		$('#confirmed_'+id).show();
+		$('#inv_'+id).hide();
+		
+	})
+}
 
-
+function decline_me(id)
+{
+	var reno=prompt("Please enter the reason :","");
+	while(reno.length==0)
+	{
+		reno=prompt("Please enter the reason :","");
+	}
+	$.post('/MeetingAttendances/declineAttendance',{meetingId:id , reason:reno},
+	function()
+	{
+		$.bar({
+			message : 'You Declined the invitation.'
+		});
+		$('#inv_'+id).hide();
+		$('#declined_'+id).show();
+		$('#accept_'+id).hide();
+		$('#decline_'+id).hide();
+		
+	}
+	);
+}
 	
-
-
 
 
 
