@@ -215,7 +215,8 @@ public class Meetings extends SmartCRUD
 		if( params.get( "_save" ) != null )
 		{
 			// redirect( request.controller + ".list" );
-			Meetings.viewMeetings( currentProject.id );
+			//Meetings.viewMeetings( currentProject.id );
+			redirect( "/Application/overlayKiller" );
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
 		{
@@ -243,24 +244,23 @@ public class Meetings extends SmartCRUD
 		List<Meeting> meetings = Meeting.find( "byProject.idAndDeleted", id, false ).fetch();
 		List<Meeting> upcoming = new ArrayList<Meeting>();
 		List<Meeting> past = new ArrayList<Meeting>();
+		List<Meeting> current= new ArrayList<Meeting>();
 		while( meetings.isEmpty() == false )
 		{
 			Meeting temp = (meetings.remove( 0 ));
+			Date tempStart= new Date(temp.startTime);
 			Date tempEnd = new Date( temp.endTime );
-			if( tempEnd.before( currDate ) )
+			if( currDate.after(tempEnd) )
 				past.add( temp );
 			else
+			if(currDate.before(tempStart))
 				upcoming.add( temp );
+			else
+				current.add(temp);
 		}
-		boolean pastIsEmpty = false;
-		boolean upcomingIsEmpty = false;
-		if( past.isEmpty() )
-			pastIsEmpty = true;
-		if( upcoming.isEmpty() )
-			upcomingIsEmpty = true;
-		Logs.addLog( Security.getConnected(), "view", "Meetings", project.id, project, new Date( System.currentTimeMillis() ) );
+		
 		String projectName = project.name;
-		render( meetings, id, projectName, past, upcoming, upcomingIsEmpty, pastIsEmpty, project );
+		render( meetings, id, projectName, past, upcoming, current, project );
 
 	}
 
@@ -328,7 +328,7 @@ public class Meetings extends SmartCRUD
 	public static void associations( long id )
 	{
 		// amr hany part :
-		User currentUser = User.find( "byEmail", Security.connected() ).first();
+		User currentUser = Security.getConnected();
 		// here will go our tasks
 		// ghada();
 		// behairy();
@@ -439,20 +439,38 @@ public class Meetings extends SmartCRUD
 	public static void viewMeeting( long id )
 	{
 		Meeting meeting = Meeting.findById( id );
-		List<MeetingAttendance> attendees = MeetingAttendance.find( "byMeeting.idAndDeleted", id, false ).fetch();
-		User user = Security.getConnected();
-		List<MeetingAttendance> theUser = MeetingAttendance.find( "byMeeting.idAndUser.id", id, user.id ).fetch();
-		Date currentDate = new Date();
-		long longCurrentDate = currentDate.getTime();
-		boolean noteFlag = false;
-		if( theUser == null || theUser.isEmpty() )
-			render( meeting, attendees, noteFlag );
-
-		if( (theUser.get( 0 ).status.equals( "confirmed" )) && (meeting.endTime < longCurrentDate) )
-			noteFlag = true;
-		System.out.println( noteFlag );
-		Logs.addLog( Security.getConnected(), "view", "Meeting", meeting.id, meeting.project, new Date( System.currentTimeMillis() ) );
-		render( meeting, attendees, noteFlag, id );
+		MeetingAttendance ma= MeetingAttendance.find("byMeetingAndUserAndDeleted",meeting,Security.getConnected(),false).first();
+		boolean invited=false;
+		boolean attending=false;
+		boolean declined=false;
+		if(ma==null)
+		{
+			invited=false;
+		}
+		else
+		if(ma.status.equals("confirmed"))
+		{
+			invited=true;
+			attending=true;
+		}
+		else
+		if(ma.status.equals("declined"))
+		{
+			invited=true;
+			declined=true;
+		}
+		else
+		if(ma.status.equals("waiting"))
+		{
+			invited=true;
+		}
+		
+		boolean past=false;
+		if(meeting.endTime<new Date().getTime())
+			past=true;
+		
+		
+		render( meeting,invited,attending,declined,past);
 	}
 
 	/**

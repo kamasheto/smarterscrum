@@ -13,8 +13,6 @@ GET		/admin/projects/{id}/components/new				Components.blank
 
 GET     /admin/projects/{id}/meetings/new         		Meetings.blank
 GET		/meetings/toggletask							Meetings.toggleTask
-GET     /meetings/{id}                           Meetings.viewMeeting
-GET     /projects/{id}/meetings                  Meetings.viewMeetings
 GET     /projects/requestrole              				Requests.RequestRole
 GET     /projects/meetings/associations    				Meetings.associations
 GET     /projects/{projectID}/meetings                  Meetings.deleteMeeting

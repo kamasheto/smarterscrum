@@ -1,4 +1,74 @@
-﻿$(function() {
+﻿
+function delete_meeting(id, pId)
+{
+	var confirmation= confirm("Are you sure you want to delete this meeting ?");
+	
+	if (confirmation) {
+		$.post('/Meetings/deleteMeeting', {
+			id:id
+		}, function(){
+		removeMe(pId);	
+		});
+	};		
+}
+
+function set_confirmed(id)
+{
+	if(confirm("Change you status to attending??"))
+	$.post('/MeetingAttendances/confirmAttendance',{meetingId: id}
+	,function()
+	{
+		$('#accept').hide();
+		$('#decline').hide();
+		$('#confirmed').show();
+	})
+}
+
+
+function set_declined(id)
+{
+	
+	
+		var reno=prompt("Please enter the reason :","");
+		while(reno.length==0)
+		{
+			reno=prompt("Please enter the reason :","");
+		}
+		$.post('/MeetingAttendances/declineAttendance',{meetingId:id , reason:reno},
+		function()
+		{
+			$('#declined').show();
+			$('#accept').hide();
+			$('#decline').hide();
+			
+		}
+		);
+	
+}
+
+function join_meeting(id)
+{
+	if(confirm("Change you status to attending??"))
+	$.post('/Meetings/joinMeeting',{meetingID: id}
+	,function()
+	{
+		$('#accepts').hide();
+		$('#confirmedd').show();
+	})
+}
+
+
+
+	
+
+
+
+
+
+
+
+
+$(function() {
 	$('.draggable').live('mouseover', function() {
 		var con = $(this).closest('.workspaceContainer').attr('id');
 		$(this).data('init', 1);
@@ -210,3 +280,4 @@ function show(id) {
 	});
 
 }
+
