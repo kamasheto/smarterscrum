@@ -1,0 +1,9 @@
+#{extends 'magicBox.html' /}	
+	#{set 'title'}
+	${attendance.user.name}
+	#{/set}
+	<b>Attendance Status : </b> 
+	${status}
+	#{if attendance.status.equals("declined")}
+	<b>Reason : </b> ${attendance.reason}
+	#{/if}
