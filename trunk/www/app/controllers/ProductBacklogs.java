@@ -136,6 +136,7 @@ public class ProductBacklogs extends SmartController {
 
 	public static void showGraph(long id, long componentId) {
 		Project temp = Project.findById(id);
+		String pName = temp.name;
 		Security.check(Security.getConnected().projects.contains(temp));
 		Component myComponent = Component.findById(componentId);
 		String Data = temp.fetchData(componentId);
@@ -155,6 +156,6 @@ public class ProductBacklogs extends SmartController {
 			Data = null;
 		else
 			Data = Data.substring(0, 18) + maxDays + "," + Data.substring(18);
-		render(Data, SprintsInProject, temp, componentId, myComponent);
+		render(Data, SprintsInProject, temp, componentId, myComponent, pName);
 	}
 }

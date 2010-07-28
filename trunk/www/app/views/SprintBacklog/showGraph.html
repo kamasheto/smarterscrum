@@ -23,11 +23,11 @@
  		<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.cursor.js'}"></script>
 	
  #{/set}
-<h2>Sprint Burndown Chart</h2>
-	    	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
 	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
-	<strong>NOTE: </strong>To zoom in on a graph, simply click and drag and let go. To zoom out just double click the graph!
+	<strong>NOTE: </strong>If your graph has too much data then not all points will be shown, to view more day specific statistics then you will have to zoom in. To zoom in on a graph, simply click and drag and let go. To zoom out just double click the graph!
 	<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
+    
 	<div class="jqplot" id="chart1" style="height:300px; width:100%"></div>
 
 
