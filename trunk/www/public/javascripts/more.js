@@ -16,14 +16,10 @@ function delete_role(role_id, that) {
 	}
 }
 function setBaseRole(role) {
-	$('p').removeClass('baseRole')
-	$('.delete_img').show();
-	$('.tick_img').hide();
+	$('.all-roles').removeClass('baseRole')
 	
 	$.post('/roles/setbaserole?id=' + role, function() {
-		$('#role_p_' + role).addClass('baseRole')
-		$('#role_p_' + role + ' .delete_img').hide();
-		$('#role_p_' + role + ' .tick_img').show();
+		$('.role-div-' + role).addClass('baseRole')
 		$.bar({message:'Base role updated successfully'})
 	})
 }

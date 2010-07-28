@@ -105,7 +105,12 @@ cursor:pointer;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 }
-.draggable img, .draggable span, .draggableChild img, .draggableChild span
-{
-cursor:pointer;
+img {
+	cursor:default;
+}
+.draggable a, .draggable span, .draggableChild a, .draggableChild span{
+	cursor:pointer;
+}
+.baseRole .tick_img, .baseRole .delete_img{
+	display: none;
 }

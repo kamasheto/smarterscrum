@@ -9,13 +9,13 @@
 	<li><a href="/show/projects">Projects</a></li>
 	<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
 	#{/set}
-	#{note 'highlight'}These are your project roles. Members in a project may have more than one role at a time. Whenever possible, avoid editing roles to limit confusion for developers. If you'd like to give a developer more access, add him to a new role. All members joining a project join the base role automatically. Click on a role to set it to be the base role.#{/note}
+	#{note 'highlight'}These are your project roles. Members in a project may have more than one role at a time. Whenever possible, avoid editing roles to limit confusion for developers. If you'd like to give a developer more access, add him to a new role. All members joining a project join the base role automatically. Click a star to set that role as base role.#{/note}
 #{/if}
 #{else}
 	#{set title: 'Global Roles' /}
-	#{note}These are the default roles. All projects created include these roles by default. Changes to these roles does NOT affect roles of projects already created. The base role is highlighted in bold. All members joining a project join the base role automatically. Click on a role to set it to be the base role.#{/note}
+	#{note}These are the default roles. All projects created include these roles by default. Changes to these roles does NOT affect roles of projects already created. The base role is highlighted in bold. All members joining a project join the base role automatically. Click a star to set that role as base role.#{/note}
 #{/else}
 #{list roles, as:'role'}
-	<div class="#{if role.baseRole} baseRole#{/if} " id="role_p_${role.id}" name="/show/role?id=${role.id}"><div class="item_imgs"><a href="#" onclick="overlayOpen('/admin/roles/${role.id}')" title="Edit"><img src="@{'/public/images/famfam/pencil.png'}"></a> <span class="delete_img ${role.baseRole ? 'hidden' :''}"><a href="#" onclick="delete_role(${role.id})" title="Delete"><img src="@{'/public/images/famfam/delete.png'}"></a> </span><span class="tick_img ${role.baseRole ? '' : 'hidden'}"><img src="/public/images/famfam/accept.png" alt=""> </span></div>
+	<div class="#{if role.baseRole}baseRole #{/if} all-roles role-div-${role.id}" name="/show/role?id=${role.id}"><div class="item_imgs"><a href="#" onclick="overlayOpen('/admin/roles/${role.id}')" title="Edit"><img src="@{'/public/images/famfam/pencil.png'}"></a> <span class="delete_img"><a href="#" onclick="delete_role(${role.id}, this)" title="Delete"><img src="@{'/public/images/famfam/delete.png'}"></a> </span><span class="tick_img"><a href="#" onclick="setBaseRole(${role.id})"><img src="/public/images/famfam/star.png" alt=""></a></span></div>
 	${role.name}</div>
 #{/list}

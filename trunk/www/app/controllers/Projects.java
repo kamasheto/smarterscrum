@@ -78,13 +78,9 @@ public class Projects extends SmartCRUD {
 			if (Security.getConnected().isAdmin) {
 
 				flash.success("' " + projectObject.name + " '" + " Project Has Been Successfully Created.");
-				//redirect(request.controller + ".show", object.getEntityId());
-				// redirect("Application/overlayKiller");
 				Application.overlayKiller();
 			} else {
 				flash.success("Your Project Request Has Been Sent.You Will Be Notified Upon Approval");
-			//	redirect("/show/projects");
-				// redirect("Application/overlayKiller");
 				Application.overlayKiller();
 			}
 		}

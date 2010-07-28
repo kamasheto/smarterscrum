@@ -1,5 +1,6 @@
 #{extends 'magicBox.html' /}
-#{set title: role.name /}
+#{set 'title'}<div class="item_imgs"><a href="#" onclick="overlayOpen('/admin/roles/${role.id}')" title="Edit"><img src="@{'/public/images/famfam/pencil.png'}"></a> <span class="delete_img"><a href="#" onclick="delete_role(${role.id}, this)" title="Delete"><img src="@{'/public/images/famfam/delete.png'}"></a> </span><span class="tick_img"><a href="#" onclick="setBaseRole(${role.id})"><img src="/public/images/famfam/star.png" alt=""></a></span></div>
+${role.name}#{/set}
 
-<div>Role has ${role.users.size()} users</div>
-<div>${role.users}</div>
+<strong>Users: </strong>${role.users.size()} <a onclick="$('#role-users-${role.id}').toggle()">[toggle]</a>
+<div id='role-users-${role.id}' style="display:none;">${role.users}</div>
