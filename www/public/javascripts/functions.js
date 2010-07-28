@@ -1,4 +1,5 @@
-﻿function delete_meeting(id, pId)
+﻿
+function delete_meeting(id, pId)
 {
 	var confirmation= confirm("Are you sure you want to delete this meeting ?");
 	
@@ -72,7 +73,7 @@ function confirm_me(id)
 		$('#decline_'+id).hide();
 		$('#confirmed_'+id).show();
 		$('#inv_'+id).hide();
-		
+
 	})
 }
 
@@ -93,11 +94,12 @@ function decline_me(id)
 		$('#declined_'+id).show();
 		$('#accept_'+id).hide();
 		$('#decline_'+id).hide();
-		
+	
 	}
 	);
 }
-	
+
+
 
 
 
@@ -243,7 +245,9 @@ function load(url, el) {
 
 function removeMe(me)
 {
-	$(me).closest('.ui-widget-content').remove();
+	$(me).closest('.ui-widget-content').slideUp(function() {
+		$(this).remove()
+	});
 }
 
 
