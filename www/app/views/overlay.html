@@ -54,10 +54,18 @@
         </script>
 
 <style type="text/css">
+thead {
+background:none repeat scroll 0 0 #333333;
+color:#EEEEEE;
+cursor:move;
+font-size:12px;
+}
 body,html {
 	background: transparent !important;
+	overflow:auto;
 }
-#theLoadedContent{background-color:#fff;padding:10px}
+#theLoadedContent{background-color:#fff;padding:10px;
+overflow:auto;}
 </style>
 </head>
 <body onload="$('#theLoadedContent').show();#{get 'onLoad'/};   $('#overlayClose',parent.document.body).show() ">
