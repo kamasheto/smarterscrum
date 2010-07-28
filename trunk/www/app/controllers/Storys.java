@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import models.Component;
+import models.Meeting;
 import models.Project;
 import models.Sprint;
 import models.Story;
@@ -847,7 +848,7 @@ public class Storys extends SmartCRUD {
 	 * Sprint : 4
 	 */
 
-	public static void magicShow(long projectId, long componentId, int reviewer, int assignee, long taskId, int tasks){
+	public static void magicShow(long projectId, long componentId, int reviewer, int assignee, long taskId, int tasks, long meetingId){
 		String title;
 		if (componentId != 0) {
 			Component component = Component.findById(componentId);
@@ -922,6 +923,16 @@ public class Storys extends SmartCRUD {
 								stories.addAll(component.componentStories);
 							}
 							render(stories, title);
+						}else{
+							if(meetingId!=0){
+								Meeting meeting = Meeting.findById(meetingId);
+								List<Task> task = new ArrayList<Task>();
+								for(Task task2: meeting.tasks){
+									if(!task2.deleted){
+										task.add(task2);
+									}
+								}
+							}
 						}
 					}
 				}

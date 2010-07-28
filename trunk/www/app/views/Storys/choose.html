@@ -1,6 +1,26 @@
 #{extends 'overlay.html' /}
 #{set 'title'}Story or Task ?!#{/set}
 
-<a href="javascript:overlayOpen('/admin/tasks/new?id2=${project.components.get(0).id}')" onclick="javascript:window.close()"><img src="@{'/public/images/TASKS.png'}"/></a>
+<input type="button"  value="Add Task" id="Task"  onclick="getAddTask()"/> 
 
-<a href="#"><img src="@{'/public/images/BOOK.png'}"/></a>
+<input type="button"  value="Add Story" id="Story"  onclick="getAddStory()"/>
+
+<div id="adding_content"><img  id = "loading" src ="@{'/public/images/loadingMagic.gif'}" style="display:none"/></div>
+
+<script type="text/javascript">
+
+function getAddTask(){
+	$('#loading').show();
+	$('#adding_content').load('/admin/tasks/new?id2=${project.components.get(0).id}');
+	$('#loading').hide();
+}
+
+function getAddStory(){
+	$('#loading').show();
+	$('#adding_content').load('/admin/storys/new?id=${project.id}');
+	$('#loading').hide();
+	$('#Task').hide();
+	$('#Story').hide();	
+	}
+
+</script>

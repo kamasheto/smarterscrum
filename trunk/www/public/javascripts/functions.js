@@ -368,3 +368,14 @@ function show(id) {
 
 }
 
+function deleteTheTask(tId, box){
+	
+	if((confirm('Are you sure you want to delete the Task ?')))
+	{
+	
+	$.post('/tasks/delete', {id:tId}, function(data){ $.bar({message:data}
+	);
+	removeMe(box);
+	;});
+	}
+}

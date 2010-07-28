@@ -467,7 +467,7 @@ public class Tasks extends SmartCRUD {
 	 * @category C3 17.1
 	 * @return its a void method.
 	 */
-	public static void delete(String id) {
+	public static void delete(long id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
@@ -483,13 +483,13 @@ public class Tasks extends SmartCRUD {
 			object.save();
 			String text="The Task was deleted successfully";
 			System.out.println("here");
-			render(text);
+			
 		} catch (Exception e) {
 			flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
-			redirect(request.controller + ".show", object.getEntityId());
+			renderText("Task can't be deleted");
 		}
 		flash.success(Messages.get("crud.deleted", type.modelName, object.getEntityId()));
-		redirect("/show/tasks?id=" + tmp.taskStory.componentID.project.id);
+		renderText("Task deleted successfully.");
 	}
 
 	/**
