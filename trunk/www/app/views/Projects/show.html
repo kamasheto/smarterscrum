@@ -225,7 +225,7 @@ function addTaskStatus()
 	var statusId;
 	if(textFeildValue == "")
 	{
-		alert("You Must Enter a Valid Task Status Type.");
+		alert("You Must Enter a Valid Task Status Status.");
 	}
 	else
 	{
@@ -250,8 +250,7 @@ function addTaskStatus()
 										{
 										  textFieldValue(textFeildValue, rad_val=="Pending", rad_val=="Closed");
 										})
-										$('option[value='+id+']').attr("selected", true);
-									    textFieldValue(textFeildValue, rad_val=="Pending", rad_val=="Closed");
+									    textFieldValue("", false, false);
 								 }
 								 else
 								 {
@@ -293,7 +292,7 @@ function editTaskStatus()
 	}
 	if(x=="")
 	{
-		alert("You Must Enter a Valid Task Status Type.");
+		alert("You Must Enter a Valid Task Status Status.");
 	}
 	else
 	{
@@ -316,7 +315,7 @@ function editTaskStatus()
 							}
 							else
 							{
-								alert("Task Type couldn't be editted.");
+								alert("Task Status couldn't be editted.");
 								$('option[value='+m+']').attr("selected", true);
 							    textFieldValue(x, rad_val == "Pending", rad_val == "Closed");
 							}
@@ -691,9 +690,9 @@ hideLoader('addES','loaderES');
 	<input type="radio" name="taskStatusGroup" value="Others" checked> Others <br>
 	</form>
 	
-	<input id="addTST" type="button" name="add" value="Add" onclick="addTaskStatus()" />
-	<input id="editTST" type="button" name="edit" value="Save" onclick="editTaskStatus()" disabled/>
-	<input id="removeTST" type="button" name="remove" value="Remove" onclick="removeTaskStatus()" disabled/>
+	<input id="addTST" type="button" title="Add a new Task Status" name="add" value="Add" onclick="addTaskStatus()" />
+	<input id="editTST" type="button" title="Save after editing" name="edit" value="Save" onclick="editTaskStatus()" disabled/>
+	<input id="removeTST" type="button" title="Remove from project" name="remove" value="Remove" onclick="removeTaskStatus()" disabled/>
 	
 	<img id="loaderTST"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
 	
