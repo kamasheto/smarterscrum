@@ -9,7 +9,7 @@
             <h3> Succsses Scenarios </h3>    
             #{list items:succsses, as:'Scenario'}
            
-              <TEXTAREA NAME="succssesName1" id="succsses${Scenario_index}"  ROWS="4" COLS="60">${Scenario}</TEXTAREA>
+              <TEXTAREA style="width:90%" NAME="succssesName1" id="succsses${Scenario_index}"  ROWS="2" COLS="40">${Scenario}</TEXTAREA>
               <br id="brs{Scenario_index}"/> 
              <input type="button"  value="delete the scenario above" id="bs${Scenario_index}"  onclick="removeSuccsses(${Scenario_index});"/> 
              <br id="br2s${Scenario_index}"/> 
@@ -29,7 +29,7 @@
                   
             #{list items:failure, as:'Scenario'}
            
-              <TEXTAREA NAME="failureName1" id="failure${Scenario_index}"  ROWS="4" COLS="60">${Scenario}</TEXTAREA>
+              <TEXTAREA style="width:90%" NAME="failureName1" id="failure${Scenario_index}"  ROWS="2" COLS="40">${Scenario}</TEXTAREA>
               <br id="brf{Scenario_index}" /> 
              <input type="button"  value="delete the scenario above" id="bf${Scenario_index}"   onclick="removeFailure(${Scenario_index});"/> 
              <br id="br2f${Scenario_index}"/> 
@@ -94,12 +94,12 @@ function addSuccsses() {
 	  var num= ( $('#succssesNum').val()-1)+2;
 	  var id= ( $('#succssesId').val()-1)+2;
 	  
-	  var columns=60;
+	  var columns=40;
 	  newdiv.setAttribute('cols',columns);
 	  newdiv.setAttribute('id',"succsses"+num);
 	  newdiv.setAttribute('name','succssesName1');
-	  newdiv.setAttribute('rows',4);
-	  
+	  newdiv.setAttribute('rows',2);
+	  newdiv.setAttribute('style','width:90%'); 
 	  var br=document.createElement('br');
 	  br.setAttribute('id',"br2s"+num);
 	  var br1=document.createElement('br');
@@ -140,11 +140,12 @@ function addFailure() {
 	
 	  var newdiv = document.createElement('TEXTAREA');
 	  var num= ( $('#failureNum').val()-1)+2;
-	  var columns=60;
+	  var columns=40;
 	  newdiv.setAttribute('cols',columns);
 	  newdiv.setAttribute('id',"failure"+num);
 	  newdiv.setAttribute('name','failureName1');
-	  newdiv.setAttribute('rows',4);
+	  newdiv.setAttribute('rows',2);
+	  newdiv.setAttribute('style','width:90%');
 	  
 	  var br=document.createElement('br');
 	  br.setAttribute('id',"br2f"+num);
