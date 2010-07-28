@@ -1,4 +1,4 @@
-#{extends 'overlay.html' /}
+#{extends 'main.html' /}
 
 #{set 'crumbs'}
 <li><a href="/show/projects">Projects</a></li>
@@ -12,27 +12,23 @@
 <script type="text/javascript">
 
 $(function(){
-	$("#accordion").accordion({autoHeight:false });	
-});
+	$("#accordion").accordion({autoHeight:false });
+	
+	});
 	
 function showLoader(id,select){
-var element=document.getElementById(id);
-var loader=document.getElementById(select);
-loader.style.position="absolute";
-loader.style.top=element.style.top;
-element.disabled=true;
-
-loader.style.visibility="visible";
+	var element=document.getElementById(id);
+	var loader=document.getElementById(select);
+	loader.style.position="absolute";
+	loader.style.top=element.style.top;
+	element.disabled=true;
+	loader.style.visibility="visible";
 }
 function hideLoader(id,select){
-var element=document.getElementById(id);
-var loader=document.getElementById(select);
-
-element.disabled=false;
-
-loader.style.visibility="hidden";
-
-
+	var element=document.getElementById(id);
+	var loader=document.getElementById(select);
+	element.disabled=false;
+	loader.style.visibility="hidden";
 }
 function getInSprint(){
 var i=document.getElementById('meetingTypesList').selectedIndex;
@@ -167,34 +163,211 @@ alert("Task Type was not Removed.");
 hideLoader('removeTSK','loaderTSK');
 }
 
-function removeTaskStatus(){
-showLoader('removeTST','loaderTST');
-var n=&{object.id};
-var select=document.getElementById('taskStatusesList');
-var i=getSelectedItem(select);
-if(i<0){
-hideLoader('removeTST','loaderTST');
-return;
+function textFieldValue(optionName, isPending, isClosed)
+{
+	if(optionName=="")
+	{
+		$("option[name = 'addNewTaskStatus']").attr("selected", true);
+		$('#taskTSText').val("");
+		$('#addTST').attr("disabled", false);
+		$('#editTST').attr("disabled", true);
+		$('#removeTST').attr("disabled", true);
+		if(isPending)
+		{
+			$('input[name = "taskStatusGroup"]')[0].checked = true;
+		}
+		else if(isClosed)
+		{
+			$('input[name = "taskStatusGroup"]')[1].checked = true;
+		}
+		else
+		{
+			$('input[name = "taskStatusGroup"]')[2].checked = true;
+		}
+	}
+	else
+	{
+		$("option[name = 'addNewTaskStatus']").attr("selected", false);
+		$('#taskTSText').val(optionName);
+		$('#addTST').attr("disabled", true);
+		$('#editTST').attr("disabled", false);
+		$('#removeTST').attr("disabled", false);
+		if(isPending)
+		{
+			$('input[name = "taskStatusGroup"]')[0].checked = true;
+		}
+		else
+		{
+			if(isClosed)
+			{
+				$('input[name = "taskStatusGroup"]')[1].checked = true;
+			}
+			else
+			{
+				$('input[name = "taskStatusGroup"]')[2].checked = true;
+			}
+		}
+		
+	}
+	
 }
-var m=select.options[i].value;
-var conf=confirm("Are you sure you want to delete this task status?");
-if(conf){
-$.post('@{removeTaskStatus()}',{statusID:m},function (flag){
 
-if(flag){
-select.remove(i);
-
+function addTaskStatus()
+{
+	if (!$('#taskStatusesList option:selected').length) {
+		alert('Please select a Tasj Status from the list.');
+		return
+	}
+	showLoader('addTST', 'loaderTST');
+	var projectId = &{object.id};
+	var textFeildValue = $('#taskTSText').val();
+	var rad_val = $("input[name='taskStatusGroup'] : checked").val();
+	var statusId;
+	if(textFeildValue == "")
+	{
+		alert("You Must Enter a Valid Task Status Type.");
+	}
+	else
+	{
+		$.post('@{taskStatusCheck()}',{id : projectId, status : textFeildValue},
+				function(exist)
+				{
+			       if (!exist)
+				   {
+					   $.post('@{addTaskStatus()}', {id : projectId, taskStatus : textFeildValue, indicator : rad_val}, 
+							   function(id) //id: Task Status id
+							   {    
+						          if(id)
+							      {
+								      statusId = id;
+								      var select=document.getElementById('taskStatusesList');
+								      var optn = document.createElement("OPTION");
+									  optn.text = textFeildValue;
+									  optn.value = id;
+									  select.options.add(optn);
+									  $('#taskStatusesList option[value=' + id + ']').click(
+										function()
+										{
+										  textFieldValue(textFeildValue, rad_val=="Pending", rad_val=="Closed");
+										})
+										$('option[value=' + id + ']').attr("selected", true);
+									    textFieldValue(textFeildValue, rad_val == "Pending", rad_val == "Closed");
+								 }
+								 else
+								 {
+									alert("Task Status couldn't be added.");
+									textFieldValue("", rad_val == "Pending", rad_val == "Closed");
+									$('#taskTSText').val(textFeildValue);
+								 }
+							  } ,'json')
+					}
+					else
+					{
+						alert("Task status name is already used.");
+						textFieldValue("", rad_val == "Pending", rad_val == "Closed");
+						$('#taskTSText').val(textFeildValue);
+					} 
+       			})
+	}
+	hideLoader('addTST', 'loaderTST');
 }
-else{
-alert("Task Status was not Removed.");
+
+function editTaskStatus()
+{
+	if (!$('#taskStatusesList option:selected').length) {
+		alert('Please select a Tasj Status from the list.');
+		return
+	}
+	showLoader('editTST', 'loaderTST');
+	var projectId = &{object.id};
+	var taskStatusesList = document.getElementById('taskStatusesList');
+	var selectedItem = getSelectedItem(taskStatusesList);
+	var textFieldValue = $('#taskTSText').val();
+	var rad_val = $("input[name='taskStatusGroup'] : checked").val()
+	var selectedItemValue = taskStatusesList.options[selectedItem].value;
+	
+	if(selectedItem < 0)
+	{
+		hideLoader('editTST', 'loaderTST');
+		return;
+	}
+	if(textFieldValue == "")
+	{
+		alert("You Must Enter a Valid Task Status Type.");
+	}
+	else
+	{
+		$.post('@{newTaskStatusCheck()}',{statusID : selectedItemValue, id : projectId, status : textFieldValue},
+			function(exist)
+			{
+		      if (!exist) 
+			  {
+				  $.post('@{editTaskStatus()}', {statusID : selectedItemValue, newName : textFieldValue, indicator : rad_val},
+						  function (flag)
+						  {
+					        if(flag)
+						    {
+							    $('option[value=' + selectedItemValue + ']').html(textFieldValue);
+							    $('#taskStatusesList option[value=' + selectedItemValue + ']').click(function() {
+					        		textFieldValue(textFieldValue, rad_val == "Pending", rad_val == "Closed");
+					        	})
+								$('option[value=' + selectedItemValue + ']').attr("selected", true);
+								textFieldValue(textFieldValue, rad_val == "Pending", rad_val == "Closed");
+							}
+							else
+							{
+								alert("Task Type couldn't be editted.");
+								$('option[value=' + selectedItemValue + ']').attr("selected", true);
+							    textFieldValue(textFieldValue, rad_val == "Pending", rad_val == "Closed");
+							}
+						}, 'json')
+			 }
+			 else
+				 alert("Task status name is already used.");
+				 $('option[value=' + selectedItemValue + ']').attr("selected", true);
+			     textFieldValue(textFieldValue, rad_val == "Pending", rad_val == "Closed");
+		   })
+	}
+	hideLoader('editTST', 'loaderTST');
 }
 
-},'json')
+function removeTaskStatus()
+{
+	if (!$('#taskStatusesList option:selected').length) {
+		alert('Please select a Tasj Status from the list.');
+		return
+	}
+	showLoader('removeTST', 'loaderTST');
+	var taskStatusesList = document.getElementById('taskStatusesList');
+	var selectedItem = getSelectedItem(taskStatusesList);
+	var selectedItemValue = $('#taskStatusesList option:selected').val;
+	var conf = confirm("Are you sure you want to delete this task status?");
+	if(selectedItem < 0)
+	{
+		hideLoader('removeTST', 'loaderTST');
+		return;
+	}
+	if(conf)
+	{
+		$.post('@{removeTaskStatus()}', {statusID:selectedItemValue},
+				function (flag)
+				{
+			      if(flag)
+				  {
+			    	  taskStatusesList.remove(selectedItem);
+				  }
+				  else
+				  {
+					  alert("Task Status was not Removed.");
+				  }
+				}, 'json')
+		$('#taskTSText').val("");
+		$('#addTST').attr("disabled", true);
+		$('#editTST').attr("disabled", true);
+		$('#removeTST').attr("disabled", true);
+	}
+	hideLoader('removeTST', 'loaderTST');	
 }
-hideLoader('removeTST','loaderTST');
-}
-
-
 
 function addTask(){
 showLoader('addTSK','loaderTSK');
@@ -237,52 +410,6 @@ hideLoader('addTSK','loaderTSK');
 hideLoader('addTSK', 'loaderTSK');
 document.getElementById('taskText').value="";
 }
-
-
-function addTaskStatus(){
-showLoader('addTST','loaderTST');
-var n=&{object.id};
-var m=document.getElementById('taskTSText').value;
-if(m==""){
-alert("You Must Enter a Valid Task Status Type.");
-hideLoader('addTST','loaderTST');
-return;
-}
-
-var rad_val = $("input[name='taskStatusGroup']:checked").val()
-
-$.post('@{taskStatusCheck()}',{id:n,status:m},function(exist){
-	if (!exist) {
-		$.post('@{addTaskStatus()}', {
-			id: n,
-			taskStatus: m,
-			indicator: rad_val
-		}, function(id){
-
-if(id){
-var select=document.getElementById('taskStatusesList');
-var optn = document.createElement("OPTION");
-optn.text = m;
-optn.value = id;
-select.options.add(optn);
-
-}
-else{
-alert("Task Type couldn't be added.");
-}
-
-hideLoader('addTST','loaderTST');
-},'json')
-}
-	else
-	alert("Task status name is already used.");
-	
-})
-	hideLoader('addTST', 'loaderTST');
-	document.getElementById('taskTSText').value="";
-}
-
-
 
 function addStory(){
 showLoader('addST','loaderST');
@@ -451,9 +578,15 @@ hideLoader('addES','loaderES');
 
 </script>
 	
-	<h2 id="crudShowTitle">Edit "&{object.name}" Defaults and Settings #{if object.isScrum == true}(SCRUM)#{/if} </h2>
+	<h2 id="crudShowTitle">Edit "&{object.name}" Defaults and Settings </h2>
+	
+	
 <p>	&{object.description}</p> 
+	
 	<div class="objectForm">
+	
+
+
 <div id="accordion">
 #{if connected.in(object).can('editProject') }
 	<h3><a href="#">Default Sprint Duration:</a></h3>
@@ -536,16 +669,17 @@ hideLoader('addES','loaderES');
 		<div class="taskStatus">
 	
 	<ul >
-<select name="drop1" id="taskStatusesList" style="width:200px" size="10" multiple="multiple">
+<select name="taskStatusesList" id="taskStatusesList" style="width:200px" size="10" multiple="multiple">
+<option value="addNewTaskStatus" name="addNewTaskStatus" onclick="textFieldValue('',false,false)" selected > Add new Task Status</option>
 #{list items:object.taskStatuses, as:'taskStatus'}
 	#{if taskStatus.deleted==false}
-	<option value=${taskStatus.id}>${taskStatus.name}</option>
+	<option value=${taskStatus.id} onclick="textFieldValue($(this).html(),${taskStatus.pending},${taskStatus.closed})" >${taskStatus.name}</option>
 		#{/if}
 	
 #{/list}
 	</select>
 	<br>
-	Add new : &nbsp;<input id="taskTSText" class="" type="text" name="object.name" value="" "size="27" /> 
+	Status Name : &nbsp;<input id="taskTSText" class="" type="text" name="object.name" value="" "size="27" /> 
 	
 	<form name="taskStatusesForm">
 	<br> 
@@ -557,7 +691,8 @@ hideLoader('addES','loaderES');
 	</form>
 	
 	<input id="addTST" type="button" name="add" value="Add" onclick="addTaskStatus()" />
-	<input id="removeTST" type="button" name="add" value="Remove" onclick="removeTaskStatus()"/>
+	<input id="editTST" type="button" name="edit" value="Save" onclick="editTaskStatus()" disabled/>
+	<input id="removeTST" type="button" name="remove" value="Remove" onclick="removeTaskStatus()" disabled/>
 	
 	<img id="loaderTST"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
 	
@@ -637,4 +772,6 @@ hideLoader('addES','loaderES');
 
 		</div>
 	#{/if}
+	<br>
+	
 </div>
