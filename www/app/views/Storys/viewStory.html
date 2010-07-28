@@ -1,5 +1,5 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}Story: ${story.number}#{if connected.in(project).can('editStory')}#{ifnot inSprint}<a href="javascript:overlayOpen('/admin/storys/${story.id}')"><img title="Edit Scenarios" src="@{'/public/images/famfam/pencil.png'}"></a><a href="javascript:overlayOpen('/storys/editScenario?id=${story.id}')"><img title="Edit" src="@{'/public/images/editsce.gif'}"></a>#{/ifnot}#{/if}#{ifnot inSprint}#{if connected.in(project).can('deleteStory')}<a href="javascript:deleteStory(${story.id}, this, ${hasDependency});"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{/ifnot}#{/set}
+#{set 'title'}Story: ${story.number}#{if connected.in(project).can('editStory')}#{ifnot inSprint}<a href="javascript:overlayOpen('/admin/storys/${story.id}')"><img title="Edit Scenarios" src="@{'/public/images/famfam/pencil.png'}"></a><a href="javascript:overlayOpen('/storys/editScenario?id=${story.id}')"><img title="Edit" src="@{'/public/images/editsce.gif'}"></a>#{/ifnot}#{/if}#{ifnot inSprint}#{if connected.in(project).can('deleteStory')}<a href="#"onclick="deleteStory(${story.id}, this, ${hasDependency});"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{/ifnot}#{/set}
 #{if connected.in(project).can('editStory')}
 #{ifnot message.length() == 0}
 	#{note}${message}#{/note}
