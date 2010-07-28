@@ -1,5 +1,7 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}${title} #{if stories!=null}<a href="javascript:overlayOpen('/storys/choose?projectId=${stories.get(0).componentID.project.id}')"><img src="@{'/public/images/famfam/add.png'}"></a>#{/if}#{/set}
+#{set 'title'}${title} #{if stories!=null}<a href="javascript:overlayOpen('/storys/choose?projectId=${stories.get(0).componentID.project.id}')"><img src="@{'/public/images/famfam/add.png'}"></a>#{/if}
+#{if task1 !=null}<div class="item_imgs">#{if connected.in(project).can('editTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${task1.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${task1.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div>#{/if}
+#{/set}
 
 
 		#{if task !=null}
@@ -14,9 +16,6 @@
 	#{/if}
 		
 		#{if task1!=null}
-			#{if connected.in(project).can('editTask')}
-				<a href="javascript:overlayOpen('/admin/tasks/${task1.id}')"><img src="@{'/public/images/famfam/pencil.png'}"></a><br>
-			#{/if}
 		<br>
 		${task1.description}
 		<br>
@@ -41,21 +40,11 @@
 		#{list items:stories ,as :'Story'}
 			#{if Story.uncategorized}
 				#{list items:Story.storiesTask ,as :'Task'}
-				<div name="/storys/magicShow?taskId=${Task.id}">T${Task.number} ${Task.description}</div>
+				<div name="/storys/magicShow?taskId=${Task.id}">S${Task.taskStory.number} ${Task.description}<div class="item_imgs">#{if connected.in(project).can('editTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div></div>
 				#{/list}
 			#{/if}
 			#{else}
-			<div name="/storys/viewStory?storyId=${Story.id}">Story: ${Story.number}</div>
+			<div name="/storys/viewStory?storyId=${Story.id}">Story: ${Story.number}#{if connected.in(project).can('editStory')}#{ifnot Story.inSprint()}<a href="javascript:overlayOpen('/admin/storys/${Story.id}')"><img src="@{'/public/images/famfam/pencil.png'}"></a><a href="javascript:overlayOpen('/storys/editScenario?id=${Story.id}')"><img src="@{'/public/images/editsce.gif'}"></a>#{/ifnot}#{/if}#{ifnot Story.inSprint()}#{if connected.in(project).can('deleteStory')}<a href="javascript:deleteStory(${Story.id}, this, ${hasDependency});"><img src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{/ifnot}</div>
 			#{/else}		
 		#{/list}
 		#{/if}
-#{set 'moreScripts'}
-<script type="text/javascript">
-function deleteTheTask(tId, box){
-	$.post('@{Tasks.delete()}', {id:tId}, function(data){ $.bar({message:data}
-	);
-	removeMe(box);
-	;});
-}
-</script>
-#{/set}
