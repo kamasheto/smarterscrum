@@ -721,16 +721,28 @@ public class Storys extends SmartCRUD {
 			}
 		}
 
-		if (story1.succussSenario == null)
-			succsses.add("");
-		if (story1.failureSenario == null)
-			failure.add("");
-
+		boolean successflag=false;
+		boolean failureflag=false;
+		if (story1.succussSenario == ""){
+			
+		
+		}
+		if (story1.failureSenario == ""){
+			
+		}
+		if(story1.succussSenario.trim().length()==0){
+			 successflag=true;	
+		}
+		if(story1.failureSenario.trim().length()==0){
+			failureflag=true;
+	
+		}
+		
 		int succssesNum = succsses.size();
 		int failureNum = failure.size();
 		long storyId = id;
 		Long projectId = story1.componentID.project.id;
-		render(succsses, failure, succssesNum, failureNum, storyId, projectId);
+		render(successflag,failureflag,succsses, failure, succssesNum, failureNum, storyId, projectId);
 
 	}
 
