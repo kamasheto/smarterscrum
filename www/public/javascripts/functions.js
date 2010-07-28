@@ -100,7 +100,18 @@ function decline_me(id)
 }
 
 
-
+function deleteStory(sId,box,d){
+	message = "Are you sure you want to delete this story?";
+	if(d)
+		message+= " Some stories depend on it.";
+	if((confirm(message)))
+	{
+		$.post('/Storys/delete', {id:sId}, function(data){
+			$.bar({message:data});
+			removeMe(box);
+		});
+	}
+}
 
 
 
