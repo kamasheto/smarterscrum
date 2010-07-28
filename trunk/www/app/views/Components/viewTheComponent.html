@@ -8,9 +8,12 @@ ${component.description}
 		<div name="/sprints/listSprintsInComponent?componentId=${component.id}&type=1">Boards</div>
 <script type="text/javascript">
 function deleteTheComponent(cId, box){
-	$.post('@{Components.delete()}', {id:cId}, function(data){ $.bar({message:data}
-	);
-	removeMe(box);
-	;});
+	if((confirm('Are you sure you want to delete the component?')))
+	{
+		$.post('@{Components.delete()}', {id:cId}, function(data){ $.bar({message:data}
+		);
+		removeMe(box);
+		;});
+	}
 }
 </script>
