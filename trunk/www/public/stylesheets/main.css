@@ -168,9 +168,6 @@ ul.project_links a:hover {
 .ui-widget-header {
 	cursor: move;
 }
-.item_imgs {
-	float: right;
-}
 a, a img, span.revertFrom, span.min{
 	cursor: pointer;
 }

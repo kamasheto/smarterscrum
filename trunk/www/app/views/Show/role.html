@@ -1,6 +1,5 @@
 #{extends 'magicBox.html' /}
 #{set title: role.name /}
 
-#{list items:role.permissions, as:'perm'}
-	<div name="/roles/removePermission?roleId=${role.id}&permId=${perm.id}" class="trash">${perm.description}</div>
-#{/list}
+<div>Role has ${role.users.size()} users</div>
+<div>${role.users}</div>

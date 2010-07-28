@@ -4,7 +4,7 @@ import play.mvc.Before;
 
 public class SmartCRUD extends CRUD {
 	@Before
-	public static void addDefaults() {
-		renderArgs.put("connected", Security.getConnected());
+	public static void beforeCRUDActions() throws Throwable {
+		SmartController.beforeActions();
 	}
 }
