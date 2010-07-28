@@ -1,4 +1,41 @@
-﻿
+﻿		var getNotifications = function() {
+				$.getJSON('/notificationtasks/getlatestnews',
+					function(data) {
+						$(data).each(function(){
+							$.gritter.add({
+								title: this.madeBySysAdmin? '[SysAdmin] '+this.header : this.header,
+								text: this.body,
+								image: this.importance > 0 ? '/public/images/tick.png' : this.importance < 0 ? '/public/images/cross.png' : '/public/images/error.png',
+								sticky: false,
+								time: ''
+							});
+							return true;
+						});
+					setTimeout('getNotifications();', 1000);
+					});
+				}
+var ping = function() {
+				$.getJSON('/sessions/ping',
+					function(data) {
+						str = '';
+						$(data).each(function() {
+							// users?
+							if (this.isAdmin) {
+								this.name = '<span class="isAdmin">' + this.name + '</span>';
+							}
+							str += '<a href="/show/user?id='+this.id+'">' + this.name + '</a>, ';
+						});
+						
+						$('#onlineUsers').html(str.substring(0,str.length-2));
+						setTimeout('ping()', 1000*30);
+					});
+				}
+
+			 $.extend($.gritter.options, { 
+				fade_in_speed: 50, // how fast notifications fade in (string or int)
+				fade_out_speed: 300, // how fast the notices fade out
+				time: 5000 // hang on the screen for...
+			});
 function delete_meeting(id, pId)
 {
 	var confirmation= confirm("Are you sure you want to delete this meeting ?");
@@ -263,20 +300,17 @@ function removeMe(me)
 
 
 function loadBox(url, el) {
-
+	
 //	if($.inArray(url,myDivs)==-1){
 	$('#' + el).append('<div style="position:absolute;z-index:0"id="myTemp"></div>');
-
+	
 	$('#' + el + ' #myTemp').load(url, function() {
 		$('#' + el + ' #myTemp').children().attr('name',url);
 		$('#' + el + ' #myTemp').children().css('position','absolute!important');
 
 		$('#' + el + ' #myTemp').children().css('z-index','4');
-	//	alert($('#' + el + ' #myTemp').html());
-	//alert($('#' + el + ' #myTemp').attr('id'));
 		$('#' + el + ' #myTemp').replaceWith($('#' + el + ' #myTemp').html());
 		myDivs.push(url);
-	
 	});
 	//}
 }
