@@ -192,7 +192,8 @@ public class Projects extends SmartCRUD {
 		// forbidden();
 		// }
 	}
-/**
+	
+	/**
 	 * This action method adds a task status to the list of task statuses in
 	 * project specified by the parameter id.
 	 * 
@@ -279,7 +280,6 @@ public class Projects extends SmartCRUD {
 	 * @issue 236
 	 * @sprint 2, 4
 	 */
-	@Check( "canEditProject" )
 	public static void removeTaskStatus( long statusID )
 	{
 		TaskStatus taskStatus = TaskStatus.findById(statusID);
@@ -298,6 +298,59 @@ public class Projects extends SmartCRUD {
 		Notifications.notifyUsers(taskStatus.project, header, body, "deleteTaskStatus", new Byte((byte) -1));
 		renderJSON(true);
 	}
+	
+	/**
+	 * task status checks method that will be used to check for the task status
+	 * before adding a new meeting type in the list of task status
+	 * 
+	 * @author Amr Hany
+	 * @param id
+	 * @param status
+	 */
+	public static void taskStatusCheck(long id, String status) {
+		Project p = Project.findById(id);
+		boolean statusExists = false;
+		for (TaskStatus taskStatus : p.taskStatuses) {
+			if (taskStatus.deleted == false) {
+				if (taskStatus.name.equalsIgnoreCase(status)) {
+					statusExists = true;
+					break;
+				}
+			}
+		}
+		renderJSON(statusExists);
+	}
+	
+	/**
+	 * This method checks that the task status name isn't used before in the list of task status 
+	 * in a specific project before editing.
+	 * 
+	 * @author Heba Elsherif
+	 * @parm statusID 
+	 *             the id of the selected Task Status.
+	 * @param id
+	 *         project id
+	 * @param status
+	 *           task status name
+	 * @return void
+	 * @issue 224
+	 * @sprint 4
+	 */
+	public static void newTaskStatusCheck(long statusID, long id, String status) {
+		Project p = Project.findById(id);
+		TaskStatus t = TaskStatus.findById(statusID);
+		boolean statusExists = false;
+		for (TaskStatus taskStatus : p.taskStatuses) {
+			if (taskStatus.deleted == false) {
+				if (taskStatus.name.equalsIgnoreCase(status) && !(t.name.equalsIgnoreCase(status))) {
+					statusExists = true;
+					break;
+				}
+			}
+		}
+		renderJSON(statusExists);
+	}
+	
 	/**
 	 * This action method adds a task type to the array list of task types in
 	 * project specified by the parameter id.
@@ -673,28 +726,6 @@ public class Projects extends SmartCRUD {
 		for (TaskType taskType : p.taskTypes) {
 			if (taskType.deleted == false) {
 				if (taskType.name.equalsIgnoreCase(type)) {
-					typeExists = true;
-					break;
-				}
-			}
-		}
-		renderJSON(typeExists);
-	}
-
-	/**
-	 * task status checks method that will be used to check for the task status
-	 * before adding a new meeting type in the list of task status
-	 * 
-	 * @author Amr Hany
-	 * @param id
-	 * @param status
-	 */
-	public static void taskStatusCheck(long id, String status) {
-		Project p = Project.findById(id);
-		boolean typeExists = false;
-		for (TaskStatus taskStatus : p.taskStatuses) {
-			if (taskStatus.deleted == false) {
-				if (taskStatus.name.equalsIgnoreCase(status)) {
 					typeExists = true;
 					break;
 				}

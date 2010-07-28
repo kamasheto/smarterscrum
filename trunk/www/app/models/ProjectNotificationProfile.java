@@ -33,6 +33,9 @@ public class ProjectNotificationProfile extends SmartModel {
 	public boolean RequestToBeReviewer;
 	public boolean AcceptToBeReviewerRequest;
 	public boolean RejectToBeReviewerRequest;
+	public boolean addTaskStatus;
+	public boolean editTaskStatus;
+	public boolean deleteTaskStatus;
 
 	/**
 	 * the constructor that's responsible for adding this profile to the DB
