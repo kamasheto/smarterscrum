@@ -1,4 +1,20 @@
 
+function removePermission(role_id, perm_id, that) {
+	$.post('/roles/removePermission', {
+		roleId: role_id,
+		permId: perm_id
+	}, function() {
+		removeMe($(that))
+	})
+}
+
+function delete_role(role_id, that) {
+	if (confirm("Are you sure you want to delete this role")) {
+		$.post('/roles/delete?id=' + role_id, function() {
+			removeMe(that)
+		})
+	}
+}
 function setBaseRole(role) {
 	$('p').removeClass('baseRole')
 	$('.delete_img').show();

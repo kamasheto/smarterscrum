@@ -158,18 +158,18 @@ public class Roles extends SmartCRUD {
 		JPASupport object = type.findById(id);
 		Security.check(((Role) object).project, "deleteRole");
 		if (((Role) object).baseRole) {
-			flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
-			redirect("/show/roles?id=" + ((Role) object).project.id);
+			// flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
+			// redirect("/show/roles?id=" + ((Role) object).project.id);
 		} else {
 			try {
 				object.delete();
 			} catch (Exception e) {
-				flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
-				redirect(request.controller + ".show", object.getEntityId());
+				// flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
+				// redirect(request.controller + ".show", object.getEntityId());
 			}
-			flash.success(Messages.get("crud.deleted", type.modelName, object.getEntityId()));
-			Project project = ((Role) object).project;
-			redirect(project == null ? "/roles/defaultroles" : "/show/roles?id=" + ((Role) object).project.id);
+			// flash.success(Messages.get("crud.deleted", type.modelName, object.getEntityId()));
+			// Project project = ((Role) object).project;
+			// redirect(project == null ? "/roles/defaultroles" : "/show/roles?id=" + ((Role) object).project.id);
 		}
 	}
 

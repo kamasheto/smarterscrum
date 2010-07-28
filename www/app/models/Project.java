@@ -541,12 +541,12 @@ public class Project extends SmartModel
 		
 		if(!isScrum){
 			//Default creations in case not a scrum project
-			Story defaultStory = new Story("default","default", "default", 1, "default", Security.getConnected().id);
-			Component defaultComponent = new Component();
+			Story defaultStory = new Story("default","default", "default", 1, "default", Security.getConnected().id).save();
+			Component defaultComponent = new Component().save();
 			defaultStory.componentID = defaultComponent;
 			defaultComponent.name = "default component";
 			defaultComponent.project = this;
-			Sprint defaultSprint = new Sprint();
+			Sprint defaultSprint = new Sprint().save();
 			defaultSprint.project = this;
 			defaultStory.save();
 			defaultComponent.save();
@@ -720,5 +720,13 @@ public class Project extends SmartModel
 		List<Request> requests = Request.find("byIsDeletionAndProject", false, this).fetch();
 		List<Request> drequests = Request.find("byIsDeletionAndProject", true, this).fetch();
 		return requests.size()+drequests.size();
+	}
+	
+	/**
+	 * This method returns the activity of this project on a scale of 1-10, 1 being least active and 10 being most active
+	 * @author mahmoudsakr
+	 */
+	public int activity() {
+		return 1;
 	}
 }
