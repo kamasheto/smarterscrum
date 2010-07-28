@@ -186,7 +186,6 @@ public class Tasks extends SmartCRUD {
 		object.save();
 		tmp = (Task) object;
 		tmp.init();
-		Calendar cal = new GregorianCalendar();
 		Logs.addLog(tmp.reporter, "Create", "Task", tmp.id, tmp.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 		String header = "A new Task has been added to Story: 'S" + tmp.taskStory.id + "\'" + ".";
 		String body = "In Project: " + "\'" + tmp.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + tmp.taskStory.componentID.name + "\'" + "." + '\n' + " Task: 'T" + tmp.id + "\'" + "." + '\n' + " Added by: " + "\'" + tmp.reporter.name + "\'" + ".";
@@ -212,7 +211,7 @@ public class Tasks extends SmartCRUD {
 		// tmp.init();
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			redirect("/storys/liststoriesinproject?projectId=" + tmp.taskStory.componentID.project.id + "&storyId=" + tmp.taskStory.id);
+			Application.overlayKiller();
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			redirect(request.controller + ".blank");
@@ -454,7 +453,7 @@ public class Tasks extends SmartCRUD {
 		if (params.get("_save") != null)
 
 		{
-			redirect("/storys/liststoriesinproject?projectId=" + tmp.taskStory.componentID.project.id + "&storyId=" + tmp.taskStory.id);
+			Application.overlayKiller();
 
 		}
 		redirect(request.controller + ".show", object.getEntityId());
@@ -472,7 +471,6 @@ public class Tasks extends SmartCRUD {
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
 		Task tmp = (Task) object;
-		System.out.println("here");
 		Security.check(Security.getConnected().in(tmp.taskStory.componentID.project).can("modifyTask"));
 		try {
 			tmp.deleted = true;
@@ -483,7 +481,7 @@ public class Tasks extends SmartCRUD {
 			object.save();
 			String text="The Task was deleted successfully";
 			System.out.println("here");
-			
+			renderText(text);
 		} catch (Exception e) {
 			flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
 			renderText("Task can't be deleted");
@@ -639,39 +637,10 @@ public class Tasks extends SmartCRUD {
 		render(myProject, canSee, minDate, temp, lastModified, empty, efforts, changes, numberOfModifications, theTask, maxDate);
 	}
 
-	// A method that updates the Task's Status.
-	public static void updateTaskStatus(long Task_id, int Status) {
-		Task T = Task.findById(Task_id);
-		Security.check(Security.getConnected().in(T.taskStory.componentID.project).can("modifyTask"));
-		T.status = Status;
-		T.save();
-	}
+	
+	
 
-	/**
-	 * This method direct to the CRUD admin page to create a new Task Story 35
-	 * Component 3
-	 * 
-	 * @author Monayri
-	 * @param void
-	 * @return void
-	 */
-	public static void AddTaskAPI() {
-		redirect("/admin/tasks/new");
-	}
-
-	//
-	// /**
-	// * This method divert to the CRUD admin page to edit a given Task Story 36
-	// * Component 3
-	// *
-	// * @author Monayri
-	// * @param void
-	// * @return void
-	// */
-	// public static void EditTaskAPI(long TaskID) {
-	// // redirect( "/admin/tasks/" + TaskID );
-	// }
-
+	
 	/**
 	 * changes the given task description
 	 * 

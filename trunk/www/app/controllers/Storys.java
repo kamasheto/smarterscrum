@@ -292,12 +292,12 @@ public class Storys extends SmartCRUD {
 		Notifications.notifyUsers(storyObj.componentID.getUsers(), header, body, (byte) 1);
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			listStoriesInProject(project.id, 0);
+			Application.overlayKiller();
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			redirect(request.controller + ".blank");
 		}
-		redirect(request.controller + ".show", object.getEntityId());
+		Application.overlayKiller();
 	}
 
 	/**
@@ -376,7 +376,7 @@ public class Storys extends SmartCRUD {
 		if (params.get("_save") != null) {
 			listStoriesInProject(project.id, 0);
 		}
-		redirect(request.controller + ".show", object.getEntityId());
+		Application.overlayKiller();
 	}
 
 	/**
@@ -868,18 +868,31 @@ public class Storys extends SmartCRUD {
 				title="C"+component.number+": Tasks";
 				List<Task> task = new ArrayList<Task>();
 				for(Story story : component.componentStories){
-					task.addAll(story.storiesTask);
+					for(Task task2: story.storiesTask){
+						if(!task2.deleted){
+							task.add(task2);
+						}
+					}
 				}
 				render(task, title);
 			}else{
 				title="C"+component.number+": Stories";
-				List<Story> stories = component.componentStories;
+				List<Story> stories = new ArrayList<Story>();
+				for(Story story: component.componentStories){
+					if(!story.deleted){
+						stories.add(story);
+					}
+				}
 				render(stories, title);
 			}
 		} else {
 			if(taskId!=0){
 				Task task1 = Task.findById(taskId);
 				title ="S"+task1.taskStory.number+ " Task"+task1.number;
+				if(task1.deleted){
+					task1=null;
+					title="The task has been deleted";
+				}
 				render(task1, title);
 			}else{
 				if(reviewer==1){
@@ -896,7 +909,7 @@ public class Storys extends SmartCRUD {
 					if(component!=null){
 						for(Story story : component.componentStories){
 							for(Task task2 : story.storiesTask){
-								if(task2.reviewer.equals(user)){
+								if(task2.reviewer.equals(user)&& !task2.deleted && task2.checkUnderImpl()){
 									task.add(task2);
 								}
 							}
@@ -918,7 +931,7 @@ public class Storys extends SmartCRUD {
 						if(component!=null){
 							for(Story story : component.componentStories){
 								for(Task task2 : story.storiesTask){
-									if(task2.assignee.equals(user)){
+									if(task2.assignee.equals(user)&& !task2.deleted && task2.checkUnderImpl()){
 										task.add(task2);
 									}
 								}
@@ -932,7 +945,11 @@ public class Storys extends SmartCRUD {
 							Project project = Project.findById(projectId);
 							List<Story> stories = new ArrayList<Story>();
 							for (Component component : project.components) {
-								stories.addAll(component.componentStories);
+								for(Story story : component.componentStories){
+									if(!story.deleted){
+										stories.add(story);
+									}
+								}
 							}
 							render(stories, title);
 						}else{

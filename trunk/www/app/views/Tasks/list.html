@@ -9,11 +9,11 @@
 	</div>
 
 	<div id="crudListTable">
-		#{crud.table fields:['description', 'taskStory'] }
+		#{crud.table fields:['number', 'taskStory'] }
 				
 				
 				#{crud.custom 'taskStory'}
-					<label>${object.taskStory.description}</label>
+					<label>Story:${object.taskStory.number}</label>
 				#{/crud.custom}
 			#{/crud.table}
 	</div>

@@ -259,7 +259,7 @@ public class Bootstrap extends Job {
 			T2.description = "Documentation";
 			T2.taskStory = S1;
 			T2.taskStatus = S1.componentID.project.taskStatuses.get(0);
-			T2.taskType = S1.componentID.project.taskTypes.get(0);
+			T2.taskType = S1.componentID.project.taskTypes.get(1);
 
 			T2.reporter = users.get(0);
 			T2.assignee = users.get(1);
@@ -276,7 +276,7 @@ public class Bootstrap extends Job {
 			T3.description = "Coding";
 			T3.taskStory = S4;
 			T3.taskStatus = S4.componentID.project.taskStatuses.get(0);
-			T3.taskType = S4.componentID.project.taskTypes.get(0);
+			T3.taskType = S4.componentID.project.taskTypes.get(2);
 
 			T3.reporter = users.get(4);
 			T3.assignee = users.get(5);
@@ -293,7 +293,7 @@ public class Bootstrap extends Job {
 			T4.description = "Scenario testing";
 			T4.taskStory = S4;
 			T4.taskStatus = S4.componentID.project.taskStatuses.get(0);
-			T4.taskType = S4.componentID.project.taskTypes.get(0);
+			T4.taskType = S4.componentID.project.taskTypes.get(3);
 
 			T4.reporter = users.get(4);
 			T4.assignee = users.get(5);
@@ -310,7 +310,7 @@ public class Bootstrap extends Job {
 			T5.description = "Coding";
 			T5.taskStory = S6;
 			T5.taskStatus = S6.componentID.project.taskStatuses.get(0);
-			T5.taskType = S6.componentID.project.taskTypes.get(0);
+			T5.taskType = S6.componentID.project.taskTypes.get(4);
 
 			T5.reporter = users.get(11);
 			T5.assignee = users.get(12);
@@ -344,7 +344,7 @@ public class Bootstrap extends Job {
 			T7.description = "Reviewing";
 			T7.taskStory = S6;
 			T7.taskStatus = S6.componentID.project.taskStatuses.get(0);
-			T7.taskType = S6.componentID.project.taskTypes.get(0);
+			T7.taskType = S6.componentID.project.taskTypes.get(1);
 
 			T7.reporter = users.get(11);
 			T7.assignee = users.get(12);
@@ -352,8 +352,8 @@ public class Bootstrap extends Job {
 			T7.estimationPoints = 1.0;
 			T7.taskSprint = Sp1;
 			Sp1.tasks.add(T7);
-			S7.componentID.project.taskStatuses.get(0).Tasks.add(T7);
-			S7.storiesTask.add(T7);
+			S6.componentID.project.taskStatuses.get(0).Tasks.add(T7);
+			S6.storiesTask.add(T7);
 			T7.init();
 			T7.save();
 
@@ -361,7 +361,7 @@ public class Bootstrap extends Job {
 			T8.description = "Reviewing";
 			T8.taskStory = S6;
 			T8.taskStatus = S6.componentID.project.taskStatuses.get(0);
-			T8.taskType = S6.componentID.project.taskTypes.get(0);
+			T8.taskType = S6.componentID.project.taskTypes.get(2);
 
 			T8.reporter = users.get(11);
 			T8.assignee = users.get(12);
@@ -369,8 +369,8 @@ public class Bootstrap extends Job {
 			T8.estimationPoints = 1.0;
 			T8.taskSprint = Sp1;
 			Sp1.tasks.add(T8);
-			S7.componentID.project.taskStatuses.get(0).Tasks.add(T8);
-			S7.storiesTask.add(T8);
+			S6.componentID.project.taskStatuses.get(0).Tasks.add(T8);
+			S6.storiesTask.add(T8);
 			T8.init();
 			T8.save();
 
@@ -378,7 +378,7 @@ public class Bootstrap extends Job {
 			T9.description = "Reviewing";
 			T9.taskStory = S4;
 			T9.taskStatus = S4.componentID.project.taskStatuses.get(0);
-			T9.taskType = S4.componentID.project.taskTypes.get(0);
+			T9.taskType = S4.componentID.project.taskTypes.get(3);
 
 			T9.reporter = users.get(4);
 			T9.assignee = users.get(5);
@@ -395,7 +395,7 @@ public class Bootstrap extends Job {
 			T10.description = "Reviewing";
 			T10.taskStory = S1;
 			T10.taskStatus = S1.componentID.project.taskStatuses.get(0);
-			T10.taskType = S1.componentID.project.taskTypes.get(0);
+			T10.taskType = S1.componentID.project.taskTypes.get(4);
 			T10.reporter = users.get(0);
 			T10.assignee = users.get(1);
 			T10.reviewer = users.get(2);
@@ -427,7 +427,7 @@ public class Bootstrap extends Job {
 			T12.description = "Reviewing5";
 			T12.taskStory = S8;
 			T12.taskStatus = S8.componentID.project.taskStatuses.get(0);
-			T12.taskType = S8.componentID.project.taskTypes.get(0);
+			T12.taskType = S8.componentID.project.taskTypes.get(1);
 			T12.reporter = users.get(0);
 			T12.assignee = users.get(1);
 			T12.reviewer = users.get(2);
@@ -443,7 +443,7 @@ public class Bootstrap extends Job {
 			T13.description = "Coding";
 			T13.taskStory = S9;
 			T13.taskStatus = S9.componentID.project.taskStatuses.get(0);
-			T13.taskType = S9.componentID.project.taskTypes.get(0);
+			T13.taskType = S9.componentID.project.taskTypes.get(2);
 			T13.reporter = users.get(0);
 			T13.assignee = users.get(1);
 			T13.reviewer = users.get(2);
@@ -459,7 +459,7 @@ public class Bootstrap extends Job {
 			T14.description = "Documentation3";
 			T14.taskStory = S9;
 			T14.taskStatus = S9.componentID.project.taskStatuses.get(0);
-			T14.taskType = S9.componentID.project.taskTypes.get(0);
+			T14.taskType = S9.componentID.project.taskTypes.get(3);
 			T14.reporter = users.get(0);
 			T14.assignee = users.get(1);
 			T14.reviewer = users.get(2);
@@ -475,7 +475,7 @@ public class Bootstrap extends Job {
 			T15.description = "Reviewing2";
 			T15.taskStory = S9;
 			T15.taskStatus = S9.componentID.project.taskStatuses.get(0);
-			T15.taskType = S9.componentID.project.taskTypes.get(0);
+			T15.taskType = S9.componentID.project.taskTypes.get(4);
 			T15.reporter = users.get(0);
 			T15.assignee = users.get(1);
 			T15.reviewer = users.get(2);
@@ -507,7 +507,7 @@ public class Bootstrap extends Job {
 			T17.description = "Reviewing3";
 			T17.taskStory = S9;
 			T17.taskStatus = S9.componentID.project.taskStatuses.get(0);
-			T17.taskType = S9.componentID.project.taskTypes.get(0);
+			T17.taskType = S9.componentID.project.taskTypes.get(1);
 			T17.reporter = users.get(0);
 			T17.assignee = users.get(1);
 			T17.reviewer = users.get(2);
@@ -523,7 +523,7 @@ public class Bootstrap extends Job {
 			T18.description = "Coding ";
 			T18.taskStory = S9;
 			T18.taskStatus = S9.componentID.project.taskStatuses.get(0);
-			T18.taskType = S9.componentID.project.taskTypes.get(0);
+			T18.taskType = S9.componentID.project.taskTypes.get(2);
 			T18.reporter = users.get(0);
 			T18.assignee = users.get(1);
 			T18.reviewer = users.get(2);
@@ -807,8 +807,8 @@ public class Bootstrap extends Job {
 			T35.estimationPoints = 1.0;
 			T35.taskSprint = Sp1;
 			Sp1.tasks.add(T35);
-			S7.componentID.project.taskStatuses.get(0).Tasks.add(T35);
-			S7.storiesTask.add(T35);
+			S6.componentID.project.taskStatuses.get(0).Tasks.add(T35);
+			S6.storiesTask.add(T35);
 			T35.init();
 			T35.save();
 
@@ -824,8 +824,8 @@ public class Bootstrap extends Job {
 			T36.estimationPoints = 1.0;
 			T36.taskSprint = Sp1;
 			Sp1.tasks.add(T36);
-			S7.componentID.project.taskStatuses.get(0).Tasks.add(T36);
-			S7.storiesTask.add(T36);
+			S6.componentID.project.taskStatuses.get(0).Tasks.add(T36);
+			S6.storiesTask.add(T36);
 			T36.init();
 			T36.save();
 
@@ -841,8 +841,8 @@ public class Bootstrap extends Job {
 			T37.estimationPoints = 1.0;
 			T37.taskSprint = Sp1;
 			Sp1.tasks.add(T37);
-			S7.componentID.project.taskStatuses.get(0).Tasks.add(T37);
-			S7.storiesTask.add(T37);
+			S6.componentID.project.taskStatuses.get(0).Tasks.add(T37);
+			S6.storiesTask.add(T37);
 			T37.init();
 			T37.save();
 
@@ -858,8 +858,8 @@ public class Bootstrap extends Job {
 			T38.estimationPoints = 1.0;
 			T38.taskSprint = Sp1;
 			Sp1.tasks.add(T38);
-			S7.componentID.project.taskStatuses.get(0).Tasks.add(T38);
-			S7.storiesTask.add(T38);
+			S6.componentID.project.taskStatuses.get(0).Tasks.add(T38);
+			S6.storiesTask.add(T38);
 			T38.init();
 			T38.save();
 

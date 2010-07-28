@@ -312,7 +312,7 @@ public class Users extends SmartCRUD {
 			List<User> users = new ArrayList<User>();
 			if(all == 1)
 			{
-				users= User.findAll();
+				users= User.find("byDeleted", false).fetch();
 				title = "All Users";
 				render(users, title);
 			}
@@ -321,14 +321,22 @@ public class Users extends SmartCRUD {
 				if(componentId !=0)
 				{
 					Component component = Component.findById(componentId);
-					users = component.componentUsers;
+					for(User user: component.componentUsers){
+						if(!user.deleted){
+							users.add(user);
+						}
+					}
 					title = "C"+ component.number+ ": Users";
 					render(users, title);
 				}
 				else
 				{
 					Project project = Project.findById(projectId);
-					users= project.users;
+					for(User user: project.users){
+						if(!user.deleted){
+							users.add(user);
+						}
+					}
 					title= "Project Users";
 					render(users, title);
 				}
