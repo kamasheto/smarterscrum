@@ -36,6 +36,8 @@ public class Boards extends SmartCRUD {
 	public static void loadboard1(long sprintID, long componentID)
 	{
 		Sprint s = Sprint.findById(sprintID);  //sprint
+		if(s.deleted)
+			notFound();
 		Project p = s.project;                 //project
 		Board b = p.board;					   //project board
 		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>();     //tasks
@@ -45,6 +47,8 @@ public class Boards extends SmartCRUD {
 		else
 		{
 			Component comp = Component.findById(componentID);
+			if(comp.deleted)
+				notFound();
 			columns = comp.componentBoard.columns;  //columns of component board
 		}
 				
@@ -105,6 +109,8 @@ public class Boards extends SmartCRUD {
 		else
 		{
 			Component comp = Component.findById(componentID);    //component
+			if(comp.deleted)
+				notFound();
 			List<User> users = comp.getUsers();                  //usres in component
 			for (int i = 0; i < users.size(); i++) {
 				data.add(null);
@@ -198,6 +204,8 @@ public class Boards extends SmartCRUD {
 			}}
 			else{
 				Component c = Component.findById(cid);
+				if(c.deleted)
+					notFound();
 			for (Meeting m : c.componentMeetings) 
 			{
 				long now = new Date().getTime();
@@ -275,6 +283,8 @@ public class Boards extends SmartCRUD {
 		else
 		{
 			Component c = Component.findById(cid);
+			if(c.deleted)
+				notFound();
 			for (Meeting m : c.componentMeetings) 
 			{
 				flag=false;
@@ -330,6 +340,8 @@ public class Boards extends SmartCRUD {
 	public static void showHiddenColumn(long cid,long uid)
 	{
 		Column c=Column.findById( cid );
+		if(c.deleted)
+			notFound();
 		int count=0;
 		for(int i=0;i<c.board.columns.size();i++)
 		{
@@ -341,6 +353,8 @@ public class Boards extends SmartCRUD {
 		c.save();
 		Calendar cal = new GregorianCalendar();
 		User u = User.findById(uid);
+		if(u.deleted)
+			notFound();
 		Logs.addLog(u, "shown", "Column", cid, c.board.project, cal.getTime());
 		String message = u.name+" "+ "has shown " + c.name;
 		Notifications.notifyUsers(c.board.project, "Show Column",message, "addColumn", (byte) 0);
@@ -360,7 +374,8 @@ public class Boards extends SmartCRUD {
 	public static void hideColumn(long cid,long uid)
 	{
 		Column c=Column.findById( cid );
-		
+		if(c.deleted)
+			notFound();
 		c.onBoard=false;
 		c.sequence=-1;
 		c.save();
@@ -376,6 +391,8 @@ public class Boards extends SmartCRUD {
 		}
 		Calendar cal = new GregorianCalendar();
 		User u = User.findById(uid);
+		if(u.deleted)
+			notFound();
 		Logs.addLog(u, "hided", "Column", c.id, c.board.project, cal.getTime());
 		String message = u.name+" " + "has hided " + c.name;
 		Notifications.notifyUsers(c.board.project, "Hide Column", message, "deleteColumn", (byte) 0);
@@ -394,6 +411,8 @@ public class Boards extends SmartCRUD {
 	public static void sprintBoards(long sprintID)
 	{
 		Sprint s = Sprint.findById(sprintID);
+		if(s.deleted)
+			notFound();
 		Project p = s.project;
 		List <Board> boards = new ArrayList <Board>();
 		for(int i=0;i<p.components.size();i++)

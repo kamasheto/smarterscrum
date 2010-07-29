@@ -13,6 +13,8 @@ function getAddTask(){
 	$('#loading').show();
 	$('#adding_content').load('/admin/tasks/new?id2=${project.components.get(0).id}');
 	$('#loading').hide();
+	$('#Task').hide();
+	$('#Story').hide();	
 }
 
 function getAddStory(){

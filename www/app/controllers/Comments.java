@@ -8,6 +8,8 @@ public class Comments extends SmartController {
 	
 	public static void deleteComment(long id){
 		Comment comment = Comment.findById(id);
+		if(comment.deleted)
+			notFound();
 		if(comment == null)
 			renderText("Comment not found.");
 		else
