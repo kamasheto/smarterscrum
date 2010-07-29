@@ -1,7 +1,7 @@
 <!--  USED FOR LISTING ALL THE BOARDS/CHARTS IN A COMPONENT -->
 
 #{extends 'magicBox.html' /}
-#{set 'title'}C${component.number} #{if type == 1}Boards#{/if}#{elseif type == 2}Charts#{/elseif}#{else}Backlogs#{/else}#{/set}
+#{set 'title'}C${component.number}: #{if type == 1}Boards#{/if}#{elseif type == 2}Charts#{/elseif}#{else}Backlogs#{/else}#{/set}
 	#{if type == 2}
 		<div class="overlay"name="@{ProductBacklogs.showGraph(component.project.id,component.id)}" title="view the overall chart?">Overall Chart</div>
 	#{/if}
