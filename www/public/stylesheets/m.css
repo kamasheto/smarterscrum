@@ -198,6 +198,9 @@ display:inline-block;
 #top_header_projects_pane a {
 	text-decoration:none;
 }
+.draggableChild .ui-widget-header {
+	cursor: pointer;
+}
 /***************************/
 /* END mahmoudsakr's CSS */
 /***************************/
