@@ -252,7 +252,7 @@ $(function() {
 		var url2 = $(this).parent().parent().attr('name')+' .actual';
 		myDivs = $.grep(myDivs, function(value) {
 	
-		    return value != 2url;
+		    return value != url2;
 		});
 		var theId = $(this).parent().parent().attr('id');
 		var theSecondId = theId + "_2";
