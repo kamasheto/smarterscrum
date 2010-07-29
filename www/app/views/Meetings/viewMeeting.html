@@ -1,7 +1,10 @@
 #{extends 'magicBox.html' /}	
 	#{set 'title'}
 	${meeting.name}
-	
+	#{if (meeting.snapshot!=null)}
+	<a href="javascript:overlayOpen('/Snapshots/loadsnapShot?id=${meeting.snapshot.id}');" title="View Associated Snapshot">
+	<img src="@{'/public/images/famfam/camera_go.png'}"></a>
+	#{/if}
 	#{if (connected.in(project).can('editMeeting') ||connceted.equals(meeting.creator)) }
 	<a href="javascript:overlayOpen('/admin/meetings/${meeting.id}');" title="edit">
 	<img src="@{'/public/images/famfam/pencil.png'}"></a>
