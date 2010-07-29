@@ -735,15 +735,23 @@ public class Tasks extends SmartCRUD {
 		m.add(task1.reporter);
 		m.add(task1.reviewer);
 		String body = "";
+		String header = "Task: 'T" + task1.id + "\'" + " Task Type has been edited.";
+		if (userId == Security.getConnected().id) {
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
 
-		if (userId != Security.getConnected().id) {
-			body = "from " + Security.getConnected().name + "'s account";
+		} else {
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 		}
-
-		Notifications.notifyUsers(m, "TASk editing", "task " + id + " description is edited", (byte) 1);
+		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
 		Calendar cal = new GregorianCalendar();
 		Project y = task1.taskStory.componentID.project;
-		Logs.addLog(user1, "EditDesc", "Task", id, y, cal.getTime());
+		if (userId == Security.getConnected().id) {
+			Logs.addLog(user1, "Edit", "Task Description", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
+		}
+		else
+		{
+			Logs.addLog(user1+" has performed action (Edit) using resource (Task Description) in project "+task1.taskStory.componentID.project.name+" from the account of "+Security.getConnected().name );
+		}
 		return true;
 
 	}
@@ -793,8 +801,13 @@ public class Tasks extends SmartCRUD {
 			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
-		Logs.addLog(user1, "Edit", "Task Type", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
-		return true;
+		if (userId == Security.getConnected().id) {
+			Logs.addLog(user1, "Edit", "Task Type", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
+		}
+		else
+		{
+			Logs.addLog(user1+" has performed action (Edit) using resource (Task Type) in project "+task1.taskStory.componentID.project.name+" from the account of "+Security.getConnected().name );
+		}return true;
 	}
 
 	/**
@@ -1006,8 +1019,13 @@ public class Tasks extends SmartCRUD {
 			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
-		Logs.addLog(user1, "Edit", "task status", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
-		return true;
+		if (userId == Security.getConnected().id) {
+			Logs.addLog(user1, "Edit", "Task Status", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
+		}
+		else
+		{
+			Logs.addLog(user1+" has performed action (Edit) using resource (Task Status) in project "+task1.taskStory.componentID.project.name+" from the account of "+Security.getConnected().name );
+		}return true;
 
 	}
 
@@ -1277,8 +1295,13 @@ public class Tasks extends SmartCRUD {
 			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
-		Logs.addLog(user1, "Edit", "Task Assignee", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
-
+		if (userId == Security.getConnected().id) {
+			Logs.addLog(user1, "Edit", "Task Assignee", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
+		}
+		else
+		{
+			Logs.addLog(user1+" has performed action (Edit) using resource (Task Assignee) in project "+task1.taskStory.componentID.project.name+" from the account of "+Security.getConnected().name );
+		}
 		return true;
 	}
 
@@ -1406,8 +1429,13 @@ public class Tasks extends SmartCRUD {
 
 		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
-		Logs.addLog(user1, "Edit", "Task Reviewer", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
-
+		if (userId == Security.getConnected().id) {
+			Logs.addLog(user1, "Edit", "Task Reviewer", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
+		}
+		else
+		{
+			Logs.addLog(user1+" has performed action (Edit) using resource (Task Reviewer) in project "+task1.taskStory.componentID.project.name+" from the account of "+Security.getConnected().name );
+		}
 		return true;
 	}
 
