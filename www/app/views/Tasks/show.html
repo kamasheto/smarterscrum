@@ -182,14 +182,18 @@
 				<label for="object_comment">Comments and Actions</label>
 				<input type="hidden" name="object.comment@id" value="" />
 				<textarea id="object_comment" name="object.comment"></textarea>
+				<div name="comments">
 				<table>
 				#{list items:comments, as:'comment'}
-					<tr>
-						<td><b>${comment.author} (<i><span class="formatTime">${comment.timeOfComment}</span></i>)</b></td>
-						<td>${comment.comment.raw()}</td>
-					</tr>
+					#{ifnot comment.deleted}
+						<tr>
+							<td><b>${comment.author} (<i><span class="formatTime">${comment.timeOfComment}</span></i>)</b></td>
+							<td>${comment.comment.raw()} - <a href="#" onclick="deleteComment(${comment.id}, ${object.id});"><img src="@{'public/images/famfam/delete.png'}"></a></td>
+						</tr>
+					#{/ifnot}
 				#{/list}
 				</table>
+				</div>
 			#{/crud.custom}
 			
 		#{/crud.form }
@@ -233,6 +237,15 @@
 		$('#object_reviewer').html( str );
 	}); 
     
+	}
+
+	function deleteComment(cId,tIdd){
+		$.post('/comments/deleteComment', {id:cId}, function(msg){
+			$.bar({message:msg});
+		});
+		$.post('/comments/listCommentsOfTask', {tId:tIdd}, function(data){
+			$("[name='comments']").html(data);
+		});
 	}
 
 	</script>
