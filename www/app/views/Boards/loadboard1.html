@@ -727,11 +727,11 @@ $('.component').click(function()
 		}
 		}
 		function take_snapshot() {
-		$.post('/snapshots/takesnapshot', {sprintID:${s.id}}, function(){alert('Saved!')});
+		$.post('/snapshots/takesnapshot', {sprintID:${s.id},componentID:0,meetingID:0}, function(){alert('Saved!')});
 	}
 			function take_snap(id) {
 				if(id!=null)
-		$.post('@{snapshots.takecomponentsnapshot()}', {sprintID:${s.id},componentID:id} ,function(){alert('saved!')});	
+		$.post('@{snapshots.takesnapshot()}', {sprintID:${s.id},componentID:id,meetingID:0} ,function(){alert('saved!')});	
 	}
 
 		function extend(id,date) {
@@ -758,10 +758,10 @@ $('.component').click(function()
 		}
 	function take_meetingsnapshot(id) {
 	
-		$.post('/snapshots/takemeetingsnapshot', {sprintID:${s.id},id:id}, function(){alert('Snapshot Associated!')});
+		$.post('/snapshots/takesnapshot', {sprintID:${s.id},componentID:0,meetingID:id}, function(){alert('Snapshot Associated!')});
 	}
 function take_componentmeetingsnapshot(id,cid) {
 	if(cid!=null)
-		$.post('/snapshots/takecomponentmeetingsnapshot', {sprintID:${s.id},componentID:cid,meetingID:id}, function(){alert('Snapshot Associated!')});
+		$.post('/snapshots/takesnapshot', {sprintID:${s.id},componentID:cid,meetingID:id}, function(){alert('Snapshot Associated!')});
 	}
 </script>
