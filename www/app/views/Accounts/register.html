@@ -2,32 +2,33 @@
 <!--Task: C1S24-->
 #{extends 'main.html' /}
 #{set title:'Register New Account' /}
-<div id="register">
-	<h1>Register</h1>
+<div id="login">
+	
 	<!--The Registration form element-->
 	<form name = "register" action = "@{addUser()}" method="post">
+	<h1>Register</h1>
 		<!--Show an error from the controller if any-->
 		<p class="form-field">
 			<label>Username</label>
-			<input type="text" name="name" id="firstname" value="${flash.name}" onblur = "User.name = firstname.value"/> *
+			<input type="text" name="name" id="firstname" value="${flash.name}" onblur = "User.name = firstname.value"/> <span class="red">*</span>
 		</p>
 		<p class="form-field">
 			<label>Email</label>
-			<input type="text" name="email" id="email" value="${flash.email}" onblur = "User.email = email.value"/> *
+			<input type="text" name="email" id="email" value="${flash.email}" onblur = "User.email = email.value"/> <span class="red">*</span>
 		</p>
 		<p class="form-field">
 			<label>Password</label>
-			<input type="password" name="password" id="password" onblur = "User.pass = password.value" /> *
+			<input type="password" name="password" id="password" onblur = "User.pass = password.value" /> <span class="red">*</span>
 		</p>
 		<p class="form-field">
 			<label>Confirm Password</label>
-			<input type="password" name="confirmPass" id="confirmPass"  /> *
+			<input type="password" name="confirmPass" id="confirmPass"  /> <span class="red">*</span>
 		</p>
 		<p id="signin-field">
 			<input type = "submit" value = "Register" /> or <a href="/secure/login">Login</a>
 		</p>
 		<p class="form-field">
-			* Required fields
+			<span class="red">*</span> Required fields
 		</p>
 	</form> 
 </div>
