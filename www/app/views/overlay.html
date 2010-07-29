@@ -31,7 +31,8 @@
 
                
        		$(function(){
-       			$('*').live('click',function(){
+       			
+       			$('*').live('mouseover',function(){
 
            			var o = window.parent.document.getElementsByTagName('iframe');
            			for(i=0;i<o.length;i++){
@@ -61,7 +62,14 @@
 #{get 'onLoad2' /}
    			    	
    		       		});
-        </script>
+	       		function lo()
+	       		{var o = window.parent.document.getElementsByTagName('iframe');
+       			for(i=0;i<o.length;i++){
+       				if (/\bautoHeight\b/.test(o[i].className)){
+       					setHeight(o[i]);
+       					addEvent(o[i],'load', doIframe);
+       				}}
+	       		}        </script>
 
 <style type="text/css">
 thead {
@@ -78,7 +86,7 @@ body,html {
 overflow:auto;}
 </style>
 </head>
-<body onload="$('#theLoadedContent').show();#{get 'onLoad'/};   $('#overlayClose',parent.document.body).show() ">
+<body onunload="lo();" onload="lo();$('#theLoadedContent').show();#{get 'onLoad'/};   $('#overlayClose',parent.document.body).show(); ">
 
 <div id="theLoadedContent">
 #{doLayout /}
