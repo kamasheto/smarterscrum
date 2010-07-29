@@ -3,11 +3,24 @@
 	${attendance.user.name}
 	#{/set}
 	<br>
-	<b>Attendance to ${attendance.meeting.name} Status : </b> 
-	<br>
-	${status}
-	#{if attendance.status.equals("declined")}
+	<b>Attendance to ${attendance.meeting.name} Status : </b> <br>
+	<span id="attendance_of_user_${attendance.id}">${status}</span>
+	<span id="reason_span_${attendance.id}" style="display:#{if (attendance.status.equals("declined"))} block #{/if} #{else} none #{/else}">
 	<br>
 	<b>Reason : </b> 
-	<br>${attendance.reason}
+	<br>
+	<span id="reason_of_user_${attendance.id}">${attendance.reason}</span>
+	</span>
+	
+	
+	#{if attendance.meeting.endTime < new Date().getTime()}
+	#{if ( connected.in(attendance.meeting.project).can('setMeetingAttendance') || connected.equals(attendance.meeting.creator) )}
+	<br>
+	<b> Change ${attendance.user.name} attendance status</b> :<br>
+	&nbsp&nbsp<a onclick="set_attended(${attendance.id})" title="attended"><img src="@{'/public/images/famfam/application_add.png'}"></img></a>
+	&nbsp&nbsp
+	<a onclick="set_didnot_attend(${attendance.id})" title="did not attend"><img src="@{'/public/images/famfam/application_delete.png'}"></img></a>
+	
+	
 	#{/if}
+	#{/if} 
