@@ -12,7 +12,7 @@ public class Comments extends SmartController {
 			renderText("Comment not found.");
 		else
 		{
-			comment.delete();
+			comment.deleteComment();
 			renderText("Comment deleted successfully.");
 		}
 	}
