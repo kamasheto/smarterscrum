@@ -270,6 +270,7 @@ public class Storys extends SmartCRUD {
 		storyObj.description = "As a " + storyObj.productRole.name + ", I can " + storyObj.description;
 		toBeSaved.addedBy = Security.getConnected();
 		object.save();
+		toBeSaved.init();
 		Logs.addLog(toBeSaved.addedBy, "Create", "Story", storyObj.id, project, new Date(System.currentTimeMillis()));
 		String header = "A new Story has been added.";
 		String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' + " In Component: " + "\'" + storyObj.componentID.name + "\'" + "." + '\n' + " Story: 'S" + storyObj.id + "\'" + "." + '\n' + " Added by: " + "\'" + toBeSaved.addedBy.name + "\'" + ".";

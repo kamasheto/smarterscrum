@@ -9,26 +9,36 @@
 #{/ifnot}
 	${story.description}<br>
 	<b>Success Scenarios</b><br>
+	
 	#{list items:success, as:'suc'}
+		#{if suc!=null}
 		%{ 
 		int s=0;
+		
 		if (suc.trim().length() == 0)
 		{
 			s++;
 		}
+		
 		else
 		{
 			out.print(suc+"<br>");
 		}	
+		
 		if(s == success.length)
 		{
 			out.print("No success scenarios are defined for this story.<br>");
 		}
 	}%
+	#{/if}
 	#{/list}
+	
 	<br><b>Failure Scenarios</b><br>
+	#{if fail!=null}
 	#{list items:failure, as:'fail'}
+	
 	%{ int i=0;
+	
 		if (fail.trim().length() == 0)
 		{
 			i++;
@@ -37,12 +47,14 @@
 		{
 			out.print(fail+"<br>");
 		}	
+		
 		if(i == failure.length)
 		{
 			out.print("No failure scenarios are defined for this story.<br>");
 		}
 	}%
-	#{/list}<br>
+	#{/list}
+	#{/if}<br>
 	#{list items:story.storiesTask, as:'task'}
 		<div name="/storys/magicShow?taskId=${task.id}">S${story.number} ${task.description}<div class="item_imgs">#{if connected.in(project).can('modifyTask')}#{if !task.checkUnderImpl()}<a onclick="javascript:overlayOpen('/admin/tasks/${task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div><div  class="right" title="Type: ${task.taskType.name}" style="background:${task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; position:relative;" ></div></div>
 	#{/list}
