@@ -797,6 +797,7 @@ public class Meetings extends SmartCRUD
 				attendance.status = "confirmed";
 				attendance.save();
 			}
+			flash.success("You have succesfully joined meeting "+m.name);
 		}
 	}
 	
