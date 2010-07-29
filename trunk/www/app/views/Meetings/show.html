@@ -1,288 +1,160 @@
-#{extends 'main.html' /}
+#{extends 'overlay.html' /}
 
 
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${object.project.id}">${meeting.project.name}</a></li>
-<li><a href="/projects/${object.project.id}/meetings"> Meetings and Events</a> </li>
-
-
-#{/set}
-
-<br>
-
+   
   <script type="text/javascript"> 
 $(function() {
+
 	$('#object_startTime').datepicker({  
 		changeMonth: true,
 		changeYear: true,
 	    showTime: true,
 		dateFormat: '@'
-	 });
-	$('#object_endTime').datepicker({  
-		changeMonth: true,
-		changeYear: true,
-	    showTime: true,
-		dateFormat: '@'
-	 });
 	 
-</script>
-	
- <script type="text/javascript"> 
-$(function() {
-	$('#object_startTime').datepicker({  
-		changeMonth: true,
-		changeYear: true,
-	    showTime: true,
-		dateFormat: '@'
 	 });
 	$('#object_endTime').datepicker({  
 		changeMonth: true,
 		changeYear: true,
 	    showTime: true,
 		dateFormat: '@'
+		
 	 });
 });
 
-function showLoader(id,select){
-var element=document.getElementById(id);
-var loader=document.getElementById(select);
-element.disabled=true;
-
-loader.style.visibility="visible";
-}
-
-function hideLoader(id,select){
-var element=document.getElementById(id);
-var loader=document.getElementById(select);
-
-element.disabled=false;
-
-loader.style.visibility="hidden";
-
-
-}
-function notifyUsers(){
-var n=&{object.id};
-$.post('@{notifyUsersWithModifications()}',{id:n},function (flag){
-if (flag){
-alert("Users Have Successfully Been Notified With Changes.");
-}
-else{
-alert("There are no Attending Users to Be Notified");
-}
-
-},'json')
-}
-function saveChanges(){
-document.getElementById('done').style.visibility="hidden";
-showLoader('save','loaderSV');
-var n=&{object.id};
-var nm=$('#object_name').val();
-var desc=$('#object_description').val();
-var st=$('#object_startTime').val();
-var et=$('#object_endTime').val();
-var lc=$('#object_location').val();
-var sprintId=$('#object_sprint').val();
-
-
-if(!nm || !desc || !lc){
-alert("Please Enter All Required Fields !");
-hideLoader('save','loaderSV');
-return;
-}
-
-$.post('@{saveChanges()}',{id:n,name:nm,description:desc,startTime:st,endTime:et,location:lc,sprintId:sprintId}
-,function (timeFlag){
-if(timeFlag){
-document.getElementById('done').style.visibility="visible";
-document.getElementById('done').style.color="red";
-var conf=confirm("Do you want to Notify Attending users with Modifications?");
-
-if(conf){
-notifyUsers();
-}
-
-}
-else{
-alert("Please Enter A Valid Start And End Time");
-}
-hideLoader('save','loaderSV');
-},'json')
-
-}
-
-function startTimeShow(){
-var st=$('#object_startTime').val();
-
-
-
-}
-	</script> 
+function showStuff(id) {
+	if(document.getElementById(id).style.display == 'block'){
+		document.getElementById(id).style.display = 'none';
+		var o=document.getElementById('object_sprint');
+		o.value='none';
+				}
+	else{
+		document.getElementById(id).style.display = 'block';
+	}
+	}
+	function showtypes(){
+		
+		if(document.getElementById('object_sprint').value!='none'){
+			document.getElementById('types').style.display='block';
+			}
+		else{
+			document.getElementById('types').style.display='none';
+			}
+		}
+	</script>
    
+
 <div id="crudShow" class="${type.name}">
 	
-	<h2 id="crudShowTitle">Edit "&{object.name}" Meeting.</h2>
-	<label id="done" style="visibility:hidden"><b><big>Changes Have Been Successfully Committed.</big></b></label>
-	<br><br>
+	<h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
+	
 	<div class="objectForm">
 	#{form action:@save(object.id), enctype:'multipart/form-data'}
-
-		#{crud.form}
+		
+		#{crud.form fields:['name','description','location','startTime','endTime','sprint','type']}
 		
 		    #{crud.custom 'name'}
-<div class="crudField">  
+ 
 	<label for="object_name"> Name</label> <br>
-	<input id="object_name" class="" type="text" name="object.name" value="&{object.name}" size="50" /> 
+	<input id="object_name" class="" type="text" name="object.name" value="" size="50" /> 
 	<span class="crudHelp" style="color:red">*</span>
-</div> 
+ 
            #{/crud.custom}
 		    
 		    
 		    #{crud.custom 'description'}
-<div class="crudField"> 
+ 
  	<br><label for="object_description"> Description </label> <br></br>
-	<TextArea id="object_description" class="" type="text" name="object.description" rows ="5" value="" cols="52" />&{object.description}</TextArea>	
+	<TextArea id="object_description" class="" type="text" name="object.description" rows ="5" value="" cols="52" /> </TextArea>	
     <span class="crudHelp" style="color:red"> *</span> 	
-</div> 
+ 
 		    #{/crud.custom}
 		    
 				    
 		    
 		    #{crud.custom 'location'}
-<div class="crudField"> 
+
 	<br><label for="object_location"> Location</label> <br> </br>
-	<input id="object_location" class="" type="text" name="object.location" value="&{object.location}" size="50" /> 
+	<input id="object_location" class="" type="text" name="object.location" value="" size="50" /> 
     <span class="crudHelp" style="color:red"> *</span> <br></br>
-</div> 	    
+	    
 		    #{/crud.custom}
 		    
 		    
 	       #{crud.custom 'startTime'}	    
-<div class="crudField"> 
-	<br><label for="object_startTime"> Starts at <span id="stLbl" style="color:red" class="formatTime">${object.startTime}</span> </label><br> 
-	<input id="object_startTime" class="formatTime" type="text" name="object.startTime" value="&{object.startTime}" onchange="startTimeShow()" size="50" /> 
+ 
+	<br><label for="object_startTime"> Start time  </label><br> 
+	<input id="object_startTime" class="" type="text" name="object.startTime" value="" size="50" /> 
     
     <span class="crudHelp" style="color:red">  * </span> 	
- </div>
+ 
            #{/crud.custom}
 		
 		   
 		   #{crud.custom "endTime"}	
 		  
- <div class="crudField"> 	
+ 	
 
-	<br><label for="object_endTime"> End Time <span id="etLbl" style="color:red" class="formatTime">${object.endTime}</span> </label> <br>
-	<input id="object_endTime" class="" type="text" name="object.endTime" value="&{object.endTime}" size="50" /> 
+	<br><label for="object_endTime"> End Time </label> <br>
+	<input id="object_endTime" class="" type="text" name="object.endTime" value="" size="50" /> 
 	
 	<span class="crudHelp" style="color:red">*</span>
-</div> 		 
-
-<div class="crudField"> 
- 
-	
-	
-		
-        
-		
-		
-		
-		   
+ 		   
 		   #{/crud.custom}
 		   
 		
-			#{crud.custom 'project'}			
-	
-			#{/crud.custom}
 			
-		
-			#{crud.custom 'sprint'}
-			<script type="text/javascript">
-			function showStuff(id) {
-				if(document.getElementById(id).style.display == 'block'){
-					document.getElementById(id).style.display = 'none';
-					var o=document.getElementById('object_sprint');
-					o.value='none';
-							}
-				else{
-					document.getElementById(id).style.display = 'block';
-				}
-				}
-			</script>
-			<div class="crudField">  
-			<label for="object_sprint">sprint</label>
-			<input type="checkbox" onclick="showStuff('span');">
+			
+		#{crud.custom 'sprint'}
+		#{if sprints.size()!=0 }
+		#{if connected.in(currentProject).can('AssociateSprinttoMeeting') }
+		 
+			<label for="object_sprint">Associate to Sprint</label>
+			<input type="checkbox" onclick="showStuff('span'); showtypes();">
 			<span id="span" style="display: none;">
-			<select id="object_sprint" name="object.sprintid" >
-			<option value="none">None</option>
+			<select id="object_sprint" name="object.sprintid" onchange="showtypes()" >
+			<option  value="none">None</option>
 			#{list items:sprints, as:'sprint'}
-				<option value="${sprint.id}">Sprint ${sprint.sprintNumber}</option>
+				<option   value="${sprint.id}">Sprint ${sprint.sprintNumber}</option>
 					#{/list}
 					</select>
 					</span>
     <span class="crudHelp"></span>
-</div>
-	        #{/crud.custom}	
+
+#{/if}#{/if}
+		#{/crud.custom}
 	        
-	        #{crud.custom 'creator'}
 	        
-	       
-	        #{/crud.custom}
 	         
 
              
 		    #{crud.custom 'type'}
+ 
+   <span id="types" style="display:none;">
+			<label for="object_type">Type of Meeting</label>
+					<select id="object_type" name="object.type">
+					#{list items:types, as:'meetingtype'}
+					<option  value="${meetingtype}">${meetingtype}</option>
+					#{/list}
+					</select>
+					</span>
             #{/crud.custom}
-	        
-	        #{crud.custom 'snapshot'}
-            #{/crud.custom}   	
-	
-			#{crud.custom 'artifacts'}
-			#{/crud.custom}
-			
-			#{crud.custom 'tasks'}
-			#{/crud.custom}
-			
-			#{crud.custom 'components'}
-			#{/crud.custom}
-			
-			#{crud.custom 'users'}
-			#{/crud.custom}
-			
-			#{crud.custom 'deleted'}
-			#{/crud.custom}
-			
-			#{crud.custom 'isReviewLog'}
-			#{/crud.custom}
-			
-			#{crud.custom 'status'}
-			#{/crud.custom}
+	 			
 			#{/crud.form }
-		
-		
+			
 		 <br> <br> </br> 
 		
 		 
 		
+		 <p style="color:red" size=""> <small> * Required Fields. </small> </p> 
 		
+		<br> <br>
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		<p>
-	
-		<input id="save"type="button" name="add" value="Save" onclick="saveChanges()" />
-		<img id="loaderSV"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
+		<p class="crudButtons">
+			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
+
 		</p>
-	
 	#{/form}
-	
 	</div>
-	
-	
+
 </div>
+ 
