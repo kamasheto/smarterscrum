@@ -39,7 +39,7 @@
            					setHeight(o[i]);
            					addEvent(o[i],'load', doIframe);
            				}
-           			}	$('button').live('click',function(){
+           			}});	$('button').live('click',function(){
 
                			var o = window.parent.document.getElementsByTagName('iframe');
                			for(i=0;i<o.length;i++){
@@ -47,7 +47,7 @@
                					setHeight(o[i]);
                					addEvent(o[i],'load', doIframe);
                				}
-               			}
+               			}});
                			$('input[type=button]').live('click',function(){
 
                    			var o = window.parent.document.getElementsByTagName('iframe');
@@ -55,7 +55,7 @@
                    				if (/\bautoHeight\b/.test(o[i].className)){
                    					setHeight(o[i]);
                    					addEvent(o[i],'load', doIframe);
-                   				}
+                   				}});
                    			}$('input[type=submit]').live('click',function(){
 
                        			var o = window.parent.document.getElementsByTagName('iframe');
@@ -64,7 +64,7 @@
                        					setHeight(o[i]);
                        					addEvent(o[i],'load', doIframe);
                        				}
-                       			}
+                       			}});
 
 
                		});
