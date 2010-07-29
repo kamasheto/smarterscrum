@@ -148,3 +148,8 @@ display:inline
 	color:#777;
 	font-size:30px;
 }
+.item_imgs
+{
+float:right;
+display:inline-block;
+}
