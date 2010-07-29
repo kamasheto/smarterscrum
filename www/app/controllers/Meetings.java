@@ -808,7 +808,6 @@ public class Meetings extends SmartCRUD
 		List<MeetingAttendance> confirmed= new ArrayList<MeetingAttendance>();
 		List<MeetingAttendance> declined=new ArrayList<MeetingAttendance>();
 		List<MeetingAttendance> waiting= new ArrayList<MeetingAttendance>();
-		System.out.println(attendance.size());
 		while (attendance.isEmpty() == false)
 		{
 			MeetingAttendance ma= attendance.remove(0);
@@ -844,7 +843,7 @@ public class Meetings extends SmartCRUD
 		MeetingAttendance attendance= MeetingAttendance.findById(id);
 		boolean past= (attendance.meeting.endTime<new Date().getTime());
 		String status="";
-		if(past)
+		if(!past)
 		{
 			if(attendance.status.equals("waiting"))
 			{

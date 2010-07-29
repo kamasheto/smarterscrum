@@ -3,6 +3,9 @@
 	${meeting.name} Attendees.
 	#{/set}
 	
+	#{if (confirmed.isEmpty()&&waiting.isEmpty()&&declined.isEmpty()) }
+	#{note} No Attendees #{/note}
+	#{/if}
 	
 	#{list items:confirmed, as:'attendance'}
 	<div name="/Meetings/viewAttendeeStatus?id=${attendance.id}">${attendance.user.name}</div>
