@@ -114,3 +114,37 @@ img {
 .baseRole .tick_img, .baseRole .delete_img{
 	display: none;
 }
+#normal
+{
+height:100%;
+}
+#login form
+{
+-moz-border-radius:11px 11px 11px 11px;
+-moz-box-shadow:0 4px 18px #C8C8C8;
+background:none repeat scroll 0 0 #FFFFFF;
+border:1px solid #E5E5E5;
+font-weight:normal;
+margin:20px auto 0;
+overflow:auto;
+padding:16px;
+width:300px;
+}
+#signin-field
+{
+float:right
+}
+#remember-field
+{
+float:left
+}
+#remember-field label
+{
+display:inline
+}
+#login h1
+{
+	background:transparent;
+	color:#777;
+	font-size:30px;
+}

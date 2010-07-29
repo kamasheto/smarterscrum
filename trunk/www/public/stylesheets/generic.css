@@ -19,17 +19,17 @@ button,a button,input[type=submit],input[type=ok],input[type=send],input[type=bu
 	font-size: 1.1em;
 	font-family: verdana;
 }
-.ui-widget-header img
-{
-float:right;
-}
-#myWorkspaces,.workspaceContainer
-{
-width:100%;
-height:100%;
-position:fixed;
 
+.ui-widget-header img {
+	float: right;
 }
+
+#myWorkspaces,.workspaceContainer {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+}
+
 .nav a {
 	padding: 5px;
 }
@@ -47,9 +47,10 @@ position:fixed;
 	border-bottom: 2px solid #222222 !important;
 	font-size: 12px;
 	text-align: center;
-	
-	} body ,html { background : #333
-	url('img/workspace.png') repeat top left;
+}
+
+body,html {
+	background: #333 url('img/workspace.png') repeat top left;
 	font-family: Verdana;
 	font-size: 10px;
 	margin: 0px;
@@ -116,7 +117,7 @@ img {
 	display: inline-block;
 }
 
-.topper a,.topper{
+.topper a,.topper {
 	color: #eee;
 	text-decoration: none;
 }
@@ -177,23 +178,24 @@ img {
 }
 
 .aDIV {
-background-color:#111111;
-border-bottom:2px solid #222222;
-color:#EEEEEE !important;
-display:inline-block;
-font-family:Verdana;
-font-size:14px;
-font-variant:small-caps;
-margin-bottom:-2px;
-margin-right:10px;
-margin-top:10px;
-min-width:100px;
-overflow:hidden;
-padding:5px;
-text-align:center;
-text-decoration:none !important;
-text-transform:lowercase;
+	background-color: #111111;
+	border-bottom: 2px solid #222222;
+	color: #EEEEEE !important;
+	display: inline-block;
+	font-family: Verdana;
+	font-size: 14px;
+	font-variant: small-caps;
+	margin-bottom: -2px;
+	margin-right: 10px;
+	margin-top: 10px;
+	min-width: 100px;
+	overflow: hidden;
+	padding: 5px;
+	text-align: center;
+	text-decoration: none !important;
+	text-transform: lowercase;
 }
+
 /**rounded corners**/
 .allCornersRounded {
 	border-radius: 5px;
@@ -283,75 +285,7 @@ text-transform:lowercase;
 }
 
 /**form**/
-.search:focus {
-	border: 0px !important;
-}
 
-.search {
-	border: 0px;
-	padding: 3px !important;
-	color: #222;
-	height: 30px;
-	width: 180px;
-	border-radius-bottom-left: 3px !important;
-	-moz-border-radius-bottomleft: 3px !important;
-	-webkit-border-bottom-left-radius: 3px !important;
-	border-radius-top-left: 3px !important;
-	-moz-border-radius-topleft: 3px !important;
-	-webkit-border-top-left-radius: 3px !important;
-	border-radius-bottom-right: 0px !important;
-	-moz-border-radius-bottomright: 0px !important;
-	-webkit-border-bottom-right-radius: 0px !important;
-	border-radius-top-right: 0px !important;
-	-moz-border-radius-topright: 0px !important;
-	-webkit-border-top-right-radius: 0px !important;
-	margin: 0px !important;
-	background-color: #E8E8E8;
-	font-size: 24px;
-	vertical-align: top;
-}
-
-.searchBtn {
-	padding: 3px !important;
-	margin: 0px !important;
-	border: 0px !important;
-	vertical-align: middle;
-	min-width: 70px;
-	overflow: auto;
-	min-height: 20px;
-	color: #fff !important;
-	background: #444 !important;
-	background: -moz-linear-gradient(center bottom, #444 20%, #555 80%)
-		!important;
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #444),
-		color-stop(0.8, #555) ) !important;
-	height: 36px !important;
-	border-radius-bottom-left: 0px !important;
-	-moz-border-radius-bottomleft: 0px !important;
-	-webkit-border-bottom-left-radius: 0px !important;
-	border-radius-top-left: 0px !important;
-	-moz-border-radius-topleft: 0px !important;
-	-webkit-border-top-left-radius: 0px !important;
-	border-radius-bottom-right: 3px !important;
-	-moz-border-radius-bottomright: 3px !important;
-	-webkit-border-bottom-right-radius: 3px !important;
-	border-radius-top-right: 3px !important;
-	-moz-border-radius-topright: 3px !important;
-	-webkit-border-top-right-radius: 3px !important;
-	color: #fff;
-}
-
-.search:focus,input[type=text]:focus,input[type=password]:focus,textarea:focus
-	{
-	background-color: #FFF;
-	border: 1px #ddd solid;
-	margin-bottom: 0.5px !important;
-}
-
-label {
-	width: 150px;
-	display: inline-block;
-}
 
 button {
 	padding: 5px 10px 5px 10px !important
@@ -591,9 +525,9 @@ ul.project_links a {
 	padding: 7px;
 	color: #ffffff;
 }
-h1,h2,h3,h4,h5,h6,h7
-{
-background: #ddd;
+
+h1,h2,h3,h4,h5,h6,h7 {
+	background: #ddd;
 	font-family: Georgia, "Times New Roman", Times, serif;
 	font-size: 20px;
 	font-style: italic;
@@ -601,12 +535,38 @@ background: #ddd;
 	letter-spacing: -1px;
 	color: #111;
 	border: 0px;
-	margin-bottom:5px;
-	margin-top:0px;
-
-
+	margin-bottom: 5px;
+	margin-top: 0px;
 }
 
 body {
 	background: transparent url('img/workspace.png') repeat top left scroll;
+}
+
+input[type=text],input[type=password]
+{
+border:1px solid #ddd;
+background-color:#eee;
+}
+input[type=text]:focus,input[type=password]:focus
+{
+box-shadow:0px 0px 10px #ccc;
+-moz-box-shadow:0px 0px 10px #ccc;
+-webkit-box-shadow:0px 0px 10px #ccc;
+background-color:#fff;
+}
+
+#login input[type=text],#login input[type=password]
+{
+font-size:18px;
+width:95%;
+}
+#login label
+{
+color:#999;
+display:block;
+}
+.red
+{
+color:red;
 }
