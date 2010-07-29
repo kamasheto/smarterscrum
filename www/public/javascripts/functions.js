@@ -478,10 +478,10 @@ function showProjectWorkspace(project_id) {
 		return
 	}
 	$('#workspaces').append('<div id="workspace-'+project_id+'" class="workspace"><img src="/public/images/loadingMagic"></div>')
-	show(project_id)
 	$.post('/show/workspace', {id: project_id}, function(data) {
 		$('#project-tabs').append('<a class="aDIV topCornersRounded right project-button selectedADiv" id="project-button-'+project_id+'" href="#" onclick="show('+project_id+')" style="width: 120px !important" title="">'+$(data).find('.project_name_in_header').html()+' <span class="right ui-icon ui-icon-circle-close" onclick="close_workspace('+project_id+')"> </span></a>');
 		$('#workspace-' + project_id).html(data)
 		$('#top_header_projects_pane').slideUp()
+		show(project_id)
 	})
 }

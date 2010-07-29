@@ -1,0 +1,49 @@
+<div class="topper nav">
+<span class="project_name_in_header">${proj.name}</span>
+<a href="#" onclick="loadBox('/storys/magicShow?projectId=${proj.id}','workspace-${proj.id}')">Stories</a>	
+<a  href="#"onclick="loadBox('/components/listComponentsInProject?projectId=${proj.id}','workspace-${proj.id}')">Components</a>
+<a href="#" onclick="loadBox('/users/findUsers?projectId=${proj.id}','workspace-${proj.id}')">Users</a>
+<a  href="#"onclick="loadBox('@{Projects.events(proj.id)}','workspace-${proj.id}')">Events</a>	
+<a href="#" onclick="loadBox('@{Projects.settings(proj.id)}','workspace-${proj.id}')">Settings</a> 
+#{if connected}
+<a  href="#"onclick="$('#chatContainer_${proj.id}').slideToggle(400); #{ifnot connected.openChats.contains(proj.chatroom)} signIn(${proj.chatroom.id}); getMessages(${proj.id},${proj.chatroom.id}); #{/ifnot}">Chatroom</a>
+#{/if}
+</div>
+
+<div class="workspaceContainer">
+#{if connected}
+	<div class="draggable"id="chatContainer_${proj.id}"style="position:absolute;right:0px;top:95px;width:225px;#{ifnot connected.openChats.contains(proj.chatroom)}display:none;#{/ifnot}">
+	<div class="chatContainerHeader">${proj.name} Chat <a id="${proj.name}_min"class="right"href="#" title="minimize?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);$('#${proj.name}_max').slideToggle(400);$('#${proj.name}_min').slideToggle(400);" style="text-decoration:none; color:#fff">[-]</a> <a id="${proj.name}_max"class="right"href="#" title="maximize?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);$('#${proj.name}_max').slideToggle(400);$('#${proj.name}_min').slideToggle(400);" style="display:none;text-decoration:none; color:#fff">[+]</a> <a class="right"href="#" title="signout?" onclick="signOut(${proj.chatroom.id});$('#chatContainer_${proj.name}').slideToggle(400);" style="text-decoration:none; color:#fff">[x]</a></div>
+								<div id="chatHolder_${proj.name}">
+									<div id="thread_${proj.id}" class="thread">
+										<script type="text/html" id="message_tmpl">
+											<div class="<%= message.author == 'notice' ? 'notice allCornersRounded' : message.author == '${connected.name}' ? 'you' : 'them' %>">		
+												<strong class="title" style="<%= message.author == 'notice' ? 'display:none !important' : '' %>"><%= message.author%></strong> 
+												<%= message.message.replace('\n', '<br/>') %>
+											</div>
+										</script>
+										<div id ="threader_${proj.id}"></div>
+									</div>
+									<div id="newMessage" class="chatboxinput">	
+										<textarea id="message_${proj.name}" name="message_${proj.name}" class="chatboxtextarea"></textarea>
+									</div>	
+									<script type="text/javascript">
+									#{if connected.openChats.contains(proj.chatroom)}
+									$(function()
+									{
+											retrieve(${proj.id},${proj.chatroom.id});
+											getMessages(${proj.id},${proj.chatroom.id});
+									});
+									#{/if}								
+										$('#message_${proj.name}').keypress(function(event){
+										if (event.keyCode == '13')
+										{		var message = $('#message_${proj.name}').val();
+										$('#message_${proj.name}').val('');
+										$.post('@{ChatSystem.addMessage()}', {message: message , id:${proj.chatroom.id}}); 
+										$('#message_${proj.name}').focus(); }
+									});
+									</script>
+								</div>
+							</div>
+#{/if}		
+</div>
