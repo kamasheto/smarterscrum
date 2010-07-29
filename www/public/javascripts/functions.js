@@ -379,3 +379,33 @@ function deleteTheTask(tId, box){
 	;});
 	}
 }
+
+function set_attended(id)
+{
+	if(confirm("change status to attended??"))
+	$.post('/meetingAttendances/setConfirmed',{id: id}
+	,function()
+	{
+		$('#reason_span_'+id).hide();
+		$('#attendance_of_user_'+id).html("attended");
+	})
+}
+
+function set_didnot_attend(id)
+{
+	var reno=prompt("Please enter the reason :","");
+	while(reno.length==0)
+	{
+		reno=prompt("Please enter the reason :","");
+	}
+	
+		$.post('/meetingAttendances/setDeclined',{id:id , reason:reno},
+		function()
+		{
+			$('#reason_span_'+id).show();
+			$('#attendance_of_user_'+id).html("did not attend");
+			$('#reason_of_user_'+id).html(reno);
+				
+	})
+	
+}

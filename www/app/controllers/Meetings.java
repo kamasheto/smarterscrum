@@ -805,29 +805,32 @@ public class Meetings extends SmartCRUD
 	{
 		Meeting meeting= Meeting.findById(meetingId);
 		List<MeetingAttendance> attendance= MeetingAttendance.find("byMeeting.idAndDeleted",meetingId,false).fetch();
-		List<MeetingAttendance> invitedMembers= new ArrayList<MeetingAttendance>();
-		for(MeetingAttendance att:attendance)
+		List<MeetingAttendance> confirmed= new ArrayList<MeetingAttendance>();
+		List<MeetingAttendance> declined=new ArrayList<MeetingAttendance>();
+		List<MeetingAttendance> waiting= new ArrayList<MeetingAttendance>();
+		System.out.println(attendance.size());
+		while (attendance.isEmpty() == false)
 		{
-			if(att.user.equals(Security.getConnected()));
-			invitedMembers.add(att);
+			MeetingAttendance ma= attendance.remove(0);
+				if(ma.status.equals("confirmed"))
+					{
+						confirmed.add(ma);
+						continue;
+					}
+				
+					if(ma.status.equals("declined"))
+					{
+						declined.add(ma);
+						continue;
+					}
+					if(ma.status.equals("waiting"));
+					{
+						waiting.add(ma);
+						continue;
+				}
 		}
 		
-		for(MeetingAttendance att:attendance)
-		{
-			if(att.status.equals("confirmed"))
-			invitedMembers.add(att);
-		}
-		for(MeetingAttendance att:attendance)
-		{
-			if(att.status.equals("waiting"))
-			invitedMembers.add(att);
-		}
-		for(MeetingAttendance att:attendance)
-		{
-			if(att.status.equals("declined"))
-			invitedMembers.add(att);
-		}
-		render(invitedMembers,meeting);
+		render(confirmed,declined,waiting,meeting);
 		
 	}
 	

@@ -3,6 +3,13 @@
 	${meeting.name} Attendees.
 	#{/set}
 	
-	#{list items:invitedMembers, as:'attendance'}
+	
+	#{list items:confirmed, as:'attendance'}
+	<div name="/Meetings/viewAttendeeStatus?id=${attendance.id}">${attendance.user.name}</div>
+	#{/list}
+	#{list items:waiting, as:'attendance'}
+	<div name="/Meetings/viewAttendeeStatus?id=${attendance.id}">${attendance.user.name}</div>
+	#{/list}
+	#{list items:declined, as:'attendance'}
 	<div name="/Meetings/viewAttendeeStatus?id=${attendance.id}">${attendance.user.name}</div>
 	#{/list}
