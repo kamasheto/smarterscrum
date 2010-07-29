@@ -3,6 +3,10 @@
 	border: 0px !important;
 }
 
+.ui-icon-extlink {
+	cursor: pointer
+}
+
 .draggableChild {
 	width: 100%;
 }
@@ -13,12 +17,14 @@
 
 .draggable {
 	width: 300px;
-	position:absolute !important;
+	position: absolute !important;
 }
+
 .draggableChild {
 	position: relative;
 	display: block;
 }
+
 .draggableChild .min {
 	display: none;
 }
@@ -46,10 +52,10 @@
 	letter-spacing: -1px;
 	color: #ddd;
 	border: 0px;
-	margin-bottom:5px;
+	margin-bottom: 5px;
 }
 
-.draggableChild .ui-widget-header, .overlay .ui-widget-header {
+.draggableChild .ui-widget-header,.overlay .ui-widget-header {
 	font-size: 12px;
 	background: #ddd !important;
 	background: -moz-linear-gradient(center bottom, #eee 20%, #ddd 80%)
@@ -61,10 +67,9 @@
 	font-style: normal;
 	font-weight: normal;
 	border: 0px;
-	margin:0px;
-	padding:5px;
+	margin: 0px;
+	padding: 5px;
 }
-
 
 .clone {
 	font-size: 12px;
@@ -78,16 +83,16 @@
 	font-style: normal;
 	font-weight: normal;
 	border: 0px;
-	margin:0px;
-	padding:5px;
+	margin: 0px;
+	padding: 5px;
 }
-.clone img, .clone span
-{
-	display:none;
+
+.clone img,.clone span {
+	display: none;
 }
-.ui-widget-header span
-{
-	float:right;
+
+.ui-widget-header span {
+	float: right;
 }
 
 .draggable.ui-widget-content {
@@ -101,72 +106,75 @@
 		!important;
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #87155f),
 		color-stop(0.8, #b7568d) ) !important;
-		padding:5px;
-			border-radius: 5px;
+	padding: 5px;
+	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 }
+
 img {
-	cursor:default;
+	cursor: default;
 }
-.draggable a, .draggable span, .draggableChild a, .draggableChild span{
-	cursor:pointer;
+
+.draggable a,.draggable span,.draggableChild a,.draggableChild span {
+	cursor: pointer;
 }
-#normal
-{
-height:100%;
+
+#normal {
+	height: 100%;
 }
-#login form
-{
--moz-border-radius:11px 11px 11px 11px;
--moz-box-shadow:0 4px 18px #C8C8C8;
-background:none repeat scroll 0 0 #FFFFFF;
-border:1px solid #E5E5E5;
-font-weight:normal;
-margin:20px auto 0;
-overflow:auto;
-padding:16px;
-width:300px;
+
+#login form {
+	-moz-border-radius: 11px 11px 11px 11px;
+	-moz-box-shadow: 0 4px 18px #C8C8C8;
+	background: none repeat scroll 0 0 #FFFFFF;
+	border: 1px solid #E5E5E5;
+	font-weight: normal;
+	margin: 20px auto 0;
+	overflow: auto;
+	padding: 16px;
+	width: 300px;
 }
-#signin-field
-{
-float:right
+
+#signin-field {
+	float: right
 }
-#workspaces,.workspaceContainer, body,html, #normal {
+
+#workspaces,.workspaceContainer,body,html,#normal {
 	width: 100%;
 	height: 100%;
-
-}
-#remember-field
-{
-float:left
-}
-#remember-field label
-{
-display:inline
-}
-#login h1
-{
-	background:transparent;
-	color:#777;
-	font-size:30px;
-}
-.item_imgs
-{
-float:right;
-display:inline-block;
 }
 
-/***************************/
-/* START mahmoudsakr's CSS */
-/***************************/
-.baseRole .tick_img, .baseRole .delete_img{
+#remember-field {
+	float: left
+}
+
+#remember-field label {
+	display: inline
+}
+
+#login h1 {
+	background: transparent;
+	color: #777;
+	font-size: 30px;
+}
+
+.item_imgs {
+	float: right;
+	display: inline-block;
+}
+
+/***************************/ /* START mahmoudsakr's CSS */
+	/***************************/
+.baseRole .tick_img,.baseRole .delete_img {
 	display: none;
 }
+
 .project_name_in_header {
 	color: #444;
-	font-style:italic;
+	font-style: italic;
 }
+
 #top_header_projects_pane {
 	background: black;
 	color: white;
@@ -174,31 +182,35 @@ display:inline-block;
 	position: absolute;
 	right: 0px;
 	top: 42px;
-	width:200px;
+	width: 200px;
 	z-index: 100;
 	padding: 8px;
-	border-radius:8px;
-	border-top-right-radius:0;
-	border-top-left-radius:0;
+	border-radius: 8px;
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
 }
+
 #project_search_text {
 	width: 195px;
 }
-#projects_search_results, #add-new-project-link {
-	text-align:center;
-	font-size:18px;
+
+#projects_search_results,#add-new-project-link {
+	text-align: center;
+	font-size: 18px;
 }
+
 #add-new-project-link {
-	border-top:1px solid #222;
-	padding-top:3px;
-	margin-top:3px;
+	border-top: 1px solid #222;
+	padding-top: 3px;
+	margin-top: 3px;
 }
+
 #top_header_projects_pane a {
-	text-decoration:none;
+	text-decoration: none;
 }
+
 .draggableChild .ui-widget-header {
 	cursor: pointer;
 }
-/***************************/
-/* END mahmoudsakr's CSS */
-/***************************/
+/***************************/ /* END mahmoudsakr's CSS */
+	/***************************/

@@ -14,7 +14,16 @@
 <div class="workspaceContainer">
 #{if connected}
 	<div class="draggable"id="chatContainer_${proj.id}"style="position:absolute;right:0px;top:95px;width:225px;#{ifnot connected.openChats.contains(proj.chatroom)}display:none;#{/ifnot}">
-	<div class="chatContainerHeader">${proj.name} Chat <a id="${proj.name}_min"class="right"href="#" title="minimize?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);$('#${proj.name}_max').slideToggle(400);$('#${proj.name}_min').slideToggle(400);" style="text-decoration:none; color:#fff">[-]</a> <a id="${proj.name}_max"class="right"href="#" title="maximize?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);$('#${proj.name}_max').slideToggle(400);$('#${proj.name}_min').slideToggle(400);" style="display:none;text-decoration:none; color:#fff">[+]</a> <a class="right"href="#" title="signout?" onclick="signOut(${proj.chatroom.id});$('#chatContainer_${proj.name}').slideToggle(400);" style="text-decoration:none; color:#fff">[x]</a></div>
+	<div class="chatContainerHeader">${proj.name} Chat 
+	
+	
+	<a id="${proj.name}_min"class="right"href="#" title="minimize?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);$('#${proj.name}_max').slideToggle(400);$('#${proj.name}_min').slideToggle(400);" style="text-decoration:none; color:#fff">
+	<span class="ui-icon ui-icon-circle-triangle-n"></span></a> 
+	<a id="${proj.name}_max"class="right"href="#" title="maximize?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);$('#${proj.name}_max').slideToggle(400);$('#${proj.name}_min').slideToggle(400);" style="display:none;text-decoration:none; color:#fff">
+	
+			<span class="ui-icon ui-icon-circle-triangle-s"></span></a> <a class="right"href="#" title="signout?" onclick="signOut(${proj.chatroom.id});$('#chatContainer_${proj.id}').slideToggle(400);" style="text-decoration:none; color:#fff">
+	
+			<span class="ui-icon ui-icon-circle-close"></span></a></div>
 								<div id="chatHolder_${proj.name}">
 									<div id="thread_${proj.id}" class="thread">
 										<script type="text/html" id="message_tmpl">
