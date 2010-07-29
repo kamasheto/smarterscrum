@@ -5,7 +5,13 @@
 #{if x==1}
    #{if user!=null}
 	   #{list items:user.projects ,as :'project'}
-	     ${project.name}
+		    <div name="/users/findUsers?userId=${user.id}&x=2&projectId=${project.id}">${project.name}</div>
 	   #{/list}
+   #{/if}
+#{/if}
+
+#{if x==2}
+   #{if user!=null}
+	   heba
    #{/if}
 #{/if}
