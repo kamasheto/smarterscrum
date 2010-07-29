@@ -231,6 +231,16 @@ $(function() {
 
 			});
 
+	$('.draggableChild .ui-widget-header').live(
+			'click',
+			function() {
+				if($(this).next().html()=='')
+					load3($(this).parent().attr('name') + ' .actual',$(this).parent().attr('id'));
+
+				$(this).next().slideToggle(400);
+
+			});
+
 	$('.min').live(
 			'click',
 			function() {
@@ -292,6 +302,24 @@ function load(url, el) {
 		
 
 	});
+}function load3(url, el) {
+
+	var pUrl = $('#'+el).attr('name');
+	$('#'+el+'_header').load(pUrl+' .mainH', function(){
+		
+		$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
+		$('#'+el+'_header').find('.min').first().remove();
+	});
+	$('#' + el + '_content').load(url, function() {
+		$('#' + el + ' .min').first().show();
+		$('#' + el + '_content').children().show();
+		//$('#' + el + '_content').find('ui-widget-header').first().load
+		$('#' + el + ' .loading').first().hide();
+		$('#' + el + '_content').slideDown(400);
+		magic(el);
+		
+
+	});
 }
 
 function removeMe(me)
@@ -339,7 +367,7 @@ function magic(id) {
 						if($.inArray(url,myDivs)==-1 && $.inArray(url2,myDivs)==-1){
 							
 							var id2 = "ui" +num++;
-						var head = '<div id="'+id2+'_header" class="ui-widget-header mainH"><span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span></span><span class="min"onclick="$(this).children().toggle();"><span class="ui-icon ui-icon-circle-triangle-n" style="display: none;"></span><span class="ui-icon ui-icon-circle-triangle-s"></span></span>' + $(this).html() + '</div>';
+						var head = '<div id="'+id2+'_header" class="ui-widget-header mainH"><span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span></span>' + $(this).html() + '</div>';
 						$(this).html(head);
 						$(this).addClass('ui-widget-content draggableChild');
 
