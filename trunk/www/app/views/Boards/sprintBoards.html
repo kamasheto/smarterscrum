@@ -4,13 +4,13 @@ Boards
 #{/set}
 <div class="overlay" name="/boards/loadboard1?sprintID=${sprintID}">
 ${p.name}'s Task Board
-<a  onClick="loadBox('/Snapshots/index?id=${sprintID}&type=${p.name}','workspace_${p.id}')')"><img src="@{'/public/images/famfam/camera_go.png'}"></a>
+<a  onClick="loadBox('/Snapshots/index?id=${sprintID}&type=${p.name}','workspace-${p.id}')"><img src="@{'/public/images/famfam/camera_go.png'}"></a>
 </div>
 
 #{list boards, as:'board'}
 <div class="overlay" name="/boards/loadboard1?sprintID=${sprintID}&componentID=${board.component.id}">
 ${board.component.name}'s Task Board
-<a onClick="loadBox('/Snapshots/index?id=${sprintID}&type=${board.component.name}','workspace_${p.id}')')"><img src="@{'/public/images/famfam/camera_go.png'}"></a>
+<a onClick="loadBox('/Snapshots/index?id=${sprintID}&type=${board.component.name}','workspace-${p.id}')"><img src="@{'/public/images/famfam/camera_go.png'}"></a>
 </div>
 
 #{/list}
