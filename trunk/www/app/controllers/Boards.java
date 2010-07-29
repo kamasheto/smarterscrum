@@ -26,12 +26,11 @@ import play.mvc.With;
 public class Boards extends SmartCRUD {
 	
 	/**
-	 * @author Dina Helal
+	 * This method is used to generate the project board 
+	 * & the component board for a certain sprint
+	 * @author Hadeer Diwan, Dina Helal
 	 * @param sprintID: sprint id
 	 * @param componentID: component id
-	 * 
-	 * this method is used to generate the project board 
-	 * & the component board for a certain sprint
 	 */
 
 	public static void loadboard1(long sprintID, long componentID)
@@ -167,15 +166,13 @@ public class Boards extends SmartCRUD {
 		return cols;
 	}
 
-	 /** 
-	 * @param Project as P then loop to get all Running meeting of Project
-	 * and compare the logged in user's id in order to get which meeting he is 
-	 * confirmed in . if not then lost of empty meeting will be render to 
-	 * loadboard.html .
-	 *            
-	 *            
-	 * @author asmaak89
-	 */
+	 /**
+	  * This method is used to get a list of list of users attending a meeting that 
+	  * the logged in user is an attendee in
+	  * @author asmaak89, Dina Helal
+	  * @param P: Project
+	  * @param cid: Component id
+	  */
 	
 	public static ArrayList<ArrayList<User>> Meetingloadboard(Project p, long cid)
 	{
@@ -236,6 +233,15 @@ public class Boards extends SmartCRUD {
 			
 	
 	}
+	
+	/**
+	  * This method is used to get a list of list of users attending running meetings for the admin to see
+	  * @author asmaak89, Dina Helal
+	  * @param P: Project
+	  * @param cid: Component id
+	  */
+	
+	
 	public static ArrayList<ArrayList<User>> MeetingloadboardAdmin(Project p, long cid)
 	{
 		long id=Security.getConnected().id;
