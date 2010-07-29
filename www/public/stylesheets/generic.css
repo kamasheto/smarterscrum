@@ -570,3 +570,7 @@ display:block;
 {
 color:red;
 }
+.disabled
+{
+background-color:#333
+}
