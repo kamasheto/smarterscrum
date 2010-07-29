@@ -1,8 +1,8 @@
 #{extends 'magicBox.html' /}
 #{set 'title'}${title}
 #{/set}
-#{if users !=null}
 
+#{if users !=null}
 		#{if users.size()==0}
 		<label> No Users</label>
 		#{/if}
@@ -13,25 +13,19 @@
 #{/if}
 		
 #{if user!=null}
-		#{if user.avatar !=""}
-       <img src="${user.avatar}"></img>
+	   #{if user.avatar !=""}
+         <img src="${user.avatar}"></img>
        #{/if}
        #{else}
-       <img src="@{'public/images/no-profile.png'}"/>
+         <img src="@{'public/images/no-profile.png'}"/>
        #{/else}
 	  	<br>
 		<b>${user.name}</b>
 		<br>
-		<b>Projects</b>
-		%{count =0;}%
-		#{list items:user.projects ,as :'project'}
-			#{if count ==0}
-			${project.name}
-            #{/if}
-            #{else}
-            , ${project.name}
-            #{/else}
-            %{count =count+1;}%
-		#{/list}
+		<b>${user.email}</b>
 		<br>
-#{/if}		
+		<div name="/users/listUserProjects?userId=${user.id}&x=1">Projects</div>
+#{/if}
+
+
+		
