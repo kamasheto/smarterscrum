@@ -1,13 +1,9 @@
-#{extends 'main.html' /}
-#{set title:' Snapshot' /}
+#{extends 'overlay.html' /}
+
 
 <ul id="data" id="Columnsofsnapshot" >
 <h1>${snap.type} Snapshot</h1>
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${p.id}">${p.name}</a></li>
-<li><a href="@{Snapshots.loadsnapShot(snap.id)} ">Snapshot ${snap.id}</a></li>
-#{/set}
+
 		<table>
 				<thead>	
 					<td style="border:1px solid #333"><b>Headers</b></td>
