@@ -247,7 +247,7 @@ $(function() {
 				if($(this).parent().next().html()=='')
 					load2($(this).parent().parent().attr('name') + ' .actual',$(this).parent().parent().attr('id'));
 
-				
+
 
 				$(this).parent().next().slideToggle(400);
 
@@ -275,8 +275,8 @@ $(function() {
 			$('#' + theSecondId).replaceWith($('#' + theId));
 		}
 	
+		});
 	});
-});
 
 function load(url, el) {
 
@@ -317,7 +317,6 @@ function load(url, el) {
 		$('#' + el + ' .loading').first().hide();
 		$('#' + el + '_content').slideDown(400);
 		magic(el);
-		
 
 	});
 }
@@ -343,7 +342,7 @@ if($.inArray(url,myDivs)==-1){
 		$('#' + el + ' #myTemp').replaceWith($('#' + el + ' #myTemp').html());
 		myDivs.push(url);
 	});
-	}
+}
 }
 var num =1;
 function magic(id) {
@@ -366,7 +365,7 @@ function magic(id) {
 						var url2 = url+' .actual';
 						if($.inArray(url,myDivs)==-1 && $.inArray(url2,myDivs)==-1){
 							
-							var id2 = "ui" +num++;
+						var id2 = "ui" +num++;
 						var head = '<div id="'+id2+'_header" class="ui-widget-header mainH"><span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span></span>' + $(this).html() + '</div>';
 						$(this).html(head);
 						$(this).addClass('ui-widget-content draggableChild');
@@ -391,28 +390,6 @@ function magic(id) {
 
 }
 var myDivs = new Array();
-function show(id) {
-	$('#normal').hide();
-	$('#myHeaders').show();
-	$('#myWorkspaces').show();
-	$('#myWorkspaces').children().each(function() {
-		if ($(this).attr('id') == ('workspace_' + id)) {
-			$(this).show();
-		} else {
-			$(this).hide();
-		}
-
-	});
-	$('#myHeaders').children().each(function() {
-		if ($(this).attr('id') == ('header_' + id)) {
-			$(this).show();
-		} else {
-			$(this).hide();
-		}
-
-	});
-
-}
 
 function deleteTheTask(tId, box){
 	
@@ -454,4 +431,57 @@ function set_didnot_attend(id)
 				
 	})
 	
+}
+searching_projects = null
+function search_projects() {
+	if ($('#project_search_text').val() == '') {
+		$('#projects_search_results').html('')
+		return
+	}
+	$('#projects_search_results').html('<img src="/public/images/loadingMagic.gif">')
+	if (searching_projects) {
+		searching_projects.abort()
+	}
+	searching_projects = $.post('/ajax/projects', {query: $('#project_search_text').val()}, function(projects) {
+		results = ''
+		$(projects).each(function() {
+			results += '<div><a onclick="showProjectWorkspace('+this.id+')">'+this.name+'</a></div>'
+		})
+		$('#projects_search_results').html(results)
+	})
+}
+
+function show(id) {
+	if ($('#workspace-'+id).length) {
+		// make sure we have that thingie first
+		// DO NOT load workspace here, it might have been removed on purpose!
+		$('#normal').hide();
+		$('#workspaces').show()
+		$('.workspace').hide()
+		$('#workspace-' + id).show()
+		$('.project-button').removeClass('selectedADiv')
+		$('#project-button-'+id).addClass('selectedADiv')	
+	}
+}
+
+function close_workspace(project_id) {
+	$('#project-button-'+project_id).fadeOut(function() {
+		$(this).remove()
+	})
+	$('#workspace-'+project_id).remove()
+}
+function showProjectWorkspace(project_id) {
+	if ($('#workspace-'+project_id).length) {
+		// workspace already loaded, just show it instead
+		$('#top_header_projects_pane').slideUp()
+		show(project_id)
+		return
+	}
+	$('#workspaces').append('<div id="workspace-'+project_id+'" class="workspace"><img src="/public/images/loadingMagic"></div>')
+	show(project_id)
+	$.post('/show/workspace', {id: project_id}, function(data) {
+		$('#project-tabs').append('<a class="aDIV topCornersRounded right project-button selectedADiv" id="project-button-'+project_id+'" href="#" onclick="show('+project_id+')" style="width: 120px !important" title="">'+$(data).find('.project_name_in_header').html()+' <span class="right ui-icon ui-icon-circle-close" onclick="close_workspace('+project_id+')"> </span></a>');
+		$('#workspace-' + project_id).html(data)
+		$('#top_header_projects_pane').slideUp()
+	})
 }

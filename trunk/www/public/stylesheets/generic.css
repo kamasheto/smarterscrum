@@ -165,13 +165,6 @@ img {
 }
 
 /**nav**/
-.aDIV:hover {
-	cursor: pointer;
-	position: relative;
-	z-index: 9;
-	margin-top: 5px;
-	padding-bottom: 10px;
-}
 
 .aDIV {
 	background-color: #111111;
@@ -192,6 +185,17 @@ img {
 	text-transform: lowercase;
 }
 
+.aDIV:hover, .selectedADiv {
+	cursor: pointer;
+	position: relative;
+	z-index: 9;
+	margin-top: 5px;
+	padding-bottom: 10px;
+}
+
+.selectedADiv {
+	font-weight:bold;
+}
 /**rounded corners**/
 .allCornersRounded {
 	border-radius: 5px;

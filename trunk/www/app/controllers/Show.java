@@ -185,4 +185,9 @@ public class Show extends SmartController {
 		Role role = Role.findById(id);
 		render(role);
 	}
+	
+	public static void workspace(long id) {
+		Project proj = Project.findById(id);
+		render(proj);
+	}
 }
