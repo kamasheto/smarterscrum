@@ -20,7 +20,12 @@
 #{/if}
 		
 #{if user!=null}
+		#{if user.avatar !=""}
        <img src="${user.avatar}"></img>
+       #{/if}
+       #{else}
+       <img src="@{'public/images/no-profile.png'}"/>
+       #{/else}
 	  	<br>
 		<b>${user.name}</b>
 		<br>
