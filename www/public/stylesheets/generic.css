@@ -539,12 +539,12 @@ body {
 	background: transparent url('img/workspace.png') repeat top left scroll;
 }
 
-input[type=text],input[type=password]
+input[type=text],input[type=password],textarea
 {
 border:1px solid #ddd;
 background-color:#eee;
 }
-input[type=text]:focus,input[type=password]:focus
+input[type=text]:focus,input[type=password]:focus,textarea:focus
 {
 box-shadow:0px 0px 10px #ccc;
 -moz-box-shadow:0px 0px 10px #ccc;
