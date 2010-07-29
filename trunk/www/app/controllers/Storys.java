@@ -8,6 +8,7 @@ import java.util.List;
 
 import models.Component;
 import models.Meeting;
+import models.ProductRole;
 import models.Project;
 import models.Sprint;
 import models.Story;
@@ -67,8 +68,18 @@ public class Storys extends SmartCRUD {
 			render("Storys/error.html", priorities, components, roles);
 		// Sort the priorities according to their priority
 		// Collections.sort(project.priorities);
+		String productRoles="";
+		for(int i=0;i<project.productRoles.size();i++)
+		{
+			//productRoles=productRoles+project.productRoles.get(i).name+",";
+			if(project.productRoles.get(i).name.charAt(0)=='a'||project.productRoles.get(i).name.charAt(0)=='e'||project.productRoles.get(i).name.charAt(0)=='i'||project.productRoles.get(i).name.charAt(0)=='o'||project.productRoles.get(i).name.charAt(0)=='u'||project.productRoles.get(i).name.charAt(0)=='A'||project.productRoles.get(i).name.charAt(0)=='E'||project.productRoles.get(i).name.charAt(0)=='I'||project.productRoles.get(i).name.charAt(0)=='O'||project.productRoles.get(i).name.charAt(0)=='U')
+			productRoles=productRoles+"As an "+project.productRoles.get(i).name+",-";
+			else
+				productRoles=productRoles+"As a "+project.productRoles.get(i).name+",-";
+					
+		}
 		try {
-			render(type, stories, project);
+			render(type, stories, project, productRoles);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/blank.html", type);
 		}
@@ -256,6 +267,8 @@ public class Storys extends SmartCRUD {
 				stories.add(story);
 			}
 		}
+		String newdesc = storyObj.description;
+		
 		// Sort the priorities according to their priority
 		Collections.sort(project.priorities);
 		if (validation.hasErrors()) {
@@ -267,7 +280,52 @@ public class Storys extends SmartCRUD {
 			}
 		}
 		Story toBeSaved = (Story) object;
-		storyObj.description = "As a " + storyObj.productRole.name + ", I can " + storyObj.description;
+		//storyObj.description = storyObj.description;
+		String [] desc = newdesc.split(",");
+		if(desc.length==1)
+		{
+			storyObj.description=desc[0];
+		}
+		else
+		{
+			String [] desc2 = desc[0].split(" ");
+			if(desc2.length==3)
+			{
+			if(desc2[0].equalsIgnoreCase("as") && (desc2[1].equalsIgnoreCase("a")||desc2[1].equalsIgnoreCase("an")))
+					{
+				boolean flag=false;
+				for(int j=0;j<storyObj.componentID.project.productRoles.size();j++)
+				{
+					if(storyObj.componentID.project.productRoles.get(j).name.equalsIgnoreCase(desc2[2]))
+						flag=true;
+				}
+				if(!flag)
+				{
+					ProductRole pr = new ProductRole(storyObj.componentID.project.id, desc2[2], "");
+					storyObj.productRole = pr;				
+				}
+				else
+				{
+					for(int j=0;j<storyObj.componentID.project.productRoles.size();j++)
+					{
+						if(storyObj.componentID.project.productRoles.get(j).name.equalsIgnoreCase(desc2[2]))
+							{
+							storyObj.productRole = storyObj.componentID.project.productRoles.get(j);
+							}
+					}
+				}
+				for(int i=1;i<desc.length;i++)
+				{
+					storyObj.description = desc[i]+" ";
+				}
+			}
+			}
+			else
+			{
+				storyObj.description=storyObj.description;
+			}
+		}
+		
 		toBeSaved.addedBy = Security.getConnected();
 		object.save();
 		toBeSaved.init();
