@@ -37,7 +37,7 @@
 		#{/crud.custom}
 		
 			#{crud.custom 'productRole'}
-					
+					<div name="view-more" style="display:none">
 		
 						 <select id="object_productRole" name="object.productRole@id" onchange="setDesc();">
 								#{list items:project.productRoles ,as :'productRole'}
@@ -48,9 +48,11 @@
 						</select> 
 		    <span class="crudHelp">*</span>
 		    <span class="error"></span>
+		    </div>
 		#{/crud.custom}
 		
 		#{crud.custom 'priority'}
+		<div name="view-more" style="display:none">
 				<label for="object_priority">priority</label>
 				<select id="object_priority" name="object.priority">
 					#{list items:project.priorities ,as :'priority'}
@@ -58,9 +60,11 @@
 					#{/list}
 				</select>
 				<span class="crudHelp">*</span>
+				</div>
 		#{/crud.custom}
 		
 		#{crud.custom 'dependentStories'}
+		<div name="view-more" style="display:none">
 				<label for="object_dependentStories">dependent stories</label>
 				<input type="hidden" name="object.dependentStories@id" value="" />
 				<select id="object_dependentStories" name="object.dependentStories@id" multiple="yes">
@@ -71,9 +75,11 @@
 							#{/list}		
 				</select>
     			<span class="crudHelp">*</span>
+    			</div>
 		#{/crud.custom}
 		
 	#{/crud.form}
+	<a href="#" onclick = "toggleOptions()" name="view-more-link">View more options</a>
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
 			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
@@ -113,5 +119,17 @@ function setRole()
 			document.getElementById('object_productRole').options[i].selected=false;
 		}
 	}
+}
+function toggleOptions(){
+	current_text = $("[name='view-more-link']").text();
+	if(current_text == "View more options"){
+		$("[name='view-more-link']").text("Hide extra options");
+		$("[name='view-more']").slideDown();
+	}
+	else
+	{
+		$("[name='view-more-link']").text("View more options");
+		$("[name='view-more']").slideUp();
+	}	
 }
 </script>
