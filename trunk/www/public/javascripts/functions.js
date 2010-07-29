@@ -202,7 +202,7 @@ $(function() {
 										top : pos2.top + pos.top,
 										left : pos2.left + pos.left
 									});
-									$(this).closest('.workspaceContainer')
+									$(this).closest('.workspace')
 											.append($(this));
 								}
 								$(this).draggable( {
