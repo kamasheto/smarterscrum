@@ -19,6 +19,9 @@
 	position: relative;
 	display: block;
 }
+.draggableChild .min {
+	display: none;
+}
 
 .ui-widget-header {
 	font-weight: normal;
