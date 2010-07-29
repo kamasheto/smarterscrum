@@ -25,11 +25,18 @@ public class Comment extends SmartModel{
 	
 	public long timeOfComment;
 	
+	public boolean deleted=false;
+	
 	public Comment(User user, long taskId, String comment){
 		this.comment = comment;
 		task = Task.findById(taskId);
 		author = user;
 		//this.type = type;
 		timeOfComment = new Date().getTime();
+	}
+	
+	public  void deleteComment(){
+		this.deleted = true;
+		this.save();
 	}
 }
