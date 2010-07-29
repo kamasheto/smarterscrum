@@ -125,7 +125,9 @@
 		</span> 
 		<div id="top_header_projects_pane" class="hidden">
 			<input type="text" value="" id="project_search_text" onkeyup="search_projects()">
-			<div id="projects_search_results"></div>
+			<div id="projects_search_results">#{list items:connected?.projects, as:'project'}
+				<div><a onclick="showProjectWorkspace(${project.id})">${project.name}</a></div>
+			#{/list}</div>
 			<div id="add-new-project-link"><a href="#" onclick="overlayOpen('/admin/projects/new')" style=""><img src="/public/images/95.png" style="width:18px"> Add New</a></div>
 		</div>
 	#{/if}
