@@ -103,6 +103,7 @@ public class Security extends Secure.Security
 			Security.forgotPassword();
 		}
 		User u;
+		username=username.toLowerCase();
 		if( username.contains( "@" ) )
 		{
 			u = User.find( "byEmail", username ).first();
