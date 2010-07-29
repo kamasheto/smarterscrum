@@ -214,13 +214,8 @@ $(function() {
 								$(this).children().show();
 								$(this).removeClass('draggableChild');
 								$(this).addClass('draggable');
-								if (!$(this).data('loaded')
-										&& $(this).find('.ui-widget-content')
-												.first().html() == '') {
-									load($(this).attr('name') + ' .actual', $(
-											this).attr('id'));
-									$(this).data('loaded', 9);
-								}
+																	load($(this).attr('name') + ' .actual', $(this).attr('id'));
+								
 
 							},
 							start : function(event, ui) {
@@ -239,20 +234,21 @@ $(function() {
 	$('.min').live(
 			'click',
 			function() {
+				if($(this).parent().next().html()=='')
+					load2($(this).parent().parent().attr('name') + ' .actual',$(this).parent().parent().attr('id'));
 
-				if (!$(this).parent().parent().data('loaded')
-						&& $(this).parent().next().html() == '') {
-					load($(this).parent().parent().attr('name') + ' .actual',
-							$(this).parent().parent().attr('id'));
-					$(this).parent().parent().data('loaded', 9);
-
-				}
+				
 
 				$(this).parent().next().slideToggle(400);
 
 			});
 
 	$('.revertFrom').live('click', function() {
+		var url = $(this).parent().parent().attr('name');
+		myDivs = $.grep(myDivs, function(value) {
+	
+		    return value != url;
+		});
 		var theId = $(this).parent().parent().attr('id');
 		var theSecondId = theId + "_2";
 		if ($('#' + theSecondId).attr('id') == null)
@@ -263,17 +259,19 @@ $(function() {
 			$('#' + theId).addClass('draggableChild');
 			$('#' + theSecondId).replaceWith($('#' + theId));
 		}
-		url = $(this).parent().parent().attr('name');
-		myDivs = $.grep(myDivs, function(value) {
 	
-		    return value != url;
-		});
 	});
 });
 
 function load(url, el) {
 
 	if($.inArray(url,myDivs)==-1){
+	load2(url,el)
+		myDivs.push(url);
+
+
+}}function load2(url, el) {
+
 	var pUrl = $('#'+el).attr('name');
 	$('#'+el+'_header').load(pUrl+' .mainH', function(){
 		
@@ -286,10 +284,10 @@ function load(url, el) {
 		$('#' + el + ' .loading').first().hide();
 		$('#' + el + '_content').slideDown(400);
 		magic(el);
-		myDivs.push(url);
+		
 
 	});
-}}
+}
 
 function removeMe(me)
 {
@@ -331,7 +329,11 @@ function magic(id) {
 						}
 						else{
 
-						var id2 = "ui" +num++;
+						var url = $(this).attr('name');
+						var url2 = url+' .actual';
+						if($.inArray(url,myDivs)==-1 && $.inArray(url2,myDivs)==-1){
+							
+							var id2 = "ui" +num++;
 						var head = '<div id="'+id2+'_header" class="ui-widget-header mainH"><span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span></span><span class="min"onclick="$(this).children().toggle();"><span class="ui-icon ui-icon-circle-triangle-n" style="display: none;"></span><span class="ui-icon ui-icon-circle-triangle-s"></span></span>' + $(this).html() + '</div>';
 						$(this).html(head);
 						$(this).addClass('ui-widget-content draggableChild');
@@ -340,6 +342,17 @@ function magic(id) {
 						$(this)
 								.append(
 										'<div id="' + id2 + '_content" class="ui-widget-content" ></div>');
+						}
+						else
+						{	//alert($($(this).closest('.workspaceContainer').find('div[name='+$(this).attr('name')+']')).first().attr('id'));
+							var id2= $($(this).closest('.workspaceContainer').find('div[name='+$(this).attr('name')+']')).first().attr('id')+'_2';
+							var head = '<div id="'+id2+'_header" class="ui-widget-header mainH">' + $(this).html() + '</div>';
+							$(this).html(head);
+							$(this).addClass('clone');
+
+							$(this).attr('id', id2);	
+						}
+						
 						}
 					});
 
