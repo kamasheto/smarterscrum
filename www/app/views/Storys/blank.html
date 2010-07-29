@@ -1,12 +1,13 @@
 #{extends 'overlay.html' /}
 
+<script type="text/javascript" src="@{'/public/javascripts/jquery.autocomplete.js/'}"></script>
 <div id="crudBlank" class="${type.name}">
-	
+
 	<h2 id="crudBlankTitle">&{'crud.blank.title', type.modelName}</h2>
 	
 	<div class="objectForm">
 	#{form action:@create(), enctype:'multipart/form-data'}
-		#{crud.form fields:['componentID', 'productRole','description', 'priority', 'notes', 'dependentStories']}
+		#{crud.form fields:['componentID', 'description', 'priority', 'notes', 'dependentStories']}
 		
 		#{crud.custom 'componentID'}
 			<label for="object_componentID">component*</label>
@@ -21,37 +22,16 @@
 		#{crud.custom 'description' }
 			
 					<label for="object_description">Description	</label>
-					
-						AS a <select id="descRole" onchange="setRole();" >
-								#{list items:project.productRoles ,as :'productRole'}
-									<option value="${productRole.id}">${productRole.name}</option>
-									
-								#{/list}
-								
-						</select> , I can
-	
-						<TEXTAREA id="object_description"  name="object.description" ROWS="4" COLS="60"></TEXTAREA>
+			
+						<textarea id="example"  name="object.description" ROWS="4" COLS="60" onclick="f();"></textarea>
+		  
 		    <span class="crudHelp">*</span>
+		  <div style="display:none" class="d">Ex: As a/an product role, description</div>
 		    <span class="error"></span>
 		    </div>
 		#{/crud.custom}
 		
-			#{crud.custom 'productRole'}
-					<div name="view-more" style="display:none">
-		
-						 <select id="object_productRole" name="object.productRole@id" onchange="setDesc();">
-								#{list items:project.productRoles ,as :'productRole'}
-									<option value="${productRole.id}">${productRole.name}</option>
-									
-								#{/list}
-								
-						</select> 
-		    <span class="crudHelp">*</span>
-		    <span class="error"></span>
-		    </div>
-		#{/crud.custom}
-		
-		#{crud.custom 'priority'}
+			#{crud.custom 'priority'}
 		<div name="view-more" style="display:none">
 				<label for="object_priority">priority</label>
 				<select id="object_priority" name="object.priority">
@@ -62,6 +42,7 @@
 				<span class="crudHelp">*</span>
 				</div>
 		#{/crud.custom}
+		
 		
 		#{crud.custom 'dependentStories'}
 		<div name="view-more" style="display:none">
@@ -74,23 +55,35 @@
 								#{/if}
 							#{/list}		
 				</select>
-    			<span class="crudHelp">*</span>
     			</div>
 		#{/crud.custom}
 		
 	#{/crud.form}
 	<a href="#" onclick = "toggleOptions()" name="view-more-link">View more options</a>
 		<p class="crudButtons">
-			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
-			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
-			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" />
+			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" onclick="product_role(${story.id});"/>
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" onclick="product_role();" />
+			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" onclick="product_role();"/>
 		</p>
 	#{/form}
 	</div>
 
-</div>
-
 <script type="text/javascript">
+	var data='${productRoles}'.split("-");
+	$("#example").autocomplete(data);
+	
+	function f()
+	{
+		$('.d').css('display','inline-block');
+	}
+	
+	function product_role(id)
+	{
+		$.post('/Storys/addProductRole' ,			
+			{projectID:id,						
+			description:$("#example").val()});
+	} 
+	
 function setDesc()
 {
 	for(var i=0; i< $('#object_productRole').length +1;i++)
