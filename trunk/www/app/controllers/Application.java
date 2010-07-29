@@ -89,9 +89,11 @@ public class Application extends SmartController {
 	 */
 	public static void viewComponents(long id) {
 		Project currentProject = Project.findById(id);
+		if(currentProject.deleted)
+			notFound();
 		boolean inSprint = (currentProject.inSprint(new Date()));
 		String projectName = currentProject.name;
-		List<Component> components = Component.find("byProject.idAnddeleted", id, false).fetch();
+		List<Component> components = Component.find("byProject.idAndDeleted", id, false).fetch();
 
 		render(components, id, projectName, inSprint, currentProject);
 	}
@@ -119,6 +121,8 @@ public class Application extends SmartController {
 	 */
 	public static void deleteComponent(long id) {
 		Component c = Component.findById(id);
+		if(c.deleted)
+			notFound();
 		Security.check(Security.getConnected().in(c.project).can("deleteComponent"));
 		c.deleteComponent();
 		Logs.addLog(Security.getConnected(), "Delete", "Component", c.id, c.project, new Date(System.currentTimeMillis()));
@@ -152,6 +156,8 @@ public class Application extends SmartController {
 			id = Security.getConnected().id;
 		}
 		User user = User.findById(id);
+		if(user.deleted)
+			notFound();
 		Security.check(Security.getConnected().equals(user));
 		render(user);
 	}
@@ -168,6 +174,8 @@ public class Application extends SmartController {
 	 */
 	public static void editProfile(@Required (message = "You must enter a name") String name, String pwd1, String pwd2, @Required (message = "You must enter an email") @Email (message = "You must enter a valid email") String email, long id) {
 		User usr = User.findById(id);
+		if(usr.deleted)
+			notFound();
 		Security.check(Security.getConnected().equals(usr));
 		if (Validation.hasErrors() || (pwd1.length() > 0 && !pwd1.equals(pwd2))) {
 			flash.error("An error has occured");

@@ -21,6 +21,8 @@ public class ChatSystem extends SmartController
 	public static void addMessage( String message, long id )
 	{
 		ChatRoom room = ChatRoom.findById( id );
+		if(room.deleted)
+			notFound();
 		Security.check( Security.getConnected().projects.contains( room.project ) );
 		new Message( Security.getConnected().name, message, room ).save();
 	}
@@ -38,6 +40,8 @@ public class ChatSystem extends SmartController
 	public static void newMessages( long id )
 	{
 		ChatRoom room = ChatRoom.findById( id );
+		if(room.deleted)
+			notFound();
 		Security.check( Security.getConnected().projects.contains( room.project ) );
 		List<Message> messages = Message.find( "room = ?1 and stamp > ?2", room, request.date.getTime() ).fetch();
 		if( messages.isEmpty() )
@@ -64,6 +68,8 @@ public class ChatSystem extends SmartController
 	public static void enterChat( long id )
 	{
 		ChatRoom room = ChatRoom.findById( id );
+		if(room.deleted)
+			notFound();
 		User currentUser = Security.getConnected();
 		Security.check( Security.getConnected().projects.contains( room.project ) );// ||
 		// !(currentUser.openChats.size()==1)
@@ -105,6 +111,8 @@ public class ChatSystem extends SmartController
 	public static void viewRoom( long id )
 	{
 		ChatRoom room = ChatRoom.findById( id );
+		if(room.deleted)
+			notFound();
 		Security.check( Security.getConnected().projects.contains( room.project ) );
 		User currentUser = Security.getConnected();
 		render( room, currentUser );

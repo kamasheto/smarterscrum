@@ -21,7 +21,7 @@ public class Ajax extends SmartController {
 			User me = Security.getConnected();
 			List<Project> myProjects = new LinkedList<Project>();
 			if (me.isAdmin)
-				myProjects = Project.find("byNameLike", "%" + query + "%").fetch();
+				myProjects = Project.find("byNameLikeAndDeleted", "%" + query + "%", false).fetch();
 			else
 				for (Project project : me.projects) {
 					if (project.name.contains(query) && me.in(project).can("invite"))
@@ -34,7 +34,7 @@ public class Ajax extends SmartController {
 			renderJSON(result);
 		} else {
 			List<Project.Object> result = new LinkedList<Project.Object>();
-			for (Project u : Project.find("byNameLike", "%" + query + "%").<Project> fetch()) {
+			for (Project u : Project.find("byNameLikeAndDeleted", "%" + query + "%", false).<Project> fetch()) {
 				result.add(new Project.Object(u.id, u.name));
 			}
 			renderJSON(result);
@@ -50,7 +50,7 @@ public class Ajax extends SmartController {
 	 */
 	public static void users(String query) {
 		List<User.Object> result = new LinkedList<User.Object>();
-		for (User u : User.find("byNameLike", "%" + query + "%").<User> fetch()) {
+		for (User u : User.find("byNameLikeAndDeleted", "%" + query + "%", false).<User> fetch()) {
 			result.add(new User.Object(u.id, u.name));
 		}
 		renderJSON(result);

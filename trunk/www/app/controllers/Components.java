@@ -27,6 +27,8 @@ public class Components extends SmartCRUD {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Project currentProject = Project.findById(id);
+		if(currentProject.deleted)
+			notFound();
 		Security.check(Security.getConnected().in(currentProject).can("addComponent"));
 
 		try {
@@ -134,6 +136,8 @@ public class Components extends SmartCRUD {
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
 		Component component = (Component) object;
+		if(component.deleted)
+			notFound();
 		Security.check(Security.getConnected().in(component.project).can("deleteComponent"));
 		try {
 			component.deleteComponent();
@@ -158,6 +162,8 @@ public class Components extends SmartCRUD {
 	 */
 	public static void show(long id) {
 		Component c = Component.findById(id);
+		if(c.deleted)
+			notFound();
 		Security.check(Security.getConnected().in(c.project).can("editComponent"));
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -183,6 +189,8 @@ public class Components extends SmartCRUD {
 	
 	public static void viewTheComponent(long componentId){
 		Component component = Component.findById(componentId);
+		if(component.deleted)
+			notFound();
 		render(component);
 	}
 

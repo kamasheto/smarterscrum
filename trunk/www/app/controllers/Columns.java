@@ -43,8 +43,8 @@ public class Columns extends SmartController {
 		Calendar cal = new GregorianCalendar();
 		User u = User.findById(userId);
 		List<Column> cols = b.columns;
-		Column c1 = Column.find("bySequenceAndBoard", pos1 - 1, b).first();
-		Column c2 = Column.find("bySequenceAndBoard", pos2 - 1, b).first();
+		Column c1 = Column.find("bySequenceAndBoardAndDeleted", pos1 - 1, b, false).first();
+		Column c2 = Column.find("bySequenceAndBoardAndDeleted", pos2 - 1, b, false).first();
 		Logs.addLog(u, "edit", "Column Position", c1.id, p, cal.getTime());
 		String message = u.name + " has changed the position of " + c1.name + " from " + c1.sequence + " to " + c2.sequence;
 		Notifications.notifyUsers(p, "Edit Column Position", message, "editColumnPosition", (byte) 0);
@@ -100,8 +100,8 @@ public class Columns extends SmartController {
 				Component c = Component.findById(cid);
 				b=c.componentBoard;
 			}
-		Column c1 = Column.find("bySequenceAndBoard", pos1, b).first();
-		Column c2 = Column.find("bySequenceAndBoard", pos2, b).first();
+		Column c1 = Column.find("bySequenceAndBoardAndDeleted", pos1, b, false).first();
+		Column c2 = Column.find("bySequenceAndBoardAndDeleted", pos2, b, false).first();
 		c1.sequence = pos2;
 		c2.sequence = pos1;
 		c1.save();
