@@ -249,6 +249,11 @@ $(function() {
 	
 		    return value != url;
 		});
+		var url2 = $(this).parent().parent().attr('name')+' .actual';
+		myDivs = $.grep(myDivs, function(value) {
+	
+		    return value != 2url;
+		});
 		var theId = $(this).parent().parent().attr('id');
 		var theSecondId = theId + "_2";
 		if ($('#' + theSecondId).attr('id') == null)
