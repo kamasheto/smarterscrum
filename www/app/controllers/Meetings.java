@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import controllers.CRUD.ObjectType;
+
 import models.Artifact;
 import models.Component;
 import models.Meeting;
@@ -128,12 +130,12 @@ public class Meetings extends SmartCRUD
 		notFoundIfNull( type );
 		JPASupport object = type.findById( id );
 		Meeting meeting = (Meeting) object;
-		Project p = meeting.project;
-		Security.check( Security.getConnected().in( p ).can( "editMeeting" ) );
-		List<Sprint> sprints = p.upcomingSprints();
+		Project currentProject = meeting.project;
+		List<Sprint> sprints = currentProject.upcomingSprints();
+		List<String> types = currentProject.meetingTypes();
 		try
 		{
-			render( type, object, sprints );
+			render( type, object, sprints ,types);
 		}
 		catch( TemplateNotFoundException e )
 		{
@@ -267,65 +269,66 @@ public class Meetings extends SmartCRUD
 
 	}
 
-	/**
-	 * This action takes the meetings parameters and checks their validity
-	 * before saving changes to meeting.
-	 * 
-	 * @param id
-	 *            long
-	 * @param name
-	 *            String
-	 * @param description
-	 *            description
-	 * @param startTime
-	 *            long
-	 * @param endTime
-	 *            long
-	 * @param location
-	 *            String
-	 * @param infrontBoard
-	 *            boolean
-	 *@author Behairy
-	 */
-
-	// @Check ("canEditMeeting")
-	public static void saveChanges( long id, String name, String description, long startTime, long endTime, String location, String sprintId )
+	public static void save(String id) throws Exception
 	{
-		Meeting m = Meeting.findById( id );
-		Security.check( Security.getConnected().in( m.project ).can( "editMeeting" ) );
+		ObjectType type = ObjectType.get(getControllerClass());
+		notFoundIfNull(type);
+		JPASupport object = type.findById(id);
+		validation.valid( object.edit( "object", params ) );
+		Meeting temp = (Meeting) object;
+		Project currentProject = temp.project;
+		Security.check( Security.getConnected().in( currentProject ).can( "editMeeting" ) ||temp.creator.equals(Security.getConnected()) ||temp.endTime<new Date().getTime());
 		Date currentDate = new Date();
 		long longCurrentDate = currentDate.getTime();
-		boolean timeFlag = false;
-
-		// Check Time Validity
-		if( startTime > longCurrentDate && startTime < endTime )
+		List<Sprint> sprints = currentProject.upcomingSprints();
+		List<String> types = currentProject.meetingTypes();
+		if( validation.hasErrors() )
 		{
-			timeFlag = true;
-		}
-
-		if( timeFlag )
-		{
-			m.startTime = startTime;
-			m.endTime = endTime;
-			m.description = description;
-			m.location = location;
-			m.name = name;
-			/**
-			 * adding the sprint to the meeting
-			 * 
-			 * @author minazaki
-			 */
-			if( !sprintId.equals( "none" ) )
-			{
-				Sprint sprint = Sprint.findById( Long.parseLong( sprintId ) );
-				sprint.meetings.add( m );
-				sprint.save();
-				m.sprint = sprint;
+			renderArgs.put( "error", Messages.get( "crud.hasErrors" ) );
+			try
+			{		
+				render( "Meetings/show.html", type,object, sprints ,types);
 			}
-			Logs.addLog( Security.getConnected(), "Edit", "Meeting", m.id, m.project, new Date( System.currentTimeMillis() ) );
-			m.save();
+			catch( TemplateNotFoundException e )
+			{
+				render( "CRUD/show.html", type ,object, sprints ,types);
+			}
 		}
-		renderJSON( timeFlag );
+		else if( !(temp.startTime > longCurrentDate && temp.startTime < temp.endTime) )
+		{
+
+			renderArgs.put( "error", "Please fix Meeting date" );
+			render( "Meetings/show.html", type,object , sprints ,types);
+			// render( request.controller.replace( ".", "/" ) + "/blank.html",
+			// type );
+		}
+		/*
+		 * adding the selected sprint to the meeting
+		 * @author minazaki
+		 */
+		if( !params.get( "object.sprintid" ).equals( "none" ) )
+		{
+			Sprint sprint = Sprint.findById( Long.parseLong( params.get( "object.sprintid" ) ) );
+			sprint.meetings.add( temp );
+			sprint.save();
+			temp.sprint = sprint;
+		}
+		if( params.get( "object.type" ) != null )
+		{
+			temp.type = params.get( "object.type" );
+		}
+
+		object.save();
+		
+
+		Logs.addLog( Security.getConnected(), "edit", "Meeting", temp.id, temp.project, new Date( System.currentTimeMillis() ) );
+		flash.success( "Meeting edited successfully" );
+		if( params.get( "_save" ) != null )
+		{
+			// redirect( request.controller + ".list" );
+			// Meetings.viewMeetings( currentProject.id );
+			redirect( "/Application/overlayKiller" );
+		}
 	}
 
 	public static void associations( long id )
