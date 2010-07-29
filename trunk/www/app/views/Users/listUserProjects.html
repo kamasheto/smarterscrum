@@ -1,0 +1,11 @@
+#{extends 'magicBox.html' /}
+#{set 'title'}${title}
+#{/set}
+
+#{if x==1}
+   #{if user!=null}
+	   #{list items:user.projects ,as :'project'}
+	     ${project.name}
+	   #{/list}
+   #{/if}
+#{/if}

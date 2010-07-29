@@ -343,4 +343,15 @@ public class Users extends SmartCRUD {
 			}
 		}
 	}
+	
+	public static void listUserProjects(long userId, int x)
+	{
+		String title;
+		if(x==1)
+		{
+		User user = User.findById(userId);
+		title= user.name+"'s Projects";
+		render(user, title);
+		}
+	}
 }
