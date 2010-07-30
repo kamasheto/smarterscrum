@@ -257,7 +257,7 @@ No Attendees
 		#{list items:col, as:'task'}
 		<!-- small sticky note -->
 		#{if connected.in(p).can('changeTaskStatus') || connected.equals(task.assignee) || connected.equals(task.reviewer)}
-		<div id="task-${task.id}_T" class="drag status status_${task.id}">
+		<div style="float:left" id="task-${task.id}_T" class="drag status status_${task.id}">
 		<p>		
 		<div class="${task.taskStatus.columns[0].name}" style="max-width:130px"></div>  
 		<div style="max-width:130px" id="task-${task.id}_T" class="drag status status_${task.id}">
@@ -278,7 +278,7 @@ No Attendees
 		</p>
 		
 		<!-- big sticky note -->						
-		<p> 
+		<p style="float:left"> 
 		<div style="display:none;"  id="${task.id}Large" style="border:hidden">
 		<div style="max-width:165px" id="tas-${task.id}_" >
 		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 15px;border=0px" id="tas-${task.id}_T">
