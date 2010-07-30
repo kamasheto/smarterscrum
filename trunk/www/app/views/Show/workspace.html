@@ -1,3 +1,8 @@
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+		loadBox('@{Projects.myTasks(proj.id)}', 'workspace-${proj.id}');
+	})
+</script>
 <div class="topper nav">
 <!-- DO NOT REMOVE THIS! If you want to, hide the class.. this element is used to create the top button! -->
 <span class="project_name_in_header">${proj.name}</span>
