@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import notifiers.Notifications;
+
 import models.Component;
 import models.Project;
 import models.User;

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import notifiers.Notifications;
+
 import models.Artifact;
 import models.Component;
 import models.Meeting;
@@ -135,7 +137,7 @@ public class ReviewLog extends SmartController {
 
 			for (Meeting m : noteMeetings) {
 				Notifications.notifyUsers(getAttendanceConfirmed(m.id), header,
-						body, (byte) 1);
+						body, (byte) 0);
 			}
 			Logs.addLog(userWhoChanged, body, "Note", id,
 					note.meetingsArtifacts.get(0).project, new Date());

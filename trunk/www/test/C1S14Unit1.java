@@ -7,7 +7,7 @@ import models.Role;
 import models.User;
 import org.junit.Test;
 import controllers.Logs;
-import controllers.Notifications;
+import notifiers.Notifications;
 import controllers.Requests;
 import controllers.Security;
 import play.mvc.Before;

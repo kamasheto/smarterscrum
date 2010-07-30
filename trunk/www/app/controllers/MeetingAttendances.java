@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import notifiers.Notifications;
+
 import models.Meeting;
 import models.MeetingAttendance;
 import models.Project;

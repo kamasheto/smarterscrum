@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import notifiers.Notifications;
+
 import controllers.CRUD.ObjectType;
 
 import models.Artifact;
@@ -509,7 +511,7 @@ public class Meetings extends SmartCRUD
 			meeting.status = false;
 			if( users.isEmpty() == false )
 				message = "unfortunately " + meeting.name + " meeting that you've been invited to is cancelled";
-			Notifications.notifyUsers( users, "Meeting Canceled", message );
+			Notifications.notifyUsers( users, "Meeting Canceled", message, (byte) -1);
 		}
 
 		List<Artifact> artifacts = meeting.artifacts;
@@ -525,7 +527,7 @@ public class Meetings extends SmartCRUD
 		{
 			if( users.isEmpty() == false )
 				message = "unfortunately " + meeting.name + " meeting notes are deleted.";
-			Notifications.notifyUsers( users, "Meeting Notes deleted", message );
+			Notifications.notifyUsers( users, "Meeting Notes deleted", message, (byte) -1);
 		}
 		Logs.addLog( Security.getConnected(), "delete", "Meeting", meeting.id, meeting.project, new Date( System.currentTimeMillis() ) );
 		meeting.save();
@@ -562,7 +564,7 @@ public class Meetings extends SmartCRUD
 		String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
 		String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
 		String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-		Notifications.notifyUsers( userList, header, body );
+		Notifications.notifyUsers( userList, header, body, (byte) 0);
 
 	}
 
@@ -599,7 +601,7 @@ public class Meetings extends SmartCRUD
 					String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
 					String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
 					String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-					Notifications.notifyUsers( userList, header, body );
+					Notifications.notifyProjectUsers( meeting.project, header, body, "setMeeting", (byte)0);
 				}
 			}
 		}
@@ -646,7 +648,7 @@ public class Meetings extends SmartCRUD
 						String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
 						String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
 						String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-						Notifications.notifyUsers( userList, header, body );
+						Notifications.notifyUsers( userList, header, body, (byte)0);
 					}
 				}
 			}
@@ -701,7 +703,7 @@ public class Meetings extends SmartCRUD
 
 		if( users.isEmpty() == false )
 		{
-			Notifications.notifyUsers( users, " " + meeting.name + " Meeting Modification", message );
+			Notifications.notifyUsers( users, " " + meeting.name + " Meeting Modification", message, (byte)0);
 			flag = true;
 		}
 		renderJSON( flag );

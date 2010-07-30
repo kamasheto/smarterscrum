@@ -7,6 +7,8 @@ import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
+import notifiers.Notifications;
+
 import controllers.Security;
 
 import models.Board;
@@ -357,7 +359,7 @@ public class Boards extends SmartCRUD {
 			notFound();
 		Logs.addLog(u, "shown", "Column", cid, c.board.project, cal.getTime());
 		String message = u.name+" "+ "has shown " + c.name;
-		Notifications.notifyUsers(c.board.project, "Show Column",message, "addColumn", (byte) 0);
+		Notifications.notifyProjectUsers(c.board.project, "Show Column",message, "addColumn", (byte) 0);
 		
 	}
 	/**
@@ -395,7 +397,7 @@ public class Boards extends SmartCRUD {
 			notFound();
 		Logs.addLog(u, "hided", "Column", c.id, c.board.project, cal.getTime());
 		String message = u.name+" " + "has hided " + c.name;
-		Notifications.notifyUsers(c.board.project, "Hide Column", message, "deleteColumn", (byte) 0);
+		Notifications.notifyProjectUsers(c.board.project, "Hide Column", message, "deleteColumn", (byte) 0);
 		
 		
 	}

@@ -3,6 +3,8 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import notifiers.Notifications;
+
 import models.Component;
 import models.Project;
 import models.Sprint;
@@ -123,7 +125,7 @@ public class ImpedimentTasks extends SmartController {
 
 		Sprint s = Sprint.findById(j.taskSprint.id);
 		Project project = impedimentTask.taskSprint.project;
-		Notifications.notifyUsers(project, "Impediment reported", impedimentTask.description, "reportImpediment", (byte) -1);
+		Notifications.notifyProjectUsers(project, "Impediment reported", impedimentTask.description, "reportImpediment", (byte) -1);
 
 		Logs.addLog(project, "added", "Task", impedimentTask.id);
 	}
