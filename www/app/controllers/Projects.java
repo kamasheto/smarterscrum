@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import notifiers.Notifications;
+
 import models.Component;
 import models.Priority;
 import models.Project;
@@ -228,7 +230,7 @@ public class Projects extends SmartCRUD {
 		+ " Task Status name: " + "\'" + t.name + "\'" +"." + '\n'
 		+ " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		Logs.addLog(Security.getConnected(), "Create", "TaskStatus", t.id, p, new Date(System.currentTimeMillis()));
-		Notifications.notifyUsers(p, header, body, "addTaskStatus", new Byte((byte) 1));
+		Notifications.notifyProjectUsers(p, header, body, "addTaskStatus", (byte) 0);
 		renderJSON(t.id);
 	}
 	
@@ -265,7 +267,7 @@ public class Projects extends SmartCRUD {
 		String body = "In Project " + "\'" + p.name + "\'" + "." + '\n'
 				+ " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		Logs.addLog(Security.getConnected(), "Edit", "TaskStatus", taskStatus.id, p, new Date(System.currentTimeMillis()));
-		Notifications.notifyUsers(p, header, body, "editTaskStatus", new Byte((byte) 0));
+		Notifications.notifyProjectUsers(p, header, body, "editTaskStatus", (byte) 0);
 		renderJSON( true );
 	}
 	
@@ -295,7 +297,7 @@ public class Projects extends SmartCRUD {
 		String body = "In Project " + "\'" + taskStatus.project.name + "\'" + "." + '\n'
 				+ " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		Logs.addLog(Security.getConnected(), "Delete", "TaskStatus", taskStatus.id, taskStatus.project, new Date(System.currentTimeMillis()));
-		Notifications.notifyUsers(taskStatus.project, header, body, "deleteTaskStatus", new Byte((byte) -1));
+		Notifications.notifyProjectUsers(taskStatus.project, header, body, "deleteTaskStatus", (byte) -1);
 		renderJSON(true);
 	}
 	

@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import notifiers.Notifications;
+
 import models.Board;
 import models.Column;
 import models.Comment;

@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import notifiers.Notifications;
+
 import models.Board;
 import models.Component;
 import models.Meeting;
@@ -173,8 +175,8 @@ public class Show extends SmartController {
 		project.save();
 		String body = "Please note that the project " + project.name + " has been deleted and all upcoming meetings and events are cancelled !";
 		String header = project.name + " deletion notification";
-		List<User> projectMembers = project.users;
-		Notifications.notifyUsers(projectMembers, header, body, (byte) -1);
+		//List<User> projectMembers = project.users;
+		Notifications.notifyProjectUsers(project, header, body, "deleteProject",(byte) -1);
 		Logs.addLog(Security.getConnected(), "Deleted Project", "project", id, project, new Date());
 		// } else {
 		// forbidden();

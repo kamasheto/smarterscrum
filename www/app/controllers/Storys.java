@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import notifiers.Notifications;
+
 import models.Component;
 import models.Meeting;
 import models.ProductRole;
@@ -744,7 +746,7 @@ public class Storys extends SmartCRUD {
 		 * sprint.project.name + "\'" + "."+ '\n' + '\n' + " Assigned by: " +
 		 * "\'" + Security.getConnected().name + "\'" + ".";
 		 */
-		Notifications.notifyUsers(sprint.project, header, body, "assignStoryToSprint", new Byte((byte) 0));
+		Notifications.notifyProjectUsers(sprint.project, header, body, "assignStoryToSprint", (byte) 0);
 		Logs.addLog(Security.getConnected(), "Assign", "Story To Sprint", story.id, sprint.project, new Date(System.currentTimeMillis()));
 		story.save();
 		sprint.save();

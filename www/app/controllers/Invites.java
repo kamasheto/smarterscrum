@@ -1,5 +1,6 @@
 package controllers;
 
+import notifiers.Notifications;
 import models.Invite;
 import models.Role;
 import models.User;
