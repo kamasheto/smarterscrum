@@ -301,12 +301,26 @@ List<User> users = c.getUsers();
 	 *            the string that filters the list of board according to its
 	 *            type
 	 */
-	public static void index(long id, String type) {
+	public static void index(long sid, long pid, long cid) {
 
-		List<Snapshot> snapshots = Snapshot.find("sprint.id = ? and type = ? ", id, type).fetch();
-		if(snapshots.size()!=0){Sprint s=snapshots.get(0).sprint;
-		render(snapshots,type,s);}
-		render(snapshots,type);
+		Sprint s = Sprint.findById(sid);
+		List<Snapshot> snapshots = new ArrayList();
+		if(pid!=0)
+		{
+			Project p = Project.findById(pid);
+			snapshots = Snapshot.find("byBoardAndSprint",p.board,s).fetch();
+			render(snapshots,p,pid,cid);
+		}
+		else
+		{
+			Component c = Component.findById(cid);
+			snapshots = Snapshot.find("byBoardAndSprint",c.componentBoard,s).fetch();
+			render(snapshots,c,pid,cid);
+		}
+		//List<Snapshot> snapshots = Snapshot.find("sprint.id = ? and type = ? ", id, type).fetch();
+		//if(snapshots.size()!=0){Sprint s=snapshots.get(0).sprint;
+		//render(snapshots,type,s);}
+		//render(snapshots,type);
 	}
 	public static void indexuser(long id, String type) {
 

@@ -1,6 +1,12 @@
 #{extends 'magicBox.html' /}
 #{set 'title'}
-Snapshots of ${type} board #{/set}
+#{if pid!=0}
+Snapshots of ${p.name} board
+#{/if} 
+#{else}
+Snapshots of ${c.name} board
+#{/else}
+#{/set}
 
 
 #{if (snapshots.size()==0)}
