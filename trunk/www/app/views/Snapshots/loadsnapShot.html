@@ -2,8 +2,13 @@
 
 
 <ul id="data" id="Columnsofsnapshot" >
+#{if cid==0}
+<a href="/boards/loadboard1?sprintID=${snap.sprint.id}" title="back to board" class="tiptitize"><img src="@{'/public/images/famfam/back.bmp'}"></a>
+#{/if}
+#{else}
+<a href="/boards/loadboard1?sprintID=${snap.sprint.id}&componentID=${cid}" title="back to board" class="tiptitize"><img src="@{'/public/images/famfam/back.bmp'}"></a>
+#{/else}
 <h1>${snap.type} Snapshot</h1>
-
 		<table>
 				<thead>	
 					<td style="border:1px solid #333"><b>Headers</b></td>
