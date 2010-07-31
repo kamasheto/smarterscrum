@@ -148,13 +148,35 @@ public class Boards extends SmartCRUD {
 		}
 	}	
 	
-	/**
-	 * order any list of columns and return the ordered list.
-	 * 
-	 * @author Josephhajj
-	 * @param cols
-	 */
-
+	public static void loadMeetings(long pid, long componentID)
+	{
+		Project p = Project.findById(pid);
+		ArrayList ud = getDescPerm(p);    //list of users with permission to edit task description
+		ArrayList ua = getAssiPerm(p);	  //list of users with permission to edit task assignee
+		ArrayList ur = getRevPerm(p);     //list of users with permission to edit task reviewer
+		ArrayList ut = getTypePerm(p);    //list of users with permission to edit task type
+		ArrayList us = getStatusPerm(p);  //list of users with permission to edit task status
+		if(componentID==0)
+		{
+			ArrayList<ArrayList<User>> u=Meetingloadboard( p,componentID);     //list of users attending meeting infront of board (not admins)
+			ArrayList<ArrayList<User>> uAdmin=MeetingloadboardAdmin( p, componentID);   //list of users attending meeting infront of board (admins)
+			render(ud, ua, ur, ut, us, u, uAdmin);
+		}
+		else
+		{
+			ArrayList<ArrayList<User>> u=Meetingloadboard( p,componentID);    //list of users attending meeting infront of board (not admins)
+			ArrayList<ArrayList<User>> uAdmin=MeetingloadboardAdmin( p, componentID);   //list of users attending meeting infront of board (admins)
+			render(ud, ua, ur, ut, us, u, uAdmin);
+		}
+	}
+	
+		/**
+		 * order any list of columns and return the ordered list.
+		 * 
+		 * @author Josephhajj
+		 * @param cols
+		 */	
+		
 	public static List<Column> orderColumns(List<Column> cols) {
 		int smallest;
 		Column temp;
