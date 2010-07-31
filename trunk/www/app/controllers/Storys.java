@@ -291,26 +291,37 @@ public class Storys extends SmartCRUD {
 		else
 		{
 			String [] desc2 = desc[0].split(" ");
-			if(desc2.length==3)
+			if(desc2.length>=3)
 			{
 			if(desc2[0].equalsIgnoreCase("as") && (desc2[1].equalsIgnoreCase("a")||desc2[1].equalsIgnoreCase("an")))
 					{
 				boolean flag=false;
+				String productrole="";
+				for(int k=2;k<desc2.length;k++)
+				{
+					if(k==desc2.length-1)
+						productrole=productrole+desc2[k];
+					else
+						productrole=productrole+desc2[k]+" ";
+						
+					
+				}
 				for(int j=0;j<storyObj.componentID.project.productRoles.size();j++)
 				{
-					if(storyObj.componentID.project.productRoles.get(j).name.equalsIgnoreCase(desc2[2]))
+					if(storyObj.componentID.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
 						flag=true;
 				}
 				if(!flag)
 				{
-					ProductRole pr = new ProductRole(storyObj.componentID.project.id, desc2[2], "");
+					ProductRole pr = new ProductRole(storyObj.componentID.project.id, productrole, "");
+					pr.save();
 					storyObj.productRole = pr;				
 				}
 				else
 				{
 					for(int j=0;j<storyObj.componentID.project.productRoles.size();j++)
 					{
-						if(storyObj.componentID.project.productRoles.get(j).name.equalsIgnoreCase(desc2[2]))
+						if(storyObj.componentID.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
 							{
 							storyObj.productRole = storyObj.componentID.project.productRoles.get(j);
 							}
