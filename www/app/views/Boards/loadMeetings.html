@@ -48,7 +48,7 @@ function displayTZCountDown(countdown,tzcd)
 		if (answer) 
 		{
 			extend(${users.meeting.id});
-			location.reload();	
+			window.location.reload();	
 		}
 		else
 		{
@@ -56,9 +56,9 @@ function displayTZCountDown(countdown,tzcd)
 			if(answera)
 			{
 				take_meetingsnapshot(${users.meeting.id});
-				location.reload();
+				window.location.reload();
 			}
-			else{location.reload();}
+			else{window.location.reload();}
 		}	
 	}
 	else 
@@ -108,6 +108,32 @@ No Attendees
 
 <script>
 	$('.tiptipize').tipTip({delay:0});
+	
+	function end(id) {
+	var ans=confirm('are you sure you want to end the meeting?');
+	if(ans){
+	$.post('/Meetings/end', {meetingid:id},function(){
+		window.location.reload()
+	});
+	var answer=confirm('The system will now automaticaly update the associated snapshot to the current view of the board!')
+	if (answer) {
+	take_meetingsnapshot(id);
+	}
+	
+	}
+	}
+	function join(id)
+	{
+	$.post('/Meetings/joinMeeting', {meetingID:id},function()
+	{
+		window.location.reload();
+	});
+		function extend(id,date) {
+		$.post('/Meetings/extend', {meetingid:id}, function(){alert('extended!')});
+	}
+	
+		}
+	
 	function select_user(id, str) 
  {
  	// $('.status').css('display','none');
@@ -231,7 +257,8 @@ No Attendees
 		window.opener.$('.shows_'+id).css('display','inline-block');
 					
 	}
-	 
+	
+	
 	}
 
 </script>

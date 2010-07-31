@@ -522,28 +522,6 @@ $('.component').click(function()
 		$.post('@{snapshots.takesnapshot()}', {sprintID:${s.id},componentID:id,meetingID:0} ,function(){alert('saved!')});	
 	}
 
-		function extend(id,date) {
-		$.post('/Meetings/extend', {meetingid:id}, function(){alert('extended!')});
-	}
-	function end(id) {
-	var ans=confirm('are you sure you want to end the meeting?');
-	if(ans){
-	$.post('/Meetings/end', {meetingid:id});
-	var answer=confirm('The system will now automaticaly update the associated snapshot to the current view of the board!')
-	if (answer) {
-	take_meetingsnapshot(id);
-	location.reload();
-	}
-	
-	}
-		}
-		function join(id)
-		{
-			$.post('/Meetings/joinMeeting', {meetingID:id},function()
-			{
-				window.location.reload();
-				});
-		}
 	function take_meetingsnapshot(id) {
 	
 		$.post('/snapshots/takesnapshot', {sprintID:${s.id},componentID:0,meetingID:id}, function(){alert('Snapshot Associated!')});
