@@ -154,26 +154,26 @@ REDIPS.drag.init()
 		#{/set}
 		#{list items:col, as:'task'}
 		<!-- small sticky note -->
+		<div style="float:left" id="task-${task.id}_T" class="drag">
+		<a id="task-${task.id}_hidden" style="display:none; font-size:large;cursor: pointer !important" class="showtask">+</a>
+		
 		#{if connected.in(p).can('changeTaskStatus') || connected.equals(task.assignee) || connected.equals(task.reviewer)}
-		<div style="float:left" id="task-${task.id}_T" class="drag status status_${task.id}">
-		<p>		
-		<div class="${task.taskStatus.columns[0].name}" style="max-width:130px"></div>  
-		<div style="max-width:130px" id="task-${task.id}_T" class="drag status status_${task.id}">
+		<div id="task-${task.id}_TT" class="status status_${task.id}">
 		#{/if}
 		#{else}
-		<div class="nostatus nostatus_${task.id}">
-		<p>
-		<div class="${task.taskStatus.column.name}" style="max-width:130px"></div>
-		<div style="max-width:130px" id="task-${task.id}_T" class="nostatus nostatus_${task.id}">
+		<div id="task-${task.id}_TT" class="nostatus nostatus_${task.id}">
 		#{/else}
+		<p>		
+		<div class="${task.taskStatus.columns[0].name}" style="max-width:130px"></div>  
+		<div style="max-width:130px" class="status status_${task.id}">
 		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor}; max-width:110px;border=0px"  id="${task.id}_small">
 		<a id="task-${task.id}" style="font-size:x-large;cursor: pointer !important;border=0px" class="ctask">-</a>S ${task.taskStory.id} 
 		<div id="desc_${task.id}">${task.description}</div>
 		<a class="SmallSticky tiptitize" title="Edit task info?" style="cursor: pointer !important" id="${task.id}">view/edit info..</a>
 		</div>
 		</div>
-		<a id="task-${task.id}_hidden" style="display:none; font-size:large;cursor: pointer !important" class="showtask">+</a>
 		</p>
+		
 		
 		<!-- big sticky note -->						
 		<p style="float:left"> 
@@ -245,6 +245,8 @@ REDIPS.drag.init()
 		</div>
 		</div>
 		</p>
+		</div>
+		</div>
 		</div>
 		#{/list}
 	</td>
@@ -330,12 +332,12 @@ $('.component').click(function()
 		
 	$('.ctask').click(function()
 	{
-		$('#'+this.id+"_T").hide();	
+		$('#'+this.id+"_TT").hide();	
 		$('#'+this.id+"_hidden").show();
 		$('.showtask').click(function(){
 		var splittedT 	= this.id.split("_");
 		var j= splittedT[0];
-		originalT = '#'+j+"_T";
+		originalT = '#'+j+"_TT";
 		$(originalT).show();
 		$(this).hide();
 	});
