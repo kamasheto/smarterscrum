@@ -175,55 +175,55 @@ public class Bootstrap extends Job {
 			
 			// Stories
 
-			Story S1 = new Story("As a System Admin I can view all System logs", "", "", 1, "", 1);
+			Story S1 = new Story("I can view all System logs", "", "", 1, "", 1);
 			S1.componentID = c1;
 			c1.componentStories.add(S1);
 			S1.init();
 			S1.save();
 
-			Story S2 = new Story("As a Project Admin I can create one or more new roles in one or more of my projects.", "", "", 1, "", 1);
+			Story S2 = new Story("I can create one or more new roles in one or more of my projects.", "", "", 1, "", 1);
 			S2.componentID = c1;
 			c1.componentStories.add(S2);
 			S2.init();
 			S2.save();
 
-			Story S3 = new Story("As a System Admin I can edit details of users on the system", "", "", 1, "", 1);
+			Story S3 = new Story("I can edit details of users on the system", "", "", 1, "", 1);
 			S3.componentID = c1;
 			c1.componentStories.add(S3);
 			S3.init();
 			S3.save();
 
-			Story S4 = new Story("As a Registered User I can Request to Create a Project", "", "", 1, "", 1);
+			Story S4 = new Story("I can Request to Create a Project", "", "", 1, "", 1);
 			S4.componentID = c2;
 			c2.componentStories.add(S4);
 			S4.init();
 			S4.save();
 
-			Story S5 = new Story("As a Project Admin I Can Edit the default properties of the project", "", "", 1, "", 1);
+			Story S5 = new Story("I can edit the default properties of the project", "", "", 1, "", 1);
 			S5.componentID = c2;
 			c2.componentStories.add(S5);
 			S5.init();
 			S5.save();
 
-			Story S6 = new Story("As a Project Admin, I can create product roles in a project.", "", "", 1, "", 1);
+			Story S6 = new Story("I can create product roles in a project.", "", "", 1, "", 1);
 			S6.componentID = c3;
 			c3.componentStories.add(S6);
 			S6.init();
 			S6.save();
 
-			Story S7 = new Story("As a Project Admin, I can assign specific stories to a specific sprint.", "", "", 1, "", 1);
+			Story S7 = new Story("Assign specific stories to a specific sprint.", "", "", 1, "", 1);
 			S7.componentID = c3;
 			c3.componentStories.add(S7);
 			S7.init();
 			S7.save();
 
-			Story S8 = new Story("As a Project Admin, I can drag and drop a task", "", "", 1, "", 1);
+			Story S8 = new Story("Drag and drop a task", "", "", 1, "", 1);
 			S8.componentID = c5;
 			c5.componentStories.add(S8);
 			S8.init();
 			S8.save();
 
-			Story S9 = new Story("As a Project Admin, I can estimate effort points", "", "", 1, "", 1);
+			Story S9 = new Story("Estimate effort points", "", "", 1, "", 1);
 			S9.componentID = c4;
 			c4.componentStories.add(S9);
 			S9.init();
@@ -928,8 +928,11 @@ public class Bootstrap extends Job {
 				}
 			}
 
+			//Product Roles
 			ProductRole pr = new ProductRole(1L, "scrum master", "can do anything").save();
-
+			ProductRole pr1 = new ProductRole(1L, "admin", "can do anything").save();
+			ProductRole pr2 = new ProductRole(1L, "developer", "").save();
+			
 			// Hadeer Younis Issue:
 			T1.setEffortOfDay(4, 0);
 			T1.setEffortOfDay(3, 1);
@@ -939,14 +942,29 @@ public class Bootstrap extends Job {
 			S1.failureSenario = " S1 :Failure Scenario 1\n S1 :Failure Scenario 2";
 			S1.succussSenario = "S1: Siccess Scenario\nS1 :Success Scenario 2";
 			S1.save();
+			
 			S3.failureSenario = "S3 :Failure Scenario 1/n S3 :Failure Scenario 2";
 			S3.succussSenario = "S1: Siccess Scenario/nS1 :Success Scenario 2";
 			S3.save();
-			ProductRole pr1 = new ProductRole(1L, "admin", "can do anything").save();
+			
 			S1.productRole = pr1;
 			S1.save();
+			
 			S2.productRole = pr1;
 			S2.save();
+			
+			S3.productRole = pr1;
+			S3.save();
+			
+			S4.productRole = pr2;
+			S4.save();
+			
+			S5.productRole = pr2;
+			S5.save();
+			
+			S6.productRole = pr;
+			S6.save();
+			
 
 		}
 	}
