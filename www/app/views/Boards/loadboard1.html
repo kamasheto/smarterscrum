@@ -25,14 +25,12 @@ REDIPS.drag.init()
 <h1>${comp.name}'s Task Board</h1>
 #{/else}
 
-<a href="#" id="ToggleBoard-open" title="toggle" class="tiptitize" style="display:none"><img src="@{'/public/images/famfam/bullet_toggle_plus.png'}"></a>
-<a href="#" id="ToggleBoard-close" title="toggle" class="tiptitize"><img src="@{'/public/images/famfam/bullet_toggle_minus.png'}"></a>
+<a href="#" id="ToggleBoard-open" onclick="$('#mainBoard').slideToggle(400)" title="toggle" class="tiptitize" style="display:none"><img src="@{'/public/images/famfam/show.bmp'}"></a>
+<a href="#" id="ToggleBoard-close" onclick="$('#mainBoard').slideToggle(400)" title="toggle" class="tiptitize"><img src="@{'/public/images/famfam/hide.png'}"></a>
 
 <!-- Show Col drop down list by Dina -->
 #{set count=0}
 #{/set}
-<a href="#;" class="tiptitize" onclick="$('#changeCol').slideToggle(400)" title="show columns?" type="button" ><img src="@{'/public/images/famfam/show.gif'}"></a>
-
 
 #{if comp==null}
 <a title="view snapshots" class="tiptitize" href="javascript:popUp('/Snapshots/boardsnapshots?sid=${s.id}&pid=${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
@@ -42,6 +40,9 @@ REDIPS.drag.init()
 <a title="view snapshots" class="tiptitize" href="javascript:popUp('/Snapshots/boardsnapshots?sid=${s.id}&cid=${comp.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
 <a title="take a snapshot" class="tiptitize" href="javascript:take_snap(${comp.id})"><img src="@{'/public/images/famfam/camera_add.png'}"></a>
 #{/else}
+
+<a href="#;" class="tiptitize" onclick="$('#changeCol').slideToggle(400)" title="view hidden columns" type="button" ><img src="@{'/public/images/famfam/application_view_columns.png'}"></a>
+
 
 <!-- view hidden Col by Hadeer -->
 #{if connected.in(p).can('ShowColumn')}
@@ -357,16 +358,12 @@ $('.component').click(function()
 	{
 		$('#ToggleBoard-open').css('display','inline-block');
 		$('#ToggleBoard-close').css('display','none');	
-   		event.preventDefault();
-   		$('#mainBoard').toggle();
  	});
  	
 	$('#ToggleBoard-open').click(function(event)
 	{
 		$('#ToggleBoard-open').css('display','none');
 		$('#ToggleBoard-close').css('display','inline-block');
-   		event.preventDefault();
-   		$('#mainBoard').toggle();
  	});
 	
 	$('#form').click(function(event)
