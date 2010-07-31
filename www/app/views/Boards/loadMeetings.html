@@ -1,30 +1,29 @@
-<div id="current"><br/>
+#{extends 'overlay.html' /}
+#{set 'title'}
+Meetings
+#{/set}
 #{if u.size()==0 && uAdmin.size()==0}
 <div><b style="font-size:small;" class="smartBarHeader" >There are no running meetings </b></div>
 #{/if}
 
 #{else}
-<div><b style="font-size:small;" class="smartBarHeader" >Running Meetings</b></div>
 #{list items:u, as:'users'}
-<b>Meeting: ${users.meeting.name}</b><br/>
-<div class="formatTime">${users.meeting.startTime}</div>
-<div id="amr" class="formatTime">${users.meeting.endTime}</div>
-<u>Attendees</u><br/>
-#{list items:users , as:'user'}
-<a id="${user.id}" href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a><br/>
-#{/list}<br/>
-<div id="myLayer"></div>
-<!--Amr Abdelwahab-->
+<div style="float:left;width:4.5cm;">
+<h6>${users.meeting.name}</h6>
 #{if comp==null}
-<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u></a><br/><br />
-<span id="tzcd"></span><br/>
+<a class="tiptitize" title="take meeting snapshot?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><img src="@{'/public/images/famfam/camera_add.png'}"></a>
 #{/if}
 #{else}
-<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_componentmeetingsnapshot(${users.meeting.id},${comp.id});"><u>Attach a SnapShot</u></a><br/><br />
-<span id="tzcd"></span><br/>
+<a class="tiptitize" title="take meeting snapshot?" href="javascript:take_componentmeetingsnapshot(${users.meeting.id},${comp.id});"><img src="@{'/public/images/famfam/camera_add.png'}"></a>
 #{/else}
-<a  href="javascript: end(${users.meeting.id});"><b>end meeting</b></a><br/>
-
+<a title="end meeting?" href="javascript: end(${users.meeting.id});"><img src="@{'/public/images/famfam/cancel.png'}"></a><br/>
+<div class="formatTime">${users.meeting.startTime}</div>
+<div id="amr" class="formatTime">${users.meeting.endTime}</div>
+#{list items:users , as:'user'}
+<a id="${user.id}" href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a><br/>
+#{/list}
+<span id="tzcd"></span><br/>
+<div id="myLayer"></div>
 <script type="text/javascript" charset="utf-8"> 
 // CONFIGURE THE COUNTDOWN SCRIPT HERE
 var date=${users.meeting.endTime};
@@ -77,42 +76,38 @@ function displayTZCountDown(countdown,tzcd)
 	}
 }
 </script>
-
+</div>
 #{/list}
 
 #{list items:uAdmin, as:'users'}
-<a href ="/meetings/${users.meeting.id}"> <b>Meeting: ${users.meeting.name}</b></a><br/>
+<div style="float:left;width:4.5cm;">
+<h6>${users.meeting.name}</h6>
+#{if comp==null}
+<a class="tiptitize" title="take meeting snapshot?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><img src="@{'/public/images/famfam/camera_add.png'}"></a>
+#{/if}
+#{else}
+<a class="tiptitize" title="take meeting snapshot?" href="javascript:take_componentmeetingsnapshot(${users.meeting.id},${comp.id});"><img src="@{'/public/images/famfam/camera_add.png'}"></a>
+#{/else}
+<a class="tiptitize" href="javascript: join(${users.meeting.id});"><img src="@{'/public/images/famfam/go.png'}"></a><br/>
 <div class="formatTime">${users.meeting.startTime}</div>
 <div id="amr" class="formatTime">${users.meeting.endTime}</div>
-<br/>
 #{if users.size()==0}
 No Attendees
 #{/if}
 #{else}
-<u>Attendees</u>
 #{list items:users , as:'user'}
-<a id="${user.id}" href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a>
+<div id="${user.id}">${user.name}</div>
 #{/list}
 #{/else}
 <br/>
-
 <div id="myLayer"></div>
-<!--Amr Abdelwahab-->
-#{if comp==null}
-<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u></a>
-<span id="tzcd"></span><br/>
-#{/if}
-#{else}
-<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_componentmeetingsnapshot(${users.meeting.id},${comp.id});"><u>Attach a SnapShot</u></a>
-<span id="tzcd"></span><br/>
-#{/else}
-<a  href="javascript: join(${users.meeting.id});">join</a>
-<br/><br/>
-#{/list}
 </div>
+<!--Amr Abdelwahab-->
+#{/list}
 #{/else}	
 
 <script>
+	$('.tiptipize').tipTip({delay:0});
 	function select_user(id, str) 
  {
  	// $('.status').css('display','none');
@@ -186,7 +181,6 @@ No Attendees
 	}
 	else
 	{
-		alert();
 		window.opener.$('.hidesassi').css('display','none');
 		window.opener.$('.showdesc').css('display','inline-block');
 	}
