@@ -18,165 +18,6 @@
 REDIPS.drag.init()
 #{/set}
 
-
-<!--Tools-->
-<div style="float:left">
-<!-- view hidden Col by Hadeer -->
-#{if connected.in(p).can('ShowColumn')}
-#{if hidencolumnsOfBoard.isEmpty()}
-#{/if}
-#{else}
-<a href="#;" class="tiptitize" onclick="$('#b1').slideToggle()" title="add hidden column?" type="button">Add Columns!</a><br/>	
-<select id="b1" onchange="javascript: showHiddenCol(b1.value);" style="display:none" class="hidecol">
-<option value="">add columns</option>
-#{list items:hidencolumnsOfBoard, as:'c'}
-<option value= "${c.id}">${c.name}</option>
-#{/list}
-</select>
-#{/else}
-#{/if}
-
-<!-- hide Col by Hadeer -->
-#{if connected.in(p).can('HideColumn')}
-#{if columnsOfBoard.isEmpty()}
-#{/if}
-#{else}
-<a href="#;" class="tiptitize" onclick="$('#b2').slideToggle(400)" title="delete column?" type="button" >Delete Columns!</a><br/>
-<select id="b2" onchange="hideCol(b2.value)" style="display:none" class="showcol">
-<option id="x" value="">delete columns</option>
-#{list items:columnsOfBoard, as:'c'}
-<option value= "${c.id}">${c.name}</option>
-#{/list}
-</select>
-#{/else}
-#{/if}
-
-#{if comp==null}
-<a class="titptitize" title="view board snapshots?" href="/snapshots/index?id=${s.id}&type=${p.name}" >View snapshots</a><br/>
-<a class="titptitize" title="take board snapshot?" href="javascript:take_snapshot();">Take Snapshot</a><br/><br/>
-#{/if}
-#{else}
-<a class="titptitize" title="view board snapshots?" href="/snapshots/index?id=${s.id}&type=${comp.name}" >View snapshots</a><br>
-<a class="titptitize" title="take board snapshot?" href="javascript:take_snap(${comp.id})">Take Snapshot</a><br/><br/>
-#{/else}
-
-<!-- asmaak89 Part-->
-<div id="current"><br/>
-#{if u.size()==0 && uAdmin.size()==0}
-<div><b style="font-size:small;" class="smartBarHeader" >There are no running meetings </b></div>
-#{/if}
-
-#{else}
-<div><b style="font-size:small;" class="smartBarHeader" >Running Meetings</b></div>
-#{list items:u, as:'users'}
-<b>Meeting: ${users.meeting.name}</b><br/>
-<div class="formatTime">${users.meeting.startTime}</div>
-<div id="amr" class="formatTime">${users.meeting.endTime}</div>
-<u>Attendees</u><br/>
-#{list items:users , as:'user'}
-<a id="${user.id}" href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a><br/>
-#{/list}<br/>
-<div id="myLayer"></div>
-<!--Amr Abdelwahab-->
-#{if comp==null}
-<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u></a><br/><br />
-<span id="tzcd"></span><br/>
-#{/if}
-#{else}
-<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_componentmeetingsnapshot(${users.meeting.id},${comp.id});"><u>Attach a SnapShot</u></a><br/><br />
-<span id="tzcd"></span><br/>
-#{/else}
-<a  href="javascript: end(${users.meeting.id});"><b>end meeting</b></a><br/>
-
-<script type="text/javascript" charset="utf-8"> 
-// CONFIGURE THE COUNTDOWN SCRIPT HERE
-var date=${users.meeting.endTime};
-var tz =0;         //  
-var lab = 'tzcd';    //  The id of the page entry where the timezone countdown is to show
-displayTZCountDown(setTZCountDown(date,tz),lab);
-
-function setTZCountDown(date,tz) 
-{
-	var toDate=new Date(date);
-	var fromDate = new Date();
-	fromDate.setMinutes(fromDate.getMinutes());
-	var diffDate = new Date(0);
-	diffDate.setMilliseconds(toDate - fromDate);
-	return Math.floor(diffDate.valueOf()/1000);
-}
-function displayTZCountDown(countdown,tzcd) 
-{
-	if (countdown < 0)  
-	{
-		var answer=confirm('Meeting time has ended now ,Do you want to extend for another hour?')
-		if (answer) 
-		{
-			extend(${users.meeting.id});
-			location.reload();	
-		}
-		else
-		{
-			var answera=confirm('Do you want to update the associated snapshot?');
-			if(answera)
-			{
-				take_meetingsnapshot(${users.meeting.id});
-				location.reload();
-			}
-			else{location.reload();}
-		}	
-	}
-	else 
-	{
-		var secs = countdown % 60; 
-		if (secs < 10) secs = '0'+secs;
-		var countdown1 = (countdown - secs) / 60;
-		var mins = countdown1 % 60; 
-		if (mins < 10) mins = '0'+mins;
-		countdown1 = (countdown1 - mins) / 60;
-		var hours = countdown1 % 24;
-		var days = (countdown1 - hours) / 24;
-		document.getElementById(tzcd).innerHTML = days + " day" + (days == 1 ? '' : 's') + ' : ' +hours+ 'hours : ' +mins+ 'm : '+secs+'s';
-		setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
-	}
-}
-</script>
-
-#{/list}
-
-#{list items:uAdmin, as:'users'}
-<a href ="/meetings/${users.meeting.id}"> <b>Meeting: ${users.meeting.name}</b></a><br/>
-<div class="formatTime">${users.meeting.startTime}</div>
-<div id="amr" class="formatTime">${users.meeting.endTime}</div>
-<br/>
-#{if users.size()==0}
-No Attendees
-#{/if}
-#{else}
-<u>Attendees</u>
-#{list items:users , as:'user'}
-<a id="${user.id}" href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a>
-#{/list}
-#{/else}
-<br/>
-
-<div id="myLayer"></div>
-<!--Amr Abdelwahab-->
-#{if comp==null}
-<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u></a>
-<span id="tzcd"></span><br/>
-#{/if}
-#{else}
-<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_componentmeetingsnapshot(${users.meeting.id},${comp.id});"><u>Attach a SnapShot</u></a>
-<span id="tzcd"></span><br/>
-#{/else}
-<a  href="javascript: join(${users.meeting.id});">join</a>
-<br/><br/>
-#{/list}
-</div>
-#{/else}	
-
-</div>
-
 #{if comp==null}
 <h1>${p.name}'s Task Board</h1>
 #{/if}
@@ -184,19 +25,75 @@ No Attendees
 <h1>${comp.name}'s Task Board</h1>
 #{/else}
 
-
-<a href="" id="ToggleBoard">Toggle Board</a>
+<a href="#" id="ToggleBoard-open" title="toggle" class="tiptitize" style="display:none"><img src="@{'/public/images/famfam/bullet_toggle_plus.png'}"></a>
+<a href="#" id="ToggleBoard-close" title="toggle" class="tiptitize"><img src="@{'/public/images/famfam/bullet_toggle_minus.png'}"></a>
 
 <!-- Show Col drop down list by Dina -->
 #{set count=0}
 #{/set}
-<select id="changeCol" onchange="showCol(changeCol.value)">
-<option id="d" value="d">View Hidden Columns</option>
+<a href="#;" class="tiptitize" onclick="$('#changeCol').slideToggle(400)" title="show columns?" type="button" ><img src="@{'/public/images/famfam/show.gif'}"></a>
+
+
+#{if comp==null}
+<a title="view snapshots" class="tiptitize" href="javascript:popUp('/Snapshots/boardsnapshots?sid=${s.id}&pid=${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+<a title="take a snapshot" class="tiptitize" href="javascript:take_snapshot()"><img src="@{'/public/images/famfam/camera_add.png'}"></a>
+#{/if}
+#{else}
+<a title="view snapshots" class="tiptitize" href="javascript:popUp('/Snapshots/boardsnapshots?sid=${s.id}&cid=${comp.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+<a title="take a snapshot" class="tiptitize" href="javascript:take_snap(${comp.id})"><img src="@{'/public/images/famfam/camera_add.png'}"></a>
+#{/else}
+
+<!-- view hidden Col by Hadeer -->
+#{if connected.in(p).can('ShowColumn')}
+#{if hidencolumnsOfBoard.isEmpty()}
+<a class="tiptitize" title="all columns are added" type="button"><img src="@{'/public/images/famfam/add-disabled.png'}"></a>
+#{/if}
+#{else}
+<a href="#;" class="tiptitize" onclick="$('#b1').slideToggle()" title="add column?" type="button"><img src="@{'/public/images/famfam/add.png'}"></a>
+#{/else}
+#{/if}
+
+
+
+<!-- hide Col by Hadeer -->
+#{if connected.in(p).can('HideColumn')}
+#{if columnsOfBoard.isEmpty()}
+<a class="tiptitize" title="all columns deleted" type="button"><img src="@{'/public/images/famfam/delete-disabled.png'}"></a>
+#{/if}
+#{else}
+<a href="#;" class="tiptitize" onclick="$('#b2').slideToggle(400)" title="delete column?" type="button" ><img src="@{'/public/images/famfam/delete.png'}"></a>
+#{/else}
+#{/if}
+
+#{if comp==null}
+<a title="Meetings" class="tiptitize" href="javascript:popUp('/Boards/loadMeetings?pid=${p.id}')"><img src="@{'/public/images/famfam/date.png'}"></a>
+#{/if}
+#{else}
+<a title="Meetings" class="tiptitize" href="javascript:popUp('/Boards/loadMeetings?pid=${p.id}&cid=${component.id}')"><img src="@{'/public/images/famfam/date.png'}"></a>
+#{/else}
+
+<br/>
+<select id="changeCol" onchange="showCol(changeCol.value)" style="display:none">
+<option id="d" value="d">Columns</option>
 #{list items:columnsOfBoard, as:'c'}
 <option value= "${count}">${c.name}</option>
 #{set count=count+1}
 #{/set}
 #{/list}	
+</select>
+
+<select id="b1" onchange="javascript: showHiddenCol(b1.value);" style="display:none" class="hidecol">
+<option value="">add columns</option>
+#{list items:hidencolumnsOfBoard, as:'c'}
+<option value= "${c.id}">${c.name}</option>
+#{/list}
+</select>
+
+<select id="b2" onchange="hideCol(b2.value)" style="display:none" class="showcol">
+<option id="x" value="">delete columns</option>
+#{list items:columnsOfBoard, as:'c'}
+<option value= "${c.id}">${c.name}</option>
+#{/list}
 </select>
 
 <div id="drag">
@@ -395,7 +292,7 @@ function popUp(URL)
 {
 day = new Date();
 id = day.getTime();
-eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=200,height=400,left = 583,top = 184');");
+eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=200,height=270,left = 0,top = 0');");
 }
 
 
@@ -456,12 +353,22 @@ $('.component').click(function()
 	});
 	});
 		
-	$('#ToggleBoard').click(function(event)
+	$('#ToggleBoard-close').click(function(event)
 	{
+		$('#ToggleBoard-open').css('display','inline-block');
+		$('#ToggleBoard-close').css('display','none');	
    		event.preventDefault();
    		$('#mainBoard').toggle();
  	});
  	
+	$('#ToggleBoard-open').click(function(event)
+	{
+		$('#ToggleBoard-open').css('display','none');
+		$('#ToggleBoard-close').css('display','inline-block');
+   		event.preventDefault();
+   		$('#mainBoard').toggle();
+ 	});
+	
 	$('#form').click(function(event)
 	{
    		event.preventDefault();
@@ -489,132 +396,7 @@ $('.component').click(function()
     	   },{indicator : 'Saving...',});
 	$('div.tiptipize').tipTip({delay:0});
 
- function select_user(id, str) 
- {
- 	// $('.status').css('display','none');
-	//  $('.nostatus').css('display','none');
-	 
- 	 $('.editDES').css('display','none');
-	 $('.noedit').css('display','none');
-	 $('.shwtype').css('display','none');		
-	$('.hidestype').css('display','none');
-	 selectedUser = id;
-	 $('#myLayer').html(str+' is editing the Board now '+ '<br/><br/>').effect('highlight',{}, 6000).fadeOut();
-	 var descList = ${ud};
-	 var f_desc = false;
-     for(var j=0; j<descList.length; j++)
-    {
-     if(descList[j]==id)
-	 {
-	 	f_desc = true;
-	 }
-    }
-	if(f_desc)
-	{
-		$('.noedit').css('display','none');
-		$('.editDES').css('display','inline-block');			
-	}
-	else
-	{
-		$('.noedit').css('display','inline-block');
-		$('.noedit_'+id).css('display','none');
-		$('.editdesc_'+id).css('display','inline-block');	
-	}
-	
-	 var statusList = ${us};
-	 var f_status = false;
-	for(var j=0; j<statusList.length; j++)
-    {
-     if(statusList[j]==id)
-	 {
-	 	f_status = true;
-	 }
-    }
-	if(f_status)
-	{
-	//	 $('.status').css('display','inline-block');
-	//	  $('.nostatus').css('display','none');		
-	}
-	else
-	{
-	//	 $('.status').css('display','none');
-	//	 $('.nostatus').css('display','inline-block');
-	// 	$('.nostatus_'+id).css('display','none');
-	//	$('.status_'+id).css('display','inline-block');	
-	}	
-		
-			
-	 var assiList = ${ua};
-	 var f_assi = false;
-	 
-     for(var j=0; j<assiList.length; j++)
-    {
-     if(assiList[j]==id)
-	 {
-	 	f_assi = true;
-	 }
-    }
-	if(f_assi)
-	{
-		$('.showdesc').css('display','none');
-		$('.hidesassi').css('display','inline-block');		
-	
-	}
-	else
-	{
-		$('.hidesassi').css('display','none');
-		$('.showdesc').css('display','inline-block');
-	}
-	
-	 
-	 var revList = ${ur};
-	 var f_rev = false;
-	 
-     for(var l=0; l<revList.length; l++)
-    {
-     if(revList[l]==id)
-	 {
-	 	f_rev = true;
-	 }
-    }
-	if(f_rev)
-	{
-		$('.showrev').css('display','none');
-		$('.hidesrev').css('display','inline-block');		
-	
-	}
-	else
-	{
-		$('.showrev').css('display','inline-block');
-		$('.hidesrev').css('display','none');		
-	
-	}
-	
-	 var typeList = ${ut};
-	 var f_type = false;
-	 
-     for(var l=0; l<typeList.length; l++)
-    {
-     if(typeList[l]==id)
-	 {
-	 	f_type = true;
-	 }
-    }
-	if(f_type)
-	{
-		$('.shwtype').css('display','none');		
-		$('.hidestype').css('display','inline-block');		
-	}
-	else
-	{
-		$('.shwtype').css('display','inline-block');
-		$('.shwtype_'+id).css('display','none');		
-		$('.shows_'+id).css('display','inline-block');
-					
-	}
-	 
-	}
-	
+ 	
 	
 	/**
 	 * swapping with clicking instead of drag and drop.
