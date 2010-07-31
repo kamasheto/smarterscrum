@@ -1,0 +1,19 @@
+<h3>Snapshots</h3>
+
+#{if (snapshots.size()==0)}
+Sorry, There are no snapshots to display now.<br/>
+#{/if}
+#{else}
+#{list items:snapshots, as:'snapshot'}
+<a href="#" onclick="f(${snapshot.id})" >
+Snapshot ${snapshot.id} taken by ${snapshot.user.name}</a><br/>		
+#{/list}
+#{/else}
+
+<script>
+	function f(id)
+	{
+		window.close();
+		window.opener.location="/snapshots/loadsnapShot?id="+id;
+	}
+</script>
