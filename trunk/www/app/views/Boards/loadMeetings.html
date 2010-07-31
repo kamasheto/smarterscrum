@@ -1,0 +1,243 @@
+<div id="current"><br/>
+#{if u.size()==0 && uAdmin.size()==0}
+<div><b style="font-size:small;" class="smartBarHeader" >There are no running meetings </b></div>
+#{/if}
+
+#{else}
+<div><b style="font-size:small;" class="smartBarHeader" >Running Meetings</b></div>
+#{list items:u, as:'users'}
+<b>Meeting: ${users.meeting.name}</b><br/>
+<div class="formatTime">${users.meeting.startTime}</div>
+<div id="amr" class="formatTime">${users.meeting.endTime}</div>
+<u>Attendees</u><br/>
+#{list items:users , as:'user'}
+<a id="${user.id}" href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a><br/>
+#{/list}<br/>
+<div id="myLayer"></div>
+<!--Amr Abdelwahab-->
+#{if comp==null}
+<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u></a><br/><br />
+<span id="tzcd"></span><br/>
+#{/if}
+#{else}
+<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_componentmeetingsnapshot(${users.meeting.id},${comp.id});"><u>Attach a SnapShot</u></a><br/><br />
+<span id="tzcd"></span><br/>
+#{/else}
+<a  href="javascript: end(${users.meeting.id});"><b>end meeting</b></a><br/>
+
+<script type="text/javascript" charset="utf-8"> 
+// CONFIGURE THE COUNTDOWN SCRIPT HERE
+var date=${users.meeting.endTime};
+var tz =0;         //  
+var lab = 'tzcd';    //  The id of the page entry where the timezone countdown is to show
+displayTZCountDown(setTZCountDown(date,tz),lab);
+
+function setTZCountDown(date,tz) 
+{
+	var toDate=new Date(date);
+	var fromDate = new Date();
+	fromDate.setMinutes(fromDate.getMinutes());
+	var diffDate = new Date(0);
+	diffDate.setMilliseconds(toDate - fromDate);
+	return Math.floor(diffDate.valueOf()/1000);
+}
+function displayTZCountDown(countdown,tzcd) 
+{
+	if (countdown < 0)  
+	{
+		var answer=confirm('Meeting time has ended now ,Do you want to extend for another hour?')
+		if (answer) 
+		{
+			extend(${users.meeting.id});
+			location.reload();	
+		}
+		else
+		{
+			var answera=confirm('Do you want to update the associated snapshot?');
+			if(answera)
+			{
+				take_meetingsnapshot(${users.meeting.id});
+				location.reload();
+			}
+			else{location.reload();}
+		}	
+	}
+	else 
+	{
+		var secs = countdown % 60; 
+		if (secs < 10) secs = '0'+secs;
+		var countdown1 = (countdown - secs) / 60;
+		var mins = countdown1 % 60; 
+		if (mins < 10) mins = '0'+mins;
+		countdown1 = (countdown1 - mins) / 60;
+		var hours = countdown1 % 24;
+		var days = (countdown1 - hours) / 24;
+		document.getElementById(tzcd).innerHTML = days + " day" + (days == 1 ? '' : 's') + ' : ' +hours+ 'hours : ' +mins+ 'm : '+secs+'s';
+		setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
+	}
+}
+</script>
+
+#{/list}
+
+#{list items:uAdmin, as:'users'}
+<a href ="/meetings/${users.meeting.id}"> <b>Meeting: ${users.meeting.name}</b></a><br/>
+<div class="formatTime">${users.meeting.startTime}</div>
+<div id="amr" class="formatTime">${users.meeting.endTime}</div>
+<br/>
+#{if users.size()==0}
+No Attendees
+#{/if}
+#{else}
+<u>Attendees</u>
+#{list items:users , as:'user'}
+<a id="${user.id}" href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a>
+#{/list}
+#{/else}
+<br/>
+
+<div id="myLayer"></div>
+<!--Amr Abdelwahab-->
+#{if comp==null}
+<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><u>Attach a SnapShot</u></a>
+<span id="tzcd"></span><br/>
+#{/if}
+#{else}
+<a class="tiptitize" title="attach board snapshot to meeting?" href="javascript:take_componentmeetingsnapshot(${users.meeting.id},${comp.id});"><u>Attach a SnapShot</u></a>
+<span id="tzcd"></span><br/>
+#{/else}
+<a  href="javascript: join(${users.meeting.id});">join</a>
+<br/><br/>
+#{/list}
+</div>
+#{/else}	
+
+<script>
+	function select_user(id, str) 
+ {
+ 	// $('.status').css('display','none');
+	//  $('.nostatus').css('display','none');
+	 
+ 	 window.opener.$('.editDES').css('display','none');
+	 window.opener.$('.noedit').css('display','none');
+	 window.opener.$('.shwtype').css('display','none');		
+	window.opener.$('.hidestype').css('display','none');
+	 selectedUser = id;
+	 $('#myLayer').html(str+' is editing the Board now '+ '<br/><br/>').effect('highlight',{}, 6000).fadeOut();
+	 var descList = ${ud};
+	 var f_desc = false;
+     for(var j=0; j<descList.length; j++)
+    {
+     if(descList[j]==id)
+	 {
+	 	f_desc = true;
+	 }
+    }
+	if(f_desc)
+	{
+		window.opener.$('.noedit').css('display','none');
+		window.opener.$('.editDES').css('display','inline-block');			
+	}
+	else
+	{
+		window.opener.$('.noedit').css('display','inline-block');
+		window.opener.$('.noedit_'+id).css('display','none');
+		window.opener.$('.editdesc_'+id).css('display','inline-block');	
+	}
+	
+	 var statusList = ${us};
+	 var f_status = false;
+	for(var j=0; j<statusList.length; j++)
+    {
+     if(statusList[j]==id)
+	 {
+	 	f_status = true;
+	 }
+    }
+	if(f_status)
+	{
+	//	 $('.status').css('display','inline-block');
+	//	  $('.nostatus').css('display','none');		
+	}
+	else
+	{
+	//	 $('.status').css('display','none');
+	//	 $('.nostatus').css('display','inline-block');
+	// 	$('.nostatus_'+id).css('display','none');
+	//	$('.status_'+id).css('display','inline-block');	
+	}	
+		
+			
+	 var assiList = ${ua};
+	 var f_assi = false;
+	 
+     for(var j=0; j<assiList.length; j++)
+    {
+     if(assiList[j]==id)
+	 {
+	 	f_assi = true;
+	 }
+    }
+	if(f_assi)
+	{
+		window.opener.$('.showdesc').css('display','none');
+		window.opener.$('.hidesassi').css('display','inline-block');		
+	
+	}
+	else
+	{
+		alert();
+		window.opener.$('.hidesassi').css('display','none');
+		window.opener.$('.showdesc').css('display','inline-block');
+	}
+	
+	 
+	 var revList = ${ur};
+	 var f_rev = false;
+	 
+     for(var l=0; l<revList.length; l++)
+    {
+     if(revList[l]==id)
+	 {
+	 	f_rev = true;
+	 }
+    }
+	if(f_rev)
+	{
+		window.opener.$('.showrev').css('display','none');
+		window.opener.$('.hidesrev').css('display','inline-block');		
+	
+	}
+	else
+	{
+		window.opener.$('.showrev').css('display','inline-block');
+		window.opener.$('.hidesrev').css('display','none');		
+	
+	}
+	
+	 var typeList = ${ut};
+	 var f_type = false;
+	 
+     for(var l=0; l<typeList.length; l++)
+    {
+     if(typeList[l]==id)
+	 {
+	 	f_type = true;
+	 }
+    }
+	if(f_type)
+	{
+		window.opener.$('.shwtype').css('display','none');		
+		window.opener.$('.hidestype').css('display','inline-block');		
+	}
+	else
+	{
+		window.opener.$('.shwtype').css('display','inline-block');
+		window.opener.$('.shwtype_'+id).css('display','none');		
+		window.opener.$('.shows_'+id).css('display','inline-block');
+					
+	}
+	 
+	}
+
+</script>
