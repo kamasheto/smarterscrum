@@ -9,11 +9,9 @@
 <a href="#" onclick="loadBox('/storys/magicShow?projectId=${proj.id}','workspace-${proj.id}')">Stories</a>	
 <!--a  href="#"onclick="loadBox('/components/listComponentsInProject?projectId=${proj.id}','workspace-${proj.id}')">Components</a-->
 <a href="#" onclick="loadBox('/users/findUsers?projectId=${proj.id}','workspace-${proj.id}')">Users</a>
-<a  href="#"onclick="loadBox('@{Projects.events(proj.id)}','workspace-${proj.id}')">Events</a>	
-<a href="#" onclick="loadBox('@{Projects.settings(proj.id)}','workspace-${proj.id}')">Settings</a> 
-#{if connected}
+<a  href="#"onclick="loadBox('@{Projects.events(proj.id)}','workspace-${proj.id}')">Events</a>
 <a  href="#"onclick="$('#chatContainer_${proj.id}').slideToggle(400); #{ifnot connected.openChats.contains(proj.chatroom)} signIn(${proj.chatroom.id}); getMessages(${proj.id},${proj.chatroom.id}); #{/ifnot}">Chatroom</a>
-#{/if}
+<a href="#" onclick="loadBox('@{Projects.settings(proj.id)}','workspace-${proj.id}')">Settings</a> 
 </div>
 
 <div class="workspaceDraggables" id="workspace-${proj.id}">

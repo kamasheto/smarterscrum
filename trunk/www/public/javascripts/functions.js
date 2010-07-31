@@ -181,12 +181,22 @@ $(function() {
 							handle : '.ui-widget-header',
 							cancel : 'img',
 							stop : function(event, ui) {
+								
+								if ($(this).attr('name') == '#') {
+									// do nothing on # links
+									alert(1)
+									return
+								}
+								
 								var x = $(this).attr('class').split(" ");
 								var is = false;
 								for ( var i = 0; i < x.length; i++) {
 									if (x[i] == 'draggableChild')
 										is = true;
 								}
+								
+								// note to hadeer
+								// you could have just $(this).hasClass('draggableChild')
 								if (is) {
 									var el = $(this);
 									var pos = el.position();
@@ -278,11 +288,11 @@ $(function() {
 function load(url, el) {
 
 	if($.inArray(url,myDivs)==-1){
-	load2(url,el)
+		load2(url,el)
 		myDivs.push(url);
-
-
-}}function load2(url, el) {
+	}
+}
+function load2(url, el) {
 
 	var pUrl = $('#'+el).attr('name');
 	$('#'+el+'_header').load(pUrl+' .mainH', function(){
@@ -479,8 +489,9 @@ function showProjectWorkspace(project_id) {
 		show(project_id)
 		return
 	}
-	$('#workspaces').append('<div id="" class="workspace workspace-'+project_id+'"><img src="/public/images/loadingMagic"></div>')
+	$('#workspaces').append('<div class="workspace workspace-'+project_id+'"><div style="width:32px;margin:auto;margin-top:200px;"><img src="/public/images/loadingMagic.gif"></div></div>')
 	show(project_id)
+	// return
 	$.post('/show/workspace', {id: project_id}, function(data) {
 		$('#project-tabs').append('<a class="aDIV topCornersRounded right project-button selectedADiv" id="project-button-'+project_id+'" href="#" onclick="show('+project_id+')" style="width: 120px !important" title="">'+$(data).find('.project_name_in_header').html()+' <span class="right ui-icon ui-icon-circle-close" onclick="close_workspace('+project_id+')"> </span></a>');
 		$('.workspace-' + project_id).html(data)
