@@ -9,7 +9,7 @@
 	#{if type == 1}
 		<div class="overlay" name="/boards/loadboard1?sprintID=${sprint.id}&componentID=${component.id}">
 		Sprint ${sprint.sprintNumber} Task Board
-		<a href="javascript:loadBox('/Snapshots/index?id=${sprint.id}&type=${component.name}','workspace-${component.project.id}')"><img src="@{'/public/images/famfam/camera_go.png'}">
+		<a href="javascript:loadBox('/Snapshots/index?sid=${sprint.id}&cid=${component.id}','workspace-${component.project.id}')"><img src="@{'/public/images/famfam/photos.png'}">
 		</a></a></div>
 	#{/if}
 	#{elseif type == 2}
