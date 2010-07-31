@@ -30,7 +30,7 @@ var i =0;
 		}
 		else
 		{	//alert($($(this).closest('.workspaceContainer').find('div[name='+$(this).attr('name')+']')).first().attr('id'));
-			var id2= $($(this).closest('.workspaceContainer').find('div[name='+$(this).attr('name')+']')).first().attr('id')+'_2';
+			var id2= $($(this).closest('.workspaceDraggables').find('div[name='+$(this).attr('name')+']')).first().attr('id')+'_2';
 			var head = '<div id="'+id2+'_header" class="ui-widget-header mainH">' + $(this).html() + '</div>';
 			$(this).html(head);
 

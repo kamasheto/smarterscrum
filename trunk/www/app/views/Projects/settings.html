@@ -1,6 +1,6 @@
 #{extends 'magicBox.html' /}
 #{set 'title'}Settings#{/set}
-
+<div name="/components/listComponentsInProject?projectId=${project.id}">Components</div>
 #{if connected.in(project).can('manageRoles')}
 	<div name="/show/roles?id=${project.id}">Roles</div>
 #{/if}
