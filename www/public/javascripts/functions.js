@@ -449,7 +449,11 @@ function search_projects() {
 }
 
 function show(id) {
-	if ($('.workspace-'+id).length) {
+	if (!id) {
+		$('#workspaces').hide()
+		$('#normal').show()
+		$('.project-button').removeClass('selectedADiv')
+	} else if ($('.workspace-'+id).length) {
 		// make sure we have that thingie first
 		// DO NOT load workspace here, it might have been removed on purpose!
 		$('#normal').hide();
@@ -466,6 +470,7 @@ function close_workspace(project_id) {
 		$(this).remove()
 	})
 	$('.workspace-'+project_id).remove()
+	show(0)
 }
 function showProjectWorkspace(project_id) {
 	if ($('.workspace-'+project_id).length) {

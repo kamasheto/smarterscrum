@@ -111,6 +111,7 @@
 </div>
 </div>
 <div class="topBar">
+	<a class="aDIV topCornersRounded" href="#" onclick="show(0)" style="color: #E5A1A5;" title="Go home">Home</a>
 #{if connected?.isAdmin}
 	<a class="aDIV topCornersRounded" href="/admin" style="color: #E5A1A5;" title="View the admin panel">Admin Panel</a>
 #{/if}
@@ -167,7 +168,11 @@
 							</div>
 						</div>
 
-<div id="workspaces" style="display:none;"></div>
+<div id="workspaces" style="display:none;">
+	<div id="workspace-help">
+		Welcome to your projects workspace. You could click on the links in the top header to show boxes of respective content. You could then browse through by clicking links in boxes, or, for more focus on what you need most, by dragging the links outside to create new boxes of that content alone.
+	</div>
+</div>
 <div id="normal">
 #{doLayout/}
 </div>

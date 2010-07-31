@@ -171,3 +171,13 @@ ul.project_links a:hover {
 a, a img, span.revertFrom, span.min{
 	cursor: pointer;
 }
+#workspace-help {
+	background:url(/public/images/famfam/error.png) no-repeat center left;
+	position:absolute;
+	padding-left:22px;
+	top: 50%;
+	font-size:10px;
+	left:25%;
+	width:50%;
+	color: #444;
+}
