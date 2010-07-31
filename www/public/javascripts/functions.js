@@ -151,18 +151,15 @@ function deleteStory(sId,box,d){
 }
 
 
-
-
-
 $(function() {
 	$('.draggable').live('mouseover', function() {
-		var con = $(this).closest('.workspaceContainer').attr('id');
+		var con = $(this).closest('.workspaceDraggables').attr('id');
 		$(this).data('init', 1);
 		$(this).draggable( {
 			handle : '.ui-widget-header',
 			cancel : 'img',
 			stack  : '.draggable',
-			containment: '#'+con,
+			containment: '#'+con
 		});
 		var h = $(this).height();
 		var w = $(this).width();
@@ -202,7 +199,7 @@ $(function() {
 										top : pos2.top + pos.top,
 										left : pos2.left + pos.left
 									});
-									$(this).closest('.workspace')
+									$(this).closest('.workspaceDraggables')
 											.append($(this));
 								}
 								$(this).draggable( {
@@ -377,7 +374,7 @@ function magic(id) {
 						}
 						else
 						{	//alert($($(this).closest('.workspaceContainer').find('div[name='+$(this).attr('name')+']')).first().attr('id'));
-							var id2= $($(this).closest('.workspaceContainer').find('div[name='+$(this).attr('name')+']')).first().attr('id')+'_2';
+							var id2= $($(this).closest('.workspaceDraggables').find('div[name='+$(this).attr('name')+']')).first().attr('id')+'_2';
 							var head = '<div id="'+id2+'_header" class="ui-widget-header mainH">' + $(this).html() + '</div>';
 							$(this).html(head);
 							$(this).addClass('clone');
@@ -452,13 +449,13 @@ function search_projects() {
 }
 
 function show(id) {
-	if ($('#workspace-'+id).length) {
+	if ($('.workspace-'+id).length) {
 		// make sure we have that thingie first
 		// DO NOT load workspace here, it might have been removed on purpose!
 		$('#normal').hide();
 		$('#workspaces').show()
 		$('.workspace').hide()
-		$('#workspace-' + id).show()
+		$('.workspace-' + id).show()
 		$('.project-button').removeClass('selectedADiv')
 		$('#project-button-'+id).addClass('selectedADiv')	
 	}
@@ -468,20 +465,20 @@ function close_workspace(project_id) {
 	$('#project-button-'+project_id).fadeOut(function() {
 		$(this).remove()
 	})
-	$('#workspace-'+project_id).remove()
+	$('.workspace-'+project_id).remove()
 }
 function showProjectWorkspace(project_id) {
-	if ($('#workspace-'+project_id).length) {
+	if ($('.workspace-'+project_id).length) {
 		// workspace already loaded, just show it instead
 		$('#top_header_projects_pane').slideUp()
 		show(project_id)
 		return
 	}
-	$('#workspaces').append('<div id="workspace-'+project_id+'" class="workspace"><img src="/public/images/loadingMagic"></div>')
+	$('#workspaces').append('<div id="" class="workspace workspace-'+project_id+'"><img src="/public/images/loadingMagic"></div>')
+	show(project_id)
 	$.post('/show/workspace', {id: project_id}, function(data) {
 		$('#project-tabs').append('<a class="aDIV topCornersRounded right project-button selectedADiv" id="project-button-'+project_id+'" href="#" onclick="show('+project_id+')" style="width: 120px !important" title="">'+$(data).find('.project_name_in_header').html()+' <span class="right ui-icon ui-icon-circle-close" onclick="close_workspace('+project_id+')"> </span></a>');
-		$('#workspace-' + project_id).html(data)
+		$('.workspace-' + project_id).html(data)
 		$('#top_header_projects_pane').slideUp()
-		show(project_id)
 	})
 }
