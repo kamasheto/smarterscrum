@@ -7,7 +7,15 @@
 #{ifnot message.length() == 0}
 	#{note}${message}#{/note}
 #{/ifnot}
+	#{if story.productRole==null}
 	${story.description}<br>
+	#{/if}
+	#{elseif story.productRole!=null && (story.productRole.name[0]=='a'||story.productRole.name[0]=='e'||story.productRole.name[0]=='i'||story.productRole.name[0]=='o')}
+	As an ${story.productRole.name}, ${story.description}<br>
+	#{/elseif}
+	#{elseif story.productRole!=null}
+	As a ${story.productRole.name}, ${story.description}<br>
+	#{/elseif}
 	<b>Success Scenarios</b><br>
 	
 	#{list items:success, as:'suc'}
