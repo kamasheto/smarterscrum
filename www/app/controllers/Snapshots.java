@@ -286,8 +286,10 @@ List<User> users = c.getUsers();
 		Snapshot snap = Snapshot.findById(id);
 		ArrayList<String> Columnsofsnapshot = snap.Columnsofsnapshot;
 		ArrayList<ComponentRowh> data = snap.data;
-		Project p= snap.board.project;
-		render(Columnsofsnapshot, data,snap,p);
+		long cid=0;
+		if(snap.board.component!=null)
+			cid=snap.board.component.id;
+		render(Columnsofsnapshot, data,snap,cid);
 
 	}
 
@@ -322,6 +324,24 @@ List<User> users = c.getUsers();
 		//render(snapshots,type,s);}
 		//render(snapshots,type);
 	}
+	public static void boardsnapshots(long sid, long pid, long cid) {
+
+		Sprint s = Sprint.findById(sid);
+		List<Snapshot> snapshots = new ArrayList();
+		if(pid!=0)
+		{
+			Project p = Project.findById(pid);
+			snapshots = Snapshot.find("byBoardAndSprint",p.board,s).fetch();
+			render(snapshots,p,pid,cid);
+		}
+		else
+		{
+			Component c = Component.findById(cid);
+			snapshots = Snapshot.find("byBoardAndSprint",c.componentBoard,s).fetch();
+			render(snapshots,c,pid,cid);
+		}
+	}
+
 	public static void indexuser(long id, String type) {
 
 		List<Snapshot> snapshots = Snapshot.find("sprint.id = ? and type = ? and user=? ", id, type,Security.getConnected()).fetch();
