@@ -9,13 +9,26 @@
 	<li><a href="/show/projects">Projects</a></li>
 	<li><a href="/show/project?id=${project.id}">${project.name}</a></li>
 	#{/set}
-	#{note 'highlight'}These are your project roles. Members in a project may have more than one role at a time. Whenever possible, avoid editing roles to limit confusion for developers. If you'd like to give a developer more access, add him to a new role. All members joining a project join the base role automatically. Click a star to set that role as base role.#{/note}
+	#{if connected.in(project).can('manageRoles')}
+		#{note 'highlight'}These are your project roles. Members in a project may have more than one role at a time. Whenever possible, avoid editing roles to limit confusion for developers. If you'd like to give a developer more access, add him to a new role. All members joining a project join the base role automatically. Click a star to set that role as base role.#{/note}
+	#{/if}
 #{/if}
 #{else}
 	#{set title: 'Global Roles' /}
-	#{note}These are the default roles. All projects created include these roles by default. Changes to these roles does NOT affect roles of projects already created. The base role is highlighted in bold. All members joining a project join the base role automatically. Click a star to set that role as base role.#{/note}
+	#{if connected.in(project).can('manageRoles')}
+		#{note}These are the default roles. All projects created include these roles by default. Changes to these roles does NOT affect roles of projects already created. The base role is highlighted in bold. All members joining a project join the base role automatically. Click a star to set that role as base role.#{/note}
+	#{/if}
 #{/else}
 #{list roles, as:'role'}
-	<div name="/show/role?id=${role.id}"><div class=" #{if role.baseRole}baseRole #{/if} all-roles-${role.project.id} role-div-${role.id}"><span class="delete_img"><a href="#" onclick="delete_role(${role.id}, this)" title="Delete"><img src="@{'/public/images/famfam/delete.png'}"></a> </span><a href="#" onclick="overlayOpen('/admin/roles/${role.id}')" title="Edit"><img src="@{'/public/images/famfam/pencil.png'}"></a> <span class="tick_img"><a title="Set base role" href="#" onclick="setBaseRole(${role.id}, ${role.project.id})"><img src="/public/images/famfam/star.png" alt=""></a></span></div>
+	<div name="/show/role?id=${role.id}"><div class=" #{if role.baseRole}baseRole #{/if} all-roles-${role.project.id} role-div-${role.id}">#{if connected.in(project).can('deleteRole')}<span class="delete_img"><a href="#" onclick="delete_role(${role.id}, this)" title="Delete"><img src="@{'/public/images/famfam/delete.png'}"></a></span>#{/if}#{if connected.in(project).can('editRole')}<a href="#" onclick="overlayOpen('/admin/roles/${role.id}')" title="Edit"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if connected.in(project).can('manageRoles')} <span class="tick_img"><a title="Set base role" href="#" onclick="setBaseRole(${role.id}, ${role.project.id})"><img src="/public/images/famfam/star.png" alt=""></a></span>#{/if}
+	#{ifnot user.roles.contains(role)}	
+		#{if requestedRoles.contains(role)}
+			<div class="dim"><span class="tick_img"><a href="#" onclick="deleteRequest(${role.id});"><img title="Remove Request" src="@{'public/images/famfam/delete.png'}"></a></span></div>
+		#{/if}
+		#{else}
+			<span class="tick_img"><a href="#" onclick="requestRole(${role.id});"><img title="Request Role" src="@{'public/images/famfam/add.png'}"></a></span>
+		#{/else}
+	#{/ifnot}
+	</div>
 	${role.name}</div>
 #{/list}
