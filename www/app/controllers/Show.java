@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import notifiers.Notifications;
-
 import models.Board;
 import models.Component;
 import models.Meeting;
@@ -20,6 +18,7 @@ import models.Task;
 import models.TaskType;
 import models.User;
 import models.UserNotificationProfile;
+import notifiers.Notifications;
 import play.mvc.With;
 
 @With (Secure.class)
@@ -33,14 +32,13 @@ public class Show extends SmartController {
 			Security.check(user.isAdmin);
 			roles = Role.find("byProjectIsNull").fetch();
 		} else {
-			//Security.check(project, "manageRoles");
+			// Security.check(project, "manageRoles");
 			roles = project.roles;
 		}
 		List<Request> requests = Request.find("byUser", user).fetch();
 		ArrayList<Role> requestedRoles = new ArrayList<Role>();
-		for(Request request:requests){
-			if(!request.deleted)
-				requestedRoles.add(request.role);
+		for (Request request : requests) {
+			requestedRoles.add(request.role);
 		}
 		render(project, roles, user, requestedRoles);
 	}
@@ -154,7 +152,7 @@ public class Show extends SmartController {
 
 		project.chatroom.deleted = true;
 		project.chatroom.save();
-		project.notificationProfile.deleted=true;
+		project.notificationProfile.deleted = true;
 		project.notificationProfile.save();
 		for (Meeting temp : project.meetings) {
 			temp.deleted = true;
@@ -171,11 +169,11 @@ public class Show extends SmartController {
 			temp.save();
 		}
 
-		for (Request temp : project.requests) {
-			temp.deleted = true;
-			temp.save();
-		}
-		
+		// for (Request temp : project.requests) {
+		// temp.deleted = true;
+		// temp.save();
+		// }
+
 		for (UserNotificationProfile temp : project.userNotificationProfiles) {
 			temp.deleted = true;
 			temp.save();
@@ -184,41 +182,39 @@ public class Show extends SmartController {
 		project.save();
 		String body = "Please note that the project " + project.name + " has been deleted and all upcoming meetings and events are cancelled !";
 		String header = project.name + " deletion notification";
-		//List<User> projectMembers = project.users;
-		Notifications.notifyProjectUsers(project, header, body, "deleteProject",(byte) -1);
+		// List<User> projectMembers = project.users;
+		Notifications.notifyProjectUsers(project, header, body, "deleteProject", (byte) -1);
 		Logs.addLog(Security.getConnected(), "Deleted Project", "project", id, project, new Date());
 		// } else {
 		// forbidden();
 		// }
 	}
-	
+
 	public static void role(long id) {
 		User user = Security.getConnected();
 		Role role = Role.findById(id);
 		List<Request> requests = Request.find("byUser", user).fetch();
 		ArrayList<Role> requestedRoles = new ArrayList<Role>();
-		for(Request request:requests){
-			if(!request.deleted)
-				requestedRoles.add(request.role);
+		for (Request request : requests) {
+			requestedRoles.add(request.role);
 		}
 		boolean requested = false;
-		if(requestedRoles.contains(role))
+		if (requestedRoles.contains(role))
 			requested = true;
-		render(role, requested,user);
+		render(role, requested, user);
 	}
-	
-	public static void listTaskTypesInProject(long projectId){
+
+	public static void listTaskTypesInProject(long projectId) {
 		Project project = Project.findById(projectId);
 		User user = Security.getConnected();
 		ArrayList<TaskType> requested = new ArrayList<TaskType>();
 		List<Requestreviewer> requests = Requestreviewer.find("byUser", user).fetch();
-		for(Requestreviewer r:requests){
-			if(!r.deleted)
-				requested.add(r.types);
+		for (Requestreviewer r : requests) {
+			requested.add(r.types);
 		}
 		render(project, requested, projectId);
 	}
-	
+
 	public static void workspace(long id) {
 		Project proj = Project.findById(id);
 		render(proj);

@@ -5,13 +5,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import notifiers.Notifications;
-
 import models.Component;
 import models.Project;
 import models.Requestreviewer;
 import models.TaskType;
 import models.User;
+import notifiers.Notifications;
 
 public class Requestreviewers extends SmartController {
 	/**
@@ -84,7 +83,8 @@ public class Requestreviewers extends SmartController {
 							String header = "User: " + "\'" + Security.getConnected().name + "\'" + " requested to be a " + "\'" + task.name + "\'" + " reviewer.";
 							String body = "User: " + "\'" + Security.getConnected().name + "\'" + " requested to be a " + "\'" + task.name + "\'" + " reviewer." + '\n' + " Requested at: " + new Date(System.currentTimeMillis()) + ".";
 							Logs.addLog(Security.getConnected(), "Request to be a reviewer", "Task Type", ID, project, new Date(System.currentTimeMillis()));
-							//Notifications.notifyProjectUsers(project, header, body, "requestToBeReviewer", (byte) 0);
+							// Notifications.notifyProjectUsers(project, header,
+							// body, "requestToBeReviewer", (byte) 0);
 							message = "The request for " + task.name + " has been sent succesfully";
 
 						}
@@ -137,7 +137,9 @@ public class Requestreviewers extends SmartController {
 								String header = "User: " + "\'" + Security.getConnected().name + "\'" + " requested to be a " + "\'" + task.name + "\'" + " reviewer.";
 								String body = "In Project: " + "\'" + project.name + "\'" + ".";
 								Logs.addLog(Security.getConnected(), "Request to be a reviewer", "Task Type", ID, project, new Date(System.currentTimeMillis()));
-								//Notifications.notifyUsers(project, header, body, "RequestToBeReviewer", new Byte((byte) 0));
+								// Notifications.notifyUsers(project, header,
+								// body, "RequestToBeReviewer", new Byte((byte)
+								// 0));
 								message = "The request for " + task.name + " has been sent succesfully";
 
 							}
@@ -220,21 +222,20 @@ public class Requestreviewers extends SmartController {
 			String header = "User: " + "\'" + x.user.name + "\'" + " request to be a " + "\'" + x.types.name + "\'" + " reviewer has been rejected.";
 			String body = "In Project: " + "\'" + x.types.project.name + "\'" + "." + '\n' + " Rejected by: " + Security.getConnected().name + ".";
 			Logs.addLog(Security.getConnected(), "Reject to be a reviewer request", "Task Type", requestID, x.component.project, new Date(System.currentTimeMillis()));
-			//Notifications.notifyProjectUsers(x.component.project, header, body, "RejectToBeReviewerRequest", (byte) -1);
+			// Notifications.notifyProjectUsers(x.component.project, header,
+			// body, "RejectToBeReviewerRequest", (byte) -1);
 		}
 		renderText("the request has been rejected");
 	}
-	
-	public static void removeRequest(long taskTypeId){
+
+	public static void removeRequest(long taskTypeId) {
 		User user = Security.getConnected();
 		TaskType taskType = TaskType.findById(taskTypeId);
 		Requestreviewer r = Requestreviewer.find("byUserAndTypes", user, taskType).first();
-		if(r != null && r.deleted!=true){
-			r.deleted=true;
-			r.save();
+		if (r != null) {
+			r.delete();
 			renderText("Your request was cancelled successfully");
-		}
-		else{
+		} else {
 			renderText("Not found. Most probably request was removed before.");
 		}
 	}

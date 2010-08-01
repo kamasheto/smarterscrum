@@ -30,8 +30,6 @@ public class Request extends SmartModel {
 
 	public String hash; // will have to use for accepting/declining
 
-	public boolean deleted;
-
 	public boolean isDeletion;
 
 	public Component component;
