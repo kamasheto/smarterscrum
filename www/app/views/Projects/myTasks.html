@@ -1,26 +1,27 @@
 #{extends 'magicBox.html' /}
 #{set 'title'}My Tasks#{/set}
-
-#{if task.size()==0}
-		<label> No Tasks to Review</label>
-		#{/if}
-#{if task.size()!=0}
-
-<label> To Review</label>
-		#{/if}
-		#{list items:task ,as :'Task'}
-
-<div name="/storys/magicShow?taskId=${Task.id}">S${Task.taskStory.number} Task${Task.number}<div class="item_imgs">#{if connected.in(project).can('modifyTask')}#{if !Task.checkUnderImpl()}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div><div  class="right" title="Type: ${Task.taskType.name}" style="background:${Task.taskType.hexColor}; ; width: 15px; height: 15px; border-color:white; position:relative;" ></div></div>
-		#{/list}
 #{if task1.size()==0}
-		<label> No Tasks to do</label>
+		<label>You have no Tasks to do</label><br>
+		<label>-----------------------</label><br>
 		#{/if}
 #{if task1.size()!=0}
 
-<label> To do</label>
+<label> To do:</label>
 		#{/if}		
 #{list items:task1 ,as :'Task1'}
 
 <div name="/storys/magicShow?taskId=${Task1.id}">S${Task1.taskStory.number} Task${Task1.number}<div class="item_imgs">#{if connected.in(project).can('modifyTask')}#{if !Task1.checkUnderImpl()}<a onclick="javascript:overlayOpen('/admin/tasks/${Task1.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task1.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div><div  class="right" title="Type: ${Task1.taskType.name}" style="background:${Task1.taskType.hexColor}; ; width: 15px; height: 15px; border-color:white; position:relative;" ></div></div>
+		#{/list}
+
+#{if task.size()==0}
+		<label>You have no Tasks to Review</label>
+		#{/if}
+#{if task.size()!=0}
+
+<label> To Review:</label>
+		#{/if}
+		#{list items:task ,as :'Task'}
+
+<div name="/storys/magicShow?taskId=${Task.id}">S${Task.taskStory.number} Task${Task.number}<div class="item_imgs">#{if connected.in(project).can('modifyTask')}#{if !Task.checkUnderImpl()}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div><div  class="right" title="Type: ${Task.taskType.name}" style="background:${Task.taskType.hexColor}; ; width: 15px; height: 15px; border-color:white; position:relative;" ></div></div>
 		#{/list}
 		
