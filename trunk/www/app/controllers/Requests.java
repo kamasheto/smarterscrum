@@ -43,8 +43,8 @@ public class Requests extends SmartCRUD {
 	public static void requestRespond(long id) {
 		Project pro = Project.findById(id);
 		Security.check(pro, "manageRequests");
-		List<Request> requests = Request.find("deleted = false and isDeletion = false and project = " + pro.id + " order by id desc").fetch();
-		List<Request> drequests = Request.find("deleted = false and isDeletion = true and project = " + pro.id + " order by id desc").fetch();
+		List<Request> requests = Request.find("isDeletion = false and project = " + pro.id + " order by id desc").fetch();
+		List<Request> drequests = Request.find("isDeletion = true and project = " + pro.id + " order by id desc").fetch();
 		render(requests, drequests, pro);
 	}
 
@@ -216,8 +216,7 @@ public class Requests extends SmartCRUD {
 		Role role = Role.findById(roleId);
 		User user = Security.getConnected();
 		Request request = Request.find("byRoleAndUser", role, user).first();
-		request.deleted = true;
-		request.save();
+		request.delete();
 		renderText("Request removed!");
 	}
 	
