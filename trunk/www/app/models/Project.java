@@ -723,10 +723,15 @@ public class Project extends SmartModel
 	}
 	
 	/**
-	 * This method returns the activity of this project on a scale of 1-10, 1 being least active and 10 being most active
+	 * This method returns the recent activity of this project on a scale of 0-10, 0 being least active and 10 being most active, based on the number of recent actions taken place (extracted information from logs per project, in the last 10 days)
 	 * @author mahmoudsakr
 	 */
 	public int activity() {
-		return 1;
+		List<Log> logs = Log.find("project = ? and date > ?", 
+								this, 
+								new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 10 ))
+							.fetch();
+		int s = logs.size() / 10;
+		return s > 10 ? 10 : s < 0 ? 0 : s;
 	}
 }

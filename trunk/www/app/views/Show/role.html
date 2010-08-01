@@ -1,5 +1,5 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}<div class=" #{if role.baseRole}baseRole #{/if} all-roles-${role.project.id} role-div-${role.id}"><a href="#" onclick="overlayOpen('/admin/roles/${role.id}')" title="Edit"><img src="@{'/public/images/famfam/pencil.png'}"></a> <span class="delete_img"><a href="#" onclick="delete_role(${role.id}, this)" title="Delete"><img src="@{'/public/images/famfam/delete.png'}"></a> </span><span class="tick_img"><a href="#" title="Set base role" onclick="setBaseRole(${role.id}, ${role.project.id})"><img src="/public/images/famfam/star.png" alt=""></a></span></div>
+#{set 'title'}<div class=" #{if role.baseRole}baseRole #{/if} all-roles-${role.project.id} role-div-${role.id}"><span class="delete_img"><a href="#" onclick="delete_role(${role.id}, this)" title="Delete"><img src="@{'/public/images/famfam/delete.png'}"></a> </span><a href="#" onclick="overlayOpen('/admin/roles/${role.id}')" title="Edit"><img src="@{'/public/images/famfam/pencil.png'}"></a> <span class="tick_img"><a href="#" title="Set base role" onclick="setBaseRole(${role.id}, ${role.project.id})"><img src="/public/images/famfam/star.png" alt=""></a></span></div>
 ${role.name}#{/set}
 
 <p>
