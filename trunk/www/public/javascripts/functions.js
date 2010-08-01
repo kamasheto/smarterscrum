@@ -1,73 +1,41 @@
-﻿		var getNotifications = function() {
-				$.getJSON('/notificationtasks/getlatestnews',
-					function(data) {
-						$(data).each(function(){
-							$.gritter.add({
-								title: this.madeBySysAdmin? '[SysAdmin] '+this.header : this.header,
-								text: this.body,
-								image: this.importance > 0 ? '/public/images/tick.png' : this.importance < 0 ? '/public/images/cross.png' : '/public/images/error.png',
-								sticky: false,
-								time: ''
-							});
-							return true;
-						});
-					setTimeout('getNotifications();', 1000);
-					});
-				}
+﻿var getNotifications = function() {
+	$.getJSON('/notificationtasks/getlatestnews',
+		function(data) {
+			$(data).each(function(){
+				$.gritter.add({
+					title: this.madeBySysAdmin? '[SysAdmin] '+this.header : this.header,
+					text: this.body,
+					image: this.importance > 0 ? '/public/images/tick.png' : this.importance < 0 ? '/public/images/cross.png' : '/public/images/error.png',
+					sticky: false,
+					time: ''
+				});
+				return true;
+			});
+		setTimeout('getNotifications();', 1000);
+		});
+	}
 var ping = function() {
-				$.getJSON('/sessions/ping',
-					function(data) {
-						str = '';
-						$(data).each(function() {
-							// users?
-							if (this.isAdmin) {
-								this.name = '<span class="isAdmin">' + this.name + '</span>';
-							}
-							str += '<a href="/show/user?id='+this.id+'">' + this.name + '</a>, ';
-						});
-						
-						$('#onlineUsers').html(str.substring(0,str.length-2));
-						setTimeout('ping()', 1000*30);
-					});
+	$.getJSON('/sessions/ping',
+		function(data) {
+			str = '';
+			$(data).each(function() {
+				// users?
+				if (this.isAdmin) {
+					this.name = '<span class="isAdmin">' + this.name + '</span>';
 				}
-
-			 $.extend($.gritter.options, { 
-				fade_in_speed: 50, // how fast notifications fade in (string or int)
-				fade_out_speed: 300, // how fast the notices fade out
-				time: 5000 // hang on the screen for...
+				str += '<a href="/show/user?id='+this.id+'">' + this.name + '</a>, ';
 			});
 			
-			
-function doOnLoad() {
-	
-	$('.dim').live('mouseover', function() {
-		$(this).click(function() {	
-		})
-	})
-		$('.formatDate').each(function(){
-			if (!$(this).data('processed')) {
-				$(this).data('processed', true)
-				$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );	
-			}
+			$('#onlineUsers').html(str.substring(0,str.length-2));
+			setTimeout('ping()', 1000*30);
 		});
-		$('.formatTime').each(function(){
-			if (!$(this).data('processed')) {
-				$(this).data('processed', true)
-				$(this).html( formatDate( new Date(Number($(this).html())), 'd MMM, yyyy hh:mma') );	
-			}
-		});
-	
-	    $("a").tipTip({delay:0});
-	    $("td").tipTip({delay:0});
-	    $("span").tipTip({delay:0});
-	 $("div").tipTip({delay:0});
-	 $("img").tipTip({delay:0});
-	    $('div.crudField').each(function(){
-				if ($(this).html().trim() == '') {
-					$(this).remove();
-				}
-		    });
-}
+	}
+ $.extend($.gritter.options, { 
+	fade_in_speed: 50, // how fast notifications fade in (string or
+						// int)
+	fade_out_speed: 300, // how fast the notices fade out
+	time: 5000 // hang on the screen for...
+});
 function delete_meeting(id, pId)
 {
 	var confirmation= confirm("Are you sure you want to delete this meeting ?");
@@ -130,7 +98,6 @@ function confirm_me(id)
 					message : 'Meeting has already ended.'
 				});
 			}
-
 	})
 }
 
@@ -242,7 +209,8 @@ $(function() {
 								}
 								
 								// note to hadeer
-								// you could have just $(this).hasClass('draggableChild')
+								// you could have just
+								// $(this).hasClass('draggableChild')
 								if (is) {
 									var el = $(this);
 									var pos = el.position();
@@ -267,7 +235,7 @@ $(function() {
 								$(this).children().show();
 								$(this).removeClass('draggableChild');
 								$(this).addClass('draggable');
-								load($(this).attr('name') + ' .actual', $(this).attr('id'));
+								load($(this).attr('name') + ' .actual', $(this).attr('id'),1);
 								
 
 							},
@@ -288,7 +256,7 @@ $(function() {
 			'click',
 			function() {
 				if($(this).next().html()=='')
-					load3($(this).parent().attr('name') + ' .actual',$(this).parent().attr('id'));
+					load($(this).parent().attr('name') + ' .actual',$(this).parent().attr('id'),3);
 
 				$(this).next().slideToggle(400);
 
@@ -298,7 +266,7 @@ $(function() {
 			'click',
 			function() {
 				if($(this).parent().next().html()=='')
-					load2($(this).parent().parent().attr('name') + ' .actual',$(this).parent().parent().attr('id'));
+					load($(this).parent().parent().attr('name') + ' .actual',$(this).parent().parent().attr('id'),2);
 
 
 
@@ -331,47 +299,29 @@ $(function() {
 		});
 	});
 
-function load(url, el) {
 
-	if($.inArray(url,myDivs)==-1){
-		load2(url,el)
-		myDivs.push(url);
-	}
-}
-function load2(url, el) {
 
-	var pUrl = $('#'+el).attr('name');
-	$('#'+el+'_header').load(pUrl+' .mainH', function(){
-		
-		$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
-	});
+function load(url, el, n) {
+	if($.inArray(url,myDivs)==-1 || n==2){
+		var pUrl = $('#'+el).attr('name');
+		$('#'+el+'_header').load(pUrl+' .mainH', function(){
+			
+			$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
+			if(n==3)
+			$('#'+el+'_header').find('.min').first().remove();
+		});
+		$('#' + el + '_content').load(url, function() {
+			$('#' + el + ' .min').first().show();
+			$('#' + el + '_content').children().show();
+			// $('#' + el + '_content').find('ui-widget-header').first().load
+			$('#' + el + ' .loading').first().hide();
+			$('#' + el + '_content').slideDown(400);
+			magic(el);
 	
-	$('#' + el + '_content').load(url, function() {
-		$('#' + el + ' .min').first().show();
-		$('#' + el + '_content').children().show();
-		//$('#' + el + '_content').find('ui-widget-header').first().load
-		$('#' + el + ' .loading').first().hide();
-		$('#' + el + '_content').slideDown(400);
-		magic(el);
-	});
-}
-function load3(url, el) {
-
-	var pUrl = $('#'+el).attr('name');
-	$('#'+el+'_header').load(pUrl+' .mainH', function(){
-		
-		$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
-		$('#'+el+'_header').find('.min').first().remove();
-	});
-	$('#' + el + '_content').load(url, function() {
-		$('#' + el + ' .min').first().show();
-		$('#' + el + '_content').children().show();
-		//$('#' + el + '_content').find('ui-widget-header').first().load
-		$('#' + el + ' .loading').first().hide();
-		$('#' + el + '_content').slideDown(400);
-		magic(el);
-
-	});
+		});
+	}
+	if(n==1)
+		myDivs.push(url);
 }
 
 function removeMe(me)
@@ -382,68 +332,62 @@ function removeMe(me)
 }
 
 
-function loadBox(url, el) {
-
-if($.inArray(url,myDivs)==-1){
-	$('#' + el).append('<div style="position:absolute;z-index:0"id="myTemp"></div>');
+function loadBox(url, el) 
+{
+	if($.inArray(url,myDivs)==-1)
+	{
+		$('#' + el).append('<div style="position:absolute;z-index:0"id="myTemp"></div>');
+		
+		$('#' + el + ' #myTemp').load(url, function() {
+			$('#' + el + ' #myTemp').children().attr('name',url);
+			$('#' + el + ' #myTemp').children().css('position','absolute!important');
 	
-	$('#' + el + ' #myTemp').load(url, function() {
-		$('#' + el + ' #myTemp').children().attr('name',url);
-		$('#' + el + ' #myTemp').children().css('position','absolute!important');
+			$('#' + el + ' #myTemp').children().css('z-index','4');
+			$('#' + el + ' #myTemp').replaceWith($('#' + el + ' #myTemp').html());
+			myDivs.push(url);
+		});
+	}
+}
 
-		$('#' + el + ' #myTemp').children().css('z-index','4');
-		$('#' + el + ' #myTemp').replaceWith($('#' + el + ' #myTemp').html());
-		myDivs.push(url);
-	});
-}}
-var num =1;
 function magic(id) {
-
-	doOnLoad()
-	$("#" + id + "_content div[name]")
-			.each(
-					function() {
-						if($(this).attr('class')=='overlay')
-						{
-							var id2 = "ui" +num;
-							num++;
-							var head = '<div id="'+id2+'_header" class="ui-widget-header"><a href="#" onclick="overlayOpen(\''+$(this).attr('name')+'\')"><span class="ui-icon ui-icon-extlink"></span></a>' + $(this).html()+ '</div>';
-							$(this).html(head);
-							$(this).attr('id', id2);
-							$(this).addClass('ui-widget-content');
-						}
-						else{
-
-						var url = $(this).attr('name');
-						var url2 = url+' .actual';
-						if($.inArray(url,myDivs)==-1 && $.inArray(url2,myDivs)==-1){
-							
-						var id2 = "ui" +num++;
-						var head = '<div id="'+id2+'_header" class="ui-widget-header mainH"><span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span></span>' + $(this).html() + '</div>';
-						$(this).html(head);
-						$(this).addClass('ui-widget-content draggableChild');
-
-						$(this).attr('id', id2);
-						$(this)
-								.append(
-										'<div id="' + id2 + '_content" class="ui-widget-content" ></div>');
-						}
-						else
-						{	//alert($($(this).closest('.workspaceContainer').find('div[name='+$(this).attr('name')+']')).first().attr('id'));
-							var id2= $($(this).closest('.workspaceDraggables').find('div[name='+$(this).attr('name')+']')).first().attr('id')+'_2';
-							var head = '<div id="'+id2+'_header" class="ui-widget-header mainH">' + $(this).html() + '</div>';
-							$(this).html(head);
-							$(this).addClass('clone');
-
-							$(this).attr('id', id2);	
-						}
-						
-						}
-					});
-
+	doOnLoad();
+	$("#" + id + "_content div[name]").each(
+	function() 
+	{
+		if($(this).attr('class')=='overlay')
+		{
+			var id2 = "ui" +num;
+			num++;
+			var head = '<div id="'+id2+'_header" class="ui-widget-header"><a href="#" onclick="overlayOpen(\''+$(this).attr('name')+'\')"><span class="ui-icon ui-icon-extlink"></span></a>' + $(this).html()+ '</div>';
+			$(this).html(head);
+			$(this).attr('id', id2);
+			$(this).addClass('ui-widget-content');
+		}
+		else
+		{
+			var url = $(this).attr('name');
+			var url2 = url+' .actual';
+			if($.inArray(url,myDivs)==-1 && $.inArray(url2,myDivs)==-1)
+			{
+				var id2 = "ui" +num++;
+				var head = '<div id="'+id2+'_header" class="ui-widget-header mainH"><span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span></span>' + $(this).html() + '</div>';
+				$(this).html(head);
+				$(this).addClass('ui-widget-content draggableChild');
+				$(this).attr('id', id2);
+				$(this).append('<div id="' + id2 + '_content" class="ui-widget-content" ></div>');
+				}
+			else
+			{	var id2= $($(this).closest('.workspaceDraggables').find('div[name='+$(this).attr('name')+']')).first().attr('id')+'_2';
+				var head = '<div id="'+id2+'_header" class="ui-widget-header mainH">' + $(this).html() + '</div>';
+				$(this).html(head);
+				$(this).addClass('clone');
+				$(this).attr('id', id2);	
+			}
+		}
+	});
 }
 var myDivs = new Array();
-
+var num =1;
 function deleteTheTask(tId, box){
 	
 	if((confirm('Are you sure you want to delete the Task ?')))
