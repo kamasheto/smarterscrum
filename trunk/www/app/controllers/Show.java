@@ -35,7 +35,6 @@ public class Show extends SmartController {
 			roles = project.roles;
 		}
 		List<Request> requests = Request.find("byUser", user).fetch();
-		System.out.println("el size "+requests.size());
 		ArrayList<Role> requestedRoles = new ArrayList<Role>();
 		for(Request request:requests){
 			if(!request.deleted)
@@ -192,8 +191,18 @@ public class Show extends SmartController {
 	}
 	
 	public static void role(long id) {
+		User user = Security.getConnected();
 		Role role = Role.findById(id);
-		render(role);
+		List<Request> requests = Request.find("byUser", user).fetch();
+		ArrayList<Role> requestedRoles = new ArrayList<Role>();
+		for(Request request:requests){
+			if(!request.deleted)
+				requestedRoles.add(request.role);
+		}
+		boolean requested = false;
+		if(requestedRoles.contains(role))
+			requested = true;
+		render(role, requested,user);
 	}
 	
 	public static void workspace(long id) {
