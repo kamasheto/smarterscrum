@@ -1,8 +1,12 @@
 #{extends 'main.html' /} #{set title:'Home' /}
 #{set 'moreScripts'}
 <script type="text/javascript">
-       		$(function(){
-       			showProjectWorkspace2(${id},'${url}',${isOverlay});	
-       		});
+ 		$(function(){
+ 			showProjectWorkspace(${id});
+ 			if(!${isOverlay})
+ 				loadBox('${url}','workspace-${id}');	
+ 			else
+     			overlayOpen('${url}');
+ 		});
 </script>
 #{/set}
