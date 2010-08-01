@@ -19,7 +19,6 @@ import models.Component.ComponentRowh;
 public class Snapshots extends SmartController {
 	
 	public static void  TakeSnapshot(long sprintID, long componentID, long meetingID){
-		System.out.println(sprintID+" "+componentID+" "+meetingID);
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
 		Board b ;
