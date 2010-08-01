@@ -28,10 +28,8 @@
               <script src="@{'/public/javascripts/skinSwitcher.js'}" type="text/javascript" charset="utf-8"></script>
 		
         <script type="text/javascript">
-
-               
        		$(function(){
-       			
+       			doOnLoad();
        			$('*').live('mouseover',function(){
 
            			var o = window.parent.document.getElementsByTagName('iframe');
@@ -42,23 +40,6 @@
            				}
            			}});	
 
-       			$('.formatDate').each(function(){
-					$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );
-				});
-       			$('.formatTime').each(function(){
-					$(this).html( formatDate( new Date(Number($(this).html())), 'd MMM, yyyy hh:mma') );
-				});
-       		
-   			    $("a").tipTip({delay:0});
-   			    $("td").tipTip({delay:0});
-   			    $("span").tipTip({delay:0});
-   			 $("div").tipTip({delay:0});
-   			 $("img").tipTip({delay:0});
-   			    $('div.crudField').each(function(){
-						if ($(this).html().trim() == '') {
-							$(this).remove();
-						}
-   	   			    });
 #{get 'onLoad2' /}
    			    	
    		       		});
