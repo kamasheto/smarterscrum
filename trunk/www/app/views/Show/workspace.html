@@ -1,6 +1,6 @@
 <script type="text/javascript" charset="utf-8">
 	$(function() {
-		#{if connected.projects.contains(proj)}if(shouldLoad())loadBox('@{Projects.myTasks(proj.id)}', 'workspace-${proj.id}');#{/if}
+		#{if connected.projects.contains(proj)}loadBox('@{Projects.myTasks(proj.id)}', 'workspace-${proj.id}');#{/if}
 	})
 </script>
 <div class="topper nav">
