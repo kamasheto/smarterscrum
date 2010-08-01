@@ -337,7 +337,7 @@ function removeMe(me)
 
 
 function loadBox(url, el) {
-if(should==true){
+
 if($.inArray(url,myDivs)==-1){
 	$('#' + el).append('<div style="position:absolute;z-index:0"id="myTemp"></div>');
 	
@@ -350,11 +350,6 @@ if($.inArray(url,myDivs)==-1){
 		myDivs.push(url);
 	});
 }}
-else
-{
-	should=true;
-}
-}
 var num =1;
 function magic(id) {
 
@@ -487,11 +482,6 @@ function close_workspace(project_id) {
 	show(0)
 }
 
-var should = true;
-function shouldLoad()
-{
-	return(should);
-}
 
 function showProjectWorkspace(project_id) {
 	if ($('.workspace-'+project_id).length) {
