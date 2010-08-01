@@ -7,18 +7,18 @@
 #{else}
 	#{list items:sprints, as:'sprint'}
 		#{if (sprint.id==runningSprint) }
-			<div class="running" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.id} Backlogs
+			<div class="running" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs
 			
 			</div>
 		#{/if}
 		#{else}
 		#{if (sprint.ended) }
-			<div class="Past" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.id} Backlogs
+			<div class="Past" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs
 			
 			</div>
 		#{/if}
 		#{else}
-		<div class="Upcoming" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.id} Backlogs
+		<div class="Upcoming" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs
 			
 			</div>#{/else}
 		#{/else}
