@@ -40,7 +40,7 @@
 }
 
 .draggableChild .revertFrom,.clone .min,.clone span {
-	display: none
+	display: none;
 }
 
 .draggable .ui-widget-header {
@@ -55,7 +55,7 @@
 	margin-bottom: 5px;
 }
 
-.draggableChild .ui-widget-header,.overlay .ui-widget-header {
+.draggableChild .ui-widget-header,.overlay .ui-widget-header, .bar {
 	font-size: 12px;
 	background: #ddd;
 	background: -moz-linear-gradient(center bottom, #eee 10%, #ddd 90%);

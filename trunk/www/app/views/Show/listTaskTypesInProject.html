@@ -1,7 +1,7 @@
 #{extends 'magicBox.html' /}
 #{set 'title'}Task Types#{/set}
 #{list items:project.taskTypes, as: 'taskType'}
-<div name="">
+<div class="bar">
 #{if requested.contains(taskType)}
 <a class="dim" href="#" onclick="removeRequestToBeReviewer(${taskType.id});"><img title="Remove request to be reviewer for this task type" src="@{'public/images/famfam/delete.png'}"></a>
 #{/if}

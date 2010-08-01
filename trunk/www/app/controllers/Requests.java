@@ -43,8 +43,8 @@ public class Requests extends SmartCRUD {
 	public static void requestRespond(long id) {
 		Project pro = Project.findById(id);
 		Security.check(pro, "manageRequests");
-		List<Request> requests = Request.find("isDeletion = false and project = " + pro.id + " order by id desc").fetch();
-		List<Request> drequests = Request.find("isDeletion = true and project = " + pro.id + " order by id desc").fetch();
+		List<Request> requests = Request.find("deleted = false and isDeletion = false and project = " + pro.id + " order by id desc").fetch();
+		List<Request> drequests = Request.find("deleted = false and isDeletion = true and project = " + pro.id + " order by id desc").fetch();
 		render(requests, drequests, pro);
 	}
 
@@ -211,13 +211,6 @@ public class Requests extends SmartCRUD {
 		redirect("/admin/requests");
 	}
 	
-	public static void requestRoleInProject(long roleId){
-		Role role = Role.findById(roleId);
-		User user = Security.getConnected();
-		Request request = new Request(user,role);
-		request.save();
-		renderText("Request sent! - Waiting for a project admin to approve.");
-	}
 	
 	public static void removeRequestRoleInProject(long roleId){
 		Role role = Role.findById(roleId);
