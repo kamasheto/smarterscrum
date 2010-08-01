@@ -38,7 +38,8 @@ public class Show extends SmartController {
 		System.out.println("el size "+requests.size());
 		ArrayList<Role> requestedRoles = new ArrayList<Role>();
 		for(Request request:requests){
-			requestedRoles.add(request.role);
+			if(!request.deleted)
+				requestedRoles.add(request.role);
 		}
 		render(project, roles, user, requestedRoles);
 	}
