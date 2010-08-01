@@ -1,5 +1,4 @@
 /*generic template css*/
-
 .ui-widget-content {
 	border: 0px !important;
 }
@@ -59,7 +58,7 @@
 .draggableChild .ui-widget-header,.overlay .ui-widget-header {
 	font-size: 12px;
 	background: #ddd;
-	background: -moz-linear-gradient(center bottom, #eee 20%, #ddd 80%);
+	background: -moz-linear-gradient(center bottom, #eee 10%, #ddd 90%);
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #ddd),
 		color-stop(0.8, #eee) );
 	color: #b7568d;
@@ -74,7 +73,7 @@
 .clone {
 	font-size: 12px;
 	background: #eee !important;
-	background: -moz-linear-gradient(center bottom, #eee 20%, #ddd 80%)
+	background: -moz-linear-gradient(center bottom, #eee 10%, #ddd 90%)
 		!important;
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #ddd),
 		color-stop(0.8, #eee) ) !important;
@@ -102,7 +101,7 @@
 
 .draggable {
 	background: #b7568d !important;
-	background: -moz-linear-gradient(center bottom, #87155f 20%, #b7568d 80%)
+	background: -moz-linear-gradient(center bottom, #87155f 10%, #b7568d 90%)
 		!important;
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #87155f),
 		color-stop(0.8, #b7568d) ) !important;
@@ -140,10 +139,11 @@ img {
 	float: right
 }
 
-#workspaces,.workspace, body,html,#normal {
+#workspaces,.workspace,body,html,#normal {
 	width: 100%;
 	height: 100%;
 }
+
 .workspaceDraggables {
 	margin: 5px auto 5px auto;
 	width: 99%;
@@ -151,7 +151,9 @@ img {
 	border: 3px dotted #888;
 	border-radius: 30px;
 }
+
 .workspace {
+	
 }
 
 #remember-field {
@@ -176,7 +178,7 @@ img {
 /***************************/ /* START mahmoudsakr's CSS */
 	/***************************/
 .baseRole .tick_img,.baseRole .delete_img {
-	display:none;
+	display: none;
 }
 
 .project_name_in_header {
@@ -221,23 +223,47 @@ img {
 .draggableChild .ui-widget-header {
 	cursor: pointer;
 }
+
 .project_name_in_header {
 	display: none;
 }
+
 /***************************/ /* END mahmoudsakr's CSS */
 	/***************************/
-	
-.green
-{
-color:green;
+.green {
+	color: green;
 }
 
-.yellow
-{
-color:yellow;
+.yellow {
+	color: yellow;
 }
 
-.red
-{
-color:red;
+.red {
+	color: red;
+}
+
+.yellowBg {
+	background: #FFFDA3 !important;
+	background:-moz-linear-gradient(center bottom , #FFFECF 10%, #FFFDA3 90%) repeat scroll 0 0 transparent !important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #FFFDA3),
+		color-stop(0.8, #FFFECF) ) !important;
+	color: #fff;
+}
+
+.redBg {
+	background: #FF4040 !important;
+	background: -moz-linear-gradient(center bottom, #FF5E5E 10%, #FF4040 90%)
+		!important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #FF5E5E),
+		color-stop(0.8, #FF4040) ) !important;
+	color: #fff;
+}
+
+.greenBg {
+	background: #CBFFA8 !important;
+	background: -moz-linear-gradient(center bottom, #C0FF96 10%, #CBFFA8 90%)
+		!important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #C0FF96),
+		color-stop(0.8, #CBFFA8) ) !important;
+	color: #000;
 }

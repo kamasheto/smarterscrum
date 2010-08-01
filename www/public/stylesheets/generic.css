@@ -390,35 +390,28 @@ tr:nth-child(odd) {
 td {
 	padding: 3px;
 }
-thead td
-{
-text-align:center;
-background-color:#333;
-color:#eee;
+
+thead td {
+	text-align: center;
+	background-color: #333;
+	color: #eee;
 }
 
 td form input,td form input {
-	width: 20px!important;
+	width: 20px !important;
 	height: 20px !important;
 	border: 0px !important;
 	font: 12px;
-	margin:0px;
-	padding:0px;
-	box-shadow:0px 0px 10px #333;
--moz-box-shadow:0px 0px 10px #333;
--webkit-box-shadow:0px 0px 10px #333;
-background:#333;
-color:#eee;
-position:absolute;
-z-index:99999999;
-
+	margin: 0px;
+	padding: 0px;
+	box-shadow: 0px 0px 10px #333;
+	-moz-box-shadow: 0px 0px 10px #333;
+	-webkit-box-shadow: 0px 0px 10px #333;
+	background: #333;
+	color: #eee;
+	position: absolute;
+	z-index: 99999999;
 }
-
-td:focus
-{
-
-}
-
 .crudField {
 	padding: 10px;
 	border-bottom: 1px solid #eee;
@@ -551,6 +544,7 @@ input[type=text]:focus,input[type=password]:focus,textarea:focus {
 .disabled {
 	background-color: #333;
 }
+
 h1,h2,h3,h4,h5,h6,h7 {
 	font-family: Georgia, "Times New Roman", Times, serif;
 	font-size: 20px;
