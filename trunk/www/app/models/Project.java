@@ -1,6 +1,5 @@
 package models;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,9 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import controllers.Security;
-
 import play.data.validation.Required;
+import controllers.Security;
 
 /**
  * @author Kash
@@ -25,9 +23,8 @@ import play.data.validation.Required;
  * @author Kash
  */
 @Entity
-public class Project extends SmartModel
-{
-	@Column( unique = true )
+public class Project extends SmartModel {
+	@Column (unique = true)
 	@Required
 	public String name;
 
@@ -38,7 +35,7 @@ public class Project extends SmartModel
 	public boolean deleted;
 
 	public boolean isPrivate;
-	
+
 	public boolean isScrum;
 
 	public boolean approvalStatus = false;
@@ -46,23 +43,23 @@ public class Project extends SmartModel
 	public User user;
 
 	/* One To Many Relations */
-	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
+	@OneToMany (mappedBy = "project", cascade = CascadeType.ALL)
 	public List<ProductRole> productRoles;
 
-	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
+	@OneToMany (mappedBy = "project", cascade = CascadeType.ALL)
 	public List<Meeting> meetings;
 
-	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
+	@OneToMany (mappedBy = "project", cascade = CascadeType.ALL)
 	public List<Role> roles;
 
 	@OneToMany (mappedBy = "project")
 	public List<Component> components;
 
-	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
+	@OneToMany (mappedBy = "project", cascade = CascadeType.ALL)
 	public List<Sprint> sprints;
 
 	// Added in Sprint 2 by Galal Aly
-	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
+	@OneToMany (mappedBy = "project", cascade = CascadeType.ALL)
 	public List<Priority> priorities;
 
 	// Added in Sprint 2 by Monayri
@@ -426,7 +423,7 @@ public class Project extends SmartModel
 		sprintDuration = 14;
 		this.save();
 	}
-	
+
 	public void init(boolean isScrum) {
 		// this.save();
 		board = new Board(this).save();
@@ -537,11 +534,10 @@ public class Project extends SmartModel
 		meetingsTypesInSprint.add(true);
 
 		sprintDuration = 14;
-		
-		
-		if(!isScrum){
-			//Default creations in case not a scrum project
-			Story defaultStory = new Story("default","default", "default", 1, "default", Security.getConnected().id).save();
+
+		if (!isScrum) {
+			// Default creations in case not a scrum project
+			Story defaultStory = new Story("default", "default", "default", 1, "default", Security.getConnected().id).save();
 			Component defaultComponent = new Component().save();
 			defaultStory.componentID = defaultComponent;
 			defaultComponent.name = "default component";
@@ -552,7 +548,7 @@ public class Project extends SmartModel
 			defaultComponent.save();
 			defaultSprint.save();
 		}
-		
+
 		this.save();
 	}
 
@@ -715,22 +711,23 @@ public class Project extends SmartModel
 		List<Request> requests = Request.find("byIsDeletionAndProject", true, this).fetch();
 		return requests.size();
 	}
-	public int getNumberOfTotalRequests()
-	{
+
+	public int getNumberOfTotalRequests() {
 		List<Request> requests = Request.find("byIsDeletionAndProject", false, this).fetch();
 		List<Request> drequests = Request.find("byIsDeletionAndProject", true, this).fetch();
-		return requests.size()+drequests.size();
+		return requests.size() + drequests.size();
 	}
-	
+
 	/**
-	 * This method returns the recent activity of this project on a scale of 0-10, 0 being least active and 10 being most active, based on the number of recent actions taken place (extracted information from logs per project, in the last 10 days)
+	 * This method returns the recent activity of this project on a scale of
+	 * 0-10, 0 being least active and 10 being most active, based on the number
+	 * of recent actions taken place (extracted information from logs per
+	 * project, in the last 10 days)
+	 * 
 	 * @author mahmoudsakr
 	 */
 	public int activity() {
-		List<Log> logs = Log.find("project = ? and date > ?", 
-								this, 
-								new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 10 ))
-							.fetch();
+		List<Log> logs = Log.find("project = ? and date > ?", this, new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 10)).fetch();
 		int s = logs.size() / 10;
 		return s > 10 ? 10 : s < 0 ? 0 : s;
 	}
