@@ -310,13 +310,13 @@ List<User> users = c.getUsers();
 		if(pid!=0)
 		{
 			Project p = Project.findById(pid);
-			snapshots = Snapshot.find("byBoardAndSprint",p.board,s).fetch();
+			snapshots = Snapshot.find("byBoardAndSprintAndType",p.board,s,p.name).fetch();
 			render(snapshots,p,pid,cid);
 		}
 		else
 		{
 			Component c = Component.findById(cid);
-			snapshots = Snapshot.find("byBoardAndSprint",c.componentBoard,s).fetch();
+			snapshots = Snapshot.find("byBoardAndSprintAndType",c.componentBoard,s,c.name).fetch();
 			render(snapshots,c,pid,cid);
 		}
 		//List<Snapshot> snapshots = Snapshot.find("sprint.id = ? and type = ? ", id, type).fetch();
@@ -331,13 +331,13 @@ List<User> users = c.getUsers();
 		if(pid!=0)
 		{
 			Project p = Project.findById(pid);
-			snapshots = Snapshot.find("byBoardAndSprint",p.board,s).fetch();
+			snapshots = Snapshot.find("byBoardAndSprintAndType",p.board,s,p.name).fetch();
 			render(snapshots,p,pid,cid);
 		}
 		else
 		{
 			Component c = Component.findById(cid);
-			snapshots = Snapshot.find("byBoardAndSprint",c.componentBoard,s).fetch();
+			snapshots = Snapshot.find("byBoardAndSprintAndType",c.componentBoard,s,c.name).fetch();
 			render(snapshots,c,pid,cid);
 		}
 	}
