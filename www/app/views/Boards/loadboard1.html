@@ -176,11 +176,10 @@ REDIPS.drag.init()
 		
 		
 		<!-- big sticky note -->						
-		<p style="float:left"> 
 		<div style="display:none;"  id="${task.id}Large" style="border:hidden">
 		<div style="max-width:165px" id="tas-${task.id}_" >
+		<p style="float:left"> 
 		<div title="Story ${task.taskStory.id}: ${task.taskStory.description}" class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 15px;border=0px" id="tas-${task.id}_T">
-		<p>
 		<div  style="border=0px" align="center">S ${task.taskStory.id}</div>
 		
 		#{if connected.in(p).can('changeTaskDescreption') || connected.equals(task.assignee)} <!-- if has permission (desc) or assignee -->
@@ -238,13 +237,11 @@ REDIPS.drag.init()
 		Type:${task.taskType.name}</a></div>
 		<div id="types_${task.id}" class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${task.taskType.name}</div>
 		#{/else}
-		</p>
 		<a href="javascript:;" id="${task.id}_HiddenSticky">
 		<span style="text-align:right; display:inline-block; width:3cm " title="Done Editing?" >Done</span></a>
 		</div>
+		</p>	
 		</div>
-		</div>
-		</p>
 		</div>
 		</div>
 		</div>
@@ -396,7 +393,8 @@ $('.component').click(function()
 		$('.col_'+i).css('display','none');
 	});    
 	$('.editDES').editable(function(value)
-		{var taskId 	= parseInt($('#lolid').closest("div").attr("id"));  
+		{
+			var taskId 	= parseInt($('#lolid').closest("div").attr("id"));  
     	 $.post('@{Tasks.editTaskDesc2()}',{id:taskId, userId:selectedUser, desc:value});
 		 document.getElementById("desc_"+taskId).innerHTML = value;
        	 document.getElementById(taskId+"_des").innerHTML = value;
