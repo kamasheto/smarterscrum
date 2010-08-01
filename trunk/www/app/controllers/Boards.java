@@ -441,6 +441,7 @@ public class Boards extends SmartCRUD {
 		List <Board> boards = new ArrayList <Board>();
 		for(int i=0;i<p.components.size();i++)
 		{
+			if(p.components.get(i).componentBoard!=null)
 			boards.add(p.components.get(i).componentBoard);
 		}
 		render(boards,sprintID,p);
