@@ -1,12 +1,12 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}Reviewer Requests#{/set}
+#{set 'title'}Request to be reviewer#{/set}
 #{list items:project.taskTypes, as: 'taskType'}
 <div class="bar">
 #{if requested.contains(taskType)}
-<a class="dim" href="#" onclick="removeRequestToBeReviewer(${taskType.id});"><img title="Remove request to be reviewer for this task type" src="@{'public/images/famfam/delete.png'}"></a>
+<a class="dim" href="#" onclick="removeRequestToBeReviewer(${taskType.id});"><img title="Remove request to be reviewer for this task type" src="@{'public/images/famfam/group_delete.png'}"></a>
 #{/if}
 #{else}
-<a href="#" onclick="requestToBeReviewer(${taskType.id}, ${projectId});"><img title="Request to be reviewer for this task type" src="@{'public/images/famfam/add.png'}"></a>
+<a href="#" onclick="requestToBeReviewer(${taskType.id}, ${projectId});"><img title="Request to be reviewer for this task type" src="@{'public/images/famfam/group_go.png'}"></a>
 #{/else}
 ${taskType.name}
 </div>
