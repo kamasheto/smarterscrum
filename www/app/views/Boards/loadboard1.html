@@ -262,6 +262,15 @@ var selectedUser = 0;
 var col_from = -1;
 var col_to = -1;
 
+function take_snapshot() {
+		$.post('/snapshots/takesnapshot', {sprintID:${s.id},componentID:0,meetingID:0}, function(){alert('Saved!')});
+	}
+			function take_snap(id) {
+				if(id!=null)
+		$.post('@{snapshots.takesnapshot()}', {sprintID:${s.id},componentID:id,meetingID:0} ,function(){alert('saved!')});	
+	}
+
+
 function showCol(c)
 {
 	//$('#desc_1').load('/boards/loadboard1?sprintID=1 #desc_1');
