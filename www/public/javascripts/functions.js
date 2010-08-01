@@ -1,41 +1,114 @@
-﻿var getNotifications = function() {
-	$.getJSON('/notificationtasks/getlatestnews',
-		function(data) {
-			$(data).each(function(){
-				$.gritter.add({
-					title: this.madeBySysAdmin? '[SysAdmin] '+this.header : this.header,
-					text: this.body,
-					image: this.importance > 0 ? '/public/images/tick.png' : this.importance < 0 ? '/public/images/cross.png' : '/public/images/error.png',
-					sticky: false,
-					time: ''
-				});
-				return true;
-			});
-		setTimeout('getNotifications();', 1000);
-		});
-	}
-var ping = function() {
-	$.getJSON('/sessions/ping',
-		function(data) {
-			str = '';
-			$(data).each(function() {
-				// users?
-				if (this.isAdmin) {
-					this.name = '<span class="isAdmin">' + this.name + '</span>';
+﻿		var getNotifications = function() {
+				$.getJSON('/notificationtasks/getlatestnews',
+					function(data) {
+						$(data).each(function(){
+							$.gritter.add({
+								title: this.madeBySysAdmin? '[SysAdmin] '+this.header : this.header,
+								text: this.body,
+								image: this.importance > 0 ? '/public/images/tick.png' : this.importance < 0 ? '/public/images/cross.png' : '/public/images/error.png',
+								sticky: false,
+								time: ''
+							});
+							return true;
+						});
+					setTimeout('getNotifications();', 1000);
+					});
 				}
-				str += '<a href="/show/user?id='+this.id+'">' + this.name + '</a>, ';
+var ping = function() {
+				$.getJSON('/sessions/ping',
+					function(data) {
+						str = '';
+						$(data).each(function() {
+							// users?
+							if (this.isAdmin) {
+								this.name = '<span class="isAdmin">' + this.name + '</span>';
+							}
+							str += '<a href="/show/user?id='+this.id+'">' + this.name + '</a>, ';
+						});
+						
+						$('#onlineUsers').html(str.substring(0,str.length-2));
+						setTimeout('ping()', 1000*30);
+					});
+				}
+
+			 $.extend($.gritter.options, { 
+				fade_in_speed: 50, // how fast notifications fade in (string or int)
+				fade_out_speed: 300, // how fast the notices fade out
+				time: 5000 // hang on the screen for...
 			});
-			
-			$('#onlineUsers').html(str.substring(0,str.length-2));
-			setTimeout('ping()', 1000*30);
-		});
+
+function request_accept( id, hash )
+{
+	$.post('/requests/requestAccept' ,
+		    {hash:hash, id:id} ,
+		    function(){
+		    $('#req_'+id).remove();
+		    })
+}
+function request_accept2( id, hash )
+{
+	$.post('/requests/deletionRequestAccept' ,
+		    {hash:hash} ,
+		    function(){
+		    $('#req_'+id).remove();
+		    })
+		}
+function request_ignore( id, hash)
+{
+	$.post('/requests/requestIgnore' ,
+		    {hash:hash} ,
+		    function(){
+		    $('#req_'+id).remove();
+		    })
+		}
+function show_comment(id){
+
+	$('#comment_'+id).show();
 	}
- $.extend($.gritter.options, { 
-	fade_in_speed: 50, // how fast notifications fade in (string or
-						// int)
-	fade_out_speed: 300, // how fast the notices fade out
-	time: 5000 // hang on the screen for...
-});
+function do_ignore(id, hash){
+	var textValue = $('#text_'+id).val();
+	if(textValue == '')
+		$.bar({message:'You must Enter a reason why you declined this request!'})
+	else
+	{
+		$.post('/requests/requestIgnore' ,
+		    {hash:hash, body:textValue} ,
+		    function(){
+		    	$('#req_'+id).remove();
+				$('#comment_'+id).remove();
+		    })
+	}
+}
+function doOnLoad() {
+	
+	$('.dim').live('mouseover', function() {
+		$(this).click(function() {	
+		})
+	})
+		$('.formatDate').each(function(){
+			if (!$(this).data('processed')) {
+				$(this).data('processed', true)
+				$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );	
+			}
+		});
+		$('.formatTime').each(function(){
+			if (!$(this).data('processed')) {
+				$(this).data('processed', true)
+				$(this).html( formatDate( new Date(Number($(this).html())), 'd MMM, yyyy hh:mma') );	
+			}
+		});
+	
+	    $("a").tipTip({delay:0});
+	    $("td").tipTip({delay:0});
+	    $("span").tipTip({delay:0});
+	 $("div").tipTip({delay:0});
+	 $("img").tipTip({delay:0});
+	    $('div.crudField').each(function(){
+				if ($(this).html().trim() == '') {
+					$(this).remove();
+				}
+		    });
+}
 function delete_meeting(id, pId)
 {
 	var confirmation= confirm("Are you sure you want to delete this meeting ?");
@@ -98,11 +171,12 @@ function confirm_me(id)
 					message : 'Meeting has already ended.'
 				});
 			}
+
 	})
 }
 
 function requestRole(roleIdd){
-	$.post('/requests/requestRoleInProject', {roleId:roleIdd}, function(msg){
+	$.post('/projecttasks/requestRole', {id:roleIdd}, function(msg){
 		$.bar({message:msg});
 	});
 }
@@ -311,27 +385,28 @@ $(function() {
 		});
 	});
 
+		
 
 
 function load(url, el, n) {
 	if($.inArray(url,myDivs)==-1 || n==2){
-		var pUrl = $('#'+el).attr('name');
-		$('#'+el+'_header').load(pUrl+' .mainH', function(){
-			
-			$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
+	var pUrl = $('#'+el).attr('name');
+	$('#'+el+'_header').load(pUrl+' .mainH', function(){
+		
+		$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
 			if(n==3)
-			$('#'+el+'_header').find('.min').first().remove();
-		});
-		$('#' + el + '_content').load(url, function() {
-			$('#' + el + ' .min').first().show();
-			$('#' + el + '_content').children().show();
-			// $('#' + el + '_content').find('ui-widget-header').first().load
-			$('#' + el + ' .loading').first().hide();
-			$('#' + el + '_content').slideDown(400);
-			magic(el);
-	
-		});
-	}
+		$('#'+el+'_header').find('.min').first().remove();
+	});
+	$('#' + el + '_content').load(url, function() {
+		$('#' + el + ' .min').first().show();
+		$('#' + el + '_content').children().show();
+		//$('#' + el + '_content').find('ui-widget-header').first().load
+		$('#' + el + ' .loading').first().hide();
+		$('#' + el + '_content').slideDown(400);
+		magic(el);
+
+	});
+}
 	if(n==1)
 		myDivs.push(url);
 }
@@ -348,16 +423,16 @@ function loadBox(url, el)
 {
 	if($.inArray(url,myDivs)==-1)
 	{
-		$('#' + el).append('<div style="position:absolute;z-index:0"id="myTemp"></div>');
-		
-		$('#' + el + ' #myTemp').load(url, function() {
-			$('#' + el + ' #myTemp').children().attr('name',url);
-			$('#' + el + ' #myTemp').children().css('position','absolute!important');
+	$('#' + el).append('<div style="position:absolute;z-index:0"id="myTemp"></div>');
 	
-			$('#' + el + ' #myTemp').children().css('z-index','4');
-			$('#' + el + ' #myTemp').replaceWith($('#' + el + ' #myTemp').html());
-			myDivs.push(url);
-		});
+	$('#' + el + ' #myTemp').load(url, function() {
+		$('#' + el + ' #myTemp').children().attr('name',url);
+		$('#' + el + ' #myTemp').children().css('position','absolute!important');
+
+		$('#' + el + ' #myTemp').children().css('z-index','4');
+		$('#' + el + ' #myTemp').replaceWith($('#' + el + ' #myTemp').html());
+		myDivs.push(url);
+	});
 	}
 }
 
@@ -366,37 +441,41 @@ function magic(id) {
 	$("#" + id + "_content div[name]").each(
 	function() 
 	{
-		if($(this).attr('class')=='overlay')
-		{
-			var id2 = "ui" +num;
-			num++;
-			var head = '<div id="'+id2+'_header" class="ui-widget-header"><a href="#" onclick="overlayOpen(\''+$(this).attr('name')+'\')"><span class="ui-icon ui-icon-extlink"></span></a>' + $(this).html()+ '</div>';
-			$(this).html(head);
-			$(this).attr('id', id2);
-			$(this).addClass('ui-widget-content');
-		}
+						if($(this).attr('class')=='overlay')
+						{
+							var id2 = "ui" +num;
+							num++;
+							var head = '<div id="'+id2+'_header" class="ui-widget-header"><a href="#" onclick="overlayOpen(\''+$(this).attr('name')+'\')"><span class="ui-icon ui-icon-extlink"></span></a>' + $(this).html()+ '</div>';
+							$(this).html(head);
+							$(this).attr('id', id2);
+							$(this).addClass('ui-widget-content');
+						}
 		else
 		{
-			var url = $(this).attr('name');
-			var url2 = url+' .actual';
+						var url = $(this).attr('name');
+						var url2 = url+' .actual';
 			if($.inArray(url,myDivs)==-1 && $.inArray(url2,myDivs)==-1)
 			{
-				var id2 = "ui" +num++;
-				var head = '<div id="'+id2+'_header" class="ui-widget-header mainH"><span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span></span>' + $(this).html() + '</div>';
-				$(this).html(head);
-				$(this).addClass('ui-widget-content draggableChild');
-				$(this).attr('id', id2);
+						var id2 = "ui" +num++;
+						var head = '<div id="'+id2+'_header" class="ui-widget-header mainH"><span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span></span>' + $(this).html() + '</div>';
+						$(this).html(head);
+						$(this).addClass('ui-widget-content draggableChild');
+
+						$(this).attr('id', id2);
 				$(this).append('<div id="' + id2 + '_content" class="ui-widget-content" ></div>');
-				}
-			else
+						}
+						else
 			{	var id2= $($(this).closest('.workspaceDraggables').find('div[name='+$(this).attr('name')+']')).first().attr('id')+'_2';
-				var head = '<div id="'+id2+'_header" class="ui-widget-header mainH">' + $(this).html() + '</div>';
-				$(this).html(head);
-				$(this).addClass('clone');
-				$(this).attr('id', id2);	
-			}
-		}
-	});
+							var head = '<div id="'+id2+'_header" class="ui-widget-header mainH">' + $(this).html() + '</div>';
+							$(this).html(head);
+							$(this).addClass('clone');
+
+							$(this).attr('id', id2);	
+						}
+						
+						}
+					});
+
 }
 var myDivs = new Array();
 var num =1;

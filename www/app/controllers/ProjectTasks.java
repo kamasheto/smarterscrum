@@ -28,12 +28,11 @@ public class ProjectTasks extends SmartController {
 		notFoundIfNull(role);
 		if (user.in(role.project).can("manageRequests")) {
 			user.addRole(role);
-			flash.success("Successfully added role: " + role.name);
+			renderText("Successfully added role!");
 		} else {
 			new Request(user, role).save();
-			flash.success("Successfully requested role: " + role.name);
+			renderText("Request sent! - Waiting for a project admin to approve.");
 		}
-		Show.project(role.project.id);
 	}
 
 	/**

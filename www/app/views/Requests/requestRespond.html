@@ -2,10 +2,8 @@
 #{set title:'Requests' /}
 
 #{list items:requests, as:'req'}
-	<div name="/requests/show?id=${req.id}" id="req_${req.id}">
-		<div class="item_imgs">
-			<a onclick="request_accept('${req.id}', '${req.hash}');" href="#"><img src="/public/images/famfam/tick.png"></a><a onclick="request_ignore('${req.id}', '${req.hash}');" href="#"><img src="/public/images/famfam/cross.png"></a>
-		</div>
+	<div class="bar">
+			<a onclick="request_ignore('${req.id}', '${req.hash}');" href="#"><img src="/public/images/famfam/cross.png"></a><a onclick="request_accept('${req.id}', '${req.hash}');" href="#"><img src="/public/images/famfam/tick.png"></a>
 		${req.user.name} has  requested to be ${req.role.name}
 	
 	</div>
@@ -15,73 +13,15 @@
 #{/else}
 
 #{list items:drequests, as:'req'}
-	<div name="/requests/show?id=${req.id}" id="req_${req.id}" class="delete_request"><a href="/show/user?id=${req.user.id}">${req.user.name}</a> has  requested to be deleted from the project.
-	<a onclick="request_accept2('${req.id}', '${req.hash}');" href="#">Accept  </a> &bull; 
-	<a onclick="show_comment('${req.id}');" href = "#">Decline</a>
+	<div class="bar"><a href="/show/user?id=${req.user.id}">${req.user.name}</a> has  requested to be deleted from the project.
+	<a onclick="show_comment('${req.id}');" href = "#"><img src="/public/images/famfam/cross.png"></a><a onclick="request_accept2('${req.id}', '${req.hash}');" href="#"><img src="/public/images/famfam/tick.png"></a>
 	<div id = "comment_${req.id}" style="display:none">
 		<b>Dear ${req.user.name}, your request to be deleted from ${req.project.name} has been denied because ....</b>
 		<textarea id = "text_${req.id}" rows="2" cols="150"></textarea><br />
 		<a onclick="do_ignore('${req.id}', '${req.hash}');" href = "#"><font color="red"><b><u>Decline Request and Notify user</u></b></font></a>
-		<br /> <br />
 	</div>
 	</div>
-
-
 #{/list}
 #{else}
-	#{note 'error'}There are no new deletion requests in ${pro.name}#{/note}
+	#{note 'error'}There are no new deletion requests#{/note}
 #{/else}
-
-#{set 'crumbs'}
-<!-- deprecated -->
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${pro.id}">${pro.name}</a></li>
-#{/set}
-
-<script type="text/javascript">
-$(document).ready(function() {
-	$("#accordion").accordion({ autoHeight:false } );
-})
-function request_accept( id, hash )
-{
-	$.post('@{requestAccept()}' ,
-		    {hash:hash, id:id} ,
-		    function(){
-		    $('#req_'+id).remove();
-		    })
-		}
-function request_accept2( id, hash )
-{
-	$.post('@{deletionRequestAccept()}' ,
-		    {hash:hash} ,
-		    function(){
-		    $('#req_'+id).remove();
-		    })
-		}
-function request_ignore( id, hash)
-{
-	$.post('@{requestIgnore()}' ,
-		    {hash:hash} ,
-		    function(){
-		    $('#req_'+id).remove();
-		    })
-		}
-function show_comment(id){
-	
-	$('#comment_'+id).show();
-	}
-function do_ignore(id, hash){
-	var textValue = $('#text_'+id).val();
-	if(textValue == '')
-	alert('you must Enter a reason why you declined this request!');
-	else
-	{
-		$.post('@{requestIgnore()}' ,
-		    {hash:hash, body:textValue} ,
-		    function(){
-		    $('#req_'+id).remove();
-		    })
-			$('#comment_'+id).remove();
-		}
-	}
-</script>

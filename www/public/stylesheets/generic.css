@@ -20,7 +20,7 @@ button,a button,input[type=submit],input[type=ok],input[type=send],input[type=bu
 	font-family: verdana;
 }
 
-.ui-widget-header img {
+.ui-widget-header img, .bar img {
 	float: right;
 }
 
