@@ -27,6 +27,7 @@ import play.mvc.With;
 @With (Secure.class)
 public class Boards extends SmartCRUD {
 	
+
 	/**
 	 * This method is used to generate the project board 
 	 * & the component board for a certain sprint
@@ -444,7 +445,7 @@ public class Boards extends SmartCRUD {
 			if(p.components.get(i).componentBoard!=null)
 			boards.add(p.components.get(i).componentBoard);
 		}
-		render(boards,sprintID,p);
+		render(boards,sprintID,p,s);
 	}
 	
 	public static ArrayList getDescPerm (Project p)
