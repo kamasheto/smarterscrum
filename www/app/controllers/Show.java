@@ -24,16 +24,23 @@ import play.mvc.With;
 public class Show extends SmartController {
 
 	public static void roles(long id) {
+		User user = Security.getConnected();
 		Project project = Project.findById(id);
 		List<Role> roles = null;
 		if (project == null) {
-			Security.check(Security.getConnected().isAdmin);
+			Security.check(user.isAdmin);
 			roles = Role.find("byProjectIsNull").fetch();
 		} else {
-			Security.check(project, "manageRoles");
+			//Security.check(project, "manageRoles");
 			roles = project.roles;
 		}
-		render(project, roles);
+		List<Request> requests = Request.find("byUser", user).fetch();
+		System.out.println("el size "+requests.size());
+		ArrayList<Role> requestedRoles = new ArrayList<Role>();
+		for(Request request:requests){
+			requestedRoles.add(request.role);
+		}
+		render(project, roles, user, requestedRoles);
 	}
 
 	public static void index() {
