@@ -1,0 +1,30 @@
+#{extends 'magicBox.html' /}
+
+#{set 'title'}${project.name}'s Boards #{/set}
+#{if (sprints.size()==0)}
+	There are No Sprints.
+#{/if}
+#{else}
+	#{list items:sprints, as:'sprint'}
+		#{if (sprint.id==runningSprint) }
+			<div class="running" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.id} Boards
+			
+			</div>
+		#{/if}
+		#{else}
+		#{if (sprint.ended) }
+			<div class="Past" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.id} Boards
+			
+			</div>
+		#{/if}
+		#{else}
+		<div class="Upcoming" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.id} Boards
+			
+			</div>#{/else}
+		#{/else}
+
+
+
+
+#{/list}
+#{/else}
