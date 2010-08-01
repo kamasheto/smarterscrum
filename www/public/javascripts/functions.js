@@ -337,7 +337,7 @@ function removeMe(me)
 
 
 function loadBox(url, el) {
-	
+if(should==true){
 if($.inArray(url,myDivs)==-1){
 	$('#' + el).append('<div style="position:absolute;z-index:0"id="myTemp"></div>');
 	
@@ -348,7 +348,12 @@ if($.inArray(url,myDivs)==-1){
 		$('#' + el + ' #myTemp').children().css('z-index','4');
 		$('#' + el + ' #myTemp').replaceWith($('#' + el + ' #myTemp').html());
 		myDivs.push(url);
+		
 	});
+}}
+else
+{
+	should=true;
 }
 }
 var num =1;
@@ -482,6 +487,35 @@ function close_workspace(project_id) {
 	$('.workspace-'+project_id).remove()
 	show(0)
 }
+function showProjectWorkspace2(project_id,url,isOverlay) {
+	if ($('.workspace-'+project_id).length) {
+		// workspace already loaded, just show it instead
+		$('#top_header_projects_pane').slideUp()
+		show(project_id)
+		return
+	}
+	should=false;
+	$('#workspaces').append('<div class="workspace workspace-'+project_id+'"><div style="width:32px;margin:auto;margin-top:200px;"><img src="/public/images/loadingMagic.gif"></div></div>')
+	show(project_id)
+	// return
+	$.post('/show/workspace', {id: project_id}, function(data) {
+		$('#project-tabs').append('<a class="aDIV topCornersRounded right project-button selectedADiv" id="project-button-'+project_id+'" href="#" onclick="show('+project_id+')" style="width: 120px !important" title="">'+$(data).find('.project_name_in_header').html()+' <span class="right ui-icon ui-icon-circle-close" onclick="close_workspace('+project_id+')"> </span></a>');
+		$('.workspace-' + project_id).html(data);
+		$('#top_header_projects_pane').slideUp();
+		should=true;
+		if(isOverlay)
+			loadBox(url,'workspace-'+project_id);
+		else
+			overlayOpen(url);
+		
+	})
+}
+var should = true;
+function shouldLoad()
+{
+	return(should);
+}
+
 function showProjectWorkspace(project_id) {
 	if ($('.workspace-'+project_id).length) {
 		// workspace already loaded, just show it instead
