@@ -1,4 +1,5 @@
 /*generic template css*/
+
 .ui-widget-content {
 	border: 0px !important;
 }
@@ -57,11 +58,10 @@
 
 .draggableChild .ui-widget-header,.overlay .ui-widget-header {
 	font-size: 12px;
-	background: #ddd !important;
-	background: -moz-linear-gradient(center bottom, #eee 20%, #ddd 80%)
-		!important;
+	background: #ddd;
+	background: -moz-linear-gradient(center bottom, #eee 20%, #ddd 80%);
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #ddd),
-		color-stop(0.8, #eee) ) !important;
+		color-stop(0.8, #eee) );
 	color: #b7568d;
 	font-family: verdana;
 	font-style: normal;
@@ -226,3 +226,18 @@ img {
 }
 /***************************/ /* END mahmoudsakr's CSS */
 	/***************************/
+	
+.green
+{
+color:green;
+}
+
+.yellow
+{
+color:yellow;
+}
+
+.red
+{
+color:red;
+}
