@@ -40,10 +40,16 @@ var ping = function() {
 			
 function doOnLoad() {
 		$('.formatDate').each(function(){
-			$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );
+			if (!$(this).data('processed')) {
+				$(this).data('processed', true)
+				$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );	
+			}
 		});
 		$('.formatTime').each(function(){
-			$(this).html( formatDate( new Date(Number($(this).html())), 'd MMM, yyyy hh:mma') );
+			if (!$(this).data('processed')) {
+				$(this).data('processed', true)
+				$(this).html( formatDate( new Date(Number($(this).html())), 'd MMM, yyyy hh:mma') );	
+			}
 		});
 	
 	    $("a").tipTip({delay:0});
