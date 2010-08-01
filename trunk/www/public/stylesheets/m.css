@@ -242,7 +242,7 @@ img {
 	color: red;
 }
 
-.yellowBg, .yellowBg .ui-widget-header {
+.yellowBg .ui-widget-header {
 	background: #FFFDE6 !important;
 	background:-moz-linear-gradient(center bottom , #FEFFF5 10%, #FFFDE6 90%) repeat scroll 0 0 transparent !important;
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #FFFDE6),
@@ -250,7 +250,7 @@ img {
 	color: #000;
 }
 
-.redBg, .redBg .ui-widget-header {
+.redBg .ui-widget-header {
 	background: #FFE6E6 !important;
 	background: -moz-linear-gradient(center bottom, #FFE6E6 10%, #FFF5F5 90%)
 		!important;
@@ -259,7 +259,7 @@ img {
 	color: #000;
 }
 
-.greenBg, .greenBg .ui-widget-header {
+.greenBg .ui-widget-header {
 	background: #E6FFE6 !important;
 	background: -moz-linear-gradient(center bottom, #F5FFF5 10%, #E6FFE6 90%)
 		!important;
