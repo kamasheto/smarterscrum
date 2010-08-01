@@ -19,6 +19,25 @@ import play.mvc.With;
 
 @With (Secure.class)
 public class Sprints extends SmartCRUD {
+	public static void BoardSprints(long projectId) {
+		Project project = (Project) (Project.findById(projectId));
+		List<Sprint> sprints = project.sprints;
+		long runningSprint = project.runningSprint();
+		render(sprints, project, runningSprint);
+	}
+	public static void ChartSprints(long projectId) {
+		Project project = (Project) (Project.findById(projectId));
+		List<Sprint> sprints = project.sprints;
+		long runningSprint = project.runningSprint();
+		render(sprints, project, runningSprint);
+	}
+
+	public static void BacklogSprints(long projectId) {
+		Project project = (Project) (Project.findById(projectId));
+		List<Sprint> sprints = project.sprints;
+		long runningSprint = project.runningSprint();
+		render(sprints, project, runningSprint);
+	}
 	/**
 	 * to render the showsprints page with the sprints and the projectId
 	 * 
