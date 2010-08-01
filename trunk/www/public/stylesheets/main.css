@@ -185,9 +185,10 @@ a, a img, span.revertFrom, span.min{
 	opacity: 0.2;
 }
 .activity-level {
-	background: url(/public/images/activity-level.png) no-repeat top left;
+	background: url(/public/images/activity-level.png);
 	width: 16px;
 	height: 16px;
+	background-position: -16px -16px;
 }
 .activity-level-0 {
 	background-position: -16px -16px;
