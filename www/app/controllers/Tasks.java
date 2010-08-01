@@ -703,16 +703,17 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * changes the given task description
+	 * This method changes the given task description.
 	 * 
-	 * @author Moumen Mohamed story=C3S36
+	 * @author Moumen Mohamed 
 	 * @param id
-	 *            the id of the giventask
+	 *            the id of the given task.
 	 * @param userId
-	 *            the id of the user who will do the change in description
+	 *            the id of the user who will do the change in description.
 	 * @param desc
-	 *            The new description
+	 *            The new description.
 	 * @return boolean
+	 * @story C3S36
 	 */
 	public static boolean editTaskDesc2(long id, long userId, String desc) {
 		Task task1 = Task.findById(id);
@@ -739,10 +740,10 @@ public class Tasks extends SmartCRUD {
 		String body = "";
 		String header = "Task: 'T" + task1.id + "\'" + " Task Type has been edited.";
 		if (userId == Security.getConnected().id) {
-			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ".";
 
 		} else {
-			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
 		Calendar cal = new GregorianCalendar();
@@ -755,20 +756,20 @@ public class Tasks extends SmartCRUD {
 			Logs.addLog(user1+" has performed action (Edit) using resource (Task Description) in project "+task1.taskStory.componentID.project.name+" from the account of "+Security.getConnected().name );
 		}
 		return true;
-
 	}
 
 	/**
-	 * changes the given task type
+	 * This method changes the given task type.
 	 * 
-	 * @author Moumen Mohamed story=C3S36
+	 * @author Moumen Mohamed 
 	 * @param id
-	 *            the id of the given task
+	 *            the id of the given task.
 	 * @param type
-	 *            The new Tasktupe
+	 *            The new Task Type.
 	 * @param userId
-	 *            the id of the user who will change the taskType
+	 *            the id of the user who will change the task Type.
 	 * @return boolean
+	 * @story C3S36
 	 */
 	public static boolean editTaskType(long id, long typeId, long userId) {
 		Task task1 = Task.findById(id);
@@ -797,19 +798,15 @@ public class Tasks extends SmartCRUD {
 		// task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" +
 		// task1.taskStory.componentID.project.name + "\'" + ".";
 		if (userId == Security.getConnected().id) {
-			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
+			Logs.addLog(user1, "Edit", "Task Type", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ".";
 
 		} else {
-			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
+			Logs.addLog(user1+" has performed action (Edit) using resource (Task Type) in project "+task1.taskStory.componentID.project.name+" from the account of "+Security.getConnected().name );
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
-		if (userId == Security.getConnected().id) {
-			Logs.addLog(user1, "Edit", "Task Type", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
-		}
-		else
-		{
-			Logs.addLog(user1+" has performed action (Edit) using resource (Task Type) in project "+task1.taskStory.componentID.project.name+" from the account of "+Security.getConnected().name );
-		}return true;
+		return true;
 	}
 
 	/**
@@ -946,16 +943,17 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * changes the given task status
+	 * This method changes the given task status.
 	 * 
-	 * @author Moumen Mohamed story=C3S36
+	 * @author Moumen Mohamed 
 	 * @param id
-	 *            the id of the given task
+	 *            the id of the given task.
 	 * @param newStatus
-	 *            The new taskstatus
+	 *            The new task status.
 	 * @param userId
-	 *            the id of the user who will change the taskstatus
+	 *            the id of the user who will change the task status.
 	 * @return boolean
+	 * story C3S36
 	 */
 	public static boolean editTaskStatus(long id, long userId, TaskStatus newStatus) {
 		Task task1 = Task.findById(id);
@@ -1016,18 +1014,14 @@ public class Tasks extends SmartCRUD {
 		// task1.taskStory.componentID.project.name + "\'" + ".";
 		String header = "Task: 'T" + task1.id + "\'" + " Task Status has been edited.";
 		if (userId == Security.getConnected().id) {
-			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
+			Logs.addLog(user1, "Edit", "Task Status", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ".";
 		} else {
-			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
+			Logs.addLog(user1+" has performed action (Edit) using resource (Task Status) in project "+task1.taskStory.componentID.project.name+" from the account of "+Security.getConnected().name );
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
-		if (userId == Security.getConnected().id) {
-			Logs.addLog(user1, "Edit", "Task Status", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
-		}
-		else
-		{
-			Logs.addLog(user1+" has performed action (Edit) using resource (Task Status) in project "+task1.taskStory.componentID.project.name+" from the account of "+Security.getConnected().name );
-		}return true;
+		return true;
 
 	}
 
@@ -1243,16 +1237,17 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * changes the given task assignee
+	 * This method changes the given task assignee.
 	 * 
-	 * @author Moumen Mohamed story=C3S36
+	 * @author Moumen Mohamed 
 	 * @param id
-	 *            the id of the given task
+	 *            the id of the given task.
 	 * @param userId
-	 *            the id of the user who will do the change
+	 *            the id of the user who will do the change.
 	 * @param assigneId
-	 *            the id of the user who will be the assignee of the task
+	 *            the id of the user who will be the assignee of the task.
 	 * @return boolean
+	 * @story C3S36
 	 */
 	public static boolean editTaskAssignee2(long id, long userId, long assigneeId) {
 		Task task1 = Task.findById(id);
@@ -1292,9 +1287,9 @@ public class Tasks extends SmartCRUD {
 		 */
 		String body = "";
 		if (userId == Security.getConnected().id) {
-			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ".";
 		} else {
-			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
 		if (userId == Security.getConnected().id) {
@@ -1379,16 +1374,17 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * changes the given task reviewer
+	 * This method changes the given task reviewer.
 	 * 
-	 * @author Moumen Mohamed story=C3S36
+	 * @author Moumen Mohamed 
 	 * @param id
-	 *            the id of the given task
+	 *            the id of the given task.
 	 * @param userId
-	 *            the id of the user who will be doing the change
+	 *            the id of the user who will be doing the change.
 	 * @param reviewerId
-	 *            the id of the user who will be the reviewer of the task
+	 *            the id of the user who will be the reviewer of the task.
 	 * @return boolean
+	 * @story C3S36
 	 */
 	public static boolean editTaskReviewer2(long id, long userId, long reviewerId) {
 		Task task1 = Task.findById(id);
@@ -1424,10 +1420,10 @@ public class Tasks extends SmartCRUD {
 		// "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
 		String header = "Task: 'T" + task1.id + "\'" + " Reviewer has been edited.";
 		if (userId == Security.getConnected().id) {
-			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ".";
 
 		} else {
-			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
+			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 
 		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
