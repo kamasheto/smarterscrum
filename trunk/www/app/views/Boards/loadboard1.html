@@ -260,11 +260,11 @@ var col_from = -1;
 var col_to = -1;
 
 function take_snapshot() {
-		$.post('/snapshots/takesnapshot', {sprintID:${s.id},componentID:0,meetingID:0}, function(){alert('Saved!')});
+		$.post('/snapshots/takesnapshot', {sprintID:${s.id},componentID:0,meetingID:0}, function(){$.bar({message:"Snapshot Taken!"})});
 	}
 			function take_snap(id) {
 				if(id!=null)
-		$.post('@{snapshots.takesnapshot()}', {sprintID:${s.id},componentID:id,meetingID:0} ,function(){alert('saved!')});	
+		$.post('@{snapshots.takesnapshot()}', {sprintID:${s.id},componentID:id,meetingID:0} ,function(){$.bar({message:"Snapshot Taken!"})});	
 	}
 
 
