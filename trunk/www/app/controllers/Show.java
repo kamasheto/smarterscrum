@@ -205,6 +205,11 @@ public class Show extends SmartController {
 		render(role, requested,user);
 	}
 	
+	public static void listTaskTypesInProject(long projectId){
+		Project project = Project.findById(projectId);
+		render(project);
+	}
+	
 	public static void workspace(long id) {
 		Project proj = Project.findById(id);
 		render(proj);
