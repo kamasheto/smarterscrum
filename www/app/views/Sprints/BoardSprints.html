@@ -7,18 +7,18 @@
 #{else}
 	#{list items:sprints, as:'sprint'}
 		#{if (sprint.id==runningSprint) }
-			<div class="running" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.id} Boards
+			<div class="running" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber} Boards
 			
 			</div>
 		#{/if}
 		#{else}
 		#{if (sprint.ended) }
-			<div class="Past" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.id} Boards
+			<div class="Past" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber} Boards
 			
 			</div>
 		#{/if}
 		#{else}
-		<div class="Upcoming" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.id} Boards
+		<div class="Upcoming" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber} Boards
 			
 			</div>#{/else}
 		#{/else}
