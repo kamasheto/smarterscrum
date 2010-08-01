@@ -176,7 +176,7 @@ img {
 /***************************/ /* START mahmoudsakr's CSS */
 	/***************************/
 .baseRole .tick_img,.baseRole .delete_img {
-	display: none;
+	display:none;
 }
 
 .project_name_in_header {
