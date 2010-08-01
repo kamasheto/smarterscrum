@@ -1,4 +1,7 @@
 #{extends 'overlay.html' /}
+<script type="text/javascript" src="@{'/public/javascripts/jquery.autocomplete.js/'}"></script>
+
+
 <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/tipsy.css'}" />
 <script type="text/javascript" src="@{'/public/javascripts/jquery.tipsy.js'}" charset="utf-8" ></script>
 <script type="text/javascript">
@@ -95,19 +98,21 @@ $('#object_dependentStories').tipsy({fade: true, gravity: 'w', html:true });
 		    <span class="crudHelp"></span>
 		#{/crud.custom}
 		
-		#{crud.custom 'description'}
-			<label for="object_description">Description</label>
-			
-			AS a <select id="descRole" onchange="setRole();" >
-								#{list items:project.productRoles ,as :'productRole'}
-									<option value="${productRole.id}">${productRole.name}</option>
-									
-								#{/list}
-								
-						</select> , I can
-			<textarea id="object_description" cols="48" rows="5" class="" name="object.description" >${object.description}</textarea>
-			<span class="crudHelp">Required.Max length is 1000.</span>
-			<span id="test"></span>
+		#{crud.custom 'description' }
+		<label for="object_description">Description	</label>
+		
+		#{if object.productRole==null}
+		<textarea id="example"  name="object.description" ROWS="4" COLS="60" onclick="f();">${object.description}</textarea>
+		#{/if}
+		#{else}
+		<textarea id="example"  name="object.description" ROWS="4" COLS="60" onclick="f();">As a ${object.productRole.name}, ${object.description}</textarea>
+		#{/else}
+		
+		    <span class="crudHelp">*</span>
+		  <div style="display:none" class="d">Ex: As a/an product role, description</div>
+		    <span class="error"></span>
+		    </div>
+		
 		#{/crud.custom}
 		
 			#{crud.custom 'productRole'}
@@ -200,3 +205,20 @@ $('#object_dependentStories').tipsy({fade: true, gravity: 'w', html:true });
 </div>
 </div>
 </div>
+
+<script>
+	var data='${productRoles}'.split("-");
+	$("#example").autocomplete(data);
+	
+	function f()
+	{
+		$('.d').css('display','inline-block');
+	}
+	
+	function product_role(id)
+	{
+		$.post('/Storys/addProductRole' ,			
+			{projectID:id,						
+			description:$("#example").val()});
+	}
+</script>

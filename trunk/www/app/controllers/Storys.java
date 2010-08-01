@@ -161,8 +161,18 @@ public class Storys extends SmartCRUD {
 				message = "Are you sure you want to delete this story? This action can not be undone.";
 			}
 		}
+		String productRoles="";
+		for(int i=0;i<project.productRoles.size();i++)
+		{
+			//productRoles=productRoles+project.productRoles.get(i).name+",";
+			if(project.productRoles.get(i).name.charAt(0)=='a'||project.productRoles.get(i).name.charAt(0)=='e'||project.productRoles.get(i).name.charAt(0)=='i'||project.productRoles.get(i).name.charAt(0)=='o'||project.productRoles.get(i).name.charAt(0)=='u'||project.productRoles.get(i).name.charAt(0)=='A'||project.productRoles.get(i).name.charAt(0)=='E'||project.productRoles.get(i).name.charAt(0)=='I'||project.productRoles.get(i).name.charAt(0)=='O'||project.productRoles.get(i).name.charAt(0)=='U')
+			productRoles=productRoles+"As an "+project.productRoles.get(i).name+",-";
+			else
+				productRoles=productRoles+"As a "+project.productRoles.get(i).name+",-";
+					
+		}
 		try {
-			render(type, object, stories, project, editable, editable2, message);
+			render(type, object, stories, project, editable, editable2, message,productRoles);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -391,7 +401,6 @@ public class Storys extends SmartCRUD {
 		validation.valid(object.edit("object", params));
 		Story storyObj = (Story) object;
 		String oldDescription = storyObj.description;
-		storyObj.description = "As a " + storyObj.productRole.name + ", I can " + storyObj.description;
 		// We will add the story to a project .. We need to get that project
 
 		Project project = storyObj.componentID.project;
@@ -409,6 +418,7 @@ public class Storys extends SmartCRUD {
 				stories.add(story);
 			}
 		}
+		String newdesc = storyObj.description;
 		// Sort the priorities according to their priority
 		Collections.sort(project.priorities);
 		if (validation.hasErrors()) {
@@ -419,7 +429,61 @@ public class Storys extends SmartCRUD {
 				render("CRUD/show.html", type, object);
 			}
 		}
-		storyObj.description = "As a " + storyObj.productRole.name + ", I can " + storyObj.description;
+		String [] desc = newdesc.split(",");
+		if(desc.length==1)
+		{
+			storyObj.description=desc[0];
+		}
+		else
+		{
+			String [] desc2 = desc[0].split(" ");
+			if(desc2.length>=3)
+			{
+			if(desc2[0].equalsIgnoreCase("as") && (desc2[1].equalsIgnoreCase("a")||desc2[1].equalsIgnoreCase("an")))
+					{
+				boolean flag=false;
+				String productrole="";
+				for(int k=2;k<desc2.length;k++)
+				{
+					if(k==desc2.length-1)
+						productrole=productrole+desc2[k];
+					else
+						productrole=productrole+desc2[k]+" ";
+						
+					
+				}
+				for(int j=0;j<storyObj.componentID.project.productRoles.size();j++)
+				{
+					if(storyObj.componentID.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
+						flag=true;
+				}
+				if(!flag)
+				{
+					ProductRole pr = new ProductRole(storyObj.componentID.project.id, productrole, "");
+					pr.save();
+					storyObj.productRole = pr;				
+				}
+				else
+				{
+					for(int j=0;j<storyObj.componentID.project.productRoles.size();j++)
+					{
+						if(storyObj.componentID.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
+							{
+							storyObj.productRole = storyObj.componentID.project.productRoles.get(j);
+							}
+					}
+				}
+				for(int i=1;i<desc.length;i++)
+				{
+					storyObj.description = desc[i]+" ";
+				}
+			}
+			}
+			else
+			{
+				storyObj.description=storyObj.description;
+			}
+		}
 		String header = "Story: 'S" + storyObj.id + "\'" + " has been edited.";
 		String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' + " In Component: " + "\'" + storyObj.componentID.name + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		/*
