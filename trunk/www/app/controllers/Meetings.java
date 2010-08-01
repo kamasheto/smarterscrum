@@ -792,22 +792,29 @@ public class Meetings extends SmartCRUD
 		Meeting m = Meeting.findById( meetingID );
 		if( m.endTime > new Date().getTime() )
 		{
-			Security.check( m.project, "joinMeeting" );
-			MeetingAttendance ma = MeetingAttendance.find( "user = ?1 and meeting =?2", Security.getConnected(), m ).first();
-			if( ma != null )
+			if(Security.getConnected().in(m.project).can("joinMeeting"))
 			{
-				ma.status = "confirmed";
-				ma.reason = "";
-				ma.save();
+				MeetingAttendance ma = MeetingAttendance.find( "user = ?1 and meeting =?2", Security.getConnected(), m ).first();
+				if( ma != null )
+				{
+					ma.status = "confirmed";
+					ma.reason = "";
+					ma.save();
+				}
+				if( ma == null )
+				{
+					MeetingAttendance attendance = new MeetingAttendance( Security.getConnected(), m );
+					attendance.status = "confirmed";
+					attendance.save();
+				}
+				flash.success("You have succesfully joined meeting "+m.name);
+				renderJSON(true);
 			}
-			if( ma == null )
-			{
-				MeetingAttendance attendance = new MeetingAttendance( Security.getConnected(), m );
-				attendance.status = "confirmed";
-				attendance.save();
-			}
-			flash.success("You have succesfully joined meeting "+m.name);
+			else
+				renderJSON(false);
 		}
+		else
+			renderJSON(false);
 	}
 	
 	public static void invitedMembers(long meetingId)

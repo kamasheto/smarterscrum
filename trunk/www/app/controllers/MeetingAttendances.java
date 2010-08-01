@@ -220,6 +220,8 @@ public class MeetingAttendances extends SmartController {
 	 */
 	public static void confirmAttendance(long meetingId) {
 		Meeting m = Meeting.findById(meetingId);
+		if(m.endTime>new Date().getTime())
+		{
 		MeetingAttendance ma= MeetingAttendance.find("byMeetingAndUserAndDeleted",m,Security.getConnected(),false).first();
 		ma.status = "confirmed";
 		ma.reason = "";
@@ -228,6 +230,9 @@ public class MeetingAttendances extends SmartController {
 		String body = "Dear " + ma.user.getDisplayName(ma.meeting.project) + "\n";
 		String body2 = "Your attendance to " + ma.meeting.name + " was confirmed.";
 		Notifications.notifyUsers(ma.user, header, body + body2, (byte) 1);
+		renderJSON(true);
+		}
+		renderJSON(false);
 	}
 
 	/**
@@ -236,6 +241,8 @@ public class MeetingAttendances extends SmartController {
 	 */
 	public static void declineAttendance(long meetingId,String reason) {
 		Meeting m = Meeting.findById(meetingId);
+		if(m.endTime>new Date().getTime())
+		{
 		MeetingAttendance ma= MeetingAttendance.find("byMeetingAndUserAndDeleted",m,Security.getConnected(),false).first();
 		ma.status = "declined";
 		ma.reason = reason;
@@ -244,5 +251,8 @@ public class MeetingAttendances extends SmartController {
 		String body = "Dear " + ma.user.getDisplayName(ma.meeting.project) + "\n";
 		String body2 = "You Declined the attendance to "+ma.meeting.name+".";
 		Notifications.notifyUsers(ma.user, header, body + body2, (byte) 1);
+		renderJSON(true);
+		}
+		renderJSON(false);
 	}
 }

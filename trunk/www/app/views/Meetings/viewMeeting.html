@@ -21,8 +21,8 @@
 	#{/if}
 	#{if meeting.endTime> new Date().getTime()}
 	#{if (invited&&!attending&&!declined) }
-	<span id="accept_${meeting.id}" style="display:block"><a onClick="javascript:set_confirmed(${meeting.id});" title="accept invitation"><img src="@{'/public/images/famfam/application_add.png'}"></a></span>
-	<span id="decline_${meeting.id}" style="display:block"><a onClick="javascript:set_declined(${meeting.id});" title="decline invitation"><img src="@{'/public/images/famfam/application_delete.png'}"></a></span>
+	<span id="accept_${meeting.id}" style="display:block"><a onClick="javascript:confirm_me(${meeting.id});" title="accept invitation"><img src="@{'/public/images/famfam/application_add.png'}"></a></span>
+	<span id="decline_${meeting.id}" style="display:block"><a onClick="javascript:decline_me(${meeting.id});" title="decline invitation"><img src="@{'/public/images/famfam/application_delete.png'}"></a></span>
 	<span id="confirmed_${meeting.id}" style="display:none"><img src="@{'/public/images/famfam/accept.png'}" title="you are attending this meeting"></img></span>
 	<span id="declined_${meeting.id}" style="display:none"><img src="@{'/public/images/famfam/exclamation.png'}"} title="you are not attending this meeting"></img></span>
 	#{/if}
