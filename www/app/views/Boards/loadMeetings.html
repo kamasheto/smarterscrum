@@ -133,7 +133,14 @@ No Attendees
 	}
 	
 		}
+	function take_meetingsnapshot(id) {
 	
+		$.post('/Snapshots/TakeSnapshot', {sprintID:${sid},componentID:0,meetingID:id}, function(){alert('Snapshot Associated!')});
+	}
+	function take_componentmeetingsnapshot(id,cid) {
+	if(cid!=null)
+		$.post('/Snapshots/TakeSnapshot', {sprintID:${sid},componentID:${cid},meetingID:id}, function(){alert('Snapshot Associated!')});
+	}
 	function select_user(id, str) 
  {
  	// $('.status').css('display','none');

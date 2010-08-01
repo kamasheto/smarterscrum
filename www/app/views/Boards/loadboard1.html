@@ -67,10 +67,10 @@ REDIPS.drag.init()
 #{/if}
 
 #{if comp==null}
-<a title="Meetings" class="tiptitize" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}')"><img src="@{'/public/images/famfam/date.png'}"></a>
+<a title="Meetings" class="tiptitize" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}')"><img src="@{'/public/images/famfam/date.png'}"></a>
 #{/if}
 #{else}
-<a title="Meetings" class="tiptitize" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&cid=${component.id}')"><img src="@{'/public/images/famfam/date.png'}"></a>
+<a title="Meetings" class="tiptitize" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}&cid=${component.id}')"><img src="@{'/public/images/famfam/date.png'}"></a>
 #{/else}
 
 <br/>
@@ -514,20 +514,5 @@ $('.component').click(function()
 			table.rows[i].cells[to].innerHTML = temp ;
 		}
 		}
-		function take_snapshot() {
-		$.post('/snapshots/takesnapshot', {sprintID:${s.id},componentID:0,meetingID:0}, function(){alert('Saved!')});
-	}
-			function take_snap(id) {
-				if(id!=null)
-		$.post('@{snapshots.takesnapshot()}', {sprintID:${s.id},componentID:id,meetingID:0} ,function(){alert('saved!')});	
-	}
-
-	function take_meetingsnapshot(id) {
 	
-		$.post('/snapshots/takesnapshot', {sprintID:${s.id},componentID:0,meetingID:id}, function(){alert('Snapshot Associated!')});
-	}
-function take_componentmeetingsnapshot(id,cid) {
-	if(cid!=null)
-		$.post('/snapshots/takesnapshot', {sprintID:${s.id},componentID:cid,meetingID:id}, function(){alert('Snapshot Associated!')});
-	}
 </script>
