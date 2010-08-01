@@ -210,7 +210,24 @@ public class Requests extends SmartCRUD {
 		flash.success("Users are now deactivated ");
 		redirect("/admin/requests");
 	}
-
+	
+	public static void requestRoleInProject(long roleId){
+		Role role = Role.findById(roleId);
+		User user = Security.getConnected();
+		Request request = new Request(user,role);
+		request.save();
+		renderText("Request sent! - Waiting for a project admin to approve.");
+	}
+	
+	public static void removeRequestRoleInProject(long roleId){
+		Role role = Role.findById(roleId);
+		User user = Security.getConnected();
+		Request request = Request.find("byRoleAndUser", role, user).first();
+		request.deleted = true;
+		request.save();
+		renderText("Request removed!");
+	}
+	
 	public static void show() {
 		forbidden();
 	}
