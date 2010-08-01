@@ -103,12 +103,12 @@
 		<span id="project-tabs">
 			<a class="aDIV topCornersRounded right" href="#" onclick="$('#top_header_projects_pane').slideToggle()" style="width: 120px !important" title="">Projects</a>
 		</span> 
-		<div id="top_header_projects_pane" class="hidden">
-			<input type="text" value="" id="project_search_text" onkeyup="search_projects()">
+		<div id="top_header_projects_pane" class="hidden bottomCornersRounded">
+			<input type="text" value="" id="project_search_text" onkeyup="search_projects()"/>
 			<div id="projects_search_results">#{list items:connected?.projects, as:'project'}
 				<div><a onclick="showProjectWorkspace(${project.id})">${project.name}</a></div>
 			#{/list}</div>
-			<div id="add-new-project-link"><a href="#" onclick="overlayOpen('/admin/projects/new'); $('#top_header_projects_pane').slideUp()" style=""><img src="/public/images/95.png" style="width:18px"> Add New</a></div>
+			<div id="add-new-project-link"><a href="#" onclick="overlayOpen('/admin/projects/new'); $('#top_header_projects_pane').slideUp()" style=""><img src="/public/images/famfam/add.png" alt="[+]"/> Add New</a></div>
 		</div>
 	#{/if}
 </div>
@@ -132,19 +132,6 @@
 						#{/if}
 							</div>
 							<br style="clear:both"/>
-							
-							
-							<div id="skinList">
- 								<div class="allCornersRounded skinListHolder" >
- 									<a href="javascript:"onclick="chooseStyle('blue', 60)">Blue</a>
- 									<br/>
- 									<a href="javascript:"onclick="chooseStyle('green', 60)">Green</a>
- 									<br/>
- 									<a href="javascript:"onclick="chooseStyle('red', 60);$('#theLogoImage').attr('src','@{'/public/images/smartsoftred.png'}');">Red</a>
- 									<br/>
- 									<a checked="checked"href="javascript:"onclick="chooseStyle('original', 60)">Purple</a>
-								</div>
-							</div>
 						</div>
 
 <div id="workspaces" style="display:none;">
