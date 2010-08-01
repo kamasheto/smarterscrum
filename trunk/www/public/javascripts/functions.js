@@ -115,6 +115,12 @@ function deleteRequest(roleIdd){
 	}
 }
 
+function requestToBeReviewer(taskTypeId,projectId){
+	$.post('requestreviewers/requestToBeReviewer', {ID:taskTypeId, Pid:projectId}, function(msg){
+		$.bar({message:msg});
+	});
+}
+
 function decline_me(id)
 {
 	var reno=prompt("Please enter the reason :","");
