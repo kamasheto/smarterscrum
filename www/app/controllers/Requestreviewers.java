@@ -224,4 +224,18 @@ public class Requestreviewers extends SmartController {
 		}
 		renderText("the request has been rejected");
 	}
+	
+	public static void removeRequest(long taskTypeId){
+		User user = Security.getConnected();
+		TaskType taskType = TaskType.findById(taskTypeId);
+		Requestreviewer r = Requestreviewer.find("byUserAndTypes", user, taskType).first();
+		if(r != null && r.deleted!=true){
+			r.deleted=true;
+			r.save();
+			renderText("Your request was cancelled successfully");
+		}
+		else{
+			renderText("Not found. Most probably request was removed before.");
+		}
+	}
 }
