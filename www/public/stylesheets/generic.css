@@ -24,8 +24,6 @@ button,a button,input[type=submit],input[type=ok],input[type=send],input[type=bu
 	float: right;
 }
 
-
-
 .nav a {
 	padding: 5px;
 }
@@ -165,7 +163,6 @@ img {
 }
 
 /**nav**/
-
 .aDIV {
 	background-color: #111111;
 	border-bottom: 2px solid #222222;
@@ -185,7 +182,7 @@ img {
 	text-transform: lowercase;
 }
 
-.aDIV:hover, .selectedADiv {
+.aDIV:hover,.selectedADiv {
 	cursor: pointer;
 	position: relative;
 	z-index: 9;
@@ -194,8 +191,9 @@ img {
 }
 
 .selectedADiv {
-	font-weight:bold;
+	font-weight: bold;
 }
+
 /**rounded corners**/
 .allCornersRounded {
 	border-radius: 5px;
@@ -285,8 +283,6 @@ img {
 }
 
 /**form**/
-
-
 button {
 	padding: 5px 10px 5px 10px !important
 }
@@ -375,32 +371,6 @@ button {
 }
 
 /**tables**/
-.myTables,.myTables td,.myTables tr,.myTables table {
-	border: 0px;
-	padding: 0px;
-	vertical-align: top;
-}
-
-.cTitle {
-	background-color: #bbb !important;
-}
-
-table {
-	border-collapse: collapse;
-}
-
-#content tr,#content td,#content table {
-	border: 1px #999 solid;
-}
-
-#content table {
-	width: 100%;
-}
-
-#content td {
-	padding: 5px;
-}
-
 table {
 	border-collapse: collapse;
 }
@@ -409,18 +379,44 @@ tr {
 	margin: 0px !important;
 }
 
-#sprint td form input,#Pstories td form input,#impedimentLog td form input
-	{
-	width: 100% !important;
-	height: 100% !important;
-	border: 0px !important;
-	font: inherit !important;
-	font-size: inherit !important;
+tr:nth-child(even) {
+	background: #eee
 }
 
-/**headings**/
-h1,h2,h4,h5 {
-	font-family: Georgia, Serif !important;
+tr:nth-child(odd) {
+	background: #FFF
+}
+
+td {
+	padding: 3px;
+}
+thead td
+{
+text-align:center;
+background-color:#333;
+color:#eee;
+}
+
+td form input,td form input {
+	width: 20px!important;
+	height: 20px !important;
+	border: 0px !important;
+	font: 12px;
+	margin:0px;
+	padding:0px;
+	box-shadow:0px 0px 10px #333;
+-moz-box-shadow:0px 0px 10px #333;
+-webkit-box-shadow:0px 0px 10px #333;
+background:#333;
+color:#eee;
+position:absolute;
+z-index:99999999;
+
+}
+
+td:focus
+{
+
 }
 
 .crudField {
@@ -526,8 +522,36 @@ ul.project_links a {
 	color: #ffffff;
 }
 
+body {
+	background: transparent url('img/workspace.png') repeat top left scroll;
+}
+
+input[type=text],input[type=password],textarea {
+	border: 1px solid #ddd;
+	background-color: #eee;
+}
+
+input[type=text]:focus,input[type=password]:focus,textarea:focus {
+	box-shadow: 0px 0px 10px #ccc;
+	-moz-box-shadow: 0px 0px 10px #ccc;
+	-webkit-box-shadow: 0px 0px 10px #ccc;
+	background-color: #fff;
+}
+
+#login input[type=text],#login input[type=password] {
+	font-size: 18px;
+	width: 95%;
+}
+
+#login label {
+	color: #999;
+	display: block;
+}
+
+.disabled {
+	background-color: #333;
+}
 h1,h2,h3,h4,h5,h6,h7 {
-	background: #ddd;
 	font-family: Georgia, "Times New Roman", Times, serif;
 	font-size: 20px;
 	font-style: italic;
@@ -537,40 +561,4 @@ h1,h2,h3,h4,h5,h6,h7 {
 	border: 0px;
 	margin-bottom: 5px;
 	margin-top: 0px;
-}
-
-body {
-	background: transparent url('img/workspace.png') repeat top left scroll;
-}
-
-input[type=text],input[type=password],textarea
-{
-border:1px solid #ddd;
-background-color:#eee;
-}
-input[type=text]:focus,input[type=password]:focus,textarea:focus
-{
-box-shadow:0px 0px 10px #ccc;
--moz-box-shadow:0px 0px 10px #ccc;
--webkit-box-shadow:0px 0px 10px #ccc;
-background-color:#fff;
-}
-
-#login input[type=text],#login input[type=password]
-{
-font-size:18px;
-width:95%;
-}
-#login label
-{
-color:#999;
-display:block;
-}
-.red
-{
-color:red;
-}
-.disabled
-{
-background-color:#333
 }
