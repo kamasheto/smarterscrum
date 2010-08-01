@@ -196,9 +196,9 @@ a, a img, span.revertFrom, span.min{
 .activity-level-1, .activity-level-2, .activity-level-3 {
 	background-position: 0 -16px;
 }
-.activity-level-4, .activity-level-5, .activity-level-6 {
+.activity-level-4, .activity-level-5, .activity-level-6, .activity-level-7 {
 	background-position: -16px 0;
 }
-.activity-level-7, .activity-level-8, .activity-level-9, .activity-level-10 {
+.activity-level-8, .activity-level-9, .activity-level-10 {
 	background-position: 0 0;
 }
