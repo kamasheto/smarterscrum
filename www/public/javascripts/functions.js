@@ -121,6 +121,12 @@ function requestToBeReviewer(taskTypeId,projectId){
 	});
 }
 
+function removeRequestToBeReviewer(id){
+	$.post('requestreviewers/removerequest', {taskTypeId:id}, function(msg){
+		$.bar({message:msg});
+	});
+}
+
 function decline_me(id)
 {
 	var reno=prompt("Please enter the reason :","");
