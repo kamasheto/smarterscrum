@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import notifiers.Notifications;
+
 import models.Component;
 import models.Project;
 import play.db.jpa.JPASupport;
@@ -74,7 +76,7 @@ public class Components extends SmartCRUD {
 		object.save();
 		temp.init();
 		Logs.addLog(Security.getConnected(), "Create", "Component", temp.id, currentProject, new Date(System.currentTimeMillis()));
-		Notifications.notifyUsers(temp.project, "Component", "Component " + temp.name + " was created ", "onCreateComponent", (byte) 1);
+		Notifications.notifyProjectUsers(temp.project, "Component", "Component " + temp.name + " was created ", "onCreateComponent", (byte) 1);
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
 			redirect( "/Application/overlayKiller" );
@@ -111,7 +113,7 @@ public class Components extends SmartCRUD {
 		}
 		object.save();
 
-		Notifications.notifyUsers(temp.project, "Component", "Component " + temp.name + " was edited", "onEditComponent", (byte) 0);
+		Notifications.notifyProjectUsers(temp.project, "Component", "Component " + temp.name + " was edited", "onEditComponent", (byte) 0);
 		Logs.addLog(Security.getConnected(), "Edit", "Component", temp.id, temp.project, new Date(System.currentTimeMillis()));
 		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
@@ -142,7 +144,7 @@ public class Components extends SmartCRUD {
 		try {
 			component.deleteComponent();
 			Logs.addLog(Security.getConnected(), "Delete", "Component", component.id, component.project, new Date(System.currentTimeMillis()));
-			Notifications.notifyUsers(component.project, "Component", "Component " + component.name + " was deleted", "onDeleteComponent", (byte) -1);
+			Notifications.notifyProjectUsers(component.project, "Component", "Component " + component.name + " was deleted", "onDeleteComponent", (byte) -1);
 		} catch (Exception e) {
 			//flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
 			//redirect(request.controller + ".show", object.getEntityId());
