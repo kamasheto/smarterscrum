@@ -59,8 +59,8 @@
 	font-size: 12px;
 	background: #ddd;
 	background: -moz-linear-gradient(center bottom, #eee 10%, #ddd 90%);
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #ddd),
-		color-stop(0.8, #eee) );
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #ddd),
+		color-stop(0.9, #eee) );
 	color: #b7568d;
 	font-family: verdana;
 	font-style: normal;
@@ -75,8 +75,8 @@
 	background: #eee !important;
 	background: -moz-linear-gradient(center bottom, #eee 10%, #ddd 90%)
 		!important;
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #ddd),
-		color-stop(0.8, #eee) ) !important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #ddd),
+		color-stop(0.9, #eee) ) !important;
 	color: #ccc !important;
 	font-family: verdana;
 	font-style: normal;
@@ -103,8 +103,8 @@
 	background: #b7568d !important;
 	background: -moz-linear-gradient(center bottom, #87155f 10%, #b7568d 90%)
 		!important;
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #87155f),
-		color-stop(0.8, #b7568d) ) !important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #87155f),
+		color-stop(0.9, #b7568d) ) !important;
 	padding: 5px;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -242,28 +242,28 @@ img {
 	color: red;
 }
 
-.yellowBg {
-	background: #FFFDA3 !important;
-	background:-moz-linear-gradient(center bottom , #FFFECF 10%, #FFFDA3 90%) repeat scroll 0 0 transparent !important;
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #FFFDA3),
-		color-stop(0.8, #FFFECF) ) !important;
-	color: #fff;
+.yellowBg, .yellowBg .ui-widget-header {
+	background: #FFFDE6 !important;
+	background:-moz-linear-gradient(center bottom , #FEFFF5 10%, #FFFDE6 90%) repeat scroll 0 0 transparent !important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #FFFDE6),
+		color-stop(0.9, #FEFFF5) ) !important;
+	color: #000;
 }
 
-.redBg {
-	background: #FF4040 !important;
-	background: -moz-linear-gradient(center bottom, #FF5E5E 10%, #FF4040 90%)
+.redBg, .redBg .ui-widget-header {
+	background: #FFE6E6 !important;
+	background: -moz-linear-gradient(center bottom, #FFE6E6 10%, #FFF5F5 90%)
 		!important;
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #FF5E5E),
-		color-stop(0.8, #FF4040) ) !important;
-	color: #fff;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #FFF5F5),
+		color-stop(0.9, #FFE6E6) ) !important;
+	color: #000;
 }
 
-.greenBg {
-	background: #CBFFA8 !important;
-	background: -moz-linear-gradient(center bottom, #C0FF96 10%, #CBFFA8 90%)
+.greenBg, .greenBg .ui-widget-header {
+	background: #E6FFE6 !important;
+	background: -moz-linear-gradient(center bottom, #F5FFF5 10%, #E6FFE6 90%)
 		!important;
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #C0FF96),
-		color-stop(0.8, #CBFFA8) ) !important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #F5FFF5),
+		color-stop(0.9, #E6FFE6) ) !important;
 	color: #000;
 }
