@@ -12,10 +12,12 @@ import models.Component;
 import models.Meeting;
 import models.Project;
 import models.Request;
+import models.Requestreviewer;
 import models.Role;
 import models.Sprint;
 import models.Story;
 import models.Task;
+import models.TaskType;
 import models.User;
 import models.UserNotificationProfile;
 import play.mvc.With;
@@ -207,7 +209,14 @@ public class Show extends SmartController {
 	
 	public static void listTaskTypesInProject(long projectId){
 		Project project = Project.findById(projectId);
-		render(project);
+		User user = Security.getConnected();
+		ArrayList<TaskType> requested = new ArrayList<TaskType>();
+		List<Requestreviewer> requests = Requestreviewer.find("byUser", user).fetch();
+		for(Requestreviewer r:requests){
+			if(!r.deleted)
+				requested.add(r.types);
+		}
+		render(project, requested, projectId);
 	}
 	
 	public static void workspace(long id) {
