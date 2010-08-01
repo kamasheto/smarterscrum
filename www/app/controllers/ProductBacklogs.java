@@ -34,6 +34,8 @@ public class ProductBacklogs extends SmartController {
 		String name = "";
 		if (isComp == 0) {
 			Project project = Project.findById(id);
+			if(project.deleted)
+				notFound();
 			Security.check(project.users.contains(Security.getConnected()) || Security.getConnected().isAdmin);
 			name = project.name;
 			List<List<Story>> stories = new LinkedList<List<Story>>();
@@ -81,6 +83,8 @@ public class ProductBacklogs extends SmartController {
 
 		} else {
 			Component component = Component.findById(id);
+			if(component.deleted)
+				notFound();
 			Security.check(component.componentUsers.contains(Security.getConnected()) || Security.getConnected().isAdmin);
 			name = component.name;
 			Long compId = component.id;
@@ -136,9 +140,13 @@ public class ProductBacklogs extends SmartController {
 
 	public static void showGraph(long id, long componentId) {
 		Project temp = Project.findById(id);
+		if(temp.deleted)
+			notFound();
 		String pName = temp.name;
 		Security.check(Security.getConnected().projects.contains(temp));
 		Component myComponent = Component.findById(componentId);
+		if(myComponent.deleted)
+			notFound();
 		String Data = temp.fetchData(componentId);
 		List<Sprint> SprintsInProject = temp.sprints;
 		int maxDays = 0;
@@ -147,7 +155,7 @@ public class ProductBacklogs extends SmartController {
 				SprintsInProject.remove(i);
 			else {
 				for (int j = 0; j < SprintsInProject.size(); j++) {
-					if (SprintsInProject.get(j).getDuration() >= SprintsInProject.get(i).getDuration())
+					if (!SprintsInProject.get(j).deleted && SprintsInProject.get(j).getDuration() >= SprintsInProject.get(i).getDuration())
 						maxDays = SprintsInProject.get(j).getDuration();
 				}
 			}

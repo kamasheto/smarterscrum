@@ -30,6 +30,8 @@ public class Games extends SmartController {
 	 */
 	public static void chooseStories(long cId) {
 		Component c = Component.findById(cId);
+		if(c.deleted)
+			notFound();
 		Security.check(Security.getConnected().in(c.project).can("startGame")); // c.componentUsers.contains(
 		// Security.getConnected()
 		// ) );

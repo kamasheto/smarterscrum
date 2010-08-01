@@ -27,6 +27,8 @@ public class ProductRoles extends SmartCRUD {
 	 **/
 	public static void viewProductRoles(long id) {
 		Project project = Project.findById(id);
+		if(project.deleted)
+			notFound();
 		String projectName = project.name;
 		List<ProductRole> productRoles = ProductRole.find("byProject.idAndDeleted", id, false).fetch();
 		boolean noProductRoles = productRoles.isEmpty();
@@ -46,6 +48,8 @@ public class ProductRoles extends SmartCRUD {
 	 **/
 	public static void viewProductRole(long id) {
 		ProductRole productRole = ProductRole.findById(id);
+		if(productRole.deleted)
+			notFound();
 		boolean noStories = productRole.stories.isEmpty();
 		boolean editable = !(productRole.inSprint());
 		boolean deletable = productRole.stories.isEmpty();
@@ -68,6 +72,8 @@ public class ProductRoles extends SmartCRUD {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Project project = Project.findById(id);
+		if(project.deleted)
+			notFound();
 		User user = Security.getConnected();
 		Security.check(user.in(project).can("addProductRole"));
 		try {

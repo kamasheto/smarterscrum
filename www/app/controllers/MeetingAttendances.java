@@ -28,7 +28,7 @@ public class MeetingAttendances extends SmartController {
 	 */
 
 	public static void confirm(String meetingHash) {
-		MeetingAttendance attendance = MeetingAttendance.find("byMeetingHash", meetingHash).first();
+		MeetingAttendance attendance = MeetingAttendance.find("byMeetingHashAndDeleted", meetingHash, false).first();
 		String status = attendance.status;
 		Date currentDate = new Date();
 		Date tempStart = new Date(attendance.meeting.endTime);
@@ -86,7 +86,7 @@ public class MeetingAttendances extends SmartController {
 		if (notYet) {
 
 			boolean flag = true;
-			List<MeetingAttendance> attendees = MeetingAttendance.find("byMeeting.id", attendance.meeting.id).fetch();
+			List<MeetingAttendance> attendees = MeetingAttendance.find("byMeeting.idAndDeleted", attendance.meeting.id, false).fetch();
 			while (attendees.isEmpty() == false) {
 				MeetingAttendance temp = (MeetingAttendance) attendees.remove(0);
 				String tempStatus = temp.status;
@@ -98,7 +98,7 @@ public class MeetingAttendances extends SmartController {
 				attendance.meeting.status = false;
 				attendance.meeting.save();
 				attendance.save();
-				attendees = MeetingAttendance.find("byMeeting.id", attendance.meeting.id).fetch();
+				attendees = MeetingAttendance.find("byMeeting.idAndDeleted", attendance.meeting.id, false).fetch();
 				List<User> users = new ArrayList<User>();
 				while (attendees.isEmpty() == false) {
 					users.add(attendees.remove(0).user);
@@ -124,7 +124,7 @@ public class MeetingAttendances extends SmartController {
 	 */
 
 	public static void setExcuse(String meetingHash, String excuse) {
-		MeetingAttendance attendance = MeetingAttendance.find("byMeetingHash", meetingHash).first();
+		MeetingAttendance attendance = MeetingAttendance.find("byMeetingHashAndDeleted", meetingHash, false).first();
 		attendance.reason = excuse;
 		attendance.save();
 
@@ -141,6 +141,8 @@ public class MeetingAttendances extends SmartController {
 		// long userID = Security.getConnected().id;
 		User currentUser = Security.getConnected(); // User.findById(userID);
 		Project currentProject = Project.findById(projectID);
+		if(currentProject.deleted)
+			notFound();
 		List<MeetingAttendance> allmeetings = MeetingAttendance.find("byUserAndMeeting.project.idAndDeletedAndStatusLike", currentUser, projectID, false, "waiting").fetch();
 		List<MeetingAttendance> meetings = new ArrayList<MeetingAttendance>();
 		Date currentDate = new Date();
@@ -162,6 +164,8 @@ public class MeetingAttendances extends SmartController {
 	 */
 	public static void setAttendance(long meetingID) {
 		Meeting meeting = Meeting.findById(meetingID);
+		if(meeting.deleted)
+			notFound();
 		Security.check(Security.getConnected().in(meeting.project).can("setMeetingAttendance") || Security.getConnected().equals(meeting.creator));
 		List<MeetingAttendance> attendances = MeetingAttendance.find("byMeeting.idAndDeleted", meetingID, false).fetch();
 		render(attendances, meeting);
