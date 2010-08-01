@@ -1,5 +1,5 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}Component Backlogs#{/set}
+#{set 'title'}Sprint ${sprint.id} Backlogs#{/set}
 
 #{list items:sprint.project.components, as:'component'}
 <div class="overlay" name="@{SprintBacklog.index(component.id,sprint.id)}">${component.name}</div>
