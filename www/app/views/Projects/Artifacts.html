@@ -1,0 +1,13 @@
+#{extends 'magicBox.html' /}
+
+#{set 'title'}Artifacts #{/set}
+<div name="@{Sprints.BoardSprints(project.id)}">
+Boards
+</div>
+<div name="@{Sprints.BacklogSprints(project.id)}">
+Backlogs
+</div>
+<div name="@{Sprints.ChartSprints(project.id)}">
+Charts
+</div>
+
