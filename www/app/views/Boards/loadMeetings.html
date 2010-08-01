@@ -88,7 +88,7 @@ function displayTZCountDown(countdown,tzcd)
 #{else}
 <a class="tiptitize" title="take meeting snapshot?" href="javascript:take_componentmeetingsnapshot(${users.meeting.id},${comp.id});"><img src="@{'/public/images/famfam/camera_add.png'}"></a>
 #{/else}
-<a class="tiptitize" href="javascript: join(${users.meeting.id});"><img src="@{'/public/images/famfam/go.png'}"></a><br/>
+<a class="tiptitize" title="join" href="javascript: join(${users.meeting.id});"><img src="@{'/public/images/famfam/go.png'}"></a><br/>
 <div class="formatTime">${users.meeting.startTime}</div>
 <div id="amr" class="formatTime">${users.meeting.endTime}</div>
 #{if users.size()==0}
