@@ -22,13 +22,12 @@ Meetings
 #{list items:users , as:'user'}
 <a id="${user.id}" href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a><br/>
 #{/list}
-<span id="tzcd"></span><br/>
-<div id="myLayer"></div>
+<span id="tzcd_${users.meeting.id}"></span><br/>
 <script type="text/javascript" charset="utf-8"> 
 // CONFIGURE THE COUNTDOWN SCRIPT HERE
 var date=${users.meeting.endTime};
 var tz =0;         //  
-var lab = 'tzcd';    //  The id of the page entry where the timezone countdown is to show
+var lab = 'tzcd_'+${users.meeting.id};    //  The id of the page entry where the timezone countdown is to show
 displayTZCountDown(setTZCountDown(date,tz),lab);
 
 function setTZCountDown(date,tz) 
@@ -76,6 +75,7 @@ function displayTZCountDown(countdown,tzcd)
 	}
 }
 </script>
+<div id="myLayer"></div>
 </div>
 #{/list}
 
