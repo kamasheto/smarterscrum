@@ -1,11 +1,11 @@
 #{extends 'magicBox.html' /}
 #{set 'title'}Settings#{/set}
 <div name="/components/listComponentsInProject?projectId=${project.id}">Components</div>
-<div name="/show/listTaskTypesInProject?projectId=${project.id}">Reviewer Requests</div>
 <div name="/show/roles?id=${project.id}">Roles</div>
 #{if connected.in(project).can('manageRequests')}
 	<div name="/projects/requestrespond?id=${project.id}">Requests</div>
 #{/if}
+<div name="/show/listTaskTypesInProject?projectId=${project.id}">Request to be reviewer</div>
 <div name="/users/managenotificationprofile?id=${project.id}" class="overlay">Manage my notifications</div>
 #{if connected.in(project).can('editProject')}
 	<div name="/admin/projects/${project.id}" class="overlay">Project Settings</div>

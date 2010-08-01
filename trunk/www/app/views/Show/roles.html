@@ -20,13 +20,13 @@
 	#{/if}
 #{/else}
 #{list roles, as:'role'}
-	<div name="/show/role?id=${role.id}"><div class=" #{if role.baseRole}baseRole #{/if} all-roles-${role.project.id} role-div-${role.id}">#{if connected.in(project).can('deleteRole')}<span class="delete_img"><a href="#" onclick="delete_role(${role.id}, this)" title="Delete"><img src="@{'/public/images/famfam/delete.png'}"></a></span>#{/if}#{if connected.in(project).can('editRole')}<a href="#" onclick="overlayOpen('/admin/roles/${role.id}')" title="Edit"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if connected.in(project).can('manageRoles')} <span class="tick_img"><a title="Set base role" href="#" onclick="setBaseRole(${role.id}, ${role.project.id})"><img src="/public/images/famfam/star.png" alt=""></a></span>#{/if}
+	<div class="bar"><div class=" #{if role.baseRole}baseRole #{/if} all-roles-${role.project.id} role-div-${role.id}">#{if connected.in(project).can('deleteRole')}<span class="delete_img"><a href="#" onclick="delete_role(${role.id}, this)" title="Delete"><img src="@{'/public/images/famfam/delete.png'}"></a></span>#{/if}#{if connected.in(project).can('editRole')}<a href="#" onclick="overlayOpen('/admin/roles/${role.id}')" title="Edit"><img src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if connected.in(project).can('manageRoles')} <span class="tick_img"><a title="Set base role" href="#" onclick="setBaseRole(${role.id}, ${role.project.id})"><img src="/public/images/famfam/star.png" alt=""></a></span>#{/if}
 	#{ifnot user.roles.contains(role)}	
 		#{if requestedRoles.contains(role)}
 			<div class="dim"><span class="tick_img"><a href="#" onclick="deleteRequest(${role.id});"><img title="Remove Request" src="@{'public/images/famfam/delete.png'}"></a></span></div>
 		#{/if}
 		#{else}
-			<span class="tick_img"><a href="#" onclick="requestRole(${role.id});"><img title="Request Role" src="@{'public/images/famfam/add.png'}"></a></span>
+			<span class="tick_img"><a href="#" onclick="requestRole(${role.id});"><img title="Request Role" src="@{'public/images/famfam/group_go.png'}"></a></span>
 		#{/else}
 	#{/ifnot}
 	</div>
