@@ -813,7 +813,48 @@ public class Projects extends SmartCRUD {
 
 	public static void myTasks(long projectId){
 		Project project = Project.findById(projectId);
-		render(project);
+		
+		
+		
+			User user = Security.getConnected();
+			Component component=null;
+			for(Component comp: user.components){
+				if(comp.project.equals(project)){
+					component = comp;
+				}
+			}
+			List<Task> task = new ArrayList<Task>();
+			if(component!=null){
+				for(Story story : component.componentStories){
+					for(Task task2 : story.storiesTask){
+						if(task2.reviewer.equals(user)&& !task2.deleted && task2.checkUnderImpl()){
+							task.add(task2);
+						}
+					}
+				}
+				}
+			
+		
+				
+			List<Task> task1 = new ArrayList<Task>();
+				
+				for(Component comp: user.components){
+					if(comp.project.equals(project)){
+						component = comp;
+					}
+				}
+				if(component!=null){
+					for(Story story : component.componentStories){
+						for(Task task2 : story.storiesTask){
+							if(task2.assignee.equals(user)&& !task2.deleted && task2.checkUnderImpl()){
+								task1.add(task2);
+							}
+						}
+					}
+					}
+				
+			
+			render(project,task,task1);
 	}
 
 }
