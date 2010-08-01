@@ -39,6 +39,11 @@ var ping = function() {
 			
 			
 function doOnLoad() {
+	
+	$('.dim').live('mouseover', function() {
+		$(this).click(function() {	
+		})
+	})
 		$('.formatDate').each(function(){
 			if (!$(this).data('processed')) {
 				$(this).data('processed', true)
@@ -340,6 +345,7 @@ function load2(url, el) {
 		
 		$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
 	});
+	
 	$('#' + el + '_content').load(url, function() {
 		$('#' + el + ' .min').first().show();
 		$('#' + el + '_content').children().show();
@@ -347,8 +353,6 @@ function load2(url, el) {
 		$('#' + el + ' .loading').first().hide();
 		$('#' + el + '_content').slideDown(400);
 		magic(el);
-		
-
 	});
 }
 function load3(url, el) {
@@ -548,9 +552,14 @@ function showProjectWorkspace(project_id) {
 	})
 }
 
+function reload() {
+	for (i in arguments) {
+		sel = arguments[i]
+		url = $(sel).closest('div[name]').attr('name')
+		delete myDivs[$.inArray(url, myDivs)]
+		$(sel).load($(sel).closest('div[name]').attr('name'))
+	}
+}
+
 $(function() {
-	$('.dim').live('mouseover', function() {
-		$(this).click(function() {	
-		})
-	})
 })
