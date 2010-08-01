@@ -129,6 +129,20 @@ function confirm_me(id)
 	})
 }
 
+function requestRole(roleIdd){
+	$.post('/requests/requestRoleInProject', {roleId:roleIdd}, function(msg){
+		$.bar({message:msg});
+	});
+}
+
+function deleteRequest(roleIdd){
+	if(confirm("Are you sure you want to cancel your request?")){
+		$.post('/requests/removeRequestRoleInProject', {roleId:roleIdd}, function(msg){
+			$.bar({message:msg});
+		});
+	}
+}
+
 function decline_me(id)
 {
 	var reno=prompt("Please enter the reason :","");
