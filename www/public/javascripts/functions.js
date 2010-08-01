@@ -36,6 +36,27 @@ var ping = function() {
 				fade_out_speed: 300, // how fast the notices fade out
 				time: 5000 // hang on the screen for...
 			});
+			
+			
+function doOnLoad() {
+		$('.formatDate').each(function(){
+			$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );
+		});
+		$('.formatTime').each(function(){
+			$(this).html( formatDate( new Date(Number($(this).html())), 'd MMM, yyyy hh:mma') );
+		});
+	
+	    $("a").tipTip({delay:0});
+	    $("td").tipTip({delay:0});
+	    $("span").tipTip({delay:0});
+	 $("div").tipTip({delay:0});
+	 $("img").tipTip({delay:0});
+	    $('div.crudField').each(function(){
+				if ($(this).html().trim() == '') {
+					$(this).remove();
+				}
+		    });
+}
 function delete_meeting(id, pId)
 {
 	var confirmation= confirm("Are you sure you want to delete this meeting ?");
@@ -221,7 +242,7 @@ $(function() {
 								$(this).children().show();
 								$(this).removeClass('draggableChild');
 								$(this).addClass('draggable');
-																	load($(this).attr('name') + ' .actual', $(this).attr('id'));
+								load($(this).attr('name') + ' .actual', $(this).attr('id'));
 								
 
 							},
@@ -309,7 +330,8 @@ function load2(url, el) {
 		
 
 	});
-}function load3(url, el) {
+}
+function load3(url, el) {
 
 	var pUrl = $('#'+el).attr('name');
 	$('#'+el+'_header').load(pUrl+' .mainH', function(){
@@ -353,6 +375,7 @@ if($.inArray(url,myDivs)==-1){
 var num =1;
 function magic(id) {
 
+	doOnLoad()
 	$("#" + id + "_content div[name]")
 			.each(
 					function() {

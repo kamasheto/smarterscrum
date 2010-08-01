@@ -1,6 +1,7 @@
 #{set id:controllers.Application.randomHash() /}
 <script type="text/javascript">
 $(function(){
+	doOnLoad()
 var i =0;
 	$("##{get 'id' /}_content div[name]").each(function(){	
 		if($(this).attr('class')=='overlay')
