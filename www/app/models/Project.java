@@ -421,6 +421,11 @@ public class Project extends SmartModel {
 		meetingsTypesInSprint.add(true);
 
 		sprintDuration = 14;
+		
+		Component defaultComponent = new Component().save();
+		defaultComponent.name = "default component";
+		defaultComponent.project = this;
+		defaultComponent.save();
 		this.save();
 	}
 
@@ -534,18 +539,19 @@ public class Project extends SmartModel {
 		meetingsTypesInSprint.add(true);
 
 		sprintDuration = 14;
-
+		
+		Component defaultComponent = new Component().save();
+		defaultComponent.name = "default component";
+		defaultComponent.project = this;
+		defaultComponent.save();
+		
 		if (!isScrum) {
 			// Default creations in case not a scrum project
 			Story defaultStory = new Story("default", "default", "default", 1, "default", Security.getConnected().id).save();
-			Component defaultComponent = new Component().save();
 			defaultStory.componentID = defaultComponent;
-			defaultComponent.name = "default component";
-			defaultComponent.project = this;
 			Sprint defaultSprint = new Sprint().save();
 			defaultSprint.project = this;
 			defaultStory.save();
-			defaultComponent.save();
 			defaultSprint.save();
 		}
 
