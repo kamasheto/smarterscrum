@@ -118,7 +118,6 @@
 							Hello ${connected.name}!&nbsp;&nbsp;|&nbsp;&nbsp;
 							<a href="/show/user?id=${controllers.Security.getConnected().id}">Profile</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 						#{/if}
-							<a href="#" id="skinlink"onclick="$('#skinList').slideToggle(200);$('#skinlink').toggleClass('topCornersRounded white')">Change Color</a>&nbsp;&nbsp;
 						
 						#{ifnot connected}
 							<a href="@{Accounts.register}">|&nbsp;&nbsp;Register</a>
