@@ -24,22 +24,18 @@ $(function() {
 function showStuff(id) {
 	if(document.getElementById(id).style.display == 'block'){
 		document.getElementById(id).style.display = 'none';
+		document.getElementById('types').style.display='none';
 		var o=document.getElementById('object_sprint');
 		o.value='none';
+		var z=document.getElementById('object_type');
+		z.value='none';
 				}
 	else{
 		document.getElementById(id).style.display = 'block';
+		document.getElementById('types').style.display='block';
 	}
 	}
-	function showtypes(){
-		
-		if(document.getElementById('object_sprint').value!='none'){
-			document.getElementById('types').style.display='block';
-			}
-		else{
-			document.getElementById('types').style.display='none';
-			}
-		}
+	
 	</script>
    
 
@@ -65,7 +61,7 @@ function showStuff(id) {
  
  	<br><label for="object_description"> Description </label> <br></br>
 	<TextArea id="object_description" class="" type="text" name="object.description" rows ="5" value="" cols="52" /> </TextArea>	
-    <span class="crudHelp" style="color:red"> *</span> 	
+    	
  
 		    #{/crud.custom}
 		    
@@ -109,10 +105,9 @@ function showStuff(id) {
 		#{if connected.in(currentProject).can('AssociateSprinttoMeeting') }
 		 
 			<label for="object_sprint">Associate to Sprint</label>
-			<input type="checkbox" onclick="showStuff('span'); showtypes();">
+			<input type="checkbox" onclick="showStuff('span');">
 			<span id="span" style="display: none;">
-			<select id="object_sprint" name="object.sprintid" onchange="showtypes()" >
-			<option  value="none">None</option>
+			<select id="object_sprint" name="object.sprintid"  >
 			#{list items:sprints, as:'sprint'}
 				<option   value="${sprint.id}">Sprint ${sprint.sprintNumber}</option>
 					#{/list}

@@ -167,6 +167,8 @@ public class Meetings extends SmartCRUD
 		User creator = Security.getConnected();
 		Date currentDate = new Date();
 		long longCurrentDate = currentDate.getTime();
+		List<Sprint> sprints = currentProject.upcomingSprints();
+		List<String> types = currentProject.meetingTypes();
 		if( validation.hasErrors() )
 		{
 			renderArgs.put( "error", Messages.get( "crud.hasErrors" ) );
@@ -176,7 +178,7 @@ public class Meetings extends SmartCRUD
 				// redirect to the same page without giving error and with the
 				// same project
 
-				render( "Meetings/blank.html", type, currentProject, creator );
+				render( "Meetings/blank.html", type, currentProject, creator ,sprints,types);
 			}
 			catch( TemplateNotFoundException e )
 			{
@@ -187,7 +189,7 @@ public class Meetings extends SmartCRUD
 		{
 
 			renderArgs.put( "error", "Please fix Meeting date" );
-			render( "Meetings/blank.html", type, currentProject, creator );
+			render( "Meetings/blank.html", type, currentProject, creator ,sprints,types);
 			// render( request.controller.replace( ".", "/" ) + "/blank.html",
 			// type );
 		}
