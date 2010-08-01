@@ -49,50 +49,25 @@ function delete_meeting(id, pId)
 	};		
 }
 
-function set_confirmed(id)
-{
-	if(confirm("Change your status to attending?"))
-	$.post('/MeetingAttendances/confirmAttendance',{meetingId: id}
-	,function()
-	{
-		$('#accept_'+id).hide();
-		$('#decline_'+id).hide();
-		$('#confirmed_'+id).show();
-		$('#inv_'+id).hide();
-	})
-}
-
-
-function set_declined(id)
-{
-	
-	
-		var reno=prompt("Please enter the reason :","");
-		while(reno.length==0)
-		{
-			reno=prompt("Please enter the reason :","");
-		}
-		$.post('/MeetingAttendances/declineAttendance',{meetingId:id , reason:reno},
-		function()
-		{
-			$('#declined_'+id).show();
-			$('#accept_'+id).hide();
-			$('#decline_'+id).hide();
-			$('#inv_'+id).hide();
-			
-		}
-		);
-	
-}
-
 function join_meeting(id)
 {
 	if(confirm("Join meeting?"))
 	$.post('/Meetings/joinMeeting',{meetingID: id}
-	,function()
+	,function(flag)
 	{
+		if(flag)
+			{
+			$.bar({ message:'You have successfully joined the meeting.' })
 		$('#accepts_'+id).hide();
 		$('#confirmedd_'+id).show();
+			}
+		else
+			{
+			$.bar({
+				message : 'Meeting has already ended.'
+			});
+			$('#accepts_'+id).hide();
+			}
 	})
 }
 
@@ -100,8 +75,10 @@ function confirm_me(id)
 {
 	if(confirm("Change your status to attending?"))
 	$.post('/MeetingAttendances/confirmAttendance',{meetingId: id}
-	,function()
+	,function(flag)
 	{
+		if(flag)
+			{
 		$.bar({
 			message : 'You accepted the invitation.'
 		});
@@ -110,6 +87,17 @@ function confirm_me(id)
 		$('#decline_'+id).hide();
 		$('#confirmed_'+id).show();
 		$('#inv_'+id).hide();
+			}
+		else
+			{
+			$('#inv_'+id).hide();
+			$('#accept_'+id).hide();
+			$('#decline_'+id).hide();
+			
+				$.bar({
+					message : 'Meeting has already ended.'
+				});
+			}
 
 	})
 }
@@ -122,8 +110,10 @@ function decline_me(id)
 		reno=prompt("Please enter the reason :","");
 	}
 	$.post('/MeetingAttendances/declineAttendance',{meetingId:id , reason:reno},
-	function()
+	function(flag)
 	{
+		if(flag)
+			{
 		$.bar({
 			message : 'You Declined the invitation.'
 		});
@@ -131,6 +121,16 @@ function decline_me(id)
 		$('#declined_'+id).show();
 		$('#accept_'+id).hide();
 		$('#decline_'+id).hide();
+			}
+		else
+			{
+			$.bar({
+				message : 'Meeting has already ended.'
+			});
+			$('#inv_'+id).hide();
+			$('#accept_'+id).hide();
+			$('#decline_'+id).hide();
+			}
 	
 	}
 	);
