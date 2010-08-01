@@ -12,6 +12,7 @@ import models.Priority;
 import models.Project;
 import models.ProjectNotificationProfile;
 import models.Request;
+import models.Sprint;
 import models.Story;
 import models.Task;
 import models.Role;
@@ -25,6 +26,12 @@ import play.mvc.With;
 
 @With (Secure.class)
 public class Projects extends SmartCRUD {
+	public static void Artifacts(long projectId) {
+		Project project = (Project) (Project.findById(projectId));
+		List<Sprint> sprints = project.sprints;
+		long runningSprint = project.runningSprint();
+		render(sprints, project, runningSprint);
+	}
 	/**
 	 * overriden to init roles by default from CRUD
 	 * 
