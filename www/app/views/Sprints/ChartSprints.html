@@ -1,24 +1,25 @@
 #{extends 'magicBox.html' /}
 
 #{set 'title'}${project.name}'s Charts #{/set}
+<div class="overlay" name="@{ProductBacklogs.showGraph(project.id,0)}">Project overall Chart</div>
 #{if (sprints.size()==0)}
 	There are No Sprints.
 #{/if}
 #{else}
 	#{list items:sprints, as:'sprint'}
 		#{if (sprint.id==runningSprint) }
-			<div class="running" name="@{Sprints.charts(sprint.id)}">Sprint ${sprint.sprintNumber} Charts<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the Whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+			<div class="greenBg" name="@{Sprints.charts(sprint.id)}">Sprint ${sprint.sprintNumber} Charts<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 			
 			</div>
 		#{/if}
 		#{else}
 		#{if (sprint.ended) }
-			<div class="Past" name="@{Sprints.charts(sprint.id)}">Sprint ${sprint.sprintNumber} Charts<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the Whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+			<div class="redBg" name="@{Sprints.charts(sprint.id)}">Sprint ${sprint.sprintNumber} Charts<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 			
 			</div>
 		#{/if}
 		#{else}
-		<div class="Upcoming" name="@{Sprints.charts(sprint.id)}">Sprint ${sprint.sprintNumber} Charts<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')"title="view the Whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+		<div class="yellowBg" name="@{Sprints.charts(sprint.id)}">Sprint ${sprint.sprintNumber} Charts<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')"title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 			
 			</div>#{/else}
 		#{/else}
