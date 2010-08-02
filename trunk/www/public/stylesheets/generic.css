@@ -333,13 +333,21 @@ tr {
 }
 
 td {
-	padding: 3px;
+	padding: 7px;
+}
+#sprintTable tr:hover
+{
+	box-shadow:0px 0px 10px #333;
+	-moz-box-shadow:0px 0px 10px #333;
+	-webkit-box-shadow:0px 0px 10px #333;
 }
 
 thead td {
 	text-align: center;
 	background-color: #333;
 	color: #eee;
+	font-size:10px;
+font-weight:bold;
 }
 
 #sprintTable td form input,td form input {
