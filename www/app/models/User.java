@@ -408,11 +408,11 @@ public class User extends SmartModel
 			save();
 		}
 	}
-
+	
 	public void removeRole( Role role )
 	{
 		roles.remove( role );
-		if( roles.size() < 0 )
+		if( roles.size() == 0 )
 		{
 			projects.remove( role.project );
 		}
