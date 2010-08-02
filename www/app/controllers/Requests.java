@@ -154,7 +154,7 @@ public class Requests extends SmartCRUD
 		if( x == null )
 			Secure.login();
 		Project y = x.project;
-		if( !x.deleted )
+		if( !x.isDeletion )
 		{
 			Notifications.notifyUsers( x.user, "Role Request Denied", "Your Role request to be " + x.role.name + " in " + y.name + " has been denied", (byte) -1 );
 		}

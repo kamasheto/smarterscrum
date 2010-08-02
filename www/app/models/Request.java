@@ -31,7 +31,7 @@ public class Request extends SmartModel
 
 	public String hash; // will have to use for accepting/declining
 
-	public boolean deleted;
+	public boolean isDeletion;
 
 	public Component component;
 
@@ -65,7 +65,7 @@ public class Request extends SmartModel
 	{
 		this.user = user;
 		this.project = project;
-		this.deleted = true;
+		this.isDeletion = true;
 		this.hash = Application.randomHash( 8 );
 	}
 
@@ -81,7 +81,7 @@ public class Request extends SmartModel
 	{
 		this.user = user;
 		this.component = component;
-		this.deleted = true;
+		this.isDeletion = true;
 		this.hash = Application.randomHash( 8 );
 	}
 
