@@ -1,6 +1,10 @@
 #{extends 'magicBox.html' /}
 #{set 'title'}Events#{/set}
-<div name="@{Sprints.showsprints(project.id)}" >Sprints</div>
+<div name="@{Sprints.showsprints(project.id)}" >Sprints 
+#{if connected.in(project).can('addSprint') }
+<a onClick="overlayOpen('/Sprints/projectblank?id=${project.id}')"href="#" ><img src="@{'public/images/famfam/add.png'}" alt=[+]/></a>
+#{/if}
+</div>
 <div name="/meetings/viewmeetings?id=${project.id}">
 Meetings
 #{if connected.in(project).can('addMeeting') }

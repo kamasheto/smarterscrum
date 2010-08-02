@@ -49,12 +49,14 @@ public class SprintBacklog extends SmartController
 		User user = Security.getConnected();
 		Sprint sprint = Sprint.findById( id );
 		Security.check( user.projects.contains( sprint.project ) );
+		String cs ="";
 		Component component = null;
 		if( componentID != 0 )
 		{
 			component = Component.findById( componentID );
 			if( component.deleted )
 				notFound();
+			cs = component.name;
 		}
 		ArrayList daysHeader = new ArrayList( sprint.getDuration() );
 		Project project = Project.findById( sprint.project.id );
@@ -83,7 +85,6 @@ public class SprintBacklog extends SmartController
 		}
 		String sNum = sprint.sprintNumber;
 		boolean flag = user.isAdmin || user.in( project ).can( "editSprintBacklog" );
-		String cs = component.name;
 		render( tasks, id, daysHeader, sNum, componentID, project, flag, cs );
 
 	}

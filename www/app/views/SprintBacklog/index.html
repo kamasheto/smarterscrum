@@ -131,7 +131,7 @@ $(function()
 
 #{/set}
 <div id="sprint">
-<h1 style="float:left">#if{componentID==0}Sprint ${sNum}: ${project.name}'s Backlog#{/if}#{else}Sprint ${sNum}: ${cs}'s Backlog#{/else}</h1>
+<h1 style="float:left">#{if componentID==0}Sprint ${sNum}: ${project.name}'s Backlog#{/if}#{else}Sprint ${sNum}: ${cs}'s Backlog#{/else}</h1>
 <div style="float:right;width:200px;">
 <div class="allCornersRounded" style="background:#333;padding:15px;border-width:10px 10px 0;color:#eee">	
 Show/Hide:
