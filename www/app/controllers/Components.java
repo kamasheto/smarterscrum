@@ -79,7 +79,8 @@ public class Components extends SmartCRUD {
 		Notifications.notifyProjectUsers(temp.project, "Component", "Component " + temp.name + " was created ", "onCreateComponent", (byte) 1);
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			redirect( "/Application/overlayKiller" );
+			// redirect( "/Application/overlayKiller" );
+			Application.overlayKiller("reload('components')");
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			redirect("/admin/projects/" + currentProject.id + "/components/new");

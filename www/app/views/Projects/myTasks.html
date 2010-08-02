@@ -1,9 +1,7 @@
 #{extends 'magicBox.html' /}
 #{set 'title'}My Tasks#{/set}
 #{if !task1.size() && !task.size()}
-		<div class="bar">
-			You do not have tasks to perform
-		</div>
+		#{note 'error'}You do not have any tasks to perform#{/note}
 		#{/if}
 #{if task1.size()!=0}
 <!-- removed by ms -->
