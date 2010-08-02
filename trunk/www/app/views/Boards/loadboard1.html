@@ -47,7 +47,7 @@ REDIPS.drag.init()
 <!-- view hidden Col by Hadeer -->
 #{if connected.in(p).can('ShowColumn')}
 #{if hidencolumnsOfBoard.isEmpty()}
-<a class="tiptitize" title="all columns are added" type="button"><img src="@{'/public/images/famfam/add-disabled.png'}"></a>
+<a class="tiptitize dim" title="all columns are added" type="button"><img src="@{'/public/images/famfam/add.png'}"></a>
 #{/if}
 #{else}
 <a href="#;" class="tiptitize" onclick="$('#b1').slideToggle()" title="add column?" type="button"><img src="@{'/public/images/famfam/add.png'}"></a>
@@ -59,7 +59,7 @@ REDIPS.drag.init()
 <!-- hide Col by Hadeer -->
 #{if connected.in(p).can('HideColumn')}
 #{if columnsOfBoard.isEmpty()}
-<a class="tiptitize" title="all columns deleted" type="button"><img src="@{'/public/images/famfam/delete-disabled.png'}"></a>
+<a class="tiptitize dim" title="all columns deleted" type="button"><img src="@{'/public/images/famfam/delete.png'}"></a>
 #{/if}
 #{else}
 <a href="#;" class="tiptitize" onclick="$('#b2').slideToggle(400)" title="delete column?" type="button" ><img src="@{'/public/images/famfam/delete.png'}"></a>
@@ -253,7 +253,7 @@ REDIPS.drag.init()
 </table>
 </div>
 
- <script type="text/javascript">
+<script type="text/javascript">
 
 var selectedUser = 0;
 var col_from = -1;
@@ -510,7 +510,6 @@ $('.component').click(function()
 	 */
 		function swapValues() {
 		var table = document.getElementById("mainBoard");
-		
 		var from = document.getElementById("from").value;
 		var to = document.getElementById("to").value;
 		var rowCount = table.rows.length;
