@@ -52,6 +52,7 @@ public class Boards extends SmartCRUD {
 			Component comp = Component.findById(componentID);
 			if(comp.deleted)
 				notFound();
+			if(comp.componentBoard!=null)
 			columns = comp.componentBoard.columns;  //columns of component board
 		}
 				
@@ -83,7 +84,7 @@ public class Boards extends SmartCRUD {
 			for (int i = 0; i < components.size(); i++) {
 				data.add(null);
 				data.set(i, new ComponentRow(components.get(i).id, components.get(i).name));
-				List<Task> tasks = components.get(i).returnComponentTasks(s);
+				List<Task> tasks = components.get(i).componentSprintTasks(s);
 
 				for (int j = 0; j < columnsOfBoard.size(); j++) {
 					data.get(i).add(null);
