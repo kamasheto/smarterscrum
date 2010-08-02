@@ -237,7 +237,7 @@ Show/Hide:
 		
 		#{ifnot task.taskType}
 		<td id="${task.id}" class="editTYPE shType">
-		#{if user.in(project).can('changeTaskType')}
+		#{if connected.in(project).can('changeTaskType')}
 		<a title="Enter a task type??"HREF="javascript:popUp('@{Tasks.chooseTaskType(task.id)}')">No type chosen</a>
 	    #{/if}
 		No type chosen
@@ -245,7 +245,7 @@ Show/Hide:
 		#{/ifnot} 
 		#{else}
 		<td id="${task.id}" title="edit the task type?" class="editTYPE shType">
-		#{if user.in(project).can('changeTaskType')}
+		#{if connected.in(project).can('changeTaskType')}
 		<a title="Enter a task type??"HREF="javascript:popUp('@{Tasks.chooseTaskType(task.id)}')">${task.taskType.name}</a>
 		#{/if}
 </td>
