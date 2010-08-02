@@ -221,3 +221,6 @@ a,a img,span.revertFrom,span.min {
 .center img {
 	float: none;
 }
+.overlay, .overlay * {
+	cursor: auto;
+}

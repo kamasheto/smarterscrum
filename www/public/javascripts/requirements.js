@@ -17,11 +17,11 @@ function doOnLoad() {
 			}
 		});
 	
-	    $("a").tipTip({delay:0});
-	    $("td").tipTip({delay:0});
-	    $("span").tipTip({delay:0});
-	 $("div").tipTip({delay:0});
-	 $("img").tipTip({delay:0});
+	    $("a").tipTip();
+	    $("td").tipTip();
+	    $("span").tipTip();
+	 $("div").tipTip();
+	 $("img").tipTip();
 	    $('div.crudField').each(function(){
 				if ($(this).html().trim() == '') {
 					$(this).remove();

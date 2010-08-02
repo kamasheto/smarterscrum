@@ -3,7 +3,7 @@
 
 #{list items:requests, as:'req'}
 	<div class="bar">
-			<a onclick="request_ignore('${req.id}', '${req.hash}');" href="#"><img src="/public/images/famfam/cross.png"></a><a onclick="request_accept('${req.id}', '${req.hash}');" href="#"><img src="/public/images/famfam/tick.png"></a>
+			<a onclick="request_ignore('${req.id}', '${req.hash}');" href="#"><img src="/public/images/famfam/group_delete.png" title="Ignore request"></a><a onclick="request_accept('${req.id}', '${req.hash}');" href="#"><img src="/public/images/famfam/group_go.png" title="Grant role request"></a>
 		${req.user.name} has  requested to be ${req.role.name}
 	
 	</div>
@@ -13,12 +13,13 @@
 #{/else}
 
 #{list items:drequests, as:'req'}
-	<div class="bar"><a href="/show/user?id=${req.user.id}">${req.user.name}</a> has  requested to be deleted from the project.
-	<a onclick="show_comment('${req.id}');" href = "#"><img src="/public/images/famfam/cross.png"></a><a onclick="request_accept2('${req.id}', '${req.hash}');" href="#"><img src="/public/images/famfam/tick.png"></a>
-	<div id = "comment_${req.id}" style="display:none">
-		<b>Dear ${req.user.name}, your request to be deleted from ${req.project.name} has been denied because ....</b>
-		<textarea id = "text_${req.id}" rows="2" cols="150"></textarea><br />
-		<a onclick="do_ignore('${req.id}', '${req.hash}');" href = "#"><font color="red"><b><u>Decline Request and Notify user</u></b></font></a>
+	<div class="bar">${req.user.name} has  requested to be deleted from the project.
+	<a onclick="show_comment(${req.id});" href = "#"><img src="/public/images/famfam/group_delete.png" title="Ignore request"></a><a onclick="request_accept2(${req.id}, '${req.hash}');" href="#"><img src="/public/images/famfam/group_go.png" title="Accept request - remove from project"></a>
+	<div id = "comment_${req.id}" style="display:none;">
+		<br />
+		Enter reason
+		<input type="text" id="text_${req.id}"><br />
+		<a onclick="do_ignore(${req.id}, '${req.hash}');" href="#">Decline request</a> (and notify user)
 	</div>
 	</div>
 #{/list}

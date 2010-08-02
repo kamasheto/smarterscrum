@@ -44,23 +44,23 @@ function request_accept( id, hash )
 	$.post('/requests/requestAccept' ,
 		    {hash:hash, id:id} ,
 		    function(){
-				reload('reviewer-requests')
+				reload('project-requests')
 		    })
 }
 function request_accept2( id, hash )
 {
 	$.post('/requests/deletionRequestAccept' ,
-		    {hash:hash} ,
+		  {hash:hash} ,
 		    function(){
-				reload('reviewer-requests')
+				reload('project-requests')
 		    })
-		}
+}
 function request_ignore( id, hash)
 {
 	$.post('/requests/requestIgnore' ,
 		    {hash:hash} ,
 		    function(){
-				reload('reviewer-requests')
+				reload('project-requests')
 		    })
 		}
 function show_comment(id){
@@ -76,40 +76,9 @@ function do_ignore(id, hash){
 		$.post('/requests/requestIgnore' ,
 		    {hash:hash, body:textValue} ,
 		    function(){
-		    	$('#req_'+id).remove();
-				$('#comment_'+id).remove();
+				reload('project-requests')
 		    })
 	}
-}
-function doOnLoad() {
-	
-	$('.dim').live('mouseover', function() {
-		$(this).click(function() {	
-		})
-	})
-		$('.formatDate').each(function(){
-			if (!$(this).data('processed')) {
-				$(this).data('processed', true)
-				$(this).html( formatDate( new Date(getDateFromFormat($(this).html(),'yyyy-MM-dd HH:mm:ss')), 'd MMM, yyyy') );	
-			}
-		});
-		$('.formatTime').each(function(){
-			if (!$(this).data('processed')) {
-				$(this).data('processed', true)
-				$(this).html( formatDate( new Date(Number($(this).html())), 'd MMM, yyyy hh:mma') );	
-			}
-		});
-	
-	    $("a").tipTip({delay:0});
-	    $("td").tipTip({delay:0});
-	    $("span").tipTip({delay:0});
-	 $("div").tipTip({delay:0});
-	 $("img").tipTip({delay:0});
-	    $('div.crudField').each(function(){
-				if ($(this).html().trim() == '') {
-					$(this).remove();
-				}
-		    });
 }
 function delete_meeting(id, pId)
 {
@@ -189,6 +158,7 @@ function revokeRole(roleIdd){
 	if (confirmation) {
 		$.post('/projecttasks/revokeRole', {id:roleIdd}, function(msg){
 		$.bar({message:msg});
+		reload('roles')
 	});
 	};
 }
@@ -294,10 +264,10 @@ $(function() {
 							handle : '.ui-widget-header',
 							cancel : 'img',
 							stop : function(event, ui) {
-
+								
 									if ($(this).hasClass('draggableChild'))
 										is = true;
-		
+								
 								if (is) {
 									var el = $(this);
 									var pos = el.position();
@@ -324,6 +294,7 @@ $(function() {
 								$(this).addClass('draggable');
 								load($(this).attr('name') + ' .actual', $(this).attr('id'),1);
 								$(this).resizable({disabled: true});
+								
 
 							},
 							start : function(event, ui) {
@@ -360,10 +331,12 @@ $(function() {
 				$(this).parent().next().slideToggle(400);
 
 			});
-$('.refresh').live('click',function(){
-	var myMommy = $(this).parent().parent();
-	load($(myMommy).attr('name')+' .actual',$(myMommy).attr('id'),2);
-});
+	$('.refresh').live('click',function(){
+		var myMommy = $(this).parent().parent();
+		// myMommy? walahi el3azem? >.<
+		$(myMommy).find('.actual:first').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>')
+		load($(myMommy).attr('name')+' .actual', $(myMommy).attr('id'),2);
+	});
 	$('.revertFrom').live('click', function() {
 		var url = $(this).parent().parent().attr('name');
 		removeFromDiv(url);
@@ -402,12 +375,12 @@ function load(url, el, n) {
 		var pUrl = $('#'+el).attr('name');
 		if(n!=3)
 		$('#'+el+'_header').load(pUrl+' .mainH', function(){
-			$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());						
-		});
+								$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
+							});
 		$('#' + el + '_content').load(url, function() {
-			$('#' + el + ' .min').first().show();
+											$('#' + el + ' .min').first().show();
 			$('#' + el + '_content').slideDown(400);
-			magic(el);
+											magic(el);
 		});
 	}
 	if(n==1)
@@ -431,6 +404,7 @@ function loadBox(url, el)
 	});
 	}
 }
+
 function magic(id) {
 	doOnLoad();
 	$("#" + id + "_content div[name]").each(
