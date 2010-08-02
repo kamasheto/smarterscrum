@@ -1,0 +1,55 @@
+#{extends 'overlay.html' /}
+#{set title:'Project deletion :'+project.name /}
+
+<h2>Project Deletion Page</h2>
+
+<b>Are you sure you want to delete this Project (${project.name})</b>
+<br>
+#{if upcomingSprints}
+<b>There are upcoming sprints</b>
+#{/if}
+
+#{if upcomingMeetings}
+<b>There are upcoming meetings</b>
+#{/if}
+
+<br><br>
+
+<input type="checkbox" onClick="delete_checked()"/> I confirm I want to delete this Project<br>
+<input type="button" id="d_b"onclick="delete_proj(${project.id})" value="Delete Project" style="display : none"/>
+
+<script type="text/javascript">
+
+function delete_proj(id)
+{
+	$.post('/Projects/deleteProject',{id:id},function(flag)
+			{
+				if(flag)
+				{
+					window.parent.$('#getOverlay').hide();
+					window.parent.$.bar({ message:'Project Deleted.' });
+					window.parent.$('#project-button-'+id).fadeOut(function() {
+						$(this).remove()
+					})
+					window.parent.$('.workspace-'+id).remove()
+					
+						window.parent.$('#workspaces').hide()
+						window.parent.$('#normal').show()
+						window.parent.$('.project-button').removeClass('selectedADiv')
+				}
+				else
+					{window.parent.$('#getOverlay').hide();
+					$.bar({ message:'Error Occured while deleting the project, please try again later.' });}
+					
+				
+			}
+			
+	);
+}
+
+function delete_checked()
+{
+	$('#d_b').toggle();
+}
+
+</script>

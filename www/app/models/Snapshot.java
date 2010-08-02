@@ -24,6 +24,8 @@ public class Snapshot extends SmartModel {
 	public ArrayList<ComponentRowh> data;
 	@Required
 	public ArrayList<String> Columnsofsnapshot;
+	
+	public boolean deleted;
 
 	public Snapshot () {
 		date = new Date();
