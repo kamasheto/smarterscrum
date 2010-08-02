@@ -572,6 +572,14 @@ function show(id) {
 		$('#project-button-'+id).addClass('selectedADiv')	
 	}
 }
+function closeWindows(el)
+{
+	$('#workspace-'+el+' div[name]').each(function(){
+		removeFromDiv($(this).attr('name'));
+		$(this).remove();
+	});
+	$('#chatContainer_'+el).hide();
+}
 
 function close_workspace(project_id) {
 	$('#project-button-'+project_id).fadeOut(function() {
