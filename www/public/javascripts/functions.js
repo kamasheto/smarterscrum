@@ -279,9 +279,8 @@ $(function() {
 		var w = $(this).width();
 		$(this).resizable( {
 			containment: '#'+con,
-			minHeight : h,
-			minWidth : w,
-			autoHide : true
+			autoHide : true,
+			disable: false,
 		});
 
 	});
@@ -295,17 +294,10 @@ $(function() {
 							handle : '.ui-widget-header',
 							cancel : 'img',
 							stop : function(event, ui) {
-								
-								var x = $(this).attr('class').split(" ");
-								var is = false;
-								for ( var i = 0; i < x.length; i++) {
-									if (x[i] == 'draggableChild')
+
+									if ($(this).hasClass('draggableChild'))
 										is = true;
-								}
-								
-								// note to hadeer
-								// you could have just
-								// $(this).hasClass('draggableChild')
+		
 								if (is) {
 									var el = $(this);
 									var pos = el.position();
@@ -331,7 +323,7 @@ $(function() {
 								$(this).removeClass('draggableChild');
 								$(this).addClass('draggable');
 								load($(this).attr('name') + ' .actual', $(this).attr('id'),1);
-								
+								$(this).resizable({disabled: true});
 
 							},
 							start : function(event, ui) {
@@ -377,10 +369,12 @@ $(function() {
 		if ($('#' + theSecondId).attr('id') == null)
 			$('#' + theId).remove();
 		else {
+			var elHtml = $('#' + theSecondId).html();
 			$('#' + theId).removeAttr('style');
 			$('#' + theId).removeClass('draggable');
 			$('#' + theId).addClass('draggableChild');
 			$('#' + theSecondId).replaceWith($('#' + theId));
+			$('#' + theId).find('.mainH').first().html(elHtml);
 		}
 	
 		});
@@ -403,15 +397,14 @@ function removeFromDiv(url)
 function load(url, el, n) {
 	if($.inArray(url,myDivs)==-1 || n==2){
 		var pUrl = $('#'+el).attr('name');
+		if(n!=3)
 		$('#'+el+'_header').load(pUrl+' .mainH', function(){
-								$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
-								if (n==3)
-									$('#'+el+'_header').find('.min').first().remove();
-							});
+			$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());						
+		});
 		$('#' + el + '_content').load(url, function() {
-											$('#' + el + ' .min').first().show();
-											$('#' + el + '_content').children().show();
-											magic(el);
+			$('#' + el + ' .min').first().show();
+			$('#' + el + '_content').slideDown(400);
+			magic(el);
 		});
 	}
 	if(n==1)
