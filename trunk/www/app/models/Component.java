@@ -118,6 +118,20 @@ public class Component extends SmartModel {
 		return tasks;
 	}
 
+	public List<Task> componentSprintTasks(Sprint s)
+	{
+		List<Task> t = new ArrayList<Task>();
+		for(int i=0;i<componentTasks.size();i++)
+		{
+			if(componentTasks.get(i).taskSprint!=null){
+			if(componentTasks.get(i).taskSprint.id==s.id)
+			{
+				t.add(componentTasks.get(i));
+			}}
+		}
+		return t;
+	}
+	
 	/**
 	 * @author Hadeer Diwan Returns a list of tasks associated to a certain
 	 *         sprint for a certain component .

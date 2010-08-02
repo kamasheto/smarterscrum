@@ -740,4 +740,5 @@ public class Project extends SmartModel {
 		int s = logs.size() / 10;
 		return s > 10 ? 10 : s < 0 ? 0 : s;
 	}
+	
 }
