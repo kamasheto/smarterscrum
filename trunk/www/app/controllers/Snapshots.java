@@ -270,8 +270,7 @@ List<User> users = c.getUsers();
 		snap.save();
 		s.finalsnapshot=snap;
 		s.save();
-		long ID = snap.id;
-		renderJSON(ID);
+		
 		
 	}
 
