@@ -360,7 +360,10 @@ $(function() {
 				$(this).parent().next().slideToggle(400);
 
 			});
-
+$('.refresh').live('click',function(){
+	var myMommy = $(this).parent().parent();
+	load($(myMommy).attr('name')+' .actual',$(myMommy).attr('id'),2);
+});
 	$('.revertFrom').live('click', function() {
 		var url = $(this).parent().parent().attr('name');
 		removeFromDiv(url);
@@ -428,7 +431,6 @@ function loadBox(url, el)
 	});
 	}
 }
-
 function magic(id) {
 	doOnLoad();
 	$("#" + id + "_content div[name]").each(
@@ -450,7 +452,7 @@ function magic(id) {
 			if($.inArray(url,myDivs)==-1 && $.inArray(url2,myDivs)==-1)
 			{
 						var id2 = "ui" +num++;
-						var head = '<div id="'+id2+'_header" class="ui-widget-header mainH"><span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span></span>' + $(this).html() + '</div>';
+						var head = '<div id="'+id2+'_header" class="ui-widget-header mainH"><span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span><span class="refresh ui-icon ui-icon-refresh"></span></span>' + $(this).html() + '</div>';
 						$(this).html(head);
 						$(this).addClass('ui-widget-content draggableChild');
 

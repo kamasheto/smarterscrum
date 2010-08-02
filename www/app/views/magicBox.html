@@ -6,6 +6,7 @@
 			<span class="ui-icon ui-icon-circle-triangle-s" style="display: none;"></span>
 			<span class="ui-icon ui-icon-circle-triangle-n"></span>
 		</span>
+		<span class="refresh ui-icon ui-icon-refresh"></span>
 		#{get 'title'/}
 	</div>
 	<div id="#{get 'id'/}_content" class="ui-widget-content actual">#{doLayout /}</div>
@@ -13,6 +14,6 @@
 
 <script type="text/javascript">
 $(function(){
-	magic("#{get 'id' /}")
+	magic("#{get 'id' /}");
 });
 </script>
