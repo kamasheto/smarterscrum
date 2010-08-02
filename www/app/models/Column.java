@@ -20,6 +20,7 @@ public class Column extends SmartModel {
 	public Column (String name, Board board, TaskStatus taskstatus) {
 		this.name = name;
 		this.board = board;
+		if(board!=null)
 		this.sequence = board.columns.size();
 		this.onBoard=true;
 		this.taskStatus=taskstatus;
@@ -41,6 +42,7 @@ public class Column extends SmartModel {
 			this.sequence=-1;
 		}	*/
 		this.save();
+		if(board!=null)
 		board.columns.add(this);
 	}
 
