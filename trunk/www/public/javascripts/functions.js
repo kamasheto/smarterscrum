@@ -569,6 +569,7 @@ function close_workspace(project_id) {
 	$('#project-button-'+project_id).fadeOut(function() {
 		$(this).remove()
 	})
+	closeWindows(project_id)
 	$('.workspace-'+project_id).remove()
 	show(0)
 }
@@ -605,5 +606,15 @@ function reload() {
 			div.find('.actual:first').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>')
 			load(url + ' .actual', div.attr('id'), 2)	
 		})
+	}
+}
+function deleteTheComponent(cId, box){
+	if((confirm('Are you sure you want to delete the component?')))
+	{
+		$.post('/components/delete', {id:cId}, function(data){ 
+				$.bar({message:data});
+				// removeMe(box);
+				reload('components')
+			});
 	}
 }
