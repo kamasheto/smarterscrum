@@ -230,7 +230,7 @@ public class Application extends SmartController
 		}
 
 	}
-
+	
 	/**
 	 * Renders a web page that contains a script that closes the overlay iframe.
 	 * 

@@ -17,13 +17,11 @@ import play.mvc.With;
  */
 @With (Secure.class)
 public class Roles extends SmartCRUD {
-	
+
 	public static void setBaseRole(long id) {
 		Role role = Role.findById(id);
 		Security.check(role.project, "manageRoles");
-		List<Role> roles = role.project == null ? 
-								Role.find("byProjectIsNull").<Role> fetch() : 
-								Role.find("byProject", role.project).<Role> fetch();
+		List<Role> roles = role.project == null ? Role.find("byProjectIsNull").<Role> fetch() : Role.find("byProject", role.project).<Role> fetch();
 		for (Role r : roles) {
 			r.baseRole = r == role;
 			r.save();
@@ -91,7 +89,7 @@ public class Roles extends SmartCRUD {
 		object.save();
 		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			Application.overlayKiller();
+			Application.overlayKiller("reload('roles')");
 		}
 		redirect("/admin/roles/" + role.id);
 	}
@@ -144,7 +142,7 @@ public class Roles extends SmartCRUD {
 		object.save();
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			Application.overlayKiller();
+			Application.overlayKiller("reload('roles')");
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			redirect("/admin/roles/new?id=" + id);
@@ -158,25 +156,29 @@ public class Roles extends SmartCRUD {
 		JPASupport object = type.findById(id);
 		Security.check(((Role) object).project, "deleteRole");
 		if (((Role) object).baseRole) {
-			// flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
+			// flash.error(Messages.get("crud.delete.error", type.modelName,
+			// object.getEntityId()));
 			// redirect("/show/roles?id=" + ((Role) object).project.id);
 		} else {
 			try {
 				object.delete();
 			} catch (Exception e) {
-				// flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
+				// flash.error(Messages.get("crud.delete.error", type.modelName,
+				// object.getEntityId()));
 				// redirect(request.controller + ".show", object.getEntityId());
 			}
-			// flash.success(Messages.get("crud.deleted", type.modelName, object.getEntityId()));
+			// flash.success(Messages.get("crud.deleted", type.modelName,
+			// object.getEntityId()));
 			// Project project = ((Role) object).project;
-			// redirect(project == null ? "/roles/defaultroles" : "/show/roles?id=" + ((Role) object).project.id);
+			// redirect(project == null ? "/roles/defaultroles" :
+			// "/show/roles?id=" + ((Role) object).project.id);
 		}
 	}
 
 	public static void list() {
 		forbidden();
 	}
-	
+
 	public static void removePermission(long roleId, long permId) {
 		Role role = Role.findById(roleId);
 		Security.check(Security.getConnected().in(role.project).can("editRole"));
