@@ -1,4 +1,4 @@
-﻿		var getNotifications = function() {
+﻿﻿		var getNotifications = function() {
 				$.getJSON('/notificationtasks/getlatestnews',
 					function(data) {
 						$(data).each(function(){
@@ -191,11 +191,6 @@ function revokeRole(roleIdd){
 		$.bar({message:msg});
 	});
 	};
-	
-	
-	$.post('/projecttasks/revokeRole', {id:roleIdd}, function(msg){
-		$.bar({message:msg});
-	});
 }
 
 function deleteRequest(roleIdd){
