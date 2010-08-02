@@ -20,6 +20,7 @@
 
 <div class="workspaceDraggables" id="workspace-${proj.id}">
 #{if connected}
+<div class="bottomCornersRounded closeAll"><a href="#" onclick="$(this).parent().siblings().remove()">Close all windows?</a></div>
 	<div class="draggable"id="chatContainer_${proj.id}"style="position:absolute;right:0px;top:95px;width:225px;#{ifnot connected.openChats.contains(proj.chatroom)}display:none;#{/ifnot}">
 	<div class="chatContainerHeader">${proj.name} Chat 
 	
