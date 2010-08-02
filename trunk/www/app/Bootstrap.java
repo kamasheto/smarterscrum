@@ -864,7 +864,7 @@ public class Bootstrap extends Job {
 			T38.save();
 
 			// ************ LOGS BEGIN ************
-			for (int l = 0; l < 30; l++) {
+			for (int l = 0; l < 120; l++) {
 				if (l % 2 == 0)
 					new Log(users.get(0), "TEST", "TEST", 0, projects.get(0), new Date()).save();
 				else

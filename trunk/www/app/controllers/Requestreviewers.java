@@ -41,12 +41,16 @@ public class Requestreviewers extends SmartController {
 	 * @task C3,S23
 	 * @Sprint2
 	 */
-	public static void requestToBeReviewer(long ID, long Pid) {
+	public static void requestToBeReviewer(long ID) {
 		Date todayDate = new GregorianCalendar().getTime();
 		String message = "";
 		TaskType task = TaskType.findById(ID);
-		Project project = Project.findById(Pid);
+		// modified by mahmoudsakr
+		// seen so2al.. why on earth do we need the project if we have the task type?
+		// Project project = Project.findById(Pid);
+		Project project = task.project;
 		User user = Security.getConnected();
+		Security.check(user.projects.contains(project)); // make sure he's in this project.. added by ms bardo
 		User xx = null;
 		List<Requestreviewer> request = Requestreviewer.find("order by id desc").fetch();
 		if (request == null) {
