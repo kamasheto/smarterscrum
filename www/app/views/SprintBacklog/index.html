@@ -8,18 +8,20 @@ cursor:move;
 </style>
 #{/set}
 #{set 'moreScripts'}
-
-<script language="javascript" type="text/javascript"
-	src="@{'/public/javascripts/jeditable-mod.js'}"></script>
-
+<script language="javascript" type="text/javascript"src="@{'/public/javascripts/jeditable-mod.js'}"></script>
 <script  type="text/javascript" src="@{'/public/javascripts/dragtablenorm.js/'}" ></script>
 <script  type="text/javascript" src="@{'/public/javascripts/sorttable.js/'}" ></script>
 <script type="text/javascript">
+function hideOrShow(c)
+{
+	$('.'+c).toggle();
+}
+#{ifnot connected.in(project).can('editBacklog') || connected.isAdmin}
 function popUp(URL) 
 {
-day = new Date();
-id = day.getTime();
-eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=200,height=400,left = 583,top = 184');");
+	day = new Date();
+	id = day.getTime();
+	eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=200,height=400,left = 583,top = 184');");
 }
 $(function() 
 {	
@@ -34,16 +36,7 @@ $(function()
 		if($(this).html()!='')
 			$(this).html(parseInt($(this).html()));
 	});
-	
-	/**
-	 * This function enables the inplace editing for the effort point for a day.
-	 * they have the class, enterEfforts
-	 *
-	 * @author Hadeer Younis
-	 * @category C4S1
-	 * @see	   inplace-editing, popups
-	 */
-		
+
     $('.enterEffort').editable(
     function(value)
     {
@@ -75,16 +68,7 @@ $(function()
     {    
         indicator : 'Saving...',
     });
-    /**
-     * The following functions enables the inplace editing for description, type, reviewer, points, assignee of a task.
-     * everyone with their class.
-     *
-     *
-     * @author Menna Ghoneim
-     * @category C4S6
-     * @see	   inplace-editing, popups
-     */
-        
+
     $('.editDES').editable(
     	    function(value)
     	    {
@@ -140,43 +124,18 @@ $(function()
     	        indicator : 'Saving...',
     	       
     	    });
-});
 
+});
+#{/ifnot}
 </script>
 
 #{/set}
-<!--
-@author menna_ghoneim
-	Looping on the list of tasks rendered to this page and putting the attributes of each 
-	task (description, assignee name, total estimation points, and points per day) 
-	in the table, in addition to an option to edit if the user is a scrum master  and the 
-	sprint is not in progress 
--->
-
 <div id="sprint">
-#{ifnot taskOfStory}
-#{if incomp}
-#{note}The component has no tasks yet.#{/note}
-#{/if}
-#{else}
-#{note}You are not a user in this component, you cannot view their tasks.#{/note}
-#{/else}
-#{/ifnot} 
-#{else}
+<h1 style="float:left">#if{componentID==0}Sprint ${sNum}: ${project.name}'s Backlog#{/if}#{else}Sprint ${sNum}: ${cs}'s Backlog#{/else}</h1>
+<div style="float:right;width:200px;">
+<div class="allCornersRounded" style="background:#333;padding:15px;border-width:10px 10px 0;color:#eee">	
+Show/Hide:
 
-<h2>Sprint Backlog</h2>
-
-	#{set 'moreLinks'}
-	<div class="clear"></div>
-			
-			<!--@author Hadeer Younis C4 S8-->
-			<a title="Take a look at the chart?" href="@{SprintBacklog.showGraph(id,componentID)}"> Show Burn Down Chart </a><br/>
-			<!--@author Hossam Amer C4 S10, S11  -->
-			<a title="Take a look at the Review Log?"href="@{ReviewLog.showMeetings(projectId, componentID, id)}">View Review Log</a>
-	
-<a href="#" onclick="$('#columnssh').slideToggle(400)">Show/Hide Columns</a>
-<div id="columnssh" style="display:none">
-	<form>
 		<select id="hideshow"name="list">
         	<option onclick="hideOrShow('shDes');">Description</option> 
         	<option onclick="hideOrShow('shReviewer');">Reviewer</option> 
@@ -186,38 +145,14 @@ $(function()
         	<option onclick="hideOrShow('shPoints');">Points</option> 
         	<option onclick="hideOrShow('shEfforts');">Efforts</option> 
 		</select>
-	</form> 
+
 </div>
-#{/set}
-<script type="text/javascript">
-function hideOrShow(c)
-{
-	$('.'+c).toggle();
-}
-</script>
-
-
-	 #{set flag=connected.in(project).can('editBacklog') || connected.isAdmin /}
-          
-	#{ifnot flag}
-	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
-	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
-	<strong>NOTE: </strong>Editing is not allowed. 
-	<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
-	#{/ifnot}
-
-
-
-
-#{list items:taskOfStory, as:'storyTask'}
-
-
-
-
-<table class="draggable sortable">
-
+<div class="notchBottom" style="border-top-color:#333"></div>
+</div>
+<br style="clear:both"/>
+<table id="sprintTable" class="draggable sortable">
 	<thead>
-<tr>
+	<tr>
 		<td>ID</td>
 		<td class="shDes">Description</td>
 		<td class="shType">Type</td>
@@ -230,22 +165,19 @@ function hideOrShow(c)
 		#{/list}
 	</tr>
 	</thead>
-
-	#{list items:storyTask, as:'task'}
-
+	#{list items:tasks, as:'task'}
 	<tr id="task_${task.id}">
-
-		<td><a title="view the task reports?" href="@{Tasks.getReport(task.id)}">${task.id}</a></td>
-
-         
-        
-         #{ifnot user.id==task.assignee.id || flag}
+	
+		<td>
+			<a title="view the task reports?" href="@{Tasks.getReport(task.id)}">${task.id}</a>
+		</td>
+		#{ifnot connected.id==task.assignee.id || flag}
 
           #{ifnot task.description}
           <td class="shDes">No Description stated</td>
           #{/ifnot}
           #{else}
-          <td class="shDes">${task.description}</td>
+		<td class="shDes">${task.description}</td>
           #{/else}
           
           #{ifnot task.taskType}
@@ -266,7 +198,7 @@ function hideOrShow(c)
           <td class="shAssignee">No assignee stated</td>
           #{/ifnot}
           #{else}
-          <td class="shAssignee>${task.assignee.name}</td>
+          <td class="shAssignee">${task.assignee.name}</td>
           #{/else}
         
          #{ifnot task.reviewer}
@@ -291,11 +223,11 @@ function hideOrShow(c)
 		#{/list}
 	
         
-         #{/ifnot}
+        #{/ifnot}
       
             
       
-         #{else}
+        #{else}
 		#{ifnot task.description}
 		<td class="shDes"><span id="${task.id}" class="editDES">No description stated
 		</span></td>
@@ -374,57 +306,4 @@ function hideOrShow(c)
 
 	#{/list}
 </table>
-<br />
-#{/list}
- #{/else} 
- 
- <script type="text/javascript">
-/**
- * This function checks which check boxes are checked 
- so i can hide the columns coresponding to them and 
- show the rest
- *
- * @author ahmedkhaled7
- * @category C4S4/C4S5
- * @see	   hide and show columns
- */
-function customize_columns()
-{
-	if($('#option1').is(':checked')==true)	
-		$('.shDes').css('display','none');
-	else
-		$('.shDes').css('display','tabel-cell');
-
-	if($('#option2').is(':checked')==true)	
-		$('.shType').css('display','none');
-	else
-		$('.shType').css('display','table-cell');
-
-	if($('#option3').is(':checked')==true)	
-		$('.shAssignee').css('display','none');
-	else
-		$('.shAssignee').css('display','table-cell');
-
-	if($('#option4').is(':checked')==true)	
-		$('.shReviewer').css('display','none');
-	else
-		$('.shReviewer').css('display','table-cell');
-
-	if($('#option5').is(':checked')==true)	
-		$('.shPoints').css('display','none');
-	else
-		$('.shPoints').css('display','table-cell');
-
-	if($('#option6').is(':checked')==true)	
-		$('.shEfforts').css('display','none');
-	else
-		$('.shEfforts').css('display','table-cell');
-
-	if($('#option7').is(':checked')==true)	
-		$('.shStatus').css('display','none');
-	else
-		$('.shStatus').css('display','table-cell');
-
-}
-
-</script>
+</div>
