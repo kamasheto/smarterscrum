@@ -15,7 +15,8 @@ import controllers.Application;
  * @Task C1S14
  */
 @Entity
-public class Request extends SmartModel {
+public class Request extends SmartModel
+{
 	@ManyToOne
 	public User user;
 
@@ -30,16 +31,17 @@ public class Request extends SmartModel {
 
 	public String hash; // will have to use for accepting/declining
 
-	public boolean isDeletion;
+	public boolean deleted;
 
 	public Component component;
 
 	// requests
 
-	public Request (User user, Role role) {
+	public Request( User user, Role role )
+	{
 		this.user = user;
 		this.role = role;
-		this.hash = Application.randomHash(8);
+		this.hash = Application.randomHash( 8 );
 		this.project = role.project;
 		// this.pending = pending;
 	}
@@ -59,11 +61,12 @@ public class Request extends SmartModel {
 	 * @since Sprint 2.
 	 * @Task C1S14
 	 */
-	public Request (User user, Project project) {
+	public Request( User user, Project project )
+	{
 		this.user = user;
 		this.project = project;
-		this.isDeletion = true;
-		this.hash = Application.randomHash(8);
+		this.deleted = true;
+		this.hash = Application.randomHash( 8 );
 	}
 
 	/**
@@ -74,11 +77,12 @@ public class Request extends SmartModel {
 	 * @param user
 	 * @param component
 	 */
-	public Request (User user, Component component) {
+	public Request( User user, Component component )
+	{
 		this.user = user;
 		this.component = component;
-		this.isDeletion = true;
-		this.hash = Application.randomHash(8);
+		this.deleted = true;
+		this.hash = Application.randomHash( 8 );
 	}
 
 }
