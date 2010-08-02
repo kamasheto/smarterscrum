@@ -1,3 +1,13 @@
+.closeAll
+{background:none repeat scroll 0 0 #333333;
+color:#EEEEEE;
+float:right;
+margin-top:-10px;
+padding:10px;
+text-align:center;
+width:120px;
+		}
+
 button,a button,input[type=submit],input[type=ok],input[type=send],input[type=button],input[type=send]
 	{
 	cursor: pointer;
