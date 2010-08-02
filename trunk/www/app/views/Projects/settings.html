@@ -2,11 +2,15 @@
 #{set 'title'}Settings#{/set}
 <div name="/components/listComponentsInProject?projectId=${project.id}" class="reload-components">Components</div>
 <div name="/show/roles?id=${project.id}" class="reload-roles">Roles</div>
-<div name="/show/listTaskTypesInProject?projectId=${project.id}" class="reload-reviewer-requests">Request reviewing</div>
+#{if connected.projects.contains(project)}
+	<div name="/show/listTaskTypesInProject?projectId=${project.id}" class="reload-reviewer-requests">Request reviewing</div>
+#{/if}
 #{if connected.in(project).can('manageRequests')}
 	<div name="/projects/requestrespond?id=${project.id}" class="reload-project-requests">Requests</div>
 #{/if}
-<div name="/users/managenotificationprofile?id=${project.id}" class="overlay">Manage my notifications</div>
+#{if connected.projects.contains(project)}
+	<div name="/users/managenotificationprofile?id=${project.id}" class="overlay">Manage my notifications</div>
+#{/if}
 #{if connected.in(project).can('editProject')}
 	<div name="/admin/projects/${project.id}" class="overlay">Project Settings</div>
 #{/if}

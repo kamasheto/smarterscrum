@@ -6,7 +6,7 @@
 
 		#{if task !=null}
 		#{if task.size()==0}
-		<label> No Tasks</label>
+		#{note}There are no tasks to show#{/note}
 		#{/if}
 		#{list items:task ,as :'Task'}
 			<div name="/tasks/magicShow?taskId=${Task.id}">#{if Task.parent!=null}S${Task.parent.number}#{/if} Task${Task.number}<div class="item_imgs">#{if connected.in(project).can('modifyTask')}#{if !Task.checkUnderImpl()}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div><div  class="right" title="Type: ${Task.taskType.name}" style="background:${Task.taskType.hexColor}; ; width: 15px; height: 15px; border-color:white; position:relative;" ></div></div>

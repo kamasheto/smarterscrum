@@ -18,7 +18,6 @@ function delete_role(role_id, that) {
 function setBaseRole(role, project) {
 	$.post('/roles/setbaserole?id=' + role, function() {
 		reload('roles')
-		$.bar({message:'Base role updated successfully'})
 	})
 }
 
