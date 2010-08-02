@@ -117,7 +117,8 @@ public class Components extends SmartCRUD {
 		Logs.addLog(Security.getConnected(), "Edit", "Component", temp.id, temp.project, new Date(System.currentTimeMillis()));
 		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			redirect( "/Application/overlayKiller" );
+			// redirect( "/Application/overlayKiller" );
+			Application.overlayKiller("reload('component-"+id+"')");
 		}
 		redirect(request.controller + ".show", object.getEntityId());
 	}

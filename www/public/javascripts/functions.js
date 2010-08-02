@@ -1,4 +1,4 @@
-﻿﻿		var getNotifications = function() {
+﻿		var getNotifications = function() {
 				$.getJSON('/notificationtasks/getlatestnews',
 					function(data) {
 						$(data).each(function(){
@@ -37,12 +37,14 @@ var ping = function() {
 				time: 5000 // hang on the screen for...
 			});
 
+var CURRENT_PROJECT = 0;
+
 function request_accept( id, hash )
 {
 	$.post('/requests/requestAccept' ,
 		    {hash:hash, id:id} ,
 		    function(){
-		    $('#req_'+id).remove();
+				reload('reviewer-requests')
 		    })
 }
 function request_accept2( id, hash )
@@ -50,7 +52,7 @@ function request_accept2( id, hash )
 	$.post('/requests/deletionRequestAccept' ,
 		    {hash:hash} ,
 		    function(){
-		    $('#req_'+id).remove();
+				reload('reviewer-requests')
 		    })
 		}
 function request_ignore( id, hash)
@@ -58,7 +60,7 @@ function request_ignore( id, hash)
 	$.post('/requests/requestIgnore' ,
 		    {hash:hash} ,
 		    function(){
-		    $('#req_'+id).remove();
+				reload('reviewer-requests')
 		    })
 		}
 function show_comment(id){
@@ -117,7 +119,7 @@ function delete_meeting(id, pId)
 		$.post('/Meetings/deleteMeeting', {
 			id:id
 		}, function(){
-		removeMe(pId);	
+		// removeMe(pId);	
 		});
 	};		
 }
@@ -178,6 +180,7 @@ function confirm_me(id)
 function requestRole(roleIdd){
 	$.post('/projecttasks/requestRole', {id:roleIdd}, function(msg){
 		$.bar({message:msg});
+		reload('roles')
 	});
 }
 
@@ -199,6 +202,7 @@ function deleteRequest(roleIdd){
 	if(confirm("Are you sure you want to cancel your request?")){
 		$.post('/requests/removeRequestRoleInProject', {roleId:roleIdd}, function(msg){
 			$.bar({message:msg});
+			reload('roles')
 		});
 	}
 }
@@ -206,12 +210,14 @@ function deleteRequest(roleIdd){
 function requestToBeReviewer(taskTypeId){
 	$.post('/requestreviewers/requestToBeReviewer', {ID:taskTypeId}, function(msg){
 		$.bar({message:msg});
+		reload('reviewer-requests')
 	});
 }
 
 function removeRequestToBeReviewer(id){
 	$.post('/requestreviewers/removerequest', {taskTypeId:id}, function(msg){
 		$.bar({message:msg});
+		reload('reviewer-requests')
 	});
 }
 
@@ -258,7 +264,7 @@ function deleteStory(sId,box,d){
 	{
 		$.post('/Storys/delete', {id:sId}, function(data){
 			$.bar({message:data});
-			removeMe(box);
+			// removeMe(box);
 		});
 	}
 }
@@ -294,12 +300,6 @@ $(function() {
 							handle : '.ui-widget-header',
 							cancel : 'img',
 							stop : function(event, ui) {
-								
-								if ($(this).attr('name') == '#') {
-									// do nothing on # links
-									alert(1)
-									return
-								}
 								
 								var x = $(this).attr('class').split(" ");
 								var is = false;
@@ -400,39 +400,27 @@ function removeFromDiv(url)
 	});
 	var url2 = url+' .actual';
 	myDivs = $.grep(myDivs, function(value) {
-
+		
 	    return value != url2;
 	});	
 }
-
+		
 function load(url, el, n) {
 	if($.inArray(url,myDivs)==-1 || n==2){
 		var pUrl = $('#'+el).attr('name');
 		$('#'+el+'_header').load(pUrl+' .mainH', function(){
-		
-			$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
-				if(n==3)
-			$('#'+el+'_header').find('.min').first().remove();
-		});
+								$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
+								if (n==3)
+									$('#'+el+'_header').find('.min').first().remove();
+							});
 		$('#' + el + '_content').load(url, function() {
-			$('#' + el + ' .min').first().show();
-			$('#' + el + '_content').children().show();
-			//$('#' + el + '_content').find('ui-widget-header').first().load
-			$('#' + el + ' .loading').first().hide();
-			$('#' + el + '_content').slideDown(400);
-			magic(el);
-
+											$('#' + el + ' .min').first().show();
+											$('#' + el + '_content').children().show();
+											magic(el);
 		});
 	}
 	if(n==1)
 		myDivs.push(url);
-}
-
-function removeMe(me)
-{
-	$(me).closest('.ui-widget-content').slideUp(function() {
-		$(this).remove()
-	});
 }
 
 
@@ -503,7 +491,7 @@ function deleteTheTask(tId, box){
 	
 	$.post('/tasks/delete', {id:tId}, function(data){ $.bar({message:data}
 	);
-	removeMe(box);
+	// removeMe(box);
 	;});
 	}
 }
@@ -562,6 +550,7 @@ function show(id) {
 		$('#normal').show()
 		$('.project-button').removeClass('selectedADiv')
 	} else if ($('.workspace-'+id).length) {
+		CURRENT_PROJECT = id;
 		// make sure we have that thingie first
 		// DO NOT load workspace here, it might have been removed on purpose!
 		$('#normal').hide();
@@ -614,16 +603,12 @@ function showProjectWorkspace(project_id) {
 
 function reload() {
 	for (i in arguments) {
-		sel = '.' + arguments[i]
-		if (!$(sel).length) {
-			alert('Found nothing for: ' + sel)
-			continue
-		}
-		div = $(sel).closest('div[name]')
-		url = div.attr('name')
-		// should we really delete?
-		// or dynamically reload it?
-		delete myDivs[$.inArray(url, myDivs)]
-		load(url, div.id, 1)
+		sel = '.reload-' + arguments[i]
+		div = $(sel, '#workspace-' + CURRENT_PROJECT)
+		div.each(function() {
+			url = div.attr('name')
+			div.find('.actual:first').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>')
+			load(url + ' .actual', div.attr('id'), 2)	
+		})
 	}
 }

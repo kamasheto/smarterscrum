@@ -1,16 +1,18 @@
 #{extends 'magicBox.html' /}
 #{set 'title'}Settings#{/set}
-<div name="/components/listComponentsInProject?projectId=${project.id}">Components</div>
-<div name="/show/roles?id=${project.id}">Roles</div>
-<div name="/show/listTaskTypesInProject?projectId=${project.id}">Request reviewing</div>
+<div name="/components/listComponentsInProject?projectId=${project.id}" class="reload-components">Components</div>
+<div name="/show/roles?id=${project.id}" class="reload-roles">Roles</div>
+<div name="/show/listTaskTypesInProject?projectId=${project.id}" class="reload-reviewer-requests">Request reviewing</div>
 #{if connected.in(project).can('manageRequests')}
-	<div name="/projects/requestrespond?id=${project.id}">Requests</div>
+	<div name="/projects/requestrespond?id=${project.id}" class="reload-project-requests">Requests</div>
 #{/if}
 <div name="/users/managenotificationprofile?id=${project.id}" class="overlay">Manage my notifications</div>
 #{if connected.in(project).can('editProject')}
 	<div name="/admin/projects/${project.id}" class="overlay">Project Settings</div>
 #{/if}
-<div name="/projects/projectDeletionRequest?id=${project.id}" class="overlay">Request to be deleted from the project</div>
+#{if connected.projects.contains(project)}
+	<div name="/projects/projectDeletionRequest?id=${project.id}" class="overlay">Request to be deleted from the project</div>
+#{/if}
 #{if (connected.in(project).can('deleteProject')) && (! project.hasRunningSprints())}
 	<div name="/projects/projectDeletion?id=${project.id}" class="overlay">Delete Project</div>
 #{/if}
