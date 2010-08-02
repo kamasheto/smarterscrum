@@ -5,13 +5,25 @@
 #{if x==1}
    #{if user!=null}
 	   #{list items:user.projects ,as :'project'}
-		    <div name="/users/findUsers?userId=${user.id}&x=2&projectId=${project.id}">${project.name}</div>
+		    <div name="/users/listUserProjects?userId=${user.id}&x=2&projectId=${project.id}&currentProjectId=${currentProject.id}">${project.name}</div>
 	   #{/list}
    #{/if}
 #{/if}
 
 #{if x==2}
    #{if user!=null}
-	   heba
+    #{list items:project.roles ,as :'pRole'}
+     #{list items:user.roles ,as :'uRole'}
+      #{if pRole.id == uRole.id}
+	    ${uRole.name}
+	    #{if project.id == currentProject.id}
+	       <a>
+	       <img title="Revoke Role" src="@{'/public/images/famfam/revoke.png'}">
+	       </a>
+	    #{/if}
+	    <br>
+      #{/if}
+     #{/list}
+    #{/list}
    #{/if}
 #{/if}

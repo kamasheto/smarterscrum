@@ -305,18 +305,20 @@ public class Users extends SmartCRUD {
 		String title;
 		if(userId!=0)
 		{
+			Project currentProject = Project.findById(projectId);
 			User user = User.findById(userId);
 			title= user.name;
-			render(user, title);
+			render(user, title, currentProject);
 		}
 		else
 		{
+			Project currentProject = Project.findById(projectId);
 			List<User> users = new ArrayList<User>();
 			if(all == 1)
 			{
 				users= User.find("byDeleted", false).fetch();
 				title = "All Users";
-				render(users, title);
+				render(users, title, currentProject);
 			}
 			else
 			{
@@ -329,38 +331,40 @@ public class Users extends SmartCRUD {
 						}
 					}
 					title = "C"+ component.number+ ": Users";
-					render(users, title);
+					render(users, title, currentProject);
 				}
 				else
 				{
-					Project project = Project.findById(projectId);
-					for(User user: project.users){
+					for(User user: currentProject.users){
 						if(!user.deleted){
 							users.add(user);
 						}
 					}
 					title= "Project Users";
-					render(users, title);
+					render(users, title, currentProject);
 				}
 			}
 		}
 	}
 	
-	public static void listUserProjects(long userId, int x, long projectId)
+	public static void listUserProjects(long userId, int x, long projectId, long currentProjectId)
 	{
 		String title;
 		if(x==1)
 		{
-		User user = User.findById(userId);
-		title= user.name+"'s Projects";
-		render(user, title, x);
+			Project currentProject = Project.findById(currentProjectId);
+			User user = User.findById(userId);
+			title= user.name+"'s Projects";
+			render(user, title, x, currentProject);
 		}
 		if(x==2)
 		{
-		User user = User.findById(userId);
-		Project project = Project.findById(projectId);
-		title= user.name+"'s Roles in project:" + project.name;
-		render(user, title, x);
+			Project currentProject = Project.findById(currentProjectId);
+			User user = User.findById(userId);
+			Project project = Project.findById(projectId);
+			title= user.name+"'s Roles in project:" + project.name;
+			render(user, title, x, project, currentProject);
 		}
+		
 	}
 }
