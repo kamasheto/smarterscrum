@@ -7,11 +7,13 @@
 	#{/if}
 	#{list items:sprints, as:'sprint'}
 	#{if type == 1}
+	#{if sprint.ended != true}
+	
 		<div class="overlay" name="/boards/loadboard1?sprintID=${sprint.id}&componentID=${component.id}">
 		Sprint ${sprint.sprintNumber} Task Board
 		<a href="javascript:loadBox('/Snapshots/index?sid=${sprint.id}&cid=${component.id}','workspace-${component.project.id}')"><img src="@{'/public/images/famfam/photos.png'}">
 		</a></a></div>
-	#{/if}
+	#{/if}#{/if}
 	#{elseif type == 2}
 		<div class="overlay"name="@{SprintBacklog.showGraph(sprint.id,component.id)}" title="view the burndown chart?">Sprint ${sprint.sprintNumber} Chart</div>
 	#{/elseif}
