@@ -5,7 +5,7 @@
 #{if x==1}
    #{if user!=null}
 	   #{list items:user.projects ,as :'project'}
-		    <div name="/users/listUserProjects?userId=${user.id}&x=2&projectId=${project.id}&currentProjectId=${currentProject.id}">${project.name}</div>
+		    <div class="reload-roles" name="/users/listUserProjects?userId=${user.id}&x=2&projectId=${project.id}&currentProjectId=${currentProject.id}">${project.name}</div>
 	   #{/list}
    #{/if}
 #{/if}
@@ -15,7 +15,8 @@
     #{list items:project.roles ,as :'pRole'}
      #{list items:user.roles ,as :'uRole'}
       #{if pRole.id == uRole.id}
-	    ${uRole.name}
+      
+	    <div class="bar">${uRole.name}
 	    #{if connected.in(project).can('revokeUserRole')}
 	      #{if project.id == currentProject.id}
 	        <a>
@@ -23,7 +24,8 @@
 	        </a>
 	      #{/if}
 	    #{/if}
-	    <br>
+	   </div>
+	   
       #{/if}
      #{/list}
     #{/list}
