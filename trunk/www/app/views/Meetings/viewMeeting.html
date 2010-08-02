@@ -1,9 +1,10 @@
 #{extends 'magicBox.html' /}	
 	#{set 'title'}
 	${meeting.name}
-	#{if (meeting.snapshot!=null)}
-	<a href="javascript:overlayOpen('/Snapshots/loadsnapShot?id=${meeting.snapshot.id}');" title="View Associated Snapshot">
-	<img src="@{'/public/images/famfam/camera_go.png'}"></a>
+	
+	#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(meeting.creator)) } 
+	<a href="#" onclick="javascript:delete_meeting(${meeting.id},this);" title="delete">
+	<img src="@{'/public/images/famfam/delete.png'}"></img></a>
 	#{/if}
 	#{if (meeting.startTime > new Date().getTime()) && ((connected.in(project).can('editMeeting') ||connceted.equals(meeting.creator))) }
 	<a href="javascript:overlayOpen('/admin/meetings/${meeting.id}');" title="edit">
@@ -12,10 +13,11 @@
 	#{if (meeting.startTime < new Date().getTime()) && ((connected.in(project).can('editMeeting') ||connceted.equals(meeting.creator))) }
 	<img class="dim" title="edit" src="@{'/public/images/famfam/pencil.png'}">
 	#{/if}
-	#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(meeting.creator)) } 
-	<a href="#" onclick="javascript:delete_meeting(${meeting.id},this);" title="delete">
-	<img src="@{'/public/images/famfam/delete.png'}"></img></a>
+	#{if (meeting.snapshot!=null)}
+	<a href="javascript:overlayOpen('/Snapshots/loadsnapShot?id=${meeting.snapshot.id}');" title="View Associated Snapshot">
+	<img src="@{'/public/images/famfam/camera_go.png'}"></a>
 	#{/if}
+	
 	#{if (invited&&attending)}
 	<img src="@{'/public/images/famfam/accept.png'}" title="you ${past ? 'attended':'are attending'} this meeting"></img>
 	#{/if}
