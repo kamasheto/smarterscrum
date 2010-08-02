@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import notifiers.Notifications;
-
 import models.Component;
 import models.Meeting;
 import models.ProductRole;
@@ -16,6 +14,7 @@ import models.Sprint;
 import models.Story;
 import models.Task;
 import models.User;
+import notifiers.Notifications;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
@@ -70,15 +69,14 @@ public class Storys extends SmartCRUD {
 			render("Storys/error.html", priorities, components, roles);
 		// Sort the priorities according to their priority
 		// Collections.sort(project.priorities);
-		String productRoles="";
-		for(int i=0;i<project.productRoles.size();i++)
-		{
-			//productRoles=productRoles+project.productRoles.get(i).name+",";
-			if(project.productRoles.get(i).name.charAt(0)=='a'||project.productRoles.get(i).name.charAt(0)=='e'||project.productRoles.get(i).name.charAt(0)=='i'||project.productRoles.get(i).name.charAt(0)=='o'||project.productRoles.get(i).name.charAt(0)=='u'||project.productRoles.get(i).name.charAt(0)=='A'||project.productRoles.get(i).name.charAt(0)=='E'||project.productRoles.get(i).name.charAt(0)=='I'||project.productRoles.get(i).name.charAt(0)=='O'||project.productRoles.get(i).name.charAt(0)=='U')
-			productRoles=productRoles+"As an "+project.productRoles.get(i).name+",-";
+		String productRoles = "";
+		for (int i = 0; i < project.productRoles.size(); i++) {
+			// productRoles=productRoles+project.productRoles.get(i).name+",";
+			if (project.productRoles.get(i).name.charAt(0) == 'a' || project.productRoles.get(i).name.charAt(0) == 'e' || project.productRoles.get(i).name.charAt(0) == 'i' || project.productRoles.get(i).name.charAt(0) == 'o' || project.productRoles.get(i).name.charAt(0) == 'u' || project.productRoles.get(i).name.charAt(0) == 'A' || project.productRoles.get(i).name.charAt(0) == 'E' || project.productRoles.get(i).name.charAt(0) == 'I' || project.productRoles.get(i).name.charAt(0) == 'O' || project.productRoles.get(i).name.charAt(0) == 'U')
+				productRoles = productRoles + "As an " + project.productRoles.get(i).name + ",-";
 			else
-				productRoles=productRoles+"As a "+project.productRoles.get(i).name+",-";
-					
+				productRoles = productRoles + "As a " + project.productRoles.get(i).name + ",-";
+
 		}
 		try {
 			render(type, stories, project, productRoles);
@@ -161,18 +159,17 @@ public class Storys extends SmartCRUD {
 				message = "Are you sure you want to delete this story? This action can not be undone.";
 			}
 		}
-		String productRoles="";
-		for(int i=0;i<project.productRoles.size();i++)
-		{
-			//productRoles=productRoles+project.productRoles.get(i).name+",";
-			if(project.productRoles.get(i).name.charAt(0)=='a'||project.productRoles.get(i).name.charAt(0)=='e'||project.productRoles.get(i).name.charAt(0)=='i'||project.productRoles.get(i).name.charAt(0)=='o'||project.productRoles.get(i).name.charAt(0)=='u'||project.productRoles.get(i).name.charAt(0)=='A'||project.productRoles.get(i).name.charAt(0)=='E'||project.productRoles.get(i).name.charAt(0)=='I'||project.productRoles.get(i).name.charAt(0)=='O'||project.productRoles.get(i).name.charAt(0)=='U')
-			productRoles=productRoles+"As an "+project.productRoles.get(i).name+",-";
+		String productRoles = "";
+		for (int i = 0; i < project.productRoles.size(); i++) {
+			// productRoles=productRoles+project.productRoles.get(i).name+",";
+			if (project.productRoles.get(i).name.charAt(0) == 'a' || project.productRoles.get(i).name.charAt(0) == 'e' || project.productRoles.get(i).name.charAt(0) == 'i' || project.productRoles.get(i).name.charAt(0) == 'o' || project.productRoles.get(i).name.charAt(0) == 'u' || project.productRoles.get(i).name.charAt(0) == 'A' || project.productRoles.get(i).name.charAt(0) == 'E' || project.productRoles.get(i).name.charAt(0) == 'I' || project.productRoles.get(i).name.charAt(0) == 'O' || project.productRoles.get(i).name.charAt(0) == 'U')
+				productRoles = productRoles + "As an " + project.productRoles.get(i).name + ",-";
 			else
-				productRoles=productRoles+"As a "+project.productRoles.get(i).name+",-";
-					
+				productRoles = productRoles + "As a " + project.productRoles.get(i).name + ",-";
+
 		}
 		try {
-			render(type, object, stories, project, editable, editable2, message,productRoles);
+			render(type, object, stories, project, editable, editable2, message, productRoles);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -243,7 +240,7 @@ public class Storys extends SmartCRUD {
 			redirect(request.controller + ".show", object.getEntityId());
 		}
 		flash.success(Messages.get("crud.deleted", type.modelName, object.getEntityId()));
-		//listStoriesInProject(story.componentID.project.id, 0);
+		// listStoriesInProject(story.componentID.project.id, 0);
 		renderText("Story deleted.");
 	}
 
@@ -280,7 +277,7 @@ public class Storys extends SmartCRUD {
 			}
 		}
 		String newdesc = storyObj.description;
-		
+
 		// Sort the priorities according to their priority
 		Collections.sort(project.priorities);
 		if (validation.hasErrors()) {
@@ -292,63 +289,47 @@ public class Storys extends SmartCRUD {
 			}
 		}
 		Story toBeSaved = (Story) object;
-		//storyObj.description = storyObj.description;
-		String [] desc = newdesc.split(",");
-		if(desc.length==1)
-		{
-			storyObj.description=desc[0];
-		}
-		else
-		{
-			String [] desc2 = desc[0].split(" ");
-			if(desc2.length>=3)
-			{
-			if(desc2[0].equalsIgnoreCase("as") && (desc2[1].equalsIgnoreCase("a")||desc2[1].equalsIgnoreCase("an")))
-					{
-				boolean flag=false;
-				String productrole="";
-				for(int k=2;k<desc2.length;k++)
-				{
-					if(k==desc2.length-1)
-						productrole=productrole+desc2[k];
-					else
-						productrole=productrole+desc2[k]+" ";
-						
-					
-				}
-				for(int j=0;j<storyObj.componentID.project.productRoles.size();j++)
-				{
-					if(storyObj.componentID.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
-						flag=true;
-				}
-				if(!flag)
-				{
-					ProductRole pr = new ProductRole(storyObj.componentID.project.id, productrole, "");
-					pr.save();
-					storyObj.productRole = pr;				
-				}
-				else
-				{
-					for(int j=0;j<storyObj.componentID.project.productRoles.size();j++)
-					{
-						if(storyObj.componentID.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
-							{
-							storyObj.productRole = storyObj.componentID.project.productRoles.get(j);
+		// storyObj.description = storyObj.description;
+		String[] desc = newdesc.split(",");
+		if (desc.length == 1) {
+			storyObj.description = desc[0];
+		} else {
+			String[] desc2 = desc[0].split(" ");
+			if (desc2.length >= 3) {
+				if (desc2[0].equalsIgnoreCase("as") && (desc2[1].equalsIgnoreCase("a") || desc2[1].equalsIgnoreCase("an"))) {
+					boolean flag = false;
+					String productrole = "";
+					for (int k = 2; k < desc2.length; k++) {
+						if (k == desc2.length - 1)
+							productrole = productrole + desc2[k];
+						else
+							productrole = productrole + desc2[k] + " ";
+
+					}
+					for (int j = 0; j < storyObj.componentID.project.productRoles.size(); j++) {
+						if (storyObj.componentID.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
+							flag = true;
+					}
+					if (!flag) {
+						ProductRole pr = new ProductRole(storyObj.componentID.project.id, productrole, "");
+						pr.save();
+						storyObj.productRole = pr;
+					} else {
+						for (int j = 0; j < storyObj.componentID.project.productRoles.size(); j++) {
+							if (storyObj.componentID.project.productRoles.get(j).name.equalsIgnoreCase(productrole)) {
+								storyObj.productRole = storyObj.componentID.project.productRoles.get(j);
 							}
+						}
+					}
+					for (int i = 1; i < desc.length; i++) {
+						storyObj.description = desc[i] + " ";
 					}
 				}
-				for(int i=1;i<desc.length;i++)
-				{
-					storyObj.description = desc[i]+" ";
-				}
-			}
-			}
-			else
-			{
-				storyObj.description=storyObj.description;
+			} else {
+				storyObj.description = storyObj.description;
 			}
 		}
-		
+
 		toBeSaved.addedBy = Security.getConnected();
 		object.save();
 		toBeSaved.init();
@@ -374,12 +355,12 @@ public class Storys extends SmartCRUD {
 		Notifications.notifyUsers(storyObj.componentID.getUsers(), header, body, (byte) 1);
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			Application.overlayKiller();
+			Application.overlayKiller("reload('storys')");
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			redirect(request.controller + ".blank");
 		}
-		Application.overlayKiller();
+		Application.overlayKiller("reload('storys')");
 	}
 
 	/**
@@ -429,59 +410,43 @@ public class Storys extends SmartCRUD {
 				render("CRUD/show.html", type, object);
 			}
 		}
-		String [] desc = newdesc.split(",");
-		if(desc.length==1)
-		{
-			storyObj.description=desc[0];
-		}
-		else
-		{
-			String [] desc2 = desc[0].split(" ");
-			if(desc2.length>=3)
-			{
-			if(desc2[0].equalsIgnoreCase("as") && (desc2[1].equalsIgnoreCase("a")||desc2[1].equalsIgnoreCase("an")))
-					{
-				boolean flag=false;
-				String productrole="";
-				for(int k=2;k<desc2.length;k++)
-				{
-					if(k==desc2.length-1)
-						productrole=productrole+desc2[k];
-					else
-						productrole=productrole+desc2[k]+" ";
-						
-					
-				}
-				for(int j=0;j<storyObj.componentID.project.productRoles.size();j++)
-				{
-					if(storyObj.componentID.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
-						flag=true;
-				}
-				if(!flag)
-				{
-					ProductRole pr = new ProductRole(storyObj.componentID.project.id, productrole, "");
-					pr.save();
-					storyObj.productRole = pr;				
-				}
-				else
-				{
-					for(int j=0;j<storyObj.componentID.project.productRoles.size();j++)
-					{
-						if(storyObj.componentID.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
-							{
-							storyObj.productRole = storyObj.componentID.project.productRoles.get(j);
+		String[] desc = newdesc.split(",");
+		if (desc.length == 1) {
+			storyObj.description = desc[0];
+		} else {
+			String[] desc2 = desc[0].split(" ");
+			if (desc2.length >= 3) {
+				if (desc2[0].equalsIgnoreCase("as") && (desc2[1].equalsIgnoreCase("a") || desc2[1].equalsIgnoreCase("an"))) {
+					boolean flag = false;
+					String productrole = "";
+					for (int k = 2; k < desc2.length; k++) {
+						if (k == desc2.length - 1)
+							productrole = productrole + desc2[k];
+						else
+							productrole = productrole + desc2[k] + " ";
+
+					}
+					for (int j = 0; j < storyObj.componentID.project.productRoles.size(); j++) {
+						if (storyObj.componentID.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
+							flag = true;
+					}
+					if (!flag) {
+						ProductRole pr = new ProductRole(storyObj.componentID.project.id, productrole, "");
+						pr.save();
+						storyObj.productRole = pr;
+					} else {
+						for (int j = 0; j < storyObj.componentID.project.productRoles.size(); j++) {
+							if (storyObj.componentID.project.productRoles.get(j).name.equalsIgnoreCase(productrole)) {
+								storyObj.productRole = storyObj.componentID.project.productRoles.get(j);
 							}
+						}
+					}
+					for (int i = 1; i < desc.length; i++) {
+						storyObj.description = desc[i] + " ";
 					}
 				}
-				for(int i=1;i<desc.length;i++)
-				{
-					storyObj.description = desc[i]+" ";
-				}
-			}
-			}
-			else
-			{
-				storyObj.description=storyObj.description;
+			} else {
+				storyObj.description = storyObj.description;
 			}
 		}
 		String header = "Story: 'S" + storyObj.id + "\'" + " has been edited.";
@@ -512,7 +477,7 @@ public class Storys extends SmartCRUD {
 		if (params.get("_save") != null) {
 			listStoriesInProject(project.id, 0);
 		}
-		Application.overlayKiller();
+		Application.overlayKiller("reload('storys')");
 	}
 
 	/**
@@ -857,28 +822,27 @@ public class Storys extends SmartCRUD {
 			}
 		}
 
-		boolean successflag=false;
-		boolean failureflag=false;
-		if (story1.succussSenario == ""){
-			
-		
+		boolean successflag = false;
+		boolean failureflag = false;
+		if (story1.succussSenario == "") {
+
 		}
-		if (story1.failureSenario == ""){
-			
+		if (story1.failureSenario == "") {
+
 		}
-		if(story1.succussSenario.trim().length()==0){
-			 successflag=true;	
+		if (story1.succussSenario.trim().length() == 0) {
+			successflag = true;
 		}
-		if(story1.failureSenario.trim().length()==0){
-			failureflag=true;
-	
+		if (story1.failureSenario.trim().length() == 0) {
+			failureflag = true;
+
 		}
-		
+
 		int succssesNum = succsses.size();
 		int failureNum = failure.size();
 		long storyId = id;
 		Long projectId = story1.componentID.project.id;
-		render(story1,successflag,failureflag,succsses, failure, succssesNum, failureNum, storyId, projectId);
+		render(story1, successflag, failureflag, succsses, failure, succssesNum, failureNum, storyId, projectId);
 
 	}
 
@@ -989,115 +953,112 @@ public class Storys extends SmartCRUD {
 		}
 	}
 
-
 	/**
-	 * @author Monayri
-	 * Issue : 227
-	 * Sprint : 4
+	 * @author Monayri Issue : 227 Sprint : 4
 	 */
 
-	public static void magicShow(long projectId, long componentId, int reviewer, int assignee, long taskId, int tasks, long meetingId){
+	public static void magicShow(long projectId, long componentId, int reviewer, int assignee, long taskId, int tasks, long meetingId) {
 		String title;
 		if (componentId != 0) {
 			Component component = Component.findById(componentId);
-			if(tasks==1){
-				title="C"+component.number+": Tasks";
+			if (tasks == 1) {
+				title = "C" + component.number + ": Tasks";
 				List<Task> task = new ArrayList<Task>();
-				for(Story story : component.componentStories){
-					for(Task task2: story.storiesTask){
-						if(!task2.deleted){
+				for (Story story : component.componentStories) {
+					for (Task task2 : story.storiesTask) {
+						if (!task2.deleted) {
 							task.add(task2);
 						}
 					}
 				}
 				render(task, title);
-			}else{
-				title="C"+component.number+": Stories";
+			} else {
+				title = "C" + component.number + ": Stories";
 				List<Story> stories = new ArrayList<Story>();
-				for(Story story: component.componentStories){
-					if(!story.deleted){
+				for (Story story : component.componentStories) {
+					if (!story.deleted) {
 						stories.add(story);
 					}
 				}
 				render(stories, title);
 			}
 		} else {
-			if(taskId!=0){
+			if (taskId != 0) {
 				Task task1 = Task.findById(taskId);
-				title ="S"+task1.taskStory.number+ " Task"+task1.number;
-				if(task1.deleted){
-					task1=null;
-					title="The task has been deleted";
+				title = "S" + task1.taskStory.number + " Task" + task1.number;
+				if (task1.deleted) {
+					task1 = null;
+					title = "The task has been deleted";
 				}
 				render(task1, title);
-			}else{
-				if(reviewer==1){
-					title="As Reviewer";
+			} else {
+				if (reviewer == 1) {
+					title = "As Reviewer";
 					User user = Security.getConnected();
 					Project project = Project.findById(projectId);
-					Component component=null;
-					for(Component comp: user.components){
-						if(comp.project.equals(project)){
+					Component component = null;
+					for (Component comp : user.components) {
+						if (comp.project.equals(project)) {
 							component = comp;
 						}
 					}
 					List<Task> task = new ArrayList<Task>();
-					if(component!=null){
-						for(Story story : component.componentStories){
-							for(Task task2 : story.storiesTask){
-								if(task2.reviewer.equals(user)&& !task2.deleted && task2.checkUnderImpl()){
+					if (component != null) {
+						for (Story story : component.componentStories) {
+							for (Task task2 : story.storiesTask) {
+								if (task2.reviewer.equals(user) && !task2.deleted && task2.checkUnderImpl()) {
 									task.add(task2);
 								}
 							}
 						}
-						}
+					}
 					render(task, title);
-				}else{
-					if(assignee==1){
-						title="As Assignee";
+				} else {
+					if (assignee == 1) {
+						title = "As Assignee";
 						User user = Security.getConnected();
 						Project project = Project.findById(projectId);
-						Component component=null;
-						for(Component comp: user.components){
-							if(comp.project.equals(project)){
+						Component component = null;
+						for (Component comp : user.components) {
+							if (comp.project.equals(project)) {
 								component = comp;
 							}
 						}
 						List<Task> task = new ArrayList<Task>();
-						if(component!=null){
-							for(Story story : component.componentStories){
-								for(Task task2 : story.storiesTask){
-									if(task2.assignee.equals(user)&& !task2.deleted && task2.checkUnderImpl()){
+						if (component != null) {
+							for (Story story : component.componentStories) {
+								for (Task task2 : story.storiesTask) {
+									if (task2.assignee.equals(user) && !task2.deleted && task2.checkUnderImpl()) {
 										task.add(task2);
 									}
 								}
 							}
-							}
-						
+						}
+
 						render(task, title);
-					}else{
-						if(projectId!=0){
-							title="Project Stories";
+					} else {
+						if (projectId != 0) {
+							title = "Project Stories";
 							Project project = Project.findById(projectId);
 							List<Story> stories = new ArrayList<Story>();
 							for (Component component : project.components) {
-								for(Story story : component.componentStories){
-									if(!story.deleted){
+								for (Story story : component.componentStories) {
+									if (!story.deleted) {
 										stories.add(story);
 									}
 								}
 							}
 							render(stories, title);
-						}else{
-							if(meetingId!=0){
+						} else {
+							if (meetingId != 0) {
 								Meeting meeting = Meeting.findById(meetingId);
 								List<Task> task = new ArrayList<Task>();
-								for(Task task2: meeting.tasks){
-									if(!task2.deleted){
+								for (Task task2 : meeting.tasks) {
+									if (!task2.deleted) {
 										task.add(task2);
 									}
 								}
-								title="Meetings Tasks";
+								title = "Meetings Tasks";
 								render(title, task);
 							}
 						}
@@ -1105,35 +1066,33 @@ public class Storys extends SmartCRUD {
 				}
 			}
 		}
-		 title="bla";
+		title = "bla";
 		render(title);
 	}
-	
-	public static void viewStory(long storyId)
-	{
+
+	public static void viewStory(long storyId) {
 		String[] success, failure;
 		Story story = Story.findById(storyId);
-		if(!(story.succussSenario == null))
-			success = story.succussSenario.split("" +"\n");
+		if (!(story.succussSenario == null))
+			success = story.succussSenario.split("" + "\n");
 		else
 			success = new String[1];
-		if(!(story.failureSenario == null))
-			 failure = story.failureSenario.split("\n");
+		if (!(story.failureSenario == null))
+			failure = story.failureSenario.split("\n");
 		else
-			 failure = new String[1];
-		
+			failure = new String[1];
+
 		boolean inSprint = story.inSprint();
 		boolean hasDependency = story.hasDependency();
 		String message = "";
-		
-		if(inSprint)
-		{
-			message+="The story can not be edited or deleted because it's in a sprint.";
+
+		if (inSprint) {
+			message += "The story can not be edited or deleted because it's in a sprint.";
 		}
-		
-		render(story,success,failure, inSprint, hasDependency, message);
+
+		render(story, success, failure, inSprint, hasDependency, message);
 	}
-	
+
 	/**
 	 * Forbids access to listing all stories!
 	 * 
@@ -1142,8 +1101,8 @@ public class Storys extends SmartCRUD {
 	public static void list() {
 		forbidden();
 	}
-	
-	public static void choose(long projectId){
+
+	public static void choose(long projectId) {
 		Project project = Project.findById(projectId);
 		render(project);
 	}

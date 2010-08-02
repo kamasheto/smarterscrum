@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import notifiers.Notifications;
-
 import models.Board;
 import models.Column;
 import models.Comment;
@@ -21,6 +19,7 @@ import models.Task;
 import models.TaskStatus;
 import models.TaskType;
 import models.User;
+import notifiers.Notifications;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
@@ -213,7 +212,7 @@ public class Tasks extends SmartCRUD {
 		// tmp.init();
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			Application.overlayKiller();
+			Application.overlayKiller("reload('tasks')");
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			redirect(request.controller + ".blank");
@@ -455,7 +454,7 @@ public class Tasks extends SmartCRUD {
 		if (params.get("_save") != null)
 
 		{
-			Application.overlayKiller();
+			Application.overlayKiller("reload('task-" + object.getEntityId() + "')");
 
 		}
 		redirect(request.controller + ".show", object.getEntityId());
@@ -481,7 +480,7 @@ public class Tasks extends SmartCRUD {
 			Logs.addLog(Security.getConnected(), "delete", "Task", tmp.id, tmp.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 			Notifications.notifyUsers(tmp.taskStory.componentID.componentUsers, header, body, (byte) -1);
 			object.save();
-			String text="The Task was deleted successfully";
+			String text = "The Task was deleted successfully";
 			System.out.println("here");
 			renderText(text);
 		} catch (Exception e) {
@@ -639,10 +638,6 @@ public class Tasks extends SmartCRUD {
 		render(myProject, canSee, minDate, temp, lastModified, empty, efforts, changes, numberOfModifications, theTask, maxDate);
 	}
 
-	
-	
-
-	
 	/**
 	 * changes the given task description
 	 * 
@@ -705,7 +700,7 @@ public class Tasks extends SmartCRUD {
 	/**
 	 * This method changes the given task description.
 	 * 
-	 * @author Moumen Mohamed 
+	 * @author Moumen Mohamed
 	 * @param id
 	 *            the id of the given task.
 	 * @param userId
@@ -750,10 +745,8 @@ public class Tasks extends SmartCRUD {
 		Project y = task1.taskStory.componentID.project;
 		if (userId == Security.getConnected().id) {
 			Logs.addLog(user1, "Edit", "Task Description", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
-		}
-		else
-		{
-			Logs.addLog(user1+" has performed action (Edit) using resource (Task Description) in project "+task1.taskStory.componentID.project.name+" from the account of "+Security.getConnected().name );
+		} else {
+			Logs.addLog(user1 + " has performed action (Edit) using resource (Task Description) in project " + task1.taskStory.componentID.project.name + " from the account of " + Security.getConnected().name);
 		}
 		return true;
 	}
@@ -761,7 +754,7 @@ public class Tasks extends SmartCRUD {
 	/**
 	 * This method changes the given task type.
 	 * 
-	 * @author Moumen Mohamed 
+	 * @author Moumen Mohamed
 	 * @param id
 	 *            the id of the given task.
 	 * @param type
@@ -802,7 +795,7 @@ public class Tasks extends SmartCRUD {
 			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ".";
 
 		} else {
-			Logs.addLog(user1+" has performed action (Edit) using resource (Task Type) in project "+task1.taskStory.componentID.project.name+" from the account of "+Security.getConnected().name );
+			Logs.addLog(user1 + " has performed action (Edit) using resource (Task Type) in project " + task1.taskStory.componentID.project.name + " from the account of " + Security.getConnected().name);
 			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
@@ -945,15 +938,14 @@ public class Tasks extends SmartCRUD {
 	/**
 	 * This method changes the given task status.
 	 * 
-	 * @author Moumen Mohamed 
+	 * @author Moumen Mohamed
 	 * @param id
 	 *            the id of the given task.
 	 * @param newStatus
 	 *            The new task status.
 	 * @param userId
 	 *            the id of the user who will change the task status.
-	 * @return boolean
-	 * story C3S36
+	 * @return boolean story C3S36
 	 */
 	public static boolean editTaskStatus(long id, long userId, TaskStatus newStatus) {
 		Task task1 = Task.findById(id);
@@ -1017,7 +1009,7 @@ public class Tasks extends SmartCRUD {
 			Logs.addLog(user1, "Edit", "Task Status", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
 			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ".";
 		} else {
-			Logs.addLog(user1+" has performed action (Edit) using resource (Task Status) in project "+task1.taskStory.componentID.project.name+" from the account of "+Security.getConnected().name );
+			Logs.addLog(user1 + " has performed action (Edit) using resource (Task Status) in project " + task1.taskStory.componentID.project.name + " from the account of " + Security.getConnected().name);
 			body = "In Project: " + "\'" + task1.taskStory.componentID.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.taskStory.componentID.name + "\'" + "." + '\n' + " Story: 'S" + task1.taskStory.id + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 		}
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
@@ -1239,7 +1231,7 @@ public class Tasks extends SmartCRUD {
 	/**
 	 * This method changes the given task assignee.
 	 * 
-	 * @author Moumen Mohamed 
+	 * @author Moumen Mohamed
 	 * @param id
 	 *            the id of the given task.
 	 * @param userId
@@ -1294,10 +1286,8 @@ public class Tasks extends SmartCRUD {
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
 		if (userId == Security.getConnected().id) {
 			Logs.addLog(user1, "Edit", "Task Assignee", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
-		}
-		else
-		{
-			Logs.addLog(user1+" has performed action (Edit) using resource (Task Assignee) in project "+task1.taskStory.componentID.project.name+" from the account of "+Security.getConnected().name );
+		} else {
+			Logs.addLog(user1 + " has performed action (Edit) using resource (Task Assignee) in project " + task1.taskStory.componentID.project.name + " from the account of " + Security.getConnected().name);
 		}
 		return true;
 	}
@@ -1376,7 +1366,7 @@ public class Tasks extends SmartCRUD {
 	/**
 	 * This method changes the given task reviewer.
 	 * 
-	 * @author Moumen Mohamed 
+	 * @author Moumen Mohamed
 	 * @param id
 	 *            the id of the given task.
 	 * @param userId
@@ -1429,10 +1419,8 @@ public class Tasks extends SmartCRUD {
 		Notifications.notifyUsers(task1.taskStory.componentID.getUsers(), header, body, (byte) 0);
 		if (userId == Security.getConnected().id) {
 			Logs.addLog(user1, "Edit", "Task Reviewer", id, task1.taskStory.componentID.project, new Date(System.currentTimeMillis()));
-		}
-		else
-		{
-			Logs.addLog(user1+" has performed action (Edit) using resource (Task Reviewer) in project "+task1.taskStory.componentID.project.name+" from the account of "+Security.getConnected().name );
+		} else {
+			Logs.addLog(user1 + " has performed action (Edit) using resource (Task Reviewer) in project " + task1.taskStory.componentID.project.name + " from the account of " + Security.getConnected().name);
 		}
 		return true;
 	}
@@ -1592,6 +1580,5 @@ public class Tasks extends SmartCRUD {
 		User user = Security.getConnected();
 		render(taskId, states, user);
 	}
-	
-	
-	}
+
+}
