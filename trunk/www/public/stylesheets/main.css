@@ -214,3 +214,10 @@ a,a img,span.revertFrom,span.min {
 .activity-level-8,.activity-level-9,.activity-level-10 {
 	background-position: 0 0;
 }
+.center {
+	text-align:center;
+	clear: both;
+}
+.center img {
+	float: none;
+}

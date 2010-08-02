@@ -1,28 +1,18 @@
 #{set id:controllers.Application.randomHash() /}
-<script type="text/javascript">
-$(function(){
-	doOnLoad()
-	magic("#{get 'id' /}");
-});
-</script>
-<div  id="#{get 'id' /}" class="ui-widget-content draggable allCornersRounded #{get 'classes' /}">
+<div  id="#{get 'id' /}" class="ui-widget-content draggable allCornersRounded">
 	<div  id="#{get 'id' /}_header"class="ui-widget-header mainH">
-		
-		<span class="revertFrom">
-			<span class="ui-icon ui-icon-circle-close"></span>
-		</span>
-			<span class="min"onclick="$(this).children().toggle();">
+		<span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span></span>
+		<span class="min"onclick="$(this).children().toggle();">
 			<span class="ui-icon ui-icon-circle-triangle-s" style="display: none;"></span>
 			<span class="ui-icon ui-icon-circle-triangle-n"></span>
 		</span>
-#{get 'title'/}
-			</div>
-			
-	
-	<div id="#{get 'id'/}_content" class="ui-widget-content actual" >
-	#{doLayout /}
+		#{get 'title'/}
 	</div>
-	<div id="icons" style="display:none;">
-#{get 'title'/}
+	<div id="#{get 'id'/}_content" class="ui-widget-content actual">#{doLayout /}</div>
 </div>
-</div>
+
+<script type="text/javascript">
+$(function(){
+	magic("#{get 'id' /}")
+});
+</script>
