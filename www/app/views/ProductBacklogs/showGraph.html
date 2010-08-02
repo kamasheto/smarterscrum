@@ -48,7 +48,12 @@ function isBefore(date){
 	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
 	<strong>NOTE: </strong>If your graph has too much data then not all points will be shown, to view more day specific statistics then you will have to zoom in. To zoom in on a graph, simply click and drag and let go. To zoom out just double click the graph!
 	<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
-    
+    #{if componentID==0}
+    <h1>${pName}'s overall progress</h1>
+    #{/if}
+    #{else}
+    <h1>${myComponent.name}'s overall progress</h1>
+    #{/else}
     <div class="jqplot" id="c_FULL" style="width:100%;height:300px;"></div>
  
          #{/else}

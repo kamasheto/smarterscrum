@@ -125,14 +125,12 @@ public class SprintBacklog extends SmartController {
 	 *         chart
 	 */
 	public static void showGraph(long id, long componentID) {
-		Boolean canSee = false;
 		Sprint temp = Sprint.findById(id);
 		Security.check(Security.getConnected().projects.contains(temp.project));
-		canSee = true;
 		String Data = temp.fetchData(componentID);
 		if (Data.contains("NONE"))
 			Data = null;
-		render(Data, temp, componentID, canSee);
+		render(Data, temp, componentID);
 	}
 
 	/**
