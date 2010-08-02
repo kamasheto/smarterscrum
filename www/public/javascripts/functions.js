@@ -533,7 +533,7 @@ function search_projects() {
 	searching_projects = $.post('/ajax/projects', {query: $('#project_search_text').val()}, function(projects) {
 		results = ''
 		$(projects).each(function() {
-			results += '<div><a onclick="showProjectWorkspace('+this.id+')">'+this.name+'</a></div>'
+			results += '<div id="project-search-result-'+this.id+'"><a onclick="showProjectWorkspace('+this.id+')">'+this.name+'</a></div>'
 		})
 		$('#projects_search_results').html(results)
 	})
