@@ -41,6 +41,7 @@ public class UserNotificationProfile extends SmartModel {
 	public boolean AcceptToBeReviewerRequest;
 	public boolean RejectToBeReviewerRequest;
 	public boolean deleteProject;
+	public boolean deletedFromProject;
 
 	// *********** List Of Action Types Ended ***********
 
@@ -80,6 +81,7 @@ public class UserNotificationProfile extends SmartModel {
 		this.AcceptToBeReviewerRequest= project.notificationProfile.AcceptToBeReviewerRequest;
 		this.RejectToBeReviewerRequest= project.notificationProfile.RejectToBeReviewerRequest;
 		this.deleteProject=project.notificationProfile.deleteProject;
+		this.deletedFromProject=project.notificationProfile.deletedFromProject;
 	}
 
 	/**
@@ -130,6 +132,8 @@ public class UserNotificationProfile extends SmartModel {
 			return RejectToBeReviewerRequest;
 		else if (action.equalsIgnoreCase("deleteProject"))
 			return deleteProject;
+		else if (action.equalsIgnoreCase("deletedFromProject"))
+			return deletedFromProject;
 		else
 			return false;
 	}
