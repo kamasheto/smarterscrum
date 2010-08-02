@@ -1062,12 +1062,6 @@ public class Projects extends SmartCRUD
 			temp.save();
 		}
 
-		for( Request temp : project.requests )
-		{
-			temp.deleted = true;
-			temp.save();
-		}
-
 		for( UserNotificationProfile temp : project.userNotificationProfiles )
 		{
 			temp.deleted = true;
