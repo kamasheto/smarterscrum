@@ -376,15 +376,7 @@ $(function() {
 
 	$('.revertFrom').live('click', function() {
 		var url = $(this).parent().parent().attr('name');
-		myDivs = $.grep(myDivs, function(value) {
-	
-		    return value != url;
-		});
-		var url2 = $(this).parent().parent().attr('name')+' .actual';
-		myDivs = $.grep(myDivs, function(value) {
-	
-		    return value != url2;
-		});
+		removeFromDiv(url);
 		var theId = $(this).parent().parent().attr('id');
 		var theSecondId = theId + "_2";
 		if ($('#' + theSecondId).attr('id') == null)
@@ -400,7 +392,18 @@ $(function() {
 	});
 
 		
+function removeFromDiv(url)
+{
+	myDivs = $.grep(myDivs, function(value) {
 
+	    return value != url;
+	});
+	var url2 = url+' .actual';
+	myDivs = $.grep(myDivs, function(value) {
+
+	    return value != url2;
+	});	
+}
 
 function load(url, el, n) {
 	if($.inArray(url,myDivs)==-1 || n==2){
