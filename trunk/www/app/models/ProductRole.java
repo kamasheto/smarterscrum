@@ -21,7 +21,7 @@ public class ProductRole extends SmartModel {
 	@ManyToOne
 	public Project project;
 	@OneToMany (mappedBy = "productRole", cascade = CascadeType.ALL)
-	public List<Story> stories;
+	public List<Task> Tasks;
 
 	/**
 	 * This is a Class Constructor Creates a new Product Role object with the
@@ -43,7 +43,7 @@ public class ProductRole extends SmartModel {
 		this.name = name;
 		this.description = description;
 		this.project = Project.findById(projectId);
-		this.stories = new ArrayList<Story>();
+		this.Tasks = new ArrayList<Task>();
 	}
 
 	/**
@@ -82,9 +82,12 @@ public class ProductRole extends SmartModel {
 	 **/
 	public boolean inSprint() {
 		Date now = Calendar.getInstance().getTime();
-		for (Story story : stories) {
-			for (Task task : story.storiesTask) {
-				if (task.taskSprint.startDate.before(now) && task.taskSprint.endDate.after(now)) {
+		for (Task  task: Tasks) {
+			if (task.taskSprint.startDate.before(now) && task.taskSprint.endDate.after(now)) {
+				return true;
+			}
+			for (Task task2 : task.subTasks) {
+				if (task2.taskSprint.startDate.before(now) && task.taskSprint.endDate.after(now)) {
 					return true;
 				}
 			}

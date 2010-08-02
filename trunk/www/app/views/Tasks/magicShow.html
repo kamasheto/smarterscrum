@@ -1,0 +1,66 @@
+#{extends 'magicBox.html' /}
+#{set 'title'}${title} #{if Tasks!=null}<a href="javascript:overlayOpen('/tasks/new?projectId=${Tasks.get(0).project.id}')"><img title = "Add" src="@{'/public/images/famfam/add.png'}"></a>#{/if}
+#{if task1 !=null}<div class="item_imgs">#{if connected.in(project).can('modifyTask')}#{if !task1.checkUnderImpl()}<a onclick="javascript:overlayOpen('/admin/tasks/${task1.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${task1.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div>#{if task1.taskType!=null}<div class="right" title="Type: ${task1.taskType.name}" style="background:${task1.taskType.hexColor}; width: 15px; height: 15px; border-color:white; position:relative;" ></div>#{/if}#{/if}
+#{/set}
+
+
+		#{if task !=null}
+		#{if task.size()==0}
+		<label> No Tasks</label>
+		#{/if}
+		#{list items:task ,as :'Task'}
+			<div name="/tasks/magicShow?taskId=${Task.id}">#{if Task.parent!=null}S${Task.parent.number}#{/if} Task${Task.number}<div class="item_imgs">#{if connected.in(project).can('modifyTask')}#{if !Task.checkUnderImpl()}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div><div  class="right" title="Type: ${Task.taskType.name}" style="background:${Task.taskType.hexColor}; ; width: 15px; height: 15px; border-color:white; position:relative;" ></div></div>
+		#{/list}
+	#{/if}
+		
+		#{if task1!=null}
+		
+		<br>
+		${task1.description}
+		<br>
+		<br>
+		<b>Assignee</b>
+		#{if task1.assignee!=null}
+		${task1.assignee.name}
+		#{/if}
+		#{else}
+		No assigned user.
+		#{/else}
+		<br>
+		<b>Reviewer</b>
+		#{if task1.reviewer!=null}
+		${task1.reviewer.name}
+		#{/if}
+		#{else}
+		No assigned user.
+		#{/else}
+		<br>
+		<b>Estimation Points</b>
+		${task1.estimationPoints}
+		<br>
+		<b>Task Status</b>
+		#{if task1.taskStatus!=null}
+		${task1.taskStatus.name}
+		#{/if}
+		#{else}
+		None.
+		#{/else}
+		
+		<br>
+		<b>Task Type</b>
+		#{if task1.taskType!=null}
+		${task1.taskType.name}
+		#{/if}
+		#{else}
+		None.
+		#{/else}
+		
+		#{/if}
+		
+		#{if Tasks !=null}
+		#{list items:Tasks ,as :'Task'}
+				#{list items:Story.storiesTask ,as :'Task'}
+				<div name="/tasks/magicShow?taskId=${Task.id}">#{if Task.parent!=null}S${Task.parent.number}#{/if} ${Task.description}<div class="item_imgs">#{if connected.in(project).can('modifyTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div><div  class="right" title="Type: ${Task.taskType.name}" style="background:maroon; color:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; position:relative;" ></div></div>
+				#{/list}		
+		#{/list}
+		#{/if}

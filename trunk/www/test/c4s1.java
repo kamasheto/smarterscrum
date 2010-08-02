@@ -21,7 +21,7 @@ public class c4s1 extends UnitTest
 	@Test
 	public void setEffortOfDayTest()
 	{
-		new Task( "This is a Test Task C4S1", false, "Task", 27.0, 1 ).save();
+		new Task( "This is a Test Task C4S1", false, 27.0).save();
 		Task testTask = Task.find( "byDescription", "This is a Test Task C4S1" ).first();
 		Sprint mySprint = Sprint.find("bySprintNumber","1").first();
 		testTask.taskSprint =  mySprint;

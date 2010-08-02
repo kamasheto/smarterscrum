@@ -9,11 +9,16 @@
 	</div>
 
 	<div id="crudListTable">
-		#{crud.table fields:['number', 'taskStory'] }
+		#{crud.table fields:['number', 'parent', 'subTasks'] }
 				
 				
-				#{crud.custom 'taskStory'}
-					<label>Story:${object.taskStory.number}</label>
+				#{crud.custom 'parent'}
+				#{if object.parent!=null}
+					<label>TaskParent:${object.parent.number}</label>
+				#{/if}
+				#{else}
+				<label>No Parent.</label>
+				#{/else}
 				#{/crud.custom}
 			#{/crud.table}
 	</div>

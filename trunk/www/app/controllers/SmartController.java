@@ -95,7 +95,7 @@ public class SmartController extends Controller {
 					
 						if(pcol.onBoard&&!pcol.deleted)
 						{
-						data.get(i).get(CS.indexOf(pcol)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+						data.get(i).get(CS.indexOf(pcol)).add( "T" + task.id + "-" + task.description + "-" + task.assignee.name);
 						}
 					}
 				}		

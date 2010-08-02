@@ -985,10 +985,10 @@ public class Storys extends SmartCRUD {
 		} else {
 			if (taskId != 0) {
 				Task task1 = Task.findById(taskId);
-				title = "S" + task1.taskStory.number + " Task" + task1.number;
-				if (task1.deleted) {
-					task1 = null;
-					title = "The task has been deleted";
+				title ="S"+task1.parent.number+ " Task"+task1.number;
+				if(task1.deleted){
+					task1=null;
+					title="The task has been deleted";
 				}
 				render(task1, title);
 			} else {

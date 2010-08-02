@@ -161,7 +161,7 @@ public class Sprint extends SmartModel
 		{
 			for( int i = 0; i < tasks.size(); i++ )
 			{
-				if( tasks.get( i ).taskStory.componentID.id == cid )
+				if( tasks.get( i ).component.id == cid )
 					taskss.add( tasks.get( i ) );
 
 			}
@@ -250,7 +250,7 @@ public class Sprint extends SmartModel
 		{
 			for( int i = 0; i < tasks.size(); i++ )
 			{
-				if( tasks.get( i ).taskStory.componentID.id == cid )
+				if( tasks.get( i ).component.id == cid )
 					taskss.add( tasks.get( i ) );
 
 			}

@@ -95,7 +95,7 @@ if(componentID==0){
 				}
 				if(pcol.onBoard==true&&!pcol.deleted)
 				{
-				data.get(i).get(CS.indexOf(pcol)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+				data.get(i).get(CS.indexOf(pcol)).add("(" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
 				}
 			}
 		}	
@@ -152,7 +152,7 @@ List<User> users = c.getUsers();
 			}
 			if(pcol.onBoard==true&&!pcol.deleted)
 			{
-			data.get(i).get(CS.indexOf(pcol)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+			data.get(i).get(CS.indexOf(pcol)).add( "T" + task.id + "-" + task.description + "-" + task.assignee.name);
 			}
 		}
 	
@@ -255,7 +255,7 @@ List<User> users = c.getUsers();
 			
 				if(pcol.onBoard&&!pcol.deleted)
 				{
-				data.get(i).get(CS.indexOf(pcol)).add("(" + task.taskStory.description + ")" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+				data.get(i).get(CS.indexOf(pcol)).add( "T" + task.id + "-" + task.description + "-" + task.assignee.name);
 				}
 			}
 		}		

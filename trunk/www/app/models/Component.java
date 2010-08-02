@@ -52,11 +52,15 @@ public class Component extends SmartModel {
 	public Board componentBoard;
 	
 	public int number;
-
+	
+	@OneToMany (mappedBy = "component", cascade = CascadeType.ALL)
+	public List<Task> componentTasks;
+	
 	public Component () {
 		componentUsers = new ArrayList<User>();
 		componentStories = new ArrayList<Story>();
 		componentMeetings = new ArrayList<Meeting>();
+		componentTasks = new ArrayList<Task>();
 	}
 
 	@Override
