@@ -277,7 +277,6 @@ public class Projects extends SmartCRUD
 		String body = "In Project: " + "\'" + p.name + "\'" + "." + '\n' + " Task Status name: " + "\'" + t.name + "\'" + "." + '\n' + " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		Logs.addLog( Security.getConnected(), "Create", "TaskStatus", t.id, p, new Date( System.currentTimeMillis() ) );
 		Notifications.notifyProjectUsers( p, header, body, "addTaskStatus", (byte) 0 );
-		flash.success( "You have succesfully added a new Task Status." );
 		renderJSON( t.id );
 	}
 
@@ -312,7 +311,6 @@ public class Projects extends SmartCRUD
 		String body = "In Project " + "\'" + p.name + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		Logs.addLog( Security.getConnected(), "Edit", "TaskStatus", taskStatus.id, p, new Date( System.currentTimeMillis() ) );
 		Notifications.notifyProjectUsers( p, header, body, "editTaskStatus", (byte) 0 );
-		flash.success( "You have succesfully editted a Task Status." );
 		renderJSON( true );
 	}
 
@@ -342,7 +340,6 @@ public class Projects extends SmartCRUD
 		String body = "In Project " + "\'" + taskStatus.project.name + "\'" + "." + '\n' + " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		Logs.addLog( Security.getConnected(), "Delete", "TaskStatus", taskStatus.id, taskStatus.project, new Date( System.currentTimeMillis() ) );
 		Notifications.notifyProjectUsers( taskStatus.project, header, body, "deleteTaskStatus", (byte) -1 );
-		flash.success( "You have succesfully deleteted a Task Status." );
 		renderJSON( true );
 	}
 

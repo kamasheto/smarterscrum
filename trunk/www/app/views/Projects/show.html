@@ -214,8 +214,9 @@ function textFieldValue(optionName, isPending, isClosed)
 
 function addTaskStatus()
 {
-	if (!$('#taskStatusesList option:selected').length) {
-		alert('Please select a Tasj Status from the list.');
+	if (!$('#taskStatusesList option:selected').length) 
+	{
+		$.bar({message:'Please select a Task Status from the list.'});
 		return
 	}
 	showLoader('addTST','loaderTST');
@@ -225,7 +226,7 @@ function addTaskStatus()
 	var statusId;
 	if(textFeildValue == "")
 	{
-		alert("You Must Enter a Valid Task Status Status.");
+		$.bar({message:'You Must Enter a Valid Task Status Status.'});
 	}
 	else
 	{
@@ -251,10 +252,11 @@ function addTaskStatus()
 										  textFieldValue(textFeildValue, rad_val=="Pending", rad_val=="Closed");
 										})
 									    textFieldValue("", false, false);
+									  $.bar({message:'You have succesfully added a new Task Status.'});
 								 }
 								 else
 								 {
-									alert("Task Status couldn't be added.");
+									$.bar({message:'Task Status could not be added.'});
 									textFieldValue("", rad_val=="Pending", rad_val=="Closed");
 									document.getElementById('taskTSText').value=textFeildValue;
 								 }
@@ -262,7 +264,7 @@ function addTaskStatus()
 					}
 					else
 					{
-						alert("Task status name is already used.");
+						$.bar({message:'Task status name is already used.'});
 						textFieldValue("", rad_val=="Pending", rad_val=="Closed");
 						document.getElementById('taskTSText').value=textFeildValue;
 					} 
@@ -273,8 +275,9 @@ function addTaskStatus()
 
 function editTaskStatus()
 {
-	if (!$('#taskStatusesList option:selected').length) {
-		alert('Please select a Task Status from the list.');
+	if (!$('#taskStatusesList option:selected').length) 
+	{
+		$.bar({message:'Please select a Task Status from the list.'});
 		return
 	}
 	showLoader('editTST','loaderTST');
@@ -292,7 +295,7 @@ function editTaskStatus()
 	}
 	if(x=="")
 	{
-		alert("You Must Enter a Valid Task Status Status.");
+		$.bar({message:'You Must Enter a Valid Task Status Status.'});
 	}
 	else
 	{
@@ -312,19 +315,22 @@ function editTaskStatus()
 					        	})
 								$('option[value='+m+']').attr("selected", true);
 								textFieldValue(x, rad_val=="Pending", rad_val=="Closed");
+								$.bar({message:'You have succesfully editted a Task Status.'});
 							}
 							else
 							{
-								alert("Task Status couldn't be editted.");
+								$.bar({message:'Task Status could not be editted.'});
 								$('option[value='+m+']').attr("selected", true);
 							    textFieldValue(x, rad_val == "Pending", rad_val == "Closed");
 							}
 						} ,'json')
 			 }
 			 else
-				 alert("Task status name is already used.");
+			 {
+				 $.bar({message:'Task status name is already used.'});
 				 $('option[value='+m+']').attr("selected", true);
 			     textFieldValue(x, rad_val == "Pending", rad_val == "Closed");
+			 }
 		   })
 	}
 	hideLoader('editTST','loaderTST');
@@ -332,8 +338,9 @@ function editTaskStatus()
 
 function removeTaskStatus()
 {
-	if (!$('#taskStatusesList option:selected').length) {
-		alert('Please select a Task Status from the list.');
+	if (!$('#taskStatusesList option:selected').length) 
+	{
+		$.bar({message:'Please select a Task Status from the list.'});
 		return
 	}
 	showLoader('removeTST','loaderTST');
@@ -356,10 +363,11 @@ function removeTaskStatus()
 			      if(flag)
 				  {
 			    	  taskStatusesList.remove(selectedItem);
+			    	  $.bar({message:'You have succesfully removed a Task Status.'});
 				  }
 				  else
 				  {
-					  alert("Task Status was not Removed.");
+					  $.bar({message:'Task Status could not be removed.'});
 				  }
 				} ,'json')
 		$('#taskTSText').val("");
