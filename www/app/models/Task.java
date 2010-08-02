@@ -31,7 +31,6 @@ public class Task extends SmartModel {
 
 	public boolean deleted;
 
-	public String type;
 
 	@Required
 	public double estimationPoints;
@@ -39,30 +38,23 @@ public class Task extends SmartModel {
 	// ADDED BY HADEER YOUNIS. DO NOT REMOVE.
 	public ArrayList<Double> estimationPointsPerDay;
 
-	@ManyToOne
-	public Story taskStory;
-
-	@ManyToOne
-	public User userTask;
+//	@ManyToOne
+	//public Story taskStory;
 
 	@ManyToMany (mappedBy = "tasks")
 	public List<Meeting> meeting;
 
-	@Required
 	@OneToOne
 	public User assignee;
 
 	@OneToOne
 	public User reporter;
 
-	@Required
 	@OneToOne
 	public User reviewer;
 
 	@ManyToMany
 	public List<Task> dependentTasks;
-
-	public int status;
 
 	@ManyToOne
 	public TaskStatus taskStatus;
@@ -81,7 +73,30 @@ public class Task extends SmartModel {
 	public List<Comment> comments;
 	
 	public String comment;
+	
+	@ManyToOne
+	public Task parent;
+	
+	@OneToMany(mappedBy="parent")
+	public List<Task> subTasks;
+	
+	@ManyToOne
+	public Project project;
+	
+	@ManyToOne
+	public Component component;
 
+	@Lob
+	public String successScenario;
+
+	@Lob
+	public String failureScenario;
+	
+	@Required
+	public int priority;
+	
+	@ManyToOne
+	public ProductRole productRole;
 
 	// @ManyToOne
 	// public Column Status_on_Board;
@@ -91,13 +106,34 @@ public class Task extends SmartModel {
 	
 	
 	public void init(){
-		this.number = this.taskStory.storiesTask.size();
-		for(Task task : this.taskStory.storiesTask){
-			if(task.number >= this.number && !this.equals(task)){
-				this.number=task.number+1;
+		this.subTasks= new ArrayList<Task>();
+		if(this.parent==null){
+			this.number = this.project.projectTasks.size();
+		}else{
+			this.project=this.parent.project;
+			this.component=this.parent.component;
+			this.number = this.parent.subTasks.size();
+			for(Task task : this.parent.subTasks){
+				if(task.number >= this.number && !this.equals(task)){
+					this.number=task.number+1;
+				}
 			}
 		}
+		
 		this.save();
+	}
+	public Task(String des, String succ, String fail, int priority, String notes, long userId) {
+		
+		this.reporter = User.findById(userId);
+		this.description = des;
+		this.successScenario = succ;
+		this.failureScenario = fail;
+		this.priority = priority;
+		this.comment = notes;
+		this.dependentTasks = null;
+		this.productRole = null;
+		this.component = null;
+		this.subTasks = new ArrayList<Task>();
 	}
 	/**
 	 * Returns the effort points of a specific task in a specific day.
@@ -148,15 +184,12 @@ public class Task extends SmartModel {
 		this.estimationPointsPerDay = new ArrayList<Double>(1);
 	}
 
-	public Task (String des, boolean deleted, String type, double estimationPoints, int status) {
+	public Task (String des, boolean deleted, double estimationPoints) {
 		this();
 		this.description = des;
 		this.deleted = false;
-		this.type = type;
-		this.status = status;
 		this.estimationPoints = estimationPoints;
 		this.estimationPointsPerDay = new ArrayList<Double>(1);
-		this.status = status;
 		this.save();
 	}
 
@@ -212,20 +245,22 @@ public class Task extends SmartModel {
 	 * @return its a void method.
 	 */
 	public void DeleteTask() {
-		Project project = taskStory.componentID.project;
-		List<Component> components = project.components;
-
-		for (Component component : components) {
-			for (Story story : component.componentStories) {
-				if (story.dependentStories.contains(this.taskStory)) {
-					for (Task task : story.storiesTask) {
-						if (task.dependentTasks.contains(this)) {
-							task.dependentTasks.remove(this);
-						}
-					}
-				}
+		Project project = this.project;
+		for (Task task : project.projectTasks) {
+			if(task.dependentTasks.contains(this))
+				task.dependentTasks.remove(this);
+			for(Task task2 : task.subTasks){
+				if(task2.dependentTasks.contains(this))
+					task2.dependentTasks.remove(this);
+				task2.save();
 			}
+			task.save();
 		}
+		for(Task task : this.subTasks){
+			task.DeleteTask();
+		}
+		this.deleted=true;
+		this.save();
 	}
 
 	/**
@@ -237,14 +272,14 @@ public class Task extends SmartModel {
 	 *         deletable.
 	 */
 	public boolean isDeletable() {
-		Project project = taskStory.componentID.project;
+		Project project = this.project;
 		List<Component> components = project.components;
 
 		for (Component component : components) {
-			for (Story story : component.componentStories) {
-				if (story.dependentStories.contains(this.taskStory)) {
-					for (Task task : story.storiesTask) {
-						if (task.dependentTasks.contains(this)) {
+			for (Task task : component.componentTasks) {
+				if (task.dependentTasks.contains(this)) {
+					for (Task task2 : this.subTasks) {
+						if (task2.dependentTasks.contains(this)) {
 							return false;
 						}
 					}

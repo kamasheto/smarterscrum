@@ -6,8 +6,8 @@
 #{extends 'overlay.html' /}
 #{set 'crumbs'}
 <li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${object.taskStory.componentID.project.id}">${object.taskStory.componentID.project.name}</a></li>
-<li><a href="/show/tasks?id=${object.taskStory.componentID.project.id}">Tasks</a></li>
+<li><a href="/show/project?id=${object.project.id}">${object.project.name}</a></li>
+<li><a href="/show/tasks?id=${object.project.id}">Tasks</a></li>
 <li><a href="">Task${object.id}</a></li>
 #{/set}
 
@@ -18,33 +18,28 @@
 
 	<div class="objectForm">
 	#{form action:@save(object.id), enctype:'multipart/form-data'}
-	#{crud.form fields:['taskStory','description', 'taskType', 'taskStatus', 'estimationPoints', 'reporter',
-	  'dependentTasks','taskSprint', 'assignee', 'reviewer', 'comment']}	
+	#{crud.form fields:['parent','description', 'taskType', 'taskStatus', 'estimationPoints', 'reporter',
+	  'dependentTasks','taskSprint', 'assignee', 'reviewer', 'comment', 'subTasks']}	
 			
 			
-			#{crud.custom 'taskStory'}
-			<label for="task_Story">Story</label> 
+			#{crud.custom 'parent'}
+			#{if object.parent!=null}
+			<label for="task_parent">Parent</label> 
 			<p>
-			<span id="task_Story2"><font color="green">${object.taskStory.description}</font></span> 
+			<span id="task_Story2"><font color="green">${object.parent.description}</font></span> 
 			</p>
+			#{/if}
 			#{/crud.custom }
 			
 			#{crud.custom 'description'}
-			#{if isReporter || isAssignee}
  			<label for="object_description">Description</label> 
 			<textarea id="object_description" cols="48" rows="5" class="" name="object.description">${object.description}</textarea> 
 			<span class="crudHelp" ><font color="Red">*</font>Max length is 300.</span> 
- 			#{/if}
- 			#{else}
- 			<label for="object_description">Description</label>
- 			<label for="object_description"><font color = "green">${object.description}</font></label>
- 			#{/else}
 			#{/crud.custom}
 			
 			
 			
 			#{crud.custom 'taskStatus'}
-			#{if isReviewer || isAssignee}
 			<p>
 			<label for="task_type">Status</label>
 			<select id="object_taskStatus" name="object.taskStatus@id">
@@ -53,17 +48,11 @@
 								#{/list}		
 			</select>
 			</p>
-			#{/if}
-			#{else}
- 			<label for="object_description">Status</label>
- 			<label for="object_description"><font color = "green">${object.taskStatus.name}</font></label>
- 			#{/else}
 			#{/crud.custom }
 				
 		
 			
 			#{crud.custom 'taskType'}
-			#{if isReporter || isAssignee}
 			<p>
 			<label for="task_type">Type</label> 
 			<select id="object_taskType" name="object.taskType@id">
@@ -72,26 +61,15 @@
 								#{/list}		
 			</select>
 			</p>
-			#{/if}
-			#{else}
- 			<label for="object_description">Type</label>
- 			<label for="object_description"><font color = "green">${object.taskType.name}</font></label>
- 			#{/else}
 			#{/crud.custom }
 			
 			#{crud.custom 'estimationPoints'}
-			#{if isReporter||isAssignee}
 			<p> 
 			<label for="object_estimationPoints">Estimation Points</label> 
 			<input id="object_estimationPoints" type="text" name="object.estimationPoints" 
 			size="5"  value = "${object.estimationPoints}"/> 
 			<span class="crudHelp" ><font color="Red">*</font>Numeric.</span> 
  			</p> 
-			#{/if}
-			#{else}
- 			<label for="object_description">Estimation Points</label>
- 			<label for="object_description"><font color = "green">${object.estimationPoints}</font></label>
- 			#{/else}
 			#{/crud.custom }
 			
 			
@@ -103,53 +81,41 @@
 			#{/crud.custom }
 			
 			#{crud.custom 'assignee'}
-			#{if isReporter}
 			<p>
 			<label for="object_assignee">Assignee</label>
 			<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers();">
+					<option value="">(None)</option>
 					#{list items:users ,as :'User'}
 					<option value="${User.id}"#{if object.assignee == User} selected#{/if}>${User.name}</option>
 					#{/list}		
 					</select>
-		    <span class="crudHelp"><font color="Red">*</font></span>
 			</p>
-			#{/if}
-			
-			#{if !isReporter}
- 			<label for="object_description">Assignee</label>
- 			<label for="object_description"><font color = "green">${object.assignee.name}</font></label>
- 			#{/if}
 			#{/crud.custom}
 	
 			#{crud.custom 'reviewer'}
-			#{if isReporter || isAssignee}
 			<label for="object_reviewer">Reviewer</label>
 			<select id="object_reviewer" name="object.reviewer@id" >
+				<option value="">(None)</option>
 				#{list items:users ,as :'User'}
+				#{if object.assignee !=null}
 				#{if User.name != object.assignee.name}
 				<option value="${User.id}"#{if object.reviewer == User} selected#{/if}>${User.name}</option>
 				#{/if}
+				#{/if}
+				#{else}
+				<option value="${User.id}"#{if object.reviewer == User} selected#{/if}>${User.name}</option>
+				#{/else}
 				#{/list}		
 			</select>
-		    <span class="crudHelp"><font color="Red">*</font></span>
 			<ul id = "reviewers">
 			#{list items:reviewers ,as :'Review'}
 				<li><font color="green">${Review.user} is the reviewer of ${Review.types.name}</font></li>
 				#{/list}
 			</ul>
-			
-			#{/if}
-			#{else}
- 			<label for="object_description">Reviewer</label>
- 			<label for="object_description"><font color = "green">${object.reviewer.name}</font></label>
- 			#{/else}
- 			
 			#{/crud.custom}
 			
 			
 			#{crud.custom 'dependentTasks'}
-			#{if isReporter || isAssignee}
-			
 			<p>
 			<label for="object_dependentTasks"> Dependent Tasks</label> 
 			<input type="hidden" name="object.dependentTasks@id" value="" /> 
@@ -159,23 +125,15 @@
 									#{/list} 
 			</select> 
 			</p>
-			
-			#{/if}
 			#{/crud.custom }
 			
 			#{crud.custom 'taskSprint'}
-			#{if isAssignee || isReporter}
 			<p>
 			<label for="object_taskSprint">Sprint</label> 
 			<span>
 			<font color="green">&nbsp;&nbsp;#{if object.taskSprint}Sprint ${object.taskSprint.sprintNumber}#{/if}#{else} The Task is not assigned to a Sprint.#{/else}</font>
 			</span>
 			</p>
-			#{/if}
-			#{else}
- 			<label for="object_description">Sprint</label>
- 			<label for="object_description"><font color = "green">Sprint${object.taskSprint.sprintNumber}</font></label>
- 			#{/else}
 			#{/crud.custom }
 			
 			#{crud.custom 'comment'}
@@ -198,18 +156,12 @@
 			
 		#{/crud.form }
 			
-		#{if isReporter || isAssignee || isReviewer}
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
 			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
 		</p>
-		#{/if}
-		#{else}
-		<label><font color = "red">You don't have the permission to edit the task.</font></label><br/>
-		#{/else}
 	#{/form}
 	</div>
-	#{if isAssignee || isReporter}
 	#{if deletable}
 	<form action="@{delete(object.id)}?x-http-method-override=DELETE" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('${message2}');">	
 				<p class="crudDelete">
@@ -221,16 +173,15 @@
 	#{if !deletable}
 		<label><font color="green">&nbsp;&nbsp;The task can't be deleted As some other tasks depends on it !</font></label>
 	#{/if}
-	#{/if}
 </div>
 #{set 'moreScripts'}
 <script type="text/javascript">
 
 	function change_reviewers(){
-    var value = ${object.taskStory.id}; 
+    var value = ${object.component.id}; 
     var value2 = $('#object_assignee').val(); 
     $.post('@{reviewers}', {id:value, id2 : value2}, function(data){
-		str = ''
+		str = '<option value="">(None)</option>';
 		$.each(data, function(id, item){
 			str += '<option value='+item.id+'>'+item.name+'</option>';
 		});

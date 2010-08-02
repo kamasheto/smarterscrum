@@ -66,7 +66,6 @@ public class C3S36editTaskStatus extends UnitTest
 		task1.assignee=assignee;
 		task1.reporter=reporter;
 		task1.reviewer=reviewer;
-		task1.taskStory=story1;
 		TaskType old=new TaskType();
 		old.name="old one";
 		old.save();

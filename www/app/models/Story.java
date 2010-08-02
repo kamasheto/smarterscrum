@@ -51,7 +51,7 @@ public class Story extends SmartModel {
 	@ManyToOne
 	public ProductRole productRole;
 
-	@OneToMany (mappedBy = "taskStory")
+	@OneToMany 
 	public List<Task> storiesTask;
 
 	@ManyToOne

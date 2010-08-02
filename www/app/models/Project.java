@@ -109,7 +109,9 @@ public class Project extends SmartModel {
 
 	@ManyToMany (mappedBy = "projects", cascade = CascadeType.ALL)
 	public List<User> users;
-
+	
+	@OneToMany (mappedBy ="project")
+	public List<Task> projectTasks;
 	/*                       */
 
 	public ArrayList<String> meetingsTypes;
@@ -133,6 +135,7 @@ public class Project extends SmartModel {
 		this.requests = new ArrayList<Request>();
 		this.logs = new ArrayList<Log>();
 		this.users = new ArrayList<User>();
+		this.projectTasks = new ArrayList<Task>();
 	}
 
 	/**

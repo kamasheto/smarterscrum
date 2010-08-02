@@ -66,7 +66,6 @@ public class C3S36editDesc extends UnitTest
 		task1.assignee=assignee;
 		task1.reporter=reporter;
 		task1.reviewer=reviewer;
-		task1.taskStory=story1;
 		Sprint s=new Sprint(2010,3,3,x);
 		task1.taskSprint=s;
 		s.save();

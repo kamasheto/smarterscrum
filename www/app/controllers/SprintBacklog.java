@@ -128,13 +128,13 @@ public class SprintBacklog extends SmartController
 
 		if( aORr == 0 )
 		{
-			users = task.taskStory.componentID.componentUsers;
+			users = task.component.componentUsers;
 			users.remove( task.reviewer );
 		}
 		else
 		{
 
-			users = task.taskStory.componentID.componentUsers;
+			users = task.component.componentUsers;
 			Project project = task.taskSprint.project;
 			List<Requestreviewer> reviewers = new ArrayList<Requestreviewer>();
 			for( int i = 0; i < project.components.size(); i++ )
@@ -146,7 +146,7 @@ public class SprintBacklog extends SmartController
 
 			if( reviewers == null || reviewers.isEmpty() )
 			{
-				users = task.taskStory.componentID.componentUsers;
+				users = task.component.componentUsers;
 			}
 			else
 			{
@@ -157,7 +157,7 @@ public class SprintBacklog extends SmartController
 			users.remove( task.assignee );
 
 			if( users.isEmpty() )
-				users = task.taskStory.componentID.componentUsers;
+				users = task.component.componentUsers;
 
 		}
 		return users;

@@ -50,9 +50,9 @@ public class ProductRoles extends SmartCRUD {
 		ProductRole productRole = ProductRole.findById(id);
 		if(productRole.deleted)
 			notFound();
-		boolean noStories = productRole.stories.isEmpty();
+		boolean noStories = productRole.Tasks.isEmpty();
 		boolean editable = !(productRole.inSprint());
-		boolean deletable = productRole.stories.isEmpty();
+		boolean deletable = productRole.Tasks.isEmpty();
 		render(productRole, editable, deletable, noStories);
 	}
 
@@ -173,7 +173,7 @@ public class ProductRoles extends SmartCRUD {
 		User user = Security.getConnected();
 		Security.check(user.in(project).can("editProductRole"));
 		boolean editable = !(productRoleObject.inSprint());
-		boolean deletable = (productRoleObject.stories.isEmpty());
+		boolean deletable = (productRoleObject.Tasks.isEmpty());
 		try {
 			render(type, object, project, editable, deletable);
 		} catch (TemplateNotFoundException e) {
@@ -205,7 +205,7 @@ public class ProductRoles extends SmartCRUD {
 		validation.valid(object.edit("object", params));
 		String message = "";
 		boolean editable = !(productRoleObject.inSprint());
-		boolean deletable = (productRoleObject.stories.isEmpty());
+		boolean deletable = (productRoleObject.Tasks.isEmpty());
 		if (validation.hasErrors()) {
 			message = "Please Fill in All The Required Fields.";
 			if (productRoleObject.name.equals("")) {
@@ -265,7 +265,7 @@ public class ProductRoles extends SmartCRUD {
 		Security.check(user.in(project).can("deleteProductRole"));
 		productRoleObject.deleted = true;
 		boolean editable = !(productRoleObject.inSprint());
-		boolean deletable = (productRoleObject.stories.isEmpty());
+		boolean deletable = (productRoleObject.Tasks.isEmpty());
 		if (validation.hasErrors()) {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
 			try {
@@ -273,7 +273,7 @@ public class ProductRoles extends SmartCRUD {
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/show.html", type, object);
 			}
-		} else if (!(productRoleObject.stories.isEmpty())) {
+		} else if (!(productRoleObject.Tasks.isEmpty())) {
 			flash.error("This Product Role cannot be deleted because it is included in a story.");
 			try {
 				render("ProductRoles/show.html", type, object, editable, deletable);

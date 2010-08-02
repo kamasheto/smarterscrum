@@ -113,7 +113,7 @@ public class ImpedimentTasks extends SmartController {
 	 */
 	public static void save2(long taskId, long[] dTasks) {
 		Task impedimentTask = Task.findById(taskId);
-		Security.check(impedimentTask.taskStory.componentID.project.users.contains(Security.getConnected()));
+		Security.check(impedimentTask.project.users.contains(Security.getConnected()));
 		// System.out.println(dTasks[0]);
 		for (int i = 0; i < dTasks.length; i++) {
 			Task n = Task.findById(dTasks[i]);

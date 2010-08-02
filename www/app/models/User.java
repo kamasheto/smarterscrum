@@ -116,7 +116,7 @@ public class User extends SmartModel
 	/**
 	 * tasks
 	 */
-	@OneToMany( mappedBy = "userTask" )
+	@OneToMany( mappedBy = "assignee" )
 	public List<Task> tasks;
 
 	/**
