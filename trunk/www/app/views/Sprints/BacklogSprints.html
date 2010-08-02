@@ -7,19 +7,24 @@
 #{else}
 	#{list items:sprints, as:'sprint'}
 		#{if (sprint.id==runningSprint) }
-			<div class="running" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs
-			
+			<div class="greenBg" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs
+			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
+<img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>
 			</div>
 		#{/if}
 		#{else}
 		#{if (sprint.ended) }
-			<div class="Past" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs
+			<div class="redBg" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs
 			
+			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
+<img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>
 			</div>
 		#{/if}
 		#{else}
-		<div class="Upcoming" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs
+		<div class="yellowBg" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs
 			
+			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
+<img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>
 			</div>#{/else}
 		#{/else}
 

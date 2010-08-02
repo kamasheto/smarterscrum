@@ -1,6 +1,12 @@
 #{extends 'magicBox.html' /}
 
-#{set 'title'}Sprints <a onClick="overlayOpen('/Sprints/projectblank?id=${project.id}')"href="#" ><img src="@{'public/images/famfam/add.png'}" alt=[+]/></a>#{/set}
+#{set 'title'}Sprints
+#{if connected.in(project).can('addSprint') }
+<a onClick="overlayOpen('/Sprints/projectblank?id=${project.id}')"href="#" ><img src="@{'public/images/famfam/add.png'}" alt=[+]/></a>
+#{/if}
+<a href="#" onclick="overlayOpen('@{ProductBacklogs.showGraph(project.id,0)}')" title="View progress of whole company for all sprints?">
+<img src="@{'public/images/famfam/chart.png'}" alt="[chart]"/></a>		
+#{/set}
 <script type="text/javascript">
 function isBefore(date){
 	var now=new Date();
@@ -22,25 +28,24 @@ function isBefore(date){
 	#{list items:sprints, as:'sprint'}
 		#{if (sprint.id==runningSprint) }
 			<div class="greenBg" name="/sprints/showsprint?id=${sprint.id}&projectId=${sprint.project.id}">Sprint ${sprint.id}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
+<img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>	
 			</div>
 		#{/if}
 		#{else}
 		#{if (sprint.ended) }
 			<div class="redBg" name="/sprints/showsprint?id=${sprint.id}&projectId=${sprint.project.id}">Sprint ${sprint.id}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
+<img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>	
 			</div>
 		#{/if}
 		#{else}
 		<div class="yellowBg" name="/sprints/showsprint?id=${sprint.id}&projectId=${sprint.project.id}">Sprint ${sprint.id}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
+<img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>	
 			</div>
 		#{/else}
 		#{/else}
-
-<!-- 
-				Start Date: ${sprint.format(sprint.startDate)}<br/>
-				End Date: ${sprint.format(sprint.endDate)}<br/>
-			<a href="sprints/showsprint?id=${sprint.id}&projectId=${sprint.project.id}">More Info</a>-->
-
-
 
 #{/list}
 #{/else}
