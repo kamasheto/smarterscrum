@@ -189,14 +189,14 @@ function deleteRequest(roleIdd){
 	}
 }
 
-function requestToBeReviewer(taskTypeId,projectId){
-	$.post('requestreviewers/requestToBeReviewer', {ID:taskTypeId, Pid:projectId}, function(msg){
+function requestToBeReviewer(taskTypeId){
+	$.post('/requestreviewers/requestToBeReviewer', {ID:taskTypeId}, function(msg){
 		$.bar({message:msg});
 	});
 }
 
 function removeRequestToBeReviewer(id){
-	$.post('requestreviewers/removerequest', {taskTypeId:id}, function(msg){
+	$.post('/requestreviewers/removerequest', {taskTypeId:id}, function(msg){
 		$.bar({message:msg});
 	});
 }
@@ -390,23 +390,23 @@ $(function() {
 
 function load(url, el, n) {
 	if($.inArray(url,myDivs)==-1 || n==2){
-	var pUrl = $('#'+el).attr('name');
-	$('#'+el+'_header').load(pUrl+' .mainH', function(){
+		var pUrl = $('#'+el).attr('name');
+		$('#'+el+'_header').load(pUrl+' .mainH', function(){
 		
-		$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
-			if(n==3)
-		$('#'+el+'_header').find('.min').first().remove();
-	});
-	$('#' + el + '_content').load(url, function() {
-		$('#' + el + ' .min').first().show();
-		$('#' + el + '_content').children().show();
-		//$('#' + el + '_content').find('ui-widget-header').first().load
-		$('#' + el + ' .loading').first().hide();
-		$('#' + el + '_content').slideDown(400);
-		magic(el);
+			$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
+				if(n==3)
+			$('#'+el+'_header').find('.min').first().remove();
+		});
+		$('#' + el + '_content').load(url, function() {
+			$('#' + el + ' .min').first().show();
+			$('#' + el + '_content').children().show();
+			//$('#' + el + '_content').find('ui-widget-header').first().load
+			$('#' + el + ' .loading').first().hide();
+			$('#' + el + '_content').slideDown(400);
+			magic(el);
 
-	});
-}
+		});
+	}
 	if(n==1)
 		myDivs.push(url);
 }
@@ -589,12 +589,16 @@ function showProjectWorkspace(project_id) {
 
 function reload() {
 	for (i in arguments) {
-		sel = arguments[i]
-		url = $(sel).closest('div[name]').attr('name')
+		sel = '.' + arguments[i]
+		if (!$(sel).length) {
+			alert('Found nothing for: ' + sel)
+			continue
+		}
+		div = $(sel).closest('div[name]')
+		url = div.attr('name')
+		// should we really delete?
+		// or dynamically reload it?
 		delete myDivs[$.inArray(url, myDivs)]
-		$(sel).load($(sel).closest('div[name]').attr('name'))
+		load(url, div.id, 1)
 	}
 }
-
-$(function() {
-})

@@ -1,5 +1,5 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}Request to be reviewer#{/set}
+#{set 'title'}Request reviewing#{/set}
 #{list items:project.taskTypes, as: 'taskType'}
 <div class="bar">
 #{if requested.contains(taskType)}
