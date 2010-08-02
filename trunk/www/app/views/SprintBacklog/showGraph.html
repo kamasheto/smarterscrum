@@ -1,5 +1,4 @@
 #{extends 'overlay.html' /}
-#{set title:'Sprint Burndown Chart' /}
 #{ifnot Data}
 	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
 	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
@@ -7,11 +6,12 @@
 </div>
 #{/ifnot}
 #{else}
-
-#{set 'onLoad'}javascript:GenerateGraph(${Data},'chart1');#{/set}
- #{set 'moreScripts'}
+#{set 'moreStyles'}
 	<link rel="stylesheet" type="text/css" href="@{'/public/stylesheets/jquery.jqplot.css'}"/>
-<script language="javascript" type="text/javascript" src="@{'/public/javascripts/jquery.jqplot.js'}"></script>
+#{/set}
+#{set 'onLoad'}javascript:GenerateGraph(${Data},'chart1');#{/set}
+#{set 'moreScripts'}
+	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/jquery.jqplot.js'}"></script>
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.logAxisRenderer.js'}"></script>
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.canvasTextRenderer.js'}"></script>
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.canvasAxisLabelRenderer.js'}"></script>
@@ -20,15 +20,19 @@
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.categoryAxisRenderer.js'}"></script>
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.barRenderer.js'}"></script>
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/generateFunction.js'}"></script>
- 		<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.cursor.js'}"></script>
-	
- #{/set}
-<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
-	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
-	<strong>NOTE: </strong>If your graph has too much data then not all points will be shown, to view more day specific statistics then you will have to zoom in. To zoom in on a graph, simply click and drag and let go. To zoom out just double click the graph!
-	<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
+ 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.cursor.js'}"></script>
+ #{/set}#{if componentID==0}
+    <h1>Sprint ${temp.sprintNumber}: ${pName}'s progress</h1>
+    #{/if}
+    #{else}
+    <h1>Sprint ${temp.sprintNumber}: ${myComponent.name}'s progress</h1>
+    #{/else}
+	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+		<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+		<strong>NOTE: </strong>If your graph has too much data then not all points will be shown, to view more day specific statistics then you will have to zoom in. To zoom in on a graph, simply click and drag and let go. To zoom out just double click the graph!
+		<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
     
-	<div class="jqplot" id="chart1" style="height:300px; width:100%"></div>
+		<div class="jqplot" id="chart1" style="height:300px; width:100%"></div>
 
 
 	#{/else}

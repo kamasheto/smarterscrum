@@ -140,10 +140,10 @@ public class ProductBacklogs extends SmartController {
 
 	public static void showGraph(long id, long componentId) {
 		Project temp = Project.findById(id);
+		Security.check(Security.getConnected().projects.contains(temp));
 		if(temp.deleted)
 			notFound();
 		String pName = temp.name;
-		Security.check(Security.getConnected().projects.contains(temp));
 		Component myComponent = Component.findById(componentId);
 		if(myComponent.deleted)
 			notFound();
