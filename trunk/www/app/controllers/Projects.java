@@ -590,33 +590,66 @@ public class Projects extends SmartCRUD
 	}
 
 	/**
-	 * @author OmarNabil This method takes user id and project id and initiates
-	 *         a new request for that user to be deleted from that project
-	 * @param userId
-	 * @param id
+	 * This method takes project id and initiates a new request for that user to
+	 * be deleted from that project
+	 * 
+	 * @author Amr Hany
+	 * @param projectID
 	 */
-	public static void RequestDeleted( long id )
+	public static void RequestDeletedFromProject( long id )
 	{
 
-		// User myUser=User.findById(userId);
-		User myUser = Security.getConnected();
-		Project myProject = Project.findById( id );
-		// System.out.println( myProject );
-		if( Request.find( "isDeletion = true and user = " + myUser.id + " and project = " + myProject.id ).first() == null )
+		User u = Security.getConnected();
+		Project project = Project.findById( id );
+
+		if( !u.in( project ).can( "manageRequests" ) )
 		{
-			Request x = new Request( myUser, myProject );
-			flash.success( "your request has been sent" );
-			x.save();
-			Show.projects( 0 );
+			if( Request.find( "byIsDeletionAndUserAndProject", true, u, project ).first() == null )
+			{
+				Request x = new Request( u, project );
+
+				x.save();
+				renderJSON( true );
+			}
+			else
+			{
+
+				renderJSON( false );
+			}
 		}
 		else
 		{
-			flash.error( "You have already made a deletion request in this project!" );
-			Show.projects( 0 );
+			project.users.remove( u );
+			project.save();
+			u.projects.remove( project );
+			u.save();
+			for( Role r : u.roles )
+			{
+				if( r.project.equals( project ) )
+				{
+					u.roles.remove( r );
+				}
+			}
+			u.save();
+			renderJSON( true );
+			Logs.addLog( "User: " + Security.getConnected().name + " has deleted him/herself from project: " + project.name );
+			Notifications.notifyProjectUsers( project, "User " + u.name + " deleted. !", "user " + u.name + " has been deleted from the project and all his/her roles have been revoked.", "deletedFromProject", (byte) -1 );
+
 		}
-		// Logs.addLog(myProject, "request to be deleted", "Request", x.id );
-		// Logs.addLog(Security.getConnected(), "request to be deleted",
-		// "Request", x.id, myProject, new Date());
+
+	}
+
+	/**
+	 * the page that display to the user the confirmation of being deleted from
+	 * the project
+	 * 
+	 * @author Amr Hany
+	 * @param id
+	 */
+	public static void projectDeletionRequest( long id )
+	{
+		Project project = Project.findById( id );
+		render( project );
 	}
 
 	/**
