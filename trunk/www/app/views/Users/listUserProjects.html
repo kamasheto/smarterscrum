@@ -16,10 +16,12 @@
      #{list items:user.roles ,as :'uRole'}
       #{if pRole.id == uRole.id}
 	    ${uRole.name}
-	    #{if project.id == currentProject.id}
-	       <a>
-	       <img title="Revoke Role" src="@{'/public/images/famfam/revoke.png'}">
-	       </a>
+	    #{if connected.in(project).can('revokeUserRole')}
+	      #{if project.id == currentProject.id}
+	        <a>
+	        <img title="Revoke Role" src="@{'/public/images/famfam/group_delete.png'}">
+	        </a>
+	      #{/if}
 	    #{/if}
 	    <br>
       #{/if}
