@@ -36,6 +36,33 @@ public class ProjectTasks extends SmartController {
 	}
 
 	/**
+	 * Connected user revokes role
+	 * @author 
+	 * 			  Dina Helal
+	 * @param id
+	 *            role id
+	 */
+	public static void revokeRole(long id) {
+		User user = Security.getConnected();
+		Role role = Role.findById(id);
+		notFoundIfNull(role);
+		if (user.in(role.project).can("revokeUserRole") || role.users.contains(user)) {
+			user.removeRole(role);
+			if(user.roles.size()==0)
+			{
+			renderText("Role revoked Succesfully!"+ '\n' +"Note that by revoking this role you have been removed from the project");	
+			}
+			else
+			{
+				renderText("Role revoked Succesfully!");
+			}
+			
+		}
+		
+	}
+
+	
+	/**
 	 * Returns list of roles of this project
 	 * 
 	 * @param id

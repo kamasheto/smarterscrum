@@ -23,6 +23,9 @@
 			<a href="#" onclick="requestRole(${role.id});"><img title="Request Role" src="@{'public/images/famfam/group_go.png'}"></a>
 		#{/else}
 	#{/ifnot}
+	#{else}
+	<div ><a href="#" onclick="revokeRole(${role.id});"><img title="Revoke Role" src="@{'public/images/famfam/group_delete.png'}"></a></div>
+	#{/else}
 	</div>
 	${role.name}</div>
 #{/list}

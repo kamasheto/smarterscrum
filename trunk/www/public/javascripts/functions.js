@@ -1,4 +1,4 @@
-﻿		var getNotifications = function() {
+﻿﻿		var getNotifications = function() {
 				$.getJSON('/notificationtasks/getlatestnews',
 					function(data) {
 						$(data).each(function(){
@@ -177,6 +177,20 @@ function confirm_me(id)
 
 function requestRole(roleIdd){
 	$.post('/projecttasks/requestRole', {id:roleIdd}, function(msg){
+		$.bar({message:msg});
+	});
+}
+
+function revokeRole(roleIdd){
+	var confirmation= confirm("Are you sure you want to revoke this role ?");
+	if (confirmation) {
+		$.post('/projecttasks/revokeRole', {id:roleIdd}, function(msg){
+		$.bar({message:msg});
+	});
+	};
+	
+	
+	$.post('/projecttasks/revokeRole', {id:roleIdd}, function(msg){
 		$.bar({message:msg});
 	});
 }
