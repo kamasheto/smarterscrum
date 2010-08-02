@@ -12,7 +12,7 @@
 	#{if (meeting.startTime < new Date().getTime()) && ((connected.in(project).can('editMeeting') ||connceted.equals(meeting.creator))) }
 	<img class="dim" title="edit" src="@{'/public/images/famfam/pencil.png'}">
 	#{/if}
-	#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(current.creator)) } 
+	#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(meeting.creator)) } 
 	<a href="#" onclick="javascript:delete_meeting(${meeting.id},this);" title="delete">
 	<img src="@{'/public/images/famfam/delete.png'}"></img></a>
 	#{/if}
