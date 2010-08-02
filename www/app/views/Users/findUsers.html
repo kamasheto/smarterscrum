@@ -7,7 +7,7 @@
 		<label> No Users</label>
 		#{/if}
 		#{list items:users ,as :'User'}
-			<div name="/users/findUsers?projectId=${currentProject.id}&userId=${User.id}">${User.name}</div>
+			<div class="reload-user" name="/users/findUsers?projectId=${currentProject.id}&userId=${User.id}">${User.name}</div>
 		#{/list}
 #{/if}
 		
@@ -23,7 +23,7 @@
 		<br>
 		<b>${user.email}</b>
 		<br>
-		<div name="/users/listUserProjects?userId=${user.id}&x=1&currentProjectId=${currentProject.id}">Projects</div>
+		<div class="reload-projects" name="/users/listUserProjects?userId=${user.id}&x=1&currentProjectId=${currentProject.id}">Projects</div>
 #{/if}
 
 

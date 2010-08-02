@@ -362,7 +362,7 @@ public class Users extends SmartCRUD {
 			Project currentProject = Project.findById(currentProjectId);
 			User user = User.findById(userId);
 			Project project = Project.findById(projectId);
-			title= user.name+"'s Roles in project:" + project.name;
+			title= user.name+"'s Roles in Project: " + project.name;
 			render(user, title, x, project, currentProject);
 		}
 		
