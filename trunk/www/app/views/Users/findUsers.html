@@ -12,17 +12,20 @@
 #{/if}
 		
 #{if user!=null}
-	   #{if user.avatar !=""}
-         <img src="${user.avatar}"></img>
-       #{/if}
-       #{else}
-         <img src="@{'public/images/no-profile.png'}"/>
-       #{/else}
-	  	<br>
-		<b>${user.name}</b>
-		<br>
-		<b>${user.email}</b>
-		<br>
+		<div class="left">
+		   #{if user.avatar !=""}
+	         <img src="${user.avatar}"/>
+	       #{/if}
+	       #{else}
+	         <img src="@{'public/images/no-profile.png'}"/>
+	       #{/else}
+		</div>
+		<div class="left" style="padding:15px 10px">
+			<b>Name: </b>${user.name}
+			<br><br>
+			<b>Email: </b>${user.email}
+		</div>
+		<br style="clear:both"/>
 		<div class="reload-projects" name="/users/listUserProjects?userId=${user.id}&x=1&currentProjectId=${currentProject.id}">Projects</div>
 #{/if}
 
