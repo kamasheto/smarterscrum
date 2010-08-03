@@ -5,6 +5,7 @@
 	.shadowed {
   -moz-box-shadow: 2px 2px 3px #969696;
   -webkit-box-shadow: 2px 2px 3px #969696;
+  padding:4px;
 }
 </style>
 
@@ -25,8 +26,8 @@ REDIPS.drag.init()
 <h1>${comp.name}'s Task Board</h1>
 #{/else}
 
-<a href="#" id="ToggleBoard-open" onclick="$('#mainBoard').slideToggle(400)" title="toggle" class="tiptitize" style="display:none"><img src="@{'/public/images/famfam/show.bmp'}"></a>
-<a href="#" id="ToggleBoard-close" onclick="$('#mainBoard').slideToggle(400)" title="toggle" class="tiptitize"><img src="@{'/public/images/famfam/hide.png'}"></a>
+<a href="#" id="ToggleBoard-open" onclick="ToggleBoardOpen();" title="toggle" class="tiptitize" style="display:none"><img src="@{'/public/images/famfam/show.bmp'}"></a>
+<a href="#" id="ToggleBoard-close" onclick="ToggleBoardClose()" title="toggle" class="tiptitize"><img src="@{'/public/images/famfam/hide.png'}"></a>
 
 <!-- Show Col drop down list by Dina -->
 #{set count=0}
@@ -123,7 +124,7 @@ REDIPS.drag.init()
 		<span style="display:inline-block" class="ui-icon ui-icon-arrow-4 "></span>
 		</span></a>
 		<a style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" class="ui-state-default ui-corner-all ">
-		<span title="hide column?" id="${count}" style="display:inline-block !important"class="tiptitize hideCol ui-icon ui-icon-hide "></span>
+		<span onclick="myhidecol(id)" title="hide column?" id="${count}" style="display:inline-block !important"class="tiptitize ui-icon ui-icon-hide "></span>
 		</span></a>
 		#{set count=count+1}
 		#{/set}
@@ -145,7 +146,7 @@ REDIPS.drag.init()
 </tr>
 
 <tr id="com-${component.id}" style="height:100px"> <!-- filling rows with data -->
-	<td id="com-${component.id}" class="component">${component.title}</td> <!-- 1st cell in each row with component name -->
+	<td id="com-${component.id}" onclick="component(this.id);">${component.title}</td> <!-- 1st cell in each row with component name -->
 	#{set count=0}
 	#{/set}
 	#{list items:component, as:'col'}
@@ -155,7 +156,7 @@ REDIPS.drag.init()
 		#{list items:col, as:'task'}
 		<!-- small sticky note -->
 		<div style="float:left" id="task-${task.id}_T" class="drag">
-		<a id="task-${task.id}_hidden" style="display:none; font-size:large;cursor: pointer !important" class="showtask">+</a>
+		<a id="task-${task.id}_hidden" style="display:none; font-size:large;cursor: pointer !important" onclick="showtask(this.id);">+</a>
 		
 		#{if connected.in(p).can('changeTaskStatus') || connected.equals(task.assignee) || connected.equals(task.reviewer)}
 		<div id="task-${task.id}_TT" class="status status_${task.id}">
@@ -166,23 +167,24 @@ REDIPS.drag.init()
 		<p>		
 		<div class="${task.taskStatus.columns[0].name}" style="max-width:130px"></div>  
 		<div style="max-width:130px" class="status status_${task.id}">
-		<div class="shadowed tiptipize" style="background-color:${task.taskType.hexColor}; max-width:110px;border=0px"  id="${task.id}_small">
-		<a id="task-${task.id}" style="font-size:x-large;cursor: pointer !important;border=0px" class="ctask">-</a> 
+		<div class="small_${task.id} shadowed tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 10px; max-width:110px;border=0px"  id="${task.id}_small">
+		<a id="task-${task.id}" onclick="ctask(this.id);" style="font-size:x-large;cursor: pointer !important;border=0px">-</a> 
 		<div id="desc_${task.id}">${task.description}</div>
-		<a class="SmallSticky tiptitize" title="Edit task info?" style="cursor: pointer !important" id="${task.id}">view/edit info..</a>
+		<a class="tiptitize" onclick="SmallSticky(this.id)" title="Edit task info?"  style="cursor: pointer !important" id="${task.id}_button">view/edit info..</a>
 		</div>
 		</div>
 		</p>
 		
 		
 		<!-- big sticky note -->						
-		<div style="display:none;"  id="${task.id}Large" style="border:hidden">
+		<div class="large_${task.id}" id="${task.id}Large" style="display:none;border:hidden">
 		<div style="max-width:165px" id="tas-${task.id}_" >
 		<p style="float:left"> 
 		<div class="shadowed tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 15px;border=0px" id="tas-${task.id}_T">
 		<div  style="border=0px" align="center"></div>
 		
 		#{if connected.in(p).can('changeTaskDescreption') || connected.equals(task.assignee)} <!-- if has permission (desc) or assignee -->
+		
 		<div style="width:3cm" id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id} tiptipize" title="Edit description?">${task.description}</div>	
 		<div style="display:none" class="noedit noedit_${task.assignee.id}"id="${task.id}_desc" border=0px >${task.description}</div>	
 		#{/if}
@@ -237,8 +239,7 @@ REDIPS.drag.init()
 		Type:${task.taskType.name}</a></div>
 		<div id="types_${task.id}" class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${task.taskType.name}</div>
 		#{/else}
-		<a href="javascript:;" id="${task.id}_HiddenSticky">
-		<span style="text-align:right; display:inline-block; width:3cm " title="Done Editing?" >Done</span></a>
+		<a href="#" id="${task.id}-done" title="Done Editing?" onclick="done(this.id)" class="tiptitize">Done</a>
 		</div>
 		</p>	
 		</div>
@@ -259,15 +260,15 @@ var selectedUser = 0;
 var col_from = -1;
 var col_to = -1;
 
-function take_snapshot() {
-		$.post('/snapshots/takesnapshot', {sprintID:${s.id},componentID:0,meetingID:0}, function(){$.bar({message:"Snapshot Taken!"})});
-	}
-			function take_snap(id) {
-				if(id!=null)
-		$.post('@{snapshots.takesnapshot()}', {sprintID:${s.id},componentID:id,meetingID:0} ,function(){$.bar({message:"Snapshot Taken!"})});	
-	}
-
-
+function take_snapshot() 
+{
+	$.post('/snapshots/takesnapshot', {sprintID:${s.id},componentID:0,meetingID:0}, function(){$.bar({message:"Snapshot Taken!"})});
+}
+function take_snap(id) 
+{	
+	if(id!=null)
+	$.post('@{snapshots.takesnapshot()}', {sprintID:${s.id},componentID:id,meetingID:0} ,function(){$.bar({message:"Snapshot Taken!"})});	
+}
 function showCol(c)
 {
 	//$('#desc_1').load('/boards/loadboard1?sprintID=1 #desc_1');
@@ -277,140 +278,125 @@ function showCol(c)
 }
 function showHiddenCol(colid)
 {
-	$.post('/Boards/showHiddenColumn' ,{cid:colid,uid:${connected.id}}, function(){window.location.reload();});
-		
+	$.post('/Boards/showHiddenColumn' ,{cid:colid,uid:${connected.id},sid:${s.id},compid:comp.id}, function(){window.location.reload();});		
 }
 function hideCol(colid)
 {
 	var answer=confirm('Are you sure u want to delete this coulmn?')
-		
-		if (answer) 	
-	      {
-	$.post('/Boards/hideColumn' ,			
-			{cid:colid,uid:${connected.id}}, function(){
-			window.location.reload();
+	if (answer) 	
+	{
+		$.post('/Boards/hideColumn' ,			
+		{cid:colid,uid:${connected.id},sid:${s.id},compid:comp.id}, function(){
+		window.location.reload();
 		});
-		
-	      }
-		  else{
-		  	var seloption = document.getElementById('b2');
-	seloption.selectedIndex='x';
-		  }
+	}
+	else
+	{
+	  	var seloption = document.getElementById('b2');
+		seloption.selectedIndex='x';
+	}
 }
 function popUp(URL) 
 {
-day = new Date();
-id = day.getTime();
-eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=200,height=270,left = 0,top = 0');");
+	day = new Date();
+	id = day.getTime();
+	eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=200,height=270,left = 0,top = 0');");
 }
 
 function popUpmeeting(URL) 
 {
-day = new Date();
-id = day.getTime();
-eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=980,height=150,left = 135,top = 30');");
+	day = new Date();
+	id = day.getTime();
+	eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=980,height=150,left = 135,top = 30');");
 }
 
 
-$('.SmallSticky').click(function()
-	{		
-		$('#'+this.id+"_small").hide();
-		$('#'+this.id+"_HiddenSticky").show();
-		$('#'+this.id+"Large").toggle();
-		$('#'+this.id+'_HiddenSticky').click(function(){
-		var splittedST 	= this.id.split("_");
-		var F= splittedST[0];
-		originalST = '#'+F;
-		$('#'+F+"_small").show();
-		$(originalST+"Large").hide();
-		$(this).hide();
-	
-	});
-	});
-	
-$('.component').click(function()
+function SmallSticky(did)
 	{
-		$('#'+this.id).toggle();
-		original = '#'+this.id;
-		$('#'+this.id+"_hidden").toggle();
-		$('#'+this.id+'_hidden').click(function(){
-		var splittedC 	= this.id.split("_");
+		alert();
+		var split = did.split("_");
+		var id=split[0];	
+		$('#'+id+"_small").hide();
+		$('#'+id+"Large").show();
+	}
+
+function done(did)
+	{		
+	var split 	= did.split("-");
+	var id=split[0];
+		$('#'+id+"_small").show();
+		$('#'+id+"Large").hide();
+	}
+
+function ctask(id)
+{
+	var split 	= id.split("-");
+	sid=split[1];
+	$('#'+id+"_TT").hide();	
+	$('#'+id+"_hidden").show();
+}
+	
+	function showtask(id)
+	{
+		var splittedT 	= id.split("_");
+		var j= splittedT[0];
+		originalT = '#'+j+"_TT";
+		$(originalT).show();
+		$('#'+id).hide();
+	}
+	
+	function component(id)
+	{
+		$('#'+id).toggle();
+		original = '#'+id;
+		$('#'+id+"_hidden").toggle();
+		$('#'+id+'_hidden').click(function(){
+		var splittedC 	= id.split("_");
 		var i= splittedC[0];
 		originalC = '#'+i;
 		$(originalC).show();
 		$(this).hide();
 	});
-	});
-	
+	}
 		
-	$('.ctask').click(function()
+	function ToggleBoardClose()
 	{
-		$('#'+this.id+"_TT").hide();	
-		$('#'+this.id+"_hidden").show();
-		$('.showtask').click(function(){
-		var splittedT 	= this.id.split("_");
-		var j= splittedT[0];
-		originalT = '#'+j+"_TT";
-		$(originalT).show();
-		$(this).hide();
-	});
-	});
-		
-	$('.cstory').click(function()
-	{
-		$('#'+this.id+"_S").hide();	
-		$('#'+this.id+"_hidden").show();
-		$('.showstory').click(function(){
-		var splittedS	= this.id.split("_");
-		var k= splittedS[0];
-		originalS = '#'+k+"_S";
-		$(originalS).show();
-		$(this).hide();		
-	});
-	});
-		
-	$('#ToggleBoard-close').click(function(event)
-	{
+		$('#mainBoard').slideToggle(400)
 		$('#ToggleBoard-open').css('display','inline-block');
 		$('#ToggleBoard-close').css('display','none');	
- 	});
+ 	}
  	
-	$('#ToggleBoard-open').click(function(event)
+	function ToggleBoardOpen ()
 	{
+		$('#mainBoard').slideToggle(400)
 		$('#ToggleBoard-open').css('display','none');
 		$('#ToggleBoard-close').css('display','inline-block');
- 	});
+ 	}
 	
-	$('#form').click(function(event)
+	function myhidecol(id)
 	{
-   		event.preventDefault();
-   		$('form').toggle(400);
- 	});
-  
-	$('.hideCol').click(function()
-	{
-		var i =this.id;
+		var i =id;
 		$('.col_'+i).css('display','none');
-	});    
-	$('.editDES').editable(function(value)
+	}
+	
+	$('.editDES').live('mouseover',function(){$(this).editable(function(value)
 		{
-			var taskId 	= parseInt($('#lolid').closest("div").attr("id"));  
+		var taskId 	= parseInt($('#lolid').closest("div").attr("id"));  
     	 $.post('@{Tasks.editTaskDesc2()}',{id:taskId, userId:selectedUser, desc:value});
 		 document.getElementById("desc_"+taskId).innerHTML = value;
        	 document.getElementById(taskId+"_des").innerHTML = value;
          document.getElementById(taskId+"_desc").innerHTML = value;
 		 return(value);   
-    	},{indicator : 'Saving...',});
+    	},{indicator : 'Saving...',});});
 
-	$('.editCOL').editable(function(value)
+	$('.editCOL').live('mouseover',function(){$(this).editable(function(value)
     	   {var colId 	= parseInt($('#lolid').closest("div").attr("id"));   
     	    $.post('@{Columns.editColumnName}',{id:colId, name:value, userId:selectedUser});
 		    return(value);
-    	   },{indicator : 'Saving...',});
-	$('div.tiptipize').tipTip({delay:0});
-
- 	
+    	   },{indicator : 'Saving...',});});
 	
+	$('.tiptipize').live('mouseover',function(){$(this).tipTip({delay:0});});
+
 	/**
 	 * swapping with clicking instead of drag and drop.
 	 * 
