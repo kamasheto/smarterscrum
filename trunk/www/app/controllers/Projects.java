@@ -1,7 +1,6 @@
 package controllers;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,8 +17,6 @@ import models.Request;
 import models.Role;
 import models.Snapshot;
 import models.Sprint;
-import models.Story;
-import models.Task;
 import models.TaskStatus;
 import models.TaskType;
 import models.User;
@@ -285,12 +282,10 @@ public class Projects extends SmartCRUD
 	 * statuses in a specific project.
 	 * 
 	 * @author Heba Elsherif
-	 * @parm statusID 
-	 *           the id of the selected Task Status.
-	 * @parm newName 
-	 *           the new name of the selected Task Status.
-	 * @parm indicator 
-	 *           an indicator to indicate weather the Task Status indicates pending or closed.
+	 * @parm statusID the id of the selected Task Status.
+	 * @parm newName the new name of the selected Task Status.
+	 * @parm indicator an indicator to indicate weather the Task Status
+	 *       indicates pending or closed.
 	 * @return void
 	 * @issue 224
 	 * @sprint 4
@@ -932,60 +927,6 @@ public class Projects extends SmartCRUD
 	public static void list()
 	{
 		forbidden();
-	}
-
-	public static void myTasks( long projectId )
-	{
-		Project project = Project.findById( projectId );
-
-		User user = Security.getConnected();
-		Component component = null;
-		for( Component comp : user.components )
-		{
-			if( comp.project.equals( project ) )
-			{
-				component = comp;
-			}
-		}
-		List<Task> task = new ArrayList<Task>();
-		if( component != null )
-		{
-			for( Story story : component.componentStories )
-			{
-				for( Task task2 : story.storiesTask )
-				{
-					if( task2.reviewer.equals( user ) && !task2.deleted && task2.checkUnderImpl() )
-					{
-						task.add( task2 );
-					}
-				}
-			}
-		}
-
-		List<Task> task1 = new ArrayList<Task>();
-
-		for( Component comp : user.components )
-		{
-			if( comp.project.equals( project ) )
-			{
-				component = comp;
-			}
-		}
-		if( component != null )
-		{
-			for( Story story : component.componentStories )
-			{
-				for( Task task2 : story.storiesTask )
-				{
-					if( task2.assignee.equals( user ) && !task2.deleted && task2.checkUnderImpl() )
-					{
-						task1.add( task2 );
-					}
-				}
-			}
-		}
-
-		render( project, task, task1 );
 	}
 
 	/**

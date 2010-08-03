@@ -350,7 +350,7 @@ public class User extends SmartModel
 	public List<Task> returnUserTasks( Sprint s, long componentID )
 	{
 		Component c = Component.findById( componentID );
-		List<Task> tasks = c.componentSprintTasks(s);
+		List<Task> tasks = c.returnComponentSprintTasks( s );
 		List<Task> userTasks = new ArrayList<Task>();
 
 		for( int i = 0; i < tasks.size(); i++ )
@@ -397,7 +397,7 @@ public class User extends SmartModel
 	}
 
 	public void addRole( Role role )
-	{		
+	{
 		if( !roles.contains( role ) )
 		{
 			roles.add( role );
@@ -413,10 +413,10 @@ public class User extends SmartModel
 			save();
 		}
 	}
-	
+
 	/**
-	 * This method revokes a specific role from a specific user.
-	 * In case the role revoked is a base role the user is deleted from the project.
+	 * This method revokes a specific role from a specific user. In case the
+	 * role revoked is a base role the user is deleted from the project.
 	 * 
 	 * @author Dina Helal, Heba Elsherif
 	 * @param id
@@ -427,7 +427,7 @@ public class User extends SmartModel
 	 */
 	public void removeRole( Role role )
 	{
-		if(role.baseRole)
+		if( role.baseRole )
 		{
 			projects.remove( role.project );
 		}
