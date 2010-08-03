@@ -236,3 +236,6 @@ a,a img,span.revertFrom,span.min {
 /*	ms: i don't really like the move cursor.. the arrow is enough*/
 /*	cursor: move;*/
 }
+.dropper {
+	display: none;
+}
