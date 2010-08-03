@@ -249,6 +249,8 @@ $(function() {
 		var w = $(this).width();
 		$(this).resizable( {
 			containment: '#'+con,
+			minHeight: $(this).height(),
+			minWidth: 300,
 			autoHide : true,
 			disable: false,
 		});
@@ -293,7 +295,7 @@ $(function() {
 								$(this).removeClass('draggableChild');
 								$(this).addClass('draggable');
 								load($(this).attr('name') + ' .actual', $(this).attr('id'),1);
-								$(this).resizable({disabled: true});
+								
 								
 
 							},
@@ -332,10 +334,10 @@ $(function() {
 
 			});
 	$('.refresh').live('click',function(){
-		var myMommy = $(this).parent().parent();
-		// myMommy? walahi el3azem? >.<
-		$(myMommy).find('.actual:first').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>')
-		load($(myMommy).attr('name')+' .actual', $(myMommy).attr('id'),2);
+		var parent = $(this).parent().parent();
+		// better? Lol
+		$(parent).find('.actual:first').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>')
+		load($(parent).attr('name')+' .actual', $(parent).attr('id'),2);
 	});
 	$('.revertFrom').live('click', function() {
 		var url = $(this).parent().parent().attr('name');
@@ -559,7 +561,7 @@ function showProjectWorkspace(project_id) {
 		url: '/show/workspace',
 		data: {id: project_id},
 		success: function(data) {
-			$('#project-tabs').append('<a class="aDIV topCornersRounded right project-button selectedADiv" id="project-button-'+project_id+'" href="#" onclick="show('+project_id+')" style="width: 120px !important" title="">'+$(data).find('.project_name_in_header').html()+' <span class="right ui-icon ui-icon-circle-close" onclick="close_workspace('+project_id+')"> </span></a>');
+			$('#project-tabs').append('<a class="aDIV topCornersRounded right project-button selectedADiv" id="project-button-'+project_id+'" href="#" onclick="show('+project_id+')" style="width: 120px !important" title="">'+$(data).find('.project_name_in_header').html()+' <span class="right ui-icon2 ui-icon-circle-close" onclick="close_workspace('+project_id+')"> </span></a>');
 			$('.workspace-' + project_id).html(data)
 			$('#top_header_projects_pane').slideUp()
 		}
