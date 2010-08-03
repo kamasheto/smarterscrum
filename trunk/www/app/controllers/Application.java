@@ -73,7 +73,7 @@ public class Application extends SmartController
 	 */
 	public static void index()
 	{
-		User user = Security.getConnected();
+		/*User user = Security.getConnected();
 		List<Notification> notis = Notification.find( "user = " + user.id + "order by id desc" ).fetch();
 		List<Notification> noti;
 		if( notis.size() < 30 )
@@ -87,7 +87,7 @@ public class Application extends SmartController
 		// "Hadeer Younis (Design)","Plum v.03 is up and running!! Note that it's still in beta phase, So please report any bugs straight away!!",
 		// (byte) 1);
 		// noti.add(n);noti.add(nn);
-		render( noti );
+		render( noti );*/
 	}
 
 	public static void notificationsHistory()
