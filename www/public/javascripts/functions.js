@@ -399,7 +399,7 @@ function load(url, el, n) {
 }
 
 
-function loadBox(url, el) 
+function loadBox(url, el, classes) 
 {
 	if($.inArray(url,myDivs)==-1)
 	{
