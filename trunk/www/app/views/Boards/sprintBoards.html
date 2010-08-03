@@ -27,7 +27,7 @@ ${p.name}'s Final Snapshot
 #{if s.id==snapshot.sprint.id }
 
 <div class="overlay" name="/Snapshots/loadsnapShot?id=${snapshot.id}">
-${component.name}'s Final Snapshot<a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+${component.name}'s Final Snapshot<a  onClick="loadBox('/Snapshots/index?sid=${s.id}&cid=${component.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
 </div>
 #{/if}
 #{/list}
