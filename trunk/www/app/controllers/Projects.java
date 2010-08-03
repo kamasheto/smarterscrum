@@ -623,11 +623,14 @@ public class Projects extends SmartCRUD
 			project.save();
 			u.projects.remove( project );
 			u.save();
-			for( Role r : u.roles )
+			if( u.roles != null )
 			{
-				if( r.project.equals( project ) )
+				for( Role r : u.roles )
 				{
-					u.roles.remove( r );
+					if( r.project.equals( project ) )
+					{
+						u.roles.remove( r );
+					}
 				}
 			}
 			u.save();
