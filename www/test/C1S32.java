@@ -10,10 +10,10 @@ public class C1S32 extends UnitTest {
     public void testUsers() {
         User u = new User("ay7aga", "ay7aga@gmail.com", "testing").save();
     	Date d = new Date();
-        new Notification(u, "Testing", "just testing", (byte) 1).save();
+        new Notification(u, u, "ay7aga", "/show/users", "User", "ay7aga",(byte) 1).save();
         Notification n = Notification.find("byHeader", "Testing").first();
         assertNotNull(n);
-    	assertEquals(u, n.user);
+    	assertEquals(u, n.receiver);
     }
  
 }
