@@ -18,7 +18,6 @@ GET     /projects/meetings/associations    				Meetings.associations
 GET     /projects/{projectID}/meetings                  Meetings.deleteMeeting
 GET		/projects/requestrespond						Requests.requestRespond
 GET		/projects/deletionRequestRespond				Requests.deletionRequestRespond
-GET		/components/{id}/assignusers					Users.assignUsers
 GET     /sprintbacklog							        SprintBacklog.index
 GET     /tasks/EditTaskAPI/{TaskID}                     Tasks.EditTaskAPI
 GET     /productbacklog/{id}/{isComp}          	        ProductBacklogs.index

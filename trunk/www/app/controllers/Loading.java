@@ -11,5 +11,30 @@ public class Loading extends SmartController {
 	public static void loading() {
 		render("Application/loading.html");
 	}
+	
+	/**
+	 * This action handles all drops caused by dragging and dropping items on workspaces.
+	 */
+	public static void dynamicDrop(String from, String to) {
+		String[] arr = from.split("-"); // meeting-1
+		String[] arr2 = to.split("-"); // user-3
+		
+		from = arr[0].toLowerCase();
+		to = arr2[0].toLowerCase();
+		long id = Long.parseLong(arr[1]), id2 = Long.parseLong(arr2[1]);
+		
+		String message = "";
+		
+		if (from.equals("user") && to.equals("component")) {
+			// inviting user id to component id2
+			System.out.println("Here with ids: " + id + ", " + id2);
+			Users.chooseUsers(id2, id);
+			message = "Assigned successfully";
+		}
+		
+		if (message.length() > 0) {
+			// do you want to send a message?
+			renderText(message);
+		}
+	}
 }
-

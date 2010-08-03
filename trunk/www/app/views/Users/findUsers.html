@@ -4,10 +4,10 @@
 
 #{if users !=null}
 		#{if users.size()==0}
-		<label> No Users</label>
+		#{note 'error'}No users#{/note}
 		#{/if}
 		#{list items:users ,as :'User'}
-			<div class="reload-user-${User.id}" name="/users/findUsers?projectId=${currentProject.id}&userId=${User.id}">${User.name} <img src="/public/images/famfam/arrow_out.png" class="dragger"></div>
+			<div class="reload-user-${User.id}" name="/users/findUsers?projectId=${currentProject.id}&userId=${User.id}">${User.name} #{drag 'user-' + User.id /}</div>
 		#{/list}
 #{/if}
 		
@@ -21,9 +21,8 @@
 	       #{/else}
 		</div>
 		<div class="left" style="padding:15px 10px">
-			<b>Name: </b>${user.name}
-			<br><br>
-			<b>Email: </b>${user.email}
+			<p><b>Name: </b>${user.name}</p>
+			<p><b>Email: </b>${user.email}</p>
 		</div>
 		<br style="clear:both"/>
 		<div class="reload-projects-in-user-${user.id}" name="/users/listUserProjects?userId=${user.id}&x=1&currentProjectId=${currentProject.id}">Projects</div>

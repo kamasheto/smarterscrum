@@ -255,21 +255,27 @@ $(function() {
 		$(this).draggable({
 			helper: 'clone',
 			start: function(event, ui) {
-				
+				$('.dropper').each(function() {
+					$(this).show()
+					if ($(this).data('init')) return
+					$(this).data('init', true)
+					$(this).droppable({
+						accept: '.dragger',
+						addClasses: false,
+						drop: function(event2, ui2) {
+							$(this).attr('src', '/public/images/loading16.gif')
+							$.post('/loading/dynamicdrop', {from: $(ui2.draggable).attr('name'), to: $(this).attr('name')}, 
+															function() {
+																$('.dropper').hide()
+																$(this).attr('src', '/public/images/famfam/arrow_in.png')
+															})
+						}
+					})
+				})
 			}
 		})
 	})
 	
-	$('.dropper').live('mouseover', function() {
-		if ($(this).data('init')) return
-		$(this).data('init', true)
-		$(this).droppable({
-			accept: '.dragger',
-			drop: function(event, ui) {
-				
-			}
-		})
-	})
 	
 	$('.draggable').live('mouseover', function() {
 		var con = $(this).closest('.workspaceDraggables').attr('id');
