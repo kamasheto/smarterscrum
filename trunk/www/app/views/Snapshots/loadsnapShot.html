@@ -17,7 +17,7 @@
 					#{/list}
 				</thead>
 				#{list items:data, as:'component'}
-				
+				#{if component!=null}
 				#{list items:cols, as:'col'}
 				<td style="border:1px solid #333">
 				
@@ -54,7 +54,7 @@
 							#{/list}
 						</td>
 						#{/list}
-					</tr>
+					</tr>#{/if}
 				#{/list}
 			</table>
 
