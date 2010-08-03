@@ -582,8 +582,14 @@ function showProjectWorkspace(project_id) {
 }
 
 function reload() {
-	for (i in arguments) {
+	// don't reload the same box more than once, just making sure nobody is abusing our system
+	reloaded = new Array()
+	for (var i = 0; i < arguments.length; i++) {
 		sel = '.reload-' + arguments[i]
+		if ($.inArray(sel, reloaded) != -1) {
+			continue
+		}
+		reloaded.push(sel)
 		div = $(sel, '#workspace-' + CURRENT_PROJECT)
 		div.each(function() {
 			url = div.attr('name')
