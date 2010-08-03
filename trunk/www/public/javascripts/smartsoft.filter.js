@@ -15,7 +15,7 @@ String.prototype.trim = function() { return this.replace(/^\s+|\s+$/, ''); };
 var page=1;
 var filter_page = 1;
 var filter_smart_array = new Array();
-var sizeOfFilteredChildren = $("#"+id+"_content > div").filter(":visible").size();
+var globalSizeOfFilteredChildren;
 
 function filter_me(id){
 	//get the text in the text box
@@ -86,10 +86,16 @@ function smart_pagination(id, view_page){
 }
 
 function filter_smart_pagination(id,view_page, nextPrevious){
-	var numPages = Math.floor(sizeOfFilteredChildren/ itemsPerPage);
-	var extraItems = !((sizeOfFilteredChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
+	if(!nextPrevious)
+	{
+		var sizeOfFilteredChildren = $("#"+id+"_content > div").filter(":visible").size();
+		globalSizeOfFilteredChildren = sizeOfFilteredChildren;
+	}
+	var numPages = Math.floor(globalSizeOfFilteredChildren/ itemsPerPage);
+	var extraItems = !((globalSizeOfFilteredChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
 	if(extraItems)
 		numPages++;
+	alert(numPages+" "+view_page);
 	if(view_page<1)
 	{
 		filter_page++;
