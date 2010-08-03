@@ -1,19 +1,32 @@
 #{set id:controllers.Application.randomHash() /}
+<script type="text/javascript">
+var page=1;
+$(function(){
+	doOnLoad()
+	magic("#{get 'id' /}");
+	smart_pagination("#{get 'id' /}",1,true);
+});
+</script>
 <div  id="#{get 'id' /}" class="ui-widget-content draggable allCornersRounded">
 	<div  id="#{get 'id' /}_header"class="ui-widget-header mainH">
-		<span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span></span>
-		<span class="min"onclick="$(this).children().toggle();">
+		
+		<span class="revertFrom">
+			<span class="ui-icon ui-icon-circle-close"></span>
+		</span>
+			<span class="min"onclick="$(this).children().toggle();">
 			<span class="ui-icon ui-icon-circle-triangle-s" style="display: none;"></span>
 			<span class="ui-icon ui-icon-circle-triangle-n"></span>
 		</span>
-		<span class="refresh ui-icon ui-icon-refresh"></span>
-		#{get 'title'/}
+#{get 'title'/}
+			</div>
+			
+	
+	<div id="#{get 'id'/}_content" class="ui-widget-content actual" >
+	#{doLayout /}
 	</div>
-	<div id="#{get 'id'/}_content" class="ui-widget-content actual">#{doLayout /}</div>
+	<input name="filter_textBox_#{get 'id' /}" type="text" onkeyup="filter_me('#{get 'id'/}');">
+	<a href="#" onclick="page++;nextPage('#{get 'id' /}',page);">Next</a> - <a href="#" onclick="page--;previousPage('#{get 'id' /}',page);">Previous</a>
+	<div id="icons" style="display:none;">
+#{get 'title'/}
 </div>
-
-<script type="text/javascript">
-$(function(){
-	magic("#{get 'id' /}");
-});
-</script>
+</div>
