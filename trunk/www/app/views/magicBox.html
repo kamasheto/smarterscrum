@@ -25,10 +25,11 @@ $(function(){
 	
 	<div id="#{get 'id'/}_content" class="ui-widget-content actual" >
 	#{doLayout /}
-	</div>
-	<div id="#{get 'id'/}_filter">
+		<div class="filter"id="#{get 'id'/}_filter">
 	<input name="filter_textBox_#{get 'id' /}" type="text" onkeyup="filter_me('#{get 'id'/}');">
 	<a href="#" onclick="page++;nextPage('#{get 'id' /}',page);">Next</a> - <a href="#" onclick="page--;previousPage('#{get 'id' /}',page);">Previous</a>
 </div>
+	</div>
+
 </div>
 
