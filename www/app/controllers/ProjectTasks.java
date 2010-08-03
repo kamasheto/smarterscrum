@@ -47,43 +47,34 @@ public class ProjectTasks extends SmartController {
 	 * @issue 94, 96
 	 * @sprint 4
 	 */
-	public static void revokeRole(long id) 
+	public static void revokeRole(long roleId, long userId) 
 	{
-		User user = Security.getConnected();
-		Role role = Role.findById(id);
+		User connectedUser = Security.getConnected();
+		User user = User.findById(userId);
+		Role role = Role.findById(roleId);
 		String msg = "";
 		notFoundIfNull(role);
-		if(user.in(role.project).can("revokeUserRole"))
+		if((!role.baseRole)&&((connectedUser.in(role.project).can("revokeUserRole"))||(user.id == connectedUser.id)))
 		{
-			if(!role.baseRole)
+			connectedUser.removeRole(role, user);
+			msg="You have revoked a role successfuly.";
+			renderText(msg);
+		}
+		
+		if((role.baseRole))
+		{
+			if((connectedUser.in(role.project).can("revokeUserRole")))
 			{
-				user.removeRole(role);
-				msg="You have revoked a role successfuly.";
-				renderText(msg);
-			}
-			else
-			{
-				user.removeRole(role);
+				connectedUser.removeRole(role, user);
 				msg="You have revoked a role successfuly. The user is no longer a member in this project.";
 				renderText(msg);
 			}
-		}
-		
-		else if (role.users.contains(user)) 
-		{
-			if(!role.baseRole)
-			{
-				user.removeRole(role);
-				msg="You have revoked a role successfuly.";
-				renderText(msg);
-			}
-			else
+			else if((user.id == connectedUser.id))
 			{
 				msg="You cannot revoke this role without leaving the project. To request to be deleted from the project ..";
 				renderText(msg);
 			}
 		}
-		
 	}
 
 	/**

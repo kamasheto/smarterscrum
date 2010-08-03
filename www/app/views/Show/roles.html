@@ -19,13 +19,18 @@
 		#{if requestedRoles.contains(role)}
 			<div class="dim"><a href="#" onclick="deleteRequest(${role.id});"><img title="Remove Request" src="@{'public/images/famfam/group_delete.png'}"></a></div>
 		#{/if}
-		#{else}
-			<a href="#" onclick="requestRole(${role.id});"><img title="Request Role" src="@{'public/images/famfam/group_go.png'}"></a>
-		#{/else}
+		#{elseif !role.baseRole}
+			<a href="#" onclick="requestRole(${role.id});">
+			<img title="Request Role" src="@{'public/images/famfam/group_go.png'}">
+			</a>
+		#{/elseif}
 	#{/ifnot}
-	#{else}
-	<div ><a href="#" onclick="revokeRole(${role.id},${role.baseRole}, ${user.id});"><img title="Revoke Role" src="@{'public/images/famfam/group_delete.png'}"></a></div>
-	#{/else}
+	
+	#{elseif !role.baseRole}\
+	  <a href="#" onclick="revokeRole(${role.id},${role.baseRole}, ${user.id});">
+	  <img title="Revoke Role" src="@{'public/images/famfam/group_delete.png'}">
+	  </a>
+	#{/elseif}
 	</div>
 	${role.name}</div>
 #{/list}
