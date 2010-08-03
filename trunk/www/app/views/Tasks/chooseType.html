@@ -14,10 +14,16 @@ function set_type(tyId,tskId,usrId,name)
 			{id:tskId, typeId:tyId, userId:usrId},
 			function()
 			{
-				window.opener.document.getElementById("type_"+tskId).innerHTML = "Type:"+name;
-				window.opener.document.getElementById("types_"+tskId).innerHTML = "Type:"+name;
-				window.close();
+			//	window.opener.document.getElementById("type_"+tskId).innerHTML = "Type:"+name;
+			//	window.opener.document.getElementById("types_"+tskId).innerHTML = "Type:"+name;
+				window.opener.$('#task-'+tskId+'_T').load('/boards/loadboard1?sprintID=1 #task-'+tskId+'_T', function()
+				{
+					alert();
 				});
+				window.close();
+			});
+				
+						
 	return true;
 }
 </script>
