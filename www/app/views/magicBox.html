@@ -7,29 +7,38 @@ $(function(){
 	smart_pagination("#{get 'id' /}",1,true);
 });
 </script>
-<div  id="#{get 'id' /}" class="ui-widget-content draggable allCornersRounded">
+<div  id="#{get 'id' /}" class="draggable allCornersRounded">
 	<div  id="#{get 'id' /}_header"class="ui-widget-header mainH">
 		
 		<span class="revertFrom">
-			<span class="ui-icon ui-icon-circle-close"></span>
+			<span title="close"class="ui-icon ui-icon-circle-close"></span>
 		</span>
-			<span class="min"onclick="$(this).children().toggle();">
-			<span class="ui-icon ui-icon-circle-triangle-s" style="display: none;"></span>
-			<span class="ui-icon ui-icon-circle-triangle-n"></span>
-		
+			<span class="min" onclick="$(this).children().toggle();">
+			<span title="show?" class="ui-icon ui-icon-circle-triangle-s" style="display: none;"></span>
+			<span title="hide?"class="ui-icon ui-icon-circle-triangle-n"></span>
 		</span>
-			<span class="refresh ui-icon ui-icon-refresh"></span>
+			<span title="refresh?"class="refresh ui-icon ui-icon-refresh"></span>
 #{get 'title'/}
 			</div>
 			
 	
 	<div id="#{get 'id'/}_content" class="ui-widget-content actual" >
 	#{doLayout /}
-		<div class="filter"id="#{get 'id'/}_filter">
-	<input name="filter_textBox_#{get 'id' /}" type="text" onkeyup="filter_me('#{get 'id'/}');">
-	<a href="#" onclick="page++;nextPage('#{get 'id' /}',page);">Next</a> - <a href="#" onclick="page--;previousPage('#{get 'id' /}',page);">Previous</a>
-</div>
 	</div>
+		<div class="filter actual"id="#{get 'id'/}_filter">
+		<table>
+		<tbody>
+		<tr>
+		<td><input style="width:100%" name="filter_textBox_#{get 'id' /}" type="text" onkeyup="filter_me('#{get 'id'/}');"></td>
+		<td style="width:50px">
+		<a href="#"  style="display:inline-block"onclick="page--;previousPage('#{get 'id' /}',page);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
+		<a href="#"  style="display:inline-block"onclick="page++;nextPage('#{get 'id' /}',page);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
+		</td>
+		</tr>
+		</tbody>
+		</table>
+</div>
+	
 
 </div>
 
