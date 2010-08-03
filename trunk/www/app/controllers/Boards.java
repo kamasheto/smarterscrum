@@ -81,8 +81,8 @@ public class Boards extends SmartCRUD {
 		if(componentID==0)
 		{
 			List<Component> components = p.getComponents();     //component of project p
-			for (int i = 0; i < components.size(); i++) {
-				data.add(null);
+			for (int i = 0; i < components.size(); i++) {data.add(null);if(components.get(i).number!=0){
+				
 				data.set(i, new ComponentRow(components.get(i).id, components.get(i).name));
 				List<Task> tasks = components.get(i).componentSprintTasks(s);
 
@@ -105,7 +105,7 @@ public class Boards extends SmartCRUD {
 					data.get(i).get(columnsOfBoard.indexOf(pcol)).add(task);
 					}
 				}
-			}
+			}}
 			ArrayList<ArrayList<User>> u=Meetingloadboard( p,componentID);     //list of users attending meeting infront of board (not admins)
 			ArrayList<ArrayList<User>> uAdmin=MeetingloadboardAdmin( p, componentID);   //list of users attending meeting infront of board (admins)
 			render(data, columnsOfBoard,hidencolumnsOfBoard, u, uAdmin, b, s, p,columns,ud,ua,ur,ut,us);
