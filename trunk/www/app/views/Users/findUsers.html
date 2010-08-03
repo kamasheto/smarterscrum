@@ -7,11 +7,24 @@
 		<label> No Users</label>
 		#{/if}
 		#{list items:users ,as :'User'}
-			<div class="reload-user" name="/users/findUsers?projectId=${currentProject.id}&userId=${User.id}">${User.name}</div>
+			<div class="reload-user-${User.id}" name="/users/findUsers?projectId=${currentProject.id}&userId=${User.id}">${User.name}</div>
 		#{/list}
 #{/if}
 		
 #{if user!=null}
+		<div class="left">
+	   #{if user.avatar !=""}
+	         <img src="${user.avatar}"/>
+       #{/if}
+       #{else}
+         <img src="@{'public/images/no-profile.png'}"/>
+       #{/else}
+	  	<br>
+		<b>${user.name}</b>
+		<br>
+		<b>${user.email}</b>
+		<br>
+		<div class="reload-projects-in-user-${user.id}" name="/users/listUserProjects?userId=${user.id}&x=1&currentProjectId=${currentProject.id}">Projects</div>
 		<div class="left">
 		   #{if user.avatar !=""}
 	         <img src="${user.avatar}"/>
@@ -26,7 +39,7 @@
 			<b>Email: </b>${user.email}
 		</div>
 		<br style="clear:both"/>
-		<div class="reload-projects" name="/users/listUserProjects?userId=${user.id}&x=1&currentProjectId=${currentProject.id}">Projects</div>
+		<div class="reload-projects-in-user-${user.id}" name="/users/listUserProjects?userId=${user.id}&x=1&currentProjectId=${currentProject.id}">Projects</div>
 #{/if}
 
 

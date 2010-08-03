@@ -229,9 +229,6 @@ a,a img,span.revertFrom,span.min {
 .draggableChild .ui-widget-content {
 	
 }
-.draggableChild .min {
-	display: none;
-}
-.draggableChild .ui-icon-refresh {
+.draggableChild .min, .draggableChild .ui-icon-refresh {
 	display: none;
 }
