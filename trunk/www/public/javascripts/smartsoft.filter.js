@@ -35,38 +35,50 @@ function smart_pagination(id, view_page, filtered){
 	/********** Settings *************/
 	var itemsPerPage = 5; //how many divs to display per page
 	/********** Do not edit anything below this line ******/
-	//First of all get all "shown" divs and store them in the smart_array
-	var smart_array = new Array();
-	var i = 0;
-	if(!filtered)
+	//CHECKS
+	var sizeOfChildren = $("#"+id+"_content > div").size();
+	var numPages = Math.floor(sizeOfChildren/ itemsPerPage);
+	var extraItems = !((sizeOfChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
+	if(extraItems)
+		numPages++;
+	if(view_page<1)
 	{
-		$("#"+id+"_content > div").show();
-		$("#"+id+"_content > div").each(function(index){
-			smart_array[i] = this;
-			$(this).hide();
-			i++;
-		});
+		page++;
+	}
+	else if(view_page>numPages){
+		page--;
 	}
 	else
 	{
-		//we have filtered betoo3 .. paginate them
-		$("#"+id+"_content > div").filter(function(index){
-			return !($(this).is(":hidden"));
-		})
-		.each(function(index){
-			smart_array[i] = this;
-			$(this).hide();
-			i++;
-		});
-	}
-	//Now calculate the number of pages
-	var numPages = Math.floor(smart_array.length / itemsPerPage);
-	var extraItems = !((smart_array.length % itemsPerPage) == 0); //whether there are items to be added in an extra page
-	if(extraItems)
-		numPages++;
-	//Now display only those in the current page
-	if(!(view_page<1 || view_page>numPages))
-	{
+		//First of all get all "shown" divs and store them in the smart_array
+		var smart_array = new Array();
+		var i = 0;
+		if(!filtered)
+		{
+			$("#"+id+"_content > div").show();
+			$("#"+id+"_content > div").each(function(index){
+				smart_array[i] = this;
+				$(this).hide();
+				i++;
+			});
+		}
+		else
+		{
+			//we have filtered betoo3 .. paginate them
+			$("#"+id+"_content > div").filter(function(index){
+				return !($(this).is(":hidden"));
+			})
+			.each(function(index){
+				smart_array[i] = this;
+				$(this).hide();
+				i++;
+			});
+		}
+		//Now calculate the number of pages
+		var extraItems = !((smart_array.length % itemsPerPage) == 0); //whether there are items to be added in an extra page
+		if(extraItems)
+			numPages++;
+		//Now display only those in the current page
 		view_page--;//if page 1, the starting index should be zero (array ba2a)
 		var starting_index = view_page * itemsPerPage;
 		var j = 1;//counter
