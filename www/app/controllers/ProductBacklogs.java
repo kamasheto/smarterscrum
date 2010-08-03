@@ -145,8 +145,11 @@ public class ProductBacklogs extends SmartController {
 			notFound();
 		String pName = temp.name;
 		Component myComponent = Component.findById(componentId);
-		if(myComponent.deleted)
-			notFound();
+		if(componentId!=0)
+		{
+			if(myComponent.deleted)
+				notFound();
+		}
 		String Data = temp.fetchData(componentId);
 		List<Sprint> SprintsInProject = temp.sprints;
 		int maxDays = 0;
