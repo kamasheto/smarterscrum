@@ -254,6 +254,7 @@ public class Projects extends SmartCRUD
 	 *            the name of the Task Status.
 	 * @parm indicator an indicator to indicate weather the Task Status
 	 *       indicates pending or closed.
+	 * @return void
 	 * @issue 219
 	 * @sprint 2, 4
 	 */
@@ -285,10 +286,12 @@ public class Projects extends SmartCRUD
 	 * statuses in a specific project.
 	 * 
 	 * @author Heba Elsherif
-	 * @parm statusID the id of the selected Task Status.
-	 * @parm newName the new name of the selected Task Status.
-	 * @parm indicator an indicator to indicate weather the Task Status
-	 *       indicates pending or closed.
+	 * @parm statusID 
+	 *           the id of the selected Task Status.
+	 * @parm newName 
+	 *           the new name of the selected Task Status.
+	 * @parm indicator 
+	 *           an indicator to indicate weather the Task Status indicates pending or closed.
 	 * @return void
 	 * @issue 224
 	 * @sprint 4
