@@ -74,6 +74,7 @@ if(componentID==0){
 	for (int i = 0; i < components.size(); i++)// for each component get
 		// the tasks
 		{
+data.add(null);if(components.get(i).number!=0){
 			data.add(null);
 			data.set(i, new ComponentRowh(components.get(i).id, components.get(i).name));
 			List<Task> tasks = components.get(i).returnComponentTasks(s);
@@ -98,7 +99,7 @@ if(componentID==0){
 				data.get(i).get(CS.indexOf(pcol)).add("(" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
 				}
 			}
-		}	
+		}}	
 	
 	Snapshot snap = new Snapshot();
 	snap.user = user;
