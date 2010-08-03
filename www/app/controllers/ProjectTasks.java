@@ -56,7 +56,7 @@ public class ProjectTasks extends SmartController {
 		notFoundIfNull(role);
 		if((!role.baseRole)&&((connectedUser.in(role.project).can("revokeUserRole"))||(user.id == connectedUser.id)))
 		{
-			connectedUser.removeRole(role, user);
+			user.removeRole(role, user);
 			msg="You have revoked a role successfuly.";
 			renderText(msg);
 		}
@@ -65,7 +65,7 @@ public class ProjectTasks extends SmartController {
 		{
 			if((connectedUser.in(role.project).can("revokeUserRole")))
 			{
-				connectedUser.removeRole(role, user);
+				user.removeRole(role, user);
 				msg="You have revoked a role successfuly. The user is no longer a member in this project.";
 				renderText(msg);
 			}
