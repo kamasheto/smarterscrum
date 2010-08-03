@@ -27,7 +27,7 @@
 	#{/ifnot}
 	
 	#{elseif !role.baseRole}
-	  <a href="#" onclick="revokeRole(${role.id},${role.baseRole}, ${user.id});">
+	  <a href="#" onclick="revokeRole(${role.id},${role.baseRole}, ${user.id}, ${role.project.id});">
 	  <img title="Revoke Role" src="@{'public/images/famfam/group_delete.png'}">
 	  </a>
 	#{/elseif}

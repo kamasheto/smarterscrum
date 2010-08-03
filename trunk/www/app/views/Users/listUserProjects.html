@@ -5,7 +5,7 @@
 #{if x==1}
    #{if user!=null}
 	   #{list items:user.projects ,as :'project'}
-		    <div class="reload-users reload-user-${user.id} reload-roles" name="/users/listUserProjects?userId=${user.id}&x=2&projectId=${project.id}&currentProjectId=${currentProject.id}">${project.name}</div>
+		    <div class="reload-project-${project.id}-in-user-${user.id}" name="/users/listUserProjects?userId=${user.id}&x=2&projectId=${project.id}&currentProjectId=${currentProject.id}">${project.name}</div>
 	   #{/list}
    #{/if}
 #{/if}
@@ -18,7 +18,7 @@
       
       <div class="bar">${uRole.name}
        #{if ((connected.in(project).can('revokeUserRole'))&&(project.id == currentProject.id))||((user.id == connected.id)&&(!uRole.baseRole))}
-	        <a onclick="revokeRole(${uRole.id}, ${uRole.baseRole}, ${user.id});">
+	        <a onclick="revokeRole(${uRole.id}, ${uRole.baseRole}, ${user.id}, ${project.id});">
 	        <img title="Revoke Role" src="@{'/public/images/famfam/group_delete.png'}">
 	        </a>
 	    #{/if}
