@@ -18,11 +18,10 @@ function filter_me(id){
 			var inputCased = input.toLowerCase();
 			var test = $(this).text().toLowerCase().split(inputCased);
 			//to show the result even if not in the current page after applying the pagination
-			if(test.length != 1 && $(this).is(':hidden'))
-				$(this).show();
+			if(test.length != 1) $(this).show();
 			return test.length == 1;
 		}).hide();
-		smart_pagination(id,page,true);
+		//smart_pagination(id,page,true);
 	}
 }
 
