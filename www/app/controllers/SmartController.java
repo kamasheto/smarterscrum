@@ -3,11 +3,13 @@ package controllers;
 	import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import models.Board;
 import models.Column;
 import models.Component;
+import models.Meeting;
 import models.Project;
 import models.Snapshot;
 import models.Sprint;
@@ -29,7 +31,7 @@ public class SmartController extends Controller {
 		List<Sprint> sprints = Sprint.findAll();
 		for (Sprint s : sprints) {
 			Date now = Calendar.getInstance().getTime();
-			if (s.endDate != null && s.endDate.before(now)) {
+			if (s.endDate != null && s.endDate.before(now) && s.ended==false) {
 				s.ended = true;
 				Project p = s.project;
 				Board b = p.board;
@@ -110,10 +112,92 @@ public class SmartController extends Controller {
 				snap.save();
 				s.finalsnapshot=snap;
 				s.save();
+				List<Component> Cs=p.components;
+					for(int index=0;index<Cs.size();index++){
+						
+						
+						Board b1 = Cs.get(index).componentBoard;
+
+						
+						List<User> users = Cs.get(index).getUsers();
+						ArrayList<ComponentRowh> data1 = new ArrayList<ComponentRowh>();
+						List<Column> columns1 = b.columns;
+						ArrayList<String> Columnsofsnapshot1 = new ArrayList<String>();
+						List<Column> CS1 =new ArrayList<Column>();
+								for( int i=0; i<columns1.size();i++)
+						{
+							if(columns1.get( i ).onBoard==true)
+							{
+								CS1.add( columns1.get( i ) );
+							}
+						}
+						for (int i = 0; i < CS1.size(); i++) {
+							Columnsofsnapshot1.add(null);
+							Columnsofsnapshot1.set(i, CS1.get(i).name);
+						}
+
+						int smallest1;
+						Column temp1;
+						for (int i = 0; i < CS1.size(); i++) {
+							smallest1 = i;
+							for (int j = i + 1; j < CS1.size(); j++) {
+								if (CS1.get(smallest1).sequence > CS1.get(j).sequence) {
+									smallest1 = j;
+
+								}
+
+							}
+							temp1 = CS1.get(smallest1);
+							CS1.set(smallest1, columns1.get(i));
+							CS1.set(i, temp1);
+							Columnsofsnapshot1.set(smallest1, CS1.get(i).name);
+							Columnsofsnapshot1.set(i, temp1.name);
+						}
+
+						for (int i = 0; i < users.size(); i++)// for each component get
+						// the tasks
+						{
+							data1.add(null);
+							data1.set(i, new ComponentRowh(users.get(i).id, users.get(i).name));
+							List<Task> tasks1 = users.get(i).returnUserTasks(s, Cs.get(index).id);
+
+							for (int j = 0; j < CS1.size(); j++) {
+								data1.get(i).add(null);
+								data1.get(i).set(j, new ArrayList<String>());
+							}
+
+							for (Task task : tasks1) {
+								Column pcol = new Column();
+								for(int k=0;k<task.taskStatus.columns.size();k++)
+								{
+									pcol = task.taskStatus.columns.get(k);
+									if(pcol.board.id==b.id)
+									{
+										break;
+									}
+								}
+								if(pcol.onBoard==true&&!pcol.deleted)
+								{
+								data.get(i).get(CS.indexOf(pcol)).add(  "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+								}
+							}
+						}	 user = Security.getConnected();
+
+						Snapshot snap1 = new Snapshot();
+						snap1.user = user;
+						snap1.type = "sprint "+s.sprintNumber+" "+Cs.get(index).name;
+						snap1.board = b1;
+						snap1.component=Cs.get(index);
+						snap1.sprint = s;
+						snap1.data = data1;
+						snap1.Columnsofsnapshot = Columnsofsnapshot1;
+						snap1.save();
+						
+					}			
+					
 			}
 
 		}
-	}
-	
+	}	
 
 }
