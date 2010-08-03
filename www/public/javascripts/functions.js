@@ -171,7 +171,7 @@ function revokeRole(roleId, baseRole, userId)
 				function(msg)
 				{
 			      $.bar({message:msg});
-			      reload('roles', 'users', 'user'+userId);
+			      reload('roles', 'users', 'projects-in-user-'+userId);
 			    });
 	};
 }
@@ -408,7 +408,6 @@ function loadBox(url, el)
 	$('#' + el + ' #myTemp').load(url, function() {
 		$('#' + el + ' #myTemp').children().attr('name',url);
 		$('#' + el + ' #myTemp').children().css('position','absolute!important');
-
 		$('#' + el + ' #myTemp').children().css('z-index','4');
 		$('#' + el + ' #myTemp').replaceWith($('#' + el + ' #myTemp').html());
 		myDivs.push(url);
