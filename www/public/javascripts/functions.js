@@ -398,18 +398,20 @@ function load(url, el, n) {
 		myDivs.push(url);
 }
 
-
+CURRENT_OFFSET = 0
 function loadBox(url, el, classes) 
 {
 	if($.inArray(url,myDivs)==-1)
 	{
 	$('#' + el).append('<div style="position:absolute;z-index:0"id="myTemp"></div>');
 	
-	$('#' + el + ' #myTemp').load(url, function() {
-		$('#' + el + ' #myTemp').children().attr('name',url);
-		$('#' + el + ' #myTemp').children().css('position','absolute!important');
-		$('#' + el + ' #myTemp').children().css('z-index','4');
-		$('#' + el + ' #myTemp').replaceWith($('#' + el + ' #myTemp').html());
+	element = $('#' + el + ' #myTemp')
+	element.load(url, function() {
+		element.children().attr('name', url);
+		element.children().addClass(classes)
+		element.children().css('position','absolute!important');
+		element.children().css('z-index','4');
+		element.replaceWith(element.html());
 		doOnLoad()
 		myDivs.push(url);
 	});
