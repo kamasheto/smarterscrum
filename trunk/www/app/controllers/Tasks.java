@@ -1777,7 +1777,7 @@ public class Tasks extends SmartCRUD
 			title = "C" + component.number + ": Tasks";
 			List<Task> task = new ArrayList<Task>();
 			task = Task.find( "byComponentAndDeleted", component, false ).fetch();
-			render( task, title );
+			render( task, title, mine );
 		}
 		else
 		{
@@ -1787,7 +1787,7 @@ public class Tasks extends SmartCRUD
 				if( task1.deleted )
 					notFound();
 				if( task1.parent != null )
-					title = "S" + task1.parent.number + " Task" + task1.number;
+					title = "Task " + task1.parent.number + "." + task1.number;
 				else
 					title = "Task " + task1.number;
 				render( task1, title );
@@ -1808,7 +1808,7 @@ public class Tasks extends SmartCRUD
 						}
 					}
 
-					render(task, title);
+					render(task, title, mine);
 				}else{
 					if(projectId!=0){
 							title="Project Tasks";
@@ -1816,7 +1816,7 @@ public class Tasks extends SmartCRUD
 							List<Task> task = new ArrayList<Task>();
 							task = Task.find("byProjectAndDeletedAndParentIsNull", project, false).fetch();
 							System.out.println(task);
-							render(task, title);
+							render(task, title, mine);
 						}else{
 							if(meetingId!=0){
 								Meeting meeting = Meeting.findById(meetingId);
