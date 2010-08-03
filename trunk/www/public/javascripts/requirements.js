@@ -1,9 +1,4 @@
 function doOnLoad() {
-	
-	$('.dim').live('mouseover', function() {
-		$(this).click(function() {	
-		})
-	})
 		$('.formatDate').each(function(){
 			if (!$(this).data('processed')) {
 				$(this).data('processed', true)
