@@ -52,6 +52,11 @@ public class Application extends SmartController
 		return res;
 	}
 
+	public static void loading()
+	{
+		render();
+	}
+	
 	public static String randomHash()
 	{
 		return randomHash( 32 );
