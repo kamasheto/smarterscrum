@@ -17,6 +17,8 @@ public class Snapshot extends SmartModel {
 	public Date date;
 	@ManyToOne
 	public Sprint sprint;
+	@ManyToOne
+	public Component component;
 
 	@ManyToOne
 	public Board board;
