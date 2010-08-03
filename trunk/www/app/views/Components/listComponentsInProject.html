@@ -5,3 +5,6 @@
 		<div name="/components/viewTheComponent?componentId=${component.id}" class="reload-component-${component.id}">C${component.number}: ${component.name}#{if connected.in(project).can('deleteComponent')}<a onclick="javascript:deleteTheComponent(${component.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if connected.in(project).can('editComponent')}<a href="javascript:overlayOpen('/admin/components/${component.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}<a href="javascript:overlayOpen('/productbacklogs/showgraph?id=${projectId}&componentId=${component.id}')"><img title="Overall Chart" src="@{'/public/images/famfam/chart.png'}"></a></div>
 #{/if}
 	#{/list}
+	#{else}
+		#{note 'error'}There are no components to display#{/note}
+	#{/else}

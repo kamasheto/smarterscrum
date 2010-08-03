@@ -10,7 +10,10 @@ function removePermission(role_id, perm_id, that) {
 
 function delete_role(role_id, that) {
 	if (confirm("Are you sure you want to delete this role")) {
-		$.post('/roles/delete?id=' + role_id, function() {
+		$.post('/roles/delete?id=' + role_id, function(data) {
+			if (data) {
+				$.bar({message: data})
+			}
 			reload('roles')
 		})
 	}
