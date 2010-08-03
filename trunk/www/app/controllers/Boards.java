@@ -446,7 +446,9 @@ public class Boards extends SmartCRUD {
 			if(p.components.get(i).componentBoard!=null)
 			boards.add(p.components.get(i).componentBoard);
 		}
-		render(boards,sprintID,p,s);
+		List<Component> components=p.components;
+		
+		render(boards,sprintID,p,s,components);
 	}
 	
 	public static ArrayList getDescPerm (Project p)
