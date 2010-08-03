@@ -10,9 +10,12 @@
 .draggableChild {
 	width: 100%;
 }
+
 .draggableChild .ui-widget-content.actual {
-border:6px solid #BF5F91 !important;
-width:auto;}
+	border-left: 5px solid #BF5F91 !important;
+	width: auto;
+}
+
 .ui-widget-content {
 	width: 100%;
 }
@@ -57,7 +60,7 @@ width:auto;}
 	margin-bottom: 5px;
 }
 
-.draggableChild .ui-widget-header,.overlay .ui-widget-header, .bar {
+.draggableChild .ui-widget-header,.overlay .ui-widget-header,.bar {
 	font-size: 12px;
 	background: #ddd;
 	background: -moz-linear-gradient(center bottom, #eee 10%, #ddd 90%);
@@ -189,7 +192,7 @@ img {
 }
 
 #top_header_projects_pane {
-	background-color:#111;
+	background-color: #111;
 	color: white;
 	text-transform: uppercase;
 	position: absolute;
@@ -246,7 +249,8 @@ img {
 
 .draggableChild.yellowBg .ui-widget-header {
 	background: #FFFDE6 !important;
-	background:-moz-linear-gradient(center bottom , #FEFFF5 10%, #FFFDE6 90%) repeat scroll 0 0 transparent !important;
+	background: -moz-linear-gradient(center bottom, #FEFFF5 10%, #FFFDE6 90%)
+		repeat scroll 0 0 transparent !important;
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #FFFDE6),
 		color-stop(0.9, #FEFFF5) ) !important;
 	color: #000;
