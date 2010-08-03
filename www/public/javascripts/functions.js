@@ -32,8 +32,7 @@ var ping = function() {
 				}
 
 			 $.extend($.gritter.options, { 
-				fade_in_speed: 50, // how fast notifications fade in (string or
-									// int)
+				fade_in_speed: 50, // how fast notifications fade in (string or int)
 				fade_out_speed: 300, // how fast the notices fade out
 				time: 5000 // hang on the screen for...
 			});
@@ -250,6 +249,28 @@ function deleteStory(sId,box,d){
 
 
 $(function() {
+	$('.dragger').live('mouseover', function(){
+		if ($(this).data('init')) return
+		$(this).data('init', true)
+		$(this).draggable({
+			helper: 'clone',
+			start: function(event, ui) {
+				
+			}
+		})
+	})
+	
+	$('.dropper').live('mouseover', function() {
+		if ($(this).data('init')) return
+		$(this).data('init', true)
+		$(this).droppable({
+			accept: '.dragger',
+			drop: function(event, ui) {
+				
+			}
+		})
+	})
+	
 	$('.draggable').live('mouseover', function() {
 		var con = $(this).closest('.workspaceDraggables').attr('id');
 		$(this).data('init', 1);
@@ -261,13 +282,13 @@ $(function() {
 		});
 		var h = $(this).height();
 		var w = $(this).width();
-		$(this).resizable( {
-			containment: '#'+con,
-			minHeight: $(this).height(),
-			minWidth: 300,
-			autoHide : true,
-			disable: false,
-		});
+		// $(this).resizable( {
+		// 	containment: '#'+con,
+		// 	minHeight: $(this).height(),
+		// 	minWidth: 300,
+		// 	autoHide : true,
+		// 	disable: false,
+		// });
 
 	});
 
@@ -352,6 +373,7 @@ $(function() {
 	$('.revertFrom').live('click', function() {
 		var url = $(this).parent().parent().attr('name');
 		removeFromDiv(url);
+		CURRENT_OFFSET -= 315
 		var theId = $(this).parent().parent().attr('id');
 		var theSecondId = theId + "_2";
 		if ($('#' + theSecondId).attr('id') == null)
@@ -393,7 +415,6 @@ function load(url, el, n) {
 			$('#' + el + '_content').slideDown(400);
 											magic(el);
 		});
-		
 	}
 	if(n==1)
 	{	myDivs.push(url);
@@ -403,7 +424,7 @@ function load(url, el, n) {
 	}
 }
 
-CURRENT_OFFSET = 0
+CURRENT_OFFSET = 10
 function loadBox(url, el, classes) 
 {
 	if($.inArray(url,myDivs)==-1)
@@ -415,6 +436,8 @@ function loadBox(url, el, classes)
 		element.children().attr('name', url);
 		element.children().addClass(classes)
 		element.children().css('position','absolute!important');
+		element.children().css('left', CURRENT_OFFSET+'px')
+		CURRENT_OFFSET += 315
 		element.children().css('z-index','4');
 		element.replaceWith(element.html());
 		doOnLoad()
