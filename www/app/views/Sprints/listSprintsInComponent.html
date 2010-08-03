@@ -13,7 +13,19 @@
 		Sprint ${sprint.sprintNumber} Task Board
 		<a href="javascript:loadBox('/Snapshots/index?sid=${sprint.id}&cid=${component.id}','workspace-${component.project.id}')"><img src="@{'/public/images/famfam/photos.png'}">
 		</a></a></div>
-	#{/if}#{/if}
+	#{/if}
+	#{else}
+	#{list items:component.snapshots, as:'snapshot'}
+	#{if snapshot.sprint.id == sprint.id}
+	
+	<div class="overlay" name="/Snapshots/loadsnapShot?id=${snapshot.id}">
+Sprint ${sprint.sprintNumber}'s Final Snapshot<a  onClick="loadBox('/Snapshots/index?sid=${sprint.id}&cid=${component.id}','workspace-${component.project.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+</div>
+	
+	#{/if}
+	#{/list}
+	#{/else}
+	#{/if}
 	#{elseif type == 2}
 		<div class="overlay"name="@{SprintBacklog.showGraph(sprint.id,component.id)}" title="view the burndown chart?">Sprint ${sprint.sprintNumber} Chart</div>
 	#{/elseif}
