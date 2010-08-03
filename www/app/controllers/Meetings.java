@@ -5,10 +5,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import notifiers.Notifications;
-
-import controllers.CRUD.ObjectType;
-
 import models.Artifact;
 import models.Component;
 import models.Meeting;
@@ -17,6 +13,7 @@ import models.Project;
 import models.Sprint;
 import models.Task;
 import models.User;
+import notifiers.Notifications;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
@@ -43,7 +40,7 @@ public class Meetings extends SmartCRUD
 		ObjectType type = ObjectType.get( getControllerClass() );
 		notFoundIfNull( type );
 		Project currentProject = Project.findById( id );
-		if(currentProject.deleted)
+		if( currentProject.deleted )
 			notFound();
 		List<Sprint> sprints = currentProject.upcomingSprints();
 		User creator = Security.getConnected();
@@ -72,8 +69,8 @@ public class Meetings extends SmartCRUD
 	{
 		Meeting M = Meeting.findById( meetingid );
 		boolean mem = false;
-		List<MeetingAttendance> att=MeetingAttendance.find( "meeting.id = ?1 and deleted = ?2 and status LIKE ?3",meetingid,false,"confirmed" ).fetch();
-		for( MeetingAttendance at : att) 
+		List<MeetingAttendance> att = MeetingAttendance.find( "meeting.id = ?1 and deleted = ?2 and status LIKE ?3", meetingid, false, "confirmed" ).fetch();
+		for( MeetingAttendance at : att )
 		{
 			if( at.user == Security.getConnected() )
 			{
@@ -139,7 +136,7 @@ public class Meetings extends SmartCRUD
 		List<String> types = currentProject.meetingTypes();
 		try
 		{
-			render( type, object, sprints ,types);
+			render( type, object, sprints, types );
 		}
 		catch( TemplateNotFoundException e )
 		{
@@ -180,7 +177,7 @@ public class Meetings extends SmartCRUD
 				// redirect to the same page without giving error and with the
 				// same project
 
-				render( "Meetings/blank.html", type, currentProject, creator ,sprints,types);
+				render( "Meetings/blank.html", type, currentProject, creator, sprints, types );
 			}
 			catch( TemplateNotFoundException e )
 			{
@@ -191,7 +188,7 @@ public class Meetings extends SmartCRUD
 		{
 
 			renderArgs.put( "error", "Please fix Meeting date" );
-			render( "Meetings/blank.html", type, currentProject, creator ,sprints,types);
+			render( "Meetings/blank.html", type, currentProject, creator, sprints, types );
 			// render( request.controller.replace( ".", "/" ) + "/blank.html",
 			// type );
 		}
@@ -225,7 +222,7 @@ public class Meetings extends SmartCRUD
 		{
 			// redirect( request.controller + ".list" );
 			// Meetings.viewMeetings( currentProject.id );
-			redirect( "/Application/overlayKiller" );
+			Application.overlayKiller( "reload('meetings')" );
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
 		{
@@ -248,12 +245,17 @@ public class Meetings extends SmartCRUD
 		 * View meetings controller which takes a projectID as an ID and returns
 		 * the meeting to use it in the model view
 		 */
+		boolean empty = false;
 		Date currDate = new Date();
 		Project project = Project.findById( id );
 		List<Meeting> meetings = Meeting.find( "byProject.idAndDeleted", id, false ).fetch();
 		List<Meeting> upcoming = new ArrayList<Meeting>();
 		List<Meeting> past = new ArrayList<Meeting>();
 		List<Meeting> current = new ArrayList<Meeting>();
+		if( meetings.size() == 0 )
+		{
+			empty = true;
+		}
 		while( meetings.isEmpty() == false )
 		{
 			Meeting temp = (meetings.remove( 0 ));
@@ -267,23 +269,22 @@ public class Meetings extends SmartCRUD
 				current.add( temp );
 		}
 
-		List<MeetingAttendance> invitations=MeetingAttendance.find("meeting.project = ?1 and user = ?2 and deleted = ?3 and meeting.endTime > ?4 and status LIKE ?5",project,Security.getConnected(),false,new Date().getTime(),"waiting").fetch();
-		
-		
+		List<MeetingAttendance> invitations = MeetingAttendance.find( "meeting.project = ?1 and user = ?2 and deleted = ?3 and meeting.endTime > ?4 and status LIKE ?5", project, Security.getConnected(), false, new Date().getTime(), "waiting" ).fetch();
+
 		String projectName = project.name;
-		render( meetings, id, projectName, past, upcoming, current, project ,invitations);
+		render( meetings, id, projectName, past, upcoming, current, project, invitations, empty );
 
 	}
 
-	public static void save(String id) throws Exception
+	public static void save( String id ) throws Exception
 	{
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		JPASupport object = type.findById(id);
+		ObjectType type = ObjectType.get( getControllerClass() );
+		notFoundIfNull( type );
+		JPASupport object = type.findById( id );
 		validation.valid( object.edit( "object", params ) );
 		Meeting temp = (Meeting) object;
 		Project currentProject = temp.project;
-		Security.check( Security.getConnected().in( currentProject ).can( "editMeeting" ) ||temp.creator.equals(Security.getConnected()) ||temp.endTime<new Date().getTime());
+		Security.check( Security.getConnected().in( currentProject ).can( "editMeeting" ) || temp.creator.equals( Security.getConnected() ) || temp.endTime < new Date().getTime() );
 		Date currentDate = new Date();
 		long longCurrentDate = currentDate.getTime();
 		List<Sprint> sprints = currentProject.upcomingSprints();
@@ -292,19 +293,19 @@ public class Meetings extends SmartCRUD
 		{
 			renderArgs.put( "error", Messages.get( "crud.hasErrors" ) );
 			try
-			{		
-				render( "Meetings/show.html", type,object, sprints ,types);
+			{
+				render( "Meetings/show.html", type, object, sprints, types );
 			}
 			catch( TemplateNotFoundException e )
 			{
-				render( "CRUD/show.html", type ,object, sprints ,types);
+				render( "CRUD/show.html", type, object, sprints, types );
 			}
 		}
 		else if( !(temp.startTime > longCurrentDate && temp.startTime < temp.endTime) )
 		{
 
 			renderArgs.put( "error", "Please fix Meeting date" );
-			render( "Meetings/show.html", type,object , sprints ,types);
+			render( "Meetings/show.html", type, object, sprints, types );
 			// render( request.controller.replace( ".", "/" ) + "/blank.html",
 			// type );
 		}
@@ -325,7 +326,6 @@ public class Meetings extends SmartCRUD
 		}
 
 		object.save();
-		
 
 		Logs.addLog( Security.getConnected(), "edit", "Meeting", temp.id, temp.project, new Date( System.currentTimeMillis() ) );
 		flash.success( "Meeting edited successfully" );
@@ -333,7 +333,7 @@ public class Meetings extends SmartCRUD
 		{
 			// redirect( request.controller + ".list" );
 			// Meetings.viewMeetings( currentProject.id );
-			redirect( "/Application/overlayKiller" );
+			Application.overlayKiller( "reload('meeting-" + temp.id + "')" );
 		}
 	}
 
@@ -450,7 +450,8 @@ public class Meetings extends SmartCRUD
 
 	public static void viewMeeting( long id )
 	{
-		Meeting meeting = Meeting.findById( id );
+		Meeting meeting = Meeting.find( "byIdAndDeleted", id, false ).first();
+		notFoundIfNull( meeting );
 		MeetingAttendance ma = MeetingAttendance.find( "byMeetingAndUserAndDeleted", meeting, Security.getConnected(), false ).first();
 		boolean invited = false;
 		boolean attending = false;
@@ -515,7 +516,7 @@ public class Meetings extends SmartCRUD
 			meeting.status = false;
 			if( users.isEmpty() == false )
 				message = "unfortunately " + meeting.name + " meeting that you've been invited to is cancelled";
-			Notifications.notifyUsers( users, "Meeting Canceled", message, (byte) -1);
+			Notifications.notifyUsers( users, "Meeting Canceled", message, (byte) -1 );
 		}
 
 		List<Artifact> artifacts = meeting.artifacts;
@@ -531,7 +532,7 @@ public class Meetings extends SmartCRUD
 		{
 			if( users.isEmpty() == false )
 				message = "unfortunately " + meeting.name + " meeting notes are deleted.";
-			Notifications.notifyUsers( users, "Meeting Notes deleted", message, (byte) -1);
+			Notifications.notifyUsers( users, "Meeting Notes deleted", message, (byte) -1 );
 		}
 		Logs.addLog( Security.getConnected(), "delete", "Meeting", meeting.id, meeting.project, new Date( System.currentTimeMillis() ) );
 		meeting.save();
@@ -568,7 +569,7 @@ public class Meetings extends SmartCRUD
 		String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
 		String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
 		String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-		Notifications.notifyUsers( userList, header, body, (byte) 0);
+		Notifications.notifyUsers( userList, header, body, (byte) 0 );
 
 	}
 
@@ -605,7 +606,7 @@ public class Meetings extends SmartCRUD
 					String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
 					String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
 					String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-					Notifications.notifyProjectUsers( meeting.project, header, body, "setMeeting", (byte)0);
+					Notifications.notifyProjectUsers( meeting.project, header, body, "setMeeting", (byte) 0 );
 				}
 			}
 		}
@@ -652,7 +653,7 @@ public class Meetings extends SmartCRUD
 						String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
 						String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
 						String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-						Notifications.notifyUsers( userList, header, body, (byte)0);
+						Notifications.notifyUsers( userList, header, body, (byte) 0 );
 					}
 				}
 			}
@@ -707,7 +708,7 @@ public class Meetings extends SmartCRUD
 
 		if( users.isEmpty() == false )
 		{
-			Notifications.notifyUsers( users, " " + meeting.name + " Meeting Modification", message, (byte)0);
+			Notifications.notifyUsers( users, " " + meeting.name + " Meeting Modification", message, (byte) 0 );
 			flag = true;
 		}
 		renderJSON( flag );
@@ -732,17 +733,20 @@ public class Meetings extends SmartCRUD
 		n.save();
 		meeting.artifacts.add( n );
 		meeting.save();
-		flash.success("The note has been added successfully!");
+		flash.success( "The note has been added successfully!" );
 
 	}
+
 	/**
 	 * Passes on the meeting id to the add a note page.
+	 * 
 	 * @author Hadeer Younis
-	 * @param id, meeting id
+	 * @param id
+	 *            , meeting id
 	 */
-	public static void newNote(long id)
+	public static void newNote( long id )
 	{
-		render(id);
+		render( id );
 	}
 
 	/**
@@ -755,7 +759,7 @@ public class Meetings extends SmartCRUD
 	public static void note( long id, int i, boolean noteFlag )
 	{
 		Artifact note = Artifact.findById( id );
-		render( note,i,noteFlag );
+		render( note, i, noteFlag );
 	}
 
 	/**
@@ -792,7 +796,7 @@ public class Meetings extends SmartCRUD
 		Meeting m = Meeting.findById( meetingID );
 		if( m.endTime > new Date().getTime() )
 		{
-			if(Security.getConnected().in(m.project).can("joinMeeting"))
+			if( Security.getConnected().in( m.project ).can( "joinMeeting" ) )
 			{
 				MeetingAttendance ma = MeetingAttendance.find( "user = ?1 and meeting =?2", Security.getConnected(), m ).first();
 				if( ma != null )
@@ -807,90 +811,91 @@ public class Meetings extends SmartCRUD
 					attendance.status = "confirmed";
 					attendance.save();
 				}
-				flash.success("You have succesfully joined meeting "+m.name);
-				renderJSON(true);
+				flash.success( "You have succesfully joined meeting " + m.name );
+				renderJSON( true );
 			}
 			else
-				renderJSON(false);
+				renderJSON( false );
 		}
 		else
-			renderJSON(false);
+			renderJSON( false );
 	}
-	
-	public static void invitedMembers(long meetingId)
+
+	public static void invitedMembers( long meetingId )
 	{
-		Meeting meeting= Meeting.findById(meetingId);
-		List<MeetingAttendance> attendance= MeetingAttendance.find("byMeeting.idAndDeleted",meetingId,false).fetch();
-		List<MeetingAttendance> confirmed= new ArrayList<MeetingAttendance>();
-		List<MeetingAttendance> declined=new ArrayList<MeetingAttendance>();
-		List<MeetingAttendance> waiting= new ArrayList<MeetingAttendance>();
-		while (attendance.isEmpty() == false)
+		Meeting meeting = Meeting.findById( meetingId );
+		List<MeetingAttendance> attendance = MeetingAttendance.find( "byMeeting.idAndDeleted", meetingId, false ).fetch();
+		List<MeetingAttendance> confirmed = new ArrayList<MeetingAttendance>();
+		List<MeetingAttendance> declined = new ArrayList<MeetingAttendance>();
+		List<MeetingAttendance> waiting = new ArrayList<MeetingAttendance>();
+		while( attendance.isEmpty() == false )
 		{
-			MeetingAttendance ma= attendance.remove(0);
-				if(ma.status.equals("confirmed"))
-					{
-						confirmed.add(ma);
-						continue;
-					}
-				
-					if(ma.status.equals("declined"))
-					{
-						declined.add(ma);
-						continue;
-					}
-					if(ma.status.equals("waiting"));
-					{
-						waiting.add(ma);
-						continue;
-				}
+			MeetingAttendance ma = attendance.remove( 0 );
+			if( ma.status.equals( "confirmed" ) )
+			{
+				confirmed.add( ma );
+				continue;
+			}
+
+			if( ma.status.equals( "declined" ) )
+			{
+				declined.add( ma );
+				continue;
+			}
+			if( ma.status.equals( "waiting" ) )
+				;
+			{
+				waiting.add( ma );
+				continue;
+			}
 		}
-		
-		render(confirmed,declined,waiting,meeting);
-		
+
+		render( confirmed, declined, waiting, meeting );
+
 	}
-	
-	public static void meetingTasks(long meetingId)
+
+	public static void meetingTasks( long meetingId )
 	{
 		render();
 	}
-	
-	public static void viewAttendeeStatus(long id)
+
+	public static void viewAttendeeStatus( long id )
 	{
-		MeetingAttendance attendance= MeetingAttendance.findById(id);
-		boolean past= (attendance.meeting.endTime<new Date().getTime());
-		String status="";
-		if(!past)
+		MeetingAttendance attendance = MeetingAttendance.findById( id );
+		boolean past = (attendance.meeting.endTime < new Date().getTime());
+		String status = "";
+		if( !past )
 		{
-			if(attendance.status.equals("waiting"))
+			if( attendance.status.equals( "waiting" ) )
 			{
-				status="awaiting reply";
+				status = "awaiting reply";
 			}
-			if(attendance.status.equals("confirmed"))
+			if( attendance.status.equals( "confirmed" ) )
 			{
-				status="attending";
+				status = "attending";
 			}
-			if(attendance.status.equals("declined"))
+			if( attendance.status.equals( "declined" ) )
 			{
-				status="not attending";
+				status = "not attending";
 			}
-			
+
 		}
 		else
 		{
-			if(attendance.status.equals("waiting"))
+			if( attendance.status.equals( "waiting" ) )
 			{
-				status="did not reply";
+				status = "did not reply";
 			}
-			if(attendance.status.equals("confirmed"))
+			if( attendance.status.equals( "confirmed" ) )
 			{
-				status="attended";
+				status = "attended";
 			}
-			if(attendance.status.equals("declined"))
+			if( attendance.status.equals( "declined" ) )
 			{
-				status="did not attend";
+				status = "did not attend";
 			}
 		}
-		
-		render(attendance,past,status);
+
+		render( attendance, past, status );
 	}
 }
