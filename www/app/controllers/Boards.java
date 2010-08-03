@@ -363,7 +363,7 @@ public class Boards extends SmartCRUD {
 	 *            the user id
 	 */
 	
-	public static void showHiddenColumn(long cid,long uid)
+	public static void showHiddenColumn(long cid,long uid, long sid, long compid)
 	{
 		Column c=Column.findById( cid );
 		if(c.deleted)
@@ -382,9 +382,12 @@ public class Boards extends SmartCRUD {
 		if(u.deleted)
 			notFound();
 		Logs.addLog(u, "shown", "Column", cid, c.board.project, cal.getTime());
-		String message = u.name+" "+ "has shown " + c.name;
-		Notifications.notifyProjectUsers(c.board.project, "Show Column",message, "addColumn", (byte) 0);
-		
+		String url ="";
+		if(compid==0)
+		url = "@{Application.externalOpen("+c.board.project.id+", '/Boards/loadboard1?sprintID="+sid+"', true)}";
+		else
+		url = "@{Application.externalOpen("+c.board.project.id+", '/Boards/loadboard1?sprintID=sid&componentID="+compid+"', true)}";	
+		Notifications.notifyProjectUsers(c.board.project, "addColumn", url, "Coulumn", c.name, (byte)0);		
 	}
 	/**
 	 * this method is used to search for a specific column and change the value
@@ -397,7 +400,7 @@ public class Boards extends SmartCRUD {
 	 * @param uid
 	 *            the user id
 	 */
-	public static void hideColumn(long cid,long uid)
+	public static void hideColumn(long cid,long uid, long sid, long compid)
 	{
 		Column c=Column.findById( cid );
 		if(c.deleted)
@@ -419,11 +422,13 @@ public class Boards extends SmartCRUD {
 		User u = User.findById(uid);
 		if(u.deleted)
 			notFound();
+		String url ="";
+		if(compid==0)
+		url = "@{Application.externalOpen("+c.board.project.id+", '/Boards/loadboard1?sprintID="+sid+"', true)}";
+		else
+		url = "@{Application.externalOpen("+c.board.project.id+", '/Boards/loadboard1?sprintID=sid&componentID="+compid+"', true)}";	
 		Logs.addLog(u, "hided", "Column", c.id, c.board.project, cal.getTime());
-		String message = u.name+" " + "has hided " + c.name;
-		Notifications.notifyProjectUsers(c.board.project, "Hide Column", message, "deleteColumn", (byte) 0);
-		
-		
+		Notifications.notifyProjectUsers(c.board.project, "deleteColumn", url, "Coulumn", c.name, (byte)-1);		
 	}
 	/**
 	 * This method takes project P & retrn a list of users 

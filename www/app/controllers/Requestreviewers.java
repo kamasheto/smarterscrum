@@ -41,8 +41,7 @@ public class Requestreviewers extends SmartController {
 	 * @task C3,S23
 	 * @Sprint2
 	 */
-	public static void requestToBeReviewer(long ID) {
-		Date todayDate = new GregorianCalendar().getTime();
+	public static void requestToBeReviewer(long ID) {		
 		String message = "";
 		TaskType task = TaskType.findById(ID);
 		// modified by mahmoudsakr
@@ -83,9 +82,7 @@ public class Requestreviewers extends SmartController {
 
 						} else {
 							Requestreviewer x = new Requestreviewer(user, project.components.get(z), task);
-							x.save();
-							String header = "User: " + "\'" + Security.getConnected().name + "\'" + " requested to be a " + "\'" + task.name + "\'" + " reviewer.";
-							String body = "User: " + "\'" + Security.getConnected().name + "\'" + " requested to be a " + "\'" + task.name + "\'" + " reviewer." + '\n' + " Requested at: " + new Date(System.currentTimeMillis()) + ".";
+							x.save();							
 							Logs.addLog(Security.getConnected(), "Request to be a reviewer", "Task Type", ID, project, new Date(System.currentTimeMillis()));
 							// Notifications.notifyProjectUsers(project, header,
 							// body, "requestToBeReviewer", (byte) 0);
@@ -137,9 +134,7 @@ public class Requestreviewers extends SmartController {
 
 							} else {
 								Requestreviewer x = new Requestreviewer(user, project.components.get(z), task);
-								x.save();
-								String header = "User: " + "\'" + Security.getConnected().name + "\'" + " requested to be a " + "\'" + task.name + "\'" + " reviewer.";
-								String body = "In Project: " + "\'" + project.name + "\'" + ".";
+								x.save();								
 								Logs.addLog(Security.getConnected(), "Request to be a reviewer", "Task Type", ID, project, new Date(System.currentTimeMillis()));
 								// Notifications.notifyUsers(project, header,
 								// body, "RequestToBeReviewer", new Byte((byte)
@@ -197,11 +192,10 @@ public class Requestreviewers extends SmartController {
 		if (requests != null) {
 			requests.accepted = true;
 			message = "the request has been accepted ";
-			requests.save();
-			String header = "User: " + "\'" + requests.user.name + "\'" + " request to be a " + "\'" + requests.types.name + "\'" + " reviewer has been accepted.";
-			String body = "In Project: " + "\'" + requests.types.project.name + "\'" + "." + '\n' + " Accepted by: " + Security.getConnected().name + ".";
+			requests.save();			
 			Logs.addLog(Security.getConnected(), "Accept to be a reviewer request", "Task Type", requestID, requests.component.project, new Date(System.currentTimeMillis()));
-			Notifications.notifyProjectUsers(requests.component.project, header, body, "AcceptToBeReviewerRequest", (byte) 1);
+			String url = "@{Application.externalOpen("+requests.component.project.id+", '/users/listUserProjects?userId="+requests.user.id+"&x=2&projectId="+requests.component.project.id+"&currentProjectId="+requests.component.project.id+"', false)}";			
+			Notifications.notifyProjectUsers(requests.component.project, "AcceptToBeReviewerRequest", url, "Review Request", requests.user.name, (byte) 1);			
 		}
 
 		renderText(message);
@@ -222,9 +216,7 @@ public class Requestreviewers extends SmartController {
 		Security.check(Security.getConnected().in(x.component.project).can("manageReviewerRequests"));
 		if (x != null) {
 			x.rejected = true;
-			x.save();
-			String header = "User: " + "\'" + x.user.name + "\'" + " request to be a " + "\'" + x.types.name + "\'" + " reviewer has been rejected.";
-			String body = "In Project: " + "\'" + x.types.project.name + "\'" + "." + '\n' + " Rejected by: " + Security.getConnected().name + ".";
+			x.save();			
 			Logs.addLog(Security.getConnected(), "Reject to be a reviewer request", "Task Type", requestID, x.component.project, new Date(System.currentTimeMillis()));
 			// Notifications.notifyProjectUsers(x.component.project, header,
 			// body, "RejectToBeReviewerRequest", (byte) -1);

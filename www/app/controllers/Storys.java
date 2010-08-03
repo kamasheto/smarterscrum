@@ -233,7 +233,7 @@ public class Storys extends SmartCRUD {
 			story.deleted = true;
 			story.save();
 			Logs.addLog(story.addedBy, "Delete", "Story", story.id, project, new Date(System.currentTimeMillis()));
-			Notifications.notifyUsers(story.componentID.getUsers(), header, body, (byte) -1);
+			//Notifications.notifyUsers(story.componentID.getUsers(), header, body, (byte) -1);
 		} catch (Exception e) {
 			System.out.println(e);
 			flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
@@ -352,7 +352,7 @@ public class Storys extends SmartCRUD {
 		 * " Notes: " + storyObj.notes + "." + '\n' + " Added by: " +
 		 * toBeSaved.addedBy.name + ".";
 		 */
-		Notifications.notifyUsers(storyObj.componentID.getUsers(), header, body, (byte) 1);
+		//Notifications.notifyUsers(storyObj.componentID.getUsers(), header, body, (byte) 1);
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
 			Application.overlayKiller("reload('storys')");
@@ -472,7 +472,7 @@ public class Storys extends SmartCRUD {
 		 * Log and notification
 		 */
 		Logs.addLog(storyObj.addedBy, "Edit", "Story", storyObj.id, project, new Date(System.currentTimeMillis()));
-		Notifications.notifyUsers(storyObj.componentID.getUsers(), header, body, (byte) 0);
+		//Notifications.notifyUsers(storyObj.componentID.getUsers(), header, body, (byte) 0);
 		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
 			listStoriesInProject(project.id, 0);
@@ -786,7 +786,7 @@ public class Storys extends SmartCRUD {
 		 * sprint.project.name + "\'" + "."+ '\n' + '\n' + " Assigned by: " +
 		 * "\'" + Security.getConnected().name + "\'" + ".";
 		 */
-		Notifications.notifyProjectUsers(sprint.project, header, body, "assignStoryToSprint", (byte) 0);
+		//Notifications.notifyProjectUsers(sprint.project, header, body, "assignStoryToSprint", (byte) 0);
 		Logs.addLog(Security.getConnected(), "Assign", "Story To Sprint", story.id, sprint.project, new Date(System.currentTimeMillis()));
 		story.save();
 		sprint.save();
@@ -877,7 +877,7 @@ public class Storys extends SmartCRUD {
 		 * "Succuss Senario: " + story1.succussSenario + "." + '\n' +
 		 * " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		 */
-		Notifications.notifyUsers(story1.componentID.getUsers(), header, body, (byte) 0);
+		//Notifications.notifyUsers(story1.componentID.getUsers(), header, body, (byte) 0);
 	}
 
 	/**
@@ -911,7 +911,7 @@ public class Storys extends SmartCRUD {
 		 * "Failure Senario: " + story1.failureSenario + "." + '\n' +
 		 * " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		 */
-		Notifications.notifyUsers(story1.componentID.getUsers(), header, body, (byte) 0);
+		//Notifications.notifyUsers(story1.componentID.getUsers(), header, body, (byte) 0);
 	}
 
 	public static void listStoriesInProject(long projectId, long storyId) {

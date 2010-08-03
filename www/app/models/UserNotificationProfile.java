@@ -15,6 +15,7 @@ import play.data.validation.Required;
  */
 @Entity
 public class UserNotificationProfile extends SmartModel {
+		
 	@ManyToOne
 	public User user;
 	@ManyToOne
@@ -26,10 +27,7 @@ public class UserNotificationProfile extends SmartModel {
 	public boolean addRole;
 	public boolean addProductRole;
 	public boolean editProductRole;
-	public boolean deleteProductRole;
-	public boolean swapColumns;
-	public boolean editColumnPosition;
-	public boolean renameColumn;
+	public boolean deleteProductRole;	
 	public boolean reportImpediment;
 	public boolean onCreateComponent;
 	public boolean onEditComponent;
@@ -40,7 +38,6 @@ public class UserNotificationProfile extends SmartModel {
 	public boolean RequestToBeReviewer;
 	public boolean AcceptToBeReviewerRequest;
 	public boolean RejectToBeReviewerRequest;
-	public boolean deleteProject;
 	public boolean deletedFromProject;
 
 	// *********** List Of Action Types Ended ***********
@@ -66,10 +63,7 @@ public class UserNotificationProfile extends SmartModel {
 		this.addRole = project.notificationProfile.addRole;
 		this.addProductRole = project.notificationProfile.addProductRole;
 		this.editProductRole = project.notificationProfile.editProductRole;
-		this.deleteProductRole = project.notificationProfile.deleteProductRole;
-		this.swapColumns = project.notificationProfile.swapColumns;
-		this.editColumnPosition = project.notificationProfile.editColumnPosition;
-		this.renameColumn = project.notificationProfile.renameColumn;
+		this.deleteProductRole = project.notificationProfile.deleteProductRole;		
 		this.reportImpediment = project.notificationProfile.reportImpediment;
 		this.onCreateComponent = project.notificationProfile.onCreateComponent;
 		this.onEditComponent = project.notificationProfile.onEditComponent;
@@ -80,7 +74,6 @@ public class UserNotificationProfile extends SmartModel {
 		this.RequestToBeReviewer= project.notificationProfile.RequestToBeReviewer;
 		this.AcceptToBeReviewerRequest= project.notificationProfile.AcceptToBeReviewerRequest;
 		this.RejectToBeReviewerRequest= project.notificationProfile.RejectToBeReviewerRequest;
-		this.deleteProject=project.notificationProfile.deleteProject;
 		this.deletedFromProject=project.notificationProfile.deletedFromProject;
 	}
 
@@ -103,13 +96,7 @@ public class UserNotificationProfile extends SmartModel {
 		else if (action.equalsIgnoreCase("editProductRole"))
 			return editProductRole;
 		else if (action.equalsIgnoreCase("deleteProductRole"))
-			return deleteProductRole;
-		else if (action.equalsIgnoreCase("swapColumns"))
-			return swapColumns;
-		else if (action.equalsIgnoreCase("renameColumn"))
-			return renameColumn;
-		else if (action.equalsIgnoreCase("editColumnPosition"))
-			return editColumnPosition;
+			return deleteProductRole;		
 		else if (action.equalsIgnoreCase("reportImpediment"))
 			return reportImpediment;
 		else if (action.equalsIgnoreCase("onCreateComponent"))
@@ -130,8 +117,6 @@ public class UserNotificationProfile extends SmartModel {
 			return AcceptToBeReviewerRequest;
 		else if (action.equalsIgnoreCase("RejectToBeReviewerRequest"))
 			return RejectToBeReviewerRequest;
-		else if (action.equalsIgnoreCase("deleteProject"))
-			return deleteProject;
 		else if (action.equalsIgnoreCase("deletedFromProject"))
 			return deletedFromProject;
 		else

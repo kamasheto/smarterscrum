@@ -101,7 +101,7 @@ public class Users extends SmartCRUD {
 		Date d = new Date();
 		User user = User.find("byEmail", Security.connected()).first();
 		Logs.addLog(user, "assignUser", "User", UId, myComponent.project, d);
-		Notifications.notifyUsers(myUser, "Assigned to a component", "You were assigned to the component " + myComponent.name + " in the project " + myComponent.project.name, (byte) 0);
+		//Notifications.notifyUsers(myUser, "Assigned to a component", "You were assigned to the component " + myComponent.name + " in the project " + myComponent.project.name, (byte) 0);
 		myUser.save();
 	}
 

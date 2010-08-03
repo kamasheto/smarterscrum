@@ -65,7 +65,8 @@ public class Requests extends SmartCRUD
 		Request x = Request.find( "byHash", hash ).first();
 		Project y = x.project;
 		x.user.addRole( x.role );
-		Notifications.notifyUsers( x.user, "Role Request Accepted", "Your Role request to be " + x.role.name + " in " + x.role.project.name + " has been accepted", (byte) 1 );
+		String url = "@{Application.externalOpen("+x.project.id+", '/users/listUserProjects?userId="+x.user.id+"&x=2&projectId="+x.project.id+"&currentProjectId="+x.project.id+"', false)}";
+		Notifications.notifyUser( x.user, "Accept", url, "your Role Request", x.role.name, (byte) 1 , x.project);
 		User myUser = Security.getConnected();
 		Logs.addLog( myUser, "RequestAccept", "Request", x.id, y, new Date() );
 		x.delete();
@@ -123,7 +124,8 @@ public class Requests extends SmartCRUD
 				currentRequest.user.save();
 			}
 		}
-		Notifications.notifyUsers( currentRequest.user, "Project deletion Request Accepted", "Your request to be deleted from " + currentRequest.project.name + " has been accepted", (byte) 1 );
+		String url = "@{Application.externalOpen("+currentRequest.project.id+", '#', false)}";
+		Notifications.notifyUser( currentRequest.user, "Accept", url, "your Request to be deleted from project", currentRequest.project.name, (byte) 1 , null);		
 		Logs.addLog( Security.getConnected(), "DeletionRequestAccept", "Request", currentRequest.id, currentRequest.project, new Date() );
 		currentRequest.delete();
 	}
@@ -156,7 +158,8 @@ public class Requests extends SmartCRUD
 		Project y = x.project;
 		if( !x.isDeletion )
 		{
-			Notifications.notifyUsers( x.user, "Role Request Denied", "Your Role request to be " + x.role.name + " in " + y.name + " has been denied", (byte) -1 );
+			String url = "@{Application.externalOpen("+x.project.id+", '#', false)}";
+			Notifications.notifyUser( x.user, "Deni", url, "your Role Request", x.role.name, (byte) -1 , x.project);			
 		}
 		else
 		{
@@ -175,7 +178,9 @@ public class Requests extends SmartCRUD
 				int i = body.indexOf( '&' );
 				i += 6;
 				b = b.substring( i );
-				Notifications.notifyUsers( x.user, "deletion request from project denied", "Your deletion request from project " + x.project.name + " has been denied because " + b + ".", (byte) -1 );
+				
+				String url = "@{Application.externalOpen("+x.project.id+", '/users/listUserProjects?userId="+x.user.id+"&x=2&projectId="+x.project.id+"&currentProjectId="+x.project.id+"', false)}";
+				Notifications.notifyUser( x.user, "Accept", url, "your Requestto be deleted from project", x.project.name, (byte) -1 , null);				
 			}
 		}
 		User myUser = Security.getConnected();
@@ -220,7 +225,7 @@ public class Requests extends SmartCRUD
 			currentUser.deleted = true;
 			currentUser.pendingDeletion = false;
 			currentUser.save();
-			Notifications.notifyUsers( currentUser, "Your deletion request from our system has been approved.", "Dear " + currentUser.name + ", your deletion request from our system has been approved by a system admin. we hope to see you back again!", (byte) -1 );
+			Notifications.byeBye();
 		}
 		flash.success( "Users are now deactivated " );
 		redirect( "/admin/requests" );

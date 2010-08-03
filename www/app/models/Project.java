@@ -106,6 +106,9 @@ public class Project extends SmartModel {
 	/* Many To Many Relations */
 	@OneToMany (mappedBy = "project", cascade = CascadeType.ALL)
 	public List<Log> logs;
+	
+	@OneToMany (mappedBy = "project", cascade = CascadeType.ALL)
+	public List<Notification> notifications;
 
 	@ManyToMany (mappedBy = "projects", cascade = CascadeType.ALL)
 	public List<User> users;

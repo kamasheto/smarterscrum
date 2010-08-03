@@ -20,10 +20,7 @@ public class ProjectNotificationProfile extends SmartModel {
 	public boolean addProductRole;
 	public boolean editProductRole;
 	public boolean deleteProductRole;
-	public boolean reportImpediment;
-	public boolean swapColumns;
-	public boolean editColumnPosition;
-	public boolean renameColumn;
+	public boolean reportImpediment;	
 	public boolean onCreateComponent;
 	public boolean onEditComponent;
 	public boolean onDeleteComponent;
@@ -52,10 +49,7 @@ public class ProjectNotificationProfile extends SmartModel {
 		addRole = true;
 		addProductRole = true;
 		editProductRole = true;
-		deleteProductRole = true;
-		swapColumns = true;
-		editColumnPosition = true;
-		renameColumn = true;
+		deleteProductRole = true;		
 		reportImpediment = true;
 		onCreateComponent = true;
 		onEditComponent = true;
@@ -89,13 +83,7 @@ public class ProjectNotificationProfile extends SmartModel {
 		else if (action.equalsIgnoreCase("editProductRole"))
 			return editProductRole;
 		else if (action.equalsIgnoreCase("deleteProductRole"))
-			return deleteProductRole;
-		else if (action.equalsIgnoreCase("swapColumns"))
-			return swapColumns;
-		else if (action.equalsIgnoreCase("renameColumn"))
-			return renameColumn;
-		else if (action.equalsIgnoreCase("editColumnPosition"))
-			return editColumnPosition;
+			return deleteProductRole;		
 		else if (action.equalsIgnoreCase("reportImpediment"))
 			return reportImpediment;
 		else if (action.equalsIgnoreCase("onCreateComponent"))

@@ -273,11 +273,10 @@ public class Projects extends SmartCRUD
 			t.closed = true;
 		p.save();
 		t.save();
-		t.init();
-		String header = "A new Task Status has been added.";
-		String body = "In Project: " + "\'" + p.name + "\'" + "." + '\n' + " Task Status name: " + "\'" + t.name + "\'" + "." + '\n' + " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		t.init();		
 		Logs.addLog( Security.getConnected(), "Create", "TaskStatus", t.id, p, new Date( System.currentTimeMillis() ) );
-		Notifications.notifyProjectUsers( p, header, body, "addTaskStatus", (byte) 0 );
+		String url = "#";
+		Notifications.notifyProjectUsers(p, "addTaskStatus", url, "Task Status", t.name, (byte) 0);		
 		renderJSON( t.id );
 	}
 
@@ -298,8 +297,7 @@ public class Projects extends SmartCRUD
 	 */
 	public static void editTaskStatus( long statusID, String newName, String indicator )
 	{
-		TaskStatus taskStatus = TaskStatus.findById( statusID );
-		String oldName = taskStatus.name;
+		TaskStatus taskStatus = TaskStatus.findById( statusID );		
 		Project p = Project.findById( taskStatus.project.id );
 		Security.check( Security.getConnected().in( p ).can( "editProject" ) );
 		taskStatus.name = newName;
@@ -309,11 +307,10 @@ public class Projects extends SmartCRUD
 			taskStatus.pending = true;
 		if( indicator.equalsIgnoreCase( "Closed" ) )
 			taskStatus.closed = true;
-		taskStatus.save();
-		String header = "Task Status: " + "\'" + oldName + "\'" + " has been edited.";
-		String body = "In Project " + "\'" + p.name + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
-		Logs.addLog( Security.getConnected(), "Edit", "TaskStatus", taskStatus.id, p, new Date( System.currentTimeMillis() ) );
-		Notifications.notifyProjectUsers( p, header, body, "editTaskStatus", (byte) 0 );
+		taskStatus.save();		
+		Logs.addLog( Security.getConnected(), "Edit", "TaskStatus", taskStatus.id, p, new Date( System.currentTimeMillis() ) );		
+		String url = "#";
+		Notifications.notifyProjectUsers(p, "editTaskStatus", url, "Task Status", taskStatus.name, (byte) 0);		
 		renderJSON( true );
 	}
 
@@ -338,11 +335,10 @@ public class Projects extends SmartCRUD
 		{
 			taskStatus.columns.get( i ).deleted = true;
 			taskStatus.columns.get( i ).save();
-		}
-		String header = "Task Status: " + "\'" + taskStatus.name + "\'" + " has been deleted.";
-		String body = "In Project " + "\'" + taskStatus.project.name + "\'" + "." + '\n' + " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
+		}		
 		Logs.addLog( Security.getConnected(), "Delete", "TaskStatus", taskStatus.id, taskStatus.project, new Date( System.currentTimeMillis() ) );
-		Notifications.notifyProjectUsers( taskStatus.project, header, body, "deleteTaskStatus", (byte) -1 );
+		String url = "#";
+		Notifications.notifyProjectUsers(taskStatus.project, "deleteTaskStatus", url, "Task Status", taskStatus.name, (byte) -1);		
 		renderJSON( true );
 	}
 
@@ -636,7 +632,8 @@ public class Projects extends SmartCRUD
 			u.save();
 			renderJSON( true );
 			Logs.addLog( "User: " + Security.getConnected().name + " has deleted him/herself from project: " + project.name );
-			Notifications.notifyProjectUsers( project, "User " + u.name + " deleted. !", "user " + u.name + " has been deleted from the project and all his/her roles have been revoked.", "deletedFromProject", (byte) -1 );
+			String url = "/show/user?id="+u.id;
+			Notifications.notifyProjectUsers(project, "deletedFromProject", url, "himself", u.name, (byte) -1);			
 
 		}
 
@@ -779,9 +776,10 @@ public class Projects extends SmartCRUD
 	{
 		Security.check( Security.getConnected().isAdmin );
 		Project p = Project.findById( id );
-		p.approvalStatus = true;
-		List<User> users = User.find( "id=" + p.user.id ).fetch();
-		Notifications.notifyUsers( users, p.name + " Project Request", "This is to Kindly Inform you that your request for Project " + p.name + " has been Approved. \n \n Message From Admin:" + message, (byte) 1 );
+		User user = p.user;
+		p.approvalStatus = true;		
+		String url = "@{Application.externalOpen("+p.id+", '#', false)}";
+		Notifications.notifyUser(user, "Approv", url, "Project", p.name, (byte) 1, null);
 		p.save();
 		p.init();
 		Role proAdmin = Role.find( "name= 'Project Creator' and project =" + p.id ).first();
@@ -803,8 +801,9 @@ public class Projects extends SmartCRUD
 		Security.check( Security.getConnected().isAdmin );
 		Project p = Project.findById( id );
 		p.deleted = true;
-		List<User> users = User.find( "id=" + p.user.id ).fetch();
-		Notifications.notifyUsers( users, p.name + " Project Request", "This is to Kindly Inform you that your request for Project " + p.name + " has been Declined. We Apologize for Any inconvenience. \n \n Message From Admin:" + message, (byte) -1 );
+		User user = p.user;
+		String url = "#";
+		Notifications.notifyUser(user, "Declin", url, "Project", p.name, (byte) -1, null);		
 		p.save();
 		renderJSON( true );
 	}
@@ -1107,10 +1106,9 @@ public class Projects extends SmartCRUD
 			temp.save();
 		}
 
-		project.save();
-		String body = "Please note that the project " + project.name + " has been deleted and all upcoming meetings and events are cancelled !";
-		String header = project.name + " deletion notification";
-		Notifications.notifyProjectUsers( project, header, body, "deleteProject", (byte) -1 );
+		project.save();		
+		String url = "#";
+		Notifications.notifyProjectUsers(project, "deleteProject", url, "Project", project.name, (byte) -1);		
 		Logs.addLog( Security.getConnected(), "Deleted Project", "project", id, project, new Date() );
 		renderJSON( true );
 

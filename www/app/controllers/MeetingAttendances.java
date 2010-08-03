@@ -103,7 +103,8 @@ public class MeetingAttendances extends SmartController {
 				while (attendees.isEmpty() == false) {
 					users.add(attendees.remove(0).user);
 				}
-				Notifications.notifyUsers(users, "Meeting Canceled", "All attendees declined invitations", (byte) -1);
+				String url = "@{Application.externalOpen("+attendance.meeting.project.id+", '/meetings/viewMeetings?id="+attendance.meeting.project.id+"', false)}";				
+				Notifications.notifyUsers(users, "Cancel", url, "Meeting", attendance.meeting.name,(byte) -1, attendance.meeting.project);
 			}
 
 			render(attendance, notYet, setbefore, isUser);
@@ -185,11 +186,9 @@ public class MeetingAttendances extends SmartController {
 		Security.check(Security.getConnected().in(ma.meeting.project).can("setMeetingAttendance"));
 		ma.status = "confirmed";
 		ma.reason = "";
-		ma.save();
-		String header = "Attendance to " + ma.meeting.name;
-		String body = "Dear " + ma.user.getDisplayName(ma.meeting.project) + "\n";
-		String body2 = "Your attendance to " + ma.meeting.name + " was confirmed.";
-		Notifications.notifyUsers(ma.user, header, body + body2, (byte) 1);
+		ma.save();		
+		String url = "@{Application.externalOpen("+ma.meeting.project.id+", '/meetings/viewAttendeeStatus?id="+ma.id+"', false)}";
+		Notifications.notifyUser(ma.user, "Confirm", url, "Meeting Attendence", ma.meeting.name,(byte) 1, ma.meeting.project);
 	}
 
 	/**
@@ -208,11 +207,9 @@ public class MeetingAttendances extends SmartController {
 		Security.check(Security.getConnected().in(ma.meeting.project).can("setMeetingAttendance"));
 		ma.status = "declined";
 		ma.reason = reason;
-		ma.save();
-		String header = "Attendance to " + ma.meeting.name;
-		String body = "Dear " + ma.user.getDisplayName(ma.meeting.project) + "\n";
-		String body2 = "Your attendance to " + ma.meeting.name + " was changed to NOT attended.";
-		Notifications.notifyUsers(ma.user, header, body + body2, (byte) 1);
+		ma.save();		
+		String url = "@{Application.externalOpen("+ma.meeting.project.id+", '/meetings/viewAttendeeStatus?id="+ma.id+"', false)}";
+		Notifications.notifyUser(ma.user, "declin", url, "Meeting Attendence", ma.meeting.name,(byte) -1, ma.meeting.project);		
 	}
 	/**
 	 * this method takes the meeting Id and change the status of the connected user in this meeting to attended
@@ -225,11 +222,7 @@ public class MeetingAttendances extends SmartController {
 		MeetingAttendance ma= MeetingAttendance.find("byMeetingAndUserAndDeleted",m,Security.getConnected(),false).first();
 		ma.status = "confirmed";
 		ma.reason = "";
-		ma.save();
-		String header = "Attendance to " + ma.meeting.name;
-		String body = "Dear " + ma.user.getDisplayName(ma.meeting.project) + "\n";
-		String body2 = "Your attendance to " + ma.meeting.name + " was confirmed.";
-		Notifications.notifyUsers(ma.user, header, body + body2, (byte) 1);
+		ma.save();			
 		renderJSON(true);
 		}
 		renderJSON(false);
@@ -246,11 +239,7 @@ public class MeetingAttendances extends SmartController {
 		MeetingAttendance ma= MeetingAttendance.find("byMeetingAndUserAndDeleted",m,Security.getConnected(),false).first();
 		ma.status = "declined";
 		ma.reason = reason;
-		ma.save();
-		String header = "Attendance to " + ma.meeting.name;
-		String body = "Dear " + ma.user.getDisplayName(ma.meeting.project) + "\n";
-		String body2 = "You Declined the attendance to "+ma.meeting.name+".";
-		Notifications.notifyUsers(ma.user, header, body + body2, (byte) 1);
+		ma.save();	
 		renderJSON(true);
 		}
 		renderJSON(false);
