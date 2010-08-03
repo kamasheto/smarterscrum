@@ -16,8 +16,9 @@ $(function(){
 			<span class="min"onclick="$(this).children().toggle();">
 			<span class="ui-icon ui-icon-circle-triangle-s" style="display: none;"></span>
 			<span class="ui-icon ui-icon-circle-triangle-n"></span>
-			<span class="refresh ui-icon ui-icon-refresh"></span>
+		
 		</span>
+			<span class="refresh ui-icon ui-icon-refresh"></span>
 #{get 'title'/}
 			</div>
 			
@@ -25,9 +26,9 @@ $(function(){
 	<div id="#{get 'id'/}_content" class="ui-widget-content actual" >
 	#{doLayout /}
 	</div>
+	<div id="#{get 'id'/}_filter">
 	<input name="filter_textBox_#{get 'id' /}" type="text" onkeyup="filter_me('#{get 'id'/}');">
 	<a href="#" onclick="page++;nextPage('#{get 'id' /}',page);">Next</a> - <a href="#" onclick="page--;previousPage('#{get 'id' /}',page);">Previous</a>
-	<div id="icons" style="display:none;">
-#{get 'title'/}
 </div>
 </div>
+
