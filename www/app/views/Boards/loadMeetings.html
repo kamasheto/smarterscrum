@@ -28,7 +28,7 @@ Meetings
 var date=${users.meeting.endTime};
 var tz =0;         //  
 var lab = 'tzcd_'+${users.meeting.id};    //  The id of the page entry where the timezone countdown is to show
-disp  c		layTZCountDown(setTZCountDown(date,tz),lab);
+dispclayTZCountDown(setTZCountDown(date,tz),lab);
 
 function setTZCountDown(date,tz) 
 {
