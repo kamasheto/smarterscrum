@@ -17,7 +17,7 @@
       #{if pRole.id == uRole.id}
       
       <div class="bar">${uRole.name}
-       #{if ((connected.in(project).can('revokeUserRole'))&&(project.id == currentProject.id))||((uRole.users.contains(connected))&&(!uRole.baseRole))}
+       #{if ((connected.in(project).can('revokeUserRole'))&&(project.id == currentProject.id))||((user.id == connected.id)&&(!uRole.baseRole))}
 	        <a onclick="revokeRole(${uRole.id}, ${uRole.baseRole}, ${user.id});">
 	        <img title="Revoke Role" src="@{'/public/images/famfam/group_delete.png'}">
 	        </a>

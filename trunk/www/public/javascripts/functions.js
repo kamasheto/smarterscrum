@@ -167,7 +167,7 @@ function revokeRole(roleId, baseRole, userId)
 	}
 	if (confirmation) 
 	{
-		$.post('/projectTasks/revokeRole', {id:roleId}, 
+		$.post('/projectTasks/revokeRole', {roleId:roleId, userId:userId}, 
 				function(msg)
 				{
 			      $.bar({message:msg});

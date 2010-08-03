@@ -425,13 +425,17 @@ public class User extends SmartModel
 	 * @issue 94, 96
 	 * @sprint 4
 	 */
-	public void removeRole( Role role )
+	public void removeRole( Role role, User user )
 	{
 		if( role.baseRole )
 		{
 			projects.remove( role.project );
+			role.project.users.remove(user);
 		}
 		roles.remove( role );
+		role.users.remove(user);
+		role.project.save();
+		role.save();
 		save();
 	}
 }
