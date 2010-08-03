@@ -1,20 +1,4 @@
-#{extends 'main.html' /} #{set title:'Task Report' /}
-#{ifnot canSee}
-<div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all"> 
-					<p><span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
-					<strong>Alert:</strong> You are prohibited from seeing this page!!!!</p>
-				</div>
-#{/ifnot}
-#{else}
-#{set 'crumbs'}
-<li><a href="/show/projects">All Projcts</a></li>
-<li><a href="/show/project?id=${theTask.taskType.project.id}">${theTask.taskType.project.name}</a></li>
-
-<li><a href="/show/tasks?id=${theTask.taskType.project.id}">${theTask.taskType.project.name}'s Tasks</a></li>
-<li><a href="/tasks/getreport?id=${theTask.id}">Task ${theTask.id}</a></li>
-
-#{/set}
-
+#{extends 'overlay.html' /} #{set title:'Task Report' /}
 #{set 'moreScripts'}
 	<link rel="stylesheet" type="text/css" href="@{'/public/stylesheets/jquery.jqplot.css'}"/>
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/jquery.jqplot.js'}"></script>
@@ -340,5 +324,3 @@ ${t.date.toString()}</td>
 </div>
 	
 	#{/else}
-
-#{/else}

@@ -600,6 +600,8 @@ public class Tasks extends SmartCRUD {
 		List<Log> temp = Log.findAll();
 		Task theTask = Task.findById(id);
 		Security.check(theTask.taskStatus.project.users.contains(Security.getConnected()));
+		if(theTask.deleted)
+			notFound();
 		boolean empty = temp.isEmpty();
 		String lastModified = null;
 		int numberOfModifications = 0;
@@ -655,10 +657,9 @@ public class Tasks extends SmartCRUD {
 		Date mindate = temp.get(0).date;
 		mindate.setTime(temp.get(0).date.getTime() - (3 * 86400000));
 		String minDate = mindate.toString().substring(0, 10);
-		boolean canSee = true;
 
 		Project myProject = theTask.taskType.project;
-		render(myProject, canSee, minDate, temp, lastModified, empty, efforts, changes, numberOfModifications, theTask, maxDate);
+		render(myProject, minDate, temp, lastModified, empty, efforts, changes, numberOfModifications, theTask, maxDate);
 	}
 
 	/**
