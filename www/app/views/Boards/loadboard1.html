@@ -134,6 +134,7 @@ REDIPS.drag.init()
 </tr>
 
 #{list items:data, as:'component'}  
+#{if component!=null} 
 <tr id="com-${component.id}_hidden" style="display:none;" > <!-- empty rows of the board -->
 	<td>Click here to toggle</td>
 	#{set count=0}
@@ -249,7 +250,7 @@ REDIPS.drag.init()
 		#{/list}
 	</td>
 	#{/list}
-</tr>
+</tr>#{/if}
 #{/list}
 </table>
 </div>
