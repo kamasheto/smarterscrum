@@ -5,6 +5,7 @@ import java.util.List;
 import models.Permission;
 import models.Project;
 import models.Role;
+import models.User;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
@@ -22,9 +23,21 @@ public class Roles extends SmartCRUD {
 		Role role = Role.findById(id);
 		Security.check(role.project, "manageRoles");
 		List<Role> roles = role.project == null ? Role.find("byProjectIsNull").<Role> fetch() : Role.find("byProject", role.project).<Role> fetch();
+		Role newBaseRole = null;
 		for (Role r : roles) {
 			r.baseRole = r == role;
+			if (r.baseRole) {
+				newBaseRole = r;
+			}
 			r.save();
+		}
+		
+		if (newBaseRole.project != null) {
+			// we're in a project
+			for (User user : newBaseRole.project.users) {
+				user.addRole(newBaseRole);
+				user.save();
+			}
 		}
 	}
 
@@ -154,24 +167,24 @@ public class Roles extends SmartCRUD {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
-		Security.check(((Role) object).project, "deleteRole");
-		if (((Role) object).baseRole) {
-			// flash.error(Messages.get("crud.delete.error", type.modelName,
-			// object.getEntityId()));
-			// redirect("/show/roles?id=" + ((Role) object).project.id);
-		} else {
+		Role role = (Role) object;
+		Security.check(role.project, "deleteRole");
+		if (!role.baseRole) {
 			try {
-				object.delete();
+				// first remove from projects
+				role.project.roles.remove(role);
+				role.project.save();
+				
+				// then remove from users
+				for (User user : role.users) {
+					user.roles.remove(role);
+					user.save();
+				}
+				
+				role.delete();
 			} catch (Exception e) {
-				// flash.error(Messages.get("crud.delete.error", type.modelName,
-				// object.getEntityId()));
-				// redirect(request.controller + ".show", object.getEntityId());
+				e.printStackTrace();
 			}
-			// flash.success(Messages.get("crud.deleted", type.modelName,
-			// object.getEntityId()));
-			// Project project = ((Role) object).project;
-			// redirect(project == null ? "/roles/defaultroles" :
-			// "/show/roles?id=" + ((Role) object).project.id);
 		}
 	}
 

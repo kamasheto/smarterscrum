@@ -153,7 +153,6 @@ public class Components extends SmartCRUD {
 		} catch (Exception e) {
 			//flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
 			//redirect(request.controller + ".show", object.getEntityId());
-			renderText("Couldn't delete the component. Please try again later.");
 		}
 		//flash.success(Messages.get("crud.deleted", type.modelName, object.getEntityId()));
 		//redirect("/projects/" + component.project.id + "/components");
@@ -186,6 +185,7 @@ public class Components extends SmartCRUD {
 	
 	public static void listComponentsInProject(long projectId){
 		Project project = Project.findById(projectId);
+		notFoundIfNull(project);
 		List<Component> components = new ArrayList<Component>();
 		for(Component c:project.components){
 			if(c.deleted == false)

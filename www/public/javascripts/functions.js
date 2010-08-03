@@ -340,11 +340,7 @@ $(function() {
 			function() {
 				if($(this).parent().next().html()=='')
 					load($(this).parent().parent().attr('name') + ' .actual',$(this).parent().parent().attr('id'),2);
-
-
-
-				$(this).parent().next().slideToggle(400);
-
+					$(this).parent().next().slideToggle(400);
 			});
 	$('.refresh').live('click',function(){
 		var parent = $(this).parent().parent();
@@ -393,7 +389,7 @@ function load(url, el, n) {
 								$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
 							});
 		$('#' + el + '_content').load(url, function() {
-											$('#' + el + ' .min').first().show();
+											// $('#' + el + ' .min').first().show();
 			$('#' + el + '_content').slideDown(400);
 											magic(el);
 		});
