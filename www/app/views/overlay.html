@@ -63,9 +63,11 @@ body,html {
 overflow:auto;}
 </style>
 </head>
-<body onunload="lo();" onload="lo();$('#theLoadedContent').show();#{get 'onLoad'/};">
-
-<div id="theLoadedContent">
+<body onunload="lo();$('#loading').show();$('#theLoadedContent').hide();" onload="lo();$('#loading').hide();$('#theLoadedContent').show();#{get 'onLoad'/};">
+<div id="loading" style="text-align:center;background-color:white;padding-bottom:30px;">
+			<img src="@{'public/images/loadingMagic.gif'}" alt="[loading]"/>
+		</div>
+<div id="theLoadedContent" style="display:none;">
 #{doLayout /}
 </div>
 			#{ifErrors}
