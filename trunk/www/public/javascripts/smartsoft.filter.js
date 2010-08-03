@@ -95,7 +95,6 @@ function filter_smart_pagination(id,view_page, nextPrevious){
 	var extraItems = !((globalSizeOfFilteredChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
 	if(extraItems)
 		numPages++;
-	alert(numPages+" "+view_page);
 	if(view_page<1)
 	{
 		filter_page++;
