@@ -153,13 +153,25 @@ function requestRole(roleIdd){
 	});
 }
 
-function revokeRole(roleIdd){
-	var confirmation= confirm("Are you sure you want to revoke this role ?");
-	if (confirmation) {
-		$.post('/projecttasks/revokeRole', {id:roleIdd}, function(msg){
-		$.bar({message:msg});
-		reload('roles')
-	});
+function revokeRole(roleId, baseRole)
+{
+	var confirmation;
+	if(baseRole)
+	{
+		confirmation= confirm("Are you sure you want to revoke this role? Notice that by revoking this role the user is no longer a member in this project.");
+	}
+	else
+	{
+		confirmation= confirm("Are you sure you want to revoke this role?");
+	}
+	if (confirmation) 
+	{
+		$.post('/projectTasks/revokeRole', {id:roleId}, 
+				function(msg)
+				{
+			      $.bar({message:msg});
+			      reload('roles', 'users', 'user');
+			    });
 	};
 }
 
