@@ -555,7 +555,7 @@ public class Meetings extends SmartCRUD
 		Meeting currentMeeting = Meeting.findById( meetingID );
 		Security.check( Security.getConnected().in( currentMeeting.project ).can( "manageMeetingAssociations" ) || Security.getConnected().equals( currentMeeting.creator ) );
 		User invitedUser = User.findById( userID );
-		if( MeetingAttendance.find( "byMeetingAndUserAndDeleted", currentMeeting, invitedUser, false ).first() != null )
+		if( MeetingAttendance.find( "byMeetingAndUserAndDeleted", currentMeeting, invitedUser, false ).first() == null )
 		{
 			MeetingAttendance attendance = new MeetingAttendance( invitedUser, currentMeeting );
 			attendance.save();
