@@ -154,7 +154,7 @@ function requestRole(roleIdd){
 	});
 }
 
-function revokeRole(roleId, baseRole)
+function revokeRole(roleId, baseRole, userId)
 {
 	var confirmation;
 	if(baseRole)
@@ -171,7 +171,7 @@ function revokeRole(roleId, baseRole)
 				function(msg)
 				{
 			      $.bar({message:msg});
-			      reload('roles', 'users', 'user');
+			      reload('roles', 'users', 'user'+userId);
 			    });
 	};
 }
