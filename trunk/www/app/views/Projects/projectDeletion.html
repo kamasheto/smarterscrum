@@ -27,6 +27,7 @@ function delete_proj(id)
 				if(flag)
 				{
 					window.parent.$('#getOverlay').hide();
+					window.parent.$('#project-search-result-'+id).hide();
 					window.parent.$.bar({ message:'Project Deleted.' });
 					window.parent.$('#project-button-'+id).fadeOut(function() {
 						$(this).remove()
