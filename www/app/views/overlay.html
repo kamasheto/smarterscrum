@@ -58,20 +58,15 @@ font-size:12px;
 h6 a, h6{font-family:verdana !important;
 font-style:normal!important;}
 body,html {
-	background: transparent !important;
+	background: #fff !important;
+	overflow:auto;
+	padding:10px;
 	overflow:auto;
 }
-#theLoadedContent{background-color:#fff;padding:10px;
-overflow:auto;}
 </style>
 </head>
-<body onunload="lo();$('#loading').show();$('#theLoadedContent').hide();" onload="lo();$('#loading').hide();$('#theLoadedContent').show();#{get 'onLoad'/};">
-<div id="loading" style="text-align:center;background-color:white;padding-bottom:30px;">
-			<img src="@{'public/images/loadingMagic.gif'}" alt="[loading]"/>
-		</div>
-<div id="theLoadedContent" style="display:none;">
-#{doLayout /}
-</div>
+<body onload="lo(); #{get 'onLoad'/};">
+			#{doLayout /}
 			#{ifErrors}
 			<script type="text/javascript">
 				$(document).ready(function(){

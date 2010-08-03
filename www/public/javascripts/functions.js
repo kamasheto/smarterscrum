@@ -410,6 +410,7 @@ function loadBox(url, el)
 		$('#' + el + ' #myTemp').children().css('position','absolute!important');
 		$('#' + el + ' #myTemp').children().css('z-index','4');
 		$('#' + el + ' #myTemp').replaceWith($('#' + el + ' #myTemp').html());
+		doOnLoad()
 		myDivs.push(url);
 	});
 	}

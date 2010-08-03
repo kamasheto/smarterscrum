@@ -85,7 +85,7 @@
 <div id ="overlayContent" style="width:80%;height:auto; padding:10%;overflow:auto;position:relative;z-index:9998">
 	<div id="overlayContentHolder" style="background-color:transparent;width:auto;height:auto;margin:auto auto auto auto;padding:10px;overflow:auto">
 	<div id="overlayClose" style="background:none repeat scroll 0 0 white;padding:5px;text-align:right;">
-<a title="close?"href="#"onclick="Javascript:$('#getOverlay').hide();document.getElementById('theLoadedContent').src ='/application/loading'">
+<a href="#" onclick="$('#getOverlay').hide(); $('#theLoadedContent').attr('src', '/application/loading')">
 <img src="@{'public/images/close.gif'}"/>
 </a>
 </div>
