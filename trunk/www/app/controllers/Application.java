@@ -86,8 +86,8 @@ public class Application extends SmartController
 		// Notification n = new Notification(Security.getConnected(),
 		// "Hadeer Younis (Design)","Plum v.03 is up and running!! Note that it's still in beta phase, So please report any bugs straight away!!",
 		// (byte) 1);
-		// noti.add(n);noti.add(nn);
-		render( noti );*/
+		// noti.add(n);noti.add(nn);*/
+		render();
 	}
 
 	public static void notificationsHistory()

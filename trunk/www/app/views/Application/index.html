@@ -29,45 +29,7 @@ Your Project(s) Updates
 </div>
 <div id="notiHolder" style="padding:1%; background:#eee;height:340px;" class="bottomCornersRounded">
 <div style="overflow:auto;height:340px">
-#{if noti.isEmpty()}
-<h1>Smarter Scrum News Feed</h1>
-<p>Now you can search for a project & request to join. <a href="/show/projects"> Click here</a></p>
-<p>You can also search for users You may know & keep yourself updated about their latest activiteis. <a href = "/show/users"> Click here</a></p>
 
-#{/if}
-#{else}
-
-
-#{list items:noti, as:'notif'}
-#{set 'moreScripts'}
-<script type="text/javascript">
-       		$(function(){
-       			$('.notifYear').each(function(){
-					$(this).html( formatDate( new Date(Number($(this).html())), '<b>yyyy</b>') );
-				});
-       			$('.notifDM').each(function(){
-					$(this).html( formatDate( new Date(Number($(this).html())), 'dd <br/> MMM') );
-				});
-				
-       		});
-</script>
-#{/set}
-<div class="notifHolder">
-<div class="left dateHolder">
-	<div class="notifYear proj">${notif.date}</div>
-	<div class="notifDM bottomCornersRounded">${notif.date}</div>
-</div>
-<div class="left" style="margin-bottom:10px;">
-<b>${notif.header}</b><br/>
-${notif.body.raw()}
-</div>
-</div>
-<br style="clear:both"/>
-#{/list}
-<br/><br/><br/>
-#{if noti.size() == 30}
-<a href="@{Application.notificationsHistory()}"> See more </a>#{/if}
-#{/else}
 </div>
 </div>
 </div>
