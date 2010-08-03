@@ -50,10 +50,12 @@ public class Notifications extends Mailer{
 						addRecipient(unps.get(i).user.email);
 				}
 			}
-			Notification notif = new Notification(unps.get(0).user, Security.getConnected(), actionType, resourceURL, resourceType, resourceName, importance);
-			setFrom("se.smartsoft.2@gmail.com");
-			setSubject("SmarterScrum Notification System");
-			send(notif);
+			if (unps.size() > 0) {
+				Notification notif = new Notification(unps.get(0).user, Security.getConnected(), actionType, resourceURL, resourceType, resourceName, importance);
+				setFrom("se.smartsoft.2@gmail.com");
+				setSubject("SmarterScrum Notification System");
+				send(notif);	
+			}
 		}
 	}
 	
