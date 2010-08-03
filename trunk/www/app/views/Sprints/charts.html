@@ -1,8 +1,9 @@
 #{extends 'magicBox.html'/}
 #{set 'title'}Sprint ${sprint.sprintNumber} Charts <a href="#" title="View the combine sprint chart?"onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the Whole Project burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>#{/set}
 #{list items:sprint.project.components, as:'component'}
-
+#{if component.number!=0 }
 <div class="overlay"name="@{SprintBacklog.showGraph(sprint.id,component.id)}" title="view the Component burndown chart?">
 ${component.name}'s chart
 </div>
+#{/if}
 #{/list}
