@@ -10,7 +10,9 @@
 .draggableChild {
 	width: 100%;
 }
-
+.draggableChild .ui-widget-content.actual {
+border:6px solid #BF5F91 !important;
+width:auto;}
 .ui-widget-content {
 	width: 100%;
 }
