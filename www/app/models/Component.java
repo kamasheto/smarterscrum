@@ -42,6 +42,8 @@ public class Component extends SmartModel {
 	// Relation with Story Entity
 	@OneToMany (mappedBy = "componentID", cascade = CascadeType.ALL)
 	public List<Story> componentStories;
+	@OneToMany (mappedBy = "component", cascade = CascadeType.ALL)
+	public List<Snapshot> snapshots;
 
 	// Relation with Meeting Entity
 	@ManyToMany (mappedBy = "components", cascade = CascadeType.ALL)
@@ -262,7 +264,7 @@ public class Component extends SmartModel {
 
 	public static class ComponentRowh extends ArrayList<ArrayList<String>> {
 		long id;
-		String title;
+		public String title;
 
 		public ComponentRowh (long id, String title) {
 			this.id = id;
