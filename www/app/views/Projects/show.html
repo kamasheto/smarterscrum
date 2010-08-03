@@ -1,13 +1,4 @@
 #{extends 'overlay.html' /}
-
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${object.id}">${object.name}</a></li>
-#{/set}
-
-
-
-
 <div id="crudShow" class="${type.name}">
 <script type="text/javascript">
 
@@ -602,62 +593,70 @@ hideLoader('addES','loaderES');
 
 <div id="accordion">
 #{if connected.in(object).can('editProject') }
-	<h3><a href="#">Default Sprint Duration:</a></h3>
+	<h6><a href="#">Default Sprint Duration:</a></h6>
 	
 	<div id="sd" class="sprintsDuration">
-		<p><b> Current Default Sprint Duration : <label id="durationLabel" style="color:red">&{object.sprintDuration}</label> Days.</b> 
-		<br><br>
-		Setting default sprint duration will be used when an end date for the sprint date is not specified upon creation.
-		<br><br>
+	
+		#{note}	Setting default sprint duration will be used when an end date for the sprint date is not specified upon creation.#{/note}
+		<div class="crudField"> Current Default Sprint Duration : <span style="color:red">&{object.sprintDuration}</span> Days.</div> 
+		<div class="crudField">
 		<input id="durationText" type="text"  value="" "size="10" /> in
 	<select id="sprintDropDown" name="sprintDropDown">
 		<option value="Days">Days</option>
 		<option value="Months">Months</option>
 		<option value="Weeks">Weeks</option>
 		</select>
-		
-		<br>
+		</div>
+		<div class="crudField">
 	<input id="addSP"type="button" name="add" value="Set" onclick="setSprintDuration()" />
 	<img id="loaderSP"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
-	</p>
+	</div>
 		</div>
 		#{/if}
 		#{if connected.in(object).can('editProject') }
-	<h3><a href="#">Default Meeting Types:</a></h3>
+	<h6><a href="#">Default Meeting Types</a></h6>
 	<div class="meetingTypes">
-	<ul >
-	<small> <b><label id=" " style="color:red" >Click On a Meeting Type to view Sprint Association </small></b></label>
-		<p><u><b>Meeting Type:</b></u>  <b><label id="inSprintLbl"> </label></b></p> 
-<select name="drop1" id="meetingTypesList" style="width:200px" size="10" multiple="multiple" onclick="getInSprint()">
-#{list items:object.meetingsTypes, as:'meetingType'}
 	
-	<option value="1">${meetingType}</option>
-		
+	#{note}Click On a Meeting Type to view Sprint Association#{/note}
+	 <b><label id="inSprintLbl"></label></b><br/>
+	<div class="left" style="padding-top:10px">
 	
-#{/list}
+	<label>Meeting Types</label> 
+	<form> 
+	<select name="drop1" id="meetingTypesList" style="width:200px" size="10" multiple="multiple" onclick="getInSprint()">
+		#{list items:object.meetingsTypes, as:'meetingType'}
+			<option value="1">${meetingType}</option>
+		#{/list}
 	</select>
-	<br>
 	
-	Add new : &nbsp;<input id="meetingText" class="" type="text" name="object.name" value="" "size="27" /> 
-	<br>
-	<INPUT id="assocSprint"TYPE=CHECKBOX NAME="assocSprint"  onclick=""   > 	Associate New Type To End Of Sprint
+</div>
+<div class="left" style="margin-top:10px;height:100%;margin-left:10px; padding-left:5px">
+ 
+<div class="crudField">
+Add new <input id="meetingText" class="" type="text" name="object.name"  /> 
+	</div><div class="crudField">
+	<INPUT id="assocSprint"TYPE=CHECKBOX NAME="assocSprint"  onclick="" > 	Associate New Type To End Of Sprint
 	
-	
+	</div><div class="crudField">
 	<input id="addMB"type="button" name="add" value="Add" onclick="addMeeting()" />
+	
 	<input id="removeMB" type="button" name="add" value="Remove" onclick="removeMeeting()"/>
 	
 	<img id="loaderMB"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
+	</div>
+	</div>
 	</div>
 	#{/if}
 	
 	
 	#{if connected.in(object).can('editProject') }
-	<h3>
+	<h6>
 		<a href="#">Default Task Types:</a>
-		</h3>
+		</h6>
 	
 		<div class="taskTypes">
-	<ul >
+		<div class="left" style="padding-top:10px">
+<label>Task Types</label>  <br/>
 <select name="drop1" id="taskTypesList" style="width:200px" size="10" multiple="multiple">
 #{list items:object.taskTypes, as:'taskType'}
 	#{if taskType.deleted==false}
@@ -666,58 +665,71 @@ hideLoader('addES','loaderES');
 	
 #{/list}
 	</select>
-	<br>
-	Add new : &nbsp;<input id="taskText" class="" type="text" name="object.name" value="" "size="27" /> 
-	<br>
+	
+</div>
+<div class="left" style="margin-top:10px;height:100%;margin-left:10px; padding-left:5px">
+<div class="crudField">
+	Add new : <input id="taskText" class="" type="text" name="object.name" value="" "size="27" /> 
+	</div><div class="crudField">
 	<input id="addTSK" type="button" name="add" value="Add" onclick="addTask()" />
 	<input id="removeTSK" type="button" name="add" value="Remove" onclick="removeTask()"/>
 	
 	<img id="loaderTSK"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
 	</div>
+	</div>
 	#{/if}
+	</div>
 	#{if connected.in(object).can('editProject') }
-	<h3>
-	<a href="#">	Default Task Statuses:</a>
-		</h3>
-		<div class="taskStatus">
 	
-	<ul >
+	<h6>
+	<a href="#">Default Task Statuses:</a>
+		</h6>
+		<div class="taskStatus">
+		#{note}The status new can't be removed nor it's meaning changed#{/note}
+			<div class="left" style="padding-top:10px">
+	<label>Task Statuses</label>
+<br/>
 <select name="taskStatusesList" id="taskStatusesList" style="width:200px" size="10" multiple="multiple">
 <option value="addNewTaskStatus" name="addNewTaskStatus" onclick="textFieldValue('',false,false)" selected > Add new Task Status</option>
 #{list items:object.taskStatuses, as:'taskStatus'}
 	#{if taskStatus.deleted==false}
-	<option value=${taskStatus.id} onclick="textFieldValue($(this).html(),${taskStatus.pending},${taskStatus.closed})" >${taskStatus.name}</option>
+	<option value=${taskStatus.id} onclick="#{if taskStatus.isNew}$('#elForm').hide();$('#removeTST').hide();#{/if}#{else}$('#elForm').show();$('#removeTST').show();#{/else}textFieldValue($(this).html(),${taskStatus.pending},${taskStatus.closed})" >${taskStatus.name}</option>
 		#{/if}
 	
 #{/list}
 	</select>
-	<br>
-	Status Name : &nbsp;<input id="taskTSText" class="" type="text" name="object.name" value="" "size="27" /> 
-	
-	<form name="taskStatusesForm">
-	<br> 
-	This status indicates: 
-	<br>
-	<input type="radio" name="taskStatusGroup" value="Pending"> Pending <br>
-	<input type="radio" name="taskStatusGroup" value="Closed"> Closed <br>
-	<input type="radio" name="taskStatusGroup" value="Others" checked> Others <br>
+	</div>
+<div class="left" style="margin-top:10px;height:100%;margin-left:10px; padding-left:5px">
+<div class="crudField">
+	Status Name&nbsp;<input id="taskTSText" class="" type="text" name="object.name" value="" "size="27" /> 
+	</div><div id="elForm" class="crudField">
+	<form  name="taskStatusesForm">
+	 
+	This status indicates
+	<br/>
+	<input type="radio" name="taskStatusGroup" value="Pending"> Pending <br/>
+	<input type="radio" name="taskStatusGroup" value="Closed"> Closed <br/>
+	<input type="radio" name="taskStatusGroup" value="Others" checked> Others <br/>
 	</form>
-	
+	</div><div class="crudField">
 	<input id="addTST" type="button" title="Add a new Task Status" name="add" value="Add" onclick="addTaskStatus()" />
 	<input id="editTST" type="button" title="Save after editing" name="edit" value="Save" onclick="editTaskStatus()" disabled/>
 	<input id="removeTST" type="button" title="Remove from project" name="remove" value="Remove" onclick="removeTaskStatus()" disabled/>
 	
 	<img id="loaderTST"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
-	
 	</div>
-	
+	</div>
+	</div>
 		#{/if}
 		#{if connected.in(object).can('editProject') }
-	<h3>
+	<h6>
 		<a href="#">Edit Story Priorities:</a>
-		</h3>
+		</h6>
 	<div class="storyPriorities">
-			<ul >
+	
+
+<div class="left" style="margin-top:10px;">
+		Story Priorities<br/>
 <select name="drop1" id="storiesTypesList" style="width:200px" size="10" multiple="multiple">
 #{list items:object.priorities, as:'storiesPriority'}
 		
@@ -730,36 +742,43 @@ hideLoader('addES','loaderES');
 	
 #{/list}
 	</select>
-	<br>
+	
+	</div>
+<div class="left" style="margin-top:10px;height:100%;margin-left:10px; padding-left:5px">
+	<div class="crudField">
 	Priority Title:&nbsp;<input id="storyText" class="" type="text" name="object.name" value="" "size="15" />
-	<br>
+	</div>
+	<div class="crudField">
 	Priority Value:<input id="priorityText" class="" type="text" name="" value="" "size="15" />
-	<br>
+	</div>
+	<div class="crudField">
 	<input id="addST" type="button" name="add" value="Add" onclick="addStory()" />
 	<input id="removeST" type="button" name="add" value="Remove" onclick="removeStory()"/>
 	
 		<img id="loaderST"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
 		</div>
+		</div>
+		</div>
 		#{/if}
 		#{if connected.in(object).can('editProject') }
-	<h3>
+	<h6>
 		<a href="#">Edit Meeting Rescheduling Policies:</a>
-		</h3>
+		</h6>
 		<div class="meetingReSchedule">
-		
-		
-		<p>
+		#{note}
 		This Feature allows the application to reschedule meeting for the " &{object.name} " project automatically when the sprint date
 		changes. To turn on feature check the box below.
-		<br>
-		<br>
+		#{/note}
 		 <INPUT id="checkBoxAutoRS"TYPE=CHECKBOX NAME="autoReschedule"  onclick="changeAutoRS()"  ${object.autoReschedule ? 'checked': ''} >Auto Meeting Reschedule</p>
 		</div>
 		#{/if}
 		#{if connected.in(object).can('editProject') }
-	<h3><a href="#">Edit Effort Estimation Points Unit:</a></h3>
-				<div class="meetingReSchedule">
-	<p><b> Current Effort  Estimation Unit : <label id="estimationLabel" style="color:red">
+	<h6><a href="#">Edit Effort Estimation Points Unit:</a></h6>
+				<div class="mee">
+				#{note}
+		You can Set the Effort Estimation Unit either in Hours or Points.
+		#{/note}
+	<p>Current Effort  Estimation Unit : <label id="estimationLabel" style="color:red">
 	
 		#{if object.effortEstimationUnit==0}
 				Hours
@@ -769,22 +788,16 @@ hideLoader('addES','loaderES');
 		#{/if}
 	
 	
-	 </label> </b> 
-		<br><br>
-		You can Set the Effort Estimation Unit either in Hours or Points.
-		<br><br>
+	 </label><br/>
 	<select id="estimationDown" name="estimationDropDown">
 		<option value="Hours">Hours</option>
 		<option value="Points">Points</option>
 		</select>
 		
-		<br>
 	<input id="addES"type="button" name="add" value="Set" onclick="setEffortUnit()" />
 	<img id="loaderES"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
-	</p>
 
 		</div>
 	#{/if}
-	<br>
 	
 </div>

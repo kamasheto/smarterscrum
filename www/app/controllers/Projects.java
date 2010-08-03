@@ -308,12 +308,11 @@ public class Projects extends SmartCRUD
 		Notifications.notifyProjectUsers(p, "editTaskStatus", url, "Task Status", taskStatus.name, (byte) 0);		
 		renderJSON( true );
 	}
-
 	/**
 	 * This method removes a task status from the list of task statuses in
 	 * project.
 	 * 
-	 * @author Behairy, Heba Elsherif
+	 * @author Behairy, Heba Elsherif, Hadeer Younis
 	 * @param statusID
 	 *            the id of the selected Task Status.
 	 * @return void
@@ -324,19 +323,26 @@ public class Projects extends SmartCRUD
 	{
 		TaskStatus taskStatus = TaskStatus.findById( statusID );
 		Security.check( Security.getConnected().in( taskStatus.project ).can( "editProject" ) );
-		taskStatus.deleted = true;
-		taskStatus.save();
-		for( int i = 0; i < taskStatus.columns.size(); i++ )
+		System.out.println(taskStatus.isNew );
+		if( taskStatus.isNew )
+			renderJSON( false );
+		else
 		{
-			taskStatus.columns.get( i ).deleted = true;
-			taskStatus.columns.get( i ).save();
-		}		
-		Logs.addLog( Security.getConnected(), "Delete", "TaskStatus", taskStatus.id, taskStatus.project, new Date( System.currentTimeMillis() ) );
-		String url = "#";
+			taskStatus.deleted = true;
+			taskStatus.save();
+			for( int i = 0; i < taskStatus.columns.size(); i++ )
+			{
+				taskStatus.columns.get( i ).deleted = true;
+				taskStatus.columns.get( i ).save();
+			}
+			String header = "Task Status: " + "\'" + taskStatus.name + "\'" + " has been deleted.";
+			String body = "In Project " + "\'" + taskStatus.project.name + "\'" + "." + '\n' + " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
+			Logs.addLog( Security.getConnected(), "Delete", "TaskStatus", taskStatus.id, taskStatus.project, new Date( System.currentTimeMillis() ) );
+			String url = "#";
 		Notifications.notifyProjectUsers(taskStatus.project, "deleteTaskStatus", url, "Task Status", taskStatus.name, (byte) -1);		
 		renderJSON( true );
+		}
 	}
-
 	/**
 	 * task status checks method that will be used to check for the task status
 	 * before adding a new meeting type in the list of task status

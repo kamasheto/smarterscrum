@@ -407,6 +407,7 @@ public class Project extends SmartModel
 		TaskStatus s1 = new TaskStatus();
 		s1.project = this;
 		s1.name = "New";
+		s1.isNew=true;
 		s1.save();
 		s1.init();
 		taskStatuses.add( s1 );
@@ -414,6 +415,7 @@ public class Project extends SmartModel
 		TaskStatus s2 = new TaskStatus();
 		s2.project = this;
 		s2.name = "Started";
+		s2.isNew=false;
 		s2.save();
 		s2.init();
 		taskStatuses.add( s2 );
@@ -421,6 +423,7 @@ public class Project extends SmartModel
 		TaskStatus s3 = new TaskStatus();
 		s3.project = this;
 		s3.name = "Pending";
+		s3.isNew=false;
 		s3.pending = true;
 		s3.closed = false;
 		s3.save();
@@ -430,12 +433,14 @@ public class Project extends SmartModel
 		TaskStatus s4 = new TaskStatus();
 		s4.project = this;
 		s4.name = "Reopened";
+		s4.isNew=false;
 		s4.save();
 		s4.init();
 		taskStatuses.add( s4 );
 
 		TaskStatus s5 = new TaskStatus();
 		s5.project = this;
+		s5.isNew=false;
 		s5.name = "Verified";
 		s5.closed = true;
 		s5.pending = false;

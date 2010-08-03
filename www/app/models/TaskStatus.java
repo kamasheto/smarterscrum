@@ -22,6 +22,8 @@ public class TaskStatus extends SmartModel {
 	@ManyToOne
 	public Project project;
 
+	public boolean isNew;
+	
 	public boolean deleted;
 
 	@OneToMany (mappedBy = "taskStatus", cascade = CascadeType.ALL)
