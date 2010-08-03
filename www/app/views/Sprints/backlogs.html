@@ -3,6 +3,8 @@
 <img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>#{/set}
 
 #{list items:sprint.project.components, as:'component'}
+#{if component.number!=0 }
 <div class="overlay" name="@{SprintBacklog.index(component.id,sprint.id)}">${component.name}</div>
+#{/if}
 #{/list}
 
