@@ -32,7 +32,9 @@ public class Invites extends SmartController {
 		Role role = Role.findById(id);
 		Security.check(role.project, "invite");
 		Invite invite = new Invite(user, role).save();
-		Notifications.notifyUsers(user, "Invitation to " + role.name, String.format("Dear " + user.name + ", you have been invited to " + role.name + " in the project " + role.project.name + ".\n\nTo accept this invitation <a href='%s'>click here</a>. To decline this invitation <a href='%s'>click here</a>.", Router.getFullUrl("Invites.respondInvite") + "?what=1&hash=" + invite.hash + "&id=" + invite.id, Router.getFullUrl("Invites.respondInvite") + "?what=0&hash=" + invite.hash + "&id=" + invite.id), (byte) 0);
+		//String url = "@{Application.externalOpen("+temp.project.id+", '/components/viewthecomponent?componentId="+temp.id+"', false)}";
+		//Notifications.notifyProjectUsers(temp.project, "onCreateComponent", url, "Component", temp.name, (byte) 0);		
+		//Notifications.notifyUsers(user, "Invitation to " + role.name, String.format("Dear " + user.name + ", you have been invited to " + role.name + " in the project " + role.project.name + ".\n\nTo accept this invitation <a href='%s'>click here</a>. To decline this invitation <a href='%s'>click here</a>.", Router.getFullUrl("Invites.respondInvite") + "?what=1&hash=" + invite.hash + "&id=" + invite.id, Router.getFullUrl("Invites.respondInvite") + "?what=0&hash=" + invite.hash + "&id=" + invite.id), (byte) 0);
 		Logs.addLog(role.project, "invited " + user.name, "Invite", invite.id);
 	}
 

@@ -140,7 +140,7 @@ public class ProductRoles extends SmartCRUD {
 			 * + Security.getConnected().name + "\'" + ".";
 			 */
 			Logs.addLog(Security.getConnected(), "Create", "ProductRole", productRoleObject.id, project, new Date(System.currentTimeMillis()));
-			Notifications.notifyProjectUsers(project, header, body, "addProductRole", (byte) 1);
+			//Notifications.notifyProjectUsers(project, header, body, "addProductRole", (byte) 1);
 			flash.success("Product Role " + productRoleObject.name + " has been created successfully.");
 			if (params.get("_save") != null) {
 				redirect("/application/overlaykiller");
@@ -233,7 +233,7 @@ public class ProductRoles extends SmartCRUD {
 			 */
 			object.save();
 			Logs.addLog(Security.getConnected(), "Edit", "ProductRole", productRoleObject.id, project, new Date(System.currentTimeMillis()));
-			Notifications.notifyProjectUsers(project, header, body, "editProductRole", (byte) 0);
+			//Notifications.notifyProjectUsers(project, header, body, "editProductRole", (byte) 0);
 			flash.success("Product Role " + productRoleObject.name + " has been edited.");
 			if (params.get("_save") != null) {
 				redirect("/application/overlaykiller");
@@ -285,7 +285,7 @@ public class ProductRoles extends SmartCRUD {
 			String body = "In Project " + "\'" + project.name + "\'" + "." + '\n' + " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
 			object.save();
 			Logs.addLog(Security.getConnected(), "Delete", "ProductRole", productRoleObject.id, productRoleObject.project, new Date(System.currentTimeMillis()));
-			Notifications.notifyProjectUsers(productRoleObject.project, header, body, "deleteProductRole", (byte) -1);
+			//Notifications.notifyProjectUsers(productRoleObject.project, header, body, "deleteProductRole", (byte) -1);
 			flash.success("Product Role " + productRoleObject.name + " has been deleted.");
 			redirect("/application/overlaykiller");
 		}
@@ -312,7 +312,7 @@ public class ProductRoles extends SmartCRUD {
 		String header = "Product Role: " + "\'" + productRoleObject.name + "\'" + " has been deleted.";
 		String body = "In Project " + "\'" + project.name + "\'" + "." + '\n' + " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		Logs.addLog(Security.getConnected(), "Delete", "ProductRole", productRoleObject.id, productRoleObject.project, new Date(System.currentTimeMillis()));
-		Notifications.notifyProjectUsers(productRoleObject.project, header, body, "deleteProductRole", (byte) -1);
+		//Notifications.notifyProjectUsers(productRoleObject.project, header, body, "deleteProductRole", (byte) -1);
 		flash.success("Product Role " + productRoleObject.name + " has been deleted.");
 	}
 

@@ -49,6 +49,11 @@ public class User extends SmartModel
 	 * avatar url (online link, for now)
 	 */
 	public String avatar;
+	
+	/**
+	 * to enable/disable sending emails 
+	 */
+	public boolean enableEmails;
 
 	/**
 	 * system admin?
@@ -127,7 +132,7 @@ public class User extends SmartModel
 	/**
 	 * Notifications
 	 */
-	@OneToMany( mappedBy = "user", cascade = CascadeType.ALL )
+	@OneToMany( mappedBy = "receiver" )
 	public List<Notification> notifications;
 
 	@OneToMany( mappedBy = "user" )
@@ -392,7 +397,7 @@ public class User extends SmartModel
 	}
 
 	public void addRole( Role role )
-	{
+	{		
 		if( !roles.contains( role ) )
 		{
 			roles.add( role );

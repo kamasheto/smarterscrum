@@ -107,15 +107,13 @@ public class Meetings extends SmartCRUD
 			forbidden();
 		}
 		M.endTime = new Date().getTime();
-		M.save();
-		Date D = new Date( M.endTime );
-		String header = "the Meeting " + M.name + " has been ended";
-		String body = "The Meeting:" + "\'" + M.name + '\n' + " in Project: " + "\'" + M.project.name + "\'" + '\n' + "by  " + Security.getConnected() + '\n' + "was ended  at " + D.getHours() + ":" + D.getMinutes() + ":" + D.getSeconds();
+		M.save();				
 		List<MeetingAttendance> attendees = MeetingAttendance.find( "byMeeting.idAndDeleted", M.id, false ).fetch();
 		Logs.addLog( Security.getConnected(), "Ended", "Meeting", M.id, M.project, new Date( System.currentTimeMillis() ) );
 		for( int i = 0; i < attendees.size(); i++ )
 		{
-			Notifications.notifyUsers( attendees.get( i ).user, header, body, (byte) 0 );
+			String url = "@{Application.externalOpen("+M.id+", '/meetings/viewMeeting?id="+M.id+"', false)}";				
+			Notifications.notifyUser(attendees.get( i ).user, "End", url, "Meeting", M.name,(byte) 0, M.project);			
 		}
 	}
 
@@ -515,8 +513,8 @@ public class Meetings extends SmartCRUD
 		{
 			meeting.status = false;
 			if( users.isEmpty() == false )
-				message = "unfortunately " + meeting.name + " meeting that you've been invited to is cancelled";
-			Notifications.notifyUsers( users, "Meeting Canceled", message, (byte) -1 );
+				message = "@{Application.externalOpen("+meeting.project.id+", '/meetings/viewMeetings?id="+meeting.project.id+"', false)}";				
+				Notifications.notifyUsers(users, "Cancel", message, "Meeting", meeting.name,(byte) -1, meeting.project);
 		}
 
 		List<Artifact> artifacts = meeting.artifacts;
@@ -532,7 +530,7 @@ public class Meetings extends SmartCRUD
 		{
 			if( users.isEmpty() == false )
 				message = "unfortunately " + meeting.name + " meeting notes are deleted.";
-			Notifications.notifyUsers( users, "Meeting Notes deleted", message, (byte) -1 );
+			//Notifications.notifyUsers( users, "Meeting Notes deleted", message, (byte) -1 );
 		}
 		Logs.addLog( Security.getConnected(), "delete", "Meeting", meeting.id, meeting.project, new Date( System.currentTimeMillis() ) );
 		meeting.save();
@@ -569,7 +567,7 @@ public class Meetings extends SmartCRUD
 		String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
 		String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
 		String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-		Notifications.notifyUsers( userList, header, body, (byte) 0 );
+		//Notifications.notifyUsers( userList, header, body, (byte) 0 );
 
 	}
 
@@ -606,7 +604,7 @@ public class Meetings extends SmartCRUD
 					String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
 					String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
 					String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-					Notifications.notifyProjectUsers( meeting.project, header, body, "setMeeting", (byte) 0 );
+					//Notifications.notifyProjectUsers( meeting.project, header, body, "setMeeting", (byte) 0 );
 				}
 			}
 		}
@@ -653,7 +651,7 @@ public class Meetings extends SmartCRUD
 						String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
 						String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
 						String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-						Notifications.notifyUsers( userList, header, body, (byte) 0 );
+						//Notifications.notifyUsers( userList, header, body, (byte) 0 );
 					}
 				}
 			}
@@ -708,7 +706,8 @@ public class Meetings extends SmartCRUD
 
 		if( users.isEmpty() == false )
 		{
-			Notifications.notifyUsers( users, " " + meeting.name + " Meeting Modification", message, (byte) 0 );
+			String url = "@{Application.externalOpen("+meeting.id+", '/meetings/viewMeeting?id="+meeting.id+"', false)}";				
+			Notifications.notifyUsers(users, "Modifi", url, "Meeting", meeting.name,(byte) 0, meeting.project);			
 			flag = true;
 		}
 		renderJSON( flag );

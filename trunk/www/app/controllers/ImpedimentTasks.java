@@ -125,8 +125,8 @@ public class ImpedimentTasks extends SmartController {
 
 		Sprint s = Sprint.findById(j.taskSprint.id);
 		Project project = impedimentTask.taskSprint.project;
-		Notifications.notifyProjectUsers(project, "Impediment reported", impedimentTask.description, "reportImpediment", (byte) -1);
-
+		String url = "@{Application.externalOpen("+project.id+", '/components/viewImpedimentLog?Proj_id="+project.id+"', false)}";
+		Notifications.notifyProjectUsers(project, "reportImpediment", url, "Impediment Task", ""+impedimentTask.number, (byte) -1);
 		Logs.addLog(project, "added", "Task", impedimentTask.id);
 	}
 
@@ -192,7 +192,8 @@ public class ImpedimentTasks extends SmartController {
 				users = proj.roles.get(i).users;
 		}
 		users.add(t.reporter);
-		Notifications.notifyUsers(users, "Impediment reported", "The status of the impediment task " + taskId + " has been changed to " + type, (byte) -1);
+		String url = "@{Application.externalOpen("+proj.id+", '/components/viewImpedimentLog?Proj_id="+proj.id+"', false)}";
+		Notifications.notifyProjectUsers(proj, "reportImpediment", url, "Impediment Task", ""+t.number, (byte) 0);		
 		Logs.addLog(proj, "updated", "Task", t.id);
 	}
 

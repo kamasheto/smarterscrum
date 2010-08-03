@@ -122,9 +122,7 @@ public class ReviewLog extends SmartController {
 
 			List<Meeting> noteMeetings = note.meetingsArtifacts;
 
-			User userWhoChanged = Security.getConnected();
-			String header = "The Note " + id + " has been edited by "
-					+ userWhoChanged.name;
+			User userWhoChanged = Security.getConnected();			
 			String body = "Note " + id + ":" + '\n' + "The new description is "
 					+ note.description;
 
@@ -136,8 +134,8 @@ public class ReviewLog extends SmartController {
 			 */
 
 			for (Meeting m : noteMeetings) {
-				Notifications.notifyUsers(getAttendanceConfirmed(m.id), header,
-						body, (byte) 0);
+				String url = "@{Application.externalOpen("+m.project.id+", '/meetings/note?id="+note.id+"&noteFlag=true&i=0', false)}";
+				Notifications.notifyUsers(getAttendanceConfirmed(m.id), "Edit", url, "Note in ", m.name, (byte) 0, m.project);						
 			}
 			Logs.addLog(userWhoChanged, body, "Note", id,
 					note.meetingsArtifacts.get(0).project, new Date());
