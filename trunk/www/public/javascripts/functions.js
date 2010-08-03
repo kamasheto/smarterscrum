@@ -32,7 +32,8 @@ var ping = function() {
 				}
 
 			 $.extend($.gritter.options, { 
-				fade_in_speed: 50, // how fast notifications fade in (string or int)
+				fade_in_speed: 50, // how fast notifications fade in (string or
+									// int)
 				fade_out_speed: 300, // how fast the notices fade out
 				time: 5000 // hang on the screen for...
 			});
@@ -389,13 +390,17 @@ function load(url, el, n) {
 								$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
 							});
 		$('#' + el + '_content').load(url, function() {
-											// $('#' + el + ' .min').first().show();
 			$('#' + el + '_content').slideDown(400);
 											magic(el);
 		});
+		
 	}
 	if(n==1)
-		myDivs.push(url);
+	{	myDivs.push(url);
+	var t ='<div id="p"></div>';
+	$(t).load(pUrl+' .filter', function(){
+	$('#' + el + '_content').parent().append($(t).html());});
+	}
 }
 
 CURRENT_OFFSET = 0
@@ -430,7 +435,7 @@ function magic(id) {
 							var head = '<div id="'+id2+'_header" class="ui-widget-header"><a href="#" onclick="overlayOpen(\''+$(this).attr('name')+'\')"><span class="ui-icon ui-icon-extlink"></span></a>' + $(this).html()+ '</div>';
 							$(this).html(head);
 							$(this).attr('id', id2);
-							$(this).addClass('ui-widget-content');
+							
 						}
 		else
 		{
@@ -441,10 +446,10 @@ function magic(id) {
 						var id2 = "ui" +num++;
 						var head = '<div id="'+id2+'_header" class="ui-widget-header mainH"><span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span><span class="refresh ui-icon ui-icon-refresh"></span></span>' + $(this).html() + '</div>';
 						$(this).html(head);
-						$(this).addClass('ui-widget-content draggableChild');
+						$(this).addClass('draggableChild');
 
 						$(this).attr('id', id2);
-				$(this).append('<div id="' + id2 + '_content" class="ui-widget-content" ></div>');
+				$(this).append('<div id="' + id2 + '_content" class="" ></div>');
 						}
 						else
 			{	var id2= $($(this).closest('.workspaceDraggables').find('div[name='+$(this).attr('name')+']')).first().attr('id')+'_2';
@@ -580,7 +585,8 @@ function showProjectWorkspace(project_id) {
 }
 
 function reload() {
-	// don't reload the same box more than once, just making sure nobody is abusing our system
+	// don't reload the same box more than once, just making sure nobody is
+	// abusing our system
 	reloaded = new Array()
 	for (var i = 0; i < arguments.length; i++) {
 		sel = '.reload-' + arguments[i]
