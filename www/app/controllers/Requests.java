@@ -205,7 +205,7 @@ public class Requests extends SmartCRUD
 		Request x = new Request( myUser, myComponent );
 		flash.success( "your request has been sent" );
 		x.save();
-		Show.project( myComponent.project.id );
+		// Show.project( myComponent.project.id );
 		// Logs.addLog(myComponent, "request to be deleted", "Request", x.id );
 
 	}

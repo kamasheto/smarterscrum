@@ -5,15 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import models.Board;
-import models.Component;
-import models.Meeting;
 import models.Project;
 import models.Request;
 import models.Requestreviewer;
 import models.Role;
-import models.Sprint;
-import models.Story;
-import models.Task;
 import models.TaskType;
 import models.User;
 import play.mvc.With;
@@ -96,73 +91,6 @@ public class Show extends SmartController
 				myProjects.add( project );
 		}
 		render( user, myProjects, me );
-	}
-
-	public static void project( long id )
-	{
-		Project project = Project.findById( id );
-		List<Request> requests = Request.find( "byUser", Security.getConnected() ).fetch();
-		List<Role> requestedRoles = new LinkedList<Role>();
-		for( Request request : requests )
-		{
-			requestedRoles.add( request.role );
-		}
-		List<User> members = project.users;
-		int memberscount = members.size();
-		List<Sprint> sprints = project.sprints;
-		int sprintscount = sprints.size();
-		int taskscount = 0;
-		for( int i = 0; i < sprintscount; i++ )
-		{
-			List<Task> tasks = sprints.get( i ).tasks;
-			taskscount += tasks.size();
-		}
-		List<Meeting> meetings = project.meetings;
-		int meetingscount = meetings.size();
-		List<Component> components = project.components;
-		int componentscount = components.size();
-		int storiescount = 0;
-		for( int i = 0; i < componentscount; i++ )
-		{
-			List<Story> stories = components.get( i ).componentStories;
-			storiescount += stories.size();
-		}
-		User connectedUser = Security.getConnected();
-		render( storiescount, taskscount, componentscount, project, meetingscount, requestedRoles, memberscount, sprintscount, connectedUser );
-	}
-
-	public static void tasks( long id )
-	{
-		Project project = Project.findById( id );
-		List<Task> tasks = new ArrayList<Task>();
-		List<models.Component> components = project.components;
-		for( models.Component C : components )
-		{
-			for( Story S : C.componentStories )
-			{
-				List<Task> tasks2 = Task.find( "byTaskStoryAndDeleted", S, false ).fetch();
-				tasks.addAll( tasks2 );
-			}
-
-		}
-
-		render( project, tasks );
-	}
-
-	public static void role( long id )
-	{
-		User user = Security.getConnected();
-		Role role = Role.findById( id );
-		List<Request> requests = Request.find( "byUser", user ).fetch();
-		ArrayList<Role> requestedRoles = new ArrayList<Role>();
-		for( Request request : requests )
-		{
-			requestedRoles.add( request.role );
-		}
-		boolean requested = false;
-		if( requestedRoles.contains( role ) )
-			requested = true;
-		render( role, requested, user );
 	}
 
 	public static void listTaskTypesInProject( long projectId )

@@ -3,17 +3,16 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import notifiers.Notifications;
-
 import models.Component;
 import models.Project;
 import models.Sprint;
-import models.Story;
 import models.Task;
 import models.TaskStatus;
 import models.User;
+import notifiers.Notifications;
 
-public class ImpedimentTasks extends SmartController {
+public class ImpedimentTasks extends SmartController
+{
 	/**
 	 * C4 S12 Rendering the project to the index page in the Impediment task
 	 * view
@@ -22,10 +21,11 @@ public class ImpedimentTasks extends SmartController {
 	 * @param projectId
 	 *            Is the pid of the project we are in
 	 */
-	public static void index(long projectId) {
-		Project project = Project.findById(projectId);
-		Security.check(project.users.contains(Security.getConnected()));
-		render(project);
+	public static void index( long projectId )
+	{
+		Project project = Project.findById( projectId );
+		Security.check( project.users.contains( Security.getConnected() ) );
+		render( project );
 	}
 
 	/**
@@ -40,39 +40,41 @@ public class ImpedimentTasks extends SmartController {
 	 * @param projectId
 	 *            Is the pid of the project we are in
 	 */
-	public static void save(String description, long projectId) {
+	public static void save( String description, long projectId )
+	{
 
-		Project project = Project.findById(projectId);
-		Security.check(Security.getConnected().projects.contains(project));
-		Task impedimentTask = new Task(description, project).save();
+		Project project = Project.findById( projectId );
+		Security.check( Security.getConnected().projects.contains( project ) );
+		Task impedimentTask = new Task( description, project ).save();
 
 		// impedimentTask.dependentTasks=dTasks;
 		// Logs.notifyUsers(task.reporter.email, "task is impediment",
 		// "task is impediment", assignee);
 		int taskType = 0;
 		impedimentTask.reporter = Security.getConnected();
-		for (int i = 0; i < project.taskTypes.size(); i++) {
-			if (project.taskTypes.get(i).name.equalsIgnoreCase("Impediment"))
+		for( int i = 0; i < project.taskTypes.size(); i++ )
+		{
+			if( project.taskTypes.get( i ).name.equalsIgnoreCase( "Impediment" ) )
 				taskType = i;
 		}
-		impedimentTask.taskType = project.taskTypes.get(taskType);
-		project.taskTypes.get(taskType).Tasks.add(impedimentTask);
-		project.taskTypes.get(taskType).save();
+		impedimentTask.taskType = project.taskTypes.get( taskType );
+		project.taskTypes.get( taskType ).Tasks.add( impedimentTask );
+		project.taskTypes.get( taskType ).save();
 		impedimentTask.save();
 
 		long sid;
-		if (project.runningSprint() != -1)
+		if( project.runningSprint() != -1 )
 			sid = project.runningSprint();
 		else
-			sid = project.sprints.get(project.sprints.size() - 1).id;
-		Sprint s = Sprint.findById(sid);
+			sid = project.sprints.get( project.sprints.size() - 1 ).id;
+		Sprint s = Sprint.findById( sid );
 
 		impedimentTask.taskSprint = s;
 		impedimentTask.save();
 
 		long id = impedimentTask.id;
 
-		renderJSON(id);
+		renderJSON( id );
 	}
 
 	/**
@@ -84,22 +86,26 @@ public class ImpedimentTasks extends SmartController {
 	 * @param itaskId
 	 *            Is the impediment task is
 	 */
-	public static void selectDependentTasks(long projectId, long itaskId) {
-		Project project = Project.findById(projectId);
-		Security.check(project.users.contains(Security.getConnected()));
+	public static void selectDependentTasks( long projectId, long itaskId )
+	{
+		Project project = Project.findById( projectId );
+		Security.check( project.users.contains( Security.getConnected() ) );
 		List<Task> Tasks = new ArrayList<Task>();
 		List<Long> taskIds = new ArrayList<Long>();
 
-		for (Component component : project.components) {
-			for (Story story : component.componentStories) {
-				for (Task task : story.storiesTask) {
-					Tasks.add(task);
-					taskIds.add(task.id);
+		for( Component component : project.components )
+		{
+			if( !component.deleted )
+				for( Task task : component.componentTasks )
+				{
+
+					Tasks.add( task );
+					taskIds.add( task.id );
 				}
-			}
+
 		}
 
-		render(itaskId, Tasks, taskIds, projectId, project);
+		render( itaskId, Tasks, taskIds, projectId, project );
 	}
 
 	/**
@@ -111,23 +117,25 @@ public class ImpedimentTasks extends SmartController {
 	 * @param dTasks
 	 *            list of dependent tasks
 	 */
-	public static void save2(long taskId, long[] dTasks) {
-		Task impedimentTask = Task.findById(taskId);
-		Security.check(impedimentTask.project.users.contains(Security.getConnected()));
+	public static void save2( long taskId, long[] dTasks )
+	{
+		Task impedimentTask = Task.findById( taskId );
+		Security.check( impedimentTask.project.users.contains( Security.getConnected() ) );
 		// System.out.println(dTasks[0]);
-		for (int i = 0; i < dTasks.length; i++) {
-			Task n = Task.findById(dTasks[i]);
-			impedimentTask.dependentTasks.add(n);
+		for( int i = 0; i < dTasks.length; i++ )
+		{
+			Task n = Task.findById( dTasks[i] );
+			impedimentTask.dependentTasks.add( n );
 		}
 
 		impedimentTask.save();
-		Task j = Task.findById(taskId);
+		Task j = Task.findById( taskId );
 
-		Sprint s = Sprint.findById(j.taskSprint.id);
+		Sprint s = Sprint.findById( j.taskSprint.id );
 		Project project = impedimentTask.taskSprint.project;
 		String url = "@{Application.externalOpen("+project.id+", '/components/viewImpedimentLog?Proj_id="+project.id+"', false)}";
 		Notifications.notifyProjectUsers(project, "reportImpediment", url, "Impediment Task", ""+impedimentTask.number, (byte) -1);
-		Logs.addLog(project, "added", "Task", impedimentTask.id);
+		Logs.addLog( project, "added", "Task", impedimentTask.id );
 	}
 
 	/**
@@ -137,31 +145,35 @@ public class ImpedimentTasks extends SmartController {
 	 * @param Proj_id
 	 *            is the id of the project.
 	 */
-	public static void viewImpedimentLog(long Proj_id) {
-		Project proj = Project.findById(Proj_id);
-		Security.check(proj.users.contains(Security.getConnected()));
+	public static void viewImpedimentLog( long Proj_id )
+	{
+		Project proj = Project.findById( Proj_id );
+		Security.check( proj.users.contains( Security.getConnected() ) );
 		Boolean canEdit = false;
-		if (Security.getConnected().isAdmin)
+		if( Security.getConnected().isAdmin )
 			canEdit = true;
-		else {
-			for (int i = 0; i < proj.roles.size(); i++) {
-				if (proj.roles.get(i).name.equalsIgnoreCase("Scrum Master"))
-					if (proj.roles.get(i).users.contains(Security.getConnected()))
+		else
+		{
+			for( int i = 0; i < proj.roles.size(); i++ )
+			{
+				if( proj.roles.get( i ).name.equalsIgnoreCase( "Scrum Master" ) )
+					if( proj.roles.get( i ).users.contains( Security.getConnected() ) )
 						canEdit = true;
 
 			}
 		}
 
 		List<Task> tasks = null;
-		for (int i = 0; i < proj.taskTypes.size(); i++) {
-			if (proj.taskTypes.get(i).name.equalsIgnoreCase("Impediment"))
-				tasks = proj.taskTypes.get(i).Tasks;
+		for( int i = 0; i < proj.taskTypes.size(); i++ )
+		{
+			if( proj.taskTypes.get( i ).name.equalsIgnoreCase( "Impediment" ) )
+				tasks = proj.taskTypes.get( i ).Tasks;
 		}
 
 		String name = proj.name;
 
 		List<TaskStatus> TaskStat = proj.taskStatuses;
-		render(tasks, TaskStat, proj, canEdit);
+		render( tasks, TaskStat, proj, canEdit );
 	}
 
 	/**
@@ -174,27 +186,30 @@ public class ImpedimentTasks extends SmartController {
 	 *            is the name of the new status
 	 * @description Updates a task to a new type
 	 */
-	public static void changeStatus(long taskId, String type) {
-		Task t = Task.findById(taskId);
+	public static void changeStatus( long taskId, String type )
+	{
+		Task t = Task.findById( taskId );
 		Project proj = t.taskSprint.project;
-		Security.check(proj.users.contains(Security.getConnected()));
+		Security.check( proj.users.contains( Security.getConnected() ) );
 		TaskStatus newType = null;
-		for (int i = 0; i < proj.taskStatuses.size(); i++) {
-			if (proj.taskStatuses.get(i).name.equalsIgnoreCase(type))
-				newType = proj.taskStatuses.get(i);
+		for( int i = 0; i < proj.taskStatuses.size(); i++ )
+		{
+			if( proj.taskStatuses.get( i ).name.equalsIgnoreCase( type ) )
+				newType = proj.taskStatuses.get( i );
 		}
 		t.taskStatus = newType;
 		t.save();
-		Sprint s = Sprint.findById(t.taskSprint.id);
-		List<User> users = new ArrayList<User>(2);
-		for (int i = 0; i < proj.roles.size(); i++) {
-			if (proj.roles.get(i).name.equalsIgnoreCase("Scrum Master"))
-				users = proj.roles.get(i).users;
+		Sprint s = Sprint.findById( t.taskSprint.id );
+		List<User> users = new ArrayList<User>( 2 );
+		for( int i = 0; i < proj.roles.size(); i++ )
+		{
+			if( proj.roles.get( i ).name.equalsIgnoreCase( "Scrum Master" ) )
+				users = proj.roles.get( i ).users;
 		}
-		users.add(t.reporter);
+		users.add( t.reporter );
 		String url = "@{Application.externalOpen("+proj.id+", '/components/viewImpedimentLog?Proj_id="+proj.id+"', false)}";
 		Notifications.notifyProjectUsers(proj, "reportImpediment", url, "Impediment Task", ""+t.number, (byte) 0);		
-		Logs.addLog(proj, "updated", "Task", t.id);
+		Logs.addLog( proj, "updated", "Task", t.id );
 	}
 
 }
