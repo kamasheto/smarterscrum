@@ -409,13 +409,24 @@ public class User extends SmartModel
 		}
 	}
 	
+	/**
+	 * This method revokes a specific role from a specific user.
+	 * In case the role revoked is a base role the user is deleted from the project.
+	 * 
+	 * @author Dina Helal, Heba Elsherif
+	 * @param id
+	 *            role id.
+	 * @return void
+	 * @issue 94, 96
+	 * @sprint 4
+	 */
 	public void removeRole( Role role )
 	{
-		roles.remove( role );
-		if( roles.size() == 0 )
+		if(role.baseRole)
 		{
 			projects.remove( role.project );
 		}
+		roles.remove( role );
 		save();
 	}
 }

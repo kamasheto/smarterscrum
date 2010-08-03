@@ -24,7 +24,7 @@
 		#{/else}
 	#{/ifnot}
 	#{else}
-	<div ><a href="#" onclick="revokeRole(${role.id});"><img title="Revoke Role" src="@{'public/images/famfam/group_delete.png'}"></a></div>
+	<div ><a href="#" onclick="revokeRole(${role.id},${role.baseRole});"><img title="Revoke Role" src="@{'public/images/famfam/group_delete.png'}"></a></div>
 	#{/else}
 	</div>
 	${role.name}</div>
