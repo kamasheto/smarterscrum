@@ -175,7 +175,7 @@ Show/Hide:
 	<tr id="task_${task.id}">
 	
 		<td>
-			<a title="view the task reports?" href="@{Tasks.getReport(task.id)}">${task.id}</a>
+			<a title="view the task reports?" href="@{Tasks.getReport(task.id)}">${task.number}</a>
 		</td>
 		#{ifnot connected.id==task.assignee.id || flag}
 
