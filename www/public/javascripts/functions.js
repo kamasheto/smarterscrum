@@ -80,7 +80,7 @@ function do_ignore(id, hash){
 		    })
 	}
 }
-function delete_meeting(id, pId)
+function delete_meeting(id)
 {
 	var confirmation= confirm("Are you sure you want to delete this meeting ?");
 	
@@ -88,7 +88,8 @@ function delete_meeting(id, pId)
 		$.post('/Meetings/deleteMeeting', {
 			id:id
 		}, function(){
-		// removeMe(pId);	
+			reload('meetings');
+			reload('meeting-'+id)
 		});
 	};		
 }
