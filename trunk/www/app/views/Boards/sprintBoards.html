@@ -21,6 +21,16 @@ ${board.component.name}'s Task Board
 ${p.name}'s Final Snapshot
 <a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
 </div>
+#{list components, as:'component'}
+#{if component.number!=0 }
+#{list component.snapshots, as:'snapshot'}
+#{if s.id==snapshot.sprint.id }
 
-
+<div class="overlay" name="/Snapshots/loadsnapShot?id=${snapshot.id}">
+${component.name}'s Final Snapshot<a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+</div>
+#{/if}
+#{/list}
+#{/if}
+#{/list}
 #{/else}
