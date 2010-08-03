@@ -7,7 +7,7 @@
 		<label> No Users</label>
 		#{/if}
 		#{list items:users ,as :'User'}
-			<div class="reload-user-${User.id}" name="/users/findUsers?projectId=${currentProject.id}&userId=${User.id}">${User.name} <img src="/public/images/famfam/arrow_out.png"></div>
+			<div class="reload-user-${User.id}" name="/users/findUsers?projectId=${currentProject.id}&userId=${User.id}">${User.name} <img src="/public/images/famfam/arrow_out.png" class="dragger"></div>
 		#{/list}
 #{/if}
 		

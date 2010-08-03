@@ -232,3 +232,7 @@ a,a img,span.revertFrom,span.min {
 .draggableChild .min, .draggableChild .ui-icon-refresh {
 	display: none;
 }
+.dragger {
+/*	ms: i don't really like the move cursor.. the arrow is enough*/
+/*	cursor: move;*/
+}
