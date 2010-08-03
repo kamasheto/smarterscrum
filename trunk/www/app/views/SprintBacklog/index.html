@@ -1,4 +1,10 @@
 #{extends 'overlay.html' /} #{set title:'Sprint Backlog' /} 
+#{ifnot tasks}
+<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+	<strong>NOTE: </strong>There isn't enough data to display</div>
+#{/ifnot}
+#{else}
 #{set 'moreStyles'}
 <style type="text/css">
 thead
@@ -307,3 +313,4 @@ Show/Hide:
 	#{/list}
 </table>
 </div>
+#{/else}
