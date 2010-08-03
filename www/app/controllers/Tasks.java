@@ -1807,31 +1807,26 @@ public class Tasks extends SmartCRUD
 							task.add( task1 );
 						}
 					}
-					render( task, title );
-				}
-				else
-				{
-					if( projectId != 0 )
-					{
-						title = "Project Tasks";
-						Project project = Project.findById( projectId );
-						List<Task> Tasks = new ArrayList<Task>();
-						Tasks = Task.find( "byProjectAndDeletedAndParent", project, false, null ).fetch();
-						render( Tasks, title );
-					}
-					else
-					{
-						if( meetingId != 0 )
-						{
-							Meeting meeting = Meeting.findById( meetingId );
+
+					render(task, title);
+				}else{
+					if(projectId!=0){
+							title="Project Tasks";
+							Project project = Project.findById(projectId);
 							List<Task> task = new ArrayList<Task>();
-							for( Task task2 : meeting.tasks )
-							{
-								if( !task2.deleted )
-								{
-									task.add( task2 );
+							task = Task.find("byProjectAndDeletedAndParentIsNull", project, false).fetch();
+							System.out.println(task);
+							render(task, title);
+						}else{
+							if(meetingId!=0){
+								Meeting meeting = Meeting.findById(meetingId);
+								List<Task> task = new ArrayList<Task>();
+								for(Task task2: meeting.tasks){
+									if(!task2.deleted){
+										task.add(task2);
+									}
 								}
-							}
+							
 							title = "Meetings Tasks";
 							render( title, task );
 						}
