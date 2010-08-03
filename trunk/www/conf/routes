@@ -7,7 +7,7 @@ GET		/admin/?			Application.adminIndexPage
 # Add BELOW
 
 GET		/admin/projects/{id}/components/new				Components.blank
-
+GET		/application/loading							Loading.loading
 
 
 

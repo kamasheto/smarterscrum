@@ -191,11 +191,10 @@ a,a img,span.revertFrom,span.min {
 
 .activity-level {
 	background: url(/public/images/activity-level.png);
+	display:inline-block;
 	width: 16px;
 	height: 16px;
 	background-position: -16px -16px;
-	top: -5px;
-	position: relative
 }
 
 .activity-level-0 {
@@ -223,4 +222,10 @@ a,a img,span.revertFrom,span.min {
 }
 .overlay, .overlay * {
 	cursor: auto;
+}
+.clickable {
+	cursor: pointer;
+}
+.draggableChild .ui-widget-content {
+	
 }
