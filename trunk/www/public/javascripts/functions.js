@@ -585,17 +585,22 @@ searching_projects = null
 function search_projects() {
 	if ($('#project_search_text').val() == '') {
 		$('#projects_search_results').html('')
+		$('#search_results_h3').hide()
 		return
 	}
 	$('#projects_search_results').html('<img src="/public/images/loadingMagic.gif">')
 	if (searching_projects) {
 		searching_projects.abort()
 	}
-	searching_projects = $.post('/ajax/projects', {query: $('#project_search_text').val()}, function(projects) {
+	searching_projects = $.post('/ajax/projects', {query: $('#project_search_text').val(), notMine: true}, function(projects) {
 		results = ''
 		$(projects).each(function() {
 			results += '<div id="project-search-result-'+this.id+'"><a onclick="showProjectWorkspace('+this.id+')">'+this.name+'</a></div>'
 		})
+		if (!$(projects).length) {
+			results += '<div><a href="#" title="No results">--</a></div>'
+		}
+		$('#search_results_h3').show()
 		$('#projects_search_results').html(results)
 	})
 }

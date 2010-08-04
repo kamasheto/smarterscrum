@@ -16,7 +16,7 @@ public class Ajax extends SmartController {
 	 * @param invite
 	 *            if true, selects projects this user canSendInvite to
 	 */
-	public static void projects(String query, boolean invite) {
+	public static void projects(String query, boolean invite, boolean notMine) {
 		if (invite) {
 			User me = Security.getConnected();
 			List<Project> myProjects = new LinkedList<Project>();
@@ -35,6 +35,9 @@ public class Ajax extends SmartController {
 		} else {
 			List<Project.Object> result = new LinkedList<Project.Object>();
 			for (Project u : Project.find("byNameLikeAndDeleted", "%" + query + "%", false).<Project> fetch()) {
+				if (Security.isConnected() && Security.getConnected().projects.contains(u) && notMine) {
+					continue;
+				}
 				result.add(new Project.Object(u.id, u.name));
 			}
 			renderJSON(result);
