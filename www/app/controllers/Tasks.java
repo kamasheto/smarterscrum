@@ -71,7 +71,6 @@ public class Tasks extends SmartCRUD
 									// taskId
 				{
 					task = Task.findById( taskId );
-					System.out.println(task+" heree");
 					if( task.deleted )
 						notFound();
 					if( task.component != null )
@@ -95,7 +94,7 @@ public class Tasks extends SmartCRUD
 			Sprint sprint = project.sprints.get( i );
 			java.util.Date End = sprint.endDate;
 			Calendar cal = new GregorianCalendar();
-			if( End.after( cal.getTime() ) )
+			if( End!=null && End.after( cal.getTime() ) )
 			{
 				sprints.add( sprint );
 			}
@@ -284,21 +283,22 @@ public class Tasks extends SmartCRUD
 			Sprint sprint = project.sprints.get( i );
 			java.util.Date End = sprint.endDate;
 			Calendar cal = new GregorianCalendar();
-			if( End.after( cal.getTime() ) )
+			if( End != null && End.after( cal.getTime() ) )
 			{
 				sprints.add( sprint );
 			}
 		}
 		String newdesc = tmp.description;
 		String productRoles = "";
-		for( int i = 0; i < project.productRoles.size(); i++ )
+		for (int i = 0; i < project.productRoles.size(); i++) 
 		{
-			if( project.productRoles.get( i ).name.charAt( 0 ) == 'a' || project.productRoles.get( i ).name.charAt( 0 ) == 'e' || project.productRoles.get( i ).name.charAt( 0 ) == 'i' || project.productRoles.get( i ).name.charAt( 0 ) == 'o' || project.productRoles.get( i ).name.charAt( 0 ) == 'u' || project.productRoles.get( i ).name.charAt( 0 ) == 'A' || project.productRoles.get( i ).name.charAt( 0 ) == 'E' || project.productRoles.get( i ).name.charAt( 0 ) == 'I' || project.productRoles.get( i ).name.charAt( 0 ) == 'O' || project.productRoles.get( i ).name.charAt( 0 ) == 'U' )
-				productRoles = productRoles + "As an " + project.productRoles.get( i ).name + ",-";
+			if(project.productRoles.get(i).name.charAt(0)=='a'||project.productRoles.get(i).name.charAt(0)=='e'||project.productRoles.get(i).name.charAt(0)=='i'||project.productRoles.get(i).name.charAt(0)=='o'||project.productRoles.get(i).name.charAt(0)=='u'||project.productRoles.get(i).name.charAt(0)=='A'||project.productRoles.get(i).name.charAt(0)=='E'||project.productRoles.get(i).name.charAt(0)=='I'||project.productRoles.get(i).name.charAt(0)=='O'||project.productRoles.get(i).name.charAt(0)=='U')
+			productRoles=productRoles+"As an "+project.productRoles.get(i).name+",-";
 			else
-				productRoles = productRoles + "As a " + project.productRoles.get( i ).name + ",-";
+			productRoles=productRoles+"As a "+project.productRoles.get(i).name+",-";
 		}
 
+		
 		if( validation.hasErrors() )
 		{
 			renderArgs.put( "error", Messages.get( "crud.hasErrors" ) );
@@ -312,6 +312,7 @@ public class Tasks extends SmartCRUD
 			}
 		}
 		tmp.init();
+		// System.out.println(tmp.parent.id + "toffa7");
 		
 		String[] desc = newdesc.split(",");
 		if (desc.length == 1) {
@@ -362,11 +363,11 @@ public class Tasks extends SmartCRUD
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
+
 			if(tmp.parent!=null)
 			Application.overlayKiller("reload('tasks','task-"+tmp.parent.id+"')", "");
 			else
 				Application.overlayKiller("reload('tasks','task-"+"')", "");
-				
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
 		{
@@ -1761,7 +1762,7 @@ public class Tasks extends SmartCRUD
 	// }
 
 	/**
-	 * @author menna_ghoneim Renders a given task id with a list of user and
+	 * @author menna_ghoneim Renders a given taskid with a list of user and
 	 *         option to say if the reviewer or the assignee is being changed to
 	 *         a page to choose a reviewer or assignee
 	 * @param taskId
@@ -1969,7 +1970,6 @@ public class Tasks extends SmartCRUD
 								if( !task2.deleted )
 								{
 									tasks.add( task2 );
-
 								}
 							}
 

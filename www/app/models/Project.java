@@ -457,10 +457,11 @@ public class Project extends SmartModel
 		if (!isScrum) {
 			// Default creations in case not a scrum project
 
-			Sprint defaultSprint = new Sprint().save();
-			defaultSprint.project = this;
-			defaultSprint.save();
-		}
+			// Sprint defaultSprint = new Sprint().save();
+			// 	defaultSprint
+			// 	defaultSprint.project = this;
+			// 	defaultSprint.save();
+ 		}
 
 		this.save();
 	}
