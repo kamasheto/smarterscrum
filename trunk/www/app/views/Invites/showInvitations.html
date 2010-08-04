@@ -1,22 +1,22 @@
 #{extends 'sidebar.html' /}
 <br/>
-<font size=3>Project Invitations</font><br/><br/>
+<font size=3>>Project Invitations:<img src="/public/images/famfam/user_go.png"/></font><br/><br/>
 #{if invitations.isEmpty()}
-there are no new project invitations
+<img src = "/public/images/famfam/exclamation.png"/> There are no new project invitations<br/>
 #{/if}
 #{else}
 #{list items:invitations, as:'inv'}
 	<li id = "#inv_${inv.id}">
 		You have been invited to be ${inv.role} in project <a href = "@{Application.externalOpen(inv.role.project.id, '#', false)}">${inv.role.project.name}</a>
-		<br><a onclick="inv_respond('${inv.id}', '${inv.hash}', 1);">Accept</a> &nbsp; 
-		<a onclick="inv_respond('${inv.hash}', 0);">Decline</a>
+		<br><img src = "/public/images/famfam/tick.png" onclick="inv_respond('${inv.id}', '${inv.hash}', 1);">Accept</a> &nbsp; 
+		<img src="/public/images/famfam/cross.png" onclick="inv_respond('${inv.hash}', 0);">Decline</a>
 	</li>
 #{/list}
 #{/else}
 <br/><br/>
-<font size=3>Meeting Invitations</font><br/><br/>
+<font size=3>>Meeting Invitations:<img src="/public/images/famfam/meeting.png"/></font><br/><br/>
 #{if meetings.isEmpty()}
-there are no new meeting invitations
+<img src = "/public/images/famfam/exclamation.png"/> There are no new meeting invitations
 #{/if}
 #{else}
 #{list items:meetings, as:'meet'}
