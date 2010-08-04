@@ -247,31 +247,45 @@ function deleteStory(sId,box,d){
 	}
 }
 
-
+DRAGGING_ELEMENT = null
 $(function() {
 	$('.dragger').live('mouseover', function(){
 		if ($(this).data('init')) return
 		$(this).data('init', true)
 		$(this).draggable({
 			helper: 'clone',
+			stack: '.draggable, .dragger',
 			start: function(event, ui) {
+				DRAGGING_ELEMENT = $(this).closest('.draggableChild').attr('id')
 				$('.dropper').each(function() {
 					$(this).show()
 					if ($(this).data('init')) return
 					$(this).data('init', true)
 					$(this).droppable({
-						accept: '.dragger',
 						addClasses: false,
+						tolerance: 'touch',
 						drop: function(event2, ui2) {
 							$(this).attr('src', '/public/images/loading16.gif')
+							that = this
 							$.post('/loading/dynamicdrop', {from: $(ui2.draggable).attr('name'), to: $(this).attr('name')}, 
-															function() {
-																$('.dropper').hide()
-																$(this).attr('src', '/public/images/famfam/arrow_in.png')
+															function(response) {
+																$(that).attr('src', '/public/images/famfam/arrow_in.png')
+																arr = response.split('|')
+																if (arr.length > 0 && arr[0]) {
+																	$.bar({message: arr[0]})
+																}	
+																if (arr.length > 1 && arr[1]) {
+																	eval(arr[1])
+																}
 															})
 						}
 					})
 				})
+			},
+			stop: function(element, ui) {
+				$('.dragger').hide()
+				$('.dropper').hide()
+				DRAGGING_ELEMENT = null
 			}
 		})
 	})
@@ -286,8 +300,8 @@ $(function() {
 			stack  : '.draggable',
 			containment: '#'+con
 		});
-		var h = $(this).height();
-		var w = $(this).width();
+		// var h = $(this).height();
+		// var w = $(this).width();
 		// $(this).resizable( {
 		// 	containment: '#'+con,
 		// 	minHeight: $(this).height(),
@@ -298,10 +312,15 @@ $(function() {
 
 	});
 
+	$('.draggableChild').live('mouseout', function() {
+		if ($(this).attr('id') != DRAGGING_ELEMENT) {
+			$(this).children().children('.dragger').hide()
+		}
+	})
 	$(".draggableChild").live(
 			'mouseover',
 			function() {
-
+				$(this).children().children('.dragger').show()
 				$(this).draggable(
 						{
 							handle : '.ui-widget-header',

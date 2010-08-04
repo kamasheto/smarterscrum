@@ -239,3 +239,6 @@ a,a img,span.revertFrom,span.min {
 .dropper {
 	display: none;
 }
+.dragger {
+	display: none;
+}

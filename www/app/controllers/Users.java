@@ -92,10 +92,13 @@ public class Users extends SmartCRUD {
 	 *            that this user is assigned to that component
 	 */
 	// @Check ("canAssignUserToComponent")
-	protected static void chooseUsers(long id, long UId) {
+	public static void chooseUsers(long id, long UId) {
 		User myUser = User.findById(UId);
 		Component myComponent = Component.findById(id);
 		Security.check(myComponent.project, "assignUserToComponent");
+		if (myUser.components.contains(myComponent)) {
+			renderText("Cannot assign user to a component he is already a member in");
+		}
 		myUser.components.add(myComponent);
 		myComponent.componentUsers.add(myUser);
 		Date d = new Date();
@@ -104,6 +107,7 @@ public class Users extends SmartCRUD {
 		Logs.addLog(user, "assignUser", "User", UId, myComponent.project, d);
 		//Notifications.notifyUsers(myUser, "Assigned to a component", "You were assigned to the component " + myComponent.name + " in the project " + myComponent.project.name, (byte) 0);
 		myUser.save();
+		renderText("User assigned to component successfully|reload('component-" + id + "-users')");
 	}
 
 	/**
