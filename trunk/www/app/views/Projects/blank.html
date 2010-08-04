@@ -72,22 +72,7 @@ To Create a Project , You Must Enter a name and a description. Make sure that th
 </div>
 	<p><small>* Required Fields</small>	</p>
 	<div id="y" class="objectForm">
-	
-		#{if flash.error}
-			<p id="er" class="error">
-				&{flash.error}
-			</p>
-		#{/if}
-		#{if flash.success}
-			<p class="success">
-				&{flash.success}
-			</p>
-		#{/if}
-	
 	#{form action:@create(), enctype:'multipart/form-data'}
-		
-		
-		
 		<div class="crudField"> 
 			<label for="object_name"> 
 			Name:  
