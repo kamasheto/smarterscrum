@@ -138,10 +138,6 @@
 							Hello <span id="username-in-topbar">${connected.name}</span>!&nbsp;&nbsp;|&nbsp;&nbsp;
 							<a href="/show/user?id=${controllers.Security.getConnected().id}">Profile</a>&nbsp;&nbsp;|&nbsp;&nbsp;
 						#{/if}
-						
-						#{ifnot connected}
-							<a href="@{Accounts.register}">Register</a>
-						#{/ifnot}
 						</div>
 						
 							
