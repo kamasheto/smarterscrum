@@ -29,7 +29,7 @@ table {
 }
 
 .draggableChild .filter {
-	display: none;
+	display: none !important;
 }
 
 .draggable {

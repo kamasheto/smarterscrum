@@ -47,9 +47,9 @@ a {
 	_border-right-color: pink;
 	_border-left-color: pink;
 	margin-top: -2px;
-	_filter: chroma(color =                     
+	_filter: chroma(color =                       
 		                                                          
-		                          pink);
+		                            pink);
 }
 
 .notchBottom2 {
@@ -67,9 +67,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                     
+	_filter: chroma(color =                       
 		                                                          
-		                          pink);
+		                            pink);
 }
 
 .notchTop {
@@ -84,9 +84,9 @@ a {
 	margin-left: 30px;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                     
+	_filter: chroma(color =                       
 		                                                          
-		                          pink);
+		                            pink);
 }
 
 .notchRight {
@@ -103,9 +103,9 @@ a {
 	display: inline-block;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                     
+	_filter: chroma(color =                       
 		                                                          
-		                          pink);
+		                            pink);
 }
 
 .notchLeft {
@@ -120,9 +120,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                     
+	_filter: chroma(color =                       
 		                                                          
-		                          pink);
+		                            pink);
 }
 
 .searchBtn:hover {
@@ -240,57 +240,44 @@ a,a img,span.revertFrom,span.min {
 	display: none;
 }
 
-.sideNotch {
-	border-left-color: red;
-	display: inline-block;
-	float: none;
-	position: relative;
-	border-width: 8px;
-	margin-left: -4px;
-	z-index:999;
-}
-
 .siderC {
 	position: relative;
-	top: 5px;
 	margin-left: -230px;
 	right: -230px;
-	padding: 15px;
-	height: 470px;
+	padding: 0px 15px;
+	height: 100%;
 	width: 200px;
 	background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.7);
 	display: inline-block;
-	z-index:1000;
+	z-index: 1000;
 }
 
 .notch {
 	display: inline-block;
-	right:-15px;
+	right: -15px;
 	position: relative;
-	z-index:999;
+	vertical-align: top;
+	z-index: 999;
 }
-.notch:hover
-{
-margin-right:15px;
+
+.notch:hover {
+	margin-right: 15px;
 }
-.notch2:hover
+
+.notch2:hover {
+	margin-right: 0px;
+}
+body,html
 {
-margin-right:0px !important;
+x-overflow:hidden !important;
 }
 
 .sideHolder {
-	position: fixed;
+	position: absolute;
 	right: 0px;
+	top: 0px;
+	height:100%;
 	margin: auto 0px;
-	color: white !important
-}
-.dropper {
-	display: none;
-}
-.dragger {
-	display: none;
-}
-img.left {
-	float: left;
-	margin-right: 2px;
+	color: white !important;
+	margin: auto 0px;
 }
