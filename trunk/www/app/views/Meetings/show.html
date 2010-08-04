@@ -114,6 +114,7 @@ function showStuff(id) {
 			<input type="checkbox" onclick="showStuff('span'); showtypes();">
 			<span id="span" style="display: none;">
 			<select id="object_sprint" name="object.sprintid" onchange="showtypes()" >
+			<option value="" style="display:none"></option>
 			#{list items:sprints, as:'sprint'}
 				<option   value="${sprint.id}">Sprint ${sprint.sprintNumber}</option>
 					#{/list}
@@ -133,6 +134,7 @@ function showStuff(id) {
    <span id="types" style="display:none;">
 			<label for="object_type">Type of Meeting</label>
 					<select id="object_type" name="object.type">
+					<option value="" style="display:none"></option>
 					#{list items:types, as:'meetingtype'}
 					<option  value="${meetingtype}">${meetingtype}</option>
 					#{/list}
