@@ -183,7 +183,8 @@ public class Components extends SmartCRUD {
 	/**** Magic Box ****/
 
 	public static void listComponentsInProject(long projectId) {
-		Project project = Project.findById(projectId);
+		// Project project = Project.findById(projectId);
+		Project project = Project.find("byIdAndDeleted", projectId, false).first();
 		notFoundIfNull(project);
 		List<Component> components = new ArrayList<Component>();
 		for (Component c : project.components) {

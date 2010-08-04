@@ -368,9 +368,6 @@ $(function() {
 								$(this).removeClass('draggableChild');
 								$(this).addClass('draggable');
 								load($(this).attr('name') + ' .actual', $(this).attr('id'),1);
-								
-								
-
 							},
 							start : function(event, ui) {
 								var id = $(this).attr('id');
@@ -443,26 +440,26 @@ function removeFromDiv(url)
 }
 		
 function load(url, el, n) {
-	if($.inArray(url,myDivs)==-1 || n==2){
+	if ($.inArray(url,myDivs) == -1 || n == 2) {
 		var pUrl = $('#'+el).attr('name');
-		if(n!=3)
-		$('#'+el+'_header').load(pUrl+' .mainH', function(){
-								$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
-							});
+		if (n != 3) {
+			$('#'+el+'_header').load(pUrl+' .mainH', function(){
+									$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
+								});
+		}
 		$('#' + el + '_content').load(url, function() {
 			var t1 = $('#' + el + '_content').find('.actual').first();
 			$(t1).replaceWith($(t1).html());		
 			$('#'+ el + '_content').parent().append('<div class="filter"id="'+el+'_filter"></div>');
-			if(n==1)
-			$('#'+ el + '_filter').load(pUrl+' .filter', function(){
-				var t2 = $('#' + el + '_filter').find('.filter').first();
-				$(t2).replaceWith($(t2).html());
-				$('#'+ el + '_filter').find('input').first().attr('name','filter_textBox_'+el);
-				magic(el);
-				$('#' + el + '_content').slideDown(400);
-			});
-			if(n!=1)
-			{
+			if (n == 1) {
+				$('#'+ el + '_filter').load(pUrl+' .filter', function(){
+					var t2 = $('#' + el + '_filter').find('.filter').first();
+					$(t2).replaceWith($(t2).html());
+					$('#'+ el + '_filter').find('input').first().attr('name','filter_textBox_'+el);
+					magic(el);
+					$('#' + el + '_content').slideDown(400);
+				});
+			} else {
 				magic(el);
 				$('#' + el + '_content').slideDown(400);
 			}
@@ -676,6 +673,19 @@ function reload() {
 		div = $(sel, '#workspace-' + CURRENT_PROJECT)
 		div.each(function() {
 			url = div.attr('name')
+			exit = false
+			$.ajax({
+				url: url,
+				async: false,
+				error: function() {
+					exit = true
+				}
+			})
+			if (exit) {
+				// this box should be removed completely.. ;) ya saye3 ya saye3
+				div.remove()
+				return
+			}
 			div.find('.actual:first').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>')
 			load(url + ' .actual', div.attr('id'), 2)	
 		})
@@ -687,7 +697,7 @@ function deleteTheComponent(cId, box){
 		$.post('/components/delete', {id:cId}, function(data){ 
 				$.bar({message:data});
 				// removeMe(box);
-				reload('components')
+				reload('components', 'component-'+cId)
 			});
 	}
 }
