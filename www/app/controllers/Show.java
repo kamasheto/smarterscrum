@@ -101,7 +101,8 @@ public class Show extends SmartController
 		List<Requestreviewer> requests = Requestreviewer.find( "byUser", user ).fetch();
 		for( Requestreviewer r : requests )
 		{
-			requested.add( r.types );
+			if(r.accepted == false && r.rejected == false)
+				requested.add( r.types );
 		}
 		render( project, requested, projectId );
 	}
