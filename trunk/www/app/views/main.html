@@ -26,8 +26,6 @@
         
         <script src="@{'/public/javascripts/requirements.js'}" type="text/javascript" charset="utf-8"></script>
         <script src="@{'/public/javascripts/functions.js'}" type="text/javascript" charset="utf-8"></script>
-         <!-- Filtering and Pagination scripts - Added By Galal Aly -->
-        <script src="@{'/public/javascripts/smartsoft.filter.js'}" type="text/javascript" charset="utf-8"></script>
         #{get 'moreScripts' /}
 		
         <script type="text/javascript">
@@ -77,15 +75,35 @@
 				ping();
    			    #{/if}
        		});
+
+       function make(el,me)
+       {
+    	   var $marginLefty = $('#'+el);
+    	   $marginLefty.animate({
+        	   marginRight: parseInt($marginLefty.css('marginRight'),10) == 0 ?$marginLefty.outerWidth() :0
+           });
+           var $ana = $(me).parent();
+           $ana.animate({
+        	   right: parseInt($ana.css('right'),10) == 0 ? -15 : 0
+           },
+           function(){
+        	   $(me).parent().toggleClass('notch2');
+           });
+
+           
+       }
+         
+                   		
         </script>
 </head>
 <body id="mainBodyTag"onload="#{get 'onLoad' /}">
+
 <div id="getOverlay" style="position:absolute;top:0px;left:0px;width:100%;min-height:100%;display:none;z-index:9999;overflow:auto">
 <div style="background-color:rgba(0,0,0,0.7);position:fixed;top:0px;left:0px;width:100%;height:100%;z-index:9997"></div>
 <div id ="overlayContent" style="width:80%;height:auto; padding:10%;overflow:auto;position:relative;z-index:9998">
 	<div id="overlayContentHolder" style="background-color:transparent;width:auto;height:auto;margin:auto auto auto auto;padding:10px;overflow:auto">
 	<div id="overlayClose" style="background:none repeat scroll 0 0 white;padding:5px;text-align:right;">
-<a href="#" onclick="$('#getOverlay').hide(); $('#theLoadedContent').attr('src', '/application/loading')">
+<a title="close?"href="#"onclick="Javascript:$('#getOverlay').hide();document.getElementById('theLoadedContent').src ='/application/loading'">
 <img src="@{'public/images/close.gif'}"/>
 </a>
 </div>
@@ -121,7 +139,7 @@
 						#{/if}
 						
 						#{ifnot connected}
-							<a href="@{Accounts.register}">|&nbsp;&nbsp;Register</a>
+							<a href="@{Accounts.register}">Register</a>
 						#{/ifnot}
 						</div>
 						
@@ -133,8 +151,51 @@
 							</div>
 							<br style="clear:both"/>
 						</div>
+						
+			
+						
+<div class="sideHolder">
+	<!-- Notifications Start -->
+	<div class="notch"style="top: 80px;">
+		<a href="#" title="View your notifications?"onclick="make('sideNoti',this);">
+		<img src="/public/images/myNotifications.png" alt="[Notifications]"/>
+		</a>
+	</div>
+	<div id="sideNoti" class="siderC">
+		<div id="sideNoti_content">
+		
+		</div>
+	</div>
+	<!-- Notifications End -->
+</div>
+<div class="sideHolder">
+	<!-- MyTasks Start -->
+	<div class="notch"style="top: 240px;">
+		<a href="#" onclick="make('sideTasks',this)">
+		<img src="/public/images/myTasks.png" alt="[Tasks]"/></a>
+	</div>
+	<div id="sideTasks" class="siderC">
+		<div id="sideTasks_content">
+		
+		</div>
+	</div>
+	<!-- MyTasks End -->
+</div>
+<div class="sideHolder">
+	<!-- MyTasks Start -->
+	<div class="notch"style="top: 340px;">
+		<a href="#" onclick="make('sideIn',this)">
+		<img src="/public/images/myInvitations.png" alt="[Invitations]"/></a>
+	</div>
+	<div id="sideIn" class="siderC">
+		<div id="sideIn_content">
+		
+		</div>
+	</div>
+	<!-- MyTasks End -->
+</div>
+<div id="workspaces" style="display:none">
 
-<div id="workspaces" style="display:none;">
 	<div id="workspace-help">
 		This is your projects workspace. You could click on the links in the top header to show boxes of respective content. You could then browse through by clicking links in the boxes, or, for more focus on what you need most, by dragging the links outside to create new boxes of that content separately.
 	</div>
