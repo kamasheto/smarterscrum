@@ -30,10 +30,10 @@ $(function(){
 		<tr>
 		<td><input style="width:100%" name="filter_textBox_#{get 'id' /}" type="text" onkeyup="filter_me(this);"></td>
 		<td style="width:50px">
-		<a href="#"  style="display:inline-block" class="normalLink" onclick="page--;previousPage('#{get 'id' /}',page);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
-		<a href="#"  style="display:inline-block" class="normalLink" onclick="page++;nextPage('#{get 'id' /}',page);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
-		<a href="#"  style="display:inline-block" class="filterLink" href="#" onclick="filter_page--;previousFilterPage('#{get 'id' /}');"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
-		<a href="#"  style="display:inline-block" class="filterLink" href="#" onclick="filter_page++;nextFilterPage('#{get 'id' /}');"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
+		<a href="#"  style="display:inline-block" class="normalLink" onclick="page--;previousPage(this,page);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
+		<a href="#"  style="display:inline-block" class="normalLink" onclick="page++;nextPage(this,page);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
+		<a href="#"  style="display:inline-block" class="filterLink" href="#" onclick="filter_page--;previousFilterPage(this);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
+		<a href="#"  style="display:inline-block" class="filterLink" href="#" onclick="filter_page++;nextFilterPage(this);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
 		</td>
 		</tr>
 		</tbody>

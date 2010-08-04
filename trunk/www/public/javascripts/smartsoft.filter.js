@@ -21,7 +21,7 @@ function filter_me(el){
 	//get id from parent container
 	var id = $(el).closest('.filter').attr('id').split("_")[0];
 	//get the text in the text box
-	var input = $("[name='filter_textBox_"+id+"']").val();
+	var input = $(el).val();
 	if(input.trim().length == 0){
 		//loop on all divs located inside the id_content and show them.
 		smart_pagination(id,page);
@@ -44,7 +44,10 @@ function filter_me(el){
 	}
 }
 
-function smart_pagination(id, view_page){
+function smart_pagination(el, view_page){
+	var id = el;
+	if($(el).closest('.filter').attr('id')!=null)
+		id = $(el).closest('.filter').attr('id').split('_')[0];
 	/**************************
 	 * id : the id of the parent div to be paginated
 	 * view_page : pages 1 2 3 ..etc.
@@ -87,7 +90,10 @@ function smart_pagination(id, view_page){
 	}
 }
 
-function filter_smart_pagination(id,view_page, nextPrevious){
+function filter_smart_pagination(el,view_page, nextPrevious){
+	var id = el;
+	if($(el).closest('.filter').attr('id')!=null)
+		id = $(el).closest('.filter').attr('id').split('_')[0];
 	if(!nextPrevious)
 	{
 		var sizeOfFilteredChildren = $("#"+id+"_content > div").filter(":visible").size();
