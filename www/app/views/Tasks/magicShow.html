@@ -9,9 +9,41 @@
 		#{note}There are no tasks to show#{/note}
 		#{/if}
 		#{list items:task ,as :'Task'}
-			<div name="/tasks/magicShow?taskId=${Task.id}">Task #{if Task.parent!=null} ${Task.parent.number}.#{/if}${Task.number}
+			#{if Task.taskStatus !=null}
+			%{ count =0;
+			}%
+			#{if Task.taskStatus.isNew}
+			<div class = "greenBg reload-task-${Task.id}" name="/tasks/magicShow?taskId=${Task.id}">Task #{if Task.parent!=null} ${Task.parent.number}.#{/if}${Task.number}
 			#{drag 'task-'+Task.id /}<div class="item_imgs">#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if connected.in(project).can('modifyTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if Task.parent==null}#{if connected.in(project).can('addTask')}<a href="javascript:overlayOpen('/admin/tasks/new?taskId=${Task.id}')"><img title = "Add subTask" src="@{'/public/images/add_task.gif'}"></a>#{/if}#{/if}</div>#{if Task.taskType!=null}
 			<div class="right" title="Type: ${Task.taskType.name}" style="text-align:center; background:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; display:inline-block; font-family:Verdana; font-weight:Bold;" >T</div>#{/if}#{if connected.equals(Task.assignee)}<img title="Assignee" src="@{'/public/images/famfam/assignee.png'}"/>#{/if}#{if connected==(Task.reviewer)}<img src="/public/images/famfam/reviewer.png" title="Reviewer" />#{/if}</div>
+			%{ count =1;
+			}%
+			#{/if}
+			#{if Task.taskStatus.pending}
+			<div class = "yellowBg reload-task-${Task.id}" name="/tasks/magicShow?taskId=${Task.id}">Task #{if Task.parent!=null} ${Task.parent.number}.#{/if}${Task.number}
+			#{drag 'task-'+Task.id /}<div class="item_imgs">#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if connected.in(project).can('modifyTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if Task.parent==null}#{if connected.in(project).can('addTask')}<a href="javascript:overlayOpen('/admin/tasks/new?taskId=${Task.id}')"><img title = "Add subTask" src="@{'/public/images/add_task.gif'}"></a>#{/if}#{/if}</div>#{if Task.taskType!=null}
+			<div class="right" title="Type: ${Task.taskType.name}" style="text-align:center; background:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; display:inline-block; font-family:Verdana; font-weight:Bold;" >T</div>#{/if}#{if connected.equals(Task.assignee)}<img title="Assignee" src="@{'/public/images/famfam/assignee.png'}"/>#{/if}#{if connected==(Task.reviewer)}<img src="/public/images/famfam/reviewer.png" title="Reviewer" />#{/if}</div>
+			%{ count =1;
+			}%
+			#{/if}
+			#{if Task.taskStatus.closed}
+			<div class = "redBg reload-task-${Task.id}" name="/tasks/magicShow?taskId=${Task.id}">Task #{if Task.parent!=null} ${Task.parent.number}.#{/if}${Task.number}
+			#{drag 'task-'+Task.id /}<div class="item_imgs">#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if connected.in(project).can('modifyTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if Task.parent==null}#{if connected.in(project).can('addTask')}<a href="javascript:overlayOpen('/admin/tasks/new?taskId=${Task.id}')"><img title = "Add subTask" src="@{'/public/images/add_task.gif'}"></a>#{/if}#{/if}</div>#{if Task.taskType!=null}
+			<div class="right" title="Type: ${Task.taskType.name}" style="text-align:center; background:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; display:inline-block; font-family:Verdana; font-weight:Bold;" >T</div>#{/if}#{if connected.equals(Task.assignee)}<img title="Assignee" src="@{'/public/images/famfam/assignee.png'}"/>#{/if}#{if connected==(Task.reviewer)}<img src="/public/images/famfam/reviewer.png" title="Reviewer" />#{/if}</div>
+			%{ count =1;
+			}%
+			#{/if}
+			#{if count ==0}
+			<div class = "reload-task-${Task.id}" name="/tasks/magicShow?taskId=${Task.id}">Task #{if Task.parent!=null} ${Task.parent.number}.#{/if}${Task.number}
+			#{drag 'task-'+Task.id /}<div class="item_imgs">#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if connected.in(project).can('modifyTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if Task.parent==null}#{if connected.in(project).can('addTask')}<a href="javascript:overlayOpen('/admin/tasks/new?taskId=${Task.id}')"><img title = "Add subTask" src="@{'/public/images/add_task.gif'}"></a>#{/if}#{/if}</div>#{if Task.taskType!=null}
+			<div class="right" title="Type: ${Task.taskType.name}" style="text-align:center; background:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; display:inline-block; font-family:Verdana; font-weight:Bold;" >T</div>#{/if}#{if connected.equals(Task.assignee)}<img title="Assignee" src="@{'/public/images/famfam/assignee.png'}"/>#{/if}#{if connected==(Task.reviewer)}<img src="/public/images/famfam/reviewer.png" title="Reviewer" />#{/if}</div>
+			#{/if}
+			#{/if}
+			#{else}
+			<div class = "reload-task-${Task.id}" name="/tasks/magicShow?taskId=${Task.id}">Task #{if Task.parent!=null} ${Task.parent.number}.#{/if}${Task.number}
+			#{drag 'task-'+Task.id /}<div class="item_imgs">#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if connected.in(project).can('modifyTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if Task.parent==null}#{if connected.in(project).can('addTask')}<a href="javascript:overlayOpen('/admin/tasks/new?taskId=${Task.id}')"><img title = "Add subTask" src="@{'/public/images/add_task.gif'}"></a>#{/if}#{/if}</div>#{if Task.taskType!=null}
+			<div class="right" title="Type: ${Task.taskType.name}" style="text-align:center; background:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; display:inline-block; font-family:Verdana; font-weight:Bold;" >T</div>#{/if}#{if connected.equals(Task.assignee)}<img title="Assignee" src="@{'/public/images/famfam/assignee.png'}"/>#{/if}#{if connected==(Task.reviewer)}<img src="/public/images/famfam/reviewer.png" title="Reviewer" />#{/if}</div>
+			#{/else}
 		#{/list}
 	#{/if}
 		
@@ -58,7 +90,41 @@
 		#{/else}
 		
 		#{list items:task1.subTasks ,as :'Task'}
-			<div name="/tasks/magicShow?taskId=${Task.id}">Task #{if Task.parent!=null} ${Task.parent.number}.#{/if}${Task.number}#{if connected.in(project).can('modifyTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"/></a>#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"/></a>#{/if}<div class="right" title="Type: ${Task.taskType.name}" style="text-align:center; background:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; display:inline-block; font-family:Verdana; font-weight:Bold;" >T</div>#{if connected.equals(Task.assignee)}<img title="Assignee" src="@{'/public/images/famfam/assignee.png'}"/>#{/if}#{if connected==(Task.reviewer)}<img src="/public/images/famfam/reviewer.png" title="Reviewer" />#{/if}</div>
+			#{if Task.taskStatus !=null}
+			%{ count =0;
+			}%
+			#{if Task.taskStatus.isNew}
+			<div class = "greenBg reload-task-${Task.id}" name="/tasks/magicShow?taskId=${Task.id}">Task #{if Task.parent!=null} ${Task.parent.number}.#{/if}${Task.number}
+			#{drag 'task-'+Task.id /}<div class="item_imgs">#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if connected.in(project).can('modifyTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if Task.parent==null}#{if connected.in(project).can('addTask')}<a href="javascript:overlayOpen('/admin/tasks/new?taskId=${Task.id}')"><img title = "Add subTask" src="@{'/public/images/add_task.gif'}"></a>#{/if}#{/if}</div>#{if Task.taskType!=null}
+			<div class="right" title="Type: ${Task.taskType.name}" style="text-align:center; background:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; display:inline-block; font-family:Verdana; font-weight:Bold;" >T</div>#{/if}#{if connected.equals(Task.assignee)}<img title="Assignee" src="@{'/public/images/famfam/assignee.png'}"/>#{/if}#{if connected==(Task.reviewer)}<img src="/public/images/famfam/reviewer.png" title="Reviewer" />#{/if}</div>
+			%{ count =1;
+			}%
+			#{/if}
+			#{if Task.taskStatus.pending}
+			<div class = "yellowBg reload-task-${Task.id}" name="/tasks/magicShow?taskId=${Task.id}">Task #{if Task.parent!=null} ${Task.parent.number}.#{/if}${Task.number}
+			#{drag 'task-'+Task.id /}<div class="item_imgs">#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if connected.in(project).can('modifyTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if Task.parent==null}#{if connected.in(project).can('addTask')}<a href="javascript:overlayOpen('/admin/tasks/new?taskId=${Task.id}')"><img title = "Add subTask" src="@{'/public/images/add_task.gif'}"></a>#{/if}#{/if}</div>#{if Task.taskType!=null}
+			<div class="right" title="Type: ${Task.taskType.name}" style="text-align:center; background:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; display:inline-block; font-family:Verdana; font-weight:Bold;" >T</div>#{/if}#{if connected.equals(Task.assignee)}<img title="Assignee" src="@{'/public/images/famfam/assignee.png'}"/>#{/if}#{if connected==(Task.reviewer)}<img src="/public/images/famfam/reviewer.png" title="Reviewer" />#{/if}</div>
+			%{ count =1;
+			}%
+			#{/if}
+			#{if Task.taskStatus.closed}
+			<div class = "redBg reload-task-${Task.id}" name="/tasks/magicShow?taskId=${Task.id}">Task #{if Task.parent!=null} ${Task.parent.number}.#{/if}${Task.number}
+			#{drag 'task-'+Task.id /}<div class="item_imgs">#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if connected.in(project).can('modifyTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if Task.parent==null}#{if connected.in(project).can('addTask')}<a href="javascript:overlayOpen('/admin/tasks/new?taskId=${Task.id}')"><img title = "Add subTask" src="@{'/public/images/add_task.gif'}"></a>#{/if}#{/if}</div>#{if Task.taskType!=null}
+			<div class="right" title="Type: ${Task.taskType.name}" style="text-align:center; background:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; display:inline-block; font-family:Verdana; font-weight:Bold;" >T</div>#{/if}#{if connected.equals(Task.assignee)}<img title="Assignee" src="@{'/public/images/famfam/assignee.png'}"/>#{/if}#{if connected==(Task.reviewer)}<img src="/public/images/famfam/reviewer.png" title="Reviewer" />#{/if}</div>
+			%{ count =1;
+			}%
+			#{/if}
+			#{if count ==0}
+			<div class = "reload-task-${Task.id}" name="/tasks/magicShow?taskId=${Task.id}">Task #{if Task.parent!=null} ${Task.parent.number}.#{/if}${Task.number}
+			#{drag 'task-'+Task.id /}<div class="item_imgs">#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if connected.in(project).can('modifyTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if Task.parent==null}#{if connected.in(project).can('addTask')}<a href="javascript:overlayOpen('/admin/tasks/new?taskId=${Task.id}')"><img title = "Add subTask" src="@{'/public/images/add_task.gif'}"></a>#{/if}#{/if}</div>#{if Task.taskType!=null}
+			<div class="right" title="Type: ${Task.taskType.name}" style="text-align:center; background:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; display:inline-block; font-family:Verdana; font-weight:Bold;" >T</div>#{/if}#{if connected.equals(Task.assignee)}<img title="Assignee" src="@{'/public/images/famfam/assignee.png'}"/>#{/if}#{if connected==(Task.reviewer)}<img src="/public/images/famfam/reviewer.png" title="Reviewer" />#{/if}</div>
+			#{/if}
+			#{/if}
+			#{else}
+			<div class = "reload-task-${Task.id}" name="/tasks/magicShow?taskId=${Task.id}">Task #{if Task.parent!=null} ${Task.parent.number}.#{/if}${Task.number}
+			#{drag 'task-'+Task.id /}<div class="item_imgs">#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if connected.in(project).can('modifyTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if Task.parent==null}#{if connected.in(project).can('addTask')}<a href="javascript:overlayOpen('/admin/tasks/new?taskId=${Task.id}')"><img title = "Add subTask" src="@{'/public/images/add_task.gif'}"></a>#{/if}#{/if}</div>#{if Task.taskType!=null}
+			<div class="right" title="Type: ${Task.taskType.name}" style="text-align:center; background:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; display:inline-block; font-family:Verdana; font-weight:Bold;" >T</div>#{/if}#{if connected.equals(Task.assignee)}<img title="Assignee" src="@{'/public/images/famfam/assignee.png'}"/>#{/if}#{if connected==(Task.reviewer)}<img src="/public/images/famfam/reviewer.png" title="Reviewer" />#{/if}</div>
+			#{/else}
 		#{/list}
 		#{/if}
 		
