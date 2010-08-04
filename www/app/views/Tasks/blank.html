@@ -15,13 +15,18 @@
 	#{/crud.form}			
 	
 	<div class="crudField" name="view-more" style="display:none">
+	<label for="object_reporter2">Reporter</label>
+	<span id="object_reporter2"><font color="green">${connected.name}</font></span>
+	</div>
+	
+	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_successScenario">Success Scenario</label>
-	<textarea id="example"  name="object.successScenario"></textarea>
+	<textarea id="object.successScenario"  name="object.successScenario"></textarea>
 	</div>
 
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_failureScenario">Failure Scenario</label>
-	<textarea id="example"  name="object.failureScenario"></textarea>
+	<textarea id="object.failureScenario"  name="object.failureScenario"></textarea>
 	</div>
 
 	<div class="crudField" name="view-more" style="display:none">
@@ -55,27 +60,6 @@
 	#{list items:project.taskTypes ,as :'taskType'}
 	<option value="${taskType.id}">${taskType.name}</option>
 	#{/list}
-	</select>
-	</div>
-	
-	<div class="crudField" name="view-more" style="display:none">
-	<label for="object_reporter">Reporter</label>
-	<select id="object_reporter" name="object.reporter@id">
-	#{if p!=null}
-	#{list items:project.users ,as :'user'}
-	<option value="${user.id}">${user.name}</option>
-	#{/list}
-	#{/if}
-	#{elseif component!=null}
-	#{list items:component.componentUsers ,as :'user'}
-	<option value="${user.id}">${user.name}</option>
-	#{/list}
-	#{/elseif}
-	#{else}
-	#{list items:task.component.componentUsers ,as :'user'}
-	<option value="${user.id}">${user.name}</option>
-	#{/list}
-	#{/else}
 	</select>
 	</div>
 	
