@@ -2,7 +2,7 @@
 #{set 'title'}
 ${myMeeting.name} Notes
 		#{if noteFlag}
-	<a href="#" onclick="overlayOpen()"><img src="@{'public/images/famfam/add.png'}" alt="[+]"/></a>
+	<a href="#" onclick="overlayOpen('/Meetings/newNote?id=${myMeeting.id}')"><img title= "add"src="@{'public/images/famfam/add.png'}" alt="[+]"/></a>
 	#{/if}
 #{/set}
 %{int i =0;}%
