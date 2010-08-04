@@ -1,5 +1,6 @@
 #{extends 'overlay.html' /}
 <script type="text/javascript" src="@{'/public/javascripts/jquery.autocomplete.js/'}"></script>
+<a onclick="ff()">test</a>
 <div id="crudBlank" class="${type.name}">
 	<h2 id="crudBlankTitle">&{'crud.blank.title', type.modelName}</h2>
 	<div class="objectForm">
@@ -29,6 +30,7 @@
 	<textarea id="object.failureScenario"  name="object.failureScenario"></textarea>
 	</div>
 
+	#{if project.taskStatuses.size()>0}
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_taskStatus">Status</label>
 	<select id="object_taskStatus" name="object.taskStatus@id">
@@ -37,7 +39,9 @@
 	#{/list}
 	</select>
 	</div>
-
+	#{/if}
+	
+	#{if project.components.size()>1}
 	#{if p!=null || (task!=null && task.component==null)}
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_component">Component</label>
@@ -53,7 +57,9 @@
 	</select>
 	</div>
 	#{/if}
+	#{/if}
 	
+	#{if project.taskTypes.size()>0}
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_taskType">Type</label>
 	<select id="object_taskType" name="object.taskType@id">
@@ -62,49 +68,74 @@
 	#{/list}
 	</select>
 	</div>
+	#{/if}
+	
+	#{if p!=null && project.users.size()>0}
+	<div class="crudField" name="view-more" style="display:none">
+	<label for="object_assignee">Assignee</label>
+	<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers();">
+	<option class="x" value="">None</option>
+	#{list items:project.users ,as :'user'}
+	<option value="${user.id}">${user.name}</option>
+	#{/list}
+	</select>
+	#{/if}
+	#{elseif component!=null && component.componentUsers.size()>0}
 	
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_assignee">Assignee</label>
 	<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers();">
 	<option value="">None</option>
-	#{if p!=null}
-	#{list items:project.users ,as :'user'}
-	<option value="${user.id}">${user.name}</option>
-	#{/list}
-	#{/if}
-	#{elseif component!=null}
 	#{list items:component.componentUsers ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
 	#{/list}
+	</select>
 	#{/elseif}
-	#{else}
+	#{elseif task!=null && task.component.componentUsers.size()>0}
+	<div class="crudField" name="view-more" style="display:none">
+	<label for="object_assignee">Assignee</label>
+	<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers();">
+	<option value="">None</option>
 	#{list items:task.component.componentUsers ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
-	#{/list}
-	#{/else}
+	#{/list}	
 	</select>
+	#{/elseif}
 	</div>
-		
+	
+	#{if p!=null && project.users.size()>0}
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_reviewer">Reviewer</label>
 	<select id="object_reviewer" name="object.reviewer@id">
 	<option value="">None</option>
-	#{if p!=null}
 	#{list items:project.users ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
 	#{/list}
+	</select>
 	#{/if}
-	#{elseif component!=null}
+	
+	#{elseif component!=null && component.componentUsers.size()>0}
+	<div class="crudField" name="view-more" style="display:none">
+	<label for="object_reviewer">Reviewer</label>
+	<select id="object_reviewer" name="object.reviewer@id">
+	<option value="">None</option>
 	#{list items:component.componentUsers ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
 	#{/list}
+	</select>
 	#{/elseif}
-	#{else}
+	
+	#{elseif task!=null && task.component.componentUsers.size()>0}
+	<div class="crudField" name="view-more" style="display:none">
+	<label for="object_reviewer">Reviewer</label>
+	<select id="object_reviewer" name="object.reviewer@id">
+	<option value="">None</option>
 	#{list items:task.component.componentUsers ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
 	#{/list}
-	#{/else}
 	</select>
+	#{/elseif}
+	
 	</div>
 	
 	<div class="crudField" name="view-more" style="display:none">
@@ -113,6 +144,7 @@
 	<span class="crudHelp" >Numeric.</span>
 	</div>
 
+	#{if project.priorities.size()>0}
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_priority">Priority</label>
 	<select id="object_priority" name="object.priority">
@@ -122,12 +154,13 @@
 	#{/list}
 	</select>
 	</div>
+	#{/if}
 	
+	#{if project.projectTasks.size()>0}
 	<div class="crudField" name="view-more" style="display:none">	
 	<label for="object_dependentTasks">Dependent Tasks</label>
 	<input type="hidden" name="object.dependentTasks@id" value="" />
 	<select id="object_dependentStories" name="object.dependentTasks@id" multiple="yes">
-	<option value="">None</option>
 	#{list items:project.projectTasks ,as :'task2'}
 	#{if task2.deleted==false}
 	<option value="${task2.description}">${task2.description}</option>
@@ -135,7 +168,9 @@
 	#{/list}
 	</select>
 	</div>
+	#{/if}
 	
+	#{if project.sprints.size()>0}
 	<div class="crudField" name="view-more" style="display:none">	
 	<label for="object_taskSprint">Sprint</label>
 	<select id="object_taskSprint" name="object.taskSprint@id">
@@ -146,7 +181,7 @@
 	</select>
 	</div>
 	</div>
-	
+	#{/if}
 	
 	#{if project!=null}
 	<input type="hidden" id="object_project" name="object.project@id" value="${project.id}" >
@@ -200,6 +235,9 @@ function toggleOptions(){
 	}	
 }
 
-	
+	function ff()
+	{
+		$('.x').css('display','none');
+	}
 
 </script>
