@@ -50,21 +50,20 @@ public class Notifications extends Mailer{
 						addRecipient(unps.get(i).user.email);
 				}
 			}
-			if (unps.size() > 0) {
-				Notification notif = new Notification(unps.get(0).user, Security.getConnected(), actionType, resourceURL, resourceType, resourceName, importance);
+			if (unps.size() > 0) {				
 				setFrom("se.smartsoft.2@gmail.com");
 				setSubject("SmarterScrum Notification System");
-				send(notif);	
+				send(project , actionType, resourceURL, resourceType, resourceName, importance);	
 			}
 		}
 	}
 	
 	public static void notifyUsers(List<User> receivers, String actionType, String resourceURL, String resourceType, String resourceName, byte importance, Project project)
 	{		
-		User usr = Security.getConnected();
+		User user = Security.getConnected();
 		for(int i=0 ; i<receivers.size(); i++)
 		{			
-			Notification nn = new Notification(receivers.get(i), usr, actionType, resourceURL, resourceType, resourceName, importance).save();
+			Notification nn = new Notification(receivers.get(i), user, actionType, resourceURL, resourceType, resourceName, importance).save();
 			if(project != null)
 				{
 					nn.project = project;
@@ -72,11 +71,10 @@ public class Notifications extends Mailer{
 				}
 			if(receivers.get(i).enableEmails)
 				addRecipient(receivers.get(i).email);
-		}
-		Notification notif = new Notification(receivers.get(0), usr, actionType, resourceURL, resourceType, resourceName, importance);
+		}		
 		setFrom("se.smartsoft.2@gmail.com");
 		setSubject("SmarterScrum Notification System");
-		send(notif);
+		send(actionType, resourceURL, resourceType, resourceName, importance, project);
 	}
 	
 	public static void notifyUser(User receiver, String actionType, String resourceURL, String resourceType, String resourceName, byte importance, Project project)
