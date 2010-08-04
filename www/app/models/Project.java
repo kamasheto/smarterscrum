@@ -492,12 +492,13 @@ public class Project extends SmartModel
 
 	public static boolean isUnique( String name )
 	{
-		List<Project> p = Project.find( "name='" + name + "'" ).fetch();
-
-		if( p.isEmpty() )
-			return false;
-		else
-			return true;
+		List<Project> projects = Project.find( "name='" + name + "'" ).fetch();
+		for(Project p: projects){
+			if(p.name.equalsIgnoreCase(name)){
+				return false;
+			}
+		}
+		return true;
 
 	}
 
