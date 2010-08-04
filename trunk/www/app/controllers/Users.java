@@ -149,16 +149,17 @@ public class Users extends SmartCRUD {
 		UserNotificationProfile currentNotificationProfile = UserNotificationProfile.find("user = " + currentUser.id + " and project = " + currentProject.id).first();
 		ObjectType type = ObjectType.get(UserNotificationProfiles.class);
 		notFoundIfNull(type);
-		if (currentNotificationProfile == null || currentNotificationProfile.deleted)
-			error("Could not find a notification profile for this user in this project");
-		else {
-			JPASupport object = type.findById(currentNotificationProfile.id);
-			try {
+		Security.check(currentUser.projects.contains(currentProject));
+		if (currentNotificationProfile == null) {
+			// create me a notification profile please
+			currentNotificationProfile = new UserNotificationProfile(currentUser, currentProject).save();
+		}
+		JPASupport object = type.findById(currentNotificationProfile.id);
+		try {
 
-				render(currentNotificationProfile, type, object);
-			} catch (TemplateNotFoundException e) {
-				render("CRUD/show.html", type, object);
-			}
+			render(currentNotificationProfile, type, object);
+		} catch (TemplateNotFoundException e) {
+			render("CRUD/show.html", type, object);
 		}
 	}
 
