@@ -1,10 +1,44 @@
-#{extends 'magicBox.html' /}
-#{set 'title'}New Note#{/set}
-<div class="crudField">
-<textarea id="noteBody" style="width:100%;"></textarea>
-</div>
+#{extends 'overLay.html'/}
 
-<div class="crudField">
-<button onclick="$.post('@{Meetings.addNote()}',{id:'${id}',note:$('#noteBody').val()});">Add</button>
-</div>
+<h2 id="crudBlankTitle">Add a note to ${meeting.name}</h2>
+	
+<div class="objectForm">
 
+<label for="object_name"> Note :</label> <br>
+<textArea id="note_field" type="text"  rows ="5" cols="52" ></textArea> 
+<span class="crudHelp" style="color:red">*</span>
+</div>
+<p class="crudButtons">
+			<input type="button" value="Add note" onClick="add_note(${meeting.id})" />
+</p>
+
+<script type="text/javascript">
+
+function add_note(id)
+{
+	var text= $('#note_field').val();
+	if(text=="")
+	{
+		window.parent.$.bar({message:'Please enter a valid note.'});
+	}
+	else
+	{
+		$.post('/Meetings/addNote',{id:id , note:text},
+				function(flag)
+				{
+					if(flag)
+					{
+						window.parent.$.bar({message:'Note successfully added'});
+						window.parent.$('#getOverlay').hide();
+						window.parent.reload('meetingNotes-'+id);
+					}
+					else
+					{
+						window.parent.$.bar({message:'Error occurred while adding the note.'});
+						window.parent.$('#getOverlay').hide();
+					}
+				})
+	}
+}
+
+</script>

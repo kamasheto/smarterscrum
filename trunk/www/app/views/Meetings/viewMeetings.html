@@ -2,7 +2,7 @@
 	#{set 'title'}
 	Meetings
 	#{if connected.in(project).can('addMeeting') }
-	<a href="javascript:overlayOpen('/admin/projects/${id}/meetings/new');" title="add"><img src="@{'/public/images/famfam/add.png'}"></a>
+	<a href="javascript:overlayOpen('/admin/projects/${id}/meetings/new');"><img title="add" src="@{'/public/images/famfam/add.png'}"></a>
 	#{/if}
 	#{/set}
 	

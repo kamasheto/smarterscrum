@@ -732,12 +732,12 @@ public class Meetings extends SmartCRUD
 	{
 
 		Meeting meeting = Meeting.findById( id );
-		Security.check( Security.getConnected().in( meeting.project ).can( "addNote" ) );
+		Security.check( meeting.project, "addNote" );
 		Artifact n = new Artifact( "Notes", note );
 		n.save();
 		meeting.artifacts.add( n );
 		meeting.save();
-		flash.success( "The note has been added successfully!" );
+		renderJSON( true );
 
 	}
 
@@ -750,7 +750,8 @@ public class Meetings extends SmartCRUD
 	 */
 	public static void newNote( long id )
 	{
-		render( id );
+		Meeting meeting = Meeting.findById( id );
+		render( meeting );
 	}
 
 	/**
