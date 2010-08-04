@@ -75,6 +75,7 @@ public class SmartController extends Controller {
 				for (int i = 0; i < components.size(); i++)// for each component get
 				// the tasks
 				{
+					data.add(null);if(components.get(i).number!=0){
 					data.add(null);
 					data.set(i, new ComponentRowh(components.get(i).id, components.get(i).name));
 					List<Task> tasks = components.get(i).returnComponentTasks(s);
@@ -100,7 +101,7 @@ public class SmartController extends Controller {
 						data.get(i).get(CS.indexOf(pcol)).add( "T" + task.id + "-" + task.description + "-" + task.assignee.name);
 						}
 					}
-				}		
+				}	}	
 				String type = "sprint "+s.id;
 				Snapshot snap = new Snapshot();
 				snap.user = user;
