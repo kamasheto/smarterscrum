@@ -22,7 +22,7 @@ function hideOrShow(c)
 {
 	$('.'+c).toggle();
 }
-#{ifnot connected.in(project).can('editBacklog') || connected.isAdmin}
+#{if connected.in(project).can('editBacklog') || connected.isAdmin}
 function popUp(URL) 
 {
 	day = new Date();
@@ -132,7 +132,7 @@ $(function()
     	    });
 
 });
-#{/ifnot}
+#{/if}
 </script>
 
 #{/set}
