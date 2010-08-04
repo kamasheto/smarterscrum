@@ -132,12 +132,14 @@ function confirm_me(id)
 		$('#decline_'+id).hide();
 		$('#confirmed_'+id).show();
 		$('#inv_'+id).hide();
+		$('#meet_'+id).hide();
 			}
 		else
 			{
 			$('#inv_'+id).hide();
 			$('#accept_'+id).hide();
 			$('#decline_'+id).hide();
+			$('#meet_'+id).hide();
 			
 				$.bar({
 					message : 'Meeting has already ended.'
@@ -218,6 +220,7 @@ function decline_me(id)
 		$('#declined_'+id).show();
 		$('#accept_'+id).hide();
 		$('#decline_'+id).hide();
+		$('#meet_'+id).hide();
 			}
 		else
 			{
@@ -227,6 +230,7 @@ function decline_me(id)
 			$('#inv_'+id).hide();
 			$('#accept_'+id).hide();
 			$('#decline_'+id).hide();
+			$('#meet_'+id).hide();
 			}
 	
 	}
