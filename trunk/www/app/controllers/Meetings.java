@@ -555,22 +555,35 @@ public class Meetings extends SmartCRUD
 		Meeting currentMeeting = Meeting.findById( meetingID );
 		Security.check( Security.getConnected().in( currentMeeting.project ).can( "manageMeetingAssociations" ) || Security.getConnected().equals( currentMeeting.creator ) );
 		User invitedUser = User.findById( userID );
-		if( MeetingAttendance.find( "byMeetingAndUserAndDeleted", currentMeeting, invitedUser, false ).first() == null )
+		if( currentMeeting.endTime > new Date().getTime() )
 		{
-			MeetingAttendance attendance = new MeetingAttendance( invitedUser, currentMeeting );
-			attendance.save();
-			List<User> userList = new LinkedList<User>();
-			userList.add( invitedUser );
-			String meetingHash = attendance.meetingHash;
-			String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
-			String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
-			String header = "Invitation to Meeting in " + currentMeeting.project.name + " project";
-			String body1 = "Hello " + invitedUser.name;
-			String body2 = "You have been invited to attend " + currentMeeting.name + " ";
-			String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
-			String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
-			String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-			// Notifications.notifyUsers( userList, header, body, (byte) 0 );
+			if( MeetingAttendance.find( "byMeetingAndUserAndDeleted", currentMeeting, invitedUser, false ).first() == null )
+			{
+				MeetingAttendance attendance = new MeetingAttendance( invitedUser, currentMeeting );
+				attendance.save();
+				List<User> userList = new LinkedList<User>();
+				userList.add( invitedUser );
+				String meetingHash = attendance.meetingHash;
+				String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
+				String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
+				String header = "Invitation to Meeting in " + currentMeeting.project.name + " project";
+				String body1 = "Hello " + invitedUser.name;
+				String body2 = "You have been invited to attend " + currentMeeting.name + " ";
+				String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
+				String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
+				String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
+				// Notifications.notifyUsers( userList, header, body, (byte) 0
+				// );
+				renderText( "User invited to meeting successfully.|reload('meetingAttendees-" + currentMeeting.id + "')" );
+			}
+			else
+			{
+				renderText( "User is already invited to this meeting." );
+			}
+		}
+		else
+		{
+			renderText( "The meeting has already passed" );
 		}
 	}
 
