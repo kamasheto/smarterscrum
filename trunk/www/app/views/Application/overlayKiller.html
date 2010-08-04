@@ -22,12 +22,16 @@
 	window.parent.$.bar({
 		message : '&{flash.success}'
 	});
-#{/if}
-	window.location = "@{Application.loading()}";
+#{/if}	
 	window.parent.$('#getOverlay').hide();
 	#{if js}window.parent.${js}#{/if}
 	${nativeJS}
+	//window.location = "@{Application.loading()}";
 })
+
+function addProjectToSearchBar(name, id) {
+	window.parent.$('#projects_search_results').append('<div id="project-search-result-'+id+'"><a onclick="showProjectWorkspace('+id+')">'+name+'</a></div>')
+}
 </script>
 </head>
 </html>

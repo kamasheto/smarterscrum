@@ -69,9 +69,12 @@ public class Projects extends SmartCRUD {
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/blank.html", type);
 			}
-		} else {
+		} else {	
+			String nativeJS = "";
 			if (user.isAdmin) {
 				projectObject.approvalStatus = true;
+				// add it to the top bar immediately
+				nativeJS = "addProjectToSearchBar('"+projectObject.name+"', "+projectObject.id+")";
 			}
 			projectObject.user = user;
 			if (params.get("object_isPrivate") != null) {
@@ -90,10 +93,10 @@ public class Projects extends SmartCRUD {
 			if (Security.getConnected().isAdmin) {
 
 				flash.success(projectObject.name + " has been successfully created.");
-				Application.overlayKiller("", "");
+				Application.overlayKiller("", nativeJS);
 			} else {
 				flash.success("Your Project Request Has Been Sent.You Will Be Notified Upon Approval");
-				Application.overlayKiller("", "");
+				Application.overlayKiller("", nativeJS);
 			}
 		}
 	}
