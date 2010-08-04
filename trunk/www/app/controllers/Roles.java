@@ -31,7 +31,7 @@ public class Roles extends SmartCRUD {
 			}
 			r.save();
 		}
-		
+
 		if (newBaseRole.project != null) {
 			// we're in a project
 			for (User user : newBaseRole.project.users) {
@@ -102,7 +102,7 @@ public class Roles extends SmartCRUD {
 		object.save();
 		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			Application.overlayKiller("reload('roles')");
+			Application.overlayKiller("reload('roles')", "");
 		}
 		redirect("/admin/roles/" + role.id);
 	}
@@ -155,7 +155,7 @@ public class Roles extends SmartCRUD {
 		object.save();
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			Application.overlayKiller("reload('roles')");
+			Application.overlayKiller("reload('roles')", "");
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			redirect("/admin/roles/new?id=" + id);
@@ -174,13 +174,13 @@ public class Roles extends SmartCRUD {
 				// first remove from projects
 				role.project.roles.remove(role);
 				role.project.save();
-				
+
 				// then remove from users
 				for (User user : role.users) {
 					user.roles.remove(role);
 					user.save();
 				}
-				
+
 				role.delete();
 			} catch (Exception e) {
 				e.printStackTrace();

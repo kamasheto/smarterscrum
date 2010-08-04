@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import notifiers.Notifications;
-
 import models.Component;
 import models.Project;
+import notifiers.Notifications;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
@@ -29,7 +28,7 @@ public class Components extends SmartCRUD {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		Project currentProject = Project.findById(id);
-		if(currentProject.deleted)
+		if (currentProject.deleted)
 			notFound();
 		Security.check(Security.getConnected().in(currentProject).can("addComponent"));
 
@@ -76,11 +75,11 @@ public class Components extends SmartCRUD {
 		object.save();
 		temp.init();
 		Logs.addLog(Security.getConnected(), "Create", "Component", temp.id, currentProject, new Date(System.currentTimeMillis()));
-		String url = "@{Application.externalOpen("+temp.project.id+", '/components/viewthecomponent?componentId="+temp.id+"', false)}";
+		String url = "@{Application.externalOpen(" + temp.project.id + ", '/components/viewthecomponent?componentId=" + temp.id + "', false)}";
 		Notifications.notifyProjectUsers(temp.project, "onCreateComponent", url, "Component", temp.name, (byte) 0);
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			Application.overlayKiller("reload('components')");
+			Application.overlayKiller("reload('components')", "");
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			redirect("/admin/projects/" + currentProject.id + "/components/new");
@@ -114,12 +113,12 @@ public class Components extends SmartCRUD {
 		}
 		object.save();
 
-		String url = "@{Application.externalOpen("+temp.project.id+", '/components/viewthecomponent?componentId="+temp.id+"', false)}";
+		String url = "@{Application.externalOpen(" + temp.project.id + ", '/components/viewthecomponent?componentId=" + temp.id + "', false)}";
 		Notifications.notifyProjectUsers(temp.project, "onEditComponent", url, "Component", temp.name, (byte) 0);
 		Logs.addLog(Security.getConnected(), "Edit", "Component", temp.id, temp.project, new Date(System.currentTimeMillis()));
 		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			Application.overlayKiller("reload('component-"+id+"')");
+			Application.overlayKiller("reload('component-" + id + "')", "");
 		}
 		redirect(request.controller + ".show", object.getEntityId());
 	}
@@ -140,20 +139,22 @@ public class Components extends SmartCRUD {
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
 		Component component = (Component) object;
-		if(component.deleted)
+		if (component.deleted)
 			notFound();
 		Security.check(Security.getConnected().in(component.project).can("deleteComponent"));
 		try {
 			component.deleteComponent();
 			Logs.addLog(Security.getConnected(), "Delete", "Component", component.id, component.project, new Date(System.currentTimeMillis()));
-			String url = "@{Application.externalOpen("+component.project.id+", '/components/listcomponentsinproject?projectId="+component.project.id+"', false)}";
-			Notifications.notifyProjectUsers(component.project, "onDeleteComponent", url, "Component", component.name, (byte) -1);			
+			String url = "@{Application.externalOpen(" + component.project.id + ", '/components/listcomponentsinproject?projectId=" + component.project.id + "', false)}";
+			Notifications.notifyProjectUsers(component.project, "onDeleteComponent", url, "Component", component.name, (byte) -1);
 		} catch (Exception e) {
-			//flash.error(Messages.get("crud.delete.error", type.modelName, object.getEntityId()));
-			//redirect(request.controller + ".show", object.getEntityId());
+			// flash.error(Messages.get("crud.delete.error", type.modelName,
+			// object.getEntityId()));
+			// redirect(request.controller + ".show", object.getEntityId());
 		}
-		//flash.success(Messages.get("crud.deleted", type.modelName, object.getEntityId()));
-		//redirect("/projects/" + component.project.id + "/components");
+		// flash.success(Messages.get("crud.deleted", type.modelName,
+		// object.getEntityId()));
+		// redirect("/projects/" + component.project.id + "/components");
 		renderText("Component deleted successfully.");
 	}
 
@@ -166,7 +167,7 @@ public class Components extends SmartCRUD {
 	 */
 	public static void show(long id) {
 		Component c = Component.findById(id);
-		if(c.deleted)
+		if (c.deleted)
 			notFound();
 		Security.check(Security.getConnected().in(c.project).can("editComponent"));
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -178,23 +179,23 @@ public class Components extends SmartCRUD {
 			render("CRUD/show.html", type, object);
 		}
 	}
-	
+
 	/**** Magic Box ****/
-	
-	public static void listComponentsInProject(long projectId){
+
+	public static void listComponentsInProject(long projectId) {
 		Project project = Project.findById(projectId);
 		notFoundIfNull(project);
 		List<Component> components = new ArrayList<Component>();
-		for(Component c:project.components){
-			if(c.deleted == false)
+		for (Component c : project.components) {
+			if (c.deleted == false)
 				components.add(c);
 		}
 		render(components, projectId);
 	}
-	
-	public static void viewTheComponent(long componentId){
+
+	public static void viewTheComponent(long componentId) {
 		Component component = Component.findById(componentId);
-		if(component.deleted)
+		if (component.deleted)
 			notFound();
 		render(component);
 	}
