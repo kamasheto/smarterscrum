@@ -42,8 +42,14 @@ public class Snapshots extends SmartController {
 		for( int i=0; i<columns.size();i++)
 		{
 			if(columns.get( i ).onBoard==true)
+			{CS.add( null );
+				CS.set(i, columns.get( i ) );
+			}
+		}for( int i=0; i<columns.size();i++)
+		{
+			if(columns.get( i ).onBoard==true)
 			{
-				CS.add( columns.get( i ) );
+				CS.set(columns.get(i).sequence, columns.get( i ) );
 			}
 		}
 		for (int i = 0; i < CS.size(); i++) {
@@ -51,23 +57,27 @@ public class Snapshots extends SmartController {
 			Columnsofsnapshot.set(i, CS.get(i).name);
 		}
 
-		int smallest;
-		Column temp;
-		for (int i = 0; i < CS.size(); i++) {
-			smallest = i;
-			for (int j = i + 1; j < CS.size(); j++) {
-				if (CS.get(smallest).sequence > CS.get(j).sequence) {
-					smallest = j;
-
-				}
-
-			}
-			temp = CS.get(smallest);
-			CS.set(smallest, columns.get(i));
-			CS.set(i, temp);
-			Columnsofsnapshot.set(smallest, CS.get(i).name);
-			Columnsofsnapshot.set(i, temp.name);
-		}
+//		int smallest;
+//		Column temp;
+//		for (int i = 0; i < CS.size(); i++) {
+//			smallest = i;
+//			System.out.println(CS.get(i).name);
+//			System.out.println(CS.get(i).sequence);
+//			for (int j = i + 1; j < CS.size(); j++) {
+//				if (CS.get(smallest).sequence > CS.get(j).sequence) {
+//					smallest = j;
+//
+//				}
+//
+//			}
+//			temp = CS.get(smallest);
+//			CS.set(smallest, columns.get(i));
+//			CS.set(i, temp);
+//			Columnsofsnapshot.set(smallest, CS.get(i).name);
+//			Columnsofsnapshot.set(i, temp.name);}
+//		}for (int i = 0; i < CS.size(); i++) {
+//		System.out.println(CS.get(i).name);
+//		System.out.println(CS.get(i).sequence);}
 if(componentID==0){
 	List<Component> components = p.getComponents();
 	String type = p.name;
@@ -96,7 +106,7 @@ data.add(null);if(components.get(i).number!=0){
 				}
 				if(pcol.onBoard==true&&!pcol.deleted)
 				{
-				data.get(i).get(CS.indexOf(pcol)).add("(" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
+				data.get(i).get(pcol.sequence).add("(" + "T" + task.id + "-" + task.description + "-" + task.assignee.name);
 				}
 			}
 		}}	
