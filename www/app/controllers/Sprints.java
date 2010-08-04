@@ -12,43 +12,52 @@ import models.Component;
 import models.Meeting;
 import models.Project;
 import models.Sprint;
+import models.Task;
+import models.User;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 import play.mvc.With;
 
-@With (Secure.class)
-public class Sprints extends SmartCRUD {
-	public static void BoardSprints(long projectId) {
-		Project project = (Project) (Project.findById(projectId));
+@With( Secure.class )
+public class Sprints extends SmartCRUD
+{
+	public static void BoardSprints( long projectId )
+	{
+		Project project = (Project) (Project.findById( projectId ));
 		List<Sprint> sprints = project.sprints;
 		long runningSprint = project.runningSprint();
-		render(sprints, project, runningSprint);
-	}
-	public static void ChartSprints(long projectId) {
-		Project project = (Project) (Project.findById(projectId));
-		List<Sprint> sprints = project.sprints;
-		long runningSprint = project.runningSprint();
-		render(sprints, project, runningSprint);
+		render( sprints, project, runningSprint );
 	}
 
-	public static void BacklogSprints(long projectId) {
-		Project project = (Project) (Project.findById(projectId));
+	public static void ChartSprints( long projectId )
+	{
+		Project project = (Project) (Project.findById( projectId ));
 		List<Sprint> sprints = project.sprints;
 		long runningSprint = project.runningSprint();
-		render(sprints, project, runningSprint);
+		render( sprints, project, runningSprint );
 	}
+
+	public static void BacklogSprints( long projectId )
+	{
+		Project project = (Project) (Project.findById( projectId ));
+		List<Sprint> sprints = project.sprints;
+		long runningSprint = project.runningSprint();
+		render( sprints, project, runningSprint );
+	}
+
 	/**
 	 * to render the showsprints page with the sprints and the projectId
 	 * 
 	 * @author minazaki
 	 * @param projectId
 	 */
-	public static void showsprints(long projectId) {
-		Project project = (Project) (Project.findById(projectId));
+	public static void showsprints( long projectId )
+	{
+		Project project = (Project) (Project.findById( projectId ));
 		List<Sprint> sprints = project.sprints;
 		long runningSprint = project.runningSprint();
-		render(sprints, project, runningSprint);
+		render( sprints, project, runningSprint );
 	}
 
 	/**
@@ -58,18 +67,20 @@ public class Sprints extends SmartCRUD {
 	 * @param id
 	 * @param projectId
 	 */
-	public static void showsprint(long id) {
-		Sprint sprint = Sprint.findById(id);
+	public static void showsprint( long id )
+	{
+		Sprint sprint = Sprint.findById( id );
 		// Project proj = (Project) (Project.findById(projectId));
 		Project proj = sprint.project;
 		long runningSprint = proj.runningSprint();
 		boolean running = runningSprint == id ? true : false;
 		boolean ended = false;
 		Date now = Calendar.getInstance().getTime();
-		if (sprint.endDate.before(now)) {
+		if( sprint.endDate.before( now ) )
+		{
 			ended = true;
 		}
-		render(sprint, proj, running, ended);
+		render( sprint, proj, running, ended );
 	}
 
 	/**
@@ -79,17 +90,21 @@ public class Sprints extends SmartCRUD {
 	 * @author minazaki
 	 * @param projectId
 	 */
-	public static void projectblank(long projectId) {
-		Security.check(Security.getConnected().in((Project) Project.findById(projectId)).can("addSprint"));
+	public static void projectblank( long projectId )
+	{
+		Security.check( Security.getConnected().in( (Project) Project.findById( projectId ) ).can( "addSprint" ) );
 		// if( Security.getConnected().in( (Project) Project.findById( projectId
 		// ) ).can( "addSprint" ) )
 		// {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		try {
-			render(type, projectId);
-		} catch (TemplateNotFoundException e) {
-			render("CRUD/blank.html", type);
+		ObjectType type = ObjectType.get( getControllerClass() );
+		notFoundIfNull( type );
+		try
+		{
+			render( type, projectId );
+		}
+		catch( TemplateNotFoundException e )
+		{
+			render( "CRUD/blank.html", type );
 		}
 		// }
 		// else
@@ -100,6 +115,7 @@ public class Sprints extends SmartCRUD {
 
 	/**
 	 * Renders the sprint to the backlogs page
+	 * 
 	 * @author Hadeer Younis
 	 * @param id
 	 *            The sprint id
@@ -107,10 +123,12 @@ public class Sprints extends SmartCRUD {
 	public static void backlogs( long id )
 	{
 		Sprint sprint = Sprint.findById( id );
-		render(sprint);
+		render( sprint );
 	}
+
 	/**
 	 * Renders the sprint to the charts page
+	 * 
 	 * @author Hadeer Younis
 	 * @param id
 	 *            The sprint id
@@ -118,7 +136,7 @@ public class Sprints extends SmartCRUD {
 	public static void charts( long id )
 	{
 		Sprint sprint = Sprint.findById( id );
-		render(sprint);
+		render( sprint );
 	}
 
 	/**
@@ -130,74 +148,95 @@ public class Sprints extends SmartCRUD {
 	 * @throws Exception
 	 */
 
-	public static void projectcreate(long projectId) throws Exception {
-		Security.check(Security.getConnected().in((Project) Project.findById(projectId)).can("addSprint"));
+	public static void projectcreate( long projectId ) throws Exception
+	{
+		Security.check( Security.getConnected().in( (Project) Project.findById( projectId ) ).can( "addSprint" ) );
 		// if( Security.getConnected().in( (Project) Project.findById( projectId
 		// ) ).can( "addSprint" ) )
 		// {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
+		ObjectType type = ObjectType.get( getControllerClass() );
+		notFoundIfNull( type );
 		Sprint object = (Sprint) type.entityClass.newInstance();
-		Project proj = Project.findById(projectId);
+		Project proj = Project.findById( projectId );
 		Date startDate = null;
 		Date endDate = null;
-		validation.valid(object.edit("object", params));
-		if (validation.hasErrors()) {
-			renderArgs.put("error", "Please Correct Date Format Error");
-			try {
-				render(request.controller.replace(".", "/") + "/projectblank.html", type, projectId);
-			} catch (TemplateNotFoundException e) {
-				render("CRUD/blank.html", type);
+		validation.valid( object.edit( "object", params ) );
+		if( validation.hasErrors() )
+		{
+			renderArgs.put( "error", "Please Correct Date Format Error" );
+			try
+			{
+				render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
 			}
-		} else {
-			String[] startdate = params.get("object.startDate").split("-");
-			int startyear = Integer.parseInt(startdate[0]);
-			int startmonth = Integer.parseInt(startdate[1]);
-			int startday = Integer.parseInt(startdate[2]);
-			startDate = new GregorianCalendar(startyear, startmonth - 1, startday).getTime();
+			catch( TemplateNotFoundException e )
+			{
+				render( "CRUD/blank.html", type );
+			}
+		}
+		else
+		{
+			String[] startdate = params.get( "object.startDate" ).split( "-" );
+			int startyear = Integer.parseInt( startdate[0] );
+			int startmonth = Integer.parseInt( startdate[1] );
+			int startday = Integer.parseInt( startdate[2] );
+			startDate = new GregorianCalendar( startyear, startmonth - 1, startday ).getTime();
 
-			if (params.get("object.endDate").length() < 2) {
+			if( params.get( "object.endDate" ).length() < 2 )
+			{
 				int defaultDays = proj.sprintDuration;
-				System.out.println(defaultDays);
+				System.out.println( defaultDays );
 				endDate = new GregorianCalendar().getTime();
-				endDate.setTime(startDate.getTime() + (86400000 * defaultDays));
-			} else {
-				String end = params.get("object.endDate");
-				String[] enddate = end.split("-");
-				int endyear = Integer.parseInt(enddate[0]);
-				int endmonth = Integer.parseInt(enddate[1]);
-				int endday = Integer.parseInt(enddate[2]);
-				endDate = new GregorianCalendar(endyear, endmonth - 1, endday).getTime();
+				endDate.setTime( startDate.getTime() + (86400000 * defaultDays) );
 			}
-			if (object.startDate == null) {
-				renderArgs.put("error", "Please Enter Missing Dates");
-				render(request.controller.replace(".", "/") + "/projectblank.html", type, projectId);
-			} else if (startDate.after(endDate)) {
-				renderArgs.put("error", "Sprint Start Date is after Sprint End Date");
-				render(request.controller.replace(".", "/") + "/projectblank.html", type, projectId);
-			} else if (startDate.before(new Date()) || endDate.before(new Date())) {
-				renderArgs.put("error", "Cant Create Sprint with Past Date");
-				render(request.controller.replace(".", "/") + "/projectblank.html", type, projectId);
-			} else if (proj.inSprint(startDate, endDate)) {
-				renderArgs.put("error", "Sprint Start Date and End Date are overlapping with other Sprint");
-				render(request.controller.replace(".", "/") + "/projectblank.html", type, projectId);
-			} else {
+			else
+			{
+				String end = params.get( "object.endDate" );
+				String[] enddate = end.split( "-" );
+				int endyear = Integer.parseInt( enddate[0] );
+				int endmonth = Integer.parseInt( enddate[1] );
+				int endday = Integer.parseInt( enddate[2] );
+				endDate = new GregorianCalendar( endyear, endmonth - 1, endday ).getTime();
+			}
+			if( object.startDate == null )
+			{
+				renderArgs.put( "error", "Please Enter Missing Dates" );
+				render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
+			}
+			else if( startDate.after( endDate ) )
+			{
+				renderArgs.put( "error", "Sprint Start Date is after Sprint End Date" );
+				render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
+			}
+			else if( startDate.before( new Date() ) || endDate.before( new Date() ) )
+			{
+				renderArgs.put( "error", "Cant Create Sprint with Past Date" );
+				render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
+			}
+			else if( proj.inSprint( startDate, endDate ) )
+			{
+				renderArgs.put( "error", "Sprint Start Date and End Date are overlapping with other Sprint" );
+				render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
+			}
+			else
+			{
 				// why create it again? o.O
 				// commented by sakr
 				// object = new Sprint(startDate, endDate, proj);
 				object.save();
 			}
 		}
-		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
-		if (params.get("_save") != null) {
-			Logs.addLog(Security.getConnected(), "Create", "Sprint", object.id, proj, Calendar.getInstance().getTime());
-			redirect("/show/project?id=" + projectId);
+		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
+		if( params.get( "_save" ) != null )
+		{
+			Logs.addLog( Security.getConnected(), "Create", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
+			redirect( "/show/project?id=" + projectId );
 		}
-		if (params.get("_saveAndAddAnother") != null) {
-			Logs.addLog(Security.getConnected(), "Create", "Sprint", object.id, proj, Calendar.getInstance().getTime());
-			redirect("/sprints/projectblank?projectId=" + projectId);
+		if( params.get( "_saveAndAddAnother" ) != null )
+		{
+			Logs.addLog( Security.getConnected(), "Create", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
+			redirect( "/sprints/projectblank?projectId=" + projectId );
 		}
-		redirect(request.controller + ".show", object.getEntityId());
+		redirect( request.controller + ".show", object.getEntityId() );
 		// }
 		// else
 		// {
@@ -205,22 +244,31 @@ public class Sprints extends SmartCRUD {
 		// }
 	}
 
-	public static void projectshow(long id) {
-		Sprint sprint = Sprint.findById(id);
+	/**
+	 * renders the sprint edit page
+	 * 
+	 * @param id
+	 */
+	public static void projectshow( long id )
+	{
+		Sprint sprint = Sprint.findById( id );
 		long projId = sprint.project.id;
-		Security.check(Security.getConnected().in(sprint.project).can("editSprint"));
+		Security.check( Security.getConnected().in( sprint.project ).can( "editSprint" ) );
 		// if( Security.getConnected().in( (Project) Project.findById( projId )
 		// ).can( "editSprint" ) )
 		// {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		JPASupport object = type.findById(id);
-		Project p = Project.findById(projId);
-		List<Meeting> meetings = p.meetingsAssoccToEndOfSprint((Sprint) object);
-		try {
-			render(type, object, projId, meetings);
-		} catch (TemplateNotFoundException e) {
-			render("Sprints/show.html", type, object);
+		ObjectType type = ObjectType.get( getControllerClass() );
+		notFoundIfNull( type );
+		JPASupport object = type.findById( id );
+		Project p = Project.findById( projId );
+		List<Meeting> meetings = p.meetingsAssoccToEndOfSprint( (Sprint) object );
+		try
+		{
+			render( type, object, projId, meetings );
+		}
+		catch( TemplateNotFoundException e )
+		{
+			render( "Sprints/show.html", type, object );
 		}
 		// }
 		// else
@@ -229,88 +277,143 @@ public class Sprints extends SmartCRUD {
 		// }
 	}
 
-	public static void projectsave(long id) throws Exception {
-		Sprint sprint = Sprint.findById(id);
+	/**
+	 * saves the edited sprint
+	 * 
+	 * @param id
+	 * @throws Exception
+	 */
+	public static void projectsave( long id ) throws Exception
+	{
+		Sprint sprint = Sprint.findById( id );
 		long projId = sprint.project.id;
-		Security.check(Security.getConnected().in(sprint.project).can("editSprint"));
+		Security.check( Security.getConnected().in( sprint.project ).can( "editSprint" ) );
 		// if( Security.getConnected().in( (Project) Project.findById( projId )
 		// ).can( "editSprint" ) )
 		// {
-		Project proj = Project.findById(projId);
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		Sprint object = (Sprint) type.findById(id);
-		validation.valid(object.edit("object", params));
-		if (validation.hasErrors()) {
-			renderArgs.put("error", "Correct Date Format Errors");
-			try {
-				render(request.controller.replace(".", "/") + "/projectshow.html", type, object, projId);
-			} catch (TemplateNotFoundException e) {
-				render("CRUD/show.html", type, object);
+		Project proj = Project.findById( projId );
+		ObjectType type = ObjectType.get( getControllerClass() );
+		notFoundIfNull( type );
+		Sprint object = (Sprint) type.findById( id );
+		validation.valid( object.edit( "object", params ) );
+		if( validation.hasErrors() )
+		{
+			renderArgs.put( "error", "Correct Date Format Errors" );
+			try
+			{
+				render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+			}
+			catch( TemplateNotFoundException e )
+			{
+				render( "CRUD/show.html", type, object );
 			}
 		}
-		if (object.endDate == null || object.startDate == null) {
-			renderArgs.put("error", "Please Enter Missing Dates");
+		if( object.endDate == null || object.startDate == null )
+		{
+			renderArgs.put( "error", "Please Enter Missing Dates" );
 
-			render(request.controller.replace(".", "/") + "/projectshow.html", type, object, projId);
-		} else if (object.startDate.after(object.endDate)) {
-			renderArgs.put("error", "Sprint Start Date is after Sprint End Date");
+			render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+		}
+		else if( object.startDate.after( object.endDate ) )
+		{
+			renderArgs.put( "error", "Sprint Start Date is after Sprint End Date" );
 
-			render(request.controller.replace(".", "/") + "/projectshow.html", type, object, projId);
+			render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
 
-		} else if (object.startDate.before(new Date()) || object.endDate.before(new Date())) {
-			renderArgs.put("error", "Cant Create Sprint with Past Date");
+		}
+		else if( object.startDate.before( new Date() ) || object.endDate.before( new Date() ) )
+		{
+			renderArgs.put( "error", "Cant Create Sprint with Past Date" );
 
-			render(request.controller.replace(".", "/") + "/projectshow.html", type, object, projId);
-		} else if ((proj.inSprint(object.startDate, object.endDate))) {
-			renderArgs.put("error", "Sprint is Overlapping with other Sprint time");
+			render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+		}
+		else if( (proj.inSprint( object.startDate, object.endDate )) )
+		{
+			renderArgs.put( "error", "Sprint is Overlapping with other Sprint time" );
 
-			render(request.controller.replace(".", "/") + "/projectshow.html", type, object, projId);
-		} else {
+			render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+		}
+		else
+		{
 			object.save();
 		}
-		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
-		if (params.get("_save") != null) {
+		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
+		if( params.get( "_save" ) != null )
+		{
 
-			Logs.addLog(Security.getConnected(), "Edit", "Sprint", object.id, proj, Calendar.getInstance().getTime());
-			redirect("/show/project?id=" + projId);
+			Logs.addLog( Security.getConnected(), "Edit", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
+			redirect( "/show/project?id=" + projId );
 		}
-		redirect(request.controller + ".show", object.getEntityId());
+		redirect( request.controller + ".show", object.getEntityId() );
 		// }
 		// else
 		// {
 		// forbidden();
 		// }
 	}
-	
-	public static void listSprintsInComponent(long componentId, int type){
-		Component component = ((Component) Component.findById(componentId));
+
+	public static void listSprintsInComponent( long componentId, int type )
+	{
+		Component component = ((Component) Component.findById( componentId ));
 		List<Sprint> sprints = component.project.sprints;
-		render(sprints, component, type);
+		render( sprints, component, type );
 	}
 
-	public static void show() {
+	public static void show()
+	{
 		forbidden();
 	}
 
-	public static void delete() {
+	public static void delete()
+	{
 		forbidden();
 	}
 
-	public static void blank() {
+	public static void blank()
+	{
 		forbidden();
 	}
 
-	public static void create() {
+	public static void create()
+	{
 		forbidden();
 	}
 
-	public static void save() {
+	public static void save()
+	{
 		forbidden();
 	}
 
-	public static void list() {
+	public static void list()
+	{
 		forbidden();
 	}
 
+	/**
+	 * Adds a task to a given sprint
+	 * 
+	 * @author Hadeer Younis
+	 * @param taskId
+	 *            , the id of the task to be added
+	 * @param sprintId
+	 *            , the id of the sprint which will accept the task
+	 */
+	public static void addTask( long taskId, long sprintId )
+	{
+		Task task = Task.findById( taskId );
+		Sprint sprint = Sprint.findById( sprintId );
+		User connected = Security.getConnected();
+		Security.check( connected.in( task.project ).can( "modifyTask" ) && connected.projects.contains( task.project ) && sprint.project == task.project );
+		if( sprint.deleted || task.deleted )
+			notFound();
+		else if( sprint.ended )
+			renderText( "Sorry the requested sprint has ended." );
+		else if( sprint.tasks.contains( task ) )
+			renderText( "Sorry the requested task already belongs to that sprint." );
+		else if(sprint.project.isScrum && sprint.startDate.before( new Date() ));
+			renderText( "Sorry you can't add a task to a running sprint" );
+		sprint.tasks.add( task );
+		sprint.save();
+		renderText( "The task was assigned to the requested sprint|reload('task-" + taskId + "','sprint-" + sprintId + ")" );
+	}
 }
