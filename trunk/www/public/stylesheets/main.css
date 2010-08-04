@@ -281,3 +281,15 @@ x-overflow:hidden !important;
 	color: white !important;
 	margin: auto 0px;
 }
+
+
+.dropper {
+	display: none;
+}
+.dragger {
+	display: none;
+}
+img.left {
+	float: left;
+	margin-right: 2px;
+}
