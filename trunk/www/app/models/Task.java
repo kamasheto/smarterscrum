@@ -106,11 +106,12 @@ public class Task extends SmartModel {
 	public void init(){
 		this.subTasks= new ArrayList<Task>();
 		if(this.parent==null){
-			this.number = this.project.projectTasks.size();
+			List<Task> tasks = Task.find("byProject", this.project).fetch();
+			this.number= tasks.size()+1;
 		}else{
 			this.project=this.parent.project;
 			this.component=this.parent.component;
-			this.number = this.parent.subTasks.size();
+			this.number = this.parent.subTasks.size()+1;
 			for(Task task : this.parent.subTasks){
 				if(task.number >= this.number && !this.equals(task)){
 					this.number=task.number+1;
