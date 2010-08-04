@@ -1815,14 +1815,15 @@ public class Tasks extends SmartCRUD
 		{
 			if( taskId != 0 )
 			{
-				Task task1 = Task.findById( taskId );
-				if( task1.deleted )
+				Task task = Task.findById( taskId );
+				if( task.deleted )
 					notFound();
-				if( task1.parent != null )
-					title = "Task " + task1.parent.number + "." + task1.number;
+				if( task.parent != null )
+					title = "Task " + task.parent.number + "." + task.number;
 				else
-					title = "Task " + task1.number;
-				render( task1, title );
+					title = "Task " + task.number;
+				List<Task> tasks = task.subTasks;
+				render( task, title, tasks );
 			}
 			else
 			{
@@ -1831,16 +1832,16 @@ public class Tasks extends SmartCRUD
 					title = "My Tasks";
 					User user = Security.getConnected();
 					Project project = Project.findById( projectId );
-					List<Task> task = new ArrayList<Task>();
+					List<Task> tasks = new ArrayList<Task>();
 					for( Task task1 : project.projectTasks )
 					{
 						if( task1.assignee != null && task1.reviewer != null && (task1.assignee.equals( user ) || task1.reviewer.equals( user )) && task1.checkUnderImpl() )
 						{
-							task.add( task1 );
+							tasks.add( task1 );
 						}
 					}
 
-					render( task, title, mine );
+					render( tasks, title, mine );
 				}
 				else
 				{
@@ -1848,27 +1849,26 @@ public class Tasks extends SmartCRUD
 					{
 						title = "Project Tasks";
 						Project project = Project.findById( projectId );
-						List<Task> task = new ArrayList<Task>();
-						task = Task.find( "byProjectAndDeletedAndParentIsNull", project, false ).fetch();
-						System.out.println( task );
-						render( task, title, mine );
+						List<Task> tasks = Task.find( "byProjectAndDeletedAndParentIsNull", project, false ).fetch();
+						// System.out.println( task );
+						render( tasks, title, mine );
 					}
 					else
 					{
 						if( meetingId != 0 )
 						{
 							Meeting meeting = Meeting.findById( meetingId );
-							List<Task> task = new ArrayList<Task>();
+							List<Task> tasks = new ArrayList<Task>();
 							for( Task task2 : meeting.tasks )
 							{
 								if( !task2.deleted )
 								{
-									task.add( task2 );
+									tasks.add( task2 );
 								}
 							}
 
 							title = "Meetings Tasks";
-							render( title, task );
+							render( title, tasks );
 						}
 					}
 				}
