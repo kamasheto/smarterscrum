@@ -98,6 +98,31 @@
     	   $('#normal').load(url);
     	   $('#normal').show();
     	   $('#workspaces').hide();
+    	   
+
+       }
+       function smartShow(url)
+       {
+    		if($('#workspaces').find('.noKill').first()!=null)
+    		{
+    			var me = $('#workspaces').find('.noKill').first();
+    			removeFromDiv($(me).attr('name'));
+    		}
+    		else if($('#normal').find('.noKill').first()!=null)
+    		{
+    			var me = $('#workspaces').find('.noKill').first();
+    		   removeFromDiv($(me).attr('name'));
+    		}
+           var myParent = 'normal';
+           if($('#normal').css('display')=='none')
+           {
+               $('#workspaces').children().each(function(){
+                   if($(this).css('display')=='block')
+                       myParent = $(this).children().first().next().attr('id');
+               });
+           }
+           loadBox(url,myParent,'noKill');
+               
        }
                    		
         </script>
@@ -144,7 +169,7 @@
 						<div class="left">
 						#{if connected}
 							Hello ${connected.name}!&nbsp;&nbsp;|&nbsp;&nbsp;
-							<a href="/show/user?id=${controllers.Security.getConnected().id}">Profile</a>
+							<a href="#" onclick="smartShow('/show/user?id=${controllers.Security.getConnected().id}')">Profile</a>
 						#{/if}
 						</div>
 						
