@@ -585,7 +585,7 @@ public class Meetings extends SmartCRUD
 				}
 				else
 				{
-					renderText( "User invited to meeting successfully.|reload('meetingAttendees-" + currentMeeting.id + "','meetings')" );
+					renderText( "User invited to meeting successfully.|reload('meetingAttendees-" + currentMeeting.id + "','meetings','meeting-" + currentMeeting.id + "')" );
 				}
 			}
 			else
