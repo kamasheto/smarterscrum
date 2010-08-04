@@ -362,45 +362,33 @@ public class Project extends SmartModel
 		meetingsTypes = new ArrayList<String>();
 		meetingsTypesInSprint = new ArrayList<Boolean>();
 
-		TaskType t7 = new TaskType();
-		t7.project = this;
-		t7.name = "User Story";
-		t7.isStory = true;
-		t7.save();
-		taskTypes.add(t7);
-		
 		TaskType t1 = new TaskType();
 		t1.project = this;
 		t1.name = "Documentation";
-		t1.isStory = false;
 		t1.save();
 		taskTypes.add( t1 );
 
 		TaskType t2 = new TaskType();
 		t2.project = this;
 		t2.name = "Impediment";
-		t2.isStory = false;
 		t2.save();
 		taskTypes.add( t2 );
 
 		TaskType t3 = new TaskType();
 		t3.project = this;
 		t3.name = "Implementation";
-		t3.isStory = false;
 		t3.save();
 		taskTypes.add( t3 );
 
 		TaskType t4 = new TaskType();
 		t4.project = this;
 		t4.name = "Test";
-		t4.isStory = false;
 		t4.save();
 		taskTypes.add( t4 );
 
 		TaskType t5 = new TaskType();
 		t5.project = this;
 		t5.name = "Other";
-		t5.isStory = false;
 		t5.save();
 		taskTypes.add( t5 );
 
