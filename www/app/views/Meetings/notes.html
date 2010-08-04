@@ -5,6 +5,9 @@ ${myMeeting.name} Notes
 	<a href="#" onclick="overlayOpen('/Meetings/newNote?id=${myMeeting.id}')"><img title= "add"src="@{'public/images/famfam/add.png'}" alt="[+]"/></a>
 	#{/if}
 #{/set}
+#{if notes.size()==0}
+#{note} there are no notes #{/note}
+#{/if}
 %{int i =0;}%
 #{list items:notes, as:'note'}
 #{if !note.deleted }
