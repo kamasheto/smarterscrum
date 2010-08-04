@@ -19,11 +19,11 @@
 		#{if requestedRoles.contains(role)}
 			<div class="dim"><a href="#" onclick="deleteRequest(${role.id});"><img title="Remove Request" src="@{'public/images/famfam/group_delete.png'}"></a></div>
 		#{/if}
-		#{elseif !role.baseRole}
+		#{else}
 			<a href="#" onclick="requestRole(${role.id});">
 			<img title="Request Role" src="@{'public/images/famfam/group_go.png'}">
 			</a>
-		#{/elseif}
+		#{/else}
 	#{/ifnot}
 	
 	#{elseif !role.baseRole}

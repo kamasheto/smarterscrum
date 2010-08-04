@@ -267,17 +267,25 @@ $(function() {
 						drop: function(event2, ui2) {
 							$(this).attr('src', '/public/images/loading16.gif')
 							that = this
-							$.post('/loading/dynamicdrop', {from: $(ui2.draggable).attr('name'), to: $(this).attr('name')}, 
-															function(response) {
-																$(that).attr('src', '/public/images/famfam/arrow_in.png')
-																arr = response.split('|')
-																if (arr.length > 0 && arr[0]) {
-																	$.bar({message: arr[0]})
-																}	
-																if (arr.length > 1 && arr[1]) {
-																	eval(arr[1])
-																}
-															})
+							$.ajax({
+								url: '/loading/dynamicdrop',
+								data: {from: $(ui2.draggable).attr('name'), to: $(this).attr('name')},
+								success: function(response) {
+									$(that).attr('src', '/public/images/famfam/arrow_in.png')
+									arr = response.split('|')
+									if (arr.length > 0 && arr[0]) {
+										$.bar({message: arr[0]})
+									}	
+									if (arr.length > 1 && arr[1]) {
+										eval(arr[1])
+									}
+								}, 
+								error: function(response) {
+									$.bar({
+										message: 'An error occurred. You may not have permission to perform that action.'
+									})
+								}
+							})
 						}
 					})
 				})
@@ -395,7 +403,7 @@ $(function() {
 	$('.revertFrom').live('click', function() {
 		var url = $(this).parent().parent().attr('name');
 		removeFromDiv(url);
-		CURRENT_OFFSET -= 315
+		// CURRENT_OFFSET -= 315
 		var theId = $(this).parent().parent().attr('id');
 		var theSecondId = theId + "_2";
 		if ($('#' + theSecondId).attr('id') == null)
@@ -446,20 +454,18 @@ function load(url, el, n) {
 	}
 }
 
-CURRENT_OFFSET = 10
+// CURRENT_OFFSET = 10
 function loadBox(url, el, classes) 
 {
-	if($.inArray(url,myDivs)==-1)
-	{
+	if($.inArray(url,myDivs)==-1) {
 	$('#' + el).append('<div style="position:absolute;z-index:0"id="myTemp"></div>');
-	
 	element = $('#' + el + ' #myTemp')
 	element.load(url, function() {
 		element.children().attr('name', url);
 		element.children().addClass(classes)
-		element.children().css('position','absolute!important');
-		element.children().css('left', CURRENT_OFFSET+'px')
-		CURRENT_OFFSET += 315
+		// element.children().css('position','absolute!important');
+		// element.children().css('left', CURRENT_OFFSET+'px')
+		// CURRENT_OFFSET += 315
 		element.children().css('z-index','4');
 		element.replaceWith(element.html());
 		doOnLoad()
@@ -470,7 +476,6 @@ function loadBox(url, el, classes)
 
 function magic(id) {
 	doOnLoad();
-	alert(id);
 	smart_pagination(''+id,1);
 	hideFilterLinks(''+id);
 	$("#" + id + "_content div[name]").each(
@@ -510,6 +515,7 @@ function magic(id) {
 						
 						}
 					});
+
 }
 var myDivs = new Array();
 var num =1;
