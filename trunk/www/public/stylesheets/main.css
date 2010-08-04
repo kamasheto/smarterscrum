@@ -269,7 +269,7 @@ a,a img,span.revertFrom,span.min {
 }
 
 .sideHolder {
-	position: fixed;
+	position: absolute;
 	right: 0px;
 	top: 0px;
 	height:100%;
