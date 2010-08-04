@@ -42,6 +42,10 @@ public class Loading extends SmartController {
 		{
 			Tasks.assignTaskReviewer(id2, id);
 		}
+		else if  (from.equals("task") && to.equals( "task" ) )
+		{
+			Tasks.setDependency(id, id2);
+		}
 		
 	}
 }

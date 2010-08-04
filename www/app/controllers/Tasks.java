@@ -70,6 +70,7 @@ public class Tasks extends SmartCRUD
 									// taskId
 				{
 					task = Task.findById( taskId );
+					System.out.println(task+" heree");
 					if( task.deleted )
 						notFound();
 					if( task.component != null )
@@ -110,7 +111,6 @@ public class Tasks extends SmartCRUD
 
 		try
 		{
-			System.out.println( component );
 			render( project, p, component, task, type, sprints, productRoles, projectId, componentId, taskId );
 
 		}
@@ -253,23 +253,71 @@ public class Tasks extends SmartCRUD
 		notFoundIfNull( type );
 		JPASupport object = type.entityClass.newInstance();
 		validation.valid( object.edit( "object", params ) );
+		Task tmp = (Task) object;
+		User user = Security.getConnected();
+		Project project = null;
+		Component component = null;
+		Task task = null;
+		Project p=null;
+		System.out.println(tmp.parent);
+		if(tmp.project!=null && tmp.parent==null){
+			p = tmp.project;
+			project = tmp.project;
+			System.out.println("here");
+			Security.check(Security.getConnected().in(tmp.project).can("AddTask"));
+			
+		}else{
+			if(tmp.parent !=null){
+				task = tmp.parent;
+				project = tmp.project;
+			}else{
+				component = tmp.component;
+				project=component.project;
+				tmp.project=project;
+				Security.check(user.in(component.project).can("AddTask"));
+			}
+		}
+		List<Sprint> sprints = new ArrayList<Sprint>();
+		for( int i = 0; i < project.sprints.size(); i++ )
+		{
+			Sprint sprint = project.sprints.get( i );
+			java.util.Date End = sprint.endDate;
+			Calendar cal = new GregorianCalendar();
+			if( End.after( cal.getTime() ) )
+			{
+				sprints.add( sprint );
+			}
+		}
+
+		String productRoles = "";
+		for (int i = 0; i < project.productRoles.size(); i++) 
+		{
+			if(project.productRoles.get(i).name.charAt(0)=='a'||project.productRoles.get(i).name.charAt(0)=='e'||project.productRoles.get(i).name.charAt(0)=='i'||project.productRoles.get(i).name.charAt(0)=='o'||project.productRoles.get(i).name.charAt(0)=='u'||project.productRoles.get(i).name.charAt(0)=='A'||project.productRoles.get(i).name.charAt(0)=='E'||project.productRoles.get(i).name.charAt(0)=='I'||project.productRoles.get(i).name.charAt(0)=='O'||project.productRoles.get(i).name.charAt(0)=='U')
+			productRoles=productRoles+"As an "+project.productRoles.get(i).name+",-";
+			else
+			productRoles=productRoles+"As a "+project.productRoles.get(i).name+",-";
+		}
+
+		
 		if( validation.hasErrors() )
 		{
 			renderArgs.put( "error", Messages.get( "crud.hasErrors" ) );
 			try
 			{
-				render( request.controller.replace( ".", "/" ) + "/blank.html", type );
+				render( request.controller.replace( ".", "/" ) + "/blank.html",  project, p, component, task, type, sprints, productRoles );
 			}
 			catch( TemplateNotFoundException e )
 			{
 				render( "CRUD/blank.html", type );
 			}
 		}
+		tmp.init();
+		System.out.println(tmp.parent.id + "toffa7");
 		object.save();
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
-			redirect( request.controller + ".list" );
+			Application.overlayKiller("reload('tasks','task-"+tmp.parent.id+"')", "");
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
 		{
@@ -643,6 +691,14 @@ public class Tasks extends SmartCRUD
 			}
 		}
 		renderJSON( reviewers );
+	}
+	public static void setDependency( long id, long id2 )
+	{	
+		Task taskFrom = Task.findById(id);
+		Task taskTo = Task.findById(id2);
+		Security.check( Security.getConnected().in( taskFrom.project ).can( "modifyTask" ) );
+		taskFrom.dependentTasks.add(taskTo);
+		taskFrom.save();
 	}
 
 	/**
@@ -1603,7 +1659,7 @@ public class Tasks extends SmartCRUD
 		// String header = "A Task Reviewer has been changed in Component: " +
 		// "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " +
 		// "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
-		String header = "Task: 'T" + task1.id + "\'" + " Reviewer has been edited.";
+		//String header = "Task: 'T" + task1.id + "\'" + " Reviewer has been edited.";
 		if( userId == Security.getConnected().id )
 		{
 			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ".";
@@ -1656,13 +1712,13 @@ public class Tasks extends SmartCRUD
 	// }
 
 	/**
-	 * @author menna_ghoneim Renders a given taskid with a list of user and
-	 *         opton to say if the reviewer or the assignee is being changed to
+	 * @author menna_ghoneim Renders a given task id with a list of user and
+	 *         option to say if the reviewer or the assignee is being changed to
 	 *         a page to choose a reviewer or assignee
 	 * @param taskId
 	 *            the task to be edited
 	 * @param aORr
-	 *            wether reviewer or assignee
+	 *            whether reviewer or assignee
 	 */
 
 	public static void chooseTaskAssiRev( long taskId, int aORr )
@@ -1864,6 +1920,7 @@ public class Tasks extends SmartCRUD
 								if( !task2.deleted )
 								{
 									tasks.add( task2 );
+
 								}
 							}
 
