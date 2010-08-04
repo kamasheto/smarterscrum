@@ -27,22 +27,35 @@ function isBefore(date){
 #{else}
 	#{list items:sprints, as:'sprint'}
 		#{if (sprint.id==runningSprint) }
-			<div class="greenBg" name="/sprints/showsprint?id=${sprint.id}&projectId=${sprint.project.id}">Sprint ${sprint.id}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+			<div class="greenBg reload-sprint" name="/sprints/showsprint?id=${sprint.id}&projectId=${sprint.project.id}">Sprint ${sprint.sprintNumber}#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
 <img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>	
+#{if connected.in(sprint.project).can("editSprint")}
+
+<a href="#" onclick="overlayOpen('@{Sprints.projectshow(sprint.id)}')"><img src="/public/images/famfam/pencil.png" /></a>
+
+#{/if}
 			</div>
 		#{/if}
 		#{else}
 		#{if (sprint.ended) }
-			<div class="redBg" name="/sprints/showsprint?id=${sprint.id}&projectId=${sprint.project.id}">Sprint ${sprint.id}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+			<div class="redBg reload-sprint" name="/sprints/showsprint?id=${sprint.id}&projectId=${sprint.project.id}">Sprint ${sprint.sprintNumber}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
 <img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>	
+#{if connected.in(sprint.project).can("editSprint")}
+<img class="dim"src="/public/images/famfam/pencil.png" />
+#{/if}
 			</div>
 		#{/if}
 		#{else}
-		<div class="yellowBg" name="/sprints/showsprint?id=${sprint.id}&projectId=${sprint.project.id}">Sprint ${sprint.id}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+		<div class="yellowBg reload-sprint" name="/sprints/showsprint?id=${sprint.id}&projectId=${sprint.project.id}">Sprint ${sprint.sprintNumber}#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
 <img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>	
+#{if connected.in(sprint.project).can("editSprint")}
+
+<a href="#" onclick="overlayOpen('@{Sprints.projectshow(sprint.id)}')"><img src="/public/images/famfam/pencil.png" /></a>
+
+#{/if}
 			</div>
 		#{/else}
 		#{/else}

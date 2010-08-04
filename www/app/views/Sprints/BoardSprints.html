@@ -7,19 +7,31 @@
 #{else}
 	#{list items:sprints, as:'sprint'}
 		#{if (sprint.id==runningSprint) }
-			<div class="running" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber} Boards
-			
+			<div class="greenBg" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber} Boards${sprint.id}#{drop 'sprint-' + sprint.id /}
+			#{if connected.in(sprint.project).can("editSprint")}
+
+<a href="#" onclick="overlayOpen('@{Sprints.projectshow(sprint.id)}')"><img src="/public/images/famfam/pencil.png" /></a>
+
+#{/if}
 			</div>
 		#{/if}
 		#{else}
 		#{if (sprint.ended) }
-			<div class="Past" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber} Boards
-			
+			<div class="redBg" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber} Boards${sprint.id}
+			#{if connected.in(sprint.project).can("editSprint")}
+
+<img class="dim"src="/pubilc/images/famfam/pencil.png" />
+
+#{/if}
 			</div>
 		#{/if}
 		#{else}
-		<div class="Upcoming" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber} Boards
-			
+		<div class="yellowBg" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber} Boards${sprint.id}#{drop 'sprint-' + sprint.id /}
+			#{if connected.in(sprint.project).can("editSprint")}
+
+<a href="#" onclick="overlayOpen('@{Sprints.projectshow(sprint.id)}')"><img src="/public/images/famfam/pencil.png" /></a>
+
+#{/if}
 			</div>#{/else}
 		#{/else}
 

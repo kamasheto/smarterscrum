@@ -1,5 +1,14 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}Sprint ${sprint.id}#{/set}
+#{set 'title'}Sprint ${sprint.id}#{drop 'sprint-' + sprint.id /}
+#{if connected.in(sprint.project).can("editSprint")}
+#{if sprint.ended}
+<img class="dim"src="/pubilc/images/famfam/pencil.png" />
+#{/if}
+#{else}
+<a href="#" onclick="overlayOpen('@{Sprints.projectshow(sprint.id)}')"><img src="/public/images/famfam/pencil.png" /></a>
+#{/else}
+#{/if}
+#{/set}
 <script type="text/javascript">
 function isBefore(date){
 	var now=new Date();
@@ -27,10 +36,7 @@ function isBefore(date){
 <br />
 <strong>End Date:</strong> ${sprint.format(sprint.endDate)}
 <br />
-<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?">
-<img src="@{'public/images/famfam/chart.png'}" alt="[chart]"/></a>
-
-			
+		
 
 
 <div name="@{Sprints.backlogs(sprint.id)}">Backlogs
@@ -42,57 +48,3 @@ function isBefore(date){
 
 			</div>
 <div name="@{Boards.sprintBoards(sprint.id)}">Boards</div>
-<!--
-#{if (!running)}
-<script type="text/javascript">
-
-	if(isBefore('${sprint.format(sprint.startDate)}')==true){
-	document.write('<a id="button"href="@{projectshow(sprint.id)}">Edit</a>');
-		}
-	else{
-	document.write('<div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all"> <p><span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> <strong>This is a past sprint. You cannot edit it.</strong></p></div>');
-		}
-</script>
-#{/if} 
-#{if (running)} 
-<div style="margin-top: 20px; padding: 0pt 0.7em;" class="ui-state-highlight ui-corner-all"> 
-					<p><span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
-					<strong>The sprint is currently running</strong></p>
-				</div>
-
-#{/if}<br/><br/>
-<strong>Status:</strong>
-<script type="text/javascript">
-if(isBefore('${sprint.format(sprint.startDate)}')==true){
-	document.write('Upcoming Sprint');
-		}
-	else{
-	document.write('Past Sprint');
-		}
-</script>
-<br/>
-
-
-
-<h2>Task Boards</h2>
-#{set 'onLoad'}
-#{if ended==true}
-#{if sprint.finalsnapshot==null }
-$.post('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}});
-
-#{/if}#{/if}#{/set}
-#{if sprint.finalsnapshot==null }
-<a title="Take a look @ the full task board?" href="/boards/loadboard?sprintID=${sprint.id}">View Sprint ${sprint.id} Task Board</a>
-
-<br/>
-<br/>
-#{list items:sprint.project.components, as:'component'}
-<a title="Look @ ${component.name}'s sprint ${sprint.id} Task Board?"href="/boards/loadComponentBoard?sprintID=${sprint.id}&componentID=${component.id}">View ${component.name} Sprint ${sprint.id}</a>
-<br/>
-<br/>
-#{/list}
-#{/if}
-#{if sprint.finalsnapshot!=null }
-<div><a title="Take a look @ the full task board?" href="@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)} ">View Sprint ${sprint.id} Task Board</a>
-#{/if}
--->
