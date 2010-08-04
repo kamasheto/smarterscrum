@@ -470,6 +470,9 @@ function loadBox(url, el, classes)
 
 function magic(id) {
 	doOnLoad();
+	alert(id);
+	smart_pagination(''+id,1);
+	hideFilterLinks(''+id);
 	$("#" + id + "_content div[name]").each(
 	function() 
 	{
@@ -507,7 +510,6 @@ function magic(id) {
 						
 						}
 					});
-
 }
 var myDivs = new Array();
 var num =1;
