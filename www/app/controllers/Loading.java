@@ -26,6 +26,9 @@ public class Loading extends SmartController {
 		if (from.equals("user") && to.equals("component")) {
 			// inviting user id to component id2
 			Users.chooseUsers(id2, id);
+		} else if (from.equals("task") && to.equals("component")) {
+			// associating task to component
+			Tasks.associateToComponent(id, id2);
 		}
 	}
 }

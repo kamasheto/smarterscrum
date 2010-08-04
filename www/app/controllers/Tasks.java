@@ -53,7 +53,7 @@ public class Tasks extends SmartCRUD
 			if( project.deleted )
 				notFound();
 			Security.check(user.in(project).can("AddTask"));
-		}
+			}
 		else
 		{
 			if( componentId != 0 )    //adding task to component
@@ -79,14 +79,14 @@ public class Tasks extends SmartCRUD
 					else if (task.project!=null)
 					{
 						Security.check(user.in(task.project).can("AddTask"));
-						project=task.project;
+					project = task.project;
 					}
-					 
+
 				}
 			}
 		}
 	
-		List <Sprint> sprints = new ArrayList<Sprint>();
+		List<Sprint> sprints = new ArrayList<Sprint>();
 		for( int i = 0; i < project.sprints.size(); i++ )
 		{
 			Sprint sprint = project.sprints.get( i );
@@ -97,7 +97,7 @@ public class Tasks extends SmartCRUD
 				sprints.add( sprint );
 			}
 		}
-		
+
 		String productRoles = "";
 		for (int i = 0; i < project.productRoles.size(); i++) 
 		{
@@ -106,6 +106,7 @@ public class Tasks extends SmartCRUD
 			else
 			productRoles=productRoles+"As a "+project.productRoles.get(i).name+",-";
 		}
+
 		try
 		{
 			System.out.println(component);
@@ -116,6 +117,7 @@ public class Tasks extends SmartCRUD
 		{
 			render( "CRUD/blank.html", type );
 		}
+
 	}
 
 	/**
@@ -125,7 +127,7 @@ public class Tasks extends SmartCRUD
 	 * @author Monayri
 	 * @category C3 17.1
 	 */
-// public static void create() throws Exception {
+	// public static void create() throws Exception {
 	// ObjectType type = ObjectType.get(getControllerClass());
 	// notFoundIfNull(type);
 	// JPASupport object = type.entityClass.newInstance();
@@ -1806,7 +1808,7 @@ public class Tasks extends SmartCRUD
 						{
 							task.add( task1 );
 						}
-								}
+					}
 
 					render(task, title, mine);
 				}else{
@@ -1834,5 +1836,27 @@ public class Tasks extends SmartCRUD
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Associate task to component @author mahmoudsakr
+	 */
+	public static void associateToComponent(long taskId, long componentId) {
+		Task task = Task.findById(taskId);
+		Component component = Component.findById(componentId);
+		User connected = Security.getConnected();
+		Security.check(connected.in(task.project).can("modifyTask") 
+						&& task.project == component.project 
+						&& task.component.project == component.project
+						&& task.parent == null);
+						
+		// first remove task from the component
+		task.component.componentTasks.remove(task);
+		task.component.save();
+		
+		task.component = component;
+		task.save();
+		
+		renderText("Associated successfully|reload('component-"+componentId+"', 'task-"+taskId+"')");
 	}
 }
