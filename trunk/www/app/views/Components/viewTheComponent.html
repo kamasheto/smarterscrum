@@ -1,8 +1,8 @@
 #{extends 'magicBox.html' /}
 #{set 'title'}C${component.number}: ${component.name} #{if connected.in(project).can('deleteComponent')}<a onclick="javascript:deleteTheComponent(${component.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if connected.in(project).can('editComponent')}<a href="javascript:overlayOpen('/admin/components/${component.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}<a href="javascript:overlayOpen('/productbacklogs/showgraph?id=${projectId}&componentId=${component.id}')"><img title="Overall chart" src="@{'/public/images/famfam/chart.png'}"></a>#{/set}
-#{note}${component.description}#{/note}
+#{if component.description!=null}#{note}${component.description}#{/note}#{/if}
 		<div name="/users/findUsers?componentId=${component.id}">Users</div>
-		<div name="/storys/magicshow?componentId=${component.id}">Stories</div>
+		<div name="/tasks/magicshow?componentId=${component.id}">Tasks</div>
 		<div name="/sprints/listSprintsInComponent?componentId=${component.id}&type=2">Charts</div>
 		<div name="/sprints/listSprintsInComponent?componentId=${component.id}&type=3">Sprint Backlog</div>
 		<div name="/sprints/listSprintsInComponent?componentId=${component.id}&type=1">Boards</div>
