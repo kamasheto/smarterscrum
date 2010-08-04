@@ -38,6 +38,9 @@
 	#{/if}
 	#{/if}
 	#{/if}
+	#{if (meeting.startTime > new Date().getTime()) && (connected.in(meeting.project).can('manageMeetingAssociations') ||connceted.equals(meeting.creator)) }
+	#{drop 'meeting-' + meeting.id /}
+	#{/if}
 	#{/set}
 	
 
