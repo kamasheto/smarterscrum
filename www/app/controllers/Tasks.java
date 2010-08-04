@@ -358,7 +358,7 @@ public class Tasks extends SmartCRUD
 		 tmp.description = tmp.description;
 		 }
 		 }
-		
+		tmp.reporter=Security.getConnected();
 		object.save();
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
@@ -399,9 +399,17 @@ public class Tasks extends SmartCRUD
 		List<Requestreviewer> reviewers = Requestreviewer.find( "byComponentAndAccepted", tmp.component, true ).fetch();
 		boolean deletable = tmp.isDeletable();
 		dependencies = Task.find( "byProjectAndDeleted", tmp.project, false ).fetch();
+		String productRoles = "";
+		for( int i = 0; i < tmp.project.productRoles.size(); i++ )
+		{
+			if( tmp.project.productRoles.get( i ).name.charAt( 0 ) == 'a' || tmp.project.productRoles.get( i ).name.charAt( 0 ) == 'e' || tmp.project.productRoles.get( i ).name.charAt( 0 ) == 'i' || tmp.project.productRoles.get( i ).name.charAt( 0 ) == 'o' || tmp.project.productRoles.get( i ).name.charAt( 0 ) == 'u' || tmp.project.productRoles.get( i ).name.charAt( 0 ) == 'A' || tmp.project.productRoles.get( i ).name.charAt( 0 ) == 'E' || tmp.project.productRoles.get( i ).name.charAt( 0 ) == 'I' || tmp.project.productRoles.get( i ).name.charAt( 0 ) == 'O' || tmp.project.productRoles.get( i ).name.charAt( 0 ) == 'U' )
+				productRoles = productRoles + "As an " + tmp.project.productRoles.get( i ).name + ",-";
+			else
+				productRoles = productRoles + "As a " + tmp.project.productRoles.get( i ).name + ",-";
+		}
 		try
 		{
-			render( type, object, users, statuses, types, dependencies, message2, deletable, reviewers, comments );
+			render( type, object, users, statuses, types, dependencies, message2, deletable, reviewers, comments, productRoles );
 		}
 		catch( TemplateNotFoundException e )
 		{

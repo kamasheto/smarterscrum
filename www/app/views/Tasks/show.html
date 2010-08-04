@@ -4,12 +4,7 @@
 -->
 
 #{extends 'overlay.html' /}
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${object.project.id}">${object.project.name}</a></li>
-<li><a href="/show/tasks?id=${object.project.id}">Tasks</a></li>
-<li><a href="">Task${object.id}</a></li>
-#{/set}
+<script type="text/javascript" src="@{'/public/javascripts/jquery.autocomplete.js/'}"></script>
 
 <div id="crudShow" class="${type.name}">
 	
@@ -31,12 +26,14 @@
 			#{/if}
 			#{/crud.custom }
 			
-			#{crud.custom 'description'}
- 			<label for="object_description">Description</label> 
-			<textarea id="object_description" cols="48" rows="5" class="" name="object.description">${object.description}</textarea> 
-			<span class="crudHelp" ><font color="Red">*</font>Max length is 300.</span> 
+			#{crud.custom 'description' }
+			<label for="object_description">Description	</label>
+			<textarea id="object_description"  name="object.description" ROWS="4" COLS="60" onclick="f();">${object.description}</textarea>
+    		<span class="crudHelp" style="color:red">*</span>
+			<div style="display:none" class="d">Ex: As a/an product role, description</div>
+			<span class="error"></span>
 			#{/crud.custom}
-			
+	
 			
 			
 			#{crud.custom 'taskStatus'}
@@ -173,8 +170,23 @@
 		<label><font color="green">&nbsp;&nbsp;The task can't be deleted As some other tasks depends on it !</font></label>
 	#{/if}
 </div>
-#{set 'moreScripts'}
+
 <script type="text/javascript">
+
+	var data='${productRoles}'.split("-");
+	$("#object_description").autocomplete(data);
+	
+	function f()
+	{
+		$('.d').css('display','inline-block');
+	}
+	
+	function product_role(id)
+	{
+		$.post('/Storys/addProductRole' ,			
+			{projectID:id,						
+			description:$("#example").val()});
+	} 
 
 	function change_reviewers(){
     var value = ${object.component.id}; 
@@ -199,4 +211,4 @@
 	}
 
 	</script>
-#{/set}
+
