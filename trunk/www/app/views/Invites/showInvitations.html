@@ -1,7 +1,7 @@
-#{extends 'sidebar.html' /}
+#{extends 'main.html' /}
 
 <h3>Project Invitations</h3>
-#{if invitations.isEmpty}
+#{if invitations.isEmpty()}
 there are no new project invitations
 #{/if}
 #{else}
@@ -14,8 +14,8 @@ there are no new project invitations
 #{/list}
 #{/else}
 <h3>Meeting Invitations</h3>
-#{if meetings.isEmpty}
-there are no new project invitations
+#{if meetings.isEmpty()}
+there are no new meeting invitations
 #{/if}
 #{else}
 #{list items:meetings, as:'meet'}
