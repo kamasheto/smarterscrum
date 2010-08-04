@@ -25,8 +25,6 @@ public class TaskType extends SmartModel {
 
 	public boolean deleted;
 
-	public boolean isStory;
-	
 	@OneToMany (mappedBy = "taskType", cascade = CascadeType.ALL)
 	public List<Task> Tasks;
 

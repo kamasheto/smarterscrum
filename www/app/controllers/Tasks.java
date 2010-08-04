@@ -42,58 +42,51 @@ public class Tasks extends SmartCRUD
 		ObjectType type = ObjectType.get( getControllerClass() );
 		notFoundIfNull( type );
 		User user = Security.getConnected();
-		List<User> users = new ArrayList<User>();
-		List<Task> depTasks = new ArrayList<Task>();
 		Project project = null;
-		List<Component> components = new ArrayList<Component>();
-		if( projectId != 0 )
+		Component component = null;
+		Task task = null;
+		Project p=null;
+		if( projectId != 0 )      //adding task to project (put drop down list of components)
 		{
-			project = Project.findById( projectId );
+			p = Project.findById( projectId );
+			project=p;
 			if( project.deleted )
 				notFound();
-			for( User pUser : project.users )
-			{
-				if( !pUser.deleted )
-					users.add( pUser );
-			}
-
+			Security.check(user.in(project).can("AddTask"));
 		}
 		else
 		{
-			if( componentId != 0 )
+			if( componentId != 0 )    //adding task to component
 			{
-				Component component = Component.findById( componentId );
+				component = Component.findById( componentId );
+				project=component.project;
 				if( component.deleted )
 					notFound();
-				project = component.project;
-				for( User cUser : component.componentUsers )
-				{
-					if( !cUser.deleted )
-						notFound();
-				}
+				Security.check(user.in(component.project).can("AddTask"));
 			}
 			else
 			{
-				if( taskId != 0 )
+				if( taskId != 0 )     //adding subtask to parent task with id taskId
 				{
-					Task task = Task.findById( taskId );
+					task = Task.findById( taskId );
 					if( task.deleted )
 						notFound();
-					project = task.project;
-
+					if(task.component!=null)
+					{
+						Security.check(user.in(task.component.project).can("AddTask"));
+						project=task.component.project;
+					}
+					else if (task.project!=null)
+					{
+						Security.check(user.in(task.project).can("AddTask"));
+						project=task.project;
+					}
+					 
 				}
 			}
 		}
-		Security.check( user.in( project ).can( "AddTask" ) );
-		for( Component component : project.components )
-		{
-			if( !component.deleted )
-				components.add( component );
-		}
-		depTasks = Task.find( "byProjectAndDeleted", project, false ).fetch();
-		List<TaskStatus> statuses = TaskStatus.find( "byProjectAndDeleted", project, false ).fetch();
-		List<TaskType> types = TaskType.find( "byProjectAndDeleted", project, false ).fetch();
-		List<Sprint> sprints = new ArrayList<Sprint>();
+	
+		List <Sprint> sprints = new ArrayList<Sprint>();
 		for( int i = 0; i < project.sprints.size(); i++ )
 		{
 			Sprint sprint = project.sprints.get( i );
@@ -103,19 +96,26 @@ public class Tasks extends SmartCRUD
 			{
 				sprints.add( sprint );
 			}
-
 		}
-
+		
+		String productRoles = "";
+		for (int i = 0; i < project.productRoles.size(); i++) 
+		{
+			if(project.productRoles.get(i).name.charAt(0)=='a'||project.productRoles.get(i).name.charAt(0)=='e'||project.productRoles.get(i).name.charAt(0)=='i'||project.productRoles.get(i).name.charAt(0)=='o'||project.productRoles.get(i).name.charAt(0)=='u'||project.productRoles.get(i).name.charAt(0)=='A'||project.productRoles.get(i).name.charAt(0)=='E'||project.productRoles.get(i).name.charAt(0)=='I'||project.productRoles.get(i).name.charAt(0)=='O'||project.productRoles.get(i).name.charAt(0)=='U')
+			productRoles=productRoles+"As an "+project.productRoles.get(i).name+",-";
+			else
+			productRoles=productRoles+"As a "+project.productRoles.get(i).name+",-";
+		}
 		try
 		{
-			render( type, components, users, statuses, types, sprints, depTasks );
+			System.out.println(component);
+			render( project, p, component, task, type, sprints, productRoles, projectId, componentId, taskId );
 
 		}
 		catch( TemplateNotFoundException e )
 		{
 			render( "CRUD/blank.html", type );
 		}
-
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class Tasks extends SmartCRUD
 	 * @author Monayri
 	 * @category C3 17.1
 	 */
-	// public static void create() throws Exception {
+// public static void create() throws Exception {
 	// ObjectType type = ObjectType.get(getControllerClass());
 	// notFoundIfNull(type);
 	// JPASupport object = type.entityClass.newInstance();
@@ -1806,7 +1806,7 @@ public class Tasks extends SmartCRUD
 						{
 							task.add( task1 );
 						}
-					}
+								}
 
 					render(task, title, mine);
 				}else{

@@ -32,7 +32,6 @@ public class Task extends SmartModel {
 	public boolean deleted;
 
 
-	@Required
 	public double estimationPoints;
 
 	// ADDED BY HADEER YOUNIS. DO NOT REMOVE.
@@ -92,7 +91,6 @@ public class Task extends SmartModel {
 	@Lob
 	public String failureScenario;
 	
-	@Required
 	public int priority;
 	
 	@ManyToOne
