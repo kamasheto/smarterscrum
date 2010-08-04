@@ -70,8 +70,7 @@ public class Projects extends SmartCRUD {
 				render("CRUD/blank.html", type);
 			}
 		} else {
-			if (Security.getConnected().isAdmin) {
-
+			if (user.isAdmin) {
 				projectObject.approvalStatus = true;
 			}
 			projectObject.user = user;
@@ -90,7 +89,7 @@ public class Projects extends SmartCRUD {
 			Logs.addLog(Security.getConnected(), "Create", "Project", projectObject.id, projectObject, new Date(System.currentTimeMillis()));
 			if (Security.getConnected().isAdmin) {
 
-				flash.success("' " + projectObject.name + " '" + " Project Has Been Successfully Created.");
+				flash.success(projectObject.name + " has been successfully created.");
 				Application.overlayKiller("", "");
 			} else {
 				flash.success("Your Project Request Has Been Sent.You Will Be Notified Upon Approval");
