@@ -3,6 +3,8 @@ package controllers;
 import java.util.LinkedList;
 import java.util.List;
 
+import notifiers.Notifications;
+
 import models.Project;
 import models.Request;
 import models.Role;
@@ -58,6 +60,8 @@ public class ProjectTasks extends SmartController {
 		{
 			user.removeRole(role, user);
 			msg="You have revoked a role successfuly.1";
+			String url = "@{Application.externalOpen("+role.project+", '#', false)}";
+			Notifications.notifyUser(user, "Delet", url, "you from project", role.project.name, (byte)-1, null);
 			renderText(msg);
 		}
 		
@@ -67,6 +71,8 @@ public class ProjectTasks extends SmartController {
 			{
 				user.removeRole(role, user);
 				msg="You have revoked a role successfuly, The user is no longer a member in this project.1";
+				String url = "@{Application.externalOpen("+role.project+", '/users/listUserProjects?userId="+user.id+"&boxId=2&projectId="+role.project.id+"&currentProjectId="+role.project+"', false)}";
+				Notifications.notifyUser(user, "Revok", url, "your role", role.name, (byte)-1, role.project);
 				renderText(msg);
 			}
 			else if((user.id == connectedUser.id))
