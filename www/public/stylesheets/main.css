@@ -267,13 +267,9 @@ a,a img,span.revertFrom,span.min {
 .notch2:hover {
 	margin-right: 0px;
 }
-body,html
-{
-x-overflow:hidden !important;
-}
 
 .sideHolder {
-	position: absolute;
+	position: fixed;
 	right: 0px;
 	top: 0px;
 	height:100%;
