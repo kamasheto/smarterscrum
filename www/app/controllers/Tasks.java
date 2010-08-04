@@ -1924,9 +1924,9 @@ public class Tasks extends SmartCRUD
 		{
 			Component component = Component.findById( componentId );
 			title = "C" + component.number + ": Tasks";
-			List<Task> task = new ArrayList<Task>();
-			task = Task.find( "byComponentAndDeleted", component, false ).fetch();
-			render( task, title, mine, projectId );
+			List<Task> tasks = new ArrayList<Task>();
+			tasks = Task.find( "byComponentAndDeleted", component, false ).fetch();
+			render( tasks, title, mine, projectId );
 		}
 		else
 		{
