@@ -21,10 +21,6 @@ for(i=1;i<meetings.length-1;i++){
 	
 	<h2 id="crudShowTitle">&{'crud.show.title', type.modelName}</h2>
 	
-	<h3><a href="/boards/loadboard?sprintID=${object.id}">View Board</a></h3>
-	<h3><a href="/boards/loadComponentBoard?sprintID=${object.id}&componentID=1">View Component Board</a></h3>
-	
-	
 	<div class="objectForm">
 	#{form action:@projectsave(object.id), enctype:'multipart/form-data'}
 		#{crud.form }
