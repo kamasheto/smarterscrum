@@ -4,8 +4,6 @@ var page=1;
 $(function(){
 	doOnLoad()
 	magic("#{get 'id' /}");
-	smart_pagination("#{get 'id' /}",1,true);
-	hideFilterLinks();
 });
 </script>
 <div  id="#{get 'id' /}" class="draggable allCornersRounded">
@@ -32,10 +30,10 @@ $(function(){
 		<tr>
 		<td><input style="width:100%" name="filter_textBox_#{get 'id' /}" type="text" onkeyup="filter_me('#{get 'id'/}');"></td>
 		<td style="width:50px">
-		<a href="#"  style="display:inline-block" name="normal_links" onclick="page--;previousPage('#{get 'id' /}',page);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
-		<a href="#"  style="display:inline-block" name="normal_links" onclick="page++;nextPage('#{get 'id' /}',page);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
-		<a href="#"  style="display:inline-block" name="filter_links" href="#" onclick="filter_page--;previousFilterPage('#{get 'id' /}');"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
-		<a href="#"  style="display:inline-block" name="filter_links" href="#" onclick="filter_page++;nextFilterPage('#{get 'id' /}');"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
+		<a href="#"  style="display:inline-block" name="normal_links_#{get 'id' /}" onclick="page--;previousPage('#{get 'id' /}',page);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
+		<a href="#"  style="display:inline-block" name="normal_links_#{get 'id' /}" onclick="page++;nextPage('#{get 'id' /}',page);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
+		<a href="#"  style="display:inline-block" name="filter_links_#{get 'id' /}" href="#" onclick="filter_page--;previousFilterPage('#{get 'id' /}');"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
+		<a href="#"  style="display:inline-block" name="filter_links_#{get 'id' /}" href="#" onclick="filter_page++;nextFilterPage('#{get 'id' /}');"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
 		</td>
 		</tr>
 		</tbody>
