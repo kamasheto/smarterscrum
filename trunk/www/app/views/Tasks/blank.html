@@ -163,6 +163,19 @@
 	</div>
 	</div>
 	
+	
+	#{if project!=null}
+	<input type="hidden" id="object_project" name="object.project@id" value="${component.project.id}" >
+	#{/if}
+	#{if component!=null}
+	<input type="hidden" id="object_project" name="object.project@id" value="${component.project.id}" >
+	<input type="hidden" id="object_project" name="object.component@id" value="${component.id}" >
+	#{/if}
+	#{elseif task!=null}
+	<input type="hidden" id="object_project" name="object.project@id" value="${task.project.id}" >
+	<input type="hidden" id="object_project" name="object.component@id" value="${task.component.id}" >
+	<input type="hidden" id="object_project" name="object.parent@id" value="${task.id}" >
+	#{/elseif}
 		
 		<a href="#" onclick = "toggleOptions()" name="view-more-link">View more options</a>
 		<p class="crudButtons">
