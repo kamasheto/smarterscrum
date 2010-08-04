@@ -194,7 +194,7 @@ public class Meetings extends SmartCRUD
 		 * adding the selected sprint to the meeting
 		 * @author minazaki
 		 */
-		if( !params.get( "object.sprintid" ).equals( "" ) )
+		if( params.get( "object.sprintid" ) != null && !params.get( "object.sprintid" ).equals( "" ) )
 		{
 			Sprint sprint = Sprint.findById( Long.parseLong( params.get( "object.sprintid" ) ) );
 			sprint.meetings.add( temp );
@@ -311,7 +311,7 @@ public class Meetings extends SmartCRUD
 		 * adding the selected sprint to the meeting
 		 * @author minazaki
 		 */
-		if( !params.get( "object.sprintid" ).equals( "" ) )
+		if( params.get( "object.sprintid" ) != null && !params.get( "object.sprintid" ).equals( "" ) )
 		{
 			Sprint sprint = Sprint.findById( Long.parseLong( params.get( "object.sprintid" ) ) );
 			sprint.meetings.add( temp );
@@ -820,7 +820,14 @@ public class Meetings extends SmartCRUD
 		Meeting myMeeting = Meeting.findById( id );
 		boolean noteFlag = false;
 		long longCurrentDate = new Date().getTime();
-		List notes = myMeeting.artifacts;
+		List notes = new ArrayList<Artifact>();
+		for( Artifact a : myMeeting.artifacts )
+		{
+			if( !a.deleted )
+			{
+				notes.add( a );
+			}
+		}
 
 		User theUser = Security.getConnected();
 		if( (theUser.meetingStatus( id ).equals( "confirmed" )) && (myMeeting.endTime > longCurrentDate) )
