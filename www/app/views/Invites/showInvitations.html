@@ -1,0 +1,49 @@
+#{extends 'sidebar.html' /}
+
+<h3>Project Invitations</h3>
+#{if invitations.isEmpty}
+there are no new project invitations
+#{/if}
+#{else}
+#{list items:invitations, as:'inv'}
+	<li id = "#inv_${inv.id}">
+		You have been invited to be ${inv.role} in project <a href = "@{Application.externalOpen(inv.role.project.id, '#', false)}">${inv.role.project.name}</a>
+		<br><a onclick="inv_respond('${inv.id}', '${inv.hash}', 1);">Accept</a> &nbsp; 
+		<a onclick="inv_respond('${inv.hash}', 0);">Decline</a>
+	</li>
+#{/list}
+#{/else}
+<h3>Meeting Invitations</h3>
+#{if meetings.isEmpty}
+there are no new project invitations
+#{/if}
+#{else}
+#{list items:meetings, as:'meet'}
+	<li id = "#meet_${meet.id}">
+		You have been invited to attend meeting: <a href = "@{Application.externalOpen(meet.meeting.project.id, '/Meetings/viewMeeting?id=meet.meeting.id', false)}">${meet.meeting.name}</a> in project <a href = "@{Application.externalOpen(meet.meeting.project.id, '#', false)}">${meet.meeting.project.name}</a>
+		<br><a onclick="confirm_me('${meet.meeting.id}');">Accept</a> &nbsp; 
+		<a onclick="decline_me('${meet.meeting.id}');">Decline</a>
+	</li>
+#{/list}
+#{/else}
+<script type = text/javascript>
+	function inv_respond(long id, string hash, int res)
+	{
+		if(res == 1)
+			$.post('@{respondInvite()}',
+					{what:true, hash:hash, id:id},
+					function()
+					{
+						document.getElementById("#inv_"+id).setText("Invitation Accepted");
+					}					
+					);
+		else
+			$.post('@{respondInvite()}',
+					{what:false, hash:hash, id:id},
+					function()
+					{
+						document.getElementById("#inv_"+id).setText("Invitation Denied");
+					}					
+					);		
+	}	
+</script>

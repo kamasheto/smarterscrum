@@ -1,7 +1,10 @@
 package controllers;
 
+import java.util.List;
+
 import notifiers.Notifications;
 import models.Invite;
+import models.MeetingAttendance;
 import models.Role;
 import models.User;
 import play.mvc.Router;
@@ -58,5 +61,19 @@ public class Invites extends SmartController {
 		invite.delete();
 		flash.success("Invitation successfully accepted and role " + invite.role.name + " added");
 		Application.index();
+	}
+	
+	public static void showInvitations()
+	{
+		User usr = Security.getConnected();
+		List<Invite> invitations = Invite.find("byUser", usr).fetch();
+		List<MeetingAttendance> meetings = MeetingAttendance.find("byUserAndDeletedAndStatus", usr, false, "waiting").fetch();
+		render(invitations, meetings);
+	}
+	
+	public static void inviteAccept(long id, String hash)
+	{
+		Invite invite = Invite.find("byHashAndId", hash, id).first();
+		
 	}
 }
