@@ -222,7 +222,8 @@ public class Sprints extends SmartCRUD
 			{
 				// why create it again? o.O
 				// commented by sakr
-				// object = new Sprint(startDate, endDate, proj);
+				// now i know why .. because this constructor assigns the sprint a static number based on the project current sprint count
+				object = new Sprint(startDate, endDate, proj);
 				object.save();
 			}
 		}
