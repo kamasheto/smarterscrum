@@ -1902,6 +1902,8 @@ public class Tasks extends SmartCRUD
 		Task task = Task.findById(taskId);
 		User user = User.findById(assigneeId);
 		User connected = Security.getConnected();
+		if(task.reviewer==user)
+			renderText("You can't be the assignee & reviewer of the same task");	
 		Security.check(connected.in(task.project).can("modifyTask") && user.projects.contains(task.project) && task.reviewer!=user && (task.component==null || user.components.contains(task.component)));
 		task.assignee = user;
 		task.save();
@@ -1912,6 +1914,8 @@ public class Tasks extends SmartCRUD
 		Task task = Task.findById(taskId);
 		User user = User.findById(reviewerId);
 		User connected = Security.getConnected();
+		if(task.assignee==user)
+			renderText("You can't be the reviewer & assignee of the same task");	
 		Security.check(connected.in(task.project).can("modifyTask") && user.projects.contains(task.project) && task.assignee!=user && (task.component==null || user.components.contains(task.component)));
 		task.reviewer = user;
 		task.save();
