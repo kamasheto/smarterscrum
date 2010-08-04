@@ -132,7 +132,7 @@
 			<input type="text" value="" id="project_search_text" onkeyup="search_projects()"/>
 			<h3>Your Projects</h3>
 			<div id="projects_my_current_projects">#{list items:connected?.projects, as:'project'}
-				<div><a onclick="showProjectWorkspace(${project.id})">${project.name}</a></div>
+				<div id="project-search-result-${project.id}"><a onclick="showProjectWorkspace(${project.id})">${project.name}</a></div>
 			#{/list}</div>
 			<h3 id="search_results_h3">Search results</h3>
 			<div id="projects_search_results"></div>
