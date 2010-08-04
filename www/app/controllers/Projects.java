@@ -128,7 +128,16 @@ public class Projects extends SmartCRUD {
 	 * @throws UnsupportedEncodingException
 	 */
 	public static void checkAvailability(String name) throws UnsupportedEncodingException {
-		boolean flag = !Project.isUnique(java.net.URLEncoder.encode(name, "UTF-8"));
+		List <Project> p = Project.findAll();
+		boolean flag = false;
+		for(int i=0;i<p.size();i++)
+		{
+			if(p.get(i).name.equalsIgnoreCase(name))
+			{	
+				flag=true;
+				break;
+			}
+		}
 		renderJSON(flag);
 	}
 

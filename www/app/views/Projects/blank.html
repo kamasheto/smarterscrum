@@ -15,7 +15,7 @@ function checkAvailability(){
 var n = document.getElementById('object_name').value;
 $.post('@{checkAvailability()}',{name:n},function (flag) {
 if(n){
-if(flag){
+if(!flag){
 document.getElementById("isAvailable").innerHTML = "("+n+") is Available.";
 document.getElementById("isAvailable").setAttribute("style","color:green");
 }
