@@ -241,9 +241,9 @@ public class Application extends SmartController
 	 * 
 	 * @author Hadeer younis
 	 */
-	public static void overlayKiller(String js)
+	public static void overlayKiller(String js, String nativeJS)
 	{
-		render(js);
+		render(js, nativeJS);
 	}
 
 	/**

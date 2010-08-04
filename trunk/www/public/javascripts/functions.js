@@ -258,7 +258,7 @@ $(function() {
 		$(this).data('init', true)
 		$(this).draggable({
 			helper: 'clone',
-			stack: '.draggable, .dragger',
+			zIndex: 2700,
 			start: function(event, ui) {
 				DRAGGING_ELEMENT = $(this).closest('.draggableChild').attr('id')
 				$('.dropper').each(function() {
@@ -275,7 +275,6 @@ $(function() {
 								url: '/loading/dynamicdrop',
 								data: {from: $(ui2.draggable).attr('name'), to: $(this).attr('name')},
 								success: function(response) {
-									$(that).attr('src', '/public/images/famfam/arrow_in.png')
 									arr = response.split('|')
 									if (arr.length > 0 && arr[0]) {
 										$.bar({message: arr[0]})
@@ -288,6 +287,9 @@ $(function() {
 									$.bar({
 										message: 'An error occurred. You may not have permission to perform that action.'
 									})
+								},
+								complete: function(response) {
+									$(that).attr('src', '/public/images/famfam/arrow_in.png')
 								}
 							})
 						}
