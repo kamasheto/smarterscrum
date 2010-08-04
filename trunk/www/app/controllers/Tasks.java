@@ -1897,4 +1897,24 @@ public class Tasks extends SmartCRUD
 
 		renderText( "Associated successfully|reload('component-" + componentId + "', 'task-" + taskId + "')" );
 	}
+	public static void assignTaskAssignee (long taskId, long assigneeId)
+	{
+		Task task = Task.findById(taskId);
+		User user = User.findById(assigneeId);
+		User connected = Security.getConnected();
+		Security.check(connected.in(task.project).can("modifyTask") && user.projects.contains(task.project) && task.reviewer!=user && (task.component==null || user.components.contains(task.component)));
+		task.assignee = user;
+		task.save();
+		renderText("Assignee added successfully|reload('task-"+taskId+"')");
+	}
+	public static void assignTaskReviewer (long taskId, long reviewerId)
+	{
+		Task task = Task.findById(taskId);
+		User user = User.findById(reviewerId);
+		User connected = Security.getConnected();
+		Security.check(connected.in(task.project).can("modifyTask") && user.projects.contains(task.project) && task.assignee!=user && (task.component==null || user.components.contains(task.component)));
+		task.reviewer = user;
+		task.save();
+		renderText("Reviewer assigned successfully|reload('task-"+taskId+"')");
+	}
 }
