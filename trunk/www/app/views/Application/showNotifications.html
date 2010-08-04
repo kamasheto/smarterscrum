@@ -7,9 +7,9 @@ Sorry, You have no Notifications yet !
 <b><font size = 3>Latest: </font></b>
 #{list items:notifications, as:'notif'}	
 	<div id = "#notif_${notif.id}">		
-		<p>#{if notif.importance = 0}<img alt="!" src="/public/images/famfam/error.png">
-			#{/if} #{elseif notif.importance = -1}<img alt="bad" src="/public/images/famfam/cross.png">
-			#{/elseif} #{elseif notif.importance = 1}<img alt="good" src="/public/images/famfam/tick.png">
+		<p>#{if notif.importance == 0}<img alt="!" src="/public/images/famfam/error.png">
+			#{/if} #{elseif notif.importance == -1}<img alt="bad" src="/public/images/famfam/cross.png">
+			#{/elseif} #{elseif notif.importance == 1}<img alt="good" src="/public/images/famfam/tick.png">
 			#{/elseif}
 		<a href = "/show/user?id=${notif.actionPerformer.id}">${notif.actionPerformer.name}</a> has ${notif.actionType}ed ${notif.resourceType}: <a href = ${notif.resourceURL}>${notif.resourceName}</a> 
 #{if notif.project != null}
