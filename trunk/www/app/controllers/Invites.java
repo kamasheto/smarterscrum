@@ -59,8 +59,8 @@ public class Invites extends SmartController {
 		}
 		Logs.addLog(invite.role.project, "accepted invite to " + invite.role.name, "Invite", invite.id);
 		invite.delete();
-		flash.success("Invitation successfully accepted and role " + invite.role.name + " added");
-		Application.index();
+		//flash.success("Invitation successfully accepted and role " + invite.role.name + " added");
+		//Application.index();
 	}
 	
 	public static void showInvitations()
@@ -71,9 +71,4 @@ public class Invites extends SmartController {
 		render(invitations, meetings);
 	}
 	
-	public static void inviteAccept(long id, String hash)
-	{
-		Invite invite = Invite.find("byHashAndId", hash, id).first();
-		
-	}
 }
