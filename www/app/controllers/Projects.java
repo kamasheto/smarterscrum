@@ -73,8 +73,6 @@ public class Projects extends SmartCRUD {
 			String nativeJS = "";
 			if (user.isAdmin) {
 				projectObject.approvalStatus = true;
-				// add it to the top bar immediately
-				nativeJS = "addProjectToSearchBar('"+projectObject.name+"', "+projectObject.id+")";
 			}
 			projectObject.user = user;
 			if (params.get("object_isPrivate") != null) {
@@ -84,6 +82,10 @@ public class Projects extends SmartCRUD {
 				projectObject.isScrum = true;
 			}
 			object.save();
+			if (user.isAdmin) {
+				// add it to the top bar immediately
+				nativeJS = "addProjectToSearchBar('"+projectObject.name+"', "+projectObject.id+")";
+			}
 			Project pro = (Project) object;
 			pro.init(projectObject.isScrum);
 			Role proAdmin = Role.find("name= 'Project Creator' and project =" + pro.id).first();
