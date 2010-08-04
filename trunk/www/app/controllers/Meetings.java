@@ -390,18 +390,20 @@ public class Meetings extends SmartCRUD
 	 * @param tas
 	 *            - the task id this method to add the task to the meeting
 	 */
-	public static void addTask(long id, long task) {
-		Task temp = Task.findById(task);
-		Meeting meeting = Meeting.findById(id);
-		Security.check(Security.getConnected().in(meeting.project).can("associateTaskToMeeting") && meeting.project == temp.project);
-		if (meeting.tasks.contains(temp)) {
-			renderText("Task already assigned to this meeting");
+	public static void addTask( long id, long task )
+	{
+		Task temp = Task.findById( task );
+		Meeting meeting = Meeting.findById( id );
+		Security.check( Security.getConnected().in( meeting.project ).can( "associateTaskToMeeting" ) && meeting.project == temp.project );
+		if( meeting.tasks.contains( temp ) )
+		{
+			renderText( "Task already assigned to this meeting" );
 		}
-		meeting.tasks.add(temp);
-		temp.meeting.add(meeting);
+		meeting.tasks.add( temp );
+		temp.meeting.add( meeting );
 		meeting.save();
 		temp.save();
-		renderText("Task assigned to meeting successfully|reload('meeting-" + id + "', 'task-" + task + "')");
+		renderText( "Task assigned to meeting successfully|reload('meeting-" + id + "', 'task-" + task + "')" );
 	}
 
 	/**
@@ -577,7 +579,14 @@ public class Meetings extends SmartCRUD
 				String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
 				// Notifications.notifyUsers( userList, header, body, (byte) 0
 				// );
-				renderText( "User invited to meeting successfully.|reload('meetingAttendees-" + currentMeeting.id + "')" );
+				if( !invitedUser.equals( Security.getConnected() ) )
+				{
+					renderText( "User invited to meeting successfully.|reload('meetingAttendees-" + currentMeeting.id + "')" );
+				}
+				else
+				{
+					renderText( "User invited to meeting successfully.|reload('meetingAttendees-" + currentMeeting.id + "','meetings')" );
+				}
 			}
 			else
 			{
