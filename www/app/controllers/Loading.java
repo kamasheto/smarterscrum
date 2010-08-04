@@ -34,6 +34,14 @@ public class Loading extends SmartController {
 		} else if (from.equals("component") && to.equals("meeting")) {
 			// inviting component to a meeting (Amr Hany)
 			Meetings.inviteComponent(id2, id);
+		}else if( from.equals("task") && to.equals( "user" ) )
+		{
+			Tasks.assignTaskAssignee(id,id2);
 		}
+		else if  (from.equals("user") && to.equals( "task" ) )
+		{
+			Tasks.assignTaskReviewer(id2, id);
+		}
+		
 	}
 }
