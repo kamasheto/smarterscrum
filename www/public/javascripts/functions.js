@@ -332,7 +332,9 @@ $(function() {
 	$(".draggableChild").live(
 			'mouseover',
 			function() {
-				$(this).children().children('.dragger').show()
+				if (!DRAGGING_ELEMENT) {
+					$(this).children().children('.dragger').show()					
+				}
 				$(this).draggable(
 						{
 							handle : '.ui-widget-header',
