@@ -93,7 +93,12 @@
 
            
        }
-         
+       function normalShow(url)
+       {
+    	   $('#normal').load(url);
+    	   $('#normal').show();
+    	   $('#workspaces').hide();
+       }
                    		
         </script>
 </head>
@@ -114,11 +119,11 @@
 </div>
 </div>
 <div class="topBar">
-	<a class="aDIV topCornersRounded" href="/" onclick="" style="color: #E5A1A5; float:left;" title="Go home">Home</a>
+	<a class="aDIV topCornersRounded" href="#" onclick="normalShow('/ #elContent')" style="color: #E5A1A5; float:left;" title="Go home">Home</a>
 #{if connected?.isAdmin}
-	<a class="aDIV topCornersRounded" href="/admin" style="color: #E5A1A5; float:left;" title="View the admin panel">Admin Panel</a>
+	<a class="aDIV topCornersRounded" href="#" onclick="normalShow('/admin')"style="color: #E5A1A5; float:left;" title="View the admin panel">Admin Panel</a>
 #{/if}
-	<a class="aDIV topCornersRounded" href="@{About.index}" title="read aboout SmartSoft?">About Us</a>  
+	<a class="aDIV topCornersRounded" href="#"  onclick="normalShow('@{About.index}')" title="read aboout SmartSoft?">About Us</a>  
 	#{if connected}
 		<span id="project-tabs">
 			<a class="aDIV topCornersRounded right" href="#" onclick="$('#top_header_projects_pane').slideToggle()" style="width: 120px !important" title="">Projects</a>
