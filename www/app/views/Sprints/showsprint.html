@@ -1,5 +1,5 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}Sprint ${sprint.id}#{drop 'sprint-' + sprint.id /}
+#{set 'title'}Sprint ${sprint.sprintNumber}#{drop 'sprint-' + sprint.id /}
 #{if connected.in(sprint.project).can("editSprint")}
 #{if sprint.ended}
 <img class="dim"src="/pubilc/images/famfam/pencil.png" />
