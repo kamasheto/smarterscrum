@@ -29,6 +29,11 @@ public class ProductBacklogs extends SmartController
 		if( temp.deleted )
 			notFound();
 		String pName = temp.name;
+		if( temp.projectTasks.size() == 0 )
+		{
+			String Data = null;
+			render( Data);
+		}
 		Component myComponent = Component.findById( componentId );
 		if( componentId != 0 )
 		{
