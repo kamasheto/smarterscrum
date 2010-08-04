@@ -288,7 +288,7 @@ public class Bootstrap extends Job
 			Task T2 = new Task();
 			T2.description = "Documentation";
 			T2.parent = S1;
-			T2.taskStatus = S1.project.taskStatuses.get( 0 );
+			T2.taskStatus = S1.project.taskStatuses.get( 1 );
 			T2.taskType = S1.project.taskTypes.get( 1 );
 
 			T2.reporter = users.get( 0 );
@@ -305,7 +305,7 @@ public class Bootstrap extends Job
 			Task T3 = new Task();
 			T3.description = "Coding";
 			T3.parent = S4;
-			T3.taskStatus = S4.project.taskStatuses.get( 0 );
+			T3.taskStatus = S4.project.taskStatuses.get( 2 );
 			T3.taskType = S4.project.taskTypes.get( 2 );
 
 			T3.reporter = users.get( 4 );
@@ -322,7 +322,7 @@ public class Bootstrap extends Job
 			Task T4 = new Task();
 			T4.description = "Scenario testing";
 			T4.parent = S4;
-			T4.taskStatus = S4.project.taskStatuses.get( 0 );
+			T4.taskStatus = S4.project.taskStatuses.get( 3 );
 			T4.taskType = S4.project.taskTypes.get( 3 );
 
 			T4.reporter = users.get( 4 );
@@ -339,7 +339,7 @@ public class Bootstrap extends Job
 			Task T5 = new Task();
 			T5.description = "Coding";
 			T5.parent = S6;
-			T5.taskStatus = S6.project.taskStatuses.get( 0 );
+			T5.taskStatus = S6.project.taskStatuses.get( 4 );
 			T5.taskType = S6.project.taskTypes.get( 4 );
 
 			T5.reporter = users.get( 11 );
@@ -373,7 +373,7 @@ public class Bootstrap extends Job
 			Task T7 = new Task();
 			T7.description = "Reviewing";
 			T7.parent = S6;
-			T7.taskStatus = S6.project.taskStatuses.get( 0 );
+			T7.taskStatus = S6.project.taskStatuses.get( 1 );
 			T7.taskType = S6.project.taskTypes.get( 1 );
 
 			T7.reporter = users.get( 11 );
@@ -390,7 +390,7 @@ public class Bootstrap extends Job
 			Task T8 = new Task();
 			T8.description = "Reviewing";
 			T8.parent = S6;
-			T8.taskStatus = S6.project.taskStatuses.get( 0 );
+			T8.taskStatus = S6.project.taskStatuses.get( 2 );
 			T8.taskType = S6.project.taskTypes.get( 2 );
 
 			T8.reporter = users.get( 11 );
@@ -407,7 +407,7 @@ public class Bootstrap extends Job
 			Task T9 = new Task();
 			T9.description = "Reviewing";
 			T9.parent = S4;
-			T9.taskStatus = S4.project.taskStatuses.get( 0 );
+			T9.taskStatus = S4.project.taskStatuses.get( 3 );
 			T9.taskType = S4.project.taskTypes.get( 3 );
 
 			T9.reporter = users.get( 4 );
@@ -424,7 +424,7 @@ public class Bootstrap extends Job
 			Task T10 = new Task();
 			T10.description = "Reviewing";
 			T10.parent = S1;
-			T10.taskStatus = S1.project.taskStatuses.get( 0 );
+			T10.taskStatus = S1.project.taskStatuses.get( 4 );
 			T10.taskType = S1.project.taskTypes.get( 4 );
 			T10.reporter = users.get( 0 );
 			T10.assignee = users.get( 1 );
@@ -456,7 +456,7 @@ public class Bootstrap extends Job
 			Task T12 = new Task();
 			T12.description = "Reviewing5";
 			T12.parent = S8;
-			T12.taskStatus = S8.project.taskStatuses.get( 0 );
+			T12.taskStatus = S8.project.taskStatuses.get( 1 );
 			T12.taskType = S8.project.taskTypes.get( 1 );
 			T12.reporter = users.get( 0 );
 			T12.assignee = users.get( 1 );
@@ -472,7 +472,7 @@ public class Bootstrap extends Job
 			Task T13 = new Task();
 			T13.description = "Coding";
 			T13.parent = S9;
-			T13.taskStatus = S9.project.taskStatuses.get( 0 );
+			T13.taskStatus = S9.project.taskStatuses.get( 2 );
 			T13.taskType = S9.project.taskTypes.get( 2 );
 			T13.reporter = users.get( 0 );
 			T13.assignee = users.get( 1 );
@@ -488,7 +488,7 @@ public class Bootstrap extends Job
 			Task T14 = new Task();
 			T14.description = "Documentation3";
 			T14.parent = S9;
-			T14.taskStatus = S9.project.taskStatuses.get( 0 );
+			T14.taskStatus = S9.project.taskStatuses.get( 3 );
 			T14.taskType = S9.project.taskTypes.get( 3 );
 			T14.reporter = users.get( 0 );
 			T14.assignee = users.get( 1 );
@@ -504,7 +504,7 @@ public class Bootstrap extends Job
 			Task T15 = new Task();
 			T15.description = "Reviewing2";
 			T15.parent = S9;
-			T15.taskStatus = S9.project.taskStatuses.get( 0 );
+			T15.taskStatus = S9.project.taskStatuses.get( 4 );
 			T15.taskType = S9.project.taskTypes.get( 4 );
 			T15.reporter = users.get( 0 );
 			T15.assignee = users.get( 1 );
@@ -552,7 +552,7 @@ public class Bootstrap extends Job
 			Task T18 = new Task();
 			T18.description = "Coding ";
 			T18.parent = S9;
-			T18.taskStatus = S9.project.taskStatuses.get( 0 );
+			T18.taskStatus = S9.project.taskStatuses.get( 1 );
 			T18.taskType = S9.project.taskTypes.get( 2 );
 			T18.reporter = users.get( 0 );
 			T18.assignee = users.get( 1 );
@@ -568,7 +568,7 @@ public class Bootstrap extends Job
 			Task T19 = new Task();
 			T19.description = "Senario review";
 			T19.parent = S9;
-			T19.taskStatus = S9.project.taskStatuses.get( 0 );
+			T19.taskStatus = S9.project.taskStatuses.get( 2 );
 			T19.taskType = S9.project.taskTypes.get( 0 );
 			T19.reporter = users.get( 0 );
 			T19.assignee = users.get( 1 );
@@ -584,7 +584,7 @@ public class Bootstrap extends Job
 			Task T20 = new Task();
 			T20.description = "Documentation";
 			T20.parent = S9;
-			T20.taskStatus = S9.project.taskStatuses.get( 0 );
+			T20.taskStatus = S9.project.taskStatuses.get( 3 );
 			T20.taskType = S9.project.taskTypes.get( 0 );
 			T20.reporter = users.get( 0 );
 			T20.assignee = users.get( 1 );
@@ -600,7 +600,7 @@ public class Bootstrap extends Job
 			Task T21 = new Task();
 			T21.description = "Coding4";
 			T21.parent = S1;
-			T21.taskStatus = S1.project.taskStatuses.get( 0 );
+			T21.taskStatus = S1.project.taskStatuses.get( 4 );
 			T21.taskType = S1.project.taskTypes.get( 0 );
 			T21.reporter = users.get( 0 );
 			T21.assignee = users.get( 1 );
@@ -632,7 +632,7 @@ public class Bootstrap extends Job
 			Task T23 = new Task();
 			T23.description = "Coding6";
 			T23.parent = S1;
-			T23.taskStatus = S1.project.taskStatuses.get( 0 );
+			T23.taskStatus = S1.project.taskStatuses.get( 1 );
 			T23.taskType = S1.project.taskTypes.get( 0 );
 			T23.reporter = users.get( 0 );
 			T23.assignee = users.get( 1 );
@@ -648,7 +648,7 @@ public class Bootstrap extends Job
 			Task T24 = new Task();
 			T24.description = "Coding5";
 			T24.parent = S1;
-			T24.taskStatus = S1.project.taskStatuses.get( 0 );
+			T24.taskStatus = S1.project.taskStatuses.get( 2 );
 			T24.taskType = S1.project.taskTypes.get( 0 );
 			T24.reporter = users.get( 0 );
 			T24.assignee = users.get( 1 );
@@ -664,7 +664,7 @@ public class Bootstrap extends Job
 			Task T25 = new Task();
 			T25.description = "Coding";
 			T25.parent = S1;
-			T25.taskStatus = S1.project.taskStatuses.get( 0 );
+			T25.taskStatus = S1.project.taskStatuses.get( 3 );
 			T25.taskType = S1.project.taskTypes.get( 0 );
 			T25.reporter = users.get( 0 );
 			T25.assignee = users.get( 1 );
@@ -680,7 +680,7 @@ public class Bootstrap extends Job
 			Task T26 = new Task();
 			T26.description = "Reviewing7";
 			T26.parent = S8;
-			T26.taskStatus = S8.project.taskStatuses.get( 0 );
+			T26.taskStatus = S8.project.taskStatuses.get( 4 );
 			T26.taskType = S8.project.taskTypes.get( 0 );
 			T26.reporter = users.get( 0 );
 			T26.assignee = users.get( 1 );
@@ -712,7 +712,7 @@ public class Bootstrap extends Job
 			Task T28 = new Task();
 			T28.description = "Reviewing9";
 			T28.parent = S8;
-			T28.taskStatus = S8.project.taskStatuses.get( 0 );
+			T28.taskStatus = S8.project.taskStatuses.get( 1 );
 			T28.taskType = S8.project.taskTypes.get( 0 );
 			T28.reporter = users.get( 0 );
 			T28.assignee = users.get( 1 );
@@ -728,7 +728,7 @@ public class Bootstrap extends Job
 			Task T29 = new Task();
 			T29.description = "senario reviewer";
 			T29.parent = S8;
-			T29.taskStatus = S8.project.taskStatuses.get( 0 );
+			T29.taskStatus = S8.project.taskStatuses.get( 2 );
 			T29.taskType = S8.project.taskTypes.get( 0 );
 			T29.reporter = users.get( 0 );
 			T29.assignee = users.get( 1 );
@@ -744,7 +744,7 @@ public class Bootstrap extends Job
 			Task T30 = new Task();
 			T30.description = "Reviewing5";
 			T30.parent = S8;
-			T30.taskStatus = S8.project.taskStatuses.get( 0 );
+			T30.taskStatus = S8.project.taskStatuses.get( 3 );
 			T30.taskType = S8.project.taskTypes.get( 0 );
 			T30.reporter = users.get( 0 );
 			T30.assignee = users.get( 1 );
@@ -760,7 +760,7 @@ public class Bootstrap extends Job
 			Task T31 = new Task();
 			T31.description = "Coding";
 			T31.parent = S4;
-			T31.taskStatus = S4.project.taskStatuses.get( 0 );
+			T31.taskStatus = S4.project.taskStatuses.get( 4 );
 			T31.taskType = S4.project.taskTypes.get( 0 );
 
 			T31.reporter = users.get( 4 );
