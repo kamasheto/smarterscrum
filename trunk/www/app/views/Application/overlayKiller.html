@@ -2,10 +2,32 @@
 <head>
 <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
-window.location = "@{Application.loading()}";
-window.parent.$('#getOverlay').hide();
-#{if js}window.parent.${js}#{/if}
-${nativeJS}
+	$(document).ready(function(){
+#{ifErrors}
+		window.parent.$.bar({
+			message : '${errors}'
+		});
+#{/ifErrors}
+#{if flash.error}
+	window.parent.$.bar({
+		message : '&{flash.error}'
+	});
+#{/if}
+#{if error}
+	window.parent.$.bar({
+		message : '&{error}'
+	});
+#{/if}
+#{if flash.success}
+	window.parent.$.bar({
+		message : '&{flash.success}'
+	});
+#{/if}
+	window.location = "@{Application.loading()}";
+	window.parent.$('#getOverlay').hide();
+	#{if js}window.parent.${js}#{/if}
+	${nativeJS}
+})
 </script>
 </head>
 </html>
