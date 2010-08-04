@@ -1,10 +1,4 @@
-#{extends 'CRUD/layout.html' /}
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${object.project.id}">${object.project.name}</a></li>
-<li><a href="/sprints/showsprints?projectId=${projId}">${object.project.name} Sprints</a>
-<li><a href="sprints/projectshow?id=${object.id}&projId=${projId}">Sprint ${object.sprintNumber} Edit</a>
-#{/set}
+#{extends 'overlay.html' /}
 <script type="text/javascript" src="@{'public/javascripts/calendar_db.js'}"></script>
 <link rel="stylesheet" href="@{'public/stylesheets/calendar.css'}">
 <script type="text/javascript">

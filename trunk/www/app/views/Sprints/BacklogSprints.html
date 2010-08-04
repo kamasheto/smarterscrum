@@ -8,23 +8,38 @@
 	#{list items:sprints, as:'sprint'}
 		#{if (sprint.id==runningSprint) }
 			<div class="greenBg" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs
-			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
+			${sprint.id}#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
 <img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>
+#{if connected.in(sprint.project).can("editSprint")}
+
+<a href="#" onclick="overlayOpen('@{Sprints.projectshow(sprint.id)}')"><img src="/public/images/famfam/pencil.png" /></a>
+
+#{/if}
 			</div>
 		#{/if}
 		#{else}
 		#{if (sprint.ended) }
 			<div class="redBg" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs
 			
-			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
+		${sprint.id}<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
 <img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>
+#{if connected.in(sprint.project).can("editSprint")}
+
+<img class="dim"src="/pubilc/images/famfam/pencil.png" />
+
+#{/if}
 			</div>
 		#{/if}
 		#{else}
 		<div class="yellowBg" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs
 			
-			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
+		${sprint.id}#{drop 'sprint-' + sprint.id /}	<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
 <img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>
+#{if connected.in(sprint.project).can("editSprint")}
+
+<a href="#" onclick="overlayOpen('@{Sprints.projectshow(sprint.id)}')"><img src="/public/images/famfam/pencil.png" /></a>
+
+#{/if}
 			</div>#{/else}
 		#{/else}
 
