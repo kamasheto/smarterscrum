@@ -448,16 +448,26 @@ function load(url, el, n) {
 								$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
 							});
 		$('#' + el + '_content').load(url, function() {
-			$('#' + el + '_content').slideDown(400);
-											magic(el);
+			var t1 = $('#' + el + '_content').find('.actual').first();
+			$(t1).replaceWith($(t1).html());		
+			$('#'+ el + '_content').parent().append('<div class="filter"id="'+el+'_filter"></div>');
+			if(n==1)
+			$('#'+ el + '_filter').load(pUrl+' .filter', function(){
+				var t2 = $('#' + el + '_filter').find('.filter').first();
+				$(t2).replaceWith($(t2).html());
+				$('#'+ el + '_filter').find('input').first().attr('name','filter_textBox_'+el);
+				magic(el);
+				$('#' + el + '_content').slideDown(400);
+			});
+			if(n!=1)
+			{
+				magic(el);
+				$('#' + el + '_content').slideDown(400);
+			}
 		});
 	}
-	if(n==1)
-	{	myDivs.push(url);
-	var t ='<div id="p"></div>';
-	$(t).load(pUrl+' .filter', function(){
-	$('#' + el + '_content').parent().append($(t).html());});
-	}
+	if(n==1)	
+		myDivs.push(url);
 }
 
 // CURRENT_OFFSET = 10
@@ -484,6 +494,9 @@ function magic(id) {
 	doOnLoad();
 	smart_pagination(''+id,1);
 	hideFilterLinks(''+id);
+
+
+	
 	$("#" + id + "_content div[name]").each(
 	function() 
 	{
@@ -508,7 +521,7 @@ function magic(id) {
 						$(this).addClass('draggableChild');
 
 						$(this).attr('id', id2);
-				$(this).append('<div id="' + id2 + '_content" class="" ></div>');
+				$(this).append('<div id="' + id2 + '_content" class="ui-widget-content" ></div>');
 						}
 						else
 			{	var id2= $($(this).closest('.workspaceDraggables').find('div[name='+$(this).attr('name')+']')).first().attr('id')+'_2';

@@ -17,7 +17,9 @@ var filter_page = 1;
 var filter_smart_array = new Array();
 var globalSizeOfFilteredChildren;
 
-function filter_me(id){
+function filter_me(el){
+	//get id from parent container
+	var id = $(el).closest('.filter').attr('id').split("_")[0];
 	//get the text in the text box
 	var input = $("[name='filter_textBox_"+id+"']").val();
 	if(input.trim().length == 0){
