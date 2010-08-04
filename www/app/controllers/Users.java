@@ -107,7 +107,7 @@ public class Users extends SmartCRUD {
 		Logs.addLog(user, "assignUser", "User", UId, myComponent.project, d);
 		//Notifications.notifyUsers(myUser, "Assigned to a component", "You were assigned to the component " + myComponent.name + " in the project " + myComponent.project.name, (byte) 0);
 		myUser.save();
-		renderText("User assigned to component successfully|reload('component-" + id + "-users')");
+		renderText("User assigned to component successfully|reload('component-" + id + "')");
 	}
 
 	/**

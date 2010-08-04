@@ -326,10 +326,7 @@ $(function() {
 							handle : '.ui-widget-header',
 							cancel : 'img',
 							stop : function(event, ui) {
-								
-									if ($(this).hasClass('draggableChild'))
-										is = true;
-								
+								is = $(this).hasClass('draggableChild')							
 								if (is) {
 									var el = $(this);
 									var pos = el.position();

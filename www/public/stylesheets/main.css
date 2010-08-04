@@ -242,3 +242,7 @@ a,a img,span.revertFrom,span.min {
 .dragger {
 	display: none;
 }
+img.left {
+	float: left;
+	margin-right: 2px;
+}
