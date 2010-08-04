@@ -657,17 +657,16 @@ public class Tasks extends SmartCRUD
 		String message2 = "Are you Sure you want to delete the task ?!";
 		List<Requestreviewer> reviewers = Requestreviewer.find( "byComponentAndAccepted", tmp.component, true ).fetch();
 		boolean deletable = tmp.isDeletable();
-
 		object = object.edit( "object", params );
 		// Look if we need to deserialize
-		for( ObjectType.ObjectField field : type.getFields() )
-		{
-			if( field.type.equals( "serializedText" ) && params.get( "object." + field.name ) != null )
-			{
-				Field f = object.getClass().getDeclaredField( field.name );
-				f.set( object, CRUD.collectionDeserializer( params.get( "object." + field.name ), (Class) ((ParameterizedType) f.getGenericType()).getActualTypeArguments()[0] ) );
-			}
-		}
+//		for( ObjectType.ObjectField field : type.getFields() )
+//		{
+//			if( field.type.equals( "serializedText" ) && params.get( "object." + field.name ) != null )
+//			{
+//				Field f = object.getClass().getDeclaredField( field.name );
+//				f.set( object, CRUD.collectionDeserializer( params.get( "object." + field.name ), (Class) ((ParameterizedType) f.getGenericType()).getActualTypeArguments()[0] ) );
+//			}
+//		}
 
 		validation.valid( object );
 		if( validation.hasErrors() )
@@ -683,6 +682,10 @@ public class Tasks extends SmartCRUD
 			}
 		}
 		object.save();
+		if(tmp.comment.trim().length() != 0){
+			Comment comment = new Comment(Security.getConnected(), tmp.id, tmp.comment);
+			comment.save();
+		}
 		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
