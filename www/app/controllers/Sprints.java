@@ -340,7 +340,8 @@ public class Sprints extends SmartCRUD
 		{
 
 			Logs.addLog( Security.getConnected(), "Edit", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
-			redirect( "/show/project?id=" + projId );
+			// redirect( "/show/project?id=" + projId );
+			Application.overlayKiller("reload('sprints', 'sprint-"+object.id+"')", "");
 		}
 		redirect( request.controller + ".show", object.getEntityId() );
 		// }

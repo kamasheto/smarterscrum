@@ -595,15 +595,12 @@ public class Project extends SmartModel
 	public List<Meeting> meetingsAssoccToEndOfSprint( Sprint sprint )
 	{
 		ArrayList<Meeting> temp = new ArrayList<Meeting>();
-		for( int i = 0; i < meetings.size(); i++ )
-		{
-
-			if( meetings.get( i ).sprint != null && meetings.get( i ).sprint.equals( sprint ) )
-			{
-				int index = meetingsTypes.indexOf( meetings.get( i ).type );
-				if( meetingsTypesInSprint.get( index ) )
-				{
-					temp.add( meetings.get( i ) );
+		
+		for (Meeting meeting : meetings) {
+			if (meeting.sprint != null && meeting.sprint == sprint) {
+				int index = meetingsTypes.indexOf(meeting.type);
+				if (index >= 0 && meetingsTypesInSprint.get(index)) {
+					temp.add(meeting);
 				}
 			}
 		}
