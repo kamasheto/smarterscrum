@@ -154,7 +154,7 @@
 <div class="sideHolder">
 	<!-- Notifications Start -->
 	<div class="notch"style="top: 80px;">
-		<a href="#" title="View your notifications?"onclick="make('sideNoti',this)">
+		<a href="#" title="View your notifications?"onclick="make('sideNoti',this);$('#sideNoti').load('/Application/showNotifications')">
 		<img src="/public/images/myNotifications.png" alt="[Notifications]"/>
 		</a>
 	</div>
@@ -181,7 +181,7 @@
 <div class="sideHolder">
 	<!-- MyTasks Start -->
 	<div class="notch"style="top: 340px;">
-		<a href="#" onclick="make('sideIn',this);$('#sideIn').load('/Invites/showInvitations')">
+		<a href="#" title = "Check your ivitations" onclick="make('sideIn',this);$('#sideIn').load('/Invites/showInvitations')">
 		<img src="/public/images/myInvitations.png" alt="[Invitations]"/></a>
 	</div>
 	<div id="sideIn" class="siderC">

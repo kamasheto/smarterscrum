@@ -8,6 +8,7 @@ import play.mvc.With;
 
 @With (Secure.class)
 public class NotificationTasks extends SmartController {
+	
 	public static void getLatestNews() {
 		Security.check(Security.isConnected());
 		User myUser = Security.getConnected();
@@ -19,4 +20,5 @@ public class NotificationTasks extends SmartController {
 		}
 		renderJSON(news);
 	}
+	
 }
