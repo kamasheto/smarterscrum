@@ -1926,7 +1926,7 @@ public class Tasks extends SmartCRUD
 			title = "C" + component.number + ": Tasks";
 			List<Task> task = new ArrayList<Task>();
 			task = Task.find( "byComponentAndDeleted", component, false ).fetch();
-			render( task, title, mine );
+			render( task, title, mine, projectId );
 		}
 		else
 		{
@@ -1940,7 +1940,7 @@ public class Tasks extends SmartCRUD
 				else
 					title = "Task " + task.number;
 				List<Task> tasks = task.subTasks;
-				render( task, title, tasks );
+				render( task, title, tasks, projectId );
 			}
 			else
 			{
@@ -1958,7 +1958,7 @@ public class Tasks extends SmartCRUD
 						}
 					}
 
-					render( tasks, title, mine );
+					render( tasks, title, mine, projectId );
 				}
 				else
 				{
@@ -1968,7 +1968,7 @@ public class Tasks extends SmartCRUD
 						Project project = Project.findById( projectId );
 						List<Task> tasks = Task.find( "byProjectAndDeletedAndParentIsNull", project, false ).fetch();
 						// System.out.println( task );
-						render( tasks, title, mine );
+						render( tasks, title, mine, projectId );
 					}
 					else
 					{
@@ -1985,7 +1985,7 @@ public class Tasks extends SmartCRUD
 							}
 
 							title = "Meetings Tasks";
-							render( title, tasks );
+							render( title, tasks, projectId );
 						}
 					}
 				}
