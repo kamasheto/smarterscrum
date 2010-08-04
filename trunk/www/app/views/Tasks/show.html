@@ -86,7 +86,7 @@
 			<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers();">
 					<option value="">(None)</option>
 					#{list items:users ,as :'User'}
-					<option value="${User.id}"#{if object.assignee == User} selected#{/if}>${User.name}</option>
+					#{if object.assignee!=null}<option value="${User.id}"#{if object.assignee.id == User.id} selected#{/if}>${User.name}</option>#{/if}
 					#{/list}		
 					</select>
 			</p>
@@ -99,7 +99,7 @@
 				#{list items:users ,as :'User'}
 				#{if object.assignee !=null}
 				#{if User.name != object.assignee.name}
-				<option value="${User.id}"#{if object.reviewer == User} selected#{/if}>${User.name}</option>
+				#{if object.reviewer!=null}<option value="${User.id}"#{if object.reviewer.id == User.id} selected#{/if}>${User.name}</option>#{/if}
 				#{/if}
 				#{/if}
 				#{else}
