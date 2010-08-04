@@ -1,0 +1,15 @@
+#{extends 'sidebar.html' /}
+<br/>
+#{if notifications.isEmpty()}
+Sorry, You have no Notifications yet !
+#{/if}
+#{else}
+#{list items:notifications, as:'notif'}	
+	<div id = "#notif_${notif.id}">		
+		<p><a href = "/show/user?id=${notif.actionPerformer.id}">${notif.actionPerformer.name}</a> has ${notif.actionType}ed ${notif.resourceType}: <a href = "${notif.resourceURL}">${notif.resourceName}</a> 
+#{if notif.project != null}
+in project ${notif.project}
+#{/if}</p>
+	</div>
+#{/list}
+#{/else} 

@@ -262,4 +262,12 @@ public class Application extends SmartController
 	{
 		render( id, url, isOverlay );
 	}
+	
+	public static void showNotifications()
+	{
+		User user = Security.getConnected();
+		List<Notification> notifications = Notification.find("receiver ="+user.id+" order by id desc").fetch();
+		render(notifications);
+	}
+	
 }
