@@ -75,7 +75,7 @@ public class Projects extends SmartCRUD
 				render( "CRUD/blank.html", type );
 			}
 		}
-		else if( Project.isUnique( (java.net.URLEncoder.encode( projectObject.name, "UTF-8" )) ) )
+		else if( !Project.isUnique( (java.net.URLEncoder.encode( projectObject.name, "UTF-8" )) ) )
 		{
 			flash.error( "Project Name is Already Taken." );
 			try
