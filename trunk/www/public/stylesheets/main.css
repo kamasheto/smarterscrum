@@ -11,7 +11,17 @@
 a:hover {
 	color: #b7568d;
 }
-
+.draggableChild .ui-widget-content
+{
+display:none;
+}
+.actual .draggableChild .ui-widget-content
+{
+width:auto;
+border-color:#EEEEEE !important;
+border-style:solid !important;
+border-width:0 5px 5px !important;
+}
 .makeTransparent {
 	background: url('/public/images/bg2.png') repeat-x fixed left top;
 }
