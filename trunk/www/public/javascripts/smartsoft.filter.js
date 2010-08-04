@@ -23,13 +23,13 @@ function filter_me(id){
 	if(input.trim().length == 0){
 		//loop on all divs located inside the id_content and show them.
 		smart_pagination(id,page);
-		showNormalLinks();
-		hideFilterLinks();
+		showNormalLinks(id);
+		hideFilterLinks(id);
 	}
 	else
 	{	
-		hideNormalLinks();
-		showFilterLinks();
+		hideNormalLinks(id);
+		showFilterLinks(id);
 		//loop on all divs that are located inside the div : id_content and hide them if does not contain the input ..
 		$("#"+id+"_content > div").filter(function(index) {
 			var inputCased = input.toLowerCase();
@@ -144,18 +144,18 @@ function previousFilterPage(id){
 	filter_smart_pagination(id,filter_page, true);
 }
 
-function hideNormalLinks(){
-	$("[name='normal_links']").hide();
+function hideNormalLinks(id){
+	$("[name='normal_links_"+id+"']").hide();
 }
 
-function showNormalLinks(){
-	$("[name='normal_links']").show();
+function showNormalLinks(id){
+	$("[name='normal_links_"+id+"']").show();
 }
 
-function hideFilterLinks(){
-	$("[name='filter_links']").hide();
+function hideFilterLinks(id){
+	$("[name='filter_links_"+id+"']").hide();
 }
 
-function showFilterLinks(){
-	$("[name='filter_links']").show();
+function showFilterLinks(id){
+	$("[name='filter_links_"+id+"']").show();
 }
