@@ -195,7 +195,7 @@ public class Requestreviewers extends SmartController {
 			requests.save();			
 			Logs.addLog(Security.getConnected(), "Accept to be a reviewer request", "Task Type", requestID, requests.component.project, new Date(System.currentTimeMillis()));
 			String url = "@{Application.externalOpen("+requests.component.project.id+", '/users/listUserProjects?userId="+requests.user.id+"&boxId=2&projectId="+requests.component.project.id+"&currentProjectId="+requests.component.project.id+"', false)}";			
-			Notifications.notifyProjectUsers(requests.component.project, "AcceptToBeReviewerRequest", url, "Review Request", requests.user.name, (byte) 1);			
+			//Notifications.notifyProjectUsers(requests.component.project, "AcceptToBeReviewerRequest", url, "Review Request", requests.user.name, (byte) 1);			
 		}
 
 		renderText(message);
