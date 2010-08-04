@@ -39,35 +39,23 @@ public class SmartController extends Controller {
 				List<Column> columns = b.columns;
 				List<Column> CS = new ArrayList<Column>();
 				ArrayList<String> Columnsofsnapshot = new ArrayList<String>();
-				for (int i = 0; i < columns.size(); i++) {
-					if (columns.get(i).onBoard == true) {
-						CS.add(columns.get(i));
+				for( int i=0; i<columns.size();i++)
+				{
+					if(columns.get( i ).onBoard==true)
+					{CS.add( null );
+						CS.set(i, columns.get( i ) );
+					}
+				}for( int i=0; i<columns.size();i++)
+				{
+					if(columns.get( i ).onBoard==true)
+					{
+						CS.set(columns.get(i).sequence, columns.get( i ) );
 					}
 				}
 				for (int i = 0; i < CS.size(); i++) {
 					Columnsofsnapshot.add(null);
 					Columnsofsnapshot.set(i, CS.get(i).name);
-				}
-
-				int smallest;
-				Column temp;
-				for (int i = 0; i < CS.size(); i++) {
-					smallest = i;
-					for (int j = i + 1; j < CS.size(); j++) {
-						if (CS.get(smallest).sequence > CS.get(j).sequence) {
-							smallest = j;
-
-						}
-
-					}
-					temp = CS.get(smallest);
-					CS.set(smallest, columns.get(i));
-					CS.set(i, temp);
-					Columnsofsnapshot.set(smallest, CS.get(i).name);
-					Columnsofsnapshot.set(i, temp.name);
-				}
-
-				for (int i = 0; i < components.size(); i++)// for each component
+				}				for (int i = 0; i < components.size(); i++)// for each component
 															// get
 				// the tasks
 				{
@@ -118,35 +106,23 @@ public class SmartController extends Controller {
 					List<Column> columns1 = b.columns;
 					ArrayList<String> Columnsofsnapshot1 = new ArrayList<String>();
 					List<Column> CS1 = new ArrayList<Column>();
-					for (int i = 0; i < columns1.size(); i++) {
-						if (columns1.get(i).onBoard == true) {
-							CS1.add(columns1.get(i));
+					for( int i=0; i<columns1.size();i++)
+					{
+						if(columns1.get( i ).onBoard==true)
+						{CS1.add( null );
+							CS1.set(i, columns1.get( i ) );
+						}
+					}for( int i=0; i<columns1.size();i++)
+					{
+						if(columns1.get( i ).onBoard==true)
+						{
+							CS1.set(columns1.get(i).sequence, columns1.get( i ) );
 						}
 					}
 					for (int i = 0; i < CS1.size(); i++) {
 						Columnsofsnapshot1.add(null);
 						Columnsofsnapshot1.set(i, CS1.get(i).name);
-					}
-
-					int smallest1;
-					Column temp1;
-					for (int i = 0; i < CS1.size(); i++) {
-						smallest1 = i;
-						for (int j = i + 1; j < CS1.size(); j++) {
-							if (CS1.get(smallest1).sequence > CS1.get(j).sequence) {
-								smallest1 = j;
-
-							}
-
-						}
-						temp1 = CS1.get(smallest1);
-						CS1.set(smallest1, columns1.get(i));
-						CS1.set(i, temp1);
-						Columnsofsnapshot1.set(smallest1, CS1.get(i).name);
-						Columnsofsnapshot1.set(i, temp1.name);
-					}
-
-					for (int i = 0; i < users.size(); i++)// for each component
+					}					for (int i = 0; i < users.size(); i++)// for each component
 															// get
 					// the tasks
 					{
