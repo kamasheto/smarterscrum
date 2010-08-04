@@ -145,17 +145,17 @@ function previousFilterPage(id){
 }
 
 function hideNormalLinks(id){
-	$("[name='normal_links_"+id+"']").hide();
+	$("#"+id+" .normalLink").hide();
 }
 
 function showNormalLinks(id){
-	$("[name='normal_links_"+id+"']").show();
+	$("#"+id+" .normalLink").show();
 }
 
 function hideFilterLinks(id){
-	$("[name='filter_links_"+id+"']").hide();
+	$("#"+id+" .filterLink").hide();
 }
 
 function showFilterLinks(id){
-	$("[name='filter_links_"+id+"']").show();
+	$("#"+id+" .filterLink").show();
 }
