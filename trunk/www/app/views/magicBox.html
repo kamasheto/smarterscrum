@@ -17,8 +17,8 @@ $(function(){
 			<span title="hide?"class="ui-icon ui-icon-circle-triangle-n"></span>
 		</span>
 			<span title="refresh?"class="refresh ui-icon ui-icon-refresh"></span>
-			#{if mine!=0}
-	<a onclick="loadBox('/tasks/magicShow?projectId=${projectId}','workspace-${projectId}', 'reload-tasks')"><span title="All tasks?"><img src="@{'/public/images/famfam/application_cascade.png'}"></span></a>
+			#{if mine==1}
+			<a onclick="loadBox('/tasks/magicShow?projectId=${projectId}','workspace-${projectId}', 'reload-tasks')"><span title="All tasks?"><img src="@{'/public/images/famfam/application_cascade.png'}"></span></a>
 			#{/if}
 #{get 'title'/}
 			</div>
