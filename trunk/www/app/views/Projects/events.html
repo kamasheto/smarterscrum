@@ -2,7 +2,7 @@
 #{set 'title'}Events#{/set}
 <div name="@{Sprints.showsprints(project.id)}" >Sprints 
 #{if connected.in(project).can('addSprint') }
-<a onClick="overlayOpen('/Sprints/projectblank?id=${project.id}')"href="#" ><img src="@{'public/images/famfam/add.png'}" alt=[+]/></a>
+<a onClick="overlayOpen('/Sprints/projectblank?projectId=${project.id}')"href="#" ><img src="@{'public/images/famfam/add.png'}" alt=[+]/></a>
 #{/if}
 </div>
 <div  class="reload-meetings" name="/meetings/viewmeetings?id=${project.id}">

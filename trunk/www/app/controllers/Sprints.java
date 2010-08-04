@@ -163,6 +163,7 @@ public class Sprints extends SmartCRUD
 		validation.valid( object.edit( "object", params ) );
 		if( validation.hasErrors() )
 		{
+			System.out.println(validation.errors());
 			renderArgs.put( "error", "Please Correct Date Format Error" );
 			try
 			{
