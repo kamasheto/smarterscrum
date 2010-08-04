@@ -17,13 +17,14 @@ function set_person(id,taskId,name, user1Id)
 			{id:taskId, userId:user1Id, assigneeId:id},
 			function()
 			{
-				//window.opener.document.getElementById("usr_"+taskId).innerHTML = "Assignee:"+name;
-				//window.opener.document.getElementById("usrs_"+taskId).innerHTML = "Assignee:"+name;
-				window.opener.$('#task-'+taskId+'_T').load('/boards/loadboard1?sprintID=1 #task-'+taskId+'_T');
-				window.opener.$.click
+				window.opener.$('#task-'+taskId+'_T').load('/boards/loadboard1?sprintID=1 #task-'+taskId+'_T', 
+				function()
+				{
+				window.opener.$('#'+taskId+'_button').click();
 				window.close();
 				});
-			
+				
+			});
 	return true;
 }
 </script>

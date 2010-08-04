@@ -16,11 +16,14 @@ function set_person(id,taskId,name, user1Id)
 			{id:taskId, userId:user1Id, reviewerId:id},
 			function()
 			{
-			//	window.opener.document.getElementById("rev_"+taskId).innerHTML = "Reviewer:"+name;
-			//	window.opener.document.getElementById("revs_"+taskId).innerHTML = "Reviewer:"+name;
-				window.opener.$('#task-'+taskId+'_T').load('/boards/loadboard1?sprintID=1 #task-'+taskId+'_T');
+				window.opener.$('#task-'+taskId+'_T').load('/boards/loadboard1?sprintID=1 #task-'+taskId+'_T', 
+				function()
+				{
+				window.opener.$('#'+taskId+'_button').click();
 				window.close();
 				});
+				
+			});
 			
 	return true;
 }
