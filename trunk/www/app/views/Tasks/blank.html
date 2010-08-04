@@ -26,7 +26,7 @@
 
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_taskStatus">Status</label>
-	<select id="object_taskStatus" name="object.taskStatus">
+	<select id="object_taskStatus" name="object.taskStatus@id">
 	#{list items:project.taskStatuses ,as :'taskStatuses'}
 	<option value="${taskStatuses.id}">${taskStatuses.name}</option>
 	#{/list}
@@ -36,7 +36,7 @@
 	#{if p!=null || (task!=null && task.component==null)}
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_component">Component</label>
-	<select id="object_component" name="object.taskType">
+	<select id="object_component" name="object.component@id">
 	#{list items:project.components ,as :'component'}
 	#{if component.name=='default component'}
 	<option value="${component.id}">None</option>
@@ -51,7 +51,7 @@
 	
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_taskType">Type</label>
-	<select id="object_taskType" name="object.taskType">
+	<select id="object_taskType" name="object.taskType@id">
 	#{list items:project.taskTypes ,as :'taskType'}
 	<option value="${taskType.id}">${taskType.name}</option>
 	#{/list}
@@ -60,7 +60,7 @@
 	
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_reporter">Reporter</label>
-	<select id="object_reporter" name="object.reporter">
+	<select id="object_reporter" name="object.reporter@id">
 	#{if p!=null}
 	#{list items:project.users ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
@@ -81,8 +81,8 @@
 	
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_assignee">Assignee</label>
-	<select id="object_assignee" name="object.assignee" onChange = "change_reviewers();">
-	<option value="none">None</option>
+	<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers();">
+	<option value="">None</option>
 	#{if p!=null}
 	#{list items:project.users ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
@@ -103,8 +103,8 @@
 		
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_reviewer">Reviewer</label>
-	<select id="object_reviewer" name="object.reviewer">
-	<option value="none">None</option>
+	<select id="object_reviewer" name="object.reviewer@id">
+	<option value="">None</option>
 	#{if p!=null}
 	#{list items:project.users ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
@@ -132,9 +132,9 @@
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_priority">Priority</label>
 	<select id="object_priority" name="object.priority">
-	<option value="none">None</option>
+	<option value="">None</option>
 	#{list items:project.priorities ,as :'priority'}
-	<option value="${user.id}">${priority.priority}</option>
+	<option value="${priority.priority}">${priority.priority}</option>
 	#{/list}
 	</select>
 	</div>
@@ -143,10 +143,10 @@
 	<label for="object_dependentTasks">Dependent Tasks</label>
 	<input type="hidden" name="object.dependentTasks@id" value="" />
 	<select id="object_dependentStories" name="object.dependentTasks@id" multiple="yes">
-	<option value="none">None</option>
-	#{list items:project.projectTasks ,as :'task'}
-	#{if task.deleted==false}
-	<option value="${task.description}">${task.description}</option>
+	<option value="">None</option>
+	#{list items:project.projectTasks ,as :'task2'}
+	#{if task2.deleted==false}
+	<option value="${task2.description}">${task2.description}</option>
 	#{/if}
 	#{/list}
 	</select>
@@ -154,8 +154,8 @@
 	
 	<div class="crudField" name="view-more" style="display:none">	
 	<label for="object_taskSprint">Sprint</label>
-	<select id="object_taskSprint" name="object.taskSprint">
-	<option value="none">None</option>
+	<select id="object_taskSprint" name="object.taskSprint@id">
+	<option value="">None</option>
 	#{list items:sprints ,as :'sprint'}
 	<option value="${sprint.id}">Sprint ${sprint.sprintNumber}</option>
 	#{/list}
@@ -165,23 +165,21 @@
 	
 	
 	#{if project!=null}
-	<input type="hidden" id="object_project" name="object.project@id" value="${component.project.id}" >
+	<input type="hidden" id="object_project" name="object.project@id" value="${project.id}" >
 	#{/if}
 	#{if component!=null}
-	<input type="hidden" id="object_project" name="object.project@id" value="${component.project.id}" >
-	<input type="hidden" id="object_project" name="object.component@id" value="${component.id}" >
+	<input type="hidden" id="object_component" name="object.component@id" value="${component.id}" >
 	#{/if}
 	#{elseif task!=null}
 	<input type="hidden" id="object_project" name="object.project@id" value="${task.project.id}" >
-	<input type="hidden" id="object_project" name="object.component@id" value="${task.component.id}" >
-	<input type="hidden" id="object_project" name="object.parent@id" value="${task.id}" >
+	<input type="hidden" id="object_component" name="object.component@id" value="${task.component.id}" >
+	<input type="hidden" id="object_parent" name="object.parent@id" value="${task.id}" >
 	#{/elseif}
 		
 		<a href="#" onclick = "toggleOptions()" name="view-more-link">View more options</a>
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" onclick="product_role();"/>
 			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" onclick="product_role();" />
-			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" onclick="product_role();"/>
 		</p>
 	</div>	
 	#{/form}
