@@ -14,6 +14,7 @@ import models.Comment;
 import models.Component;
 import models.Log;
 import models.Meeting;
+import models.ProductRole;
 import models.Project;
 import models.Requestreviewer;
 import models.Sprint;
@@ -288,17 +289,16 @@ public class Tasks extends SmartCRUD
 				sprints.add( sprint );
 			}
 		}
-
+		String newdesc = tmp.description;
 		String productRoles = "";
-		for (int i = 0; i < project.productRoles.size(); i++) 
+		for( int i = 0; i < project.productRoles.size(); i++ )
 		{
-			if(project.productRoles.get(i).name.charAt(0)=='a'||project.productRoles.get(i).name.charAt(0)=='e'||project.productRoles.get(i).name.charAt(0)=='i'||project.productRoles.get(i).name.charAt(0)=='o'||project.productRoles.get(i).name.charAt(0)=='u'||project.productRoles.get(i).name.charAt(0)=='A'||project.productRoles.get(i).name.charAt(0)=='E'||project.productRoles.get(i).name.charAt(0)=='I'||project.productRoles.get(i).name.charAt(0)=='O'||project.productRoles.get(i).name.charAt(0)=='U')
-			productRoles=productRoles+"As an "+project.productRoles.get(i).name+",-";
+			if( project.productRoles.get( i ).name.charAt( 0 ) == 'a' || project.productRoles.get( i ).name.charAt( 0 ) == 'e' || project.productRoles.get( i ).name.charAt( 0 ) == 'i' || project.productRoles.get( i ).name.charAt( 0 ) == 'o' || project.productRoles.get( i ).name.charAt( 0 ) == 'u' || project.productRoles.get( i ).name.charAt( 0 ) == 'A' || project.productRoles.get( i ).name.charAt( 0 ) == 'E' || project.productRoles.get( i ).name.charAt( 0 ) == 'I' || project.productRoles.get( i ).name.charAt( 0 ) == 'O' || project.productRoles.get( i ).name.charAt( 0 ) == 'U' )
+				productRoles = productRoles + "As an " + project.productRoles.get( i ).name + ",-";
 			else
-			productRoles=productRoles+"As a "+project.productRoles.get(i).name+",-";
+				productRoles = productRoles + "As a " + project.productRoles.get( i ).name + ",-";
 		}
 
-		
 		if( validation.hasErrors() )
 		{
 			renderArgs.put( "error", Messages.get( "crud.hasErrors" ) );
@@ -312,12 +312,61 @@ public class Tasks extends SmartCRUD
 			}
 		}
 		tmp.init();
-		System.out.println(tmp.parent.id + "toffa7");
+		
+		String[] desc = newdesc.split(",");
+		if (desc.length == 1) {
+		 tmp.description = desc[0];
+		 } else {
+		 String[] desc2 = desc[0].split(" ");
+		 if (desc2.length >= 3) {
+		 if (desc2[0].equalsIgnoreCase("as") && (desc2[1].equalsIgnoreCase("a") ||
+		 desc2[1].equalsIgnoreCase("an"))) {
+		 boolean flag = false;
+		 String productrole = "";
+		 for (int k = 2; k < desc2.length; k++) {
+		 if (k == desc2.length - 1)
+		 productrole = productrole + desc2[k];
+		 else
+		 productrole = productrole + desc2[k] + " ";
+		
+		 }
+		 for (int j = 0; j < tmp.project.productRoles.size(); j++) {
+		 if
+		 (tmp.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
+		 flag = true;
+		 }
+		 if (!flag) {
+		 ProductRole pr = new ProductRole(tmp.project.id,
+		 productrole, "");
+		 pr.save();
+		 tmp.productRole = pr;
+		 } else {
+		 for (int j = 0; j < tmp.project.productRoles.size(); j++) {
+		 if
+		 (tmp.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
+		 {
+		 tmp.productRole = tmp.project.productRoles.get(j);
+		 }
+		 }
+		 }
+		 for (int i = 1; i < desc.length; i++) {
+		 tmp.description = desc[i] + " ";
+		 }
+		 }
+		 } else {
+		 tmp.description = tmp.description;
+		 }
+		 }
+		
 		object.save();
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
+			if(tmp.parent!=null)
 			Application.overlayKiller("reload('tasks','task-"+tmp.parent.id+"')", "");
+			else
+				Application.overlayKiller("reload('tasks','task-"+"')", "");
+				
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
 		{
