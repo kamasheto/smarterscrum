@@ -135,7 +135,7 @@
 <div class="topper">
 						<div class="left">
 						#{if connected}
-							Hello <span id="username-in-topbar">${connected.name}</span>!&nbsp;&nbsp;|&nbsp;&nbsp;
+							Hello ${connected.name}!&nbsp;&nbsp;|&nbsp;&nbsp;
 							<a href="/show/user?id=${controllers.Security.getConnected().id}">Profile</a>
 						#{/if}
 						</div>
@@ -150,11 +150,11 @@
 						</div>
 						
 			
-#{if connected}						
+						
 <div class="sideHolder">
 	<!-- Notifications Start -->
 	<div class="notch"style="top: 80px;">
-		<a href="#" title="View your notifications?"onclick="make('sideNoti',this);">
+		<a href="#" title="View your notifications?"onclick="make('sideNoti',this)">
 		<img src="/public/images/myNotifications.png" alt="[Notifications]"/>
 		</a>
 	</div>
@@ -191,7 +191,6 @@
 	</div>
 	<!-- MyTasks End -->
 </div>
-#{/if}
 <div id="workspaces" style="display:none">
 
 	<div id="workspace-help">
