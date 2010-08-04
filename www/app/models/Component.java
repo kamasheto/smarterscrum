@@ -187,11 +187,12 @@ public class Component extends SmartModel
 		boolean confirmed = true;
 		for( User user : this.componentUsers )
 		{
-			if( !user.meetingStatus( meetingID ).equals( "confirmed" ) )
-			{
-				confirmed = false;
-				break;
-			}
+			if( !user.deleted )
+				if( !user.meetingStatus( meetingID ).equals( "confirmed" ) )
+				{
+					confirmed = false;
+					break;
+				}
 		}
 		if( confirmed )
 			return "confirmed";
@@ -199,11 +200,12 @@ public class Component extends SmartModel
 		boolean waiting = true;
 		for( User user : this.componentUsers )
 		{
-			if( !user.meetingStatus( meetingID ).equals( "waiting" ) )
-			{
-				waiting = false;
-				break;
-			}
+			if( !user.deleted )
+				if( !user.meetingStatus( meetingID ).equals( "waiting" ) )
+				{
+					waiting = false;
+					break;
+				}
 		}
 		if( waiting )
 			return "waiting";
@@ -211,19 +213,21 @@ public class Component extends SmartModel
 		boolean declined = true;
 		for( User user : this.componentUsers )
 		{
-			if( !user.meetingStatus( meetingID ).equals( "declined" ) )
-			{
-				declined = false;
-				break;
-			}
+			if( !user.deleted )
+				if( !user.meetingStatus( meetingID ).equals( "declined" ) )
+				{
+					declined = false;
+					break;
+				}
 		}
 		if( declined )
 			return "declined";
 
 		for( User user : this.componentUsers )
 		{
-			if( user.meetingStatus( meetingID ).equals( "notInvited" ) )
-				return "notInvited";
+			if( !user.deleted )
+				if( user.meetingStatus( meetingID ).equals( "notInvited" ) )
+					return "notInvited";
 		}
 		return "allInivited";
 
