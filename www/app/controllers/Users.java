@@ -12,9 +12,13 @@ import models.Component;
 import models.Project;
 import models.User;
 import models.UserNotificationProfile;
+import play.data.validation.Email;
+import play.data.validation.Required;
+import play.data.validation.Validation;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
+import play.libs.Mail;
 import play.mvc.With;
 
 /**
@@ -374,4 +378,82 @@ public class Users extends SmartCRUD {
 		}
 		
 	}
+	
+	public static void editMiniProfile ( long userProfileId)
+	{
+		User userProfile = User.findById(userProfileId);
+		User connectedUser = User.findById(Security.getConnected().id);
+		if (connectedUser.deleted)
+			notFound();
+		if (userProfile.deleted)
+			notFound();
+		if ((userProfile.id == connectedUser.id)||(connectedUser.isAdmin))
+		{
+			render(userProfile, connectedUser);
+		}
+		else
+		{
+			flash.error( "Sorry, You cannot edit these personal informations." );
+		}
+	}
+	public static void miniProfileAction ( @Required(message = "You must enter a name") String name,
+			@Required(message = "You must enter an email") @Email(message = "You must enter a valid email") String email,
+			long userProfileId)
+	{
+		User userProfile = User.findById(userProfileId);
+		User connectedUser = Security.getConnected();
+		if (connectedUser.deleted)
+			notFound();
+		if (userProfile.deleted)
+			notFound();
+		if ((userProfile.id == connectedUser.id)||(connectedUser.isAdmin))
+		{
+			if (Validation.hasErrors()) 
+			{
+				editMiniProfile (userProfileId);
+			}
+			String oldEmail = userProfile.email;
+			String oldname = userProfile.name;
+			userProfile.name = name;
+			userProfile.email = email;
+//			userProfile.save();
+			if (!userProfile.email.equals(oldEmail)) 
+			{
+				userProfile.activationHash = Application.randomHash(32);
+				userProfile.isActivated = false;
+//				userProfile.save();
+				session.put("username", email);
+				String emailSubject = "Your SmartSoft new Email activation requires your attention";
+				String emailBody = "Dear "
+						+ userProfile.name
+						+ ", The Email Address associated with your account has been requested to be changed. Please click the following link to activate your account: "
+						+ "http://localhost:9000/accounts/doActivation?hash="
+						+ userProfile.activationHash;
+				Mail.send("se.smartsoft@gmail.com", userProfile.email, emailSubject, emailBody);
+				flash.success("You have successfully edited user personal information, A confirmation email has been sent to the new Email.");
+			} 
+			else 
+			{
+				flash.success("You have successfully edited user personal information.");
+			}
+			if (!oldname.equals(name))
+			{
+				userProfile.save();
+				Application.overlayKiller("reload('users')", "");
+			}
+			else
+			{
+				userProfile.save();
+				Application.overlayKiller("reload('user-'+userProfileId)", "window.parent.$('#username-in-topbar').html(name)");
+			}
+			
+		}
+		else
+		{
+			Application.overlayKiller("","");
+			flash.error("You are not allowed to edit these personal information.");
+		}
+		
+	}
+	
 }
