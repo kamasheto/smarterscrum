@@ -166,8 +166,8 @@ REDIPS.drag.init()
 		#{/set}
 		#{list items:col, as:'task'}
 		<!-- small sticky note -->
-		<div id="task-${task.id}_T" class="drag">
-		<a id="task-${task.id}_hidden" style="display:none; font-size:large;cursor: pointer !important" onclick="showtask(this.id);">+</a>
+		<div style="float:left" id="task-${task.id}_T" class="drag">
+		<a id="task-${task.id}_hidden" style="display:none; font-size:large;cursor: pointer !important;text-decoration:none" onclick="showtask(this.id);">+</a>
 		
 		#{if connected.in(p).can('changeTaskStatus') || connected.equals(task.assignee) || connected.equals(task.reviewer)}
 		<div id="task-${task.id}_TT" class="status status_${task.id}">
@@ -179,7 +179,7 @@ REDIPS.drag.init()
 		<div class="${task.taskStatus.columns[0].name}" style="max-width:130px"></div>  
 		<div style="max-width:130px" class="status status_${task.id}">
 		<div class="small_${task.id} shadowed tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 10px; max-width:110px;border=0px"  id="${task.id}_small">
-		<a id="task-${task.id}" onclick="ctask(this.id);" style="font-size:x-large;cursor: pointer !important;border=0px">-</a> 
+		<a id="task-${task.id}" onclick="ctask(this.id);" style="font-size:x-large;cursor: pointer !important;border=0px; text-decoration:none">-</a> 
 		<div id="desc_${task.id}">${task.description}</div>
 		<a class="tiptitize" onclick="SmallSticky(this.id)" title="Edit task info?"  style="cursor: pointer !important" id="${task.id}_button">view/edit info..</a>
 		</div>
