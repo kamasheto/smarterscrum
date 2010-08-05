@@ -47,4 +47,13 @@ function isBefore(date){
 <img src="@{'public/images/famfam/chart.png'}" alt="[chart]"/></a>
 
 			</div>
-<div name="@{Boards.sprintBoards(sprint.id)}">Boards</div>
+<div name="@{Boards.sprintBoards(sprint.id)}">Boards
+#{if sprint.ended}
+		<a href="#" onclick="overlayOpen('@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)}')" title="View sprint board snapshot?">
+		<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
+		#{/if}
+		#{else}
+		<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id)}')" title="View project board?">
+		<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
+		#{/else}
+	</div>
