@@ -7,7 +7,9 @@
 <!-- DO NOT REMOVE THIS! If you want to, hide the class.. this element is used to create the top button! -->
 <span class="project_name_in_header">${proj.name}</span>
 <a href="#" onclick="loadBox('/tasks/magicShow?mine=1&projectId=${proj.id}','workspace-${proj.id}', 'reload-tasks')">My Tasks</a>
+#{if proj.sprints.size()!=0}
 <a href="#" onclick="loadBox('/Projects/Artifacts?projectId=${proj.id}','workspace-${proj.id}')">Artifacts</a>
+#{/if}
 <a href="#" onclick="loadBox('/users/findUsers?projectId=${proj.id}','workspace-${proj.id}', 'reload-users')">Users</a>
 <a  href="#"onclick="loadBox('@{Projects.events(proj.id)}','workspace-${proj.id}')">Events</a>
 <a  href="#"onclick="$('#chatContainer_${proj.id}').slideToggle(400); #{ifnot connected.openChats.contains(proj.chatroom)} signIn(${proj.chatroom.id}); getMessages(${proj.id},${proj.chatroom.id}); #{/ifnot}">Chatroom</a>
