@@ -3,11 +3,11 @@
 					function(data) {
 						$(data).each(function(){
 							$.gritter.add({
-								title: this.madeBySysAdmin? '[SysAdmin] '+this.header : this.header,
-								text: this.body,
+								title: 'New Notification',
+									text: '<a href = "/show/user?id='+this.receiver.id+'">'+ this.actionPerformer.name +'</a> has '+this.actionType+'ed'+ this.resourceType+': <a href = '+this.resourceURL+'>'+this.resourceName+'</a>',
 								image: this.importance > 0 ? '/public/images/tick.png' : this.importance < 0 ? '/public/images/cross.png' : '/public/images/error.png',
 								sticky: false,
-								time: ''
+								time: '10000'
 							});
 							return true;
 						});
