@@ -36,7 +36,12 @@ public class Request extends SmartModel
 	public Component component;
 
 	// requests
-
+	
+	/**
+	 * Creates a new request by a user to a certain role.
+	 * @param user the user who requested the role
+	 * @param role the requested role
+	 */
 	public Request( User user, Role role )
 	{
 		this.user = user;

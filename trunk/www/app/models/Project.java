@@ -163,7 +163,11 @@ public class Project extends SmartModel
 		// init();
 
 	}
-
+	/**
+	 * Creates a project with name and description
+	 * @param name the name or the title of the project
+	 * @param desc the description of the project
+	 */
 	public Project( String name, String desc )
 	{
 		this();
@@ -192,7 +196,10 @@ public class Project extends SmartModel
 		}
 		return ProjectTasks;
 	}
-
+	/**
+	 * gets the roles of the project
+	 * @return list of roles of a project
+	 */
 	public List<Role> getRoles()
 	{
 		return roles;
@@ -250,7 +257,11 @@ public class Project extends SmartModel
 		return FULL + data;
 
 	}
-
+	
+	/**
+	 * Get all the users in  this project
+	 * @return all users in this project
+	 */
 	public List<User> getUsers()
 	{
 
@@ -271,7 +282,7 @@ public class Project extends SmartModel
 
 	}
 
-	/*
+	/**
 	 * @author minazaki i just modified the insprint to my need it checks if the
 	 * start date of a sprint overlaps with any sprints OR the end date overlaps
 	 * with any sprints
@@ -622,26 +633,42 @@ public class Project extends SmartModel
 		}
 		return temp;
 	}
-
+	
+	/**
+	 * Adds a component to this project
+	 * @param c the component to be added
+	 */
 	public void addComponent( Component c )
 	{
 		this.components.add( c );
 		c.project = this;
 		c.save();
 	}
-
+	
+	/**
+	 * Gets the number of non-deletion requests in this project
+	 * @return the number of non-deletion requests in this project
+	 */
 	public int getNumberOfRequests()
 	{
 		List<Request> requests = Request.find( "byIsDeletionAndProject", false, this ).fetch();
 		return requests.size();
 	}
-
+	
+	/**
+	 * Gets the number of deletion requests in this project
+	 * @return the number of deletion requests in this project
+	 */
 	public int getNumberOfDeletionRequests()
 	{
 		List<Request> requests = Request.find( "byIsDeletionAndProject", true, this ).fetch();
 		return requests.size();
 	}
-
+	
+	/**
+	 * Gets the number of all requests in a project
+	 * @return the number of all requests in a project
+	 */
 	public int getNumberOfTotalRequests()
 	{
 		List<Request> requests = Request.find( "byIsDeletionAndProject", false, this ).fetch();

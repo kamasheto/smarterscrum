@@ -11,23 +11,23 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Requestreviewer extends SmartModel {
 	private static final long serialVersionUID = 1L;
-	/*
+	/**
 	 * the user request
 	 */
 	@ManyToOne
 	public User user;
-	/*
+	/**
 	 * the component of the user requested to be reviewer
 	 */
 	@ManyToOne
 	public Component component;
-	/*
+	/**
 	 * the type the user Request to be reviewer of
 	 */
 	@ManyToOne
 	public TaskType types;
 
-	/*
+	/**
 	 * a boolean variable to show if it is accepted or not
 	 */
 	public boolean accepted;

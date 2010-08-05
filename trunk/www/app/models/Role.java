@@ -33,18 +33,28 @@ public class Role extends SmartModel {
 
 	@ManyToMany
 	public List<Permission> permissions;
-
+	/**
+	 * creates a new role with a certain name
+	 * @param name name or title of a role
+	 */
 	public Role (String name) {
 		this();
 		this.name = name;
 	}
-
+	
+	/**
+	 * Creates a new role in a project
+	 * @param string name or title of a role.
+	 * @param project2 which project to save this role to.
+	 */
 	public Role (String string, Project project2) {
 		this();
 		this.name = string;
 		this.project = project2;
 	}
-
+	/**
+	 * initializes the users and permissions ArrayList of a role.
+	 */
 	public Role () {
 		users = new ArrayList<User>();
 		permissions = new ArrayList<Permission>();
@@ -66,7 +76,10 @@ public class Role extends SmartModel {
 		this.save();
 
 	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see play.db.jpa.JPASupport#toString()
+	 */
 	@Override
 	public String toString() {
 		return name;
@@ -94,6 +107,12 @@ public class Role extends SmartModel {
 		return false;
 	}
 
+	/**
+	 * Gives the permissions to a role based on the input string for example
+	 * a project owner can edit a project as well as a project Admin. However,
+	 * a developer can not edit a project.
+	 * @param string
+	 */
 	public void init(String string) {
 		String[] perms = null;
 		if (string.equalsIgnoreCase("projectOwner")) {
