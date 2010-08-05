@@ -816,9 +816,12 @@ public class Tasks extends SmartCRUD
 		 }
 		
 		 // Now finally save the comment
-		 Comment changesComment = new Comment(Security.getConnected(), tmp.id,
+		 if(!changes.equals(""))
+		 {
+			 Comment changesComment = new Comment(Security.getConnected(), tmp.id,
 		 changes);
-		 changesComment.save();
+		 	changesComment.save();
+		 }
 		// /********** End of Changes as Comment ********/
 		if(tmp.comment.trim().length() != 0){
 			Comment comment = new Comment(Security.getConnected(), tmp.id, tmp.comment);
