@@ -1,13 +1,12 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}${title}
-#{/set}
+#{set 'title'}${title}#{/set}
 
 #{if users !=null}
 		#{if users.size()==0}
 		#{note 'error'}No users#{/note}
 		#{/if}
 		#{list items:users ,as :'User'}
-			<div class="reload-user-${User.id}" name="/users/findUsers?projectId=${currentProject.id}&userId=${User.id}">${User.name} #{drag 'user-' + User.id /}
+			<div class="reload-user-${User.id}" name="/users/findUsers?projectId=${currentProject.id}&userId=${User.id}">${User.name} #{drop 'user-'+User.id /}#{drag 'user-' + User.id /}
 			 #{if (User.id == connected.id)||(connected.isAdmin)}
 			   <a href="javascript:overlayOpen('/users/editMiniProfile?userProfileId=${User.id}')">
 			   <img title="Edit Personal info" src="@{'/public/images/famfam/pencil.png'}">

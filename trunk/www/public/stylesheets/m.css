@@ -74,10 +74,10 @@ table {
 
 .draggableChild .ui-widget-header,.overlay .ui-widget-header,.bar {
 	font-size: 12px;
-	background: #bbb;
-	background: -moz-linear-gradient(center bottom, #bbb 10%, #eee 70%);
+	background: #ccc;
+	background: -moz-linear-gradient(center bottom, #ccc 10%, #eee 70%);
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #eee),
-		color-stop(0.7, #bbb) );
+		color-stop(0.7, #ccc) );
 	color: #b7568d;
 	font-family: verdana;
 	font-style: normal;
