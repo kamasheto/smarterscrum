@@ -5,29 +5,56 @@ import javax.persistence.ManyToOne;
 
 import controllers.Application;
 
+/**
+ * a meeting attendance holds information about the attendance of a user in a
+ * meeting information included in this entity include: User, Meeting, Status,
+ * etc.
+ */
 @Entity
 public class MeetingAttendance extends SmartModel {
 
-	// Relation with user model
+	/**
+	 * User involved
+	 */
 	@ManyToOne
 	public User user;
 
-	// Relation with meeting model
+	/**
+	 * Meeting involved
+	 */
 	@ManyToOne
 	public Meeting meeting;
 
-	// Meeting status has to be "waiting" or "confirmed" or "declined"
+	/**
+	 * Status of this attendance, one of: waiting, confirmed, declined
+	 */
 	public String status;
 
-	// is Deleted?
+	/**
+	 * Deleted marker
+	 * 
+	 * @deprecated
+	 */
 	public boolean deleted;
 
-	// IF status ="decline" then reason is why
+	/**
+	 * Only exists if reasons == declined
+	 */
 	public String reason;
 
-	// Meeting hash
+	/**
+	 * Meeting hash
+	 */
 	public String meetingHash;
 
+	/**
+	 * Default constructor
+	 * 
+	 * @param user
+	 *            User of this attendance
+	 * @param meeting
+	 *            Meeting of this attedance
+	 */
 	public MeetingAttendance (User user, Meeting meeting) {
 		this.user = user;
 		this.meeting = meeting;
@@ -43,6 +70,6 @@ public class MeetingAttendance extends SmartModel {
 	 * @return true if it is confirmed and false otherwise
 	 */
 	public boolean checkConfirmed() {
-		return this.status.equals("confirmed") ? true : false;
+		return this.status.equals("confirmed");
 	}
 }

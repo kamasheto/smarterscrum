@@ -13,26 +13,55 @@ import play.data.validation.Required;
  * 
  * @author Amr Tj.Wallas
  * @version 643
- * @Task C1S1
- * @Task C1S3
  */
 @Entity
-public class Log extends SmartModel
-{
-
+public class Log extends SmartModel {
+	/**
+	 * Users may have many logs, whereas each log may have only one user
+	 */
 	@ManyToOne
 	public User user;
 
+	/**
+	 * Action of the log, usually something of the sort: Create, Delete, Edit
+	 */
 	public String action_type;
 
+	/**
+	 * Resource type, something of the sort of an entity, eg: Meeting, Sprint,
+	 * User
+	 */
 	public String resource_type;
 
+	/**
+	 * The resource of the resource_type
+	 */
 	public long resource_id;
+
+	/**
+	 * A project may have many logs, whereas each log may only belong to one
+	 * project
+	 */
 	@ManyToOne
 	public Project project;
 
+	/**
+	 * The date (time) of this log event
+	 */
 	public Date date;
-	boolean deleted;
+
+	/**
+	 * Whether this log item is deleted or not
+	 * 
+	 * @deprecated
+	 */
+	public boolean deleted;
+
+	/**
+	 * Whether this action was performed by a system admin this is used to keep
+	 * track of system admin events in comparison to events by users with
+	 * permission
+	 */
 	public boolean madeBySysAdmin;
 
 	/**
@@ -54,12 +83,9 @@ public class Log extends SmartModel
 	 *            Date/time of that action
 	 * @param deleted
 	 *            Set to True if log has been deleted
-	 * @Task C1S1
-	 * @Task C1S3
 	 */
 
-	public Log( @Required User user, @Required String action_type, @Required String resource_type, @Required long resource_id, @Required Project project, @Required Date date )
-	{
+	public Log (@Required User user, @Required String action_type, @Required String resource_type, @Required long resource_id, @Required Project project, @Required Date date) {
 		this.user = user;
 		this.action_type = action_type;
 		this.resource_type = resource_type;
@@ -71,28 +97,28 @@ public class Log extends SmartModel
 
 	/**
 	 * This method returns the first log in the database that has a date less
-	 * than or equal to the date of the log this method is invoked on.
+	 * than or equal to the date of the log this method is invoked on. Notice
+	 * that for some reason this method does not consider the logs in a project,
+	 * and returns the next overall log action.
 	 * 
-	 * @return <code>Log: </code>the first log in the database that has a date
-	 *         less than or equal to the date of the log this method is invoked
-	 *         on.
+	 * @return <code>Log</code> the log that happened right before this log
+	 *         action
 	 */
-	public Log next()
-	{
-		return Log.find( "date <= ? order by date desc", date ).first();
+	public Log next() {
+		return Log.find("date <= ? order by date desc", date).first();
 	}
 
 	/**
 	 * This method returns the first log in the database that has a date greater
-	 * than or equal to the date of the log this method is invoked on.
+	 * than or equal to the date of the log this method is invoked on. Notice
+	 * that for some reason this method does not consider the logs in a project,
+	 * and returns the previous overall log action.
 	 * 
-	 * @return <code>Log: </code>the first log in the database that has a date
-	 *         greater than or equal to the date of the log this method is
-	 *         invoked on.
+	 * @return <code>Log</code> the log that happened right after this log
+	 *         action
 	 */
-	public Log prev()
-	{
-		return Log.find( "date >= ? order by date asc", date ).first();
+	public Log prev() {
+		return Log.find("date >= ? order by date asc", date).first();
 	}
 
 }

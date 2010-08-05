@@ -1,7 +1,5 @@
 package models;
 
-// @author ghadafakhry
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,49 +15,113 @@ import play.data.validation.Required;
 
 @Entity
 public class Meeting extends SmartModel {
+	
+	/**
+	 * Meeting name
+	 */
 	@Required
 	public String name;
+
+	/**
+	 * Meeting description
+	 */
 	@Lob
 	public String description;
+
+	/**
+	 * Meeting start time (unix timestamp in milliseconds)
+	 */
 	@Required
 	public long startTime;
+
+	/**
+	 * Meeting end time (unix timestamp in milliseconds)
+	 */
 	@Required
 	public long endTime;
+
+	/**
+	 * location of this meeting
+	 */
 	@Required
 	public String location;
 
+	/**
+	 * Snapshot of this meeting
+	 */
 	@OneToOne
 	public Snapshot snapshot;
+
+	/**
+	 * whether or not this meeting is a review log?
+	 */
 	public boolean isReviewLog;
+
+	/**
+	 * The meeting type
+	 */
 	public String type;
+
+	/**
+	 * Whether this meeting is deleted or not
+	 */
 	public boolean deleted;
+
+	/**
+	 * Stauts of this meeting - false if canceled, true otherwise
+	 */
 	public boolean status;
 
+	/**
+	 * Creator of this meeting - a user may create many meetings, a meeting may
+	 * only have one user
+	 */
 	@ManyToOne
 	public User creator;
 
+	/**
+	 * The sprint of this meeting - a sprint may have many meetings, a meeting
+	 * may only have a single sprint
+	 */
 	@ManyToOne
 	public Sprint sprint;
 
+	/**
+	 * The project of this meeting - a project may have many meetings, a meeting
+	 * may only have a single project
+	 */
 	@ManyToOne
 	public Project project;
 
+	/**
+	 * Artifacts associated to this meeting - a meeting may have many artifacts,
+	 * an artifact may belong to many meetings
+	 */
 	@ManyToMany
 	public List<Artifact> artifacts;
 
+	/**
+	 * Tasks associated to this meeting - a meeting may have many tasks, a task
+	 * may belong to many meetings
+	 */
 	@ManyToMany
 	public List<Task> tasks;
 
+	/**
+	 * Components associated to this meeting - a meeting may be associated to
+	 * many components, a component may be associated to many meetings
+	 */
 	@ManyToMany
-	// mapping done in component Model
 	public List<Component> components;
 
+	/**
+	 * Meeting attendees - a meeting may have many meeting attendees, and each
+	 * meeting attendee belongs to a single meeting (notice a meeting attendance
+	 * contains a single meeting and a single user, and a user may have many
+	 * attendees, so its basically a many to many relation with the users)
+	 */
 	@OneToMany (mappedBy = "meeting", cascade = CascadeType.ALL)
 	public List<MeetingAttendance> users;
-
-	
-
-	// C5-S19 , to indicate infront of Board Meeting
 
 	/**
 	 * Meeting attributes
@@ -108,62 +170,12 @@ public class Meeting extends SmartModel {
 	}
 
 	/**
-	 * change the value of the attribute delete to true
-	 * 
-	 * @author Ghada Fakhry
-	 */
-
-	// the next 4 methods are not included in this sprint (I added them by
-	// mistake) ghadafakhry
-	public Meeting addArtifact(Artifact artifact) {
-		this.artifacts.add(artifact);
-		return this;
-	}
-
-	public Meeting addTask(Task task) {
-		this.tasks.add(task);
-		return this;
-	}
-
-	public Meeting addUser(MeetingAttendance user) {
-		this.users.add(user);
-		return this;
-	}
-
-	public Meeting addComponent(Component component) {
-		this.components.add(component);
-		return this;
-	}
-
-	/**
-	 * S10, S11 Gets the list of artifacts of a given meeting
+	 * Gets the list of artifacts of a given meeting
 	 * 
 	 * @return a list of artifacts of a given meeting
 	 */
 	public List<Artifact> getMeetingArtifacts() {
 		return this.artifacts;
-	}
-
-	/**
-	 * S10, S11 Retrieves a list of tasks of type Sprint Review for a given
-	 * meeting
-	 * 
-	 * @return a list of tasks of a given meeting
-	 */
-
-	public List<Task> getMeetingSprintReviewTasks() {
-		return this.tasks;
-	}
-
-	/**
-	 * S10, S11 Gets the attendance of a given meeting
-	 * 
-	 * @return list of users of type MeetingAttendance for a given meeting
-	 * @author Hossam Amer
-	 */
-
-	public List<MeetingAttendance> getReviewMeetingAttendingUsers() {
-		return this.users;
 	}
 
 	/**
