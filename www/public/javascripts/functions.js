@@ -406,6 +406,8 @@ $(function() {
 				if($(this).parent().next().html()=='')
 					load($(this).parent().parent().attr('name') + ' .actual',$(this).parent().parent().attr('id'),2);
 					$(this).parent().next().slideToggle(400);
+					if($(this).parent().parent().hasClass('draggable'))
+					$(this).parent().next().next().toggle();
 			});
 	$('.refresh').live('click',function(){
 		var parent = $(this).parent().parent();
@@ -496,7 +498,7 @@ function loadBox(url, el, classes)
 		// element.children().css('left', CURRENT_OFFSET+'px')
 		// CURRENT_OFFSET += 315
 		element.children().css('z-index','4');
-		element.find('.bar').first().hide();
+		element.find('.bar').first().remove();
 		element.find('.actual').first().show();
 		element.replaceWith(element.html());
 		doOnLoad()
