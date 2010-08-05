@@ -914,7 +914,7 @@ public class Bootstrap extends Job
 			a1.save();
 			Artifact a2 = new Artifact( "Notes", "Second note" );
 			a2.save();
-			Meeting M = new Meeting( "ERD", users.get( 0 ), "anything", new Date().getTime() + 60000, new Date().getTime(), "C1", "meeting", p1, null );
+			Meeting M = new Meeting( "demo 1", users.get( 0 ), "anything", new Date().getTime() + 5400000, new Date().getTime(), "C1", "meeting", p1, null );
 			M.artifacts.add( a1 );
 			M.artifacts.add( a2 );
 			a1.meetingsArtifacts.add( M );
@@ -925,13 +925,13 @@ public class Bootstrap extends Job
 			T2.meeting.add( M );
 			M.save();
 
-			Meeting m2 = new Meeting( "Scrum meeting", users.get( 0 ), "15 minute scrum meeting", new Date().getTime() + 1000000000, new Date().getTime(), "board", "scrum", projects.get( 0 ), Sp1 );
+			Meeting m2 = new Meeting( "demo pre-discussion", users.get( 0 ), "just to discuss", new Date().getTime(), new Date().getTime() - 5400000, "board", "scrum", projects.get( 0 ), Sp1 );
 			m2.components.add( c1 );
 
 			c1.componentMeetings.add( m2 );
 			m2.save();
 
-			Meeting m3 = new Meeting( "Scrum meeting", users.get( 0 ), "15 minute scrum meeting", new Date().getTime() + 1500000, new Date().getTime(), "board", "scrum", projects.get( 0 ), Sp1 );
+			Meeting m3 = new Meeting( "demo post discussion", users.get( 0 ), "discuss what happened in the demo", new Date().getTime() + (5400000 * 2), new Date().getTime() + 54000000, "board", "scrum", projects.get( 0 ), Sp1 );
 			m3.components.add( c2 );
 
 			c2.componentMeetings.add( m3 );
@@ -944,6 +944,7 @@ public class Bootstrap extends Job
 				{
 					ma = new MeetingAttendance( users.get( i ), m2 );
 					ma.status = "declined";
+					ma.reason = "because I'am tired";
 					m2.users.add( ma );
 					users.get( i ).attendantusers.add( ma );
 					ma.save();
