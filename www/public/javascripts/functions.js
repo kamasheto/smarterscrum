@@ -278,7 +278,7 @@ $(function() {
 						drop: function(event2, ui2) {
 							$(this).attr('src', '/public/images/loading16.gif')
 							that = this
-							alert($(ui.helper).attr('name'))
+							// alert($(ui.helper).attr('name'))
 							$.ajax({
 								url: '/loading/dynamicdrop',
 								data: {from: $(ui.helper).attr('name'), to: $(this).attr('name')},
