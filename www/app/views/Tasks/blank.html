@@ -19,7 +19,6 @@
 #{/set}
 
 <script type="text/javascript" src="@{'/public/javascripts/jquery.autocomplete.js/'}"></script>
-<a onclick="ff()">test</a>
 <div id="crudBlank" class="${type.name}">
 	<h2 id="crudBlankTitle">&{'crud.blank.title', type.modelName}</h2>
 	<div class="objectForm">
@@ -94,7 +93,7 @@
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_assignee">Assignee</label>
 	<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers();">
-	<option class="x" value="">None</option>
+	<option value="">None</option>
 	#{list items:project.users ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
 	#{/list}
@@ -254,10 +253,4 @@ function toggleOptions(){
 		$("[name='view-more']").slideUp();
 	}	
 }
-
-	function ff()
-	{
-		$('.x').css('display','none');
-	}
-
 </script>
