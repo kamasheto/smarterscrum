@@ -736,18 +736,26 @@ public class Tasks extends SmartCRUD
 		 if (tmp.estimationPoints != oldEstPoints)
 		 changes += "Estimation points for the task were changed from <i>" +
 		 oldEstPoints + "</i> to <i>" + tmp.estimationPoints + "</i><br>";
-		 if(tmp.assignee != null && oldAssignee != 0)	 
+		 if(tmp.assignee != null && oldAssignee != 0){
 			 if (tmp.assignee.id != oldAssignee) {
 				 User temp = User.findById(oldAssignee);
 				 changes += "Task's assignee was changed from <i>" + temp.name +
 				 "</i> to <i>" + tmp.assignee.name + "</i><br>";
 				 }
-		 if(tmp.reviewer != null && oldReviewer != 0)
+		 }
+		 else if(tmp.assignee != null && oldAssignee == 0){
+			 changes += "Task's assignee is now <i>" + tmp.assignee.name + "</i><br>";
+		 }
+		 if(tmp.reviewer != null && oldReviewer != 0){
 			 if (tmp.reviewer.id != oldReviewer) {
 			 User temp = User.findById(oldReviewer);
 			 changes += "Task's reviewer was changed from <i>" + temp.name +
 			 "</i> to <i>" + tmp.reviewer.name + "</i><br>";
 			 }
+		 }
+		 else if(tmp.reviewer != null && oldReviewer == 0){
+			 changes += "Task's reviewer is now <i>" + tmp.reviewer.name + "</i><br>";
+		 }
 		 for (Task oldTask : oldDependencies) {
 		 if (!(tmp.dependentTasks.contains(oldTask))) {
 		 changes += "Task " + oldTask.number +
