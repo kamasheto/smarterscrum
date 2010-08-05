@@ -6,7 +6,7 @@
 #{/if}
 #{else}
 #{list items:invitations, as:'inv'}
-	<div id = "#inv_${inv.id}">
+	<div id = "pinv_${inv.id}">
 		<img src="/public/images/famfam/user_go.png"/>You have been invited to be ${inv.role} in project <a href = "@{Application.externalOpen(inv.role.project.id, '#', false)}">${inv.role.project.name}</a>
 		<br><a onclick="inv_respond('${inv.id}', '${inv.hash}', 1);"><img src="/public/images/famfam/tick.png" title="Accept"/></a> &nbsp; 
 		<a onclick="inv_respond('${inv.hash}', 0);"><img src="/public/images/famfam/cross.png" title="Decline"/></a>
@@ -35,7 +35,7 @@
 					{what:true, hash:hash, id:id},
 					function()
 					{
-						document.getElementById("#inv_"+id).setText("Invitation Accepted");
+						$('#pinv_'+id).hide();
 					}					
 					);
 		else
@@ -43,7 +43,7 @@
 					{what:false, hash:hash, id:id},
 					function()
 					{
-						document.getElementById("#inv_"+id).setText("Invitation Denied");
+						$('#pinv_'+id).hide();
 					}					
 					);		
 	}	
