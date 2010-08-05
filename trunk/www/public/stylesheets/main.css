@@ -135,13 +135,6 @@ a {
 		                            pink);
 }
 
-.searchBtn:hover {
-	background: #b7568d !important;
-	background: -moz-linear-gradient(center bottom, #87155f 20%, #b7568d 80%)
-		!important;
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #87155f),
-		color-stop(0.8, #b7568d) ) !important;
-}
 
 .chatboxtextarea:focus {
 	border: 2px solid #b7568d !important;
