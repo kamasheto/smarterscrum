@@ -25,18 +25,24 @@ function isBefore(date){
 		<div class="${sprint.id == runningSprint ? 'greenBg' : sprint.ended ? 'redBg' : 'yellowBg'} reload-sprint-${sprint.id}" name="/sprints/showsprint?id=${sprint.id}&projectId=${sprint.project.id}">Sprint ${sprint.sprintNumber}#{if !sprint.ended}#{drop 'sprint-' + sprint.id /}#{/if}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 		<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
 <img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>	
-	#{if connected.in(sprint.project).can("editSprint")}
 		#{if sprint.ended}
 		<a href="#" onclick="overlayOpen('@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)}')" title="View sprint board snapshot?">
 		<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
-		<img class="dim"src="/public/images/famfam/pencil.png" />
 		#{/if}
 		#{else}
 		<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id)}')" title="View project board?">
 		<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
+		#{/else}
+	
+	#{if connected.in(sprint.project).can("editSprint")}
+		#{if sprint.ended}
+		<img class="dim"src="/public/images/famfam/pencil.png" />
+		#{/if}
+		#{else}
 		<a href="#" onclick="overlayOpen('@{Sprints.projectshow(sprint.id)}')"><img src="/public/images/famfam/pencil.png" /></a>
 		#{/else}
 	#{/if}
+	
 		</div>
 	
 
