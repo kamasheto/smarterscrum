@@ -22,6 +22,12 @@ public class ChatRoom extends SmartModel
 
 	public Project project;
 
+	/***
+	 * Chat room constructor
+	 * 
+	 * @param p 
+	 * 		project that contains the chat room
+	 */
 	public ChatRoom( Project p )
 	{
 		chats = new ArrayList<Message>();

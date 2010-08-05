@@ -17,6 +17,16 @@ public class Column extends SmartModel {
 
 	public boolean deleted;
 
+	/***
+	 * Column constructor
+	 * 
+	 * @param name 
+	 * 			column name
+	 * @param board 
+	 * 			column board
+	 * @param taskstatus 
+	 * 			status that the column represents
+	 */
 	public Column (String name, Board board, TaskStatus taskstatus) {
 		this.name = name;
 		this.board = board;
@@ -46,7 +56,9 @@ public class Column extends SmartModel {
 		board.columns.add(this);
 	}
 
-	public Column() {
-		}
+	/***
+	 * Default column constructor
+	 */
+	public Column(){}
 	
 }
