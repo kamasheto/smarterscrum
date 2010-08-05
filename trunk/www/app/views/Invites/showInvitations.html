@@ -20,7 +20,7 @@
 #{/if}
 #{else}
 #{list items:meetings, as:'meet'}
-	<div id = "meet_${meet.id}">
+	<div id = "meet_${meet.meeting.id}" style="display:block">
 		<img src="/public/images/famfam/meeting.png"/> You have been invited to attend meeting: <a href = "@{Application.externalOpen(meet.meeting.project.id, '/Meetings/viewMeeting?id=meet.meeting.id', false)}">${meet.meeting.name}</a> in project <a href = "@{Application.externalOpen(meet.meeting.project.id, '#', false)}">${meet.meeting.project.name}</a>
 		<br><a onclick="confirm_me('${meet.meeting.id}');"><img src="/public/images/famfam/tick.png" title="Accept"/></a> &nbsp; 
 		<a onclick="decline_me('${meet.meeting.id}');"><img src="/public/images/famfam/cross.png" title="Decline"/></a>
