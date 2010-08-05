@@ -94,6 +94,9 @@ function overlayClose()
 
 /** auto iframe height do not remove **/
 function doIframe(){
+	if (!document) {
+		return 
+	}
 	o = document.getElementsByTagName('iframe');
 	for(i=0;i<o.length;i++){
 		if (/\bautoHeight\b/.test(o[i].className)){

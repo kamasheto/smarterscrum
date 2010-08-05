@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import notifiers.Notifications;
 
 import models.Component;
@@ -410,18 +412,18 @@ public class Users extends SmartCRUD {
 		{
 			if (Validation.hasErrors()) 
 			{
-				editMiniProfile (userProfileId);
+				editMiniProfile(userProfileId);
 			}
 			String oldEmail = userProfile.email;
 			String oldname = userProfile.name;
 			userProfile.name = name;
 			userProfile.email = email;
-//			userProfile.save();
+			boolean hasErrors = false;
+			String message = "";
 			if (!userProfile.email.equals(oldEmail)) 
 			{
 				userProfile.activationHash = Application.randomHash(32);
 				userProfile.isActivated = false;
-//				userProfile.save();
 				session.put("username", email);
 				String emailSubject = "Your SmartSoft new Email activation requires your attention";
 				String emailBody = "Dear "
@@ -430,23 +432,43 @@ public class Users extends SmartCRUD {
 						+ "http://localhost:9000/accounts/doActivation?hash="
 						+ userProfile.activationHash;
 				Mail.send("se.smartsoft@gmail.com", userProfile.email, emailSubject, emailBody);
-				flash.success("You have successfully edited user personal information, A confirmation email has been sent to the new Email.");
+				message = "You have successfully edited user personal information, A confirmation email has been sent to the new Email.";
 			} 
 			else 
 			{
-				flash.success("You have successfully edited user personal information.");
+				message = "You have successfully edited user personal information.";
 			}
-			if (!oldname.equals(name))
+			try 
 			{
 				userProfile.save();
-				Application.overlayKiller("reload('users')", "");
-			}
-			else
+				flash.success(message);
+				if (!oldname.equals(name))
+				{
+					Application.overlayKiller("reload('users')", "window.parent.$('#username-in-topbar').html('"+name+"')");
+				}
+				else
+				{
+					Application.overlayKiller("reload('user-'+userProfileId)", "");
+				}
+				
+			} 
+			catch (PersistenceException e) 
 			{
-				userProfile.save();
-				Application.overlayKiller("reload('user-'+userProfileId)", "window.parent.$('#username-in-topbar').html(name)");
+				List<User> usersWithSameName = User.find("byName", name).fetch();
+				List<User> usersWithSameEmail = User.find("byEmail", email).fetch();
+				message = "";
+				if(usersWithSameName.isEmpty())
+				{
+					message = "Sorry, The user name is already used. Please enter another name. ";
+					
+				}
+				else if(usersWithSameEmail.isEmpty())
+				{
+					message = message +"The email is already used. Please enter another email.";
+				}
+				flash.success(message);
+				editMiniProfile (userProfileId);
 			}
-			
 		}
 		else
 		{
