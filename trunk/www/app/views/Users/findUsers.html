@@ -7,7 +7,13 @@
 		#{note 'error'}No users#{/note}
 		#{/if}
 		#{list items:users ,as :'User'}
-			<div class="reload-user-${User.id}" name="/users/findUsers?projectId=${currentProject.id}&userId=${User.id}">${User.name} #{drag 'user-' + User.id /} #{drop 'user-' + User.id /}</div>
+			<div class="reload-user-${User.id}" name="/users/findUsers?projectId=${currentProject.id}&userId=${User.id}">${User.name} #{drag 'user-' + User.id /}
+			 #{if (User.id == connected.id)||(connected.isAdmin)}
+			   <a href="javascript:overlayOpen('/users/editMiniProfile?userProfileId=${User.id}')">
+			   <img title="Edit Personal info" src="@{'/public/images/famfam/pencil.png'}">
+			   </a>
+			 #{/if}
+			</div>
 		#{/list}
 #{/if}
 		
@@ -27,6 +33,3 @@
 		<br style="clear:both"/>
 		<div class="reload-projects-in-user-${user.id}" name="/users/listUserProjects?userId=${user.id}&x=1&currentProjectId=${currentProject.id}">Projects</div>
 #{/if}
-
-
-		
