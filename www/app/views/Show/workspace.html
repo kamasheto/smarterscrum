@@ -6,7 +6,9 @@
 <div class="topper nav">
 <!-- DO NOT REMOVE THIS! If you want to, hide the class.. this element is used to create the top button! -->
 <span class="project_name_in_header">${proj.name}</span>
+#{if connected.projects.contains(proj)}
 <a href="#" onclick="loadBox('/tasks/magicShow?mine=1&projectId=${proj.id}','workspace-${proj.id}', 'reload-tasks')">My Tasks</a>
+#{/if}
 #{if proj.sprints.size()!=0}
 <a href="#" onclick="loadBox('/Projects/Artifacts?projectId=${proj.id}','workspace-${proj.id}')">Artifacts</a>
 #{/if}
