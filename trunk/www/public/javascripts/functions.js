@@ -172,8 +172,15 @@ function revokeRole(roleId, baseRole, userId, projectId)
 		$.post('/projectTasks/revokeRole', {roleId:roleId, userId:userId}, 
 				function(msg)
 				{
-			      $.bar({message:msg});
-			      reload('roles', 'users', 'projects-in-user-'+userId, 'user-'+userId, 'project-'+projectId+'-in-user-'+userId);
+			      arr = msg.split('|')
+			      if (arr.length > 0 && arr[0]) 
+			      {
+			    	  $.bar({message: arr[0]});
+			      }
+			      if (arr.length > 1 && arr[1]) 
+			      {
+			    	  eval(arr[1]);
+			      }
 			    });
 	};
 }
