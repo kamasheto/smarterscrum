@@ -16,6 +16,8 @@ var page=1;
 var filter_page = 1;
 var filter_smart_array = new Array();
 var globalSizeOfFilteredChildren;
+var globalNumPagesNormal;
+var globalNumPagesFilter;
 
 function filter_me(el){
 	//get id from parent container
@@ -58,6 +60,7 @@ function smart_pagination(el, view_page){
 	var extraItems = !((sizeOfChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
 	if(extraItems)
 		numPages++;
+	globalNumPagesNormal = numPages;
 	if(view_page<1)
 	{
 		page++;
@@ -102,6 +105,7 @@ function smart_pagination(el, view_page){
 				$("#"+id+" .normalLinkp").show();
 		}
 	}
+	updatePageNumbers(id);
 }
 
 function filter_smart_pagination(el,view_page, nextPrevious){
@@ -117,6 +121,7 @@ function filter_smart_pagination(el,view_page, nextPrevious){
 	var extraItems = !((globalSizeOfFilteredChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
 	if(extraItems)
 		numPages++;
+	globalNumPagesFilter = numPages;
 	if(view_page<1)
 	{
 		filter_page++;
@@ -164,6 +169,7 @@ function filter_smart_pagination(el,view_page, nextPrevious){
 				$("#"+id+" .filterLinkp").show();
 		}
 	}
+	updatePageNumbersFilter(id);
 }
 
 function nextPage(id,page){
@@ -199,4 +205,12 @@ function hideFilterLinks(id){
 function showFilterLinks(id){
 	$("#"+id+" .filterLinkn").show();
 	$("#"+id+" .filterLinkp").show();
+}
+
+function updatePageNumbers(id){
+	$("#"+id+" .numPages").text(page+"/"+globalNumPagesNormal);
+}
+
+function updatePageNumbersFilter(id){
+	$("#"+id+" .numPages").text(filter_page+"/"+globalNumPagesFilter);
 }
