@@ -6,7 +6,7 @@
 <br/><br/>- or, we may be going through maintenance,<br/>Sorry for disturbance & will be back soon!</font> 
 #{/if}
 #{else}
-<b><font size = 3>Latest: </font></b>
+<b><font size = 3><img src="/public/images/famfam/arrow_grey_right.png"/>Latest: </font></b>
 #{list items:notifications, as:'notif'}	
 	<div id = "#notif_${notif.id}">		
 		<p>#{if notif.importance == 0}<img alt="!" src="/public/images/famfam/error.png">
