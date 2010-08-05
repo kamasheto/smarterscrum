@@ -106,7 +106,7 @@ public class Task extends SmartModel {
 	public void init(){
 		this.subTasks= new ArrayList<Task>();
 		if(this.parent==null){
-			List<Task> tasks = Task.find("byProject", this.project).fetch();
+			List<Task> tasks = Task.find("byProjectAndParentIsNull", this.project).fetch();
 			this.number= tasks.size()+1;
 		}else{
 			this.project=this.parent.project;
