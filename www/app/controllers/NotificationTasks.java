@@ -17,6 +17,8 @@ public class NotificationTasks extends SmartController {
 			news.get(i).unread = false;
 			news.get(i).save();
 			news.get(i).receiver = null;
+			news.get(i).project = null;
+			news.get(i).actionPerformer = null;
 		}
 		renderJSON(news);
 	}
