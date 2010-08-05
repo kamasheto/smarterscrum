@@ -360,7 +360,7 @@ thead td {
 font-weight:bold;
 }
 
-#sprintTable td form input,td form input {
+#sprintTable td form input,#sprintTable td form input {
 	width: 20px !important;
 	height: 20px !important;
 	border: 0px !important;
