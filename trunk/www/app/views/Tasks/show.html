@@ -4,6 +4,25 @@
 -->
 
 #{extends 'overlay.html' /}
+#{set 'moreStyles'}
+<style type="text/css">
+	.ac_results {
+		background: #eee;
+		border: 2px solid #bbb;
+		border-radius:10px;
+		border-top-right-radius: 0;
+		border-top-left-radius: 0;
+	}
+	.ac_results ul {
+		list-style: none;
+	}
+	.ac_results ul li {
+		font-size:small;
+	}
+	
+</style>
+#{/set}
+
 <script type="text/javascript" src="@{'/public/javascripts/jquery.autocomplete.js/'}"></script>
 
 <div id="crudShow" class="${type.name}">
@@ -28,14 +47,13 @@
 			
 			#{crud.custom 'description' }
 			<label for="object_description">Description	</label>
-			<textarea id="object_description"  name="object.description" ROWS="4" COLS="60" onclick="f();">${object.description}</textarea>
+			<textarea id="object_description"  name="object.description" ROWS="4" COLS="60" onclick="f();">#{if object.productRole==null}${object.description}#{/if}#{elseif object.productRole!=null && (object.productRole.name[0]=='a'||object.productRole.name[0]=='e'||object.productRole.name[0]=='i'||object.productRole.name[0]=='o')}As an ${object.productRole.name}, ${object.description}#{/elseif}#{elseif object.productRole!=null}As a ${object.productRole.name}, ${object.description}#{/elseif}</textarea>
     		<span class="crudHelp" style="color:red">*</span>
 			<div style="display:none" class="d">Ex: As a/an product role, description</div>
 			<span class="error"></span>
 			#{/crud.custom}
-	
-			
-			
+		
+					
 			#{crud.custom 'taskStatus'}
 			<p>
 			<label for="task_type">Status</label>
