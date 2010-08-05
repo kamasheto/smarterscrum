@@ -1,30 +1,30 @@
 #{extends 'sidebar.html' /}
 <br/>
-<font size=3>>Project Invitations:<img src="/public/images/famfam/user_go.png"/></font><br/><br/>
+<font size=3><img src="/public/images/famfam/arrow_grey_right.png"/>Project Invitations:</font><br/><br/>
 #{if invitations.isEmpty()}
 <img src = "/public/images/famfam/exclamation.png"/> There are no new project invitations<br/>
 #{/if}
 #{else}
 #{list items:invitations, as:'inv'}
-	<li id = "#inv_${inv.id}">
-		You have been invited to be ${inv.role} in project <a href = "@{Application.externalOpen(inv.role.project.id, '#', false)}">${inv.role.project.name}</a>
+	<div id = "#inv_${inv.id}">
+		<img src="/public/images/famfam/user_go.png"/>You have been invited to be ${inv.role} in project <a href = "@{Application.externalOpen(inv.role.project.id, '#', false)}">${inv.role.project.name}</a>
 		<br><a onclick="inv_respond('${inv.id}', '${inv.hash}', 1);"><img src="/public/images/famfam/tick.png" title="Accept"/></a> &nbsp; 
 		<a onclick="inv_respond('${inv.hash}', 0);"><img src="/public/images/famfam/cross.png" title="Decline"/></a>
-	</li>
+	</div>
 #{/list}
 #{/else}
 <br/><br/>
-<font size=3>>Meeting Invitations:<img src="/public/images/famfam/meeting.png"/></font><br/><br/>
+<font size=3><img src="/public/images/famfam/arrow_grey_right.png"/>Meeting Invitations:</font><br/><br/>
 #{if meetings.isEmpty()}
 <img src = "/public/images/famfam/exclamation.png"/> There are no new meeting invitations
 #{/if}
 #{else}
 #{list items:meetings, as:'meet'}
-	<li id = "meet_${meet.id}">
-		You have been invited to attend meeting: <a href = "@{Application.externalOpen(meet.meeting.project.id, '/Meetings/viewMeeting?id=meet.meeting.id', false)}">${meet.meeting.name}</a> in project <a href = "@{Application.externalOpen(meet.meeting.project.id, '#', false)}">${meet.meeting.project.name}</a>
+	<div id = "meet_${meet.id}">
+		<img src="/public/images/famfam/meeting.png"/> You have been invited to attend meeting: <a href = "@{Application.externalOpen(meet.meeting.project.id, '/Meetings/viewMeeting?id=meet.meeting.id', false)}">${meet.meeting.name}</a> in project <a href = "@{Application.externalOpen(meet.meeting.project.id, '#', false)}">${meet.meeting.project.name}</a>
 		<br><a onclick="confirm_me('${meet.meeting.id}');"><img src="/public/images/famfam/tick.png" title="Accept"/></a> &nbsp; 
 		<a onclick="decline_me('${meet.meeting.id}');"><img src="/public/images/famfam/cross.png" title="Decline"/></a>
-	</li>
+	</div>
 #{/list}
 #{/else}
 <script type = text/javascript>
