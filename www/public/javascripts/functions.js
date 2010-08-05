@@ -447,6 +447,8 @@ function removeFromDiv(url)
 }
 		
 function load(url, el, n) {
+	
+	$('#' + el + '_content').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>');
 	if ($.inArray(url,myDivs) == -1 || n == 2) {
 		var pUrl = $('#'+el).attr('name');
 		if (n != 3) {
@@ -454,19 +456,23 @@ function load(url, el, n) {
 									$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
 								});
 		}
-		$('#' + el + '_content').load(url, function() {
-			var t1 = $('#' + el + '_content').find('.actual').first();
-			$(t1).replaceWith($(t1).html());		
-			$('#'+ el + '_content').parent().append('<div class="filter"id="'+el+'_filter"></div>');
+		$('#'+ el + '_content').parent().append('<div id="temp" style="display:none"></div>');
+		$('#temp').load(url, function() {
+			var t1 = $('#temp').find('.actual').first();		
 			if (n == 1) {
+				$('#'+ el + '_content').parent().append('<div class="filter"id="'+el+'_filter"></div>');
 				$('#'+ el + '_filter').load(pUrl+' .filter', function(){
 					var t2 = $('#' + el + '_filter').find('.filter').first();
 					$(t2).replaceWith($(t2).html());
 					$('#'+ el + '_filter').find('input').first().attr('name','filter_textBox_'+el);
+					$('#'+el+'_content').html($(t1).html());
 					magic(el);
 					$('#' + el + '_content').slideDown(400);
 				});
-			} else {
+			}
+			else 
+			{
+				$('#'+el+'_content').html($(t1).html());
 				magic(el);
 				$('#' + el + '_content').slideDown(400);
 			}
@@ -489,7 +495,10 @@ function loadBox(url, el, classes)
 		// element.children().css('left', CURRENT_OFFSET+'px')
 		// CURRENT_OFFSET += 315
 		element.children().css('z-index','4');
+		element.find('.bar').first().hide();
+		element.find('.actual').first().show();
 		element.replaceWith(element.html());
+		
 		doOnLoad()
 		myDivs.push(url);
 	});
