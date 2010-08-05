@@ -654,7 +654,7 @@ public class Tasks extends SmartCRUD
 		ObjectType type = ObjectType.get( getControllerClass() );
 		notFoundIfNull( type );
 		JPASupport object = type.findById( id );
-
+		String changes="";
 		Task tmp = (Task) object;
 		Security.check( Security.getConnected().in( tmp.project ).can( "modifyTask" ) );
 		List<User> users = tmp.component.componentUsers;
@@ -665,6 +665,32 @@ public class Tasks extends SmartCRUD
 		String message2 = "Are you Sure you want to delete the task ?!";
 		List<Requestreviewer> reviewers = Requestreviewer.find( "byComponentAndAccepted", tmp.component, true ).fetch();
 		boolean deletable = tmp.isDeletable();
+		 String oldDescription = tmp.description;// done
+		 long oldTaskType;
+		 if(tmp.taskType != null)
+			 oldTaskType = tmp.taskType.id;// done
+		 else
+			 oldTaskType = 0;
+		 long oldTaskStatus;
+		 if(tmp.taskStatus != null)
+			 oldTaskStatus = tmp.taskStatus.id;// done
+		 else
+			 oldTaskStatus = 0;
+		 double oldEstPoints = tmp.estimationPoints;// done
+		 long oldAssignee;
+		 if(tmp.assignee != null)
+			 oldAssignee = tmp.assignee.id;// done
+		 else
+			 oldAssignee = 0;
+		 long oldReviewer;
+		 if(tmp.reviewer != null)
+			 oldReviewer = tmp.reviewer.id;// done
+		 else
+			 oldReviewer = 0;
+		 ArrayList<Task> oldDependencies = new ArrayList<Task>();
+		 for (Task current : tmp.dependentTasks) {
+			 oldDependencies.add(current);
+		 }
 		object = object.edit( "object", params );
 		// Look if we need to deserialize
 //		for( ObjectType.ObjectField field : type.getFields() )
@@ -675,7 +701,7 @@ public class Tasks extends SmartCRUD
 //				f.set( object, CRUD.collectionDeserializer( params.get( "object." + field.name ), (Class) ((ParameterizedType) f.getGenericType()).getActualTypeArguments()[0] ) );
 //			}
 //		}
-
+		
 		validation.valid( object );
 		if( validation.hasErrors() )
 		{
@@ -690,6 +716,56 @@ public class Tasks extends SmartCRUD
 			}
 		}
 		object.save();
+		/*********** Changes as Comment by Galal Aly **************/
+		
+		 if (!(tmp.description.equals(oldDescription)))
+		 changes += "Description changed from <i>" + oldDescription +
+		 "</i> to <i>" + tmp.description + "</i><br>";
+		 if(tmp.taskType != null && oldTaskType != 0)
+			 if (tmp.taskType.id != oldTaskType) {
+			 TaskType temp = TaskType.findById(oldTaskType);
+			 changes += "Task's Type was changed from <i>" + temp.name + "</i> to <i>"
+			 + tmp.taskType.name + "</i><br>";
+			 }
+		 if(tmp.taskStatus != null && oldTaskStatus != 0)
+			 if (tmp.taskStatus.id != oldTaskStatus) {
+			 TaskStatus temp = TaskStatus.findById(oldTaskStatus);
+			 changes += "Task's status was changed from <i>" + temp.name +
+			 "</i> to <i>" + tmp.taskStatus.name + "</i><br>";
+			 }
+		 if (tmp.estimationPoints != oldEstPoints)
+		 changes += "Estimation points for the task were changed from <i>" +
+		 oldEstPoints + "</i> to <i>" + tmp.estimationPoints + "</i><br>";
+		 if(tmp.assignee != null && oldAssignee != 0)	 
+			 if (tmp.assignee.id != oldAssignee) {
+				 User temp = User.findById(oldAssignee);
+				 changes += "Task's assignee was changed from <i>" + temp.name +
+				 "</i> to <i>" + tmp.assignee.name + "</i><br>";
+				 }
+		 if(tmp.reviewer != null && oldReviewer != 0)
+			 if (tmp.reviewer.id != oldReviewer) {
+			 User temp = User.findById(oldReviewer);
+			 changes += "Task's reviewer was changed from <i>" + temp.name +
+			 "</i> to <i>" + tmp.reviewer.name + "</i><br>";
+			 }
+		 for (Task oldTask : oldDependencies) {
+		 if (!(tmp.dependentTasks.contains(oldTask))) {
+		 changes += "Task " + oldTask.number +
+		 " was removed from Dependent tasks.<br>";
+		 }
+		 }
+		 for (Task newTask : tmp.dependentTasks) {
+		 if (!(oldDependencies.contains(newTask))) {
+		 changes += "Task " + newTask.number +
+		 " was added to dependent tasks.<br>";
+		 }
+		 }
+		
+		 // Now finally save the comment
+		 Comment changesComment = new Comment(Security.getConnected(), tmp.id,
+		 changes);
+		 changesComment.save();
+		// /********** End of Changes as Comment ********/
 		if(tmp.comment.trim().length() != 0){
 			Comment comment = new Comment(Security.getConnected(), tmp.id, tmp.comment);
 			comment.save();
