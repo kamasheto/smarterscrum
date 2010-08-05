@@ -25,13 +25,12 @@ function filter_me(el){
 	if(input.trim().length == 0){
 		//loop on all divs located inside the id_content and show them.
 		smart_pagination(id,page);
-		showNormalLinks(id);
 		hideFilterLinks(id);
 	}
 	else
 	{	
 		hideNormalLinks(id);
-		showFilterLinks(id);
+		//showFilterLinks(id);
 		//loop on all divs that are located inside the div : id_content and hide them if does not contain the input ..
 		$("#"+id+"_content > div").filter(function(index) {
 			var inputCased = input.toLowerCase();
@@ -87,6 +86,21 @@ function smart_pagination(el, view_page){
 			starting_index++;
 			j++;
 		}
+		view_page++;
+		if(view_page == numPages){
+			$("#"+id+" .normalLinkn").hide();
+		}
+		else{
+			if($("#"+id+" .normalLinkn").is(":hidden"))
+				$("#"+id+" .normalLinkn").show();
+		}
+		if(view_page == 1){
+			$("#"+id+" .normalLinkp").hide();
+		}
+		else{
+			if($("#"+id+" .normalLinkp").is(":hidden"))
+				$("#"+id+" .normalLinkp").show();
+		}
 	}
 }
 
@@ -134,6 +148,21 @@ function filter_smart_pagination(el,view_page, nextPrevious){
 			starting_index++;
 			j++;
 		}
+		view_page++;
+		if(view_page == numPages){
+			$("#"+id+" .filterLinkn").hide();
+		}
+		else{
+			if($("#"+id+" .filterLinkn").is(":hidden"))
+				$("#"+id+" .filterLinkn").show();
+		}
+		if(view_page == 1){
+			$("#"+id+" .filterLinkp").hide();
+		}
+		else{
+			if($("#"+id+" .filterLinkp").is(":hidden"))
+				$("#"+id+" .filterLinkp").show();
+		}
 	}
 }
 
@@ -153,17 +182,21 @@ function previousFilterPage(id){
 }
 
 function hideNormalLinks(id){
-	$("#"+id+" .normalLink").hide();
+	$("#"+id+" .normalLinkn").hide();
+	$("#"+id+" .normalLinkp").hide();
 }
 
 function showNormalLinks(id){
-	$("#"+id+" .normalLink").show();
+	$("#"+id+" .normalLinkn").show();
+	$("#"+id+" .normalLinkp").show();
 }
 
 function hideFilterLinks(id){
-	$("#"+id+" .filterLink").hide();
+	$("#"+id+" .filterLinkn").hide();
+	$("#"+id+" .filterLinkp").hide();
 }
 
 function showFilterLinks(id){
-	$("#"+id+" .filterLink").show();
+	$("#"+id+" .filterLinkn").show();
+	$("#"+id+" .filterLinkp").show();
 }
