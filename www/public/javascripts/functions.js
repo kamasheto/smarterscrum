@@ -278,9 +278,10 @@ $(function() {
 						drop: function(event2, ui2) {
 							$(this).attr('src', '/public/images/loading16.gif')
 							that = this
+							alert($(ui.helper).attr('name'))
 							$.ajax({
 								url: '/loading/dynamicdrop',
-								data: {from: $(ui2.draggable).attr('name'), to: $(this).attr('name')},
+								data: {from: $(ui.helper).attr('name'), to: $(this).attr('name')},
 								success: function(response) {
 									arr = response.split('|')
 									if (arr.length > 0 && arr[0]) {
