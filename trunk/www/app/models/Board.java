@@ -24,16 +24,33 @@ public class Board extends SmartModel {
 	public String name;
 	public boolean deleted;
 
+	
+	/***
+	 * Project board constructor
+	 * 
+	 * @param project 
+	 * 			board project
+	 */
 	public Board (Project project) {
 		this();
 		this.project = project;
 	}
 
+	
+	/***
+	 * Component board constructor
+	 * 
+	 * @param component2 
+	 * 			component board
+	 */
 	public Board (Component component2) {
 		this();
 		component = component2;
 	}
 
+	/***
+	 * Default board constructor
+	 * */
 	public Board () {
 		snapshot = new ArrayList<Snapshot>();
 		columns = new ArrayList<Column>();
