@@ -460,7 +460,7 @@ function load(url, el, n) {
 		$('#temp').load(url, function() {
 			var t1 = $('#temp').find('.actual').first();		
 			if (n == 1) {
-				$('#'+ el + '_content').parent().append('<div class="filter"id="'+el+'_filter"></div>');
+			$('#'+ el + '_content').parent().append('<div class="filter"id="'+el+'_filter"></div>');
 				$('#'+ el + '_filter').load(pUrl+' .filter', function(){
 					var t2 = $('#' + el + '_filter').find('.filter').first();
 					$(t2).replaceWith($(t2).html());
@@ -498,7 +498,6 @@ function loadBox(url, el, classes)
 		element.find('.bar').first().hide();
 		element.find('.actual').first().show();
 		element.replaceWith(element.html());
-		
 		doOnLoad()
 		myDivs.push(url);
 	});
@@ -509,9 +508,6 @@ function magic(id) {
 	doOnLoad();
 	smart_pagination(''+id,1);
 	hideFilterLinks(''+id);
-
-
-	
 	$("#" + id + "_content div[name]").each(
 	function() 
 	{
@@ -536,7 +532,7 @@ function magic(id) {
 						$(this).addClass('draggableChild');
 
 						$(this).attr('id', id2);
-				$(this).append('<div id="' + id2 + '_content" class="ui-widget-content" ></div>');
+				$(this).append('<div id="' + id2 + '_content" class="ui-widget-content actual" ></div>');
 						}
 						else
 			{	var id2= $($(this).closest('.workspaceDraggables').find('div[name='+$(this).attr('name')+']')).first().attr('id')+'_2';
@@ -669,7 +665,7 @@ function showProjectWorkspace(project_id) {
 		url: '/show/workspace',
 		data: {id: project_id},
 		success: function(data) {
-			$('#project-tabs').append('<a class="aDIV topCornersRounded right project-button selectedADiv" id="project-button-'+project_id+'" href="#" onclick="show('+project_id+')" style="width: 120px !important" title="">'+$(data).find('.project_name_in_header').html()+' <span class="right ui-icon2 ui-icon-circle-close" onclick="close_workspace('+project_id+')"> </span></a>');
+			$('#project-tabs').append('<a class="aDIV topCornersRounded selectedADiv project-button right" id="project-button-'+project_id+'" href="#" onclick="show('+project_id+')" style="width: 120px !important" title="">'+$(data).find('.project_name_in_header').html()+' <span class="right ui-icon2 ui-icon-circle-close" onclick="close_workspace('+project_id+')"> </span></a>');
 			$('.workspace-' + project_id).html(data)
 			$('#top_header_projects_pane').slideUp()
 		}
@@ -689,6 +685,7 @@ function reload() {
 		div = $(sel, '#workspace-' + CURRENT_PROJECT)
 		div.each(function() {
 			url = div.attr('name')
+			// alert('Reloading: ' + url)
 			exit = false
 			$.ajax({
 				url: url,

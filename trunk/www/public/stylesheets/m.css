@@ -229,7 +229,7 @@ img {
 	color: white;
 	text-transform: uppercase;
 	position: absolute;
-	right: 0px;
+	left: 0px;
 	top: 42px;
 	width: 200px;
 	z-index: 100;
