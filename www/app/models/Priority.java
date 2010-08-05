@@ -3,27 +3,42 @@ package models;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+/**
+ * Priority
+ */
 @Entity
 public class Priority extends SmartModel implements Comparable {
 
+	/**
+	 * Title of this priority
+	 */
 	public String title;
-	public int priority;
-	public boolean deleted = false;
 
-	// Relation with Project many to One
+	/**
+	 * Integer value of this priority
+	 */
+	public int priority;
+
+	/**
+	 * Deleted or not?
+	 * 
+	 * @deprecated
+	 */
+	public boolean deleted;
+
+	/**
+	 * Project this priority belongs to (one prio -> one project, one project ->
+	 * many prios)
+	 */
 	@ManyToOne
 	public Project project;
 
-	// @Override
+	/**
+	 * @override
+	 */
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
 		Priority mine = (Priority) o;
-		if (this.priority > mine.priority) {
-			return 1;
-		} else if (this.priority < mine.priority) {
-			return -1;
-		} else
-			return 0;
+		return this.priority > mine.priority ? 1 : this.priority < mine.priority ? -1 : 0;
 	}
 
 }

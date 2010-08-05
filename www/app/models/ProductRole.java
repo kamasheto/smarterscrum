@@ -12,14 +12,39 @@ import javax.persistence.OneToMany;
 
 import play.data.validation.Required;
 
+/**
+ * Product role in a project
+ */
 @Entity
 public class ProductRole extends SmartModel {
+	
+	/**
+	 * Whether this product role is deleted
+	 * 
+	 * @deprecated
+	 */
 	public boolean deleted;
+
+	/**
+	 * Name of this product role, eg: TA
+	 */
 	@Required
 	public String name;
+
+	/**
+	 * Description of this product role
+	 */
 	public String description;
+
+	/**
+	 * Project of this role (one role > one project, one project > many roles)
+	 */
 	@ManyToOne
 	public Project project;
+
+	/**
+	 * Tasks that use this role (one role > many tasks, one task > one role)
+	 */
 	@OneToMany (mappedBy = "productRole", cascade = CascadeType.ALL)
 	public List<Task> Tasks;
 
@@ -35,8 +60,6 @@ public class ProductRole extends SmartModel {
 	 * @param description
 	 *            description of the product role
 	 * @return void
-	 * @task C3 S1 & S4
-	 * @sprint 1
 	 */
 	public ProductRole (long projectId, String name, String description) {
 		this.deleted = false;
@@ -56,8 +79,6 @@ public class ProductRole extends SmartModel {
 	 *            the project id that the product role belongs to.
 	 * @return boolean value indecating if the product role name already exists
 	 *         or no.
-	 * @task C3 S1 & S2
-	 * @sprint 2
 	 **/
 	public static boolean hasUniqueName(String name, long projectId) {
 		Project project = Project.findById(projectId);
@@ -74,15 +95,12 @@ public class ProductRole extends SmartModel {
 	 * current sprint.
 	 * 
 	 * @author Heba Elsherif
-	 * @param void
 	 * @return boolean value indecating if the product role included in a story
 	 *         that has some tasks in the current sprint.
-	 * @task C3 S2 & S3
-	 * @sprint 2
 	 **/
 	public boolean inSprint() {
 		Date now = Calendar.getInstance().getTime();
-		for (Task  task: Tasks) {
+		for (Task task : Tasks) {
 			if (task.taskSprint.startDate.before(now) && task.taskSprint.endDate.after(now)) {
 				return true;
 			}

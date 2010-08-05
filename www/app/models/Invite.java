@@ -12,14 +12,17 @@ import controllers.Application;
  */
 @Entity
 public class Invite extends SmartModel {
+
 	/**
-	 * *..1 relation with users
+	 * User associated to this invite - one user > many invites, one invite >
+	 * one user
 	 */
 	@ManyToOne
 	public User user;
 
 	/**
-	 * *..1 relation with role
+	 * Role associated to this invite - one role > many invites, one invite >
+	 * one role
 	 */
 	@ManyToOne
 	public Role role;
@@ -42,5 +45,4 @@ public class Invite extends SmartModel {
 		this.role = role;
 		hash = Application.randomHash();
 	}
-
 }

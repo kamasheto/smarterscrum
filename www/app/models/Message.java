@@ -15,18 +15,46 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Message extends SmartModel {
 
+	/**
+	 * Message deleted marker
+	 * 
+	 * @deprecated
+	 */
 	public boolean deleted;
 
+	/**
+	 * timestamp of this message
+	 */
 	public long stamp;
 
+	/**
+	 * author of this message, name is hardcoded here to reduce overhead
+	 */
 	public String author;
 
+	/**
+	 * Body of this message
+	 */
 	@Lob
 	public String message;
 
+	/**
+	 * Room of this message (a room may have many messages, a message has only
+	 * one room)
+	 */
 	@ManyToOne
 	public ChatRoom room;
 
+	/**
+	 * Default constructor
+	 * 
+	 * @param authr
+	 *            Author of this message
+	 * @param mssage
+	 *            Body of this message
+	 * @param r
+	 *            Chatroom of this message
+	 */
 	public Message (String authr, String mssage, ChatRoom r) {
 		this.room = r;
 		this.author = authr;
