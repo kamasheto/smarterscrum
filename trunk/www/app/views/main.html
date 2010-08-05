@@ -168,7 +168,7 @@
 <div class="topper">
 						<div class="left">
 						#{if connected}
-							Hello ${connected.name}! <!--&nbsp;&nbsp;|&nbsp;&nbsp;
+							Hello <span id="username-in-topbar">${connected.name}</span>! <!--&nbsp;&nbsp;|&nbsp;&nbsp;
 							<a href="#" onclick="smartShow('/show/user?id=${controllers.Security.getConnected().id}')">Profile</a>-->
 						#{/if}
 						</div>
