@@ -2,15 +2,15 @@
 #{set 'title'}${title}
 #{/set}
 
-#{if x==1}
+#{if boxId==1}
    #{if user!=null}
 	   #{list items:user.projects ,as :'project'}
-		    <div class="reload-project-${project.id}-in-user-${user.id}" name="/users/listUserProjects?userId=${user.id}&x=2&projectId=${project.id}&currentProjectId=${currentProject.id}">${project.name}</div>
+		    <div class="reload-project-${project.id}-in-user-${user.id}" name="/users/listUserProjects?userId=${user.id}&boxId=2&projectId=${project.id}&currentProjectId=${currentProject.id}">${project.name}</div>
 	   #{/list}
    #{/if}
 #{/if}
 
-#{if x==2}
+#{if boxId==2}
    #{if user!=null}
     #{list items:project.roles ,as :'pRole'}
      #{list items:user.roles ,as :'uRole'}

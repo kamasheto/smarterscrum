@@ -360,23 +360,23 @@ public class Users extends SmartCRUD {
 		}
 	}
 	
-	public static void listUserProjects(long userId, int x, long projectId, long currentProjectId)
+	public static void listUserProjects(long userId, int boxId, long projectId, long currentProjectId)
 	{
 		String title;
-		if(x==1)
+		if(boxId==1)
 		{
 			Project currentProject = Project.findById(currentProjectId);
 			User user = User.findById(userId);
 			title= user.name+"'s Projects";
-			render(user, title, x, currentProject);
+			render(user, title, boxId, currentProject);
 		}
-		if(x==2)
+		if(boxId==2)
 		{
 			Project currentProject = Project.findById(currentProjectId);
 			User user = User.findById(userId);
 			Project project = Project.findById(projectId);
 			title= user.name+"'s Roles in Project: " + project.name;
-			render(user, title, x, project, currentProject);
+			render(user, title, boxId, project, currentProject);
 		}
 		
 	}
