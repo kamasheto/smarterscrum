@@ -134,7 +134,7 @@ margin:2px 1px;
 }
 
 .filter span {
-	float: right !important
+vertical-align:middle;
 }
 
 .draggable {

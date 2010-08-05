@@ -91,18 +91,18 @@ function smart_pagination(el, view_page){
 		}
 		view_page++;
 		if(view_page == numPages){
-			$("#"+id+" .normalLinkn").hide();
+			$("#"+id+" .normalLinkn").addClass('dim');
 		}
 		else{
-			if($("#"+id+" .normalLinkn").is(":hidden"))
-				$("#"+id+" .normalLinkn").show();
+			if($("#"+id+" .normalLinkn").hasClass('dim'))
+				$("#"+id+" .normalLinkn").removeClass('dim');
 		}
 		if(view_page == 1){
-			$("#"+id+" .normalLinkp").hide();
+			$("#"+id+" .normalLinkp").addClass('dim');
 		}
 		else{
-			if($("#"+id+" .normalLinkp").is(":hidden"))
-				$("#"+id+" .normalLinkp").show();
+			if($("#"+id+" .normalLinkp").hasClass('dim'))
+				$("#"+id+" .normalLinkp").removeClass('dim');
 		}
 	}
 	updatePageNumbers(id);
@@ -155,18 +155,18 @@ function filter_smart_pagination(el,view_page, nextPrevious){
 		}
 		view_page++;
 		if(view_page == numPages){
-			$("#"+id+" .filterLinkn").hide();
+			$("#"+id+" .filterLinkn").addClass('dim');
 		}
 		else{
-			if($("#"+id+" .filterLinkn").is(":hidden"))
-				$("#"+id+" .filterLinkn").show();
+			if($("#"+id+" .filterLinkn").hasClass('dim'))
+				$("#"+id+" .filterLinkn").removeClass('dim');
 		}
 		if(view_page == 1){
-			$("#"+id+" .filterLinkp").hide();
+			$("#"+id+" .filterLinkp").addClass('dim');
 		}
 		else{
-			if($("#"+id+" .filterLinkp").is(":hidden"))
-				$("#"+id+" .filterLinkp").show();
+			if($("#"+id+" .filterLinkp").hasClass('dim'))
+				$("#"+id+" .filterLinkp").removeClass('dim');
 		}
 	}
 	updatePageNumbersFilter(id);
@@ -188,6 +188,8 @@ function previousFilterPage(id){
 }
 
 function hideNormalLinks(id){
+	$("#"+id+" .filterLinkn").show();
+	$("#"+id+" .filterLinkp").show();
 	$("#"+id+" .normalLinkn").hide();
 	$("#"+id+" .normalLinkp").hide();
 }
@@ -195,20 +197,33 @@ function hideNormalLinks(id){
 function showNormalLinks(id){
 	$("#"+id+" .normalLinkn").show();
 	$("#"+id+" .normalLinkp").show();
+	$("#"+id+" .filterLinkn").hide();
+	$("#"+id+" .filterLinkp").hide();
 }
 
 function hideFilterLinks(id){
 	$("#"+id+" .filterLinkn").hide();
 	$("#"+id+" .filterLinkp").hide();
+	$("#"+id+" .normalLinkn").show();
+	$("#"+id+" .normalLinkp").show();
 }
 
 function showFilterLinks(id){
 	$("#"+id+" .filterLinkn").show();
 	$("#"+id+" .filterLinkp").show();
+	$("#"+id+" .normalLinkn").hide();
+	$("#"+id+" .normalLinkp").hide();
 }
 
 function updatePageNumbers(id){
 	$("#"+id+" .numPages").text(page+"/"+globalNumPagesNormal);
+	if(globalNumPagesNormal==1)
+	{
+		$("#"+id+"_filter").hide();
+	}
+	else
+		$("#"+id+"_filter").show();
+		
 }
 
 function updatePageNumbersFilter(id){
