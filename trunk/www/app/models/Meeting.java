@@ -15,7 +15,7 @@ import play.data.validation.Required;
 
 @Entity
 public class Meeting extends SmartModel {
-	
+
 	/**
 	 * Meeting name
 	 */
@@ -58,7 +58,8 @@ public class Meeting extends SmartModel {
 	public boolean isReviewLog;
 
 	/**
-	 * The meeting type
+	 * The meeting type, one of a list of types per project (found in project
+	 * settings)
 	 */
 	public String type;
 
