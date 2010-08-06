@@ -135,13 +135,13 @@ REDIPS.drag.init()
 		<div style="text-align:center">
 		<a id="${col.sequence}_c" onclick = "swapCol(id)" style="color:#FFFFFF">
 		<span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Swap with another column?" class="ui-state-default ui-corner-all">
-		<span style="display:inline-block !important"class="ui-icon ui-icon-transferthick-e-w "></span>
+		<span style="display:inline-block !important"><img src="@{'/public/images/famfam/swap.png'}"></span>
 		</span></a>
 		<a><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" title="Drag the column Anywhere" >
 		<span style="display:inline-block" class="ui-icon ui-icon-arrow-4 "></span>
 		</span></a>
 		<a style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" class="ui-state-default ui-corner-all ">
-		<span onclick="myhidecol(id)" title="hide column?" id="${count}" style="display:inline-block !important"class="tiptitize ui-icon ui-icon-hide "></span>
+		<span onclick="myhidecol(id)" title="hide column?" id="${count}" style="display:inline-block !important"class="tiptitize"><img src="@{'/public/images/famfam/toggle-open.gif'}"></span>
 		</span></a>
 		#{set count=count+1}
 		#{/set}
