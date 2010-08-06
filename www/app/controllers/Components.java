@@ -180,7 +180,10 @@ public class Components extends SmartCRUD {
 		}
 	}
 
-	/**** Magic Box ****/
+	/**
+	 * this method renders a list of components in a project
+	 * @param projectId the id of the project the page renders its components
+	 */
 
 	public static void listComponentsInProject(long projectId) {
 		// Project project = Project.findById(projectId);
@@ -194,6 +197,10 @@ public class Components extends SmartCRUD {
 		render(components, projectId);
 	}
 
+	/**
+	 * this method renders the component that should be shown in the html page
+	 * @param componentId the id of the component shown by the html page
+	 */
 	public static void viewTheComponent(long componentId) {
 		Component component = Component.findById(componentId);
 		if (component.deleted)

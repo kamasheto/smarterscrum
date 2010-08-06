@@ -63,6 +63,10 @@ public class Invites extends SmartController {
 		//Application.index();
 	}
 	
+	/**
+	 * this method renders to the html page 2 lists of project invitations
+	 * and meeting invitations to be shown in the sidebar
+	 */
 	public static void showInvitations()
 	{
 		User usr = Security.getConnected();

@@ -274,7 +274,13 @@ public class Meetings extends SmartCRUD
 
 	}
 
-	public static void save( String id ) throws Exception
+	/**
+	 * 
+	 * this method saves the created meeting in the DB & checks if every input is valid
+	 * @param id the id of the meeting that's being created
+	 * @throws Exception
+	 */
+	public static void save( long id ) throws Exception
 	{
 		ObjectType type = ObjectType.get( getControllerClass() );
 		notFoundIfNull( type );
@@ -335,6 +341,10 @@ public class Meetings extends SmartCRUD
 		}
 	}
 
+	/**
+	 * 
+	 * @param id the id of the meeting that this method shows its associations
+	 */
 	public static void associations( long id )
 	{
 		// amr hany part :
@@ -875,6 +885,11 @@ public class Meetings extends SmartCRUD
 			renderJSON( false );
 	}
 
+	/**
+	 * this method takes the id of the meeting as an input and renders to the page
+	 * the list of users invited to a meeting with their status attending, waiting, not
+	 * @param meetingId
+	 */
 	public static void invitedMembers( long meetingId )
 	{
 		Meeting meeting = Meeting.findById( meetingId );
@@ -913,6 +928,11 @@ public class Meetings extends SmartCRUD
 		render();
 	}
 
+	/**
+	 * this method takes the id of a meeting attendance as an input and renders to the page
+	 * the status of the user whether attended or not the meeting after the meeting ended 
+	 * @param id the id of the meeting attendance
+	 */
 	public static void viewAttendeeStatus( long id )
 	{
 		MeetingAttendance attendance = MeetingAttendance.findById( id );
