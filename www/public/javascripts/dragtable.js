@@ -32,12 +32,6 @@ dragtable = {
     dragtable.dragRadius2 = x * x;
   },
 
-  // How long should cookies persist? (in days)
-  cookieDays: 365,
-  setCookieDays: function(x) {
-    dragtable.cookieDays = x;
-  },
-
   // Determine browser and version.
   // TODO: eliminate browser sniffing except where it's really necessary.
   Browser: function() {
@@ -106,12 +100,6 @@ dragtable = {
     for (var i = 0; i < headers.length; i++) {
       headers[i].onmousedown = dragtable.dragStart;
     }
-
-		// Replay reorderings from cookies if there are any.
-		if (dragtable.cookiesEnabled() && table.id &&
-				table.className.search(/\bforget-ordering\b/) == -1) {
-			dragtable.replayDrags(table);
-		}
   },
 
   // Global object to hold drag information.
@@ -329,10 +317,6 @@ dragtable = {
     var targetCol = dragtable.findColumn(dragObj.table, pos.x);
     if (targetCol != -1 && targetCol != dragObj.startCol) {
       dragtable.moveColumn(dragObj.table, dragObj.startCol, targetCol);
-      if (dragObj.table.id && dragtable.cookiesEnabled() &&
-					dragObj.table.className.search(/\bforget-ordering\b/) == -1) {
-        dragtable.rememberDrag(dragObj.table.id, dragObj.startCol, targetCol);
-      }
     }
   },
 
