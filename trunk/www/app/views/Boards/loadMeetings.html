@@ -143,8 +143,8 @@ No Attendees
 	}
 	function select_user(id, str) 
  {
- 	// $('.status').css('display','none');
-	//  $('.nostatus').css('display','none');
+ 	 $('.status').css('display','none');
+	 $('.nostatus').css('display','none');
 	 
  	 window.opener.$('.editDES').css('display','none');
 	 window.opener.$('.noedit').css('display','none');
@@ -184,15 +184,15 @@ No Attendees
     }
 	if(f_status)
 	{
-	//	 $('.status').css('display','inline-block');
-	//	  $('.nostatus').css('display','none');		
+		 window.opener.$('.status').css('display','inline-block');
+		 window.opener.$('.nostatus').css('display','none');		
 	}
 	else
 	{
-	//	 $('.status').css('display','none');
-	//	 $('.nostatus').css('display','inline-block');
-	// 	$('.nostatus_'+id).css('display','none');
-	//	$('.status_'+id).css('display','inline-block');	
+		 window.opener.$('.status').css('display','none');
+		 window.opener.$('.nostatus').css('display','inline-block');
+	 	window.opener.$('.nostatus_'+id).css('display','none');
+		window.opener.$('.status_'+id).css('display','inline-block');	
 	}	
 		
 			
