@@ -32,6 +32,9 @@ public class Requestreviewer extends SmartModel {
 	 */
 	public boolean accepted;
 	
+	/**
+	 * whether the request was rejected
+	 */
 	public boolean rejected;
 
 	/**

@@ -14,9 +14,15 @@ import controllers.Security;
  */
 @Entity
 public class Session extends SmartModel {
+	/**
+	 * the session belong to the user
+	 */
 	@OneToOne
 	public User user;
 
+	/**
+	 * timestamp of the last click in the session
+	 */
 	public long lastClick;
 
 	/**

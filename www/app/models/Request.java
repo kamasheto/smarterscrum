@@ -17,22 +17,40 @@ import controllers.Application;
 @Entity
 public class Request extends SmartModel
 {
+	/**
+	 * user who requested the request
+	 */
 	@ManyToOne
 	public User user;
 
+	/**
+	 * the request was in the project
+	 */
 	// Uncommented in Sprint2 By Tj.Wallas_ , Task C1S14
 	@ManyToOne
 	public Project project;
 
+	/**
+	 * the user requested the "role"
+	 */
 	@ManyToOne
 	public Role role;
 
 	// public boolean pending;
 
+	/**
+	 * hash used for accepted or declining the request
+	 */
 	public String hash; // will have to use for accepting/declining
 
+	/**
+	 * whether it's a deletion request
+	 */
 	public boolean isDeletion;
 
+	/**
+	 * the request belongs to the component
+	 */
 	public Component component;
 
 	// requests

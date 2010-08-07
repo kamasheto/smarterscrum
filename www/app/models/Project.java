@@ -30,42 +30,84 @@ public class Project extends SmartModel
 
 	@Lob
 	@Required
+	/**
+	 * project's description
+	 */
 	public String description;
 
+	/**
+	 * whether the project is deleted
+	 */
 	public boolean deleted;
+	
+	/**
+	 * whether the project is private
+	 */
 
 	public boolean isPrivate;
 
+	/**
+	 * whether it's a scrum project
+	 */
 	public boolean isScrum;
 
+	/**
+	 * whether the project was approved
+	 */
 	public boolean approvalStatus = false;
 
+	/**
+	 * Project creator
+	 */
 	public User user;
 
 	/* One To Many Relations */
+	/**
+	 * project's product roles
+	 */
 	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
 	public List<ProductRole> productRoles;
 
+	/**
+	 * project's meetings
+	 */
 	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
 	public List<Meeting> meetings;
 
+	/**
+	 * project's roles
+	 */
 	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
 	public List<Role> roles;
 
+	/**
+	 * project's components
+	 */
 	@OneToMany( mappedBy = "project" )
 	public List<Component> components;
-
+/**
+ * project's sprints
+ */
 	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
 	public List<Sprint> sprints;
 
 	// Added in Sprint 2 by Galal Aly
+	/**
+	 * project's stories' priorities
+	 */
 	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
 	public List<Priority> priorities;
 
+	/**
+	 * project's tasks statuses
+	 */
 	// Added in Sprint 2 by Monayri
 	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
 	public List<TaskStatus> taskStatuses;
 
+	/**
+	 * project's tasks' types
+	 */
 	// Added in Sprint 2 by Monayri
 	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
 	public List<TaskType> taskTypes;
@@ -92,38 +134,83 @@ public class Project extends SmartModel
 	@OneToMany( mappedBy = "project" )
 	public List<Request> requests;
 
+	
 	/* One To One Relations */
+	
+	/**
+	 * the project's board
+	 */
 	@OneToOne( mappedBy = "project" )
 	public Board board;
 
+	/**
+	 * project's notification profile
+	 */
 	@OneToOne( mappedBy = "project", cascade = CascadeType.ALL )
 	public ProjectNotificationProfile notificationProfile;
 
+	/**
+	 * project's chatroom
+	 */
 	public ChatRoom chatroom;
 
 	/*                      */
 
 	/* Many To Many Relations */
+	/**
+	 * project's logs
+	 */
 	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
 	public List<Log> logs;
 
+	/**
+	 * project's notifications
+	 */
 	@OneToMany (mappedBy = "project", cascade = CascadeType.ALL)
 	public List<Notification> notifications;
 
+	/**
+	 * users in the project
+	 */
 	@ManyToMany( mappedBy = "projects", cascade = CascadeType.ALL )
 	public List<User> users;
 
+	/**
+	 * tasks that belong to the project
+	 */
 	@OneToMany( mappedBy = "project" )
 	public List<Task> projectTasks;
 	/*                       */
 
+	/**
+	 * project's meetings' types
+	 */
 	public ArrayList<String> meetingsTypes;
+	
+	/**
+	 * project's meetings' types in a sprint
+	 */
 	public ArrayList<Boolean> meetingsTypesInSprint;
+	/**
+	 * 
+	 */
 	public boolean autoReschedule;
+	/**
+	 * 
+	 */
 	public boolean autoNotify;
+	/**
+	 * default sprint duration
+	 */
 	public int sprintDuration;
+	/**
+	 * project's effort estimation unit 
+	 */
 	public int effortEstimationUnit;
 
+	/**
+	 * initializes the projects' instance variables
+	 */
 	public Project()
 	{
 		this.productRoles = new ArrayList<ProductRole>();
