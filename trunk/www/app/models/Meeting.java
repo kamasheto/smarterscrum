@@ -160,7 +160,7 @@ public class Meeting extends SmartModel {
 	}
 
 	/**
-	 * this method override the built in toString method
+	 * Override the built in toString method
 	 * 
 	 * @author Ghada Fakhry
 	 * @return String

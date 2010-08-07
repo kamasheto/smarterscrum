@@ -96,7 +96,7 @@ public class Log extends SmartModel {
 	}
 
 	/**
-	 * This method returns the first log in the database that has a date less
+	 * Returns the first log in the database that has a date less
 	 * than or equal to the date of the log this method is invoked on. Notice
 	 * that for some reason this method does not consider the logs in a project,
 	 * and returns the next overall log action.
@@ -109,7 +109,7 @@ public class Log extends SmartModel {
 	}
 
 	/**
-	 * This method returns the first log in the database that has a date greater
+	 * Returns the first log in the database that has a date greater
 	 * than or equal to the date of the log this method is invoked on. Notice
 	 * that for some reason this method does not consider the logs in a project,
 	 * and returns the previous overall log action.
