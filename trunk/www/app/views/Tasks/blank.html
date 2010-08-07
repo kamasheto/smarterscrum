@@ -64,7 +64,7 @@
 	#{if p!=null || (task!=null && task.component==null)}
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_component">Component</label>
-	<select id="object_component" name="object.component@id">
+	<select id="object_component" name="object.component@id" onchange="getUsers()">
 	#{list items:project.components ,as :'component'}
 	#{if component.name=='default component'}
 	<option value="${component.id}">None</option>
@@ -253,4 +253,29 @@ function toggleOptions(){
 		$("[name='view-more']").slideUp();
 	}	
 }
+function getUsers()
+{
+	var compId = $('#object_component').val();
+	$.post('@{componentUsers}', {cid : compId}, function(data){
+		str = '<option value="">(None)</option>';
+		$.each(data, function(id, item){
+			str += '<option value='+item.id+'>'+item.name+'</option>';
+		});
+		$('#object_assignee').html( str );
+		$('#object_reviewer').html( str );
+	}); 
+    
+}
+function change_reviewers(){
+    var value = $('#object_component').val();
+	var value2 = $('#object_assignee').val(); 
+    $.post('@{reviewers}', {id:value, id2 : value2}, function(data){
+		str = '<option value="">(None)</option>';
+		$.each(data, function(id, item){
+			str += '<option value='+item.id+'>'+item.name+'</option>';
+		});
+		$('#object_reviewer').html( str );
+	}); 
+    
+	}
 </script>

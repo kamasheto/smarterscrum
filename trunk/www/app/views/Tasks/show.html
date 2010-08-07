@@ -32,7 +32,7 @@
 
 	<div class="objectForm">
 	#{form action:@save(object.id), enctype:'multipart/form-data'}
-	#{crud.form fields:['parent','description', 'taskType', 'taskStatus', 'estimationPoints', 'reporter',
+	#{crud.form fields:['parent','description', 'taskType', 'taskStatus', 'component'  , 'estimationPoints', 'reporter',
 	  'dependentTasks','taskSprint', 'assignee', 'reviewer', 'comment', 'subTasks']}	
 			
 			
@@ -73,6 +73,22 @@
 			<select id="object_taskType" name="object.taskType@id">
 								#{list items:types ,as :'Type'}
 									<option value="${Type.id}"#{if object.taskType == Type} selected#{/if}>${Type.name}</option>
+								#{/list}		
+			</select>
+			</p>
+			#{/crud.custom }
+			
+			#{crud.custom 'component'}
+			<p>
+			<label for="task_type">Component</label>
+			<select id="object_component" name="object.component@id" onchange="getUsers()">
+								#{list items:object.project.components ,as :'component'}
+								#{if component.name=='default component'}
+									<option value="${component.id}"#{if object.component == component} selected#{/if}>None</option>
+								#{/if}
+								#{else}	
+									<option value="${component.id}"#{if object.component == component} selected#{/if}>${component.name}</option>
+								#{/else}
 								#{/list}		
 			</select>
 			</p>
@@ -176,6 +192,11 @@
 				</div>
 			#{/crud.custom}
 			
+			#{if object.subTasks.size()==0}
+			#{crud.custom 'subTasks'}
+			#{/crud.custom}
+			#{/if}
+			
 		#{/crud.form }
 			
 		<p class="crudButtons">
@@ -214,8 +235,8 @@
 	} 
 
 	function change_reviewers(){
-    var value = ${object.component.id}; 
-    var value2 = $('#object_assignee').val(); 
+    var value = $('#object_component').val();
+	var value2 = $('#object_assignee').val(); 
     $.post('@{reviewers}', {id:value, id2 : value2}, function(data){
 		str = '<option value="">(None)</option>';
 		$.each(data, function(id, item){
@@ -234,6 +255,18 @@
 			$("[name='comments']").html(data);
 		});
 	}
-
+function getUsers()
+{
+	var compId = $('#object_component').val();
+	$.post('@{componentUsers}', {cid : compId}, function(data){
+		str = '<option value="">(None)</option>';
+		$.each(data, function(id, item){
+			str += '<option value='+item.id+'>'+item.name+'</option>';
+		});
+		$('#object_assignee').html( str );
+		$('#object_reviewer').html( str );
+	}); 
+    
+}
 	</script>
 
