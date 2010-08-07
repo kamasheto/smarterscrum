@@ -10,37 +10,34 @@ public class ChatSystem extends SmartController
 {
 
 	/**
-	 * Add message method that adds a new message being sent to the system in
-	 * order to make others retrieve it.
+	 * Adds a new message to a certain room, to help new message retrieval
 	 * 
 	 * @author Amr Hany
 	 * @param message
+	 *            , The chat message
 	 * @param id
-	 *            : which is the room ID
+	 *            ,Room ID
 	 */
 	public static void addMessage( String message, long id )
 	{
 		ChatRoom room = ChatRoom.findById( id );
-		if(room.deleted)
+		if( room.deleted )
 			notFound();
 		Security.check( Security.getConnected().projects.contains( room.project ) );
 		new Message( Security.getConnected().name, message, room ).save();
 	}
 
 	/**
-	 * This method is the core of the Chat system as it is used in order to
-	 * retrieve the new messages and render them back to the view in order to
-	 * display them.
+	 * Retrieves new messages and renders them.
 	 * 
 	 * @author Amr Hany
-	 * @param message
 	 * @param id
-	 *            : which is the room ID
+	 *            , Room ID
 	 */
 	public static void newMessages( long id )
 	{
 		ChatRoom room = ChatRoom.findById( id );
-		if(room.deleted)
+		if( room.deleted )
 			notFound();
 		Security.check( Security.getConnected().projects.contains( room.project ) );
 		List<Message> messages = Message.find( "room = ?1 and stamp > ?2", room, request.date.getTime() ).fetch();
@@ -58,17 +55,16 @@ public class ChatSystem extends SmartController
 	}
 
 	/**
-	 * This method is called when a User enter the chat room
+	 * Signs in the currently connected user to the chatroom
 	 * 
 	 * @author Amr Hany
-	 * @param message
 	 * @param id
-	 *            which is the room ID
+	 *            , Room ID
 	 */
 	public static void enterChat( long id )
 	{
 		ChatRoom room = ChatRoom.findById( id );
-		if(room.deleted)
+		if( room.deleted )
 			notFound();
 		User currentUser = Security.getConnected();
 		Security.check( Security.getConnected().projects.contains( room.project ) );// ||
@@ -83,12 +79,11 @@ public class ChatSystem extends SmartController
 	}
 
 	/**
-	 * This method is called when a User leave the chat room of a project
+	 * Signs out the currently connected user from the chatroom
 	 * 
 	 * @author Amr Hany
-	 * @param message
 	 * @param id
-	 *            which is the room ID
+	 *            , Room ID
 	 */
 	public static void leaveChat( long id )
 	{
@@ -101,17 +96,17 @@ public class ChatSystem extends SmartController
 	}
 
 	/**
-	 * Method to render the room to in stand alone view.
+	 * Renders the room in a stand-alone view.
 	 * 
 	 * @author Amr Hany
 	 * @param id
-	 *            :room id
+	 *            ,Room ID
 	 */
 
 	public static void viewRoom( long id )
 	{
 		ChatRoom room = ChatRoom.findById( id );
-		if(room.deleted)
+		if( room.deleted )
 			notFound();
 		Security.check( Security.getConnected().projects.contains( room.project ) );
 		User currentUser = Security.getConnected();
@@ -119,12 +114,14 @@ public class ChatSystem extends SmartController
 	}
 
 	/**
-	 * retrieveSinceLastLogin method that gets the messages that are on the DB
-	 * for a specific room after a specific user signed in
+	 * Fetches all the messages from a certain chatroom that were sent after the
+	 * user's last login
 	 * 
 	 * @author Amr Hany
 	 * @param userId
+	 *            , User ID
 	 * @param roomId
+	 *            , Room ID
 	 */
 	public static void retrieveSinceLastLogin( long userId, long roomId )
 	{
