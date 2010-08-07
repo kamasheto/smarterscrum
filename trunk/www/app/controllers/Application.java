@@ -111,16 +111,6 @@ public class Application extends SmartController
 	}
 
 	/**
-	 * Renders all the notifications for the currently connected user
-	 */
-	public static void notificationsHistory()
-	{
-		User user = Security.getConnected();
-		List<Notification> notis = Notification.find( "user = " + user.id + "order by id desc" ).fetch();
-		render( notis );
-	}
-
-	/**
 	 * Renders all the components in a certain project and those currently in a
 	 * sprint
 	 * 
@@ -218,7 +208,7 @@ public class Application extends SmartController
 	 * @param email
 	 *            , the users email address
 	 * @param id
-	 *            user id
+	 *            , user id
 	 */
 	public static void editProfile( @Required( message = "You must enter a name" ) String name, String pwd1, String pwd2, @Required( message = "You must enter an email" ) @Email( message = "You must enter a valid email" ) String email, long id )
 	{
@@ -260,6 +250,10 @@ public class Application extends SmartController
 	/**
 	 * Renders a web page that contains a script that closes the overlay iframe.
 	 * 
+	 * @param js
+	 *            , The script that runs in the parent frame
+	 * @param nativeJS
+	 *            , The script that runs in the current frame
 	 * @author Hadeer younis
 	 */
 	public static void overlayKiller( String js, String nativeJS )
