@@ -17,47 +17,74 @@ import play.data.validation.Required;
 @Entity
 public class Component extends SmartModel
 {
-	/*
+	/**
 	 * Component Entity : consists of name,description up till now
+	 */
+	
+	/***
+	 * component name
 	 */
 	@Required
 	public String name;
 
+	/***
+	 * component description
+	 */
 	@Lob
 	@Required
 	@MaxSize( 10000 )
 	public String description;
 
-	// deletion marker
+	/***
+	 * a flag that determines whether the component is deleted or not
+	 */
 	public boolean deleted;
 
-	// Relation with Project Entity
+	/***
+	 * each project can have many components & each component belongs only to one project
+	 */
 	@ManyToOne
 	@Required
 	public Project project;
 
-	// Relation with User Entity
+	/***
+	 * a user can be in many components & a component can have many users
+	 */
 	@ManyToMany( mappedBy = "components", cascade = CascadeType.ALL )
 	public List<User> componentUsers;
 
+	/***
+	 * a list of component snapshots
+	 */
 	@OneToMany( mappedBy = "component", cascade = CascadeType.ALL )
 	public List<Snapshot> snapshots;
 
-	// Relation with Meeting Entity
+	/***
+	 * a component can have many meetings & a meeting can include many components
+	 */
 	@ManyToMany( mappedBy = "components", cascade = CascadeType.ALL )
 	public List<Meeting> componentMeetings;
 
-	// Relation with Board Entity
+	/***
+	 * a component has only one board
+	 */
 	@OneToOne( mappedBy = "component" )
 	public Board componentBoard;
 
+	/***
+	 * component number
+	 */
 	public int number;
 
+	/***
+	 * a component can have many tasks & a task can belong to only one component
+	 */
 	@OneToMany( mappedBy = "component", cascade = CascadeType.ALL )
 	public List<Task> componentTasks;
 
 	/***
-	 * Component constructor
+	 * Component constructor that initializes a list
+	 * of users, meetings & tasks for the component
 	 */
 	public Component()
 	{
@@ -170,7 +197,7 @@ public class Component extends SmartModel
 	}
 
 	/**
-	 * Deletes the Component
+	 * Deletes the component by setting its deletion marker to true
 	 * 
 	 * @author Amr Hany
 	 * @return boolean varaiable the shows if the component is deleted
