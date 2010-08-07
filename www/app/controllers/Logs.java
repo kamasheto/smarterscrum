@@ -89,8 +89,8 @@ public class Logs extends SmartCRUD
 	}
 
 	/**
-	 * This method fetches next 5 logs from the Database and renders them
-	 * ordered by date in descending (Pagination Factor = 5 logs per page for
+	 * This method fetches next 25 logs from the Database and renders them
+	 * ordered by date in descending (Pagination Factor = 25 logs per page for
 	 * Testing)
 	 * 
 	 * @author Amr Tj.Wallas
@@ -139,7 +139,20 @@ public class Logs extends SmartCRUD
 			logs = Log.find( "order by date desc" ).from( index ).fetch( 25 );
 		render( logs, page, filter );
 	}
-
+	
+	/**
+	 * This method is nothing but an awesome smart query builder. It simply takes
+	 * a String "filter" <b>WHICH HAS BEEN PARSED INTO A CERTAIN FORMAT</b> from
+	 * the keywords (String) entered by user when searching for logs and then builds
+	 * a customized smart Query string which will be used to find possible log 
+	 * matches. Please refer to list(..) method above.
+	 * <br /><font color="blue">PS: The format of filter should be something similar but
+	 * not limited to the string: "('something','something else','etc')"</font>
+	 * @param filter  The search String <b>Parsed into a certain format</b>
+	 * @return <code>String</code>: The Query String that is used to find logs (log matches)
+	 * @see Logs.list(..)
+	 * @since Sprint3
+	 */
 	public static String smartFilter( String filter )
 	{
 		String query = "";
