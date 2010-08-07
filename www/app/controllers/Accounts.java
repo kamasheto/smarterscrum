@@ -8,7 +8,7 @@ import play.data.validation.Required;
 import play.libs.Mail;
 
 /**
- * @author amr_osman
+ * @author Amr Tj.Wallas
  * @version 684
  * @Task C1S23
  * @Task C1S24
@@ -18,10 +18,8 @@ public class Accounts extends SmartController {
 	 * This method simply takes the required parameters of a User record ,
 	 * creates that user object and saves it into the database after checking
 	 * the persistence constraints such as required and unique parameters. On
-	 * Detection of a persistence constraint violation, a PersistenceException
-	 * is fired by java and then caught in this method. Which in return, creates
-	 * a play validation error and flashes it to be displayed in the
-	 * corresponding view.
+	 * Detection of a persistence constraint violation, a play validation error
+	 * is created and flashed to be displayed in the corresponding view.
 	 * 
 	 * @param name
 	 *            user name of that new user.
@@ -164,6 +162,11 @@ public class Accounts extends SmartController {
 		Secure.login();
 	}
 
+	/**
+	 * This method simply undos the deletion request of current connected user.
+	 * @see views/Accounts/requestDeletion
+	 * @since Sprint3
+	 */
 	public static void undoRequest() {
 		Security.check(Security.isConnected());
 		User user = Security.getConnected();
