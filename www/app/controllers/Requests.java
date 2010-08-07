@@ -212,6 +212,13 @@ public class Requests extends SmartCRUD
 
 	}
 
+	/**
+	 * This method lists and renders users who requested to be deleted from the 
+	 * system.
+	 * @author Amr TjWallas
+	 * @see views/Requests/list
+	 * @since Sprint3
+	 */
 	public static void list()
 	{
 		Security.check( Security.getConnected().isAdmin );
@@ -219,6 +226,15 @@ public class Requests extends SmartCRUD
 		render( users );
 	}
 
+	/**
+	 * This method takes a list of user ids and marks the corresponding users to
+	 * these ids as deleted in the database. In other words, A System admin has
+	 * approved their deletion requests.
+	 * @author Amr TjWallas
+	 * @param users The array consisting of user ids of these users.
+	 * @see views/Requests/list
+	 * @since Sprint3
+	 */
 	public static void deleteUsers( int[] users )
 	{
 		for( int i = 0; i < users.length; i++ )
