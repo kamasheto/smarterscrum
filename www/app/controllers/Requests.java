@@ -16,16 +16,7 @@ import play.mvc.With;
 @With( Secure.class )
 public class Requests extends SmartCRUD
 {
-	/**
-	 * belongs to s15
-	 * <p>
-	 * this method renders to the html page a list of pending requests
-	 * 
-	 * @author Moataz_Mekki
-	 * @param id
-	 *            : takes the id of the project first checks for the permission
-	 *            then list the requests
-	 */
+	
 	/**
 	 * This method fetches and renders all deletion requests corresponding to a
 	 * project with id "id" .
@@ -37,10 +28,10 @@ public class Requests extends SmartCRUD
 	 * @throws Throwable
 	 * @see models.Request
 	 * @see views/Requests/deletionRequestRespond.html
-	 * @since Sprint2.
-	 * @Task C1S14
+	 * 
+	 * 
 	 */
-	// @Check ("canManageRequests")
+	
 	public static void requestRespond( long id )
 	{
 		Project pro = Project.findById( id );
@@ -52,10 +43,9 @@ public class Requests extends SmartCRUD
 	}
 
 	/**
-	 * belongs to s15
-	 * <p>
+	 * 
 	 * this method performs the action of accepting a request once the request
-	 * is accepted it added the user to the list of roles and the role to that
+	 * is accepted it adds the user to the list of roles and the role to that
 	 * user
 	 * 
 	 * @author Moataz_Mekki
@@ -89,10 +79,8 @@ public class Requests extends SmartCRUD
 	 * @throws Throwable
 	 * @see models.Request
 	 * @see views/Requests/deletionRequestRespond.html
-	 * @since Sprint2.
-	 * @Task C1S14
+	 *
 	 */
-	// @Check ("canManageRequests")
 	public static void deletionRequestAccept( String hash ) throws Throwable
 	{
 		if( hash == null )
@@ -133,7 +121,7 @@ public class Requests extends SmartCRUD
 	}
 
 	/**
-	 * belongs to s15
+	 * 
 	 * <p>
 	 * this method performs the action of ignoring a request once the request is
 	 * ignored it will be deleted from the DB
@@ -146,9 +134,8 @@ public class Requests extends SmartCRUD
 	 *            The body of the notification message that will be sent.
 	 * @throws Throwable
 	 * @see models.Request
-	 * @Task C1S14
+	 * 
 	 */
-	// @Check ("canManageRequests")
 	public static void requestIgnore( String hash, String body ) throws Throwable
 	{
 		if( hash == null )
@@ -192,9 +179,10 @@ public class Requests extends SmartCRUD
 	}
 
 	/**
-	 * @author OmarNabil This method takes user id and component id and
+	 * This method takes user id and component id and
 	 *         initiates a new request for that user to be deleted from that
-	 *         component
+	 *         component.
+	 * @author OmarNabil 
 	 * @param userId
 	 * @param id
 	 */
@@ -217,7 +205,7 @@ public class Requests extends SmartCRUD
 	 * system.
 	 * @author Amr TjWallas
 	 * @see views/Requests/list
-	 * @since Sprint3
+	 * 
 	 */
 	public static void list()
 	{
@@ -233,7 +221,7 @@ public class Requests extends SmartCRUD
 	 * @author Amr TjWallas
 	 * @param users The array consisting of user ids of these users.
 	 * @see views/Requests/list
-	 * @since Sprint3
+	 * 
 	 */
 	public static void deleteUsers( int[] users )
 	{
@@ -257,27 +245,42 @@ public class Requests extends SmartCRUD
 		request.delete();
 		renderText( "Request removed!" );
 	}
-
+	
+	/**
+	 * Overriding the CRUD method show and making it forbidden
+	 */
 	public static void show()
 	{
 		forbidden();
 	}
-
+	
+	/**
+	 * Overriding the CRUD method save and making it forbidden
+	 */
 	public static void save()
 	{
 		forbidden();
 	}
-
+	
+	/**
+	 * Overriding the CRUD method blank and making it forbidden
+	 */
 	public static void blank()
 	{
 		forbidden();
 	}
-
+	
+	/**
+	 * Overriding the CRUD method create and making it forbidden
+	 */
 	public static void create()
 	{
 		forbidden();
 	}
-
+	
+	/**
+	 * Overriding the CRUD method delete and making it forbidden
+	 */
 	public static void delete()
 	{
 		forbidden();

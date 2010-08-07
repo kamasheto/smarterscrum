@@ -14,14 +14,13 @@ import notifiers.Notifications;
 
 public class Requestreviewers extends SmartController {
 	/**
-	 * Views the requestToBeReviewer form in where the user will choose the task
-	 * he wants
+	 * Views the requestToBeReviewer form in where the user will choose the type of the task he
+	 * wants to review.
 	 * 
 	 * @author hoksha
-	 * @parm void
+	 * @param void
 	 * @return void
-	 * @task C3,S23
-	 * @Sprint2
+	 * 
 	 */
 	public static void ListTypesOfReviewers() {
 		User user = Security.getConnected();
@@ -31,15 +30,15 @@ public class Requestreviewers extends SmartController {
 	}
 
 	/**
-	 * this method saves the request of the user in the data base in the entity
-	 * Requestreviewer
+	 * This method saves the requests of the user.
 	 * 
 	 * @author hoksha
 	 * @parm long ID TaskType id
+	 * 				the Type the user chose to review.
 	 * @parm long Pid project id
+	 * 				the project in which the user wants to be a reviewer in.
 	 * @return void
-	 * @task C3,S23
-	 * @Sprint2
+	 * 
 	 */
 	public static void requestToBeReviewer(long ID) {		
 		String message = "";
@@ -151,16 +150,13 @@ public class Requestreviewers extends SmartController {
 	}
 
 	/**
-	 * this method saves the respond of the user in the data base in the entity
-	 * Requestreviewer
+	 * this method lists the reviewer requests done by users to the projects' administrators.
 	 * 
 	 * @author hoksha
-	 * @parm void
+	 * @param void
 	 * @return void
-	 * @task C3,S24
-	 * @Sprint2
+	 * @
 	 */
-	// @Check ("canrespond")
 	public static void respond(long id) {
 		Project project = Project.findById(id);
 		List<Requestreviewer> requests = new ArrayList<Requestreviewer>();
@@ -176,14 +172,13 @@ public class Requestreviewers extends SmartController {
 	}
 
 	/**
-	 * this method saves the respond of the scrum master in the data base in the
-	 * entity Requestreviewer if he accepts
+	 * this method saves the acceptance of the projects' administrators to the reviewer requests
+	 * done by users
 	 * 
 	 * @author hoksha
-	 * @parm long requestID the ID of the Requestreviwer he choose
+	 * @param long requestID the ID of the Request 
 	 * @return void
-	 * @task C3,S24
-	 * @Sprint2
+	 *
 	 */
 	public static void accept(long requestID) {
 		Requestreviewer requests = Requestreviewer.findById(requestID);
@@ -202,14 +197,13 @@ public class Requestreviewers extends SmartController {
 	}
 
 	/**
-	 * this method saves the respond of the scrum master in the data base in the
-	 * entity Requestreviewer if he rejects
-	 * 
+	 * this method saves the rejection of the projects' administrators to the reviewer requests
+	 * done by users
+	 * 	  
 	 * @author hoksha
-	 * @parm long requestID the ID of the Requestreviwer he choose
+	 * @param long requestID the ID of the Request
 	 * @return void
-	 * @task C3,S24
-	 * @Sprint2
+	 *
 	 */
 	public static void reject(long requestID) {
 		Requestreviewer x = Requestreviewer.findById(requestID);
@@ -224,6 +218,11 @@ public class Requestreviewers extends SmartController {
 		renderText("the request has been rejected");
 	}
 
+	/**
+	 * A method that removes an old reviewer request done by the user in case he wants to cancel 
+	 * his request.
+	 * @param taskTypeId the id of the type he wanted to review.
+	 */
 	public static void removeRequest(long taskTypeId) {
 		User user = Security.getConnected();
 		TaskType taskType = TaskType.findById(taskTypeId);

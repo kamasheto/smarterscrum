@@ -19,7 +19,7 @@ import play.mvc.With;
 @With (Secure.class)
 public class ProjectTasks extends SmartController {
 	/**
-	 * Connected user requests role
+	 * A method that handles the role requests done by the connected user.
 	 * 
 	 * @param id
 	 *            role id
@@ -46,8 +46,6 @@ public class ProjectTasks extends SmartController {
 	 * @param id
 	 *            role id.
 	 * @return void
-	 * @issue 94, 96
-	 * @sprint 4
 	 */
 	public static void revokeRole(long roleId, long userId) 
 	{
@@ -84,8 +82,7 @@ public class ProjectTasks extends SmartController {
 	}
 
 	/**
-	 * R
-	 * eturns list of roles of this project
+	 * Returns the roles of the project specified by the parameter id.
 	 * 
 	 * @param id
 	 *            project id
@@ -93,7 +90,8 @@ public class ProjectTasks extends SmartController {
 	public static void getRoles(long id) {
 		List<Role.Object> roles = new LinkedList<Role.Object>();
 		for (Role role : Project.<Project> findById(id).roles) {
-			roles.add(new Role.Object(role.id, role.name));
+			if(!role.deleted)
+				roles.add(new Role.Object(role.id, role.name));
 		}
 		renderJSON(roles);
 	}
