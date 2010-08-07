@@ -7,18 +7,42 @@ import javax.persistence.OneToOne;
 @Entity
 public class Column extends SmartModel {
 
+	/***
+	 * each column belong only to one board while a board can have many columns
+	 */
 	@ManyToOne
 	public Board board;
+	
+	/***
+	 * flag that determines whether this column should be displayed n the board or not
+	 */
 	public boolean onBoard;
+	
+	/***
+	 * column name
+	 */
 	public String name;
+	
+	/***
+	 * column position on the board
+	 */
 	public int sequence;
+	
+	/***
+	 * each column represents only one task status while a task status
+	 * can be represented in many columns (project board & component board columns)
+	 */
 	@ManyToOne
 	public TaskStatus taskStatus;
 
+	/***
+	 * a flag that determines whether the column is deleted or not
+	 */
 	public boolean deleted;
 
 	/***
-	 * Column constructor
+	 * Column constructor that sets the name of the column (initially task status name),
+	 * the board the column belongs to & the task status that this column represents
 	 * 
 	 * @param name 
 	 * 			column name

@@ -17,19 +17,35 @@ import play.data.validation.Required;
 
 @Entity
 public class Artifact extends SmartModel {
+	
+	/***
+	 * Artifact type
+	 */
 	@Required
 	public String type;
 
+	/***
+	 * Artifact description
+	 */
 	@Lob
 	@Required
 	@MaxSize (300)
 	public String description;
 
+	/***
+	 * one meeting can have many artifacts & an artifact can belong to many meetings
+	 */
 	@ManyToMany (mappedBy = "artifacts")
 	public List<Meeting> meetingsArtifacts;
 
+	/***
+	 * flag to determine whether this artifact is deleted or not
+	 */
 	public boolean deleted;
 
+	/***
+	 * Artifact constructor
+	 */
 	public Artifact () {
 		meetingsArtifacts = new ArrayList<Meeting>();
 	}
@@ -56,7 +72,6 @@ public class Artifact extends SmartModel {
 	/**
 	 * Removes the artifact from the database by changing its status
 	 */
-
 	public void remove() {
 		this.deleted = true;
 	}
@@ -75,7 +90,6 @@ public class Artifact extends SmartModel {
 	 * @return a list of all artifacts of a given project
 	 * @author Hossam Amer
 	 */
-
 	public List<Artifact> getArtifacts(long projectID) {
 		List<Artifact> artifactsOfCertainProject = new ArrayList<Artifact>();
 		Project projectTmp = Project.findById(projectID);
