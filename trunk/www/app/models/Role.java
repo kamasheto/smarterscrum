@@ -16,21 +16,40 @@ import play.data.validation.Required;
  */
 @Entity
 public class Role extends SmartModel {
+	/**
+	 * name of the role
+	 */
 	@Required
 	public String name;
-
+/**
+ * whether this role is being invoked on a system admin
+ */
 	public boolean systemAdmin;
-
+/**
+ * the project that the role belongs to
+ */
 	@ManyToOne
 	public Project project;
 
+	/**
+	 * users who have this role
+	 */
 	@ManyToMany (mappedBy = "roles")
 	public List<User> users;
 
+	/**
+	 * whether this role is deleted
+	 */
 	public boolean deleted;
 	
+	/**
+	 * whether the role is the base role in the project
+	 */
 	public boolean baseRole;
 
+	/**
+	 * Role's permissions
+	 */
 	@ManyToMany
 	public List<Permission> permissions;
 	/**
