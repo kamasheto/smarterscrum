@@ -23,6 +23,12 @@ import play.mvc.With;
 @With( Secure.class )
 public class Application extends SmartController
 {
+	/**
+	 * Generates the hash value of the given String
+	 * 
+	 * @param str
+	 * @return hash String
+	 */
 	public static String hash( String str )
 	{
 		String res = "";
@@ -52,44 +58,61 @@ public class Application extends SmartController
 		return res;
 	}
 
+	/**
+	 * Renders the loading page
+	 */
 	public static void loading()
 	{
 		render();
 	}
-	
+
+	/**
+	 * Returns a 32 character long randomly generated hash string
+	 * 
+	 * @return hash String
+	 */
 	public static String randomHash()
 	{
 		return randomHash( 32 );
 	}
 
+	/**
+	 * Generates a random hash String with a specified length
+	 * 
+	 * @param length
+	 *            , The length of the hash string
+	 * @return hash String
+	 */
 	public static String randomHash( int length )
 	{
 		return hash( System.currentTimeMillis() * Math.random() + "" ).substring( 0, length );
 	}
 
 	/**
-	 *@author Moataz this method retrieves the latest 30 notifications to the
-	 *         home page
+	 * Retrieves the latest 30 notifications to the home page
+	 * 
+	 * @author Moataz
 	 */
 	public static void index()
 	{
-		/*User user = Security.getConnected();
-		List<Notification> notis = Notification.find( "user = " + user.id + "order by id desc" ).fetch();
-		List<Notification> noti;
-		if( notis.size() < 30 )
-			noti = notis;
-		else
-			noti = notis.subList( 0, 29 );
-		// Notification nn = new Notification(Security.getConnected(),
-		// "Smarter Scrum","Smarter Scrum v.01 the very first product made by SmartSoft has been released!!!",
-		// (byte) 1);
-		// Notification n = new Notification(Security.getConnected(),
-		// "Hadeer Younis (Design)","Plum v.03 is up and running!! Note that it's still in beta phase, So please report any bugs straight away!!",
-		// (byte) 1);
-		// noti.add(n);noti.add(nn);*/
+		/*
+		 * User user = Security.getConnected(); List<Notification> notis =
+		 * Notification.find( "user = " + user.id + "order by id desc"
+		 * ).fetch(); List<Notification> noti; if( notis.size() < 30 ) noti =
+		 * notis; else noti = notis.subList( 0, 29 ); // Notification nn = new
+		 * Notification(Security.getConnected(), //"Smarter Scrum",
+		 * "Smarter Scrum v.01 the very first product made by SmartSoft has been released!!!"
+		 * , // (byte) 1); // Notification n = new
+		 * Notification(Security.getConnected(), //"Hadeer Younis (Design)",
+		 * "Plum v.03 is up and running!! Note that it's still in beta phase, So please report any bugs straight away!!"
+		 * , // (byte) 1); // noti.add(n);noti.add(nn);
+		 */
 		render();
 	}
 
+	/**
+	 * Renders all the notifications for the currently connected user
+	 */
 	public static void notificationsHistory()
 	{
 		User user = Security.getConnected();
@@ -98,12 +121,12 @@ public class Application extends SmartController
 	}
 
 	/**
-	 * View components controller which takes a projectID as an ID and returns
-	 * the list of components to use it in the model view and it checks also if
-	 * this component is in sprint or not
+	 * Renders all the components in a certain project and those currently in a
+	 * sprint
 	 * 
 	 * @author Amr Hany
-	 * @param ProjectID
+	 * @param id
+	 *            ,Project ID
 	 */
 	public static void viewComponents( long id )
 	{
@@ -118,25 +141,11 @@ public class Application extends SmartController
 	}
 
 	/**
-	 * View component controller is the method called to render the component
-	 * and the sprint status to the view in order to use them
+	 * Deletes a component
 	 * 
 	 * @author Amr Hany
 	 * @param componentID
-	 */
-	// public static void viewComponent(long id) {
-	// Component component = Component.findById(id);
-	// if(component == null)
-	// System.out.println("NULL YA AMR YA HANY");
-	// boolean inSprint = component.project.inSprint(new Date());
-	// render(component);
-	// }
-
-	/**
-	 * This method is used to Delete a component by calling the model's method.
-	 * 
-	 * @author Amr Hany
-	 * @param componentID
+	 *            , Component ID
 	 */
 	public static void deleteComponent( long id )
 	{
@@ -148,19 +157,29 @@ public class Application extends SmartController
 		Logs.addLog( Security.getConnected(), "Delete", "Component", c.id, c.project, new Date( System.currentTimeMillis() ) );
 	}
 
+	/**
+	 * Renders the hash of any String
+	 * 
+	 * @param str
+	 *            , The inputed String
+	 */
 	public static void md5( String str )
 	{
 		renderText( hash( str ) );
 	}
 
-	// @Check ("systemAdmin")
+	/**
+	 * Renders the adminIndexPage page
+	 */
 	public static void adminIndexPage()
 	{
 		Security.check( Security.getConnected().isAdmin );
 		redirect( "/projects/manageProjectRequests" );
 	}
 
-	// @Check ("systemAdmin")
+	/**
+	 * Renders the adminIndex page
+	 */
 	public static void adminIndex()
 	{
 		Security.check( Security.getConnected().isAdmin );
@@ -168,7 +187,7 @@ public class Application extends SmartController
 	}
 
 	/**
-	 * View editable profile
+	 * Renders an editable profile
 	 * 
 	 * @param id
 	 *            user id
@@ -191,40 +210,42 @@ public class Application extends SmartController
 	 * Saves new user information
 	 * 
 	 * @param name
+	 *            , the users name
 	 * @param pwd1
+	 *            , the password
 	 * @param pwd2
+	 *            , the confirmation password
 	 * @param email
+	 *            , the users email address
 	 * @param id
 	 *            user id
 	 */
 	public static void editProfile( @Required( message = "You must enter a name" ) String name, String pwd1, String pwd2, @Required( message = "You must enter an email" ) @Email( message = "You must enter a valid email" ) String email, long id )
 	{
-		User usr = User.findById( id );
-		if( usr.deleted )
+		User user = User.findById( id );
+		if( user.deleted )
 			notFound();
-		Security.check( Security.getConnected().equals( usr ) );
+		Security.check( Security.getConnected().equals( user ) );
 		if( Validation.hasErrors() || (pwd1.length() > 0 && !pwd1.equals( pwd2 )) )
 		{
 			flash.error( "An error has occured" );
 			profile( id );
 		}
-		String oldEmail = usr.email;
-		usr.name = name;
+		String oldEmail = user.email;
+		user.name = name;
 		if( pwd1.length() > 0 )
-			usr.pwdHash = Application.hash( pwd1 );
-		usr.email = email;
-		usr.save();
-		// Added By Wallas in Sprint 2.
-		if( !usr.email.equals( oldEmail ) )
+			user.pwdHash = Application.hash( pwd1 );
+		user.email = email;
+		user.save();
+		if( !user.email.equals( oldEmail ) )
 		{
-			usr.activationHash = Application.randomHash( 32 );
-			usr.isActivated = false;
-			usr.save();
-			session.put( "username", email ); // Update the session cookie by
-			// setting the new Email.
+			user.activationHash = Application.randomHash( 32 );
+			user.isActivated = false;
+			user.save();
+			session.put( "username", email );
 			String subject = "Your SmartSoft new Email activation requires your attention";
-			String body = "Dear " + usr.name + ", You have requested to change the Email Address associated with your account. Please click the following link to activate your account: " + "http://localhost:9000/accounts/doActivation?hash=" + usr.activationHash;
-			Mail.send( "se.smartsoft@gmail.com", usr.email, subject, body );
+			String body = "Dear " + user.name + ", You have requested to change the Email Address associated with your account. Please click the following link to activate your account: " + "http://localhost:9000/accounts/doActivation?hash=" + user.activationHash;
+			Mail.send( "se.smartsoft@gmail.com", user.email, subject, body );
 			flash.success( "Successfully saved your data! , please check your new Email and follow the instructions sent by us to confirm your new Email." );
 			profile( id );
 		}
@@ -235,20 +256,21 @@ public class Application extends SmartController
 		}
 
 	}
-	
+
 	/**
 	 * Renders a web page that contains a script that closes the overlay iframe.
 	 * 
 	 * @author Hadeer younis
 	 */
-	public static void overlayKiller(String js, String nativeJS)
+	public static void overlayKiller( String js, String nativeJS )
 	{
-		render(js, nativeJS);
+		render( js, nativeJS );
 	}
 
 	/**
 	 * Renders a page that loads the workspace corresponding to the project id
-	 * given, and the specified url loaded in a magic box.
+	 * given, and the specified url loaded in a magic box. This will be used in
+	 * links found in emails.
 	 * 
 	 * @author Hadeer Younis
 	 * @param id
@@ -256,18 +278,21 @@ public class Application extends SmartController
 	 * @param url
 	 *            , url to be loaded
 	 * @param isOverlay
-	 *            , wether or not the url will open in an overlay
+	 *            , whether or not the url will open in an overlay
 	 */
 	public static void externalOpen( long id, String url, boolean isOverlay )
 	{
 		render( id, url, isOverlay );
 	}
-	
+
+	/**
+	 * Renders all the notifications for the currently connected user
+	 */
 	public static void showNotifications()
 	{
 		User user = Security.getConnected();
-		List<Notification> notifications = Notification.find("receiver ="+user.id+" order by id desc").fetch();
-		render(notifications);
+		List<Notification> notifications = Notification.find( "receiver =" + user.id + " order by id desc" ).fetch();
+		render( notifications );
 	}
-	
+
 }
