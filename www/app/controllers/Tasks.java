@@ -388,7 +388,12 @@ public class Tasks extends SmartCRUD
 		JPASupport object = type.findById( id );
 		Task tmp = (Task) object;
 		Security.check( Security.getConnected().in( tmp.project ).can( "modifyTask" ) );
-		List<User> users = tmp.component.componentUsers;
+		List<User> users = null;
+		if(tmp.component.id==1)
+			users = tmp.project.users;
+		else
+			users = tmp.component.componentUsers;
+		
 		List<TaskStatus> statuses = tmp.project.taskStatuses;
 		List<TaskType> types = tmp.project.taskTypes;
 		List<Task> dependencies = new ArrayList<Task>();
@@ -873,9 +878,13 @@ public class Tasks extends SmartCRUD
 
 	public static void reviewers( long id, long id2 )
 	{
+		List<User> users= null;
 		Component component = Component.findById( id );
 		User Assignee = User.findById( id2 );
-		List<User> users = component.componentUsers;
+		if(id==1)
+		users = component.project.users;
+		else
+		users = component.componentUsers;
 		List<User.Object> reviewers = new ArrayList<User.Object>();
 		for( User user : users )
 		{
@@ -2170,5 +2179,24 @@ public class Tasks extends SmartCRUD
 		task.reviewer = user;
 		task.save();
 		renderText("Reviewer assigned successfully|reload('task-"+taskId+"')");
+	}
+	public static void componentUsers (long cid)
+	{
+		Component c = Component.findById(cid);
+		List <User> users = null;
+		if(cid==1)
+		{
+			users = c.project.users;
+		}
+		else
+		{
+			users = c.componentUsers;
+		}
+		List<User.Object> u = new ArrayList<User.Object>();
+		for( User user : users )
+		{
+			u.add( new User.Object( user.id, user.name ) );
+		}
+		renderJSON( u );
 	}
 }
