@@ -56,6 +56,9 @@ public class Component extends SmartModel
 	@OneToMany( mappedBy = "component", cascade = CascadeType.ALL )
 	public List<Task> componentTasks;
 
+	/***
+	 * Component constructor
+	 */
 	public Component()
 	{
 		componentUsers = new ArrayList<User>();
@@ -63,6 +66,9 @@ public class Component extends SmartModel
 		componentTasks = new ArrayList<Task>();
 	}
 
+	/***
+	 * Overrides toString() method 
+	 */
 	@Override
 	public String toString()
 	{
@@ -70,25 +76,26 @@ public class Component extends SmartModel
 	}
 
 	/**
-	 * this method takes an input component & returns a list of the users in
-	 * this component made for C3 & it's S28
+	 * Returns a list of the users in this component
+	 * API for C3 & it's S28
 	 * 
 	 * @return List of component's users
 	 */
-
 	public List<User> getUsers()
 	{
 		return componentUsers;
 	}
 
 	/**
-	 * @author menna_ghoneim Returns a list of tasks associated to a certain
-	 *         sprint for a certain component Story: 4,5,6.
+	 * Returns a list of tasks associated to a certain sprint for this component 
+	 * Story: 4,5,6.
+	 * 
+	 * @author menna_ghoneim 
 	 * @param s
-	 *            : given a sprint
-	 * @return : List of tasks in this sprint of this component
+	 * 		given a sprint
+	 * @return
+	 * 		List of tasks in this sprint of this component
 	 */
-
 	@SuppressWarnings( "null" )
 	public List<Task> returnComponentSprintTasks( Sprint s )
 	{
@@ -113,6 +120,13 @@ public class Component extends SmartModel
 		return tasks;
 	}
 
+	/***
+	 * Returns list of tasks in sprint s in this component
+	 * 
+	 * @param s
+	 * 		 sprint
+	 * 
+	 */
 	public List<Task> componentSprintTasks( Sprint s )
 	{
 		List<Task> t = new ArrayList<Task>();
@@ -130,11 +144,13 @@ public class Component extends SmartModel
 	}
 
 	/**
-	 * @author Hadeer Diwan Returns a list of tasks associated to a certain
-	 *         sprint for a certain component .
+	 * Returns a list of tasks associated to a certain sprint for a certain component
+	 * 
+	 * @author Hadeer Diwan 
 	 * @param s
-	 *            : given a sprint
-	 * @return : List of tasks in this sprint of this component
+	 * 		given a sprint
+	 * @return 
+	 * 		List of tasks in this sprint of this component
 	 */
 	public List<Task> returnComponentTasks( Sprint s )
 	{
@@ -154,7 +170,7 @@ public class Component extends SmartModel
 	}
 
 	/**
-	 * This method deletes the Component
+	 * Deletes the Component
 	 * 
 	 * @author Amr Hany
 	 * @return boolean varaiable the shows if the component is deleted
@@ -173,15 +189,16 @@ public class Component extends SmartModel
 	}
 
 	/**
-	 * meeting status method returns the status of the component in attending
-	 * the meeting either all invited or confirmed or waiting or declined or not
-	 * invited
+	 * Meeting status method returns the status of the component in attending the meeting 
+	 * either 'all invited' or 'confirmed' or 'waiting' or 'declined' or 'not invited'
 	 * 
-	 * @author Amr Hany
+	 * @author 
+	 * 		Amr Hany
 	 * @param meetingID
-	 * @return the status of the meeting
+	 * 			meeting ID
+	 * @return 
+	 * 			the status of the meeting
 	 */
-
 	public String meetingStatus( long meetingID )
 	{
 		boolean confirmed = true;
@@ -233,6 +250,10 @@ public class Component extends SmartModel
 
 	}
 
+	
+	/***
+	 * Creates component board & sets the component number
+	 */
 	public void init()
 	{
 		componentBoard = new Board( this ).save();
@@ -261,6 +282,9 @@ public class Component extends SmartModel
 
 	}
 
+	/***
+	 * Class used to store 2 dimensional ArrayList of tasks to be rendered to the project board
+	 */
 	public static class ComponentRowh extends ArrayList<ArrayList<String>>
 	{
 		long id;
@@ -273,6 +297,9 @@ public class Component extends SmartModel
 		}
 	}
 
+	/***
+	 * Class used to store 2 dimensional ArrayList of tasks to be rendered to the component board
+	 */
 	public static class ComponentRow extends ArrayList<ArrayList<Task>>
 	{
 		long id;
