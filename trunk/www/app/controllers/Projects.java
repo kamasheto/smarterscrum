@@ -29,6 +29,12 @@ import play.mvc.With;
 
 @With (Secure.class)
 public class Projects extends SmartCRUD {
+	
+	/**
+	 * A method that returns the artifacts of a project ( Sprints ) and then the Sprints can be used
+	 * to get the backlogs and charts of each sprint.
+	 * @param projectId
+	 */
 	public static void Artifacts(long projectId) {
 		Project project = (Project) (Project.findById(projectId));
 		List<Sprint> sprints = project.sprints;
@@ -37,8 +43,9 @@ public class Projects extends SmartCRUD {
 	}
 
 	/**
-	 * overriden to init roles by default from CRUD
-	 * 
+	 * Overriding the CRUD method create.
+	 * @description Check for the Validation of the info inserted in the Add form of a Project
+	 * and if they are valid the object is created and saved.
 	 * @throws Exception
 	 */
 	public static void create() throws Exception {
@@ -103,6 +110,16 @@ public class Projects extends SmartCRUD {
 		}
 	}
 
+	/**
+	 * 
+	 * Overriding the CRUD method list.
+	 * @description returns a paginated list of all the projects in the system.
+	 * @param page
+	 * @param search
+	 * @param searchFields
+	 * @param orderBy
+	 * @param order
+	 */
 	public static void list(int page, String search, String searchFields, String orderBy, String order) {
 		Security.check(Security.getConnected().isAdmin);
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -128,7 +145,6 @@ public class Projects extends SmartCRUD {
 	 * already exists or not.
 	 * 
 	 * @param name
-	 * @author behairy
 	 * @throws UnsupportedEncodingException
 	 */
 	public static void checkAvailability(String name) throws UnsupportedEncodingException {
@@ -153,7 +169,6 @@ public class Projects extends SmartCRUD {
 	 *            long
 	 * @param meetingType
 	 *            String
-	 * @author Behairy
 	 */
 
 	public static void addMeetingType(long id, String meetingType, boolean inSprint) {
@@ -179,7 +194,6 @@ public class Projects extends SmartCRUD {
 	 *            long
 	 * @param meetingType
 	 *            String
-	 * @author Behairy
 	 */
 
 	public static void removeMeetingType(long id, String meetingType) {
@@ -203,7 +217,7 @@ public class Projects extends SmartCRUD {
 	 * 
 	 * @param id
 	 * @param meetingType
-	 * @author Behairy
+	 * 
 	 */
 
 	public static void isMeetingTypeAssociatedToSprint(long id, String meetingType) {
@@ -228,11 +242,11 @@ public class Projects extends SmartCRUD {
 	 *            the id of the project which the Task Status is added to.
 	 * @param taskStatus
 	 *            the name of the Task Status.
-	 * @parm indicator an indicator to indicate weather the Task Status
+	 * @param indicator an indicator to indicate weather the Task Status
 	 *       indicates pending or closed.
 	 * @return void
-	 * @issue 219
-	 * @sprint 2, 4
+	 * 
+	 * 
 	 */
 	public static void addTaskStatus(long id, String taskStatus, String indicator) {
 		Project p = Project.findById(id);
@@ -260,13 +274,12 @@ public class Projects extends SmartCRUD {
 	 * statuses in a specific project.
 	 * 
 	 * @author Heba Elsherif
-	 * @parm statusID the id of the selected Task Status.
-	 * @parm newName the new name of the selected Task Status.
-	 * @parm indicator an indicator to indicate weather the Task Status
+	 * @param statusID the id of the selected Task Status.
+	 * @param newName the new name of the selected Task Status.
+	 * @param indicator an indicator to indicate weather the Task Status
 	 *       indicates pending or closed.
 	 * @return void
-	 * @issue 224
-	 * @sprint 4
+	 * 
 	 */
 	public static void editTaskStatus(long statusID, String newName, String indicator) {
 		TaskStatus taskStatus = TaskStatus.findById(statusID);
@@ -294,8 +307,7 @@ public class Projects extends SmartCRUD {
 	 * @param statusID
 	 *            the id of the selected Task Status.
 	 * @return void
-	 * @issue 236
-	 * @sprint 2, 4
+	 * 
 	 */
 	public static void removeTaskStatus(long statusID) {
 		TaskStatus taskStatus = TaskStatus.findById(statusID);
@@ -310,8 +322,6 @@ public class Projects extends SmartCRUD {
 				taskStatus.columns.get(i).deleted = true;
 				taskStatus.columns.get(i).save();
 			}
-			String header = "Task Status: " + "\'" + taskStatus.name + "\'" + " has been deleted.";
-			String body = "In Project " + "\'" + taskStatus.project.name + "\'" + "." + '\n' + " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
 			Logs.addLog(Security.getConnected(), "Delete", "TaskStatus", taskStatus.id, taskStatus.project, new Date(System.currentTimeMillis()));
 			String url = "#";
 			Notifications.notifyProjectUsers(taskStatus.project, "deleteTaskStatus", url, "Task Status", taskStatus.name, (byte) -1);
@@ -320,12 +330,13 @@ public class Projects extends SmartCRUD {
 	}
 
 	/**
-	 * task status checks method that will be used to check for the task status
-	 * before adding a new meeting type in the list of task status
+	 * A method that checks the availability of a taskStatus in a project.
 	 * 
 	 * @author Amr Hany
 	 * @param id
+	 * 			the id of the project.
 	 * @param status
+	 * 			the name of the status that will be checked for availability.
 	 */
 	public static void taskStatusCheck(long id, String status) {
 		Project p = Project.findById(id);
@@ -346,14 +357,13 @@ public class Projects extends SmartCRUD {
 	 * list of task status in a specific project before editing.
 	 * 
 	 * @author Heba Elsherif
-	 * @parm statusID the id of the selected Task Status.
+	 * @param statusID the id of the selected Task Status.
 	 * @param id
 	 *            project id
 	 * @param status
 	 *            task status name
 	 * @return void
-	 * @issue 224
-	 * @sprint 4
+	 * 
 	 */
 	public static void newTaskStatusCheck(long statusID, long id, String status) {
 		Project p = Project.findById(id);
@@ -403,12 +413,10 @@ public class Projects extends SmartCRUD {
 	 * This action method removes a task type from the array list of task types
 	 * in project.
 	 * 
-	 * @param taskID
+	 * @param taskID the type id.
 	 *            long
 	 * @author Behairy
 	 */
-	// 3ayzen id
-	// @Check ("canEditProject")
 	public static void removetaskType(long taskID) {
 		TaskType taskType = TaskType.findById(taskID);
 		Security.check(Security.getConnected().in(taskType.project).can("editProject"));
@@ -457,8 +465,7 @@ public class Projects extends SmartCRUD {
 	 *            int
 	 * @author Behairy
 	 */
-	// 3ayzen id
-	// @Check ("canEditProject")
+	
 	public static void removeStoryType(long priorityID) {
 
 		Priority priorityInstance = Priority.findById(priorityID);
@@ -475,7 +482,7 @@ public class Projects extends SmartCRUD {
 	 * meeting for the project specified by the parameter id.
 	 * 
 	 * @param id
-	 *            long
+	 *            long project id
 	 * @param autoReschedule
 	 *            boolean
 	 * @author Behairy
@@ -525,6 +532,7 @@ public class Projects extends SmartCRUD {
 	 * 
 	 * @param id
 	 * @param unit
+	 * 			"Hours" if the unit needed is hours.
 	 * @author Behairy
 	 */
 
@@ -614,7 +622,6 @@ public class Projects extends SmartCRUD {
 	 *            notifications in.
 	 * @throws ClassNotFoundException
 	 */
-	// @Check ("canEditProjectNotificationProfile")
 	public static void manageNotificationProfile(long projectId) throws ClassNotFoundException {
 		Project currentProject = Project.findById(projectId);
 		Security.check(currentProject, "editProjectNotificationProfile");
@@ -668,10 +675,11 @@ public class Projects extends SmartCRUD {
 	}
 
 	/**
+	 * this method renders the list of project members to the HTML page
+	 * 
 	 * @author Moataz_Mekki
 	 * @param id
-	 *            : the id of the project this method renders the list of
-	 *            project members to the html page
+	 *            : the id of the project 
 	 */
 	public static void getProjectMembers(long id) {
 		Project pro = Project.findById(id);
@@ -680,8 +688,9 @@ public class Projects extends SmartCRUD {
 	}
 
 	/**
-	 * @author mahmoudsakr this method renders the projects of the connected
-	 *         user
+	 * this method renders the projects of the connected user
+	 * 
+	 * @author mahmoudsakr 
 	 */
 	public static void myProjects() {
 		User user = Security.getConnected();
@@ -691,7 +700,7 @@ public class Projects extends SmartCRUD {
 
 	/**
 	 * Action for Manage Project Request Page, renders list of all pending
-	 * projects requests.
+	 * projects requests that will be managed by a system administrator.
 	 * 
 	 * @author Behairy
 	 */
@@ -786,7 +795,7 @@ public class Projects extends SmartCRUD {
 	}
 
 	/**
-	 * Story proirity check method that checks for the priority name before
+	 * Story priority check method that checks for the priority name before
 	 * adding it to a project
 	 * 
 	 * @author Amr Hany
@@ -839,15 +848,24 @@ public class Projects extends SmartCRUD {
 		Project project = Project.findById(id);
 		render(project);
 	}
-
+	
+	/**
+	 * Overriding the CRUD method delete and making it forbidden
+	 */
 	public static void delete() {
 		forbidden();
 	}
-
+	
+	/**
+	 * Overriding the CRUD method save and making it forbidden
+	 */
 	public static void save() {
 		forbidden();
 	}
-
+	
+	/**
+	 * Overriding the CRUD method list and making it forbidden
+	 */
 	public static void list() {
 		forbidden();
 	}

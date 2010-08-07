@@ -20,8 +20,7 @@ public class ProductRoles extends SmartCRUD {
 	 * @author Heba Elsherif
 	 * @parm id the id of the considered project.
 	 * @return void
-	 * @task C3 S1 & S2 & S3
-	 * @sprint 2
+	 * 
 	 **/
 	public static void viewProductRoles(long id) {
 		Project project = Project.findById(id);
@@ -39,10 +38,8 @@ public class ProductRoles extends SmartCRUD {
 	 * product role view.
 	 * 
 	 * @author Heba Elsherif
-	 * @parm id the id of the considered project.
+	 * @param id the id of the considered project.
 	 * @return void
-	 * @task C3 S2 & S3
-	 * @sprint 2
 	 **/
 	public static void viewProductRole(long id) {
 		ProductRole productRole = ProductRole.findById(id);
@@ -62,8 +59,7 @@ public class ProductRoles extends SmartCRUD {
 	 * @param id
 	 *            the project id of the created product role.
 	 * @return void
-	 * @task C3 S1
-	 * @sprint 2
+	 *
 	 **/
 	// @Check ("canAddProductRole")
 	public static void blank(long id) {
@@ -90,8 +86,6 @@ public class ProductRoles extends SmartCRUD {
 	 * @author Heba Elsherif
 	 * @param void
 	 * @return void
-	 * @task C3 S1
-	 * @sprint 2
 	 **/
 	// @Check ("canAddProductRole")
 	public static void create() throws Exception {
@@ -124,22 +118,7 @@ public class ProductRoles extends SmartCRUD {
 			}
 		} else {
 			object.save();
-			String header = "A new Product Role has been added.";
-			String body = "In Project: " + "\'" + project.name + "\'" + "." + '\n' + " Product Role name: " + "\'" + productRoleObject.name + "\'" + "." + '\n' + " Added by: " + "\'" + Security.getConnected().name + "\'" + ".";
-			/*
-			 * ////Long Informative Notification message. Not suitable for
-			 * online notification. String header = "Product Role: " + "\'" +
-			 * productRoleObject.name + "\'" + " has been added to Project: " +
-			 * "\'" + project.name + "\'" + "."; String body =
-			 * "New Product Role has been added to Project " + "\'" +
-			 * project.name + "\'" + "." + '\n' + '\n' + "Product Role Name: " +
-			 * productRoleObject.name +"."+ '\n' + " Description: " +
-			 * productRoleObject.description + "." + '\n' + " Added by: " + "\'"
-			 * + Security.getConnected().name + "\'" + ".";
-			 */
 			Logs.addLog(Security.getConnected(), "Create", "ProductRole", productRoleObject.id, project, new Date(System.currentTimeMillis()));
-			// Notifications.notifyProjectUsers(project, header, body,
-			// "addProductRole", (byte) 1);
 			flash.success("Product Role " + productRoleObject.name + " has been created successfully.");
 			if (params.get("_save") != null) {
 				Application.overlayKiller("", "");
@@ -155,14 +134,11 @@ public class ProductRoles extends SmartCRUD {
 	 * Overrides the CRUD show method that renders the edit form, in order to
 	 * take the project id and checks if it's editable.
 	 * 
-	 * @author Heba Elsherif
+	 * 
 	 * @param id
 	 *            the project id of the created product role.
 	 * @return void
-	 * @task C3 S2 & S3
-	 * @sprint 2
 	 **/
-	// @Check ("canEditProductRole")
 	public static void show(String id) {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -184,14 +160,10 @@ public class ProductRoles extends SmartCRUD {
 	 * Overrides the CRUD save method that is invoked to submit the edit, in
 	 * order to check if the edits are acceptable.
 	 * 
-	 * @author Heba Elsherif
+	 * 
 	 * @param id
-	 *            the editable product role id.
 	 * @return void
-	 * @task C3 S2
-	 * @sprint 2
 	 **/
-	// @Check ("canEditProductRole")
 	public static void save(String id) throws Exception {
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
@@ -200,7 +172,6 @@ public class ProductRoles extends SmartCRUD {
 		Project project = productRoleObject.project;
 		User user = Security.getConnected();
 		Security.check(user.in(project).can("editProductRole"));
-		String oldName = productRoleObject.name;
 		validation.valid(object.edit("object", params));
 		String message = "";
 		boolean editable = !(productRoleObject.inSprint());
@@ -217,23 +188,8 @@ public class ProductRoles extends SmartCRUD {
 				render("CRUD/show.html", type, object);
 			}
 		} else {
-			String header = "Product Role: " + "\'" + oldName + "\'" + " has been edited.";
-			String body = "In Project " + "\'" + project.name + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
-			/*
-			 * ////Long Informative Notification message. Not suitable for
-			 * online notification. String header = "Product Role: " + "\'" +
-			 * oldName + "\'" + " in Project " + "\'" + project.name + "\'" +
-			 * " has been edited."; String body = "The Product Role: " + "\'" +
-			 * oldName + "\'" + " in Project " + "\'" + project.name + "\'" +
-			 * " has been edited." + '\n' + '\n' + "Product Role Name: " +
-			 * productRoleObject.name + "." + '\n' + " Description: " +
-			 * productRoleObject.description + "." + '\n' + " Edited by: " +
-			 * Security.getConnected().name + ".";
-			 */
 			object.save();
 			Logs.addLog(Security.getConnected(), "Edit", "ProductRole", productRoleObject.id, project, new Date(System.currentTimeMillis()));
-			// Notifications.notifyProjectUsers(project, header, body,
-			// "editProductRole", (byte) 0);
 			flash.success("Product Role " + productRoleObject.name + " has been edited.");
 			if (params.get("_save") != null) {
 				Application.overlayKiller("", "");
@@ -245,15 +201,14 @@ public class ProductRoles extends SmartCRUD {
 	/**
 	 * Overrides the CRUD delete method that is invoked to delete a product
 	 * role, in order to delete the product role by setting the deleted boolean
-	 * variable to true instade of deleting it.
+	 * variable to true instead of deleting it.
 	 * 
 	 * @author Heba Elsherif
 	 * @param id
 	 *            the id of the product role that's going to be deleted.
 	 * @return void
-	 * @task C3 S3
-	 * @sprint 2
-	 **/
+	 * 
+	 * 	 **/
 	// @Check ("canDeleteProductRole")
 	public static void delete(String id) {
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -281,12 +236,8 @@ public class ProductRoles extends SmartCRUD {
 				render("CRUD/show.html", type, object);
 			}
 		} else {
-			String header = "Product Role: " + "\'" + productRoleObject.name + "\'" + " has been deleted.";
-			String body = "In Project " + "\'" + project.name + "\'" + "." + '\n' + " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
 			object.save();
 			Logs.addLog(Security.getConnected(), "Delete", "ProductRole", productRoleObject.id, productRoleObject.project, new Date(System.currentTimeMillis()));
-			// Notifications.notifyProjectUsers(productRoleObject.project,
-			// header, body, "deleteProductRole", (byte) -1);
 			flash.success("Product Role " + productRoleObject.name + " has been deleted.");
 			Application.overlayKiller("", "");
 		}
@@ -296,12 +247,9 @@ public class ProductRoles extends SmartCRUD {
 	 * Deletes a product role.
 	 * 
 	 * @author Heba Elsherif
-	 * @parm id the id of the considered product role.
+	 * @param id the id of the considered product role.
 	 * @return void
-	 * @task C3 S3
-	 * @sprint 2
 	 **/
-	// @Check ("canDeleteProductRole")
 	public static void deleteProductRole(long id) {
 		ProductRole productRoleObject = ProductRole.findById(id);
 		Project project = productRoleObject.project;
@@ -309,22 +257,17 @@ public class ProductRoles extends SmartCRUD {
 		Security.check(user.in(project).can("deleteProductRole"));
 		productRoleObject.deleted = true;
 		productRoleObject.save();
-
-		String header = "Product Role: " + "\'" + productRoleObject.name + "\'" + " has been deleted.";
-		String body = "In Project " + "\'" + project.name + "\'" + "." + '\n' + " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
 		Logs.addLog(Security.getConnected(), "Delete", "ProductRole", productRoleObject.id, productRoleObject.project, new Date(System.currentTimeMillis()));
-		// Notifications.notifyProjectUsers(productRoleObject.project, header,
-		// body, "deleteProductRole", (byte) -1);
 		flash.success("Product Role " + productRoleObject.name + " has been deleted.");
 	}
 
 	/**
 	 * Overrides the CRUD list method that is invoked to list product roles
-	 * role, in order to in order not to allow users to view the crud list for
-	 * the productroles.
+	 * role, in order to in order not to allow users to view the CRUD list for
+	 * the product roles.
 	 * 
 	 * @author Heba Elsherif
-	 * @sprint 3
+	 * 
 	 **/
 	public static void list(int page, String search, String searchFields, String orderBy, String order) {
 		forbidden();

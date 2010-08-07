@@ -8,7 +8,11 @@ import play.mvc.With;
 
 @With (Secure.class)
 public class NotificationTasks extends SmartController {
-	
+	/**
+	 * This Method Returns the Latest news using the notifications of the current
+	 * connected user.
+	 * 
+	 */
 	public static void getLatestNews() {
 		Security.check(Security.isConnected());
 		User myUser = Security.getConnected();
