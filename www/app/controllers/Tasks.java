@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-
 import models.Board;
 import models.Column;
 import models.Comment;
@@ -24,14 +23,26 @@ import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 import play.mvc.With;
 
-@With (Secure.class)
-public class Tasks extends SmartCRUD {
+/**
+ * Represents the Task Entity in the Database and it's relations with other entities.
+ *
+ * @see models.Task
+ */
+@With( Secure.class )
+public class Tasks extends SmartCRUD
+{
 
 	/**
-	 * A Method that renders the form of creating a Task.
+	 * Overrides the CRUD blank method that renders the create form to create a task.
 	 * 
 	 * @author Monayri
-	 * @category C3 17.1
+	 * @param componentId
+	 *                  The component id that the task is added to.
+	 * @param taskId
+	 *              The super task id in case the task is a sub task.
+	 * @param projectId 
+	 *                The project id that the task is added to.
+	 * @return void
 	 */
 	public static void blank(long componentId, long taskId, long projectId) {
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -102,14 +113,15 @@ public class Tasks extends SmartCRUD {
 		}
 
 	}
-
-	/**
-	 * A Method that Creates a Task and checks the validation of inputs by users
-	 * in the create form.
-	 * 
-	 * @author Monayri
-	 * @category C3 17.1
-	 */
+	
+	///**
+	//* A Method that Creates a Task and checks the validation of inputs by users
+	//* in the create form.
+	//* 
+	//* @author Monayri
+	//* @param void
+    //* @return void
+	//*/
 	// public static void create() throws Exception {
 	// ObjectType type = ObjectType.get(getControllerClass());
 	// notFoundIfNull(type);
@@ -229,9 +241,19 @@ public class Tasks extends SmartCRUD {
 	// }
 	// redirect(request.controller + ".show", object.getEntityId());
 	// }
-	public static void create() throws Exception {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
+	
+	/**
+	 * Overrides the CRUD create method that is invoked to submit the creation
+	 * of the task on the database.
+	 * 
+	 * @param void
+	 * @throws Exception
+	 * @return void
+	 */
+	public static void create() throws Exception
+	{
+		ObjectType type = ObjectType.get( getControllerClass() );
+		notFoundIfNull( type );
 		JPASupport object = type.entityClass.newInstance();
 		validation.valid(object.edit("object", params));
 		Task tmp = (Task) object;
@@ -289,44 +311,49 @@ public class Tasks extends SmartCRUD {
 
 		String[] desc = newdesc.split(",");
 		if (desc.length == 1) {
-			tmp.description = desc[0];
-		} else {
-			String[] desc2 = desc[0].split(" ");
-			if (desc2.length >= 3) {
-				if (desc2[0].equalsIgnoreCase("as") && (desc2[1].equalsIgnoreCase("a") || desc2[1].equalsIgnoreCase("an"))) {
-					boolean flag = false;
-					String productrole = "";
-					for (int k = 2; k < desc2.length; k++) {
-						if (k == desc2.length - 1)
-							productrole = productrole + desc2[k];
-						else
-							productrole = productrole + desc2[k] + " ";
-
-					}
-					for (int j = 0; j < tmp.project.productRoles.size(); j++) {
-						if (tmp.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
-							flag = true;
-					}
-					if (!flag) {
-						ProductRole pr = new ProductRole(tmp.project.id, productrole, "");
-						pr.save();
-						tmp.productRole = pr;
-					} else {
-						for (int j = 0; j < tmp.project.productRoles.size(); j++) {
-							if (tmp.project.productRoles.get(j).name.equalsIgnoreCase(productrole)) {
-								tmp.productRole = tmp.project.productRoles.get(j);
-							}
-						}
-					}
-					for (int i = 1; i < desc.length; i++) {
-						tmp.description = desc[i] + " ";
-					}
-				}
-			} else {
-				tmp.description = tmp.description;
-			}
-		}
-		tmp.reporter = Security.getConnected();
+		 tmp.description = desc[0];
+		 } else {
+		 String[] desc2 = desc[0].split(" ");
+		 if (desc2.length >= 3) {
+		 if (desc2[0].equalsIgnoreCase("as") && (desc2[1].equalsIgnoreCase("a") ||
+		 desc2[1].equalsIgnoreCase("an"))) {
+		 boolean flag = false;
+		 String productrole = "";
+		 for (int k = 2; k < desc2.length; k++) {
+		 if (k == desc2.length - 1)
+		 productrole = productrole + desc2[k];
+		 else
+		 productrole = productrole + desc2[k] + " ";
+		
+		 }
+		 for (int j = 0; j < tmp.project.productRoles.size(); j++) {
+		 if
+		 (tmp.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
+		 flag = true;
+		 }
+		 if (!flag) {
+		 ProductRole pr = new ProductRole(tmp.project.id,
+		 productrole, "");
+		 pr.save();
+		 tmp.productRole = pr;
+		 } else {
+		 for (int j = 0; j < tmp.project.productRoles.size(); j++) {
+		 if
+		 (tmp.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
+		 {
+		 tmp.productRole = tmp.project.productRoles.get(j);
+		 }
+		 }
+		 }
+		 for (int i = 1; i < desc.length; i++) {
+		 tmp.description = desc[i] + " ";
+		 }
+		 }
+		 } else {
+		 tmp.description = tmp.description;
+		 }
+		 }
+		tmp.reporter=Security.getConnected();
 		object.save();
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
@@ -343,9 +370,12 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/*
-	 * * A Method that renders the form of editting a Task.
+	 * Overrides the CRUD show method that renders the edit form.
+	 * 
 	 * @author Monayri
-	 * @category C3 17.1
+	 * @param id
+	 *         the task been edited id.
+	 * @return void
 	 */
 	public static void show(String id) {
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -382,13 +412,13 @@ public class Tasks extends SmartCRUD {
 		}
 	}
 
-	/**
-	 * A Method that checks the validation of input data done by user in the
-	 * edit Task form, if its correct it saves the changes.
-	 * 
-	 * @author Monayri
-	 * @category C3 17.1
-	 */
+	///**
+	//* A Method that checks the validation of input data done by user in the
+	// * edit Task form, if its correct it saves the changes.
+	//* 
+	//* @author Monayri
+	//* @return void
+	//*/
 	// public static void save(String id) throws Exception {
 	// String changes = "";
 	// ObjectType type = ObjectType.get(getControllerClass());
@@ -614,11 +644,23 @@ public class Tasks extends SmartCRUD {
 	// }
 	// redirect(request.controller + ".show", object.getEntityId());
 	// }
-	public static void save(String id) throws Exception {
-		ObjectType type = ObjectType.get(getControllerClass());
-		notFoundIfNull(type);
-		JPASupport object = type.findById(id);
-		String changes = "";
+	
+	/*
+	 * Overrides the CRUD save method that is invoked to submit the edit, in
+	 * order to check if the edits are acceptable.
+	 * 
+	 * @author Monayri
+	 * @param id
+	 *         the id of the task being edited.
+	 * @throws Exception
+	 * @return void
+	 */
+	public static void save( String id ) throws Exception
+	{
+		ObjectType type = ObjectType.get( getControllerClass() );
+		notFoundIfNull( type );
+		JPASupport object = type.findById( id );
+		String changes="";
 		Task tmp = (Task) object;
 		Security.check(Security.getConnected().in(tmp.project).can("modifyTask"));
 		List<User> users = tmp.component.componentUsers;
@@ -682,91 +724,108 @@ public class Tasks extends SmartCRUD {
 		String newdesc = tmp.description;
 		String[] desc = newdesc.split(",");
 		if (desc.length == 1) {
-			tmp.description = desc[0];
-		} else {
-			String[] desc2 = desc[0].split(" ");
-			if (desc2.length >= 3) {
-				if (desc2[0].equalsIgnoreCase("as") && (desc2[1].equalsIgnoreCase("a") || desc2[1].equalsIgnoreCase("an"))) {
-					boolean flag = false;
-					String productrole = "";
-					for (int k = 2; k < desc2.length; k++) {
-						if (k == desc2.length - 1)
-							productrole = productrole + desc2[k];
-						else
-							productrole = productrole + desc2[k] + " ";
-
-					}
-					for (int j = 0; j < tmp.project.productRoles.size(); j++) {
-						if (tmp.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
-							flag = true;
-					}
-					if (!flag) {
-						ProductRole pr = new ProductRole(tmp.project.id, productrole, "");
-						pr.save();
-						tmp.productRole = pr;
-					} else {
-						for (int j = 0; j < tmp.project.productRoles.size(); j++) {
-							if (tmp.project.productRoles.get(j).name.equalsIgnoreCase(productrole)) {
-								tmp.productRole = tmp.project.productRoles.get(j);
-							}
-						}
-					}
-					for (int i = 1; i < desc.length; i++) {
-						tmp.description = desc[i] + " ";
-					}
-				}
-			} else {
-				tmp.description = tmp.description;
-			}
-		}
+		 tmp.description = desc[0];
+		 } else {
+		 String[] desc2 = desc[0].split(" ");
+		 if (desc2.length >= 3) {
+		 if (desc2[0].equalsIgnoreCase("as") && (desc2[1].equalsIgnoreCase("a") ||
+		 desc2[1].equalsIgnoreCase("an"))) {
+		 boolean flag = false;
+		 String productrole = "";
+		 for (int k = 2; k < desc2.length; k++) {
+		 if (k == desc2.length - 1)
+		 productrole = productrole + desc2[k];
+		 else
+		 productrole = productrole + desc2[k] + " ";
+		
+		 }
+		 for (int j = 0; j < tmp.project.productRoles.size(); j++) {
+		 if
+		 (tmp.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
+		 flag = true;
+		 }
+		 if (!flag) {
+		 ProductRole pr = new ProductRole(tmp.project.id,
+		 productrole, "");
+		 pr.save();
+		 tmp.productRole = pr;
+		 } else {
+		 for (int j = 0; j < tmp.project.productRoles.size(); j++) {
+		 if
+		 (tmp.project.productRoles.get(j).name.equalsIgnoreCase(productrole))
+		 {
+		 tmp.productRole = tmp.project.productRoles.get(j);
+		 }
+		 }
+		 }
+		 for (int i = 1; i < desc.length; i++) {
+		 tmp.description = desc[i] + " ";
+		 }
+		 }
+		 } else {
+		 tmp.description = tmp.description;
+		 }
+		 }
 
 		tmp.save();
-		if (!(tmp.description.equals(oldDescription)))
-			changes += "Description changed from <i>" + oldDescription + "</i> to <i>" + tmp.description + "</i><br>";
-		if (tmp.taskType != null && oldTaskType != 0)
-			if (tmp.taskType.id != oldTaskType) {
-				TaskType temp = TaskType.findById(oldTaskType);
-				changes += "Task's Type was changed from <i>" + temp.name + "</i> to <i>" + tmp.taskType.name + "</i><br>";
-			}
-		if (tmp.taskStatus != null && oldTaskStatus != 0)
-			if (tmp.taskStatus.id != oldTaskStatus) {
-				TaskStatus temp = TaskStatus.findById(oldTaskStatus);
-				changes += "Task's status was changed from <i>" + temp.name + "</i> to <i>" + tmp.taskStatus.name + "</i><br>";
-			}
-		if (tmp.estimationPoints != oldEstPoints)
-			changes += "Estimation points for the task were changed from <i>" + oldEstPoints + "</i> to <i>" + tmp.estimationPoints + "</i><br>";
-		if (tmp.assignee != null && oldAssignee != 0) {
-			if (tmp.assignee.id != oldAssignee) {
-				User temp = User.findById(oldAssignee);
-				changes += "Task's assignee was changed from <i>" + temp.name + "</i> to <i>" + tmp.assignee.name + "</i><br>";
-			}
-		} else if (tmp.assignee != null && oldAssignee == 0) {
-			changes += "Task's assignee is now <i>" + tmp.assignee.name + "</i><br>";
-		}
-		if (tmp.reviewer != null && oldReviewer != 0) {
-			if (tmp.reviewer.id != oldReviewer) {
-				User temp = User.findById(oldReviewer);
-				changes += "Task's reviewer was changed from <i>" + temp.name + "</i> to <i>" + tmp.reviewer.name + "</i><br>";
-			}
-		} else if (tmp.reviewer != null && oldReviewer == 0) {
-			changes += "Task's reviewer is now <i>" + tmp.reviewer.name + "</i><br>";
-		}
-		for (Task oldTask : oldDependencies) {
-			if (!(tmp.dependentTasks.contains(oldTask))) {
-				changes += "Task " + oldTask.number + " was removed from Dependent tasks.<br>";
-			}
-		}
-		for (Task newTask : tmp.dependentTasks) {
-			if (!(oldDependencies.contains(newTask))) {
-				changes += "Task " + newTask.number + " was added to dependent tasks.<br>";
-			}
-		}
-
-		// Now finally save the comment
-		if (!changes.equals("")) {
-			Comment changesComment = new Comment(Security.getConnected(), tmp.id, changes);
-			changesComment.save();
-		}
+		 if (!(tmp.description.equals(oldDescription)))
+		 changes += "Description changed from <i>" + oldDescription +
+		 "</i> to <i>" + tmp.description + "</i><br>";
+		 if(tmp.taskType != null && oldTaskType != 0)
+			 if (tmp.taskType.id != oldTaskType) {
+			 TaskType temp = TaskType.findById(oldTaskType);
+			 changes += "Task's Type was changed from <i>" + temp.name + "</i> to <i>"
+			 + tmp.taskType.name + "</i><br>";
+			 }
+		 if(tmp.taskStatus != null && oldTaskStatus != 0)
+			 if (tmp.taskStatus.id != oldTaskStatus) {
+			 TaskStatus temp = TaskStatus.findById(oldTaskStatus);
+			 changes += "Task's status was changed from <i>" + temp.name +
+			 "</i> to <i>" + tmp.taskStatus.name + "</i><br>";
+			 }
+		 if (tmp.estimationPoints != oldEstPoints)
+		 changes += "Estimation points for the task were changed from <i>" +
+		 oldEstPoints + "</i> to <i>" + tmp.estimationPoints + "</i><br>";
+		 if(tmp.assignee != null && oldAssignee != 0){
+			 if (tmp.assignee.id != oldAssignee) {
+				 User temp = User.findById(oldAssignee);
+				 changes += "Task's assignee was changed from <i>" + temp.name +
+				 "</i> to <i>" + tmp.assignee.name + "</i><br>";
+				 }
+		 }
+		 else if(tmp.assignee != null && oldAssignee == 0){
+			 changes += "Task's assignee is now <i>" + tmp.assignee.name + "</i><br>";
+		 }
+		 if(tmp.reviewer != null && oldReviewer != 0){
+			 if (tmp.reviewer.id != oldReviewer) {
+			 User temp = User.findById(oldReviewer);
+			 changes += "Task's reviewer was changed from <i>" + temp.name +
+			 "</i> to <i>" + tmp.reviewer.name + "</i><br>";
+			 }
+		 }
+		 else if(tmp.reviewer != null && oldReviewer == 0){
+			 changes += "Task's reviewer is now <i>" + tmp.reviewer.name + "</i><br>";
+		 }
+		 for (Task oldTask : oldDependencies) {
+		 if (!(tmp.dependentTasks.contains(oldTask))) {
+		 changes += "Task " + oldTask.number +
+		 " was removed from Dependent tasks.<br>";
+		 }
+		 }
+		 for (Task newTask : tmp.dependentTasks) {
+		 if (!(oldDependencies.contains(newTask))) {
+		 changes += "Task " + newTask.number +
+		 " was added to dependent tasks.<br>";
+		 }
+		 }
+		
+		 // Now finally save the comment
+		 if(!changes.equals(""))
+		 {
+			 Comment changesComment = new Comment(Security.getConnected(), tmp.id,
+		 changes);
+		 	changesComment.save();
+		 }
 		// /********** End of Changes as Comment ********/
 		if (tmp.comment.trim().length() != 0) {
 			Comment comment = new Comment(Security.getConnected(), tmp.id, tmp.comment);
@@ -780,11 +839,13 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * A Method that deletes a Task
+	 * Overrides the CRUD delete method that is invoked to delete a task, 
+	 * in order to delete the task by setting the deleted boolean variable to true instead of deleting it from the data base.
 	 * 
 	 * @author Monayri
-	 * @category C3 17.1
-	 * @return its a void method.
+	 * @param id
+	 *        the task id.
+	 * @return void
 	 */
 	public static void delete(long id) {
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -811,12 +872,22 @@ public class Tasks extends SmartCRUD {
 		renderText("Task deleted successfully.");
 	}
 
-	public static void reviewers(long id, long id2) {
-		List<User> users = null;
-		Component component = Component.findById(id);
-		User Assignee = User.findById(id2);
-		if (component.number == 0)
-			users = component.project.users;
+	/**
+	 * Returns a list of all the reviewers on a component
+	 * 
+	 * @param id
+	 *         the component id.
+	 * @param id2
+	 *         the task assignee id.
+	 * @return void
+	 */
+	public static void reviewers( long id, long id2 )
+	{
+		List<User> users= null;
+		Component component = Component.findById( id );
+		User Assignee = User.findById( id2 );
+		if(id==1)
+		users = component.project.users;
 		else
 			users = component.componentUsers;
 		List<User.Object> reviewers = new ArrayList<User.Object>();
@@ -827,7 +898,15 @@ public class Tasks extends SmartCRUD {
 		}
 		renderJSON(reviewers);
 	}
-
+	
+	/**
+	 * Sets a task to be dependent on another task.
+	 * @param id
+	 *         the task id.
+	 * @param id2
+	 *          the task id.
+	 * @return void
+	 */
 	public static void setDependency(long id, long id2) {
 		Task taskFrom = Task.findById(id);
 		Task taskTo = Task.findById(id2);
@@ -841,7 +920,6 @@ public class Tasks extends SmartCRUD {
 	 * sprint. It also Notifies all the users in the corresponding component of
 	 * the change and type of change. It also logs the change.
 	 * 
-	 * @category C4 S1
 	 * @author Hadeer Younis
 	 * @param id
 	 *            The id of the task to be updated.
@@ -849,6 +927,7 @@ public class Tasks extends SmartCRUD {
 	 *            The effort points of a specific day.
 	 * @param day
 	 *            The number of the day to which the effort belongs.
+	 * @return void
 	 */
 	public static void enterEffort(long id, double effort, int day) {
 		Task temp = Task.findById(id);
@@ -876,10 +955,10 @@ public class Tasks extends SmartCRUD {
 	/**
 	 * Fetches all the data needed to generate a report on a given task.
 	 * 
-	 * @category C4 S15
 	 * @author Hadeer Younis
 	 * @param id
 	 *            The id of the task whose report will be generated.
+	 * @return void
 	 */
 	public static void getReport(long id) {
 		List<Log> temp = Log.findAll();
@@ -948,13 +1027,13 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * changes the given task description
+	 * Changes the given task description.
 	 * 
-	 * @author Moumen Mohamed story=C3S36
+	 * @author Moumen Mohamed
 	 * @param id
-	 *            the id of the giventask
+	 *            The id of the given task.
 	 * @param desc
-	 *            The new description
+	 *            The new description.
 	 * @return boolean
 	 */
 	public static boolean editTaskDesc(long id, String desc) {
@@ -976,13 +1055,13 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * changes the given task description
+	 * Changes the given task description.
 	 * 
-	 * @author Moumen Mohamed story=C3S36
+	 * @author Moumen Mohamed
 	 * @param id
-	 *            the id of the giventask
+	 *            The id of the given task.
 	 * @param desc
-	 *            The new description
+	 *            The new task description.
 	 * @return void
 	 */
 	public static void editTaskDescJSON(long id, String desc) {
@@ -1013,13 +1092,12 @@ public class Tasks extends SmartCRUD {
 	 * 
 	 * @author Moumen Mohamed
 	 * @param id
-	 *            the id of the given task.
+	 *            The id of the given task.
 	 * @param userId
-	 *            the id of the user who will do the change in description.
+	 *            The id of the user who will do the change in description.
 	 * @param desc
 	 *            The new description.
 	 * @return boolean
-	 * @story C3S36
 	 */
 	public static boolean editTaskDesc2(long id, long userId, String desc) {
 		Task task1 = Task.findById(id);
@@ -1066,13 +1144,12 @@ public class Tasks extends SmartCRUD {
 	 * 
 	 * @author Moumen Mohamed
 	 * @param id
-	 *            the id of the given task.
+	 *            The id of the given task.
 	 * @param type
 	 *            The new Task Type.
 	 * @param userId
-	 *            the id of the user who will change the task Type.
+	 *            The id of the user who will change the task Type.
 	 * @return boolean
-	 * @story C3S36
 	 */
 	public static boolean editTaskType(long id, long typeId, long userId) {
 		Task task1 = Task.findById(id);
@@ -1114,15 +1191,15 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * changes the given task type
+	 * Changes the given task type.
 	 * 
 	 * @author Moumen Mohamed story=C3S36
 	 * @param id
-	 *            the id of the given task
+	 *            The id of the given task.
 	 * @param type
-	 *            The new Tasktupe
+	 *            The new Task type.
 	 * @param userId
-	 *            the id of the user who will change the taskType
+	 *            The id of the user who will change the taskType.
 	 * @return void
 	 */
 	public static void editTaskTypeJSON(long id, long typeId, long userId) {
@@ -1168,13 +1245,18 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * this method does filter for task id and new status and user_id and give
-	 * it to editTaskStatus
+	 * FilterS for task id and new status and user_id.
 	 * 
 	 * @author josephhajj
 	 * @param id
+	 *         The Sprint id.
 	 * @param columnSequence
+	 *                     The position of the column indicating this task status on the board.   
 	 * @param taskString
+	 *                The task status sticky note id = "task-" + task.id 
+	 * @param user_id
+	 *             Tthe user id.
+	 * @return void
 	 */
 	public static void changeTaskStatusHelper(long id, int columnSequence, String taskString, long user_id) {
 		if (user_id == 0) {
@@ -1209,18 +1291,22 @@ public class Tasks extends SmartCRUD {
 		task_id_helper2 = task_id_helper[0].split("-");
 		task_id = Integer.parseInt(task_id_helper2[1]);
 
-		editTaskStatus(task_id, user_id, status);
+		editTaskStatus( task_id, user_id, status );
 	}
 
 	/**
-	 * this method filter the method for taskid and user_id and the new assignee
-	 * and gives them to editTaskAssignee
+	 * Filters for taskid and user_id and the new assignee.
 	 * 
 	 * @author josephhajj
 	 * @param id
+	 *         The component id.
 	 * @param taskString
+	 *                 The task status sticky note id = "task-" + task.id
 	 * @param user_id
+	 *              The user id.
 	 * @param row
+	 *          The row id.
+	 * @return void
 	 */
 	public static void changeTaskAssigneeHelper(long id, String taskString, long user_id, int row) {
 		// if user is not selected take the one in the session
@@ -1248,16 +1334,16 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * This method changes the given task status.
+	 * Changes the given task status.
 	 * 
 	 * @author Moumen Mohamed
 	 * @param id
-	 *            the id of the given task.
+	 *            The id of the given task.
 	 * @param newStatus
 	 *            The new task status.
 	 * @param userId
-	 *            the id of the user who will change the task status.
-	 * @return boolean story C3S36
+	 *            The id of the user who will change the task status.
+	 * @return boolean
 	 */
 	public static boolean editTaskStatus(long id, long userId, TaskStatus newStatus) {
 		Task task1 = Task.findById(id);
@@ -1331,15 +1417,15 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * changes the given task status
+	 * Changes the given task status.
 	 * 
-	 * @author Moumen Mohamed story=C3S36
+	 * @author Moumen Mohamed
 	 * @param id
-	 *            the id of the given task
+	 *            The id of the given task.
 	 * @param statusId
-	 *            The new taskstatus id
+	 *            The new task status id.
 	 * @param userId
-	 *            the id of the user who will change the taskstatus
+	 *            The id of the user who will change the task status.
 	 * @return void
 	 */
 	public static void editTaskStatusJSON(long id, long userId, long statusId) {
@@ -1411,13 +1497,13 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * changes the given task estimation points
+	 * Changes the given task estimation points.
 	 * 
-	 * @author Moumen Mohamed story=C3S36
+	 * @author Moumen Mohamed
 	 * @param id
-	 *            the id of the given task
+	 *            The id of the given task.
 	 * @param estimation
-	 *            the value of the new estimation
+	 *            The value of the new estimation.
 	 * @return boolean
 	 */
 	public static boolean editTaskEstimation(long id, double estimation) {
@@ -1439,13 +1525,13 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * changes the given task estimation points
+	 * Changes the given task estimation points.
 	 * 
-	 * @author Moumen Mohamed story=C3S36
+	 * @author Moumen Mohamed
 	 * @param id
-	 *            the id of the given task
+	 *            The id of the given task.
 	 * @param estimation
-	 *            the value of the new estimation
+	 *            The value of the new estimation.
 	 * @return void
 	 */
 	public static void editTaskEstimationJSON(long id, double estimation) {
@@ -1473,13 +1559,13 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * changes the given task assignee
+	 * Changes the given task assignee.
 	 * 
-	 * @author Moumen Mohamed story=C3S36
+	 * @author Moumen Mohamed
 	 * @param id
-	 *            the id of the given task
+	 *          The id of the given task
 	 * @param assigneId
-	 *            the id of the user who will be the assignee of the task
+	 *                The id of the user who will be the assignee of the task.
 	 * @return boolean
 	 */
 	public static boolean editTaskAssignee(long id, long assigneeId) {
@@ -1507,13 +1593,13 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * changes the given task assignee
+	 * Changes the given task assignee.
 	 * 
-	 * @author Moumen Mohamed story=C3S36
+	 * @author Moumen Mohamed
 	 * @param id
-	 *            the id of the given task
+	 *         The id of the given task.
 	 * @param assigneId
-	 *            the id of the user who will be the assignee of the task
+	 *                The id of the user who will be the assignee of the task.
 	 * @return void
 	 */
 	public static void editTaskAssigneeJSON(long id, long assigneeId) {
@@ -1551,13 +1637,12 @@ public class Tasks extends SmartCRUD {
 	 * 
 	 * @author Moumen Mohamed
 	 * @param id
-	 *            the id of the given task.
+	 *          The id of the given task.
 	 * @param userId
-	 *            the id of the user who will do the change.
+	 *              The id of the user who will do the change.
 	 * @param assigneId
-	 *            the id of the user who will be the assignee of the task.
+	 *                 The id of the user who will be the assignee of the task.
 	 * @return boolean
-	 * @story C3S36
 	 */
 	public static boolean editTaskAssignee2(long id, long userId, long assigneeId) {
 		Task task1 = Task.findById(id);
@@ -1598,7 +1683,9 @@ public class Tasks extends SmartCRUD {
 		String body = "";
 		if (userId == Security.getConnected().id) {
 			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ".";
-		} else {
+		}
+		else
+		{
 			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 		}
 
@@ -1613,13 +1700,13 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * changes the given task reviewer
+	 * Changes the given task reviewer.
 	 * 
-	 * @author Moumen Mohamed story=C3S36
+	 * @author Moumen Mohamed
 	 * @param id
-	 *            the id of the given task
+	 *          The id of the given task.
 	 * @param reviewerId
-	 *            the id of the user who will be the reviewer of the task
+	 *                  The id of the user who will be the reviewer of the task.
 	 * @return boolean
 	 */
 	public static boolean editTaskReviewer(long id, long reviewerId) {
@@ -1647,13 +1734,13 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * changes the given task reviewer
+	 * Changes the given task reviewer.
 	 * 
-	 * @author Moumen Mohamed story=C3S36
+	 * @author Moumen Mohamed
 	 * @param id
-	 *            the id of the given task
+	 *          The id of the given task.
 	 * @param reviewerId
-	 *            the id of the user who will be the reviewer of the task
+	 *                  The id of the user who will be the reviewer of the task.
 	 * @return void
 	 */
 	public static void editTaskReviewerJSON(long id, long reviewerId) {
@@ -1686,17 +1773,16 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * This method changes the given task reviewer.
+	 * Changes the given task reviewer.
 	 * 
 	 * @author Moumen Mohamed
 	 * @param id
-	 *            the id of the given task.
+	 *          The id of the given task.
 	 * @param userId
-	 *            the id of the user who will be doing the change.
+	 *              The id of the user who will be doing the change.
 	 * @param reviewerId
-	 *            the id of the user who will be the reviewer of the task.
+	 *                  The id of the user who will be the reviewer of the task.
 	 * @return boolean
-	 * @story C3S36
 	 */
 	public static boolean editTaskReviewer2(long id, long userId, long reviewerId) {
 		Task task1 = Task.findById(id);
@@ -1777,13 +1863,15 @@ public class Tasks extends SmartCRUD {
 	// }
 
 	/**
-	 * @author menna_ghoneim Renders a given taskid with a list of user and
-	 *         option to say if the reviewer or the assignee is being changed to
-	 *         a page to choose a reviewer or assignee
+	 * Renders a given task id with a list of user and option to say if the reviewer 
+	 * or the assignee is being changed to a page to choose a reviewer or assignee
+	 * 
+	 * @author menna_ghoneim 
 	 * @param taskId
-	 *            the task to be edited
+	 *            The task to be edited.
 	 * @param aORr
-	 *            whether reviewer or assignee
+	 *            Whether reviewer or assignee.
+	 * @return void
 	 */
 
 	public static void chooseTaskAssiRev(long taskId, int aORr) {
@@ -1806,11 +1894,13 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
+	 * Renders a list of the users on the component to select an assignee from them.
+	 * 
 	 * @author Dina Helal
 	 * @param taskId
-	 *            the task to be edited
+	 *              The task to be edited.
 	 * @param compId
-	 *            component of the users
+	 *              Component of the users.
 	 */
 
 	public static void chooseTaskAssi(long taskId, long compId, long userId) {
@@ -1827,11 +1917,14 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
+	 * Renders a list of the users on the component except the assignee to select an assignee from them.
+	 * 
 	 * @author Dina Helal
 	 * @param taskId
-	 *            the task to be edited
+	 *              The task to be edited.
 	 * @param compId
-	 *            component of the users
+	 *              Component of the users.
+	 * @return void
 	 */
 
 	public static void chooseRev(long taskId, long compId, long userId) {
@@ -1848,10 +1941,12 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * @author menna_ghoneim Renders a given taskid with a likt of project types
-	 *         and the session's user id to a page to choose
+	 * Renders a given task id with a list of project types and the session's user id to a page to choose.
+	 * 
+	 * @author menna_ghoneim 
 	 * @param taskId
-	 *            the task to be edited
+	 *              The task id to be edited.
+	 * @return void
 	 */
 
 	public static void chooseTaskType(long taskId) {
@@ -1862,14 +1957,19 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * @author dina_helal takes a taskid, and renders it to a page to choose
-	 *         task type
+	 * Takes a task id, and renders it to a page to choose task type.
+	 * 
+	 * @author dina_helal 
 	 * @param taskId
-	 *            the task to be edited
+	 *             The task id to be edited.
+	 * @param userId
+	 *             The user id who is editing the task.
+	 * @return void
 	 */
-
-	public static void chooseType(long taskId, long userId) {
-		if (userId == 0) {
+	public static void chooseType( long taskId, long userId )
+	{
+		if( userId == 0 )
+		{
 			userId = Security.getConnected().id;
 		}
 		Task task = Task.findById(taskId);
@@ -1878,10 +1978,13 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * @author menna_ghoneim Renders a given taskId with project statuses and
-	 *         the user in the session to a page to choose a task status
+	 * Renders a given taskId with project statuses and the user 
+	 * in the session to a page to choose a task status.
+	 *         
+	 * @author menna_ghoneim
 	 * @param taskId
 	 *            the task to be edited
+	 * @return void
 	 */
 	public static void chooseTaskStatus(long taskId) {
 		Task task = Task.findById(taskId);
@@ -1890,7 +1993,23 @@ public class Tasks extends SmartCRUD {
 		render(taskId, states, user);
 	}
 
-	public static void magicShow(long projectId, long componentId, int mine, long meetingId, long taskId) {
+	/**
+	 * Takes renders to the view task(s) and the title and the project id and an indicator to list the tasks
+	 * 
+	 * @param projectId
+	 *                 The task'(s) project id.
+	 * @param componentId
+	 *                  The task'(s) component id.
+	 * @param mine
+	 *            An indicator whether the list of my tasks or all project tasks.
+	 * @param meetingId
+	 *                 The meeting id.
+	 * @param taskId
+	 *             The task id.
+	 * @return void
+	 */
+	public static void magicShow( long projectId, long componentId, int mine, long meetingId, long taskId )
+	{
 		String title;
 		if (componentId != 0) {
 			Component component = Component.findById(componentId);
@@ -1964,9 +2083,14 @@ public class Tasks extends SmartCRUD {
 	}
 
 	/**
-	 * Associate task to component
+	 * Associates task to component.
 	 * 
 	 * @author mahmoudsakr
+	 * @param taskId
+	 *              The task id.
+	 * @param componentId
+	 *                   The component id.
+	 * @return void
 	 */
 	public static void associateToComponent(long taskId, long componentId) {
 		Task task = Task.findById(taskId);
@@ -1983,8 +2107,18 @@ public class Tasks extends SmartCRUD {
 
 		renderText("Associated successfully|reload('component-" + componentId + "', 'task-" + taskId + "')");
 	}
-
-	public static void assignTaskAssignee(long taskId, long assigneeId) {
+	
+	/**
+	 * Assigns a given user as an assignee for a given task.
+	 * 
+	 * @param taskId
+	 *              The task id.
+	 * @param assigneeId
+	 *                  The user id.
+	 * @return void
+	 */
+	public static void assignTaskAssignee (long taskId, long assigneeId)
+	{
 		Task task = Task.findById(taskId);
 		User user = User.findById(assigneeId);
 		User connected = Security.getConnected();
@@ -1995,8 +2129,18 @@ public class Tasks extends SmartCRUD {
 		task.save();
 		renderText("Assignee added successfully|reload('task-" + taskId + "')");
 	}
-
-	public static void assignTaskReviewer(long taskId, long reviewerId) {
+	
+	/**
+	 * Assigns a given user as a reviewer for a given task.
+	 * 
+	 * @param taskId
+	 *              The task id.
+	 * @param reviewerId
+	 *                  The user id.                    
+	 * @return void
+	 */
+	public static void assignTaskReviewer (long taskId, long reviewerId)
+	{
 		Task task = Task.findById(taskId);
 		User user = User.findById(reviewerId);
 		User connected = Security.getConnected();
@@ -2007,8 +2151,17 @@ public class Tasks extends SmartCRUD {
 		task.save();
 		renderText("Reviewer assigned successfully|reload('task-" + taskId + "')");
 	}
-
-	public static void componentUsers(long cid) {
+	
+	/**
+	 * Renders a list of users on a component. 
+	 * In case the user is not in a component it renders all the users on the project.
+	 * 
+	 * @param cid
+	 *           The component id. 
+	 * @return void
+	 */
+	public static void componentUsers (long cid)
+	{
 		Component c = Component.findById(cid);
 		List<User> users = null;
 		if (c.number == 0) {

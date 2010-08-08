@@ -15,16 +15,11 @@ import play.mvc.With;
 /**
  * This is the controller method that renders to views.SprintBacklog It is for
  * viewing the sprint either in a backlog or chart.
- * <p>
- * The first method is for viewing and editing the sprint backlog, the second is
- * for viewing the burn down chart and the third is for assigning a task as
- * impediment.
  * 
  * @author Menna Ghoneim
  */
 
 @With( Secure.class )
-// @Check("systemAdmin")
 public class SprintBacklog extends SmartController
 {
 
@@ -35,11 +30,12 @@ public class SprintBacklog extends SmartController
 	 * backlog : 1,4,5,6.
 	 * 
 	 * @param componentID
-	 *            : given compenent id
+	 *                   The given compenent id.
 	 * @param id
-	 *            : given sprint id
+	 *          The given sprint id.
 	 *@param projectId
-	 *            the id of a given project
+	 *                The id of a given project.
+	 *@return void
 	 */
 
 	public static void index( long componentID, long id )
@@ -82,16 +78,15 @@ public class SprintBacklog extends SmartController
 	}
 
 	/**
-	 * Renders the burndown chart for a certain sprint and or certain component.
+	 * Renders the burn down chart for a certain sprint and or certain component.
 	 * 
 	 * @author eabdelrahman
 	 * @author Hadeer Younis
-	 * @param Sprint
-	 *            id
+	 * @param id
+	 *          The sprint id.
 	 * @param cid
-	 *            this is the component id
-	 * @return String containing the data of the sprint to draw the burn down
-	 *         chart
+	 *           The component id.
+	 * @return String containing the data of the sprint to draw the burn down chart.
 	 */
 	public static void showGraph( long id, long componentID )
 	{
@@ -104,15 +99,15 @@ public class SprintBacklog extends SmartController
 	}
 
 	/**
-	 * @author menna_ghoneim Renders a given taskId with a list of user and
-	 *         option to say if the reviewer or the assignee is being changed to
-	 *         a page to choose a reviewer or assignee
+	 * Returns a list of users of given task to choose from them  a reviewer or an assignee.
+	 * 
+	 * @author menna_ghoneime
 	 * @param taskId
 	 *            the task to be edited
 	 * @param aORr
-	 *            whether reviewer or assignee
+	 *            weather reviewer or assignee
+	 * @return void
 	 */
-
 	public static List<User> chooseTaskAssiRev( long taskId, int aORr )
 	{
 		List<User> users = new ArrayList<User>();
@@ -137,10 +132,13 @@ public class SprintBacklog extends SmartController
 	}
 
 	/**
-	 * @author menna_ghoneim Renders a given taskid with a likt of project types
-	 *         and the session's user id to a page to choose
+	 * Returns the task types of a certain project of the given task id.
+	 * 
+	 * @author menna_ghoneim
 	 * @param taskId
-	 *            the task to be edited
+	 *              The task id to be edited.
+	 * @return List<TaskType>
+	 *                      A list of the task project task types.
 	 */
 
 	public static List<TaskType> chooseTaskType( long taskId )
@@ -154,10 +152,12 @@ public class SprintBacklog extends SmartController
 	}
 
 	/**
-	 * @author menna_ghoneim Renders a given taskId with project statuses and
-	 *         the user in the session to a page to choose a task status
+	 * Returns the task status of a certain project of the given task id.
+	 * 
+	 * @author menna_ghoneim 
 	 * @param taskId
-	 *            the task to be edited
+	 *            The task id to be edited.
+	 * @return void
 	 */
 	public static List<TaskStatus> chooseTaskStatus( long taskId )
 	{

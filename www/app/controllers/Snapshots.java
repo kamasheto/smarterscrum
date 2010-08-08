@@ -16,8 +16,25 @@ import models.Task;
 import models.User;
 import models.Component.ComponentRowh;
 
+/**
+ * Represents the Snapshot Entity in the Database and it's relations with other entities.
+ *
+ * @see models.Snapshot
+ */
 public class Snapshots extends SmartController {
 	
+	
+	/**
+	 * Takes a snap shot of the board.
+	 * 
+	 * @param sprintID
+	 *                The sprint id.
+	 * @param componentID
+	 *                   The component id.
+	 * @param meetingID
+	 *                 The meeting id.
+	 * @return void
+	 */
 	public static void  TakeSnapshot(long sprintID, long componentID, long meetingID){
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
@@ -194,10 +211,12 @@ List<User> users = c.getUsers();
 
 
 	/**
-	 * Renders the data needed to load the snapshot
+	 * Renders the data needed to load the snapshot.
 	 * 
 	 * @author Amr Abdelwahab
 	 * @param id
+	 *          The snap shot id
+	 * @return void
 	 */
 
 	public static void LoadSnapShot(long id) {
@@ -215,11 +234,11 @@ List<User> users = c.getUsers();
 	 * Renders a list of the snapshots now sorted by date
 	 * 
 	 * @author Amr Abdelwahab
-	 *@param id
-	 *            the id of the sprint
-	 *@param type
-	 *            the string that filters the list of board according to its
-	 *            type
+	 * @param id
+	 *          The id of the sprint.
+	 * @param type
+	 *            The string that filters the list of board according to its type.
+	 * @return void
 	 */
 	public static void index(long sid, long pid, long cid) {
 
@@ -242,24 +261,46 @@ List<User> users = c.getUsers();
 		//render(snapshots,type,s);}
 		//render(snapshots,type);
 	}
-	public static void boardsnapshots(long sid, long pid, long cid) {
+	
+	/**
+	 * Renders a list of the snapshots of the board given a project or a component given a specific sprint.
+	 * @param sprintId
+	 *           The sprint id.
+	 * @param pid
+	 *           The project id.
+	 * @param cid
+	 *           The component id.
+	 * @return void
+	 */
+	public static void boardsnapshots(long sprintId, long pid, long cid) {
 
-		Sprint s = Sprint.findById(sid);
+		Sprint sprint = Sprint.findById(sprintId);
 		List<Snapshot> snapshots = new ArrayList();
 		if(pid!=0)
 		{
 			Project p = Project.findById(pid);
-			snapshots = Snapshot.find("byBoardAndSprintAndType",p.board,s,p.name).fetch();
+			snapshots = Snapshot.find("byBoardAndSprintAndType",p.board,sprint,p.name).fetch();
+			
+			
 			render(snapshots,p,pid,cid);
 		}
 		else
 		{
 			Component c = Component.findById(cid);
-			snapshots = Snapshot.find("byBoardAndSprintAndType",c.componentBoard,s,c.name).fetch();
+			snapshots = Snapshot.find("byBoardAndSprintAndType",c.componentBoard,sprint,c.name).fetch();
 			render(snapshots,c,pid,cid);
 		}
 	}
 
+	/**
+	 * Filters the snapshots that have been taken by the connected user.
+	 * 
+	 * @param id
+	 *          The sprint id.
+	 * @param type
+	 *            The Type of the snapshot like used in filtering and giving titles.
+	 * @return void
+	 */
 	public static void indexuser(long id, String type) {
 
 		List<Snapshot> snapshots = Snapshot.find("sprint.id = ? and type = ? and user=? ", id, type,Security.getConnected()).fetch();
