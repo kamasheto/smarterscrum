@@ -2,12 +2,14 @@
 <body>
 <p>
 Dear ${userName},
-	<br/>Welcome to SmarterScrum Tool!
-	<br/>in order to activate your account please <a href = "${url}">click here!</a>
-	<br/>otherwise you won't be able to use SmarterScrum tool & benefit from its features!
+	#{ifnot changeEmail}<br/>Welcome to SmarterScrum Tool!
+	<br/>in order to activate your account #{/ifnot}
+	#{else}You have requested to change your email address to this one
+	<br/>in order to activate your new email #{/else}please <a href = "${url}">click here!</a>
+	<br/>otherwise you won't be able to use SmarterScrum tool !!
 </p>
 <div>
-if you haven't asked to register & you received this email by error please report this <a href="#">here</a>
+<p>if you haven't asked to register or change your email & you received this email by error please report this <a href="#">here!</a></p>
 </div>
 </body>
 </html>

@@ -10,12 +10,12 @@ import controllers.Security;
 
 public class Notifications extends Mailer{
 
-	public static void activate(String userEmail, String userName, String url)
+	public static void activate(String userEmail, String userName, String url, boolean changeEmail)
 	{
 		addRecipient(userEmail);
 		setFrom("se.smartsoft.2@gmail.com");
 		setSubject("SmarterScrum Activation");
-		send(userName, url);
+		send(userName, url, changeEmail);
 	}
 	
 	public static void invite()

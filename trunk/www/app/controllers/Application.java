@@ -5,6 +5,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 
+import notifiers.Notifications;
+
 import models.Component;
 import models.Notification;
 import models.Project;
@@ -12,7 +14,6 @@ import models.User;
 import play.data.validation.Email;
 import play.data.validation.Required;
 import play.data.validation.Validation;
-import play.libs.Mail;
 import play.mvc.With;
 
 /**
@@ -232,10 +233,9 @@ public class Application extends SmartController
 			user.activationHash = Application.randomHash( 32 );
 			user.isActivated = false;
 			user.save();
-			session.put( "username", email );
-			String subject = "Your SmartSoft new Email activation requires your attention";
-			String body = "Dear " + user.name + ", You have requested to change the Email Address associated with your account. Please click the following link to activate your account: " + "http://localhost:9000/accounts/doActivation?hash=" + user.activationHash;
-			Mail.send( "se.smartsoft@gmail.com", user.email, subject, body );
+			session.put( "username", email );			
+			String url = "http://localhost:9000/accounts/doActivation?hash=" + user.activationHash;
+			Notifications.activate(user.email, user.name, url, true);			
 			flash.success( "Successfully saved your data! , please check your new Email and follow the instructions sent by us to confirm your new Email." );
 			profile( id );
 		}
