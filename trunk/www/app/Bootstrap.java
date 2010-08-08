@@ -133,8 +133,10 @@ public class Bootstrap extends Job
 				c2.componentUsers.add( tmp );
 				tmp.save();
 			}
+			
 			c2.save();
 			c2.init();
+			
 
 			Component c3 = new Component();
 			c3.name = "User Stories and Tasks";

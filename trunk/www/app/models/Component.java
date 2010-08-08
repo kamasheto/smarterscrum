@@ -289,7 +289,7 @@ public class Component extends SmartModel
 			Column c = new Column( project.board.columns.get( i ).name, componentBoard, project.board.columns.get( i ).taskStatus );
 			c.save();
 		}
-			this.number = this.project.components.size();
+			this.number = this.project.components.size()-1;
 			for( Component component : this.project.components )
 			{
 				if( component.number >= this.number && !component.equals( this ) )
