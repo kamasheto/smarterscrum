@@ -13,6 +13,11 @@ import play.libs.Mail;
 public class Security extends Secure.Security
 {
 
+	/**
+	 * gets the connected user in the session.
+	 * 
+	 * @return the currently connected user
+	 */
 	public static User getConnected()
 	{
 		String usr = (isConnected() ? connected() : "").toLowerCase();
@@ -90,11 +95,20 @@ public class Security extends Secure.Security
 		return check( getConnected().in( project ).can( permission ) );
 	}
 
+	/**
+	 * renders the forgot password view
+	 */
 	public static void forgotPassword()
 	{
 		render();
 	}
 
+	/**
+	 * called from the forgot password view on order to check if the user
+	 * name,email are existing in the database or not
+	 * 
+	 * @param username
+	 */
 	public static void checkUsername( @Required String username )
 	{
 		if( validation.hasErrors() )
@@ -103,16 +117,9 @@ public class Security extends Secure.Security
 			Security.forgotPassword();
 		}
 		User u;
-		username=username.toLowerCase();
-		if( username.contains( "@" ) )
-		{
-			u = User.find( "byEmail", username ).first();
-		}
-		else
-		{
-			u = User.find( "byName", username ).first();
-		}
-		if( u == null || u.deleted==true)
+		username = username.toLowerCase();
+		u = User.find( "select u from User u where u.email=? or u.name=?", username, username ).first();
+		if( u == null || u.deleted == true )
 		{
 			flash.error( "This username/Email does not exist" );
 			Logs.addLog( "A guest tried to recover a password of the username " + username + " but the username was not found" );
@@ -139,16 +146,34 @@ public class Security extends Secure.Security
 
 	}
 
+	/**
+	 * renders the view of the user to enter his new password on password
+	 * recovery
+	 * 
+	 * @param h
+	 *            which is the recovery hash
+	 */
 	public static void passwordRecovery( String h )
 	{
 		User user = User.find( "byRecoveryHash", h ).first();
-		if(user==null)
+		if( user == null )
 		{
 			notFound();
 		}
 		render( user );
 	}
 
+	/**
+	 * recover the user's password and change it successfully
+	 * 
+	 * @param username
+	 *            the username
+	 * @param pass1
+	 *            password field one
+	 * @param pass2
+	 *            password filed two (have to be the same like password field
+	 *            one)
+	 */
 	public static void recoverPassword( @Required String username, @Required String pass1, @Required String pass2 )
 	{
 		User u = User.find( "byName", username ).first();

@@ -17,6 +17,12 @@ import play.mvc.With;
 public class Show extends SmartController
 {
 
+	/**
+	 * renders the roles in a certain project to be used in the views.
+	 * 
+	 * @param id
+	 *            the role id
+	 */
 	public static void roles( long id )
 	{
 		User user = Security.getConnected();
@@ -46,6 +52,12 @@ public class Show extends SmartController
 		users( 0 );
 	}
 
+	/**
+	 * render the users in the system in a paginated way
+	 * 
+	 * @param page
+	 *            the page of users
+	 */
 	public static void users( int page )
 	{
 		if( page < 0 )
@@ -57,6 +69,12 @@ public class Show extends SmartController
 		render( users, page, total );
 	}
 
+	/**
+	 * shows the projects in the system in a paginated way
+	 * 
+	 * @param page
+	 *            the page of projects
+	 */
 	public static void projects( int page )
 	{
 		List<Project> projects = Project.find( "byDeleted", false ).from( page * 20 ).fetch( 20 );
@@ -93,6 +111,12 @@ public class Show extends SmartController
 		render( user, myProjects, me );
 	}
 
+	/**
+	 * List all task types in project
+	 * 
+	 * @param projectId
+	 *            the id of the project
+	 */
 	public static void listTaskTypesInProject( long projectId )
 	{
 		Project project = Project.findById( projectId );
@@ -101,12 +125,18 @@ public class Show extends SmartController
 		List<Requestreviewer> requests = Requestreviewer.find( "byUser", user ).fetch();
 		for( Requestreviewer r : requests )
 		{
-			if(r.accepted == false && r.rejected == false)
+			if( r.accepted == false && r.rejected == false )
 				requested.add( r.types );
 		}
 		render( project, requested, projectId );
 	}
 
+	/**
+	 * shows the workspace of a project
+	 * 
+	 * @param id
+	 *            the project id
+	 */
 	public static void workspace( long id )
 	{
 		Project proj = Project.findById( id );
