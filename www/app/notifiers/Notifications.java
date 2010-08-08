@@ -21,7 +21,7 @@ public class Notifications extends Mailer{
 	public static void invite(User user, String objectURL, String objectName, String confirmURL, String declineURL, Project project, boolean meeting)
 	{
 		User actionPerformer = Security.getConnected();
-		new Notification(user, actionPerformer, "Invit", objectURL, "the meeting", objectName, (byte)0).save();
+		new Notification(user, actionPerformer, "Invit", objectURL, "you to the meeting", objectName, (byte)0).save();
 		addRecipient(user.email);
 		setFrom("se.smartsoft.2@gmail.com");
 		if(meeting)
