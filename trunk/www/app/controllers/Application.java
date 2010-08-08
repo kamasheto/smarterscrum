@@ -90,24 +90,10 @@ public class Application extends SmartController
 	}
 
 	/**
-	 * Retrieves the latest 30 notifications to the home page
-	 * 
-	 * @author Moataz
+	 * Retrieves the home page
 	 */
 	public static void index()
-	{
-		/*
-		 * User user = Security.getConnected(); List<Notification> notis =
-		 * Notification.find( "user = " + user.id + "order by id desc"
-		 * ).fetch(); List<Notification> noti; if( notis.size() < 30 ) noti =
-		 * notis; else noti = notis.subList( 0, 29 ); // Notification nn = new
-		 * Notification(Security.getConnected(), //"Smarter Scrum",
-		 * "Smarter Scrum v.01 the very first product made by SmartSoft has been released!!!"
-		 * , // (byte) 1); // Notification n = new
-		 * Notification(Security.getConnected(), //"Hadeer Younis (Design)",
-		 * "Plum v.03 is up and running!! Note that it's still in beta phase, So please report any bugs straight away!!"
-		 * , // (byte) 1); // noti.add(n);noti.add(nn);
-		 */
+	{		
 		render();
 	}
 
