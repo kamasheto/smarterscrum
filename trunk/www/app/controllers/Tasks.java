@@ -389,7 +389,7 @@ public class Tasks extends SmartCRUD
 		Task tmp = (Task) object;
 		Security.check( Security.getConnected().in( tmp.project ).can( "modifyTask" ) );
 		List<User> users = null;
-		if(tmp.component.id==1)
+		if(tmp.component.number==0)
 			users = tmp.project.users;
 		else
 			users = tmp.component.componentUsers;
@@ -881,7 +881,7 @@ public class Tasks extends SmartCRUD
 		List<User> users= null;
 		Component component = Component.findById( id );
 		User Assignee = User.findById( id2 );
-		if(id==1)
+		if(component.number==0)
 		users = component.project.users;
 		else
 		users = component.componentUsers;
@@ -2184,7 +2184,7 @@ public class Tasks extends SmartCRUD
 	{
 		Component c = Component.findById(cid);
 		List <User> users = null;
-		if(cid==1)
+		if(c.number==0)
 		{
 			users = c.project.users;
 		}
