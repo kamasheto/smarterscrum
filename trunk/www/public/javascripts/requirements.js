@@ -11,12 +11,6 @@ function doOnLoad() {
 				$(this).html( formatDate( new Date(Number($(this).html())), 'd MMM, yyyy hh:mma') );	
 			}
 		});
-	
-	    $("a").tipTip();
-	    $("td").tipTip();
-	    $("span").tipTip();
-	 $("div").tipTip();
-	 $("img").tipTip();
 	    $('div.crudField').each(function(){
 				if ($(this).html().trim() == '') {
 					$(this).remove();
