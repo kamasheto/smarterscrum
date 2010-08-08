@@ -2,15 +2,15 @@
 	#{set 'title'}
 	${meeting.name}
 	
-	#{if (connected.in(project).can('deleteMeeting') ||connceted.equals(meeting.creator)) } 
+	#{if (connected.in(project).can('deleteMeeting') ||connected.equals(meeting.creator)) } 
 	<a href="#" onclick="javascript:delete_meeting(${meeting.id});" >
 	<img title="delete" src="@{'/public/images/famfam/delete.png'}"></img></a>
 	#{/if}
-	#{if (meeting.startTime > new Date().getTime()) && ((connected.in(project).can('editMeeting') ||connceted.equals(meeting.creator))) }
+	#{if (meeting.startTime > new Date().getTime()) && ((connected.in(project).can('editMeeting') ||connected.equals(meeting.creator))) }
 	<a href="javascript:overlayOpen('/admin/meetings/${meeting.id}');" >
 	<img title="edit" src="@{'/public/images/famfam/pencil.png'}"></a>
 	#{/if}
-	#{if (meeting.startTime < new Date().getTime()) && ((connected.in(project).can('editMeeting') ||connceted.equals(meeting.creator))) }
+	#{if (meeting.startTime < new Date().getTime()) && ((connected.in(project).can('editMeeting') ||connected.equals(meeting.creator))) }
 	<img class="dim" title="edit" src="@{'/public/images/famfam/pencil.png'}">
 	#{/if}
 	#{if (meeting.snapshot!=null)}

@@ -104,7 +104,9 @@ function join_meeting(id)
 			{
 			$.bar({ message:'You have successfully joined the meeting.' })
 		$('#accepts_'+id).hide();
+		$('#acceptsMeetings_'+id).hide();
 		$('#confirmedd_'+id).show();
+		$('#confirmeddMeetings_'+id).show();
 			}
 		else
 			{
@@ -112,6 +114,7 @@ function join_meeting(id)
 				message : 'Meeting has already ended.'
 			});
 			$('#accepts_'+id).hide();
+			$('#acceptsMeetings_'+id).hide();
 			}
 	})
 }
@@ -133,6 +136,9 @@ function confirm_me(id)
 		$('#confirmed_'+id).show();
 		$('#inv_'+id).hide();
 		$('#meet_'+id).hide();
+		$('#acceptMeetings_'+id).hide();
+		$('#declineMeetings_'+id).hide();
+		$('#confirmedMeetings_'+id).show();
 			}
 		else
 			{
@@ -140,6 +146,8 @@ function confirm_me(id)
 			$('#accept_'+id).hide();
 			$('#decline_'+id).hide();
 			$('#meet_'+id).hide();
+			$('#acceptMeetings_'+id).hide();
+			$('#declineMeetings_'+id).hide();
 			
 				$.bar({
 					message : 'Meeting has already ended.'
@@ -228,6 +236,9 @@ function decline_me(id)
 		$('#accept_'+id).hide();
 		$('#decline_'+id).hide();
 		$('#meet_'+id).hide();
+		$('#declinedMeetings_'+id).show();
+		$('#acceptMeetings_'+id).hide();
+		$('#declineMeetings_'+id).hide();
 			}
 		else
 			{
@@ -238,6 +249,8 @@ function decline_me(id)
 			$('#accept_'+id).hide();
 			$('#decline_'+id).hide();
 			$('#meet_'+id).hide();
+			$('#acceptMeetings_'+id).hide();
+			$('#declineMeetings_'+id).hide();
 			}
 	
 	}

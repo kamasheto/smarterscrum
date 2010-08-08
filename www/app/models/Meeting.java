@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,7 +15,8 @@ import javax.persistence.OneToOne;
 import play.data.validation.Required;
 
 @Entity
-public class Meeting extends SmartModel {
+public class Meeting extends SmartModel
+{
 
 	/**
 	 * Meeting name
@@ -120,7 +122,7 @@ public class Meeting extends SmartModel {
 	 * contains a single meeting and a single user, and a user may have many
 	 * attendees, so its basically a many to many relation with the users)
 	 */
-	@OneToMany (mappedBy = "meeting", cascade = CascadeType.ALL)
+	@OneToMany( mappedBy = "meeting", cascade = CascadeType.ALL )
 	public List<MeetingAttendance> users;
 
 	/**
@@ -140,7 +142,8 @@ public class Meeting extends SmartModel {
 	 * @param creator
 	 */
 
-	public Meeting (String name, User creator, String description, long end, long start, String location, String type, Project project, Sprint sprint) {
+	public Meeting( String name, User creator, String description, long end, long start, String location, String type, Project project, Sprint sprint )
+	{
 		this.name = name;
 		this.description = description;
 		this.startTime = start;
@@ -165,7 +168,8 @@ public class Meeting extends SmartModel {
 	 * @return String
 	 */
 
-	public String toString() {
+	public String toString()
+	{
 		return this.name;
 	}
 
@@ -174,7 +178,8 @@ public class Meeting extends SmartModel {
 	 * 
 	 * @return a list of artifacts of a given meeting
 	 */
-	public List<Artifact> getMeetingArtifacts() {
+	public List<Artifact> getMeetingArtifacts()
+	{
 		return this.artifacts;
 	}
 
@@ -184,9 +189,10 @@ public class Meeting extends SmartModel {
 	 * @return the status if there are notes in the given artifacts
 	 * @author Hossam Amer
 	 */
-	public boolean hasNotes() {
-		for (int i = 0; i < this.artifacts.size(); i++)
-			if (this.artifacts.get(i).type.equals("Notes") && !this.artifacts.get(i).deleted)
+	public boolean hasNotes()
+	{
+		for( int i = 0; i < this.artifacts.size(); i++ )
+			if( this.artifacts.get( i ).type.equals( "Notes" ) && !this.artifacts.get( i ).deleted )
 				return true;
 
 		return false;
@@ -199,9 +205,10 @@ public class Meeting extends SmartModel {
 	 * @author Hossam Amer
 	 */
 
-	public boolean hasAttendees() {
-		for (int i = 0; i < this.users.size(); i++)
-			if (this.users.get(i).status.equals("confirmed") && !this.users.get(i).deleted)
+	public boolean hasAttendees()
+	{
+		for( int i = 0; i < this.users.size(); i++ )
+			if( this.users.get( i ).status.equals( "confirmed" ) && !this.users.get( i ).deleted )
 				return true;
 
 		return false;
@@ -214,20 +221,43 @@ public class Meeting extends SmartModel {
 	 * @author Hossam Amer
 	 */
 
-	public List<Artifact> getArtifactOfTypeNotes() {
+	public List<Artifact> getArtifactOfTypeNotes()
+	{
 		List<Artifact> tmpArtifactList = new ArrayList<Artifact>();
 
-		try {
-			for (int i = 0; i < this.artifacts.size(); i++)
-				if (this.artifacts.get(i).type.equals("Notes") && !this.artifacts.get(i).deleted)
-					tmpArtifactList.add(this.artifacts.get(i));
+		try
+		{
+			for( int i = 0; i < this.artifacts.size(); i++ )
+				if( this.artifacts.get( i ).type.equals( "Notes" ) && !this.artifacts.get( i ).deleted )
+					tmpArtifactList.add( this.artifacts.get( i ) );
 
 			return tmpArtifactList;
 		}
 
-		catch (NullPointerException e) {
+		catch( NullPointerException e )
+		{
 			return null;
 		}
 
+	}
+
+	/**
+	 * gets the meeting status for the given meeting
+	 * 
+	 * @return the meeting status whether upComing or past or current
+	 */
+	public String getStatus()
+	{
+		long currentDate = new Date().getTime();
+		if( currentDate < startTime )
+		{
+			return "upComing";
+		}
+		else if( currentDate > endTime )
+		{
+			return "past";
+		}
+		else
+			return "current";
 	}
 }
