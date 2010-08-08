@@ -1,12 +1,12 @@
-.closeAll
-{background:none repeat scroll 0 0 #333333;
-color:#EEEEEE;
-float:right;
-margin-top:-10px;
-padding:10px;
-text-align:center;
-width:120px;
-		}
+.closeAll {
+	background: none repeat scroll 0 0 #333333;
+	color: #EEEEEE;
+	float: right;
+	margin-top: -10px;
+	padding: 10px;
+	text-align: center;
+	width: 120px;
+}
 
 button,a button,input[type=submit],input[type=ok],input[type=send],input[type=button],input[type=send]
 	{
@@ -30,7 +30,7 @@ button,a button,input[type=submit],input[type=ok],input[type=send],input[type=bu
 	font-family: verdana;
 }
 
-.ui-widget-header img, .bar img {
+.ui-widget-header img,.bar img {
 	float: right;
 }
 
@@ -329,7 +329,9 @@ button {
 
 /**tables**/
 table {
+	border: 1px solid #111111;
 	border-collapse: collapse;
+	width: 100%;
 }
 
 tr {
@@ -347,19 +349,19 @@ tr {
 td {
 	padding: 7px;
 }
-#sprintTable tr:hover
-{
-	box-shadow:0px 0px 10px #333;
-	-moz-box-shadow:0px 0px 10px #333;
-	-webkit-box-shadow:0px 0px 10px #333;
+
+#sprintTable tr:hover {
+	box-shadow: 0px 0px 10px #333;
+	-moz-box-shadow: 0px 0px 10px #333;
+	-webkit-box-shadow: 0px 0px 10px #333;
 }
 
 thead td {
 	text-align: center;
 	background-color: #333;
 	color: #eee;
-	font-size:10px;
-font-weight:bold;
+	font-size: 10px;
+	font-weight: bold;
 }
 
 #sprintTable td form input,#sprintTable td form input {
@@ -377,6 +379,7 @@ font-weight:bold;
 	position: absolute;
 	z-index: 99999999;
 }
+
 .crudField {
 	padding: 10px;
 	border-bottom: 1px solid #eee;
@@ -520,4 +523,617 @@ h1,h2,h3,h4,h5,h6,h7 {
 	border: 0px;
 	margin-bottom: 5px;
 	margin-top: 0px;
+}
+/*generic template css*/
+.ui-widget-content {
+	border: 0px !important;
+}
+
+.ui-icon-extlink {
+	cursor: pointer
+}
+
+.draggableChild {
+	width: 100%;
+}
+
+.draggableChild .ui-widget-content.actual {
+	border-left: 5px solid #BF5F91 !important;
+	width: auto;
+}
+
+.ui-widget-content {
+	width: 100%;
+}
+
+table {
+	width: 100%
+}
+
+.filter td {
+	padding: 0px !important
+}
+
+.draggableChild .filter {
+	display: none !important;
+}
+
+.draggable {
+	width: 300px;
+	position: absolute !important;
+}
+
+.draggableChild {
+	position: relative;
+	display: block;
+}
+
+.draggableChild .min {
+	display: none;
+}
+
+.ui-widget-header {
+	font-weight: normal;
+	overflow: auto;
+}
+
+.ui-widget-header span {
+	float: right;
+	font-size: 10px;
+}
+
+.draggableChild .revertFrom,.clone .min,.clone span {
+	display: none;
+}
+
+.draggable .ui-widget-header {
+	background: transparent;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 14px;
+	font-style: italic;
+	font-weight: normal;
+	letter-spacing: -1px;
+	color: #ddd;
+	border: 0px;
+	margin-bottom: 5px;
+}
+
+.draggableChild .ui-widget-header,.overlay .ui-widget-header,.bar {
+	font-size: 12px;
+	background: #ccc;
+	background: -moz-linear-gradient(center bottom, #ccc 10%, #eee 70%);
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #eee),
+		color-stop(0.7, #ccc) );
+	color: #b7568d;
+	font-family: verdana;
+	font-style: normal;
+	font-weight: normal;
+	border: 0px;
+	margin: 0px;
+	padding: 5px;
+}
+
+.clone {
+	font-size: 12px;
+	background: #eee !important;
+	background: -moz-linear-gradient(center bottom, #eee 10%, #ddd 90%)
+		!important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #ddd),
+		color-stop(0.9, #eee) ) !important;
+	color: #ccc !important;
+	font-family: verdana;
+	font-style: normal;
+	font-weight: normal;
+	border: 0px;
+	margin: 0px;
+	padding: 5px;
+}
+
+.clone img,.clone span {
+	display: none;
+}
+
+.ui-widget-header span {
+	float: right;
+}
+
+.draggable.ui-widget-content {
+	background: transparent;
+	border: 0px;
+}
+
+.filter input:focus {
+	outline: 2px solid #ddd;
+	box-shadow: 0px 0px 0px;
+	-moz-box-shadow: 0px 0px 0px;
+	-webkit-box-shadow: 0px 0px 0px;
+	border: 0px
+}
+.filter table
+{
+margin:2px 1px;
+}
+.filter input {
+	border: 0px;
+	background-color:#fff;
+	font-size:14px;
+}
+
+.filter span {
+vertical-align:middle;
+}
+
+.draggable {
+	background: #b7568d !important;
+	background: -moz-linear-gradient(center bottom, #87155f 10%, #b7568d 90%)
+		!important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #87155f),
+		color-stop(0.9, #b7568d) ) !important;
+	padding: 5px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+img {
+	cursor: default;
+}
+
+.draggable a,.draggable span,.draggableChild a,.draggableChild span {
+	cursor: pointer;
+}
+
+#normal {
+	height: 100%;
+}
+
+#login form {
+	-moz-border-radius: 11px 11px 11px 11px;
+	-moz-box-shadow: 0 4px 18px #C8C8C8;
+	background: none repeat scroll 0 0 #FFFFFF;
+	border: 1px solid #E5E5E5;
+	font-weight: normal;
+	margin: 20px auto 0;
+	overflow: auto;
+	padding: 16px;
+	width: 300px;
+}
+
+#signin-field {
+	float: right
+}
+
+#workspaces,.workspace,body,html,#normal {
+	width: 100%;
+	height: 100%;
+}
+
+.workspaceDraggables {
+	margin: 5px auto 5px auto;
+	width: 99%;
+	height: 100%;
+	border: 3px dotted #888;
+	border-radius: 30px;
+}
+
+.workspace {
+	
+}
+
+#remember-field {
+	float: left
+}
+
+#remember-field label {
+	display: inline
+}
+
+#login h1 {
+	background: transparent;
+	color: #777;
+	font-size: 30px;
+}
+
+.item_imgs {
+	float: right;
+	display: inline-block;
+}
+
+/***************************/ /* START mahmoudsakr's CSS */
+	/***************************/
+.baseRole .tick_img,.baseRole .delete_img {
+	display: none;
+}
+
+.project_name_in_header {
+	color: #444;
+	font-style: italic;
+}
+
+#top_header_projects_pane {
+	background-color: #111;
+	color: white;
+	text-transform: uppercase;
+	position: absolute;
+	left: 0px;
+	top: 42px;
+	width: 200px;
+	z-index: 100;
+	padding: 8px;
+	border-radius: 8px;
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
+}
+
+#project_search_text {
+	width: 195px;
+}
+
+#projects_my_current_projects, #projects_search_results, #add-new-project-link {
+	text-align: center;
+	font-size: 18px;
+}
+
+#add-new-project-link {
+	border-top: 1px solid #222;
+	padding-top: 3px;
+	margin-top: 3px;
+}
+
+#top_header_projects_pane a {
+	text-decoration: none;
+	color: #FFC4F1;
+}
+
+.draggableChild .ui-widget-header {
+	cursor: pointer;
+}
+
+.project_name_in_header {
+	display: none;
+}
+
+#top_header_projects_pane h3 {
+	color: #333;
+	text-transform: lowercase;
+}
+#search_results_h3 {
+	display: none;
+}
+/***************************/ /* END mahmoudsakr's CSS */
+	/***************************/
+.green {
+	color: green;
+}
+
+.yellow {
+	color: yellow;
+}
+
+.red {
+	color: red;
+}
+
+.draggableChild.yellowBg .ui-widget-header {
+	background: #FFFDE6 !important;
+	background: -moz-linear-gradient(center bottom, #FEFFF5 10%, #FFFDE6 90%)
+		repeat scroll 0 0 transparent !important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #FFFDE6),
+		color-stop(0.9, #FEFFF5) ) !important;
+	color: #000;
+}
+
+.redBg.draggableChild .ui-widget-header {
+	background: #FFE6E6 !important;
+	background: -moz-linear-gradient(center bottom, #FFE6E6 10%, #FFF5F5 90%)
+		!important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #FFF5F5),
+		color-stop(0.9, #FFE6E6) ) !important;
+	color: #000;
+}
+
+.greenBg.draggableChild  .ui-widget-header {
+	background: #E6FFE6 !important;
+	background: -moz-linear-gradient(center bottom, #F5FFF5 10%, #E6FFE6 90%)
+		!important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #F5FFF5),
+		color-stop(0.9, #E6FFE6) ) !important;
+	color: #000;
+}
+/**generic**/
+.logoHolder,.topBar {
+	background: url('/public/stylesheets/images/bg2.png') repeat-x scroll
+		left top;
+}
+
+#TheLogo {
+	background: url('/public/images/smartsoft.png') no-repeat top left;
+}
+
+a:hover {
+	color: #b7568d;
+}
+.draggableChild .ui-widget-content
+{
+display:none;
+}
+.actual .draggableChild .ui-widget-content
+{
+width:auto;
+border-color:#bbb !important;
+border-style:solid !important;
+border-width:0 5px 5px !important;
+}
+.makeTransparent {
+	background: url('/public/images/bg2.png') repeat-x fixed left top;
+}
+
+a {
+	color: #9E3572;
+	text-decoration: underline;
+}
+
+.ss {
+	color: #b7568d;
+}
+
+.sideBarHeading {
+	color: #b7568d;
+}
+
+.sideBarElements a:hover {
+	color: rgb(158, 53, 114);
+}
+
+/**triangle notch**/
+.notchBottom {
+	border-top: 15px solid #b7568d;
+	border-right: 15px solid transparent;
+	border-left: 15px solid transparent;
+	border-bottom: 0px;
+	height: 0px;
+	width: 0px;
+	font-size: 0;
+	line-height: 0;
+	margin-left: 30px;
+	_border-right-color: pink;
+	_border-left-color: pink;
+	margin-top: -2px;
+	_filter: chroma(color =                       
+		                                                          
+		                            pink);
+}
+
+.notchBottom2 {
+	border-top: 13px solid #b7568d;
+	border-right: 13px solid transparent;
+	border-left: 13px solid transparent;
+	border-bottom: 0px;
+	height: 0px;
+	width: 0px;
+	font-size: 0;
+	position: relative;
+	left: -13px;
+	top: -15px;
+	z-index: 10;
+	line-height: 0;
+	_border-right-color: pink;
+	_border-left-color: pink;
+	_filter: chroma(color =                       
+		                                                          
+		                            pink);
+}
+
+.notchTop {
+	border-bottom: 15px solid #b7568d;
+	border-right: 15px solid transparent;
+	border-left: 15px solid transparent;
+	border-top: 0px;
+	font-size: 0;
+	line-height: 0;
+	height: 0px;
+	width: 0px;
+	margin-left: 30px;
+	_border-right-color: pink;
+	_border-left-color: pink;
+	_filter: chroma(color =                       
+		                                                          
+		                            pink);
+}
+
+.notchRight {
+	border-left: 15px solid #b7568d;
+	border-top: 15px solid transparent;
+	border-bottom: 15px solid transparent;
+	border-right: 0;
+	font-size: 0;
+	line-height: 0;
+	height: 0px;
+	width: 0px;
+	position: relative;
+	float: right;
+	display: inline-block;
+	_border-right-color: pink;
+	_border-left-color: pink;
+	_filter: chroma(color =                       
+		                                                          
+		                            pink);
+}
+
+.notchLeft {
+	border-right: 15px solid #b7568d;
+	border-top: 15px solid transparent;
+	border-bottom: 15px solid transparent;
+	border-left: 0;
+	font-size: 0;
+	height: 0px;
+	width: 0px;
+	float: left;
+	line-height: 0;
+	_border-right-color: pink;
+	_border-left-color: pink;
+	_filter: chroma(color =                       
+		                                                          
+		                            pink);
+}
+
+
+.chatboxtextarea:focus {
+	border: 2px solid #b7568d !important;
+	margin: 0;
+}
+
+.chatContainerHeader {
+	border-right: 1px solid #b7568d;
+	border-left: 1px solid #b7568d;
+}
+
+#boards a:hover {
+	box-shadow: 0px 0px 0px #9E3572;
+	-moz-box-shadow: 0px 0px 0px #9E3572;
+	-webkit-box-shadow: 0px 0px 0px #9E3572;
+}
+
+ul.project_links a:hover {
+	box-shadow: 0px 0px 15px #9E3572;
+	-moz-box-shadow: 0px 0px 15px #9E3572;
+	-webkit-box-shadow: 0px 0px 15px #9E3572;
+}
+
+.proj {
+	background-color: #b7568d;
+}
+
+.proj2 {
+	background-color: #9E3572;
+}
+
+.projDes {
+	background-color: #b7568d;
+}
+
+.ui-widget-header {
+	cursor: move;
+}
+
+a,a img,span.revertFrom,span.min {
+	cursor: pointer;
+}
+
+#workspace-help {
+	background: url(/public/images/famfam/error.png) no-repeat center left;
+	position: absolute;
+	padding-left: 22px;
+	top: 50%;
+	font-size: 10px;
+	left: 25%;
+	width: 50%;
+	color: #444;
+}
+
+.dim {
+	opacity: 0.2;
+}
+
+.activity-level {
+	background: url(/public/images/activity-level.png);
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background-position: -16px -16px;
+}
+
+.activity-level-0 {
+	background-position: -16px -16px;
+}
+
+.activity-level-1,.activity-level-2,.activity-level-3 {
+	background-position: 0 -16px;
+}
+
+.activity-level-4,.activity-level-5,.activity-level-6,.activity-level-7
+	{
+	background-position: -16px 0;
+}
+
+.activity-level-8,.activity-level-9,.activity-level-10 {
+	background-position: 0 0;
+}
+
+.center {
+	text-align: center;
+	clear: both;
+}
+
+.center img {
+	float: none;
+}
+
+.overlay,.overlay * {
+	cursor: auto;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.draggableChild .ui-widget-content {
+	
+}
+
+.draggableChild .min,.draggableChild .ui-icon-refresh {
+	display: none;
+}
+
+.siderC {
+	position: relative;
+	margin-left: -230px;
+	right: -230px;
+	padding: 0px 15px;
+	height: 100%;
+	width: 200px;
+	background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.7);
+	display: inline-block;
+	z-index: 1000;
+}
+
+.notch {
+	display: inline-block;
+	right: -15px;
+	position: relative;
+	vertical-align: top;
+	z-index: 999;
+}
+
+.notch:hover {
+	margin-right: 15px;
+}
+
+.notch2:hover {
+	margin-right: 0px;
+}
+
+.sideHolder {
+	position: fixed;
+	right: 0px;
+	top: 0px;
+	height:100%;
+	margin: auto 0px;
+	color: white !important;
+	margin: auto 0px;
+}
+
+
+.dropper {
+	display: none;
+}
+.dragger {
+	display: none;
+}
+img.left {
+	float: left;
+	margin-right: 2px;
+}
+.more_options {
+	display: none;
 }
