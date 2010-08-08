@@ -24,9 +24,10 @@ import play.libs.Mail;
 import play.mvc.With;
 
 /**
+ * Represents the User Entity in the Database and it's relations with other entities.
+ * 
  * @author Moataz Mekki
  * @author Amr Tj.Wallas
- * @version 685
  */
 @With (Secure.class)
 public class Users extends SmartCRUD {
@@ -39,18 +40,14 @@ public class Users extends SmartCRUD {
 	 */// Commented out by Wallas
 
 	/**
-	 * belongs to s16 this method renders the users in the project to assign
-	 * them to components
+	 * Takes the component id as an input and renders to the html page a list of users in the project
+	 * & the component id it to redirect back to the component when the actions are done.
 	 * 
 	 * @author Moataz_Mekki
 	 * @param id
-	 *            this method takes the component id as an input this method
-	 *            renders to the html page a list of users & the component id it
-	 *            renders the component id just to redirect back to the
-	 *            component id when the actions are done
+	 *         The component id.
+	 * @return void
 	 */
-
-	// @Check ("canEditComponent")
 	public static void assignUsers(long id) {
 		Component comp = Component.findById(id);
 		Project pro = comp.project;
@@ -60,25 +57,25 @@ public class Users extends SmartCRUD {
 	}
 
 	/**
-	 * it's a helper method
+	 * Takes a project and returns a list of the developers in that project who are not assigned in any component yet
 	 * 
 	 * @author Moataz_Mekki
 	 * @param p
-	 *            the project that we need to get the developers in it
-	 * @return it returns a list of the developers that are not assigned in any
-	 *         component yet.
+	 *         The project that we need to get the developers in it.
+	 * @return List<User> 
+	 *             list of the developers that are not assigned in any component yet.
 	 */
-	public static List<User> getFreeUsers(Project p) {
-		List<User> users = p.users;
-		List<Component> comp = p.components;
+	public static List<User> getFreeUsers(Project project) {
+		List<User> users = project.users;
+		List<Component> projectComponents = project.components;
 		ArrayList<User> res = new ArrayList<User>();
 		for (int i = 0; i < users.size(); i++) {
 			User tmp = users.get(i);
-			for (int j = 0; j < comp.size(); j++) {
-				Component com = comp.get(j);
+			for (int j = 0; j < projectComponents.size(); j++) {
+				Component com = projectComponents.get(j);
 				if (com.componentUsers.contains(tmp))
 					break;
-				else if (j == comp.size() - 1)
+				else if (j == projectComponents.size() - 1)
 					res.add(tmp);
 			}
 
@@ -87,17 +84,16 @@ public class Users extends SmartCRUD {
 	}
 
 	/**
-	 * belongs to s16
+	 * Adds the relation between the user & the component 
+	 * to make sure that this user is assigned to that component
 	 * 
 	 * @author Moataz_Mekki
 	 * @param id
-	 *            component id
+	 *            component id.
 	 * @param UId
-	 *            user id that was assigned to the component this method adds
-	 *            the relation between the user & the component to make sure
-	 *            that this user is assigned to that component
+	 *            user id.
+	 * @return void
 	 */
-	// @Check ("canAssignUserToComponent")
 	public static void chooseUsers(long id, long UId) {
 		User myUser = User.findById(UId);
 		Component myComponent = Component.findById(id);
@@ -117,11 +113,14 @@ public class Users extends SmartCRUD {
 	}
 
 	/**
-	 * Deletes a user from the system, and redirects to the manage admin page
+	 * Deletes a user from the system, and redirects to the manage admin page.
 	 * 
 	 * @author mahmoudsakr
 	 * @param id
-	 *            user id
+	 *          user id.
+	 * @param fromACP
+	 *                 
+	 * @return void
 	 */
 	public static void del(long id, boolean fromACP) {
 		Security.check(Security.getConnected().isAdmin);
@@ -133,9 +132,7 @@ public class Users extends SmartCRUD {
 	}
 
 	/**
-	 * This method fetches and renders the corresponding UserNotificationProfile
-	 * when a user clicks the manage notifications link corresponding to a
-	 * certain project.
+	 * Fetches and renders the corresponding UserNotificationProfile.
 	 * 
 	 * @author Amr Tj.Wallas
 	 * @param id
@@ -144,10 +141,8 @@ public class Users extends SmartCRUD {
 	 * @throws ClassNotFoundException
 	 * @see {@link models.UserNotificationProfile}
 	 * @see {@link views/Users/manageNotificationProfile.html}
-	 * @since Sprint2.
-	 * @Task C1S33
+	 * @return void
 	 */
-	// @Check ("canEditUserNotificationProfile")
 	public static void manageNotificationProfile(long id) throws ClassNotFoundException {
 		Project currentProject = Project.findById(id);
 		User currentUser = Security.getConnected();
@@ -170,9 +165,8 @@ public class Users extends SmartCRUD {
 	}
 
 	/**
-	 * This method saves any modifications made by the user in a given
-	 * UserNotificationProfile in the UI Side to the database. And renders a
-	 * success message.
+	 * Saves any modifications made by the user in a given UserNotificationProfile in the 
+	 * UI Side to the database. And renders a success message.
 	 * 
 	 * @author Amr Tj.Wallas
 	 * @param id
@@ -181,8 +175,7 @@ public class Users extends SmartCRUD {
 	 * @throws Exception
 	 * @see {@link models.UserNotificationProfile}
 	 * @see {@link views/Users/manageNotificationProfile.html}
-	 * @since Sprint2.
-	 * @Task C1S33
+	 * @return void
 	 */
 	public static void saveNotificationProfile(String id) throws Exception {
 		ObjectType type = ObjectType.get(UserNotificationProfiles.class);
@@ -205,7 +198,14 @@ public class Users extends SmartCRUD {
 		}
 		redirect(request.controller + ".show", object.getEntityId());
 	}
-
+	
+	/**
+	 * Overrides the CRUD show method that renders the edit form..
+	 * 
+	 * @param id
+	 *          The user id.
+	 * @return void
+	 **/
 	public static void show(String id) {
 		Security.check(Security.getConnected().isAdmin);
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -218,6 +218,15 @@ public class Users extends SmartCRUD {
 		}
 	}
 
+	/**
+	 * Overrides the CRUD save method that is invoked to submit the edit, in
+	 * order to check if the edits are acceptable.
+	 * 
+	 * @param id
+	 *         The user id.
+	 * @throws Exception
+	 * @return void
+	 **/
 	public static void save(String id) throws Exception {
 		Security.check(Security.getConnected().isAdmin);
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -249,6 +258,12 @@ public class Users extends SmartCRUD {
 		redirect(request.controller + ".show", object.getEntityId());
 	}
 
+	/**
+	 * Overrides the CRUD blank method that renders the create form to create a user.
+	 * 
+	 * @param void
+	 * @return void
+	 */
 	public static void blank() {
 		Security.check(Security.getConnected().isAdmin);
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -260,6 +275,14 @@ public class Users extends SmartCRUD {
 		}
 	}
 
+	/**
+	 * Overrides the CRUD create method that is invoked to submit the creation
+	 * of the user on the database.
+	 * 
+	 * @param void
+	 * @throws Exception
+	 * @return void
+	 */
 	public static void create() throws Exception {
 		Security.check(Security.getConnected().isAdmin);
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -286,6 +309,21 @@ public class Users extends SmartCRUD {
 		redirect(request.controller + ".show", object.getEntityId());
 	}
 
+	/**
+	 * Overrides the CRUD list method that lists the users on a project.
+	 * 
+	 * @param page
+	 *           
+	 * @param search
+	 *             
+	 * @param searchFields
+	 *                   
+	 * @param orderBy
+	 *              
+	 * @param order
+	 *            
+	 * @return void
+	 */
 	public static void list(int page, String search, String searchFields, String orderBy, String order) {
 		Security.check(Security.getConnected().isAdmin);
 		ObjectType type = ObjectType.get(getControllerClass());
@@ -303,14 +341,30 @@ public class Users extends SmartCRUD {
 		}
 	}
 	
+	/**
+	 * Redirects to a page that indicates that the user dosen't have permission.
+	 * 
+	 * @param void
+	 * @return void
+	 */
 	public static void delete() {
 		forbidden();
 	}
 	
 	/**
-	 * @author Monayri
-	 * Issue : 228
-	 * Sprint : 4
+	 * Renders to the html page user(s) and the title of the list and the current project
+	 * (indicating which project work space the user is using), in oder to list the users per project or per component or list the user's mini profile details.
+	 * 
+	 * @param projectId
+	 *                the current project id.
+	 * @param componentId
+	 *                  the component id.
+	 * @param all
+	 *          an int value that indicates whether the list of the users is per project or per component.
+	 * @param userId
+	 *             the user id.
+	 * @author Monayri, Heba Elsherif
+	 * @return void
 	 */
 	public static void findUsers(long projectId, long componentId, int all, long userId)
 	{
@@ -360,6 +414,23 @@ public class Users extends SmartCRUD {
 		}
 	}
 	
+
+	/**
+	 * Renders to the html page user(s) and the user id and title of the list and the box id and the current project,
+	 *  in oder to list the user's mini profile details.
+	 * 
+	 * @param userId
+	 *             the user id.
+	 * @param boxId
+	 *            the box id (indicates which box or list these data is rendered to).
+	 * @param projectId
+	 *                a project id (one of the projects that the user is a member of).
+	 * @param currentProjectId
+	 *          the project work space that the user is using.
+	 
+	 * @author Heba Elsherif
+	 * @return void
+	 */
 	public static void listUserProjects(long userId, int boxId, long projectId, long currentProjectId)
 	{
 		String title;
@@ -381,6 +452,13 @@ public class Users extends SmartCRUD {
 		
 	}
 	
+	/**
+	 * Renders the user who's profile is being edited and the connected user to the html page that displays the edit form with the user mini profile data.
+	 * 
+	 * @param userProfileId
+	 *                    the use id that his mini profile is being edited.
+	 * @return void
+	 */
 	public static void editMiniProfile ( long userProfileId)
 	{
 		User userProfile = User.findById(userProfileId);
@@ -398,6 +476,20 @@ public class Users extends SmartCRUD {
 			flash.error( "Sorry, You cannot edit these personal informations." );
 		}
 	}
+	
+	/**
+	 * checks if the edits done to the user mini profile is aceptable and submits it 
+	 * and save it to the data base and returns a sucess message.
+	 * 
+	 * @param name
+	 *           the new user name.
+	 * @param email
+	 *            the new user email.
+	 * 
+	 * @param userProfileId
+	 *                    the use id that his profile is being edited.
+	 * @return void
+	 */
 	public static void miniProfileAction ( @Required(message = "You must enter a name") String name,
 			@Required(message = "You must enter an email") @Email(message = "You must enter a valid email") String email,
 			long userProfileId)
@@ -474,8 +566,6 @@ public class Users extends SmartCRUD {
 		{
 			Application.overlayKiller("","");
 			flash.error("You are not allowed to edit these personal information.");
-		}
-		
+		}	
 	}
-	
 }

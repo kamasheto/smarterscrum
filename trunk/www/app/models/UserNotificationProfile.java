@@ -2,16 +2,13 @@ package models;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-
 import play.data.validation.Required;
 
 /**
- * This class represents the UserNotificationProfile Entity in the Database and
- * it's relations with other entities.
+ * Represents the UserNotificationProfile Entity in the Database and it's relations with other entities.
  * 
  * @author Amr Tj.Wallas
  * @see models.ProjectNotificationProfile
- * @Task C1S33
  */
 @Entity
 public class UserNotificationProfile extends SmartModel {
@@ -39,21 +36,19 @@ public class UserNotificationProfile extends SmartModel {
 	public boolean AcceptToBeReviewerRequest;
 	public boolean RejectToBeReviewerRequest;
 	public boolean deletedFromProject;
-
 	// *********** List Of Action Types Ended ***********
 
 	/**
-	 * This constructor creates a new UserNotificationProfile for a specific
+	 * Creates a new UserNotificationProfile for a specific
 	 * user "user" in a specific project "project" with the default notification
 	 * options as set in the ProjectNotificationProfile of that project.
 	 * 
 	 * @author Amr Tj.Wallas
-	 * @param user
-	 * @param project
+	 * @param user An object User that the User Notification Profile belongs to.
+	 * @param project An object Project that the User Notification Profile belongs to.
 	 * @see models.ProjectNotificationProfile
 	 * @see models.Project
 	 * @see models.User
-	 * @Task C1S33
 	 */
 	public UserNotificationProfile (@Required User user, @Required Project project) {
 		this.user = user;
@@ -78,11 +73,12 @@ public class UserNotificationProfile extends SmartModel {
 	}
 
 	/**
-	 * @author Moataz_Mekki this helper method takes the action & returns the
-	 *         boolean variable of this action whether it's true or false
+	 * Takes the action & returns the boolean variable of this action whether it's true or false
+	 * 
+	 * @author Moataz_Mekki 
 	 * @param action
-	 *            : the string that describes the action
-	 * @return: returns the boolean variable related to the action
+	 *             the string that describes the action
+	 * @return boolean
 	 */
 	public boolean checkAction(String action) {
 		if (action.equalsIgnoreCase("setMeeting"))

@@ -1,13 +1,9 @@
 package controllers;
 
-/*
- * @author minazai
- */
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-
 import models.Component;
 import models.Meeting;
 import models.Project;
@@ -19,9 +15,21 @@ import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 import play.mvc.With;
 
+/**
+ * Represents the Sprint Entity in the Database and it's relations with other entities.
+ * 
+ * @author minazai
+ */
 @With( Secure.class )
 public class Sprints extends SmartCRUD
 {
+	/**
+	 * Renders a list of the sprints on the project and a the running sprint of a specific project for the board view.
+	 * 
+	 * @param projectId
+	 *                 The project id.
+	 * @return void
+	 */
 	public static void BoardSprints( long projectId )
 	{
 		Project project = (Project) (Project.findById( projectId ));
@@ -30,6 +38,13 @@ public class Sprints extends SmartCRUD
 		render( sprints, project, runningSprint );
 	}
 
+	/**
+	 * Renders a list of the sprints on the project and a the running sprint of a specific project for the chart view.
+	 * 
+	 * @param projectId
+	 *                 The project id.
+	 * @return void
+	 */
 	public static void ChartSprints( long projectId )
 	{
 		Project project = (Project) (Project.findById( projectId ));
@@ -38,6 +53,13 @@ public class Sprints extends SmartCRUD
 		render( sprints, project, runningSprint );
 	}
 
+	/**
+	 * Renders a list of the sprints on the project and a the running sprint of a specific project for the backlog view.
+	 * 
+	 * @param projectId
+	 *                 The project id.
+	 * @return void
+	 */
 	public static void BacklogSprints( long projectId )
 	{
 		Project project = (Project) (Project.findById( projectId ));
@@ -47,10 +69,12 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * to render the showsprints page with the sprints and the projectId
+	 * Renders the shows prints page with the sprints and a the running sprint of a specific project and the project it self.
 	 * 
 	 * @author minazaki
 	 * @param projectId
+	 *                 The project id.
+	 * @return void
 	 */
 	public static void showsprints( long projectId )
 	{
@@ -61,11 +85,12 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * to render sprint info page
+	 * Renders sprint info to the html page.
 	 * 
 	 * @author minazaki
 	 * @param id
-	 * @param projectId
+	 *           The sprint id.
+	 * @return void
 	 */
 	public static void showsprint( long id )
 	{
@@ -84,11 +109,13 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * is to have the blank page of crud to create inside the project so there
-	 * is no need to choose the project just the projectId is sent with the page
+	 * Overrides the CRUD blank method that renders the create form, in order to
+	 * take the project id to create a sprint into it.
 	 * 
 	 * @author minazaki
 	 * @param projectId
+	 *                 The project id.
+	 * @return void
 	 */
 	public static void projectblank( long projectId )
 	{
@@ -114,11 +141,12 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * Renders the sprint to the backlogs page
+	 * Renders the sprint to the html backlogs page.
 	 * 
 	 * @author Hadeer Younis
 	 * @param id
-	 *            The sprint id
+	 *          The sprint id
+	 * @return void
 	 */
 	public static void backlogs( long id )
 	{
@@ -127,11 +155,12 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * Renders the sprint to the charts page
+	 * Renders the sprint to the html charts page.
 	 * 
 	 * @author Hadeer Younis
 	 * @param id
-	 *            The sprint id
+	 *            The sprint id.
+	 * @return void
 	 */
 	public static void charts( long id )
 	{
@@ -140,12 +169,14 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * to be called from the sprint creation page inside a certain project thats
-	 * not to let the user choose the project
+	 * Overrides the CRUD create method that is invoked to submit the creation
+	 * of a sprint on the database.
 	 * 
 	 * @author minazki
 	 * @param projectId
+	 *                 The project id.
 	 * @throws Exception
+	 * @return void
 	 */
 
 	public static void projectcreate( long projectId ) throws Exception
@@ -163,7 +194,7 @@ public class Sprints extends SmartCRUD
 		validation.valid( object.edit( "object", params ) );
 		if( validation.hasErrors() )
 		{
-			System.out.println( validation.errors() );
+			
 			renderArgs.put( "error", "Please Correct Date Format Error" );
 			try
 			{
@@ -244,9 +275,11 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * renders the sprint edit page
+	 * Overrides the CRUD show method that renders the edit form, in order to take the project id.
 	 * 
 	 * @param id
+	 *          The sprint id.
+	 * @return void
 	 */
 	public static void projectshow( long id )
 	{
@@ -277,10 +310,13 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * saves the edited sprint
+	 * Overrides the CRUD save method that is invoked to submit the edit, in
+	 * order to check if the edits are acceptable.
 	 * 
 	 * @param id
+	 *          The sprint id.
 	 * @throws Exception
+	 * @return void
 	 */
 	public static void projectsave( long id ) throws Exception
 	{
@@ -342,7 +378,7 @@ public class Sprints extends SmartCRUD
 
 			Logs.addLog( Security.getConnected(), "Edit", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
 			// redirect( "/show/project?id=" + projId );
-			Application.overlayKiller( "reload('sprints', 'sprint-" + object.id + "')", "" );
+			Application.overlayKiller("reload('sprints', 'sprint-"+object.id+"')", "");
 		}
 		redirect( request.controller + ".show", object.getEntityId() );
 		// }
@@ -352,6 +388,15 @@ public class Sprints extends SmartCRUD
 		// }
 	}
 
+	/**
+	 * Overrides the CRUD list method, in order to list the sprints of the project of a given component.
+	 * 
+	 * @param componentId
+	 *                   The component id.
+	 * @param type
+	 *            The type.
+	 * @return void
+	 */
 	public static void listSprintsInComponent( long componentId, int type )
 	{
 		Component component = ((Component) Component.findById( componentId ));
@@ -359,44 +404,81 @@ public class Sprints extends SmartCRUD
 		render( sprints, component, type );
 	}
 
+	/**
+	 * Overrides the CRUD show method, in order to make the crud view not accessable.
+	 * 
+	 * @param void
+	 * @return void
+	 */
 	public static void show()
 	{
 		forbidden();
 	}
 
+	/**
+	 * Overrides the CRUD delete method, in order to make the crud delete action not accessable.
+	 * 
+	 * @param void
+	 * @return void
+	 */
 	public static void delete()
 	{
 		forbidden();
 	}
 
+	/**
+	 * Overrides the CRUD blank method, in order to make the crud view not accessable.
+	 * 
+	 * @param void
+	 * @return void
+	 */
 	public static void blank()
 	{
 		forbidden();
 	}
 
+	/**
+	 * Overrides the CRUD create method, in order to make the crud create action not accessable.
+	 * 
+	 * @param void
+	 * @return void
+	 */
 	public static void create()
 	{
 		forbidden();
 	}
 
+	/**
+	 * Overrides the CRUD save method, in order to make the crud edit action not accessable.
+	 * 
+	 * @param void
+	 * @return void
+	 */
 	public static void save()
 	{
 		forbidden();
 	}
 
+	/**
+	 * Overrides the CRUD list method, in order to make the crud view not accessable.
+	 * 
+	 * @param void
+	 * @return void
+	 */
 	public static void list()
 	{
 		forbidden();
 	}
 
 	/**
-	 * Adds a task to a given sprint
+	 * Adds a task to a given sprint.
 	 * 
 	 * @author Hadeer Younis
 	 * @param taskId
-	 *            , the id of the task to be added
+	 *            The id of the task to be added.
 	 * @param sprintId
-	 *            , the id of the sprint which will accept the task
+	 *            The id of the sprint which will accept the task.
+	 * @return void
 	 */
 	public static void addTask( long taskId, long sprintId )
 	{
