@@ -2006,6 +2006,14 @@ System.out.println(Security.getConnected().components);
 			title = "C" + component.number + ": Tasks";
 			List<Task> tasks = new ArrayList<Task>();
 			tasks = Task.find("byComponentAndDeleted", component, false).fetch();
+			System.out.println(tasks);
+			for(int i =0 ; i<tasks.size();i++){
+				if(tasks.contains(tasks.get(i).parent)){
+					tasks.remove(tasks.get(i));
+					i=0;
+				}
+				
+			}
 			render(tasks, title, mine, projectId);
 		} else {
 			if (taskId != 0) {
@@ -2051,7 +2059,6 @@ System.out.println(Security.getConnected().components);
 						title = "Project Tasks";
 						Project project = Project.findById(projectId);
 						List<Task> tasks = Task.find("byProjectAndDeletedAndParentIsNull", project, false).fetch();
-						// System.out.println( task );
 						render(tasks, title, mine, projectId);
 					} else {
 						if (meetingId != 0) {
