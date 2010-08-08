@@ -56,7 +56,7 @@ public class Accounts extends SmartController
 				}
 				User user = new User( name, email, password );
 				user.save();
-				String url = "/accounts/doActivation?hash=" + user.activationHash;
+				String url = "http://localhost:9000/accounts/doActivation?hash=" + user.activationHash;
 				Notifications.activate(user.email, user.name, url);
 				flash.success( "You have been registered. An Activation link has been sent to your Email Address" );
 				Secure.login();
