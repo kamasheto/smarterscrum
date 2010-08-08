@@ -53,7 +53,7 @@ public class Notifications extends Mailer{
 			List<UserNotificationProfile> unps = project.userNotificationProfiles;
 			for(int i =0 ; i<unps.size() ; i++)
 			{
-				if(unps.get(i).checkAction(actionType))
+				if(unps.get(i).checkAction(actionType) && !(unps.get(i).user.equals(Security.getConnected())))
 				{
 					new Notification(unps.get(i).user, Security.getConnected(), actionType, resourceURL, resourceType, resourceName, importance).save();
 					if(unps.get(i).user.enableEmails)
@@ -73,14 +73,17 @@ public class Notifications extends Mailer{
 		User user = Security.getConnected();
 		for(int i=0 ; i<receivers.size(); i++)
 		{			
-			Notification nn = new Notification(receivers.get(i), user, actionType, resourceURL, resourceType, resourceName, importance).save();
-			if(project != null)
-				{
+			if (!receivers.get(i).equals(user)) {
+				Notification nn = new Notification(receivers.get(i), user,
+						actionType, resourceURL, resourceType, resourceName,
+						importance).save();
+				if (project != null) {
 					nn.project = project;
 					nn.save();
 				}
-			if(receivers.get(i).enableEmails)
-				addRecipient(receivers.get(i).email);
+				if (receivers.get(i).enableEmails)
+					addRecipient(receivers.get(i).email);
+			}
 		}		
 		setFrom("se.smartsoft.2@gmail.com");
 		setSubject("SmarterScrum Notification System");
