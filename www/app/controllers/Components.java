@@ -74,6 +74,7 @@ public class Components extends SmartCRUD {
 		}
 		object.save();
 		temp.init();
+		
 		Logs.addLog(Security.getConnected(), "Create", "Component", temp.id, currentProject, new Date(System.currentTimeMillis()));
 		String url = "/application/externalopen?id="+temp.project.id+"&isOverlay=false&url=/components/viewthecomponent?componentId="+temp.id;		
 		Notifications.notifyProjectUsers(temp.project, "onCreateComponent", url, "Component", temp.name, (byte) 0);
@@ -190,6 +191,7 @@ public class Components extends SmartCRUD {
 		notFoundIfNull(project);
 		List<Component> components = new ArrayList<Component>();
 		for (Component c : project.components) {
+			System.out.println(c.number);
 			if (c.deleted == false)
 				components.add(c);
 		}
