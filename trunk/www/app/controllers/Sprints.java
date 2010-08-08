@@ -163,7 +163,7 @@ public class Sprints extends SmartCRUD
 		validation.valid( object.edit( "object", params ) );
 		if( validation.hasErrors() )
 		{
-			System.out.println(validation.errors());
+			System.out.println( validation.errors() );
 			renderArgs.put( "error", "Please Correct Date Format Error" );
 			try
 			{
@@ -222,8 +222,9 @@ public class Sprints extends SmartCRUD
 			{
 				// why create it again? o.O
 				// commented by sakr
-				// now i know why .. because this constructor assigns the sprint a static number based on the project current sprint count
-				object = new Sprint(startDate, endDate, proj);
+				// now i know why .. because this constructor assigns the sprint
+				// a static number based on the project current sprint count
+				object = new Sprint( startDate, endDate, proj );
 				object.save();
 			}
 		}
@@ -232,7 +233,7 @@ public class Sprints extends SmartCRUD
 		{
 			Logs.addLog( Security.getConnected(), "Create", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
 			// redirect( "/show/project?id=" + projectId );
-			Application.overlayKiller("reload('sprints')", "window.parent.$.bar({message:'Sprint created successfully'})");
+			Application.overlayKiller( "reload('sprints')", "window.parent.$.bar({message:'Sprint created successfully'})" );
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
 		{
@@ -341,7 +342,7 @@ public class Sprints extends SmartCRUD
 
 			Logs.addLog( Security.getConnected(), "Edit", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
 			// redirect( "/show/project?id=" + projId );
-			Application.overlayKiller("reload('sprints', 'sprint-"+object.id+"')", "");
+			Application.overlayKiller( "reload('sprints', 'sprint-" + object.id + "')", "" );
 		}
 		redirect( request.controller + ".show", object.getEntityId() );
 		// }
@@ -407,14 +408,14 @@ public class Sprints extends SmartCRUD
 			notFound();
 		else if( sprint.ended )
 			renderText( "Sorry the requested sprint has ended." );
-		else if( task.taskSprint == sprint )
+		else if( sprint.tasks.contains( task ) )
 			renderText( "Sorry the requested task already belongs to that sprint." );
-		else if(sprint.project.isScrum && sprint.startDate.before( new Date() ))
+		else if( sprint.project.isScrum && sprint.startDate.getTime() <= new Date().getTime())
 			renderText( "Sorry you can't add a task to a running sprint" );
-		// sprint.tasks.add( task );
-		// sprint.save();
-		task.taskSprint = sprint;
+		sprint.tasks.add( task );
+		task.taskSprint=sprint;
 		task.save();
+		sprint.save();
 		renderText( "The task was assigned to the requested sprint|reload('task-" + taskId + "','sprint-" + sprintId + ")" );
 	}
 }
