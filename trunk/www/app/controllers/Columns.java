@@ -2,10 +2,6 @@ package controllers;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
-
-import notifiers.Notifications;
-
 import models.Board;
 import models.Column;
 import models.Component;
@@ -45,14 +41,10 @@ public class Columns extends SmartController
 		if( userId == 0 )
 			userId = Security.getConnected().id;
 		Calendar cal = new GregorianCalendar();
-		User u = User.findById( userId );
-		List<Column> cols = b.columns;
+		User u = User.findById( userId );		
 		Column c1 = Column.find( "bySequenceAndBoardAndDeleted", pos1 - 1, b, false ).first();
 		Column c2 = Column.find( "bySequenceAndBoardAndDeleted", pos2 - 1, b, false ).first();
 		Logs.addLog( u, "edit", "Column Position", c1.id, p, cal.getTime() );
-		String message = u.name + " has changed the position of " + c1.name + " from " + c1.sequence + " to " + c2.sequence;
-		// Notifications.notifyProjectUsers(p, "Edit Column Position", message,
-		// "editColumnPosition", (byte) 0);
 		int x = c2.sequence;
 		if( c1.sequence < c2.sequence )
 		{
@@ -117,12 +109,8 @@ public class Columns extends SmartController
 		c2.sequence = pos1;
 		c1.save();
 		c2.save();
-		Calendar cal = new GregorianCalendar();
-		// User user = User.findById(user_id);
+		Calendar cal = new GregorianCalendar();		
 		Logs.addLog( user, "edit", "Column Position", c1.id, p, cal.getTime() );
-		String message = user.name + " has swapped the position of column " + c1.name + " with " + c2.name;
-		// Notifications.notifyProjectUsers(p, "swapped Column Position",
-		// message, "Column Position", (byte) 0);
 	}
 
 	/**
@@ -138,18 +126,14 @@ public class Columns extends SmartController
 	{
 		Column c = Column.find( "byId", id ).first();
 		Project p = c.board.project;
-		Security.check( p, "renameColumns" );
-		String oldname = c.name;
+		Security.check( p, "renameColumns" );		
 		c.name = name;
 		c.save();
 		if( userId == 0 )
 			userId = Security.getConnected().id;
 		Calendar cal = new GregorianCalendar();
 		User u = User.findById( userId );
-		Logs.addLog( u, "rename", "Column Name", c.id, c.board.project, cal.getTime() );
-		String message = u.name + " has renamed column " + oldname + " to " + c.name;
-		// Notifications.notifyProjectUsers(c.board.project, "Rename Column",
-		// message, "renameColumn", (byte) 0);
+		Logs.addLog( u, "rename", "Column Name", c.id, c.board.project, cal.getTime() );		
 		return true;
 	}
 }
