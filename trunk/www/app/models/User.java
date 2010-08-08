@@ -142,7 +142,13 @@ public class User extends SmartModel
 	// public List<Comment> allComments;
 
 	public ArrayList<ChatRoom> openChats;
+	/**
+	 * Class constructor just initializing the lists a user should have.
+	 * 
+	
+	 */
 
+	
 	public User()
 	{
 		roles = new ArrayList<Role>();
@@ -227,12 +233,19 @@ public class User extends SmartModel
 
 		openChats = new ArrayList<ChatRoom>();
 	}
+	/**
+	 * Gets the User Email .	 
+	 * 
+	 */
 
 	public String getEmail()
 	{
 		return email.toLowerCase();
 	}
-
+	/**
+	 * Gets the User name .	 
+	 * 
+	 */
 	public String toString()
 	{
 		return name;
@@ -282,7 +295,7 @@ public class User extends SmartModel
 	}
 
 	/**
-	 * This method takes a meeting ID and return the meeting status of the user
+	 * takes a meeting ID and return the meeting status of the user
 	 * in the specific meeting
 	 * 
 	 * @param meetingID
@@ -299,7 +312,10 @@ public class User extends SmartModel
 		else
 			return attendance.get( 0 ).status;
 	}
-
+	/**
+	 * Checks if the user have the permission to invite.	 
+	 * 
+	 */
 	public boolean canInvite()
 	{
 		for( Project p : projects )
@@ -311,7 +327,10 @@ public class User extends SmartModel
 		}
 		return false;
 	}
-
+	/**
+	 *Class Used in the game 	 
+	 * 
+	 */
 	public static class Object
 	{
 
@@ -395,6 +414,12 @@ public class User extends SmartModel
 			res = "No Role !!";
 		return res;
 	}
+	/**
+	 * Checks if the product role is present in the roles if not it adds it to the roles to be called later
+	 * 
+	 * 
+	 * @param role: This is the role checked if there.
+	 */
 
 	public void addRole( Role role )
 	{
@@ -415,7 +440,7 @@ public class User extends SmartModel
 	}
 
 	/**
-	 * This method revokes a specific role from a specific user. In case the
+	 * revokes a specific role from a specific user. In case the
 	 * role revoked is a base role the user is deleted from the project.
 	 * 
 	 * @author Dina Helal, Heba Elsherif
