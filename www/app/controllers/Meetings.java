@@ -667,6 +667,7 @@ public class Meetings extends SmartCRUD
 			meeting.components.add( c );
 			meeting.save();
 		}
+		renderText("Users invited successfully|reload('meeting-"+meetingID+"')");
 	}
 
 	/**

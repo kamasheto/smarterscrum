@@ -1,5 +1,7 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}${title}#{/set}
+#{set 'title'}#{if currentProject && users}#{drag 'projectusers-'+currentProject.id /}
+	
+#{/if}${title}#{/set}
 
 #{if users !=null}
 		#{if users.size()==0}
