@@ -90,7 +90,7 @@ public class Roles extends SmartCRUD
 		}
 		else
 		{
-			Security.check( project, "editRoles" );
+			Security.check( project, "editRole" );
 		}
 		try
 		{

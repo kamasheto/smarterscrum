@@ -407,12 +407,14 @@ public class Sprints extends SmartCRUD
 			notFound();
 		else if( sprint.ended )
 			renderText( "Sorry the requested sprint has ended." );
-		else if( sprint.tasks.contains( task ) )
+		else if( task.taskSprint == sprint )
 			renderText( "Sorry the requested task already belongs to that sprint." );
-		else if(sprint.project.isScrum && sprint.startDate.before( new Date() ));
+		else if(sprint.project.isScrum && sprint.startDate.before( new Date() ))
 			renderText( "Sorry you can't add a task to a running sprint" );
-		sprint.tasks.add( task );
-		sprint.save();
+		// sprint.tasks.add( task );
+		// sprint.save();
+		task.taskSprint = sprint;
+		task.save();
 		renderText( "The task was assigned to the requested sprint|reload('task-" + taskId + "','sprint-" + sprintId + ")" );
 	}
 }
