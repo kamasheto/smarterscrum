@@ -23,76 +23,121 @@ public class Task extends SmartModel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	/**
+	 * Description
+	 */
 	@Required
 	@Lob
-	@MaxSize (300)
+	@MaxSize(300)
 	public String description;
-
+	/**
+	 * if true its deleted
+	 */
 	public boolean deleted;
 
-
+	/**
+	 * this task's estimation points.
+	 */
 	public double estimationPoints;
 
 	// ADDED BY HADEER YOUNIS. DO NOT REMOVE.
+	/**
+	 * Estimation points per day used in the backlog.
+	 */
 	public ArrayList<Double> estimationPointsPerDay;
 
-//	@ManyToOne
-	//public Story taskStory;
-
-	@ManyToMany (mappedBy = "tasks")
+	/**
+	 * List of meetings that have many tasks associated to it.
+	 */
+	@ManyToMany(mappedBy = "tasks")
 	public List<Meeting> meeting;
-
+	/**
+	 * The user assigned to this task
+	 */
 	@OneToOne
 	public User assignee;
-
+	/**
+	 * The user reported this task
+	 */
 	@OneToOne
 	public User reporter;
-
+	/**
+	 * The user reviewing this task
+	 */
 	@OneToOne
 	public User reviewer;
-
+	/**
+	 * The list of tasks depending on this task
+	 */
 	@ManyToMany
 	public List<Task> dependentTasks;
-
+	/**
+	 * The task status
+	 */
 	@ManyToOne
 	public TaskStatus taskStatus;
-
+	/**
+	 * The task type
+	 */
 	@ManyToOne
 	public TaskType taskType;
-
+	/**
+	 * The sprint that have this task associated to it.
+	 */
 	@ManyToOne
 	public Sprint taskSprint;
 
-	
+	/**
+	 * The task number relative to this project.
+	 */
 	public int number;
 
-	
-	@OneToMany (mappedBy = "task")
+	/**
+	 * The List of comments on the task.
+	 */
+	@OneToMany(mappedBy = "task")
 	public List<Comment> comments;
-	
+	/**
+	 * The comment added
+	 */
 	public String comment;
-	
+	/**
+	 * The parent of the task
+	 */
 	@ManyToOne
 	public Task parent;
-	
-	@OneToMany(mappedBy="parent")
+	/**
+	 * The list of tasks That has this task as a parent
+	 */
+	@OneToMany(mappedBy = "parent")
 	public List<Task> subTasks;
-	
+	/**
+	 * The project of the task.
+	 */
 	@ManyToOne
 	public Project project;
-	
+	/**
+	 * the component if it belongs to one.
+	 */
 	@ManyToOne
 	public Component component;
-
+	/**
+	 * The Success scenario of the task
+	 */
 	@Lob
 	public String successScenario;
-
+	/**
+	 * The failure scenario of the task
+	 */
 	@Lob
 	public String failureScenario;
-	
+	/**
+	 * The priority of the task
+	 */
 	public int priority;
-	
+	/**
+	 * The Product role thats used in the task.
+	 */
 	@ManyToOne
 	public ProductRole productRole;
 
@@ -101,28 +146,52 @@ public class Task extends SmartModel {
 
 	// @ManyToMany
 	// public List<Day> taskDays;
-	
-	
-	public void init(){
-		this.subTasks= new ArrayList<Task>();
-		if(this.parent==null){
-			List<Task> tasks = Task.find("byProjectAndParentIsNull", this.project).fetch();
-			this.number= tasks.size()+1;
-		}else{
-			this.project=this.parent.project;
-			this.component=this.parent.component;
-			this.number = this.parent.subTasks.size()+1;
-			for(Task task : this.parent.subTasks){
-				if(task.number >= this.number && !this.equals(task)){
-					this.number=task.number+1;
+
+	/**
+	 * Class constructor just initializing the lists for the task.
+	 * 
+	 */
+
+	public void init() {
+		this.subTasks = new ArrayList<Task>();
+		if (this.parent == null) {
+			List<Task> tasks = Task.find("byProjectAndParentIsNull",
+					this.project).fetch();
+			this.number = tasks.size() + 1;
+		} else {
+			this.project = this.parent.project;
+			this.component = this.parent.component;
+			this.number = this.parent.subTasks.size() + 1;
+			for (Task task : this.parent.subTasks) {
+				if (task.number >= this.number && !this.equals(task)) {
+					this.number = task.number + 1;
 				}
 			}
 		}
-		
+
 		this.save();
 	}
-	public Task(String des, String succ, String fail, int priority, String notes, long userId) {
-		
+
+	/**
+	 * Class constructor initializing (description, success scenarios, failure
+	 * scenarios,priority , notes and reporter)
+	 * 
+	 * @param des
+	 *            : description
+	 * @param succ
+	 *            : Success Scenario string
+	 * @param fail
+	 *            : Failure Scenario string
+	 * @param priority
+	 *            : Integer value for the priority
+	 * @param notes
+	 *            : The string of notes on this task
+	 * @param userId
+	 *            : The ID of the reporter of this task
+	 */
+	public Task(String des, String succ, String fail, int priority,
+			String notes, long userId) {
+
 		this.reporter = User.findById(userId);
 		this.description = des;
 		this.successScenario = succ;
@@ -134,6 +203,7 @@ public class Task extends SmartModel {
 		this.component = null;
 		this.subTasks = new ArrayList<Task>();
 	}
+
 	/**
 	 * Returns the effort points of a specific task in a specific day.
 	 * 
@@ -147,7 +217,8 @@ public class Task extends SmartModel {
 		if (estimationPointsPerDay.size() == 0)
 			return estimationPoints;
 		if (dayId >= estimationPointsPerDay.size())
-			return estimationPointsPerDay.get(estimationPointsPerDay.size() - 1);
+			return estimationPointsPerDay
+					.get(estimationPointsPerDay.size() - 1);
 		return estimationPointsPerDay.get(dayId);
 	}
 
@@ -169,7 +240,8 @@ public class Task extends SmartModel {
 				estimationPointsPerDay.add(effort);
 		}
 		if (estimationPointsPerDay.size() <= day) {
-			double temp = estimationPointsPerDay.get(estimationPointsPerDay.size() - 1);
+			double temp = estimationPointsPerDay.get(estimationPointsPerDay
+					.size() - 1);
 			for (int i = estimationPointsPerDay.size() - 1; i < day; i++) {
 				estimationPointsPerDay.add(temp);
 			}
@@ -177,13 +249,28 @@ public class Task extends SmartModel {
 		estimationPointsPerDay.set(day, effort);
 	}
 
-	public Task () {
+	/**
+	 * Class constructor initializing the list of meetings ,dependent tasks and
+	 * estimation points per day.
+	 * 
+	 */
+	public Task() {
 		meeting = new ArrayList<Meeting>();
 		dependentTasks = new ArrayList<Task>();
 		this.estimationPointsPerDay = new ArrayList<Double>(1);
 	}
 
-	public Task (String des, boolean deleted, double estimationPoints) {
+	/**
+	 * Class constructor initializing (description,estimation points and
+	 * estimation points per day).
+	 * 
+	 * @param des
+	 *            : description
+	 * @param deleted
+	 * @param estimationPoints
+	 *            : estimation points of this task.
+	 */
+	public Task(String des, boolean deleted, double estimationPoints) {
 		this();
 		this.description = des;
 		this.deleted = false;
@@ -191,8 +278,15 @@ public class Task extends SmartModel {
 		this.estimationPointsPerDay = new ArrayList<Double>(1);
 		this.save();
 	}
+	/**
+	 * Class constructor initializing (description, Task type to impediment, deleted to false
+	 * dependent tasks estimation points per day lists, and the task status to new the project 
+	 * and the estimation points)
+	 * @param des
+	 * @param project
+	 */
 
-	public Task (String des, Project project) {
+	public Task(String des, Project project) {
 		this();
 		this.description = des;
 		this.deleted = false;
@@ -246,19 +340,19 @@ public class Task extends SmartModel {
 	public void DeleteTask() {
 		Project project = this.project;
 		for (Task task : project.projectTasks) {
-			if(task.dependentTasks.contains(this))
+			if (task.dependentTasks.contains(this))
 				task.dependentTasks.remove(this);
-			for(Task task2 : task.subTasks){
-				if(task2.dependentTasks.contains(this))
+			for (Task task2 : task.subTasks) {
+				if (task2.dependentTasks.contains(this))
 					task2.dependentTasks.remove(this);
 				task2.save();
 			}
 			task.save();
 		}
-		for(Task task : this.subTasks){
+		for (Task task : this.subTasks) {
 			task.DeleteTask();
 		}
-		this.deleted=true;
+		this.deleted = true;
 		this.save();
 	}
 
@@ -294,7 +388,7 @@ public class Task extends SmartModel {
 
 		String description;
 
-		public Object (long id, String description) {
+		public Object(long id, String description) {
 			this.id = id;
 			this.description = description;
 		}
