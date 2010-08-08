@@ -249,7 +249,7 @@ public class Meetings extends SmartCRUD
 		 * the meeting to use it in the model view
 		 */
 		boolean empty = false;
-		Date currDate = new Date();
+		long currDate = new Date().getTime();
 		Project project = Project.findById( id );
 		List<Meeting> meetings = Meeting.find( "byProject.idAndDeleted", id, false ).fetch();
 		List<Meeting> upcoming = new ArrayList<Meeting>();
@@ -262,27 +262,36 @@ public class Meetings extends SmartCRUD
 		while( meetings.isEmpty() == false )
 		{
 			Meeting temp = (meetings.remove( 0 ));
-			Date tempStart = new Date( temp.startTime );
-			Date tempEnd = new Date( temp.endTime );
-			if( currDate.after( tempEnd ) )
+			long tempStart = temp.startTime;
+			long tempEnd = temp.endTime;
+			if( currDate > tempEnd )
 				past.add( temp );
-			else if( currDate.before( tempStart ) )
-				upcoming.add( temp );
 			else
-				current.add( temp );
+			{
+				if( currDate < tempStart )
+					upcoming.add( temp );
+				else
+					current.add( temp );
+			}
 		}
+		List<Meeting> projectMeetings = new ArrayList();
+		projectMeetings.addAll( current );
+		projectMeetings.addAll( upcoming );
+		projectMeetings.addAll( past );
 
 		List<MeetingAttendance> invitations = MeetingAttendance.find( "meeting.project = ?1 and user = ?2 and deleted = ?3 and meeting.endTime > ?4 and status LIKE ?5", project, Security.getConnected(), false, new Date().getTime(), "waiting" ).fetch();
 
 		String projectName = project.name;
-		render( meetings, id, projectName, past, upcoming, current, project, invitations, empty );
+		render( projectMeetings, meetings, id, projectName, project, invitations, empty );
 
 	}
 
 	/**
+	 * this method saves the created meeting in the DB & checks if every input
+	 * is valid
 	 * 
-	 * this method saves the created meeting in the DB & checks if every input is valid
-	 * @param id the id of the meeting that's being created
+	 * @param id
+	 *            the id of the meeting that's being created
 	 * @throws Exception
 	 */
 	public static void save( long id ) throws Exception
@@ -347,8 +356,8 @@ public class Meetings extends SmartCRUD
 	}
 
 	/**
-	 * 
-	 * @param id the id of the meeting that this method shows its associations
+	 * @param id
+	 *            the id of the meeting that this method shows its associations
 	 */
 	public static void associations( long id )
 	{
@@ -891,8 +900,10 @@ public class Meetings extends SmartCRUD
 	}
 
 	/**
-	 * this method takes the id of the meeting as an input and renders to the page
-	 * the list of users invited to a meeting with their status attending, waiting, not
+	 * this method takes the id of the meeting as an input and renders to the
+	 * page the list of users invited to a meeting with their status attending,
+	 * waiting, not
+	 * 
 	 * @param meetingId
 	 */
 	public static void invitedMembers( long meetingId )
@@ -934,9 +945,12 @@ public class Meetings extends SmartCRUD
 	}
 
 	/**
-	 * this method takes the id of a meeting attendance as an input and renders to the page
-	 * the status of the user whether attended or not the meeting after the meeting ended 
-	 * @param id the id of the meeting attendance
+	 * this method takes the id of a meeting attendance as an input and renders
+	 * to the page the status of the user whether attended or not the meeting
+	 * after the meeting ended
+	 * 
+	 * @param id
+	 *            the id of the meeting attendance
 	 */
 	public static void viewAttendeeStatus( long id )
 	{

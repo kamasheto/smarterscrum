@@ -27,21 +27,51 @@
 	#{if empty}
 	#{note}Currently there are no meetings #{/note}
 	#{/if}
-	#{list items:current, as:'current'}
-		#{if !current.deleted}
-		<div class="greenBg reload-meeting-${current.id}" name="/meetings/viewmeeting?id=${current.id}">${current.name}#{if (connected.in(current.project).can('deleteMeeting') ||connceted.equals(current.creator)) } <a onclick="javascript:delete_meeting(${current.id});"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if (current.startTime > new Date().getTime()) && (connected.in(current.project).can('editMeeting') ||connceted.equals(current.creator)) }<a href="javascript:overlayOpen('/admin/meetings/${current.id}');" ><img title="edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if (current.startTime < new Date().getTime()) && ((connected.in(current.project).can('editMeeting') ||connceted.equals(current.creator))) }<img class="dim" title="edit" src="@{'/public/images/famfam/pencil.png'}">#{/if} #{if (current.endTime > new Date().getTime()) && (connected.in(current.project).can('editMeeting') ||connected.equals(current.creator)) }#{drop 'meeting-' + current.id /}#{/if}</div>
+	#{list items:projectMeetings, as:'current'}
+		
+		<div class="${current.getStatus().equals("current") ? 'greenBg' : current.getStatus().equals("upComing") ? 'yellowBg' : 'redBg'} reload-meeting-${current.id}" name="/meetings/viewmeeting?id=${current.id}">
+		${current.name}
+		#{if (connected.in(current.project).can('deleteMeeting') ||connected.equals(current.creator)) } 
+		<a onclick="javascript:delete_meeting(${current.id});"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>
 		#{/if}
-	#{/list}
-	#{list items:upcoming, as:'current'}
-		#{if !current.deleted}
-		<div class="yellowBg reload-meeting-${current.id}" name="/meetings/viewmeeting?id=${current.id}">${current.name}#{if (connected.in(current.project).can('deleteMeeting') ||connceted.equals(current.creator)) } <a onclick="javascript:delete_meeting(${current.id});"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if (current.startTime > new Date().getTime()) && (connected.in(current.project).can('editMeeting') ||connceted.equals(current.creator)) }<a href="javascript:overlayOpen('/admin/meetings/${current.id}');" ><img title="edit"src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if (current.startTime < new Date().getTime()) && ((connected.in(current.project).can('editMeeting') ||connceted.equals(current.creator))) }<img class="dim" title="edit" src="@{'/public/images/famfam/pencil.png'}">#{/if} #{if (current.endTime > new Date().getTime()) && (connected.in(current.project).can('editMeeting') ||connected.equals(current.creator)) }#{drop 'meeting-' + current.id /}#{/if}</div>
+		#{if (connected.in(current.project).can('editMeeting') ||connected.equals(current.creator)) }
+		<a href="javascript:overlayOpen('/admin/meetings/${current.id}');" ><img title="edit" ${!current.getStatus().equals("upComing")? 'class = "dim" ':''} src="@{'/public/images/famfam/pencil.png'}"></a>
+		#{/if} 
+		#{if (current.endTime > new Date().getTime()) && (connected.in(current.project).can('manageMeetingAssociations') ||connceted.equals(current.creator)) }
+		#{drop 'meeting-' + current.id /}
 		#{/if}
-	#{/list}
-	#{list items:past, as:'current'}
-		#{if !current.deleted}
-		<div class="redBg reload-meeting-${current.id}" name="/meetings/viewmeeting?id=${current.id}">${current.name}#{if (connected.in(current.project).can('deleteMeeting') ||connceted.equals(current.creator)) } <a onclick="javascript:delete_meeting(${current.id});"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if (current.startTime > new Date().getTime()) && (connected.in(current.project).can('editMeeting') ||connceted.equals(current.creator)) }<a href="javascript:overlayOpen('/admin/meetings/${current.id}');" ><img title="edit"src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if (current.startTime < new Date().getTime()) && ((connected.in(current.project).can('editMeeting') ||connceted.equals(current.creator))) }<img class="dim" title="edit" src="@{'/public/images/famfam/pencil.png'}">#{/if} #{if (current.endTime > new Date().getTime()) && (connected.in(current.project).can('editMeeting') ||connected.equals(current.creator)) }#{drop 'meeting-' + current.id /}#{/if}</div>
+		
+		
+		#{if (current.snapshot!=null)}
+		<a href="javascript:overlayOpen('/Snapshots/loadsnapShot?id=${current.snapshot.id}');" >
+		<img title="View Associated Snapshot" src="@{'/public/images/famfam/camera_go.png'}"></a>
 		#{/if}
+		
+		
+		#{if (connected.meetingStatus(current.id).equals("confirmed"))}
+		<img src="@{'/public/images/famfam/accept.png'}" title="you ${past ? 'attended':'are attending'} this meeting"></img>
+		#{/if}
+		#{if (connected.meetingStatus(current.id).equals("declined"))}
+		<img src="@{'/public/images/famfam/exclamation.png'}"} title="you ${past ? 'did not attend':'are not attending'} this meeting"></img>
+		#{/if}
+		#{if current.endTime> new Date().getTime()}
+		#{if (connected.meetingStatus(current.id).equals("waiting")) }
+		<span id="acceptMeetings_${current.id}" style="display:block"><a onClick="javascript:confirm_me(${current.id});" title="accept invitation"><img src="@{'/public/images/famfam/application_add.png'}"></a></span>
+		<span id="declineMeetings_${current.id}" style="display:block"><a onClick="javascript:decline_me(${current.id});" title="decline invitation"><img src="@{'/public/images/famfam/application_delete.png'}"></a></span>
+		<span id="confirmedMeetings_${current.id}" style="display:none"><img src="@{'/public/images/famfam/accept.png'}" title="you are attending this meeting"></img></span>
+		<span id="declinedMeetings_${current.id}" style="display:none"><img src="@{'/public/images/famfam/exclamation.png'}"} title="you are not attending this meeting"></img></span>
+		#{/if}
+		#{if (connected.meetingStatus(current.id).equals("notInvited"))}
+		#{if connected.in(current.project).can('joinMeeting')}
+		<span id="acceptsMeetings_${current.id}" style="display:block;"><a href="#" onClick="javascript:join_meeting(${current.id})"title="join meeting"><img src="@{'/public/images/famfam/go.png'}"></img></a></span>
+		<span id="confirmeddMeetings_${current.id}" style="display:none;"><img src="@{'/public/images/famfam/accept.png'}" title="you are attending this meeting"></img></span>
+		#{/if}
+		#{/if}
+		#{/if}	
+		</div>
+		
 	#{/list}
+
 	
 	
 	
