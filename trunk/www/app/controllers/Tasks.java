@@ -932,13 +932,9 @@ public class Tasks extends SmartCRUD
 		Task temp = Task.findById(id);
 		Security.check(Security.getConnected().in(temp.project).can("modifyTask") || temp.assignee == Security.getConnected());
 		User userWhoChanged = Security.getConnected();
-		Component t = temp.component;
-
-		Security.check(t.componentUsers.contains(userWhoChanged));
-
 		Calendar timeChanged = Calendar.getInstance();
 		String changeType = "";
-
+System.out.println(Security.getConnected().components);
 		if (temp.getEffortPerDay(day) != -1) {
 			changeType = "Edit Attribute Effort";
 		} else {
@@ -1506,20 +1502,15 @@ public class Tasks extends SmartCRUD
 	 * @return boolean
 	 */
 	public static boolean editTaskEstimation(long id, double estimation) {
-		Task task1 = Task.findById(id);
-		Security.check(Security.getConnected().in(task1.project).can("modifyTask") || task1.assignee == Security.getConnected());
-		if (task1 == null)
+		Task task = Task.findById(id);
+		Security.check(Security.getConnected().in(task.project).can("modifyTask") || task.assignee == Security.getConnected());
+		if (task == null)
 			return false;
-		// Double oldEstimation = task1.estimationPoints;
 		if (estimation < 0)
 			return false;
-		task1.estimationPoints = estimation;
-		task1.save();
-		String header = "Task: 'T" + task1.id + "\'" + " Estimation Points have been edited.";
-		String body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + Security.getConnected().name + "\'" + ".";
-		Logs.addLog(Security.getConnected(), "Edit", "Task estimation", id, task1.project, new Date(System.currentTimeMillis()));
-		// Notifications.notifyUsers(task1.component.getUsers(), header, body,
-		// (byte) 0);
+		task.estimationPoints = estimation;
+		task.save();
+		Logs.addLog(Security.getConnected(), "Edit", "Task estimation", id, task.project, new Date(System.currentTimeMillis()));
 		return true;
 	}
 

@@ -177,7 +177,6 @@ Show/Hide:
 		<td>
 			<a title="view the task reports?" href="@{Tasks.getReport(task.id)}">${task.number}</a>
 		</td>
-		#{if task.assignee}
 		#{ifnot connected.id==task.assignee.id || flag}
 
           #{ifnot task.description}
@@ -231,7 +230,7 @@ Show/Hide:
 	
         
         #{/ifnot}
-      #{/if}
+      
             
       
         #{else}
