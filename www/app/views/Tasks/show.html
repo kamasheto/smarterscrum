@@ -79,6 +79,11 @@
 			#{/crud.custom }
 			
 			#{crud.custom 'component'}
+			#{if object.project.components.size()==1}
+			
+			#{/if}
+			
+			#{else}
 			<p>
 			<label for="task_type">Component</label>
 			<select id="object_component" name="object.component@id" onchange="getUsers()">
@@ -92,6 +97,7 @@
 								#{/list}		
 			</select>
 			</p>
+			#{/else}
 			#{/crud.custom }
 			
 			#{crud.custom 'estimationPoints'}
