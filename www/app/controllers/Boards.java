@@ -452,7 +452,7 @@ public class Boards extends SmartCRUD
 	 * 
 	 * @author Hadeer_Diwan
 	 * @param cid
-	 *            ,Component ID
+	 *            ,Column ID
 	 * @param uid
 	 *            ,User ID
 	 * @param sid
@@ -481,13 +481,18 @@ public class Boards extends SmartCRUD
 			notFound();
 		Logs.addLog( u, "shown", "Column", cid, c.board.project, cal.getTime() );
 		String url = "";
-		// if(compid==0)
-		// url =
-		// "@{Application.externalOpen("+c.board.project.id+", '/Boards/loadboard1?sprintID="+sid+"', true)}";
-		// else
-		// url =
-		// "@{Application.externalOpen("+c.board.project.id+", '/Boards/loadboard1?sprintID=sid&componentID="+compid+"', true)}";
-		// Notifications.notifyProjectUsers(c.board.project, "addColumn", url,
+		if(compid==0)
+		{
+			url = "/application/externalopen?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid;
+			Notifications.notifyProjectUsers(c.board.project, "addColumn", url, "column", c.name, (byte)0);
+		}
+		else
+		{
+			url = "/application/externalopen?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"&componentID="+compid;
+			Component component = Component.findById(compid); 
+			Notifications.notifyUsers(component.componentUsers, "addColumn", url, "column", c.name, (byte)0, c.board.project);			
+		}
+		
 		// "Coulumn", c.name, (byte)0);
 	}
 
@@ -528,15 +533,19 @@ public class Boards extends SmartCRUD
 		if( u.deleted )
 			notFound();
 		String url = "";
-		// if(compid==0)
-		// url =
-		// "@{Application.externalOpen("+c.board.project.id+", '/Boards/loadboard1?sprintID="+sid+"', true)}";
-		// else
-		// url =
-		// "@{Application.externalOpen("+c.board.project.id+", '/Boards/loadboard1?sprintID=sid&componentID="+compid+"', true)}";
+		if(compid==0)
+		{
+			url = "/application/externalopen?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid;
+			Notifications.notifyProjectUsers(c.board.project, "deleteColumn", url, "column", c.name, (byte)-1);
+		}
+		else
+		{
+			url = "/application/externalopen?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"&componentID="+compid;
+			Component component = Component.findById(compid); 
+			Notifications.notifyUsers(component.componentUsers, "deleteColumn", url, "column", c.name, (byte)-1, c.board.project);			
+		}		
 		Logs.addLog( u, "hided", "Column", c.id, c.board.project, cal.getTime() );
-		// Notifications.notifyProjectUsers(c.board.project, "deleteColumn",
-		// url, "Coulumn", c.name, (byte)-1);
+		
 	}
 
 	/**
