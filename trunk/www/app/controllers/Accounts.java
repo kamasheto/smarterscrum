@@ -2,6 +2,8 @@ package controllers;
 
 import javax.persistence.PersistenceException;
 
+import notifiers.Notifications;
+
 import models.User;
 import play.data.validation.Email;
 import play.data.validation.Required;
@@ -54,9 +56,8 @@ public class Accounts extends SmartController
 				}
 				User user = new User( name, email, password );
 				user.save();
-				String subject = "Your SmartSoft account activation";
-				String body = "Dear " + name + ", We are glad to have you as a registered user. Please click the following link to activate your account: " + "http://localhost:9000/accounts/doActivation?hash=" + user.activationHash;
-				Mail.send( "se.smartsoft@gmail.com", user.email, subject, body );
+				String url = "/accounts/doActivation?hash=" + user.activationHash;
+				Notifications.activate(user.email, user.name, url);
 				flash.success( "You have been registered. An Activation link has been sent to your Email Address" );
 				Secure.login();
 			}
