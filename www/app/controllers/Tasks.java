@@ -405,6 +405,10 @@ public class Tasks extends SmartCRUD
 			else
 				productRoles = productRoles + "As a " + tmp.project.productRoles.get(i).name + ",-";
 		}
+		if (tmp.component== null)
+			users = tmp.project.users;
+		else
+			users = tmp.component.componentUsers;
 		try {
 			render(type, object, users, statuses, types, dependencies, message2, deletable, comments, productRoles);
 		} catch (TemplateNotFoundException e) {
