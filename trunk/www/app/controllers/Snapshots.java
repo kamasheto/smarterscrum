@@ -264,7 +264,7 @@ List<User> users = c.getUsers();
 	
 	/**
 	 * Renders a list of the snapshots of the board given a project or a component given a specific sprint.
-	 * @param sprintId
+	 * @param sid
 	 *           The sprint id.
 	 * @param pid
 	 *           The project id.
@@ -272,22 +272,20 @@ List<User> users = c.getUsers();
 	 *           The component id.
 	 * @return void
 	 */
-	public static void boardsnapshots(long sprintId, long pid, long cid) {
+	public static void boardsnapshots(long sid, long pid, long cid) {
 
-		Sprint sprint = Sprint.findById(sprintId);
+		Sprint s = Sprint.findById(sid);
 		List<Snapshot> snapshots = new ArrayList();
 		if(pid!=0)
 		{
 			Project p = Project.findById(pid);
-			snapshots = Snapshot.find("byBoardAndSprintAndType",p.board,sprint,p.name).fetch();
-			
-			
+			snapshots = Snapshot.find("byBoardAndSprintAndType",p.board,s,p.name).fetch();
 			render(snapshots,p,pid,cid);
 		}
 		else
 		{
 			Component c = Component.findById(cid);
-			snapshots = Snapshot.find("byBoardAndSprintAndType",c.componentBoard,sprint,c.name).fetch();
+			snapshots = Snapshot.find("byBoardAndSprintAndType",c.componentBoard,s,c.name).fetch();
 			render(snapshots,c,pid,cid);
 		}
 	}
