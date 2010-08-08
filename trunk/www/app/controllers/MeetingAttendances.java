@@ -103,7 +103,7 @@ public class MeetingAttendances extends SmartController {
 				while (attendees.isEmpty() == false) {
 					users.add(attendees.remove(0).user);
 				}
-				String url = "@{Application.externalOpen("+attendance.meeting.project.id+", '/meetings/viewMeetings?id="+attendance.meeting.project.id+"', false)}";				
+				String url = "/application/externalopen?id="+attendance.meeting.project.id+"&isOverlay=false&url=/meetings/viewMeetings?id="+attendance.meeting.project.id;								
 				Notifications.notifyUsers(users, "Cancel", url, "Meeting", attendance.meeting.name,(byte) -1, attendance.meeting.project);
 			}
 
@@ -187,7 +187,7 @@ public class MeetingAttendances extends SmartController {
 		ma.status = "confirmed";
 		ma.reason = "";
 		ma.save();		
-		String url = "@{Application.externalOpen("+ma.meeting.project.id+", '/meetings/viewAttendeeStatus?id="+ma.id+"', false)}";
+		String url = "/application/externalopen?id="+ma.meeting.project.id+"&isOverlay=false&url=/meetings/viewAttendeeStatus?id="+ma.meeting.project.id;		
 		Notifications.notifyUser(ma.user, "Confirm", url, "Meeting Attendence", ma.meeting.name,(byte) 1, ma.meeting.project);
 	}
 
@@ -208,7 +208,7 @@ public class MeetingAttendances extends SmartController {
 		ma.status = "declined";
 		ma.reason = reason;
 		ma.save();		
-		String url = "@{Application.externalOpen("+ma.meeting.project.id+", '/meetings/viewAttendeeStatus?id="+ma.id+"', false)}";
+		String url = "/application/externalopen?id="+ma.meeting.project.id+"&isOverlay=false&url=/meetings/viewAttendeeStatus?id="+ma.id;		
 		Notifications.notifyUser(ma.user, "declin", url, "Meeting Attendence", ma.meeting.name,(byte) -1, ma.meeting.project);		
 	}
 	/**
