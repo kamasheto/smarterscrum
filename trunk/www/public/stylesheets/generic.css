@@ -192,12 +192,13 @@ img {
 	text-transform: lowercase;
 }
 
-.aDIV:hover,.selectedADiv {
+.aDIV:hover, .selectedADiv {
 	cursor: pointer;
 	position: relative;
 	z-index: 9;
-	margin-top: 5px;
-	padding-bottom: 10px;
+	top: -5px;
+	padding-bottom:5px;
+	background: black;
 }
 
 .selectedADiv {

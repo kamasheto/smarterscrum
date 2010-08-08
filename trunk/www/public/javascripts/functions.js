@@ -281,6 +281,9 @@ $(function() {
 			zIndex: 2700,
 			start: function(event, ui) {
 				DRAGGING_ELEMENT = $(this).closest('.draggableChild').attr('id')
+				if (!DRAGGING_ELEMENT) {
+					DRAGGING_ELEMENT = $(this).closest('.draggable').attr('id')
+				}
 				$('.dropper').each(function() {
 					$(this).show()
 					if ($(this).data('init')) return
@@ -327,32 +330,29 @@ $(function() {
 	
 	
 	$('.draggable').live('mouseover', function() {
-		var con = $(this).closest('.workspaceDraggables').attr('id');
+		if (!DRAGGING_ELEMENT) {
+			$(this).children().children('.dragger').show()					
+		}
+		if ($(this).data('init')) return
 		$(this).data('init', 1);
+		var con = $(this).closest('.workspaceDraggables').attr('id');
 		$(this).draggable( {
 			handle : '.ui-widget-header',
 			cancel : 'img',
 			stack  : '.draggable',
 			containment: '#'+con
 		});
-		// var h = $(this).height();
-		// var w = $(this).width();
-		// $(this).resizable( {
-		// 	containment: '#'+con,
-		// 	minHeight: $(this).height(),
-		// 	minWidth: 300,
-		// 	autoHide : true,
-		// 	disable: false,
-		// });
-
-	});
-
-	$('.draggableChild').live('mouseout', function() {
+	}).live('mouseout', function() {
 		if ($(this).attr('id') != DRAGGING_ELEMENT) {
 			$(this).children().children('.dragger').hide()
 		}
-	})
-	$(".draggableChild").live(
+	});
+		
+	$(".draggableChild").live('mouseout', function() {
+		if ($(this).attr('id') != DRAGGING_ELEMENT) {
+			$(this).children().children('.dragger').hide()
+		}
+	}).live(
 			'mouseover',
 			function() {
 				if (!DRAGGING_ELEMENT) {
@@ -681,7 +681,7 @@ function showProjectWorkspace(project_id) {
 		url: '/show/workspace',
 		data: {id: project_id},
 		success: function(data) {
-			$('#project-tabs').append('<a class="aDIV topCornersRounded selectedADiv project-button right" id="project-button-'+project_id+'" href="#" onclick="show('+project_id+')" style="width: 120px !important" title="">'+$(data).find('.project_name_in_header').html()+' <span class="right ui-icon2 ui-icon-circle-close" onclick="close_workspace('+project_id+')"> </span></a>');
+			$('#project-tabs').append('<a class="aDIV topCornersRounded selectedADiv project-button " id="project-button-'+project_id+'" href="#" onclick="show('+project_id+')" style="width: 120px !important" title="">'+$(data).find('.project_name_in_header').html()+' <span class="right ui-icon2 ui-icon-circle-close" onclick="close_workspace('+project_id+')"> </span></a>');
 			$('.workspace-' + project_id).html(data)
 			$('#top_header_projects_pane').slideUp()
 		}
