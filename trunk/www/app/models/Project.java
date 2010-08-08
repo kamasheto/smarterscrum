@@ -544,8 +544,10 @@ public class Project extends SmartModel
 
 		Component defaultComponent = new Component().save();
 		defaultComponent.name = "default component";
+	//	defaultComponent.number = 0;
 		defaultComponent.project = this;
 		defaultComponent.save();
+		defaultComponent.init();
 		this.save();
 		return defaultComponent;
 	}
