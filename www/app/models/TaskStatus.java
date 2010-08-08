@@ -14,28 +14,53 @@ import play.data.validation.Required;
 
 @Entity
 public class TaskStatus extends SmartModel {
+	/**
+	 * name
+	 */
 
 	@Required
 	@MaxSize (100)
 	public String name;
+	/**
+	 * Its project
+	 */
 
 	@ManyToOne
 	public Project project;
+	/**
+	 * If this status is new its true .
+	 */
 
 	public boolean isNew;
-	
+	/**
+	 * if deleted is true
+	 */
+
 	public boolean deleted;
+	/**
+	 * List of tasks that have this task status.
+	 */
 
 	@OneToMany (mappedBy = "taskStatus", cascade = CascadeType.ALL)
 	public List<Task> Tasks;
+	/**
+	 * Columns indicating this status in each board.
+	 */
 
 	@OneToMany (mappedBy = "taskStatus", cascade = CascadeType.ALL)
 	public List <Column> columns;
-	
-	public boolean pending;
-	
-	public boolean closed;
+	/**
+	 * If this status stands for a pending status
+	 */
 
+	public boolean pending;
+	/**
+	 * If this status stands for a closed status
+	 */
+	public boolean closed;
+	/**
+	 * Initialize a column for every status in every board in the project.
+	 */
 	public void init() {
 		Column column = new Column(name, project.board, this).save();
 			for(int i=0;i<project.components.size();i++)
@@ -47,6 +72,11 @@ public class TaskStatus extends SmartModel {
 			columns.add(column);
 			this.save();
 	}
+	/**
+	 * Class constructor just initializing the list of tasks for this task status.
+	 * 
+	
+	 */
 
 	public TaskStatus () {
 		this.pending = false;
