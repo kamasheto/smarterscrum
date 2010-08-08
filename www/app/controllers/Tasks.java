@@ -384,12 +384,7 @@ public class Tasks extends SmartCRUD
 		Task tmp = (Task) object;
 		Security.check(Security.getConnected().in(tmp.project).can("modifyTask"));
 		List<User> users = null;
-		if (tmp.component.number == 0)
-			users = tmp.project.users;
-		else
-			users = tmp.component.componentUsers;
-
-		List<TaskStatus> statuses = tmp.project.taskStatuses;
+				List<TaskStatus> statuses = tmp.project.taskStatuses;
 		List<TaskType> types = tmp.project.taskTypes;
 		List<Task> dependencies = new ArrayList<Task>();
 		List<Comment> comments = Comment.find("byTask", tmp).fetch();
