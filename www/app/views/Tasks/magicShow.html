@@ -12,13 +12,13 @@
 			#{if task!=null}
 				<br>
 			#{if task.productRole==null}
-			${task.description}<br>
+			${task.description.nl2br()}<br>
 			#{/if}
 			#{elseif task.productRole!=null && (task.productRole.name[0]=='a'||task.productRole.name[0]=='e'||task.productRole.name[0]=='i'||task.productRole.name[0]=='o')}
-			As an ${task.productRole.name}, ${task.description}<br>
+			As an ${task.productRole.name}, ${task.description.nl2br()}<br>
 			#{/elseif}
 			#{elseif task.productRole!=null}
-			As a ${task.productRole.name}, ${task.description}<br>
+			As a ${task.productRole.name}, ${task.description.nl2br()}<br>
 			#{/elseif}
 			<br>
 			<br>
