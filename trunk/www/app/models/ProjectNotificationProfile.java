@@ -17,23 +17,16 @@ public class ProjectNotificationProfile extends SmartModel {
 	 */
 	@OneToOne
 	public Project project;
-	public boolean deleted;
-	public boolean setMeeting;
+	public boolean deleted;	
 	public boolean setSprint;
-	public boolean addRole;
-	public boolean addProductRole;
-	public boolean editProductRole;
-	public boolean deleteProductRole;
+	public boolean addRole;	
 	public boolean reportImpediment;	
 	public boolean onCreateComponent;
 	public boolean onEditComponent;
 	public boolean onDeleteComponent;
 	public boolean addColumn;
 	public boolean deleteColumn;
-	public boolean assignStoryToSprint;
-	public boolean RequestToBeReviewer;
-	public boolean AcceptToBeReviewerRequest;
-	public boolean RejectToBeReviewerRequest;
+	public boolean assignStoryToSprint;	
 	public boolean addTaskStatus;
 	public boolean editTaskStatus;
 	public boolean deleteTaskStatus;
@@ -47,23 +40,16 @@ public class ProjectNotificationProfile extends SmartModel {
 	 *            : the project that this notification profile belongs to
 	 */
 	public ProjectNotificationProfile (@Required Project project) {
-		this.project = project;
-		setMeeting = true;
+		this.project = project;		
 		setSprint = true;
-		addRole = true;
-		addProductRole = true;
-		editProductRole = true;
-		deleteProductRole = true;		
+		addRole = true;		
 		reportImpediment = true;
 		onCreateComponent = true;
 		onEditComponent = true;
 		onDeleteComponent = true;
 		addColumn=true;
 	    deleteColumn=true;
-	    assignStoryToSprint=true;
-		RequestToBeReviewer=true;
-		AcceptToBeReviewerRequest=true;
-		RejectToBeReviewerRequest=true;
+	    assignStoryToSprint=true;		
 		deleteProject=true;
 		deletedFromProject=true;
 	}
@@ -75,19 +61,11 @@ public class ProjectNotificationProfile extends SmartModel {
 	 *            : the string that describes the action
 	 * @return: returns the boolean variable related to the action
 	 */
-	public boolean checkAction(String action) {
-		if (action.equalsIgnoreCase("setMeeting"))
-			return setMeeting;
-		else if (action.equalsIgnoreCase("setSprint"))
+	public boolean checkAction(String action) {		
+		if (action.equalsIgnoreCase("setSprint"))
 			return setSprint;
 		else if (action.equalsIgnoreCase("addRole"))
-			return addRole;
-		else if (action.equalsIgnoreCase("addProductRole"))
-			return addProductRole;
-		else if (action.equalsIgnoreCase("editProductRole"))
-			return editProductRole;
-		else if (action.equalsIgnoreCase("deleteProductRole"))
-			return deleteProductRole;		
+			return addRole;		
 		else if (action.equalsIgnoreCase("reportImpediment"))
 			return reportImpediment;
 		else if (action.equalsIgnoreCase("onCreateComponent"))
@@ -101,13 +79,7 @@ public class ProjectNotificationProfile extends SmartModel {
 		else if (action.equalsIgnoreCase("deleteColumn"))
 			return deleteColumn;
 		else if (action.equalsIgnoreCase("assignStoryToSprint"))
-			return assignStoryToSprint;
-		else if (action.equalsIgnoreCase("RequestToBeReviewer"))
-			return RequestToBeReviewer;
-		else if (action.equalsIgnoreCase("AcceptToBeReviewerRequest"))
-			return AcceptToBeReviewerRequest;
-		else if (action.equalsIgnoreCase("RejectToBeReviewerRequest"))
-			return RejectToBeReviewerRequest;
+			return assignStoryToSprint;		
 		else if (action.equalsIgnoreCase("deleteProject"))
 			return deleteProject;
 		else if (action.equalsIgnoreCase("deletedFromProject"))
