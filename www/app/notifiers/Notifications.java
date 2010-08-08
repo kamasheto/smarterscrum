@@ -18,9 +18,17 @@ public class Notifications extends Mailer{
 		send(userName, url, changeEmail);
 	}
 	
-	public static void invite()
+	public static void invite(User user, String objectURL, String objectName, String confirmURL, String declineURL, Project project, boolean meeting)
 	{
-		
+		User actionPerformer = Security.getConnected();
+		new Notification(user, actionPerformer, "Invit", objectURL, "the meeting", objectName, (byte)0).save();
+		addRecipient(user.email);
+		setFrom("se.smartsoft.2@gmail.com");
+		if(meeting)
+			setSubject("Meeting Invitation");
+		else
+			setSubject("Project Invitation");
+		send(actionPerformer, user, meeting, objectURL, objectName, confirmURL, declineURL, project);
 	}
 	
 	public static void lostPass()

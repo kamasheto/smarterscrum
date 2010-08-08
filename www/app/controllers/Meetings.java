@@ -112,7 +112,7 @@ public class Meetings extends SmartCRUD
 		Logs.addLog( Security.getConnected(), "Ended", "Meeting", M.id, M.project, new Date( System.currentTimeMillis() ) );
 		for( int i = 0; i < attendees.size(); i++ )
 		{
-			String url = "@{Application.externalOpen(" + M.id + ", '/meetings/viewMeeting?id=" + M.id + "', false)}";
+			String url = "/application/externalopen?id="+M.project.id+"&isOverlay=false&url=/meetings/viewMeetings?id="+M.id;			
 			Notifications.notifyUser( attendees.get( i ).user, "End", url, "Meeting", M.name, (byte) 0, M.project );
 		}
 	}
@@ -542,34 +542,22 @@ public class Meetings extends SmartCRUD
 		{
 			meeting.status = false;
 			if( users.isEmpty() == false )
-				message = "@{Application.externalOpen(" + meeting.project.id + ", '/meetings/viewMeetings?id=" + meeting.project.id + "', false)}";
-			// Notifications.notifyUsers(users, "Cancel", message, "Meeting",
-			// meeting.name, (byte) -1, meeting.project);
+				{
+					message = "/application/externalopen?id="+meeting.project.id+"&isOverlay=false&url=/meetings/viewMeetings?id="+meeting.project.id;					
+					Notifications.notifyUsers(users, "Cancel", message, "Meeting", meeting.name, (byte) -1, meeting.project);
+				}
+			
 		}
 
 		List<Artifact> artifacts = meeting.artifacts;
-		boolean flag = false;
+		
 		while( artifacts.isEmpty() == false )
 		{
-			Artifact temp = artifacts.remove( 0 );
-			String type = temp.type;
-			if( type.equals( "Notes" ) )
-				flag = true;
+			artifacts.remove( 0 );			
 		}
-		if( flag )
-		{
-			if( users.isEmpty() == false )
-				message = "unfortunately " + meeting.name + " meeting notes are deleted.";
-			// Notifications.notifyUsers( users, "Meeting Notes deleted",
-			// message, (byte) -1 );
-		}
+		
 		Logs.addLog( Security.getConnected(), "delete", "Meeting", meeting.id, meeting.project, new Date( System.currentTimeMillis() ) );
 		meeting.save();
-		// redirect( "/projects/" + meeting.project.id + "/meetings" );
-		//
-		// } else
-		// forbidden();
-
 	}
 
 	/**
@@ -590,20 +578,12 @@ public class Meetings extends SmartCRUD
 			if( MeetingAttendance.find( "byMeetingAndUserAndDeleted", currentMeeting, invitedUser, false ).first() == null )
 			{
 				MeetingAttendance attendance = new MeetingAttendance( invitedUser, currentMeeting );
-				attendance.save();
-				List<User> userList = new LinkedList<User>();
-				userList.add( invitedUser );
+				attendance.save();				
 				String meetingHash = attendance.meetingHash;
 				String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
-				String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
-				String header = "Invitation to Meeting in " + currentMeeting.project.name + " project";
-				String body1 = "Hello " + invitedUser.name;
-				String body2 = "You have been invited to attend " + currentMeeting.name + " ";
-				String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
-				String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
-				String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-				// Notifications.notifyUsers( userList, header, body, (byte) 0
-				// );
+				String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;				
+				String meetingURL = "/application/externalopen?id="+attendance.meeting.project.id+"&isOverlay=false&url=/meetings/viewMeeting?id="+attendance.meeting.id;
+				Notifications.invite( invitedUser, meetingURL, attendance.meeting.name, confirmURL, declineURL, attendance.meeting.project, true);
 				if( !invitedUser.equals( Security.getConnected() ) )
 				{
 					renderText( "User invited to meeting successfully.|reload('meetingAttendees-" + currentMeeting.id + "')" );
@@ -774,12 +754,10 @@ public class Meetings extends SmartCRUD
 		{
 			users.add( attendees.remove( 0 ).user );
 		}
-		String message = "This is to Notify you that the Meeting " + meeting.name + " has been modified.";
-
 		if( users.isEmpty() == false )
 		{
-			String url = "@{Application.externalOpen(" + meeting.id + ", '/meetings/viewMeeting?id=" + meeting.id + "', false)}";
-			Notifications.notifyUsers( users, "Modifi", url, "Meeting", meeting.name, (byte) 0, meeting.project );
+			String url = "/application/externalopen?id="+meeting.project.id+"&isOverlay=false&url=/meetings/viewMeeting?id="+meeting.id;			
+			Notifications.notifyUsers( users, "Modifi", url, "the meeting", meeting.name, (byte) 0, meeting.project );
 			flag = true;
 		}
 		renderJSON( flag );
