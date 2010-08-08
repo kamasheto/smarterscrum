@@ -26,12 +26,3 @@
 #{else}
 	#{note 'error'}There are no new deletion requests#{/note}
 #{/else}
-#{list items:rrequests, as:'req'}
-	<div class="bar">${req.user.name} has requested to be a reviewer for ${req.types.name}
-	<a href="#" onclick="acceptRequestToBeReviewer(${req.id});"><img src="/public/images/famfam/group_go.png" title="Accept request"></a>
-	<a href="#" onclick="rejectRequestToBeReviewer(${req.id});"><img src="/public/images/famfam/group_delete.png" title="Reject"></a>
-	</div>
-#{/list}
-#{else}
-	#{note 'error'}No one requested to review anything.#{/note}
-#{/else}

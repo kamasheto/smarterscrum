@@ -5,7 +5,6 @@ import java.util.List;
 
 import models.Component;
 import models.Project;
-import models.Requestreviewer;
 import models.Sprint;
 import models.Task;
 import models.TaskStatus;
@@ -112,13 +111,13 @@ public class SprintBacklog extends SmartController
 	}
 
 	/**
-	 * @author menna_ghoneim Renders a given taskid with a list of user and
-	 *         opton to say if the reviewer or the assignee is being changed to
+	 * @author menna_ghoneim Renders a given taskId with a list of user and
+	 *         option to say if the reviewer or the assignee is being changed to
 	 *         a page to choose a reviewer or assignee
 	 * @param taskId
 	 *            the task to be edited
 	 * @param aORr
-	 *            wether reviewer or assignee
+	 *            whether reviewer or assignee
 	 */
 
 	public static List<User> chooseTaskAssiRev( long taskId, int aORr )
@@ -135,27 +134,7 @@ public class SprintBacklog extends SmartController
 		{
 
 			users = task.component.componentUsers;
-			Project project = task.taskSprint.project;
-			List<Requestreviewer> reviewers = new ArrayList<Requestreviewer>();
-			for( int i = 0; i < project.components.size(); i++ )
-			{
-
-				List<Requestreviewer> compRev = Requestreviewer.find( "byComponentAndTypesAndAccepted", project.components.get( i ), task.taskType, true ).fetch();
-				reviewers.addAll( compRev );
-			}
-
-			if( reviewers == null || reviewers.isEmpty() )
-			{
-				users = task.component.componentUsers;
-			}
-			else
-			{
-				for( int i = 0; i < reviewers.size(); i++ )
-					users.add( reviewers.get( i ).user );
-			}
-
 			users.remove( task.assignee );
-
 			if( users.isEmpty() )
 				users = task.component.componentUsers;
 
