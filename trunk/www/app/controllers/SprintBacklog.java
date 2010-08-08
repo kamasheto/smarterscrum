@@ -73,14 +73,7 @@ public class SprintBacklog extends SmartController
 		}
 		else if( componentID == 0 && id != 0 )
 		{
-			for( int i = 0; i < project.components.size(); i++ )
-			{
-				for( int j = 0; j < project.components.get( i ).returnComponentTasks( sprint ).size(); j++ )
-				{
-					if(project.components.get( i ).returnComponentTasks( sprint ).get( j )!= null)
-					tasks.add(project.components.get( i ).returnComponentTasks( sprint ).get( j ) );
-				}
-			}
+			tasks = sprint.tasks;
 		}
 		String sNum = sprint.sprintNumber;
 		boolean flag = user.isAdmin || user.in( project ).can( "editSprintBacklog" );
