@@ -184,7 +184,6 @@ public class Components extends SmartCRUD {
 	 * this method renders a list of components in a project
 	 * @param projectId the id of the project the page renders its components
 	 */
-
 	public static void listComponentsInProject(long projectId) {
 		// Project project = Project.findById(projectId);
 		Project project = Project.find("byIdAndDeleted", projectId, false).first();

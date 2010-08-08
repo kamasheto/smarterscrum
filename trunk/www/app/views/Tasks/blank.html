@@ -66,7 +66,7 @@
 	<label for="object_component">Component</label>
 	<select id="object_component" name="object.component@id" onchange="getUsers()">
 	#{list items:project.components ,as :'component'}
-	#{if component.name=='default component'}
+	#{if component.number == 0}
 	<option value="${component.id}">None</option>
 	#{/if}
 	#{else}
