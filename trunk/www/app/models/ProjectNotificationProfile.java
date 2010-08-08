@@ -11,6 +11,10 @@ import play.data.validation.Required;
 
 @Entity
 public class ProjectNotificationProfile extends SmartModel {
+	/**
+	 * All variables represents an option to the user to be notified when it happens. The boolean variable
+	 * is whether to notify the user.
+	 */
 	@OneToOne
 	public Project project;
 	public boolean deleted;
