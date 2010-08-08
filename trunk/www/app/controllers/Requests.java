@@ -6,7 +6,6 @@ import java.util.List;
 import models.Component;
 import models.Project;
 import models.Request;
-import models.Requestreviewer;
 import models.Role;
 import models.User;
 import models.UserNotificationProfile;
@@ -38,8 +37,7 @@ public class Requests extends SmartCRUD
 		Security.check( pro, "manageRequests" );
 		List<Request> requests = Request.find( "isDeletion = false and project = " + pro.id + " order by id desc" ).fetch();
 		List<Request> drequests = Request.find( "isDeletion = true and project = " + pro.id + " order by id desc" ).fetch();
-		List<Requestreviewer> rrequests = Requestreviewer.find( "component.project = " + pro.id + " and rejected = false and accepted = false order by id desc" ).fetch();
-		render( requests, drequests, pro, rrequests );
+		render( requests, drequests, pro);
 	}
 
 	/**

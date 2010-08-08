@@ -7,7 +7,6 @@ import java.util.List;
 import models.Board;
 import models.Project;
 import models.Request;
-import models.Requestreviewer;
 import models.Role;
 import models.TaskType;
 import models.User;
@@ -111,26 +110,7 @@ public class Show extends SmartController
 		render( user, myProjects, me );
 	}
 
-	/**
-	 * List all task types in project
-	 * 
-	 * @param projectId
-	 *            the id of the project
-	 */
-	public static void listTaskTypesInProject( long projectId )
-	{
-		Project project = Project.findById( projectId );
-		User user = Security.getConnected();
-		ArrayList<TaskType> requested = new ArrayList<TaskType>();
-		List<Requestreviewer> requests = Requestreviewer.find( "byUser", user ).fetch();
-		for( Requestreviewer r : requests )
-		{
-			if( r.accepted == false && r.rejected == false )
-				requested.add( r.types );
-		}
-		render( project, requested, projectId );
-	}
-
+	
 	/**
 	 * shows the workspace of a project
 	 * 

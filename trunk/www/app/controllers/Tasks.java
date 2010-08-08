@@ -14,7 +14,6 @@ import models.Log;
 import models.Meeting;
 import models.ProductRole;
 import models.Project;
-import models.Requestreviewer;
 import models.Sprint;
 import models.Task;
 import models.TaskStatus;
@@ -367,7 +366,6 @@ public class Tasks extends SmartCRUD {
 		if (comments == null)
 			comments = new ArrayList<Comment>();
 		String message2 = "Are you Sure you want to delete the task ?!";
-		List<Requestreviewer> reviewers = Requestreviewer.find("byComponentAndAccepted", tmp.component, true).fetch();
 		boolean deletable = tmp.isDeletable();
 		dependencies = Task.find("byProjectAndDeleted", tmp.project, false).fetch();
 		String productRoles = "";
@@ -378,7 +376,7 @@ public class Tasks extends SmartCRUD {
 				productRoles = productRoles + "As a " + tmp.project.productRoles.get(i).name + ",-";
 		}
 		try {
-			render(type, object, users, statuses, types, dependencies, message2, deletable, reviewers, comments, productRoles);
+			render(type, object, users, statuses, types, dependencies, message2, deletable, comments, productRoles);
 		} catch (TemplateNotFoundException e) {
 			render("CRUD/show.html", type, object);
 		}
@@ -629,7 +627,6 @@ public class Tasks extends SmartCRUD {
 		List<Task> dependencies = Task.find("byProjectAndDeleted", tmp.project, false).fetch();
 		List<Comment> comments = Comment.find("byTask", tmp).fetch();
 		String message2 = "Are you Sure you want to delete the task ?!";
-		List<Requestreviewer> reviewers = Requestreviewer.find("byComponentAndAccepted", tmp.component, true).fetch();
 		boolean deletable = tmp.isDeletable();
 		String oldDescription = tmp.description;// done
 		long oldTaskType;
@@ -675,7 +672,7 @@ public class Tasks extends SmartCRUD {
 		if (validation.hasErrors()) {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));
 			try {
-				render(request.controller.replace(".", "/") + "/show.html", type, object, users, statuses, types, dependencies, message2, deletable, reviewers, comments);
+				render(request.controller.replace(".", "/") + "/show.html", type, object, users, statuses, types, dependencies, message2, deletable, comments);
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/show.html", type, object);
 			}
@@ -1800,22 +1797,7 @@ public class Tasks extends SmartCRUD {
 
 			users = task.component.componentUsers;
 			Project project = task.taskSprint.project;
-			List<Requestreviewer> reviewers = new ArrayList<Requestreviewer>();
-			for (int i = 0; i < project.components.size(); i++) {
-
-				List<Requestreviewer> compRev = Requestreviewer.find("byComponentAndTypesAndAccepted", project.components.get(i), task.taskType, true).fetch();
-				reviewers.addAll(compRev);
-			}
-
-			if (reviewers == null || reviewers.isEmpty()) {
-				users = task.component.componentUsers;
-			} else {
-				for (int i = 0; i < reviewers.size(); i++)
-					users.add(reviewers.get(i).user);
-			}
-
 			users.remove(task.assignee);
-
 			if (users.isEmpty())
 				users = task.component.componentUsers;
 
