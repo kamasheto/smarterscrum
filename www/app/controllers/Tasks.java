@@ -1916,7 +1916,22 @@ public class Tasks extends SmartCRUD {
 					Project project = Project.findById(projectId);
 					List<Task> tasks = new ArrayList<Task>();
 					for (Task task1 : project.projectTasks) {
-						if (task1.assignee != null && task1.reviewer != null && (task1.assignee.equals(user) || task1.reviewer.equals(user)) && task1.checkUnderImpl()) {
+						if (task1.assignee != null  && task1.assignee.equals(user)  && task1.checkUnderImpl() && task1.taskStatus!=null && !task1.taskStatus.closed) {
+							tasks.add(task1);
+						}
+					}
+					for (Task task1 : project.projectTasks) {
+						if (task1.reviewer != null  && task1.reviewer.equals(user)  && task1.checkUnderImpl() && task1.taskStatus!=null && task1.taskStatus.pending) {
+							tasks.add(task1);
+						}
+					}
+					for (Task task1 : project.projectTasks) {
+						if (task1.assignee != null  && task1.assignee.equals(user)   && task1.taskStatus!=null && !task1.taskStatus.closed && !tasks.contains(task1)) {
+							tasks.add(task1);
+						}
+					}
+					for (Task task1 : project.projectTasks) {
+						if (task1.reviewer != null  && task1.reviewer.equals(user)   && task1.taskStatus!=null && task1.taskStatus.pending && !tasks.contains(task1)) {
 							tasks.add(task1);
 						}
 					}
