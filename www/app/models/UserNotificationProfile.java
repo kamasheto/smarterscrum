@@ -18,13 +18,9 @@ public class UserNotificationProfile extends SmartModel {
 	@ManyToOne
 	public Project project;
 	public boolean deleted;
-	// *********** List Of Action Types Below ***********
-	public boolean setMeeting;
+	// *********** List Of Action Types Below ***********	
 	public boolean setSprint;
-	public boolean addRole;
-	public boolean addProductRole;
-	public boolean editProductRole;
-	public boolean deleteProductRole;	
+	public boolean addRole;	
 	public boolean reportImpediment;
 	public boolean onCreateComponent;
 	public boolean onEditComponent;
@@ -32,9 +28,10 @@ public class UserNotificationProfile extends SmartModel {
 	public boolean addColumn;
 	public boolean deleteColumn;
 	public boolean assignStoryToSprint;
-	public boolean RequestToBeReviewer;
-	public boolean AcceptToBeReviewerRequest;
-	public boolean RejectToBeReviewerRequest;
+	public boolean addTaskStatus;
+	public boolean editTaskStatus;
+	public boolean deleteTaskStatus;
+	public boolean deleteProject;
 	public boolean deletedFromProject;
 	// *********** List Of Action Types Ended ***********
 
@@ -52,24 +49,21 @@ public class UserNotificationProfile extends SmartModel {
 	 */
 	public UserNotificationProfile (@Required User user, @Required Project project) {
 		this.user = user;
-		this.project = project;
-		this.setMeeting = project.notificationProfile.setMeeting;
+		this.project = project;		
 		this.setSprint = project.notificationProfile.setSprint;
-		this.addRole = project.notificationProfile.addRole;
-		this.addProductRole = project.notificationProfile.addProductRole;
-		this.editProductRole = project.notificationProfile.editProductRole;
-		this.deleteProductRole = project.notificationProfile.deleteProductRole;		
+		this.addRole = project.notificationProfile.addRole;			
 		this.reportImpediment = project.notificationProfile.reportImpediment;
 		this.onCreateComponent = project.notificationProfile.onCreateComponent;
 		this.onEditComponent = project.notificationProfile.onEditComponent;
 		this.onDeleteComponent = project.notificationProfile.onDeleteComponent;
 		this.addColumn=project.notificationProfile.addColumn;
 	    this.deleteColumn=project.notificationProfile.deleteColumn;
-	    this.assignStoryToSprint = project.notificationProfile.assignStoryToSprint;
-		this.RequestToBeReviewer= project.notificationProfile.RequestToBeReviewer;
-		this.AcceptToBeReviewerRequest= project.notificationProfile.AcceptToBeReviewerRequest;
-		this.RejectToBeReviewerRequest= project.notificationProfile.RejectToBeReviewerRequest;
-		this.deletedFromProject=project.notificationProfile.deletedFromProject;
+	    this.assignStoryToSprint = project.notificationProfile.assignStoryToSprint;		
+		this.addTaskStatus = project.notificationProfile.addTaskStatus;
+		this.editTaskStatus = project.notificationProfile.editTaskStatus;
+		this.deleteTaskStatus = project.notificationProfile.deleteTaskStatus;
+	    this.deleteProject = project.notificationProfile.deleteProject;
+	    this.deletedFromProject=project.notificationProfile.deletedFromProject;
 	}
 
 	/**
@@ -81,18 +75,10 @@ public class UserNotificationProfile extends SmartModel {
 	 * @return boolean
 	 */
 	public boolean checkAction(String action) {
-		if (action.equalsIgnoreCase("setMeeting"))
-			return setMeeting;
-		else if (action.equalsIgnoreCase("setSprint"))
+		if (action.equalsIgnoreCase("setSprint"))
 			return setSprint;
 		else if (action.equalsIgnoreCase("addRole"))
-			return addRole;
-		else if (action.equalsIgnoreCase("addProductRole"))
-			return addProductRole;
-		else if (action.equalsIgnoreCase("editProductRole"))
-			return editProductRole;
-		else if (action.equalsIgnoreCase("deleteProductRole"))
-			return deleteProductRole;		
+			return addRole;				
 		else if (action.equalsIgnoreCase("reportImpediment"))
 			return reportImpediment;
 		else if (action.equalsIgnoreCase("onCreateComponent"))
@@ -107,12 +93,14 @@ public class UserNotificationProfile extends SmartModel {
 			return deleteColumn;
 		else if (action.equalsIgnoreCase("assignStoryToSprint"))
 			return assignStoryToSprint;
-		else if (action.equalsIgnoreCase("RequestToBeReviewer"))
-			return RequestToBeReviewer;
-		else if (action.equalsIgnoreCase("AcceptToBeReviewerRequest"))
-			return AcceptToBeReviewerRequest;
-		else if (action.equalsIgnoreCase("RejectToBeReviewerRequest"))
-			return RejectToBeReviewerRequest;
+		else if (action.equalsIgnoreCase("addTaskStatus"))
+			return addTaskStatus;
+		else if (action.equalsIgnoreCase("editTaskStatus"))
+			return editTaskStatus;
+		else if (action.equalsIgnoreCase("deleteTaskStatus"))
+			return deleteTaskStatus;
+		else if (action.equalsIgnoreCase("deleteProject"))
+			return deleteProject;
 		else if (action.equalsIgnoreCase("deletedFromProject"))
 			return deletedFromProject;
 		else
