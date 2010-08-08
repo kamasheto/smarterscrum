@@ -159,7 +159,7 @@
 			<input type="hidden" name="object.dependentTasks@id" value="" /> 
 			<select id="object_dependentTasks" name="object.dependentTasks@id" multiple="yes"> 
 									#{list items:dependencies ,as :'Task'}
-									<option value="${Task.id}">${Task.description}</option>
+											<option value="${Task.id}" #{if object.dependentTasks.contains(Task)}selected#{/if}>${Task.description}</option>
 									#{/list} 
 			</select> 
 			</p>
