@@ -166,6 +166,11 @@ public class Meetings extends SmartCRUD
 		long longCurrentDate = currentDate.getTime();
 		List<Sprint> sprints = currentProject.upcomingSprints();
 		List<String> types = currentProject.meetingTypes();
+		
+		if (temp.endTime == 0) {
+			// defaults to 1 hours + start time
+			temp.endTime = temp.startTime + 1000 * 60 * 60;
+		}
 		if( validation.hasErrors() )
 		{
 			renderArgs.put( "error", Messages.get( "crud.hasErrors" ) );
