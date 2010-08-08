@@ -17,6 +17,9 @@ public class Loading extends SmartController {
 
 		from = arr[0].toLowerCase();
 		to = arr2[0].toLowerCase();
+		
+		// id = from's id
+		// id2 = to's id
 		long id = Long.parseLong(arr[1]), id2 = Long.parseLong(arr2[1]);
 
 		if (from.equals("user") && to.equals("component")) {
@@ -49,6 +52,10 @@ public class Loading extends SmartController {
 		else if  (from.equals("task") && to.equals( "task" ) )
 		{
 			Tasks.setDependency(id, id2);
-		}		
+		} else if (from.equals("projectusers") && to.equals("meeting")) {
+			Meetings.inviteAllMembers(id2);
+		} else {
+			renderText("Something went wrong. Please try again.");
+		}
 	}
 }
