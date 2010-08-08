@@ -45,103 +45,60 @@ function showStuff(id) {
 	
 	<div class="objectForm">
 	#{form action:@create(), enctype:'multipart/form-data'}
+		<div class="crudField">
+			<label for="object_name"> Name</label> <br>
+			<input id="object_name" class="" type="text" name="object.name" value="" size="50" /> 
+			<span class="crudHelp" style="color:red">*</span>
+		</div>
+		<div class="crudField">
+			<label for="object_location"> Location</label> <br> </br>
+			<input id="object_location" class="" type="text" name="object.location" value="" size="50" /> 
+		    <span class="crudHelp" style="color:red"> *</span>
+		</div>
+		<div class="crudField">
+			<label for="object_startTime"> Start time  </label><br> 
+				<input id="object_startTime" class="" type="text" name="object.startTime" value="" size="50" /> 
+			    <span class="crudHelp" style="color:red">*</span>
+		</div>
 		
-		#{crud.form fields:['name','description','location','startTime','endTime','sprint','type']}
-		
-		    #{crud.custom 'name'}
- 
-	<label for="object_name"> Name</label> <br>
-	<input id="object_name" class="" type="text" name="object.name" value="" size="50" /> 
-	<span class="crudHelp" style="color:red">*</span>
- 
-           #{/crud.custom}
-		    
-		    
-		    #{crud.custom 'description'}
- 
- 	<br><label for="object_description"> Description </label> <br></br>
-	<TextArea id="object_description" class="" type="text" name="object.description" rows ="5" value="" cols="52" /> </TextArea>	
-    	
- 
-		    #{/crud.custom}
-		    
-				    
-		    
-		    #{crud.custom 'location'}
-
-	<br><label for="object_location"> Location</label> <br> </br>
-	<input id="object_location" class="" type="text" name="object.location" value="" size="50" /> 
-    <span class="crudHelp" style="color:red"> *</span> <br></br>
-	    
-		    #{/crud.custom}
-		    
-		    
-	       #{crud.custom 'startTime'}	    
- 
-	<br><label for="object_startTime"> Start time  </label><br> 
-	<input id="object_startTime" class="" type="text" name="object.startTime" value="" size="50" /> 
-    
-    <span class="crudHelp" style="color:red">  * </span> 	
- 
-           #{/crud.custom}
-		
-		   
-		   #{crud.custom "endTime"}	
-		  
- 	
-
-	<br><label for="object_endTime"> End Time </label> <br>
-	<input id="object_endTime" class="" type="text" name="object.endTime" value="" size="50" /> 
-	
-	<span class="crudHelp" style="color:red">*</span>
- 		   
-		   #{/crud.custom}
-		   
-		
-			
-			
-		#{crud.custom 'sprint'}
-		#{if sprints.size()!=0 }
-		#{if connected.in(currentProject).can('AssociateSprinttoMeeting') }
-		 
-			<label for="object_sprint">Associate to Sprint</label>
-			<input type="checkbox" onclick="showStuff('span');">
-			<span id="span" style="display: none;">
-			<select id="object_sprint" name="object.sprintid"  >
-			<option value="" style="display:none"></option>
-			#{list items:sprints, as:'sprint'}
-				<option   value="${sprint.id}">Sprint ${sprint.sprintNumber}</option>
-					#{/list}
-					</select>
-					</span>
-    <span class="crudHelp"></span>
-
-#{/if}#{/if}
-		#{/crud.custom}
-	        
-	        
-	         
-
-             
-		    #{crud.custom 'type'}
- 
-   <span id="types" style="display:none;">
-			<label for="object_type">Type of Meeting</label>
-					<select id="object_type" name="object.type">
-					<option value="" style="display:none"></option>
-					#{list items:types, as:'meetingtype'}
-					<option  value="${meetingtype}">${meetingtype}</option>
-					#{/list}
-					</select>
-					</span>
-            #{/crud.custom}
-	 			
-			#{/crud.form }
-			
-			<div class="crudField">
+		<div class="crudField more_options">
+			<label for="object_endTime"> End Time </label> <br>
+			<input id="object_endTime" class="" type="text" name="object.endTime" value="" size="50" />
+		</div>
+		<div class="crudField more_options">
+			#{if sprints.size()!=0 }
+			#{if connected.in(currentProject).can('AssociateSprinttoMeeting') }
+				<label for="object_sprint">Associate to Sprint</label>
+				<input type="checkbox" onclick="showStuff('span');">
+				<span id="span" style="display: none;">
+				<select id="object_sprint" name="object.sprintid"  >
+				<option value="" style="display:none"></option>
+				#{list items:sprints, as:'sprint'}
+					<option   value="${sprint.id}">Sprint ${sprint.sprintNumber}</option>
+						#{/list}
+						</select>
+						</span>
+	    	<span class="crudHelp"></span>
+			#{/if}#{/if}
+		</div>
+		<div class="crudField hidden" id="types">
+					<label for="object_type">Type of Meeting</label>
+							<select id="object_type" name="object.type">
+							<option value="" style="display:none"></option>
+							#{list items:types, as:'meetingtype'}
+							<option  value="${meetingtype}">${meetingtype}</option>
+							#{/list}
+							</select>
+		</div>
+		<div class="crudField more_options">
+			<label for="object_description"> Description </label> <br></br>
+			<TextArea id="object_description" class="" type="text" name="object.description" rows ="5" value="" cols="52" /> </TextArea>
+		</div>
+		<div class="crudField more_options">
 			<label for="user_attending"> I'm attending this meeting:</label>
 			<input type=checkbox name="attending" class="" id="attending"> 
-        	</div>
+		</div>
+					<a href="javascript:$('.more_options').toggle()">Toggle more options</a>
 			
 			<input type="hidden" id="object_project" name="object.project@id" value="${currentProject.id}" >
 		    <input type="hidden" id="object_status" name="object.status" value="true" >

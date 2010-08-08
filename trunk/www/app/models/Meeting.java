@@ -37,7 +37,6 @@ public class Meeting extends SmartModel {
 	/**
 	 * Meeting end time (unix timestamp in milliseconds)
 	 */
-	@Required
 	public long endTime;
 
 	/**

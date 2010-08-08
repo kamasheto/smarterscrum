@@ -292,3 +292,6 @@ img.left {
 	float: left;
 	margin-right: 2px;
 }
+.more_options {
+	display: none;
+}
