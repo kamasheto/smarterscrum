@@ -2014,7 +2014,7 @@ System.out.println(Security.getConnected().components);
 				}
 				
 			}
-			render(tasks, title, mine, projectId);
+			render(tasks, title, mine, projectId, componentId);
 		} else {
 			if (taskId != 0) {
 				Task task = Task.findById(taskId);
@@ -2071,7 +2071,8 @@ System.out.println(Security.getConnected().components);
 							}
 
 							title = "Meetings Tasks";
-							render(title, tasks, projectId);
+							boolean project = true;
+							render(title, tasks, projectId, project);
 						}
 					}
 				}
