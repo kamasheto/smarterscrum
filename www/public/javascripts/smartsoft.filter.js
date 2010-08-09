@@ -6,18 +6,27 @@ How : The magic boxes are created using a certain format. Get the input from the
 /********** Settings *************/
 var itemsPerPage = 5; //how many divs to display per page
 
-
-
-/******** DO NOT EDIT ANYTHING BELOW THIS LINE .. plz? ***********/
-
-String.prototype.trim = function() { return this.replace(/^\s+|\s+$/, ''); };
-
+/********** Fixing Unique boxes *************/
 var page=1;
 var filter_page = 1;
 var filter_smart_array = new Array();
 var globalSizeOfFilteredChildren;
 var globalNumPagesNormal;
 var globalNumPagesFilter;
+/*********************************************/
+
+/****************** 7ewar el array of objects *************/
+
+var uniqueArray = new Array();
+
+/**********************************************************/
+
+
+/******** DO NOT EDIT ANYTHING BELOW THIS LINE .. plz? ***********/
+
+String.prototype.trim = function() { return this.replace(/^\s+|\s+$/, ''); };
+
+
 
 function filter_me(el){
 	//get id from parent container
@@ -26,7 +35,17 @@ function filter_me(el){
 	var input = $(el).val();
 	if(input.trim().length == 0){
 		//loop on all divs located inside the id_content and show them.
-		smart_pagination(id,page);
+		var smartObject = getTheUnique(id);
+		if(smartObject == false){
+			smartObject = new Object();
+			smartObject.id = id;
+			smartObject.numPages = -1;
+			smartObject.smart_array = new Array();
+			smartObject.page = 1;
+			uniqueArray.push(smartObject);
+			alert("el length : "+uniqueArray.length);
+		}
+		smart_pagination(id,smartObject.page);
 		hideFilterLinks(id);
 	}
 	else
@@ -55,27 +74,37 @@ function smart_pagination(el, view_page){
 	 ***************************/
 	/********** Do not edit anything below this line ******/
 	//CHECKS
-	var sizeOfChildren = $("#"+id+"_content > div").size();
-	var numPages = Math.floor(sizeOfChildren/ itemsPerPage);
-	var extraItems = !((sizeOfChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
-	if(extraItems)
-		numPages++;
-	globalNumPagesNormal = numPages;
+	var smartObject = getTheUnique(id);
+	if(smartObject == false){
+		var sizeOfChildren = $("#"+id+"_content > div").size();
+		var numPages = Math.floor(sizeOfChildren/ itemsPerPage);
+		var extraItems = !((sizeOfChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
+		if(extraItems)
+			numPages++;
+		smartObject = new Object();
+		smartObject.id = id;
+		smartObject.numPages = numPages;
+		smartObject.smart_array = new Array();
+		smartObject.page = 1;
+		uniqueArray.push(smartObject);
+	}
+	else if(smartObject.numPages == -1){
+		smartObject.numPages = numPages;
+	}
 	if(view_page<1)
 	{
-		page++;
+		smartObject.page++;
 	}
-	else if(view_page>numPages){
-		page--;
+	else if(view_page>smartObject.numPages){
+		smartObject.page--;
 	}
 	else
 	{
 		//First of all get all "shown" divs and store them in the smart_array
-		var smart_array = new Array();
 		var i = 0;
 			$("#"+id+"_content > div").show();
 			$("#"+id+"_content > div").each(function(index){
-				smart_array[i] = this;
+				smartObject.smart_array[i] = this;
 				$(this).hide();
 				i++;
 			});
@@ -85,12 +114,12 @@ function smart_pagination(el, view_page){
 		var starting_index = view_page * itemsPerPage;
 		var j = 1;//counter
 		while(j<= itemsPerPage){
-			$(smart_array[starting_index]).show();
+			$(smartObject.smart_array[starting_index]).show();
 			starting_index++;
 			j++;
 		}
 		view_page++;
-		if(view_page == numPages){
+		if(view_page == smartObject.numPages){
 			$("#"+id+" .normalLinkn").addClass('dim');
 		}
 		else{
@@ -172,12 +201,23 @@ function filter_smart_pagination(el,view_page, nextPrevious){
 	updatePageNumbersFilter(id);
 }
 
-function nextPage(id,page){
-	smart_pagination(id,page);
+function nextPage(el){
+	id = el;
+	if($(el).closest('.filter').attr('id')!=null){
+		id = $(el).closest('.filter').attr('id').split('_')[0];
+	}
+	var smartObject = getTheUnique(id);
+	smartObject.page++;
+	smart_pagination(el,smartObject.page);
 }
 
-function previousPage(id,page){
-	smart_pagination(id,page);
+function previousPage(el){
+	if($(el).closest('.filter').attr('id')!=null){
+		id = $(el).closest('.filter').attr('id').split('_')[0];
+	}
+	var smartObject = getTheUnique(id);
+	smartObject.page--;
+	smart_pagination(el,smartObject.page);
 }
 
 function nextFilterPage(id){
@@ -216,7 +256,8 @@ function showFilterLinks(id){
 }
 
 function updatePageNumbers(id){
-	$("#"+id+" .numPages").text(page+"/"+globalNumPagesNormal);
+	smartObject = getTheUnique(id);
+	$("#"+id+" .numPages").text(smartObject.page+"/"+smartObject.numPages);
 	if(globalNumPagesNormal<=1)
 	{
 		$("#"+id+"_filter").hide();
@@ -228,4 +269,13 @@ function updatePageNumbers(id){
 
 function updatePageNumbersFilter(id){
 	$("#"+id+" .numPages").text(filter_page+"/"+globalNumPagesFilter);
+}
+
+function getTheUnique(id){
+	for(i=0;i<uniqueArray.length;i++){
+		if(uniqueArray[i].id == id){
+			return uniqueArray[i];
+		}
+	}
+	return false;
 }
