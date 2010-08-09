@@ -1,0 +1,6 @@
+#{extends 'magicBox.html' /}
+#{set title:'Help' /}
+#{list items:topics, as:'topic'}
+	<div name="/helptopics/topic?id=${topic.id}" class="overlay">${topic.summary}</div>
+#{/list}
+

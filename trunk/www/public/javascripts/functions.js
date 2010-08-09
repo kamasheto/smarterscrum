@@ -288,6 +288,7 @@ $(function() {
 				if (!DRAGGING_ELEMENT) {
 					DRAGGING_ELEMENT = $(this).closest('.draggable').attr('id')
 				}
+				that = this
 				$('.dropper').each(function() {
 					$(this).show()
 					if ($(this).data('init')) return
@@ -297,11 +298,10 @@ $(function() {
 						tolerance: 'touch',
 						drop: function(event2, ui2) {
 							$(this).attr('src', '/public/images/loading16.gif')
-							that = this
 							// alert($(ui.helper).attr('name'))
 							$.ajax({
-								url: '/loading/dynamicdrop',
-								data: {from: $(ui.helper).attr('name'), to: $(this).attr('name')},
+								url: '/ajax/dynamicdrop',
+								data: {from: $(that).attr('name'), to: $(this).attr('name')},
 								success: function(response) {
 									arr = response.split('|')
 									if (arr.length > 0 && arr[0]) {
@@ -315,9 +315,6 @@ $(function() {
 									$.bar({
 										message: 'An error occurred. You may not have permission to perform that action.'
 									})
-								},
-								complete: function(response) {
-									$(that).attr('src', '/public/images/famfam/arrow_in.png')
 								}
 							})
 						}
@@ -326,7 +323,8 @@ $(function() {
 			},
 			stop: function(element, ui) {
 				$('.dragger').hide()
-				$('.dropper').hide()
+				$('.dropper').hide().attr('src', '/public/images/famfam/arrow_in.png')
+				$(ui.helper).remove()
 				DRAGGING_ELEMENT = null
 			}
 		})
@@ -411,7 +409,7 @@ $(function() {
 			'click',
 			function() {
 				if($(this).next().html()=='')
-					load($(this).parent().attr('name')+' .actual',$(this).parent().attr('id'),3);
+					load($(this).parent().attr('name') + ' .actual',$(this).parent().attr('id'),3);
 
 				$(this).next().slideToggle(400);
 
@@ -467,6 +465,7 @@ function removeFromDiv(url)
 }
 		
 function load(url, el, n) {
+	
 	$('#' + el + '_content').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>');
 	$('#'+el).append('<div id="contentTemp" style="display:none;"></div>');
 	if ($.inArray(url,myDivs) == -1 || n == 2) {
@@ -476,20 +475,20 @@ function load(url, el, n) {
 			$('#'+el+'_content').html($('#contentTemp').find('.actual').first().html());
 			if (n == 1) 
 			{
-				$('#'+ el + '_content').parent().append('<div class="filter"id="'+el+'_filter"></div>');
+			$('#'+ el + '_content').parent().append('<div class="filter"id="'+el+'_filter"></div>');
 				$('#'+ el + '_filter').html($('#contentTemp').find('.filter').first().html());
-				$('#'+ el + '_filter').find('input').first().attr('name','filter_textBox_'+el);
+					$('#'+ el + '_filter').find('input').first().attr('name','filter_textBox_'+el);
 			}
 			if(n==3)
 				magic(el);
 			$('#contentTemp').remove();
-			$('#' + el + '_content').slideDown(400);
+				$('#' + el + '_content').slideDown(400);
 		});
 	}
 	if(n==1)	
 	{	
 		myDivs.push(url);
-	}
+}
 }
 
 // CURRENT_OFFSET = 10
