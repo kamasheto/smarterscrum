@@ -90,33 +90,8 @@
     	   $('#normal').load(url);
     	   $('#normal').show();
     	   $('#workspaces').hide();
-    	   
 
-       }
-       function smartShow(url)
-       {
-    		if($('#workspaces').find('.noKill').first()!=null)
-    		{
-    			var me = $('#workspaces').find('.noKill').first();
-    			removeFromDiv($(me).attr('name'));
-    		}
-    		else if($('#normal').find('.noKill').first()!=null)
-    		{
-    			var me = $('#workspaces').find('.noKill').first();
-    		   removeFromDiv($(me).attr('name'));
-    		}
-           var myParent = 'normal';
-           if($('#normal').css('display')=='none')
-           {
-               $('#workspaces').children().each(function(){
-                   if($(this).css('display')=='block')
-                       myParent = $(this).children().first().next().attr('id');
-               });
-           }
-           loadBox(url,myParent,'noKill');
-               
-       }
-                   		
+       }                        		
         </script>
 </head>
 <body id="mainBodyTag"onload="#{get 'onLoad' /}">
@@ -130,11 +105,11 @@
 <img src="@{'public/images/close.gif'}"/>
 </a>
 </div>
-	<iframe id="theLoadedContent" name="iframe" src="@{Application.loading()}"class="autoHeight" style="width:100%;border:0px;">
+	<iframe id="theLoadedContent" name="theLoadedContent" src="@{Application.loading()}"class="autoHeight" style="width:100%;border:0px;">
 	</iframe>
 	</div>
 </div>
-</div>
+</div>#{if connected}
 <div class="topBar" id="project-tabs">
 	<!--a class="aDIV topCornersRounded" href="#" onclick="normalShow('/ #elContent')" style="color: #E5A1A5; float:left;" title="Go home">Home</a-->
 #{if connected?.isAdmin}
@@ -159,23 +134,21 @@
 </div>
 <div class="topper">
 						<div class="left">
-						#{if connected}
+						
 							Hello <span id="username-in-topbar">${connected.name}</span>! <!--&nbsp;&nbsp;|&nbsp;&nbsp;
 							<a href="#" onclick="smartShow('/show/user?id=${controllers.Security.getConnected().id}')">Profile</a>-->
-						#{/if}
+						
 						</div>
 						
 							
 							<div class="right">
-							#{if connected}
+							
 								<a href="/secure/logout" title="Logout from the system">Logout</a>
-						#{/if}
+						
 							</div>
 							<br style="clear:both"/>
 						</div>
-						
-			
-#{if connected}		
+	
 #{if true}
 <!-- hide for the moment -->
 <div class="sideHolder">
