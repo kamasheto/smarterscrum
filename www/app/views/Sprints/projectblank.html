@@ -1,12 +1,26 @@
 #{extends 'overlay.html' /}
-
-<head>
-<script type="text/javascript" src="@{'public/javascripts/calendar_db.js'}"></script>
-<link rel="stylesheet" href="@{'public/stylesheets/calendar.css'}">
-</head>
-
 <div id="crudBlank" class="${type.name}">
 	
+	
+	
+	#{set 'moreScripts'}
+	  <script type="text/javascript"> 
+$(function() {
+
+	$('#object_startDate').datepicker({  
+		changeMonth: true,
+		changeYear: true,
+		dateFormat: 'yy-mm-dd'
+	 
+	 });
+	$('#object_endDate').datepicker({  
+		changeMonth: true,
+		changeYear: true,
+		dateFormat: 'yy-mm-dd'
+		
+	 });
+});</script>
+	#{/set}
 	<h2 id="crudBlankTitle">&{'crud.blank.title', type.modelName}</h2>
 	
 	<div class="objectForm">
@@ -22,17 +36,6 @@
 	
 	<input id="object_startDate" class="" type="text" name="object.startDate" value="" size="10" />		
  
- 	<script type="text/javascript">
- 	var o_cal =new tcal ({
-		// input name
-		'controlname': 'object_startDate'
-		
-	},{'weekdays':["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],'months':['January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December'],'imgpath': '/public/stylesheets/img/'});
-	o_cal.a_tpl.weekstart = 1;
-	
-	</script>
-
-<span class="crudHelp">YYYY-MM-DD</span>
 
 
 			
@@ -45,17 +48,6 @@
 	
 	<input id="object_endDate" class="" type="text" name="object.endDate" value="" size="10" />		
  
- 	<script type="text/javascript">
- 	var o_cal =new tcal ({
-		// input name
-		'controlname': 'object_endDate'
-		
-	},{'weekdays':["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],'months':['January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December'],'imgpath': '/public/stylesheets/img/'});
-	o_cal.a_tpl.weekstart = 1;
-	
-	</script>
-
-<span class="crudHelp">YYYY-MM-DD</span>
 
 
 			
@@ -78,12 +70,12 @@
 		#{/crud.custom}
 	
 		#{/crud.form}
-		<p class="crudButtons">
+		<div class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
 			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
 			<input type="submit" name="_saveAndAddAnother" value="&{'crud.saveAndAddAnother', type.modelName}" />
-	<a  href="@{showsprints(projectId)}"/>Cancel and go Back to Sprints Page</a>			
-		</p>
+		
+		</div>
 	#{/form}
 	</div>
 
