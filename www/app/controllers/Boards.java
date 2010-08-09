@@ -22,6 +22,7 @@ import models.Task;
 import models.User;
 import models.Component.ComponentRow;
 import others.MeetingUsers;
+import play.mvc.Router;
 import play.mvc.With;
 
 @With( Secure.class )
@@ -483,12 +484,12 @@ public class Boards extends SmartCRUD
 		String url = "";
 		if(compid==0)
 		{
-			url = "/application/externalopen?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid;
+			url = Router.getFullUrl("Application.externalOpen")+"?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid;
 			Notifications.notifyProjectUsers(c.board.project, "addColumn", url, "column", c.name, (byte)0);
 		}
 		else
 		{
-			url = "/application/externalopen?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"&componentID="+compid;
+			url = Router.getFullUrl("Application.externalOpen")+"?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"&componentID="+compid;
 			Component component = Component.findById(compid); 
 			Notifications.notifyUsers(component.componentUsers, "addColumn", url, "column", c.name, (byte)0, c.board.project);			
 		}
@@ -535,12 +536,12 @@ public class Boards extends SmartCRUD
 		String url = "";
 		if(compid==0)
 		{
-			url = "/application/externalopen?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid;
+			url = Router.getFullUrl("Application.externalOpen")+"?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid;
 			Notifications.notifyProjectUsers(c.board.project, "deleteColumn", url, "column", c.name, (byte)-1);
 		}
 		else
 		{
-			url = "/application/externalopen?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"&componentID="+compid;
+			url = Router.getFullUrl("Application.externalOpen")+"?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"&componentID="+compid;
 			Component component = Component.findById(compid); 
 			Notifications.notifyUsers(component.componentUsers, "deleteColumn", url, "column", c.name, (byte)-1, c.board.project);			
 		}		
