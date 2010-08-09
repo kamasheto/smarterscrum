@@ -8,6 +8,7 @@
 	width: 120px;
 }
 
+label{width:200px!important}
 button,a button,input[type=submit],input[type=ok],input[type=send],input[type=button],input[type=send]
 	{
 	cursor: pointer;
