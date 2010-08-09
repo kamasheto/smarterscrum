@@ -16,7 +16,15 @@
      #{list items:user.roles ,as :'uRole'}
       #{if pRole.id == uRole.id}
       
-      <div class="bar">${uRole.name}
+      <div class="bar"> 
+      #{if !uRole.baseRole} 
+        ${uRole.name}  
+      #{/if} 
+      
+      #{else} 
+          <span title="Base Role"> <i>${uRole.name}</i> </span> 
+       #{/else}
+      
        #{if ((connected.in(project).can('revokeUserRole'))&&(project.id == currentProject.id))||((user.id == connected.id)&&(!uRole.baseRole))}
 	        <a onclick="revokeRole(${uRole.id}, ${uRole.baseRole}, ${user.id}, ${project.id});">
 	        <img title="Revoke Role" src="@{'/public/images/famfam/group_delete.png'}">
