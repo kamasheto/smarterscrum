@@ -68,7 +68,7 @@ public class ProjectTasks extends SmartController {
 			if((connectedUser.in(role.project).can("revokeUserRole")))
 			{
 				user.removeRole(role, user);
-				msg="You have revoked a role successfuly, The user is no longer a member in this project|reload('roles', 'users', 'projects-in-user-'+userId, 'user-'+userId, 'project-'+projectId+'-in-user-'+userId);";
+				msg="You have revoked a role successfuly, The user is no longer a member in this project.|reload('roles', 'users', 'projects-in-user-'+userId, 'user-'+userId, 'project-'+projectId+'-in-user-'+userId);|$('#project-search-result-'+projectId).remove();";
 				String url = "@{Application.externalOpen("+role.project+", '#', false)}";
 				Notifications.notifyUser(user, "Delet", url, "you from project", role.project.name, (byte)-1, null);
 				renderText(msg);
