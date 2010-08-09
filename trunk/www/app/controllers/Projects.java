@@ -25,6 +25,7 @@ import notifiers.Notifications;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
+import play.mvc.Router;
 import play.mvc.With;
 
 @With (Secure.class)
@@ -264,7 +265,7 @@ public class Projects extends SmartCRUD {
 		t.save();
 		t.init();
 		Logs.addLog(Security.getConnected(), "Create", "TaskStatus", t.id, p, new Date(System.currentTimeMillis()));
-		String url = "#";
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+p.id+"&isOverlay=false&url=#";
 		Notifications.notifyProjectUsers(p, "addTaskStatus", url, "Task Status", t.name, (byte) 0);
 		renderJSON(t.id);
 	}
@@ -294,7 +295,7 @@ public class Projects extends SmartCRUD {
 			taskStatus.closed = true;
 		taskStatus.save();
 		Logs.addLog(Security.getConnected(), "Edit", "TaskStatus", taskStatus.id, p, new Date(System.currentTimeMillis()));
-		String url = "#";
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+p.id+"&isOverlay=false&url=#";
 		Notifications.notifyProjectUsers(p, "editTaskStatus", url, "Task Status", taskStatus.name, (byte) 0);
 		renderJSON(true);
 	}
@@ -323,7 +324,7 @@ public class Projects extends SmartCRUD {
 				taskStatus.columns.get(i).save();
 			}
 			Logs.addLog(Security.getConnected(), "Delete", "TaskStatus", taskStatus.id, taskStatus.project, new Date(System.currentTimeMillis()));
-			String url = "#";
+			String url = Router.getFullUrl("Application.externalOpen")+"?id="+taskStatus.project.id+"&isOverlay=false&url=#";
 			Notifications.notifyProjectUsers(taskStatus.project, "deleteTaskStatus", url, "Task Status", taskStatus.name, (byte) -1);
 			renderJSON(true);
 		}
@@ -592,7 +593,7 @@ public class Projects extends SmartCRUD {
 			u.save();
 			renderJSON(true);
 			Logs.addLog("User: " + Security.getConnected().name + " has deleted him/herself from project: " + project.name);
-			String url = "/show/user?id=" + u.id;
+			String url = Router.getFullUrl("Show.user")+"?id=" + u.id;
 			Notifications.notifyProjectUsers(project, "deletedFromProject", url, "himself", u.name, (byte) -1);
 
 		}
@@ -723,7 +724,7 @@ public class Projects extends SmartCRUD {
 		Project p = Project.findById(id);
 		User user = p.user;
 		p.approvalStatus = true;
-		String url = "@{Application.externalOpen(" + p.id + ", '#', false)}";
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+p.id+"&isOverlay=false&url=#";		 
 		Notifications.notifyUser(user, "Approv", url, "Project", p.name, (byte) 1, null);
 		p.save();
 		p.init();
