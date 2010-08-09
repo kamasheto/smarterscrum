@@ -392,7 +392,7 @@ $(function() {
 								$(this).children().show();
 								$(this).removeClass('draggableChild');
 								$(this).addClass('draggable');
-								load($(this).attr('name') + ' .actual', $(this).attr('id'),1);
+								load($(this).attr('name'), $(this).attr('id'),1);
 							},
 							start : function(event, ui) {
 								var id = $(this).attr('id');
@@ -411,7 +411,7 @@ $(function() {
 			'click',
 			function() {
 				if($(this).next().html()=='')
-					load($(this).parent().attr('name') + ' .actual',$(this).parent().attr('id'),3);
+					load($(this).parent().attr('name')+' .actual',$(this).parent().attr('id'),3);
 
 				$(this).next().slideToggle(400);
 
@@ -421,7 +421,7 @@ $(function() {
 			'click',
 			function() {
 				if($(this).parent().next().html()=='')
-					load($(this).parent().parent().attr('name') + ' .actual',$(this).parent().parent().attr('id'),2);
+					load($(this).parent().parent().attr('name'),$(this).parent().parent().attr('id'),2);
 					$(this).parent().next().slideToggle(400);
 					if($(this).parent().parent().hasClass('draggable'))
 					$(this).parent().next().next().toggle();
@@ -430,7 +430,7 @@ $(function() {
 		var parent = $(this).parent().parent();
 		// better? Lol
 		$(parent).find('.actual:first').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>')
-		load($(parent).attr('name')+' .actual', $(parent).attr('id'),2);
+		load($(parent).attr('name'), $(parent).attr('id'),2);
 	});
 	$('.revertFrom').live('click', function() {
 		var url = $(this).parent().parent().attr('name');
@@ -467,39 +467,29 @@ function removeFromDiv(url)
 }
 		
 function load(url, el, n) {
-	
 	$('#' + el + '_content').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>');
+	$('#'+el).append('<div id="contentTemp" style="display:none;"></div>');
 	if ($.inArray(url,myDivs) == -1 || n == 2) {
-		var pUrl = $('#'+el).attr('name');
-		if (n != 3) {
-			$('#'+el+'_header').load(pUrl+' .mainH', function(){
-									$('#'+el+'_header').html($('#'+el+'_header').find('.mainH').first().html());
-								});
-		}
-		$('#'+ el + '_content').parent().append('<div id="temp" style="display:none"></div>');
-		$('#temp').load(url, function() {
-			var t1 = $('#temp').find('.actual').first();		
-			if (n == 1) {
-			$('#'+ el + '_content').parent().append('<div class="filter"id="'+el+'_filter"></div>');
-				$('#'+ el + '_filter').load(pUrl+' .filter', function(){
-					var t2 = $('#' + el + '_filter').find('.filter').first();
-					$(t2).replaceWith($(t2).html());
-					$('#'+ el + '_filter').find('input').first().attr('name','filter_textBox_'+el);
-					$('#'+el+'_content').html($(t1).html());
-					magic(el);
-					$('#' + el + '_content').slideDown(400);
-				});
-			}
-			else 
+		$('#contentTemp').load(url, function(){
+			if (n != 3) 
+				$('#'+el+'_header').html($('#contentTemp').find('.ui-widget-header').first().html());
+			$('#'+el+'_content').html($('#contentTemp').find('.actual').first().html());
+			if (n == 1) 
 			{
-				$('#'+el+'_content').html($(t1).html());
-				magic(el);
-				$('#' + el + '_content').slideDown(400);
+				$('#'+ el + '_content').parent().append('<div class="filter"id="'+el+'_filter"></div>');
+				$('#'+ el + '_filter').html($('#contentTemp').find('.filter').first().html());
+				$('#'+ el + '_filter').find('input').first().attr('name','filter_textBox_'+el);
 			}
+			if(n==3)
+				magic(el);
+			$('#contentTemp').remove();
+			$('#' + el + '_content').slideDown(400);
 		});
 	}
 	if(n==1)	
+	{	
 		myDivs.push(url);
+	}
 }
 
 // CURRENT_OFFSET = 10
@@ -518,7 +508,6 @@ function loadBox(url, el, classes)
 		element.find('.bar').first().remove();
 		element.find('.actual').first().show();
 		element.replaceWith(element.html());
-		doOnLoad()
 		myDivs.push(url);
 	});
 	}
@@ -526,8 +515,8 @@ function loadBox(url, el, classes)
 
 function magic(id) {
 	doOnLoad();
-	smart_pagination(''+id,1);
-	hideFilterLinks(''+id);
+	smart_pagination(id,1);
+	hideFilterLinks(id);
 	$("#" + id + "_content div[name]").each(
 	function() 
 	{
