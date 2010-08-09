@@ -709,7 +709,7 @@ function reload() {
 				return
 			}
 			div.find('.actual:first').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>')
-			load(url + ' .actual', div.attr('id'), 2)	
+			load(url, div.attr('id'), 2)	
 		})
 	}
 }
