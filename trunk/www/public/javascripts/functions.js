@@ -189,6 +189,10 @@ function revokeRole(roleId, baseRole, userId, projectId)
 			      {
 			    	  eval(arr[1]);
 			      }
+			      if (arr.length > 2 && arr[2]) 
+			      {
+			    	  eval(arr[2]);
+			      }
 			    });
 	};
 }
