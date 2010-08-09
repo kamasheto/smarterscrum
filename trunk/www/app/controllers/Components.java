@@ -192,7 +192,6 @@ public class Components extends SmartCRUD {
 		notFoundIfNull(project);
 		List<Component> components = new ArrayList<Component>();
 		for (Component c : project.components) {
-			System.out.println(c.number);
 			if (c.deleted == false)
 				components.add(c);
 		}

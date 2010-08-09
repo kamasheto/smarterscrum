@@ -107,6 +107,7 @@ public class Users extends SmartCRUD {
 			if(component.number==0 && myUser.components.contains(component)){
 				myUser.components.remove(component);
 				component.componentUsers.remove(myUser);
+				System.out.println("here");
 			}
 		}
 		Date d = new Date();
