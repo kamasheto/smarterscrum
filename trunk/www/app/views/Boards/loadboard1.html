@@ -116,16 +116,16 @@ REDIPS.drag.init()
 </select>
 
 <div id="drag">
-<table id="mainBoard" class="draggable"  border="1">
+<table id="mainBoard" class="draggable" style="" border="1">
 
 <tr> <!-- headers row -->					
-	<td>Headers</td>
+	<td width="50px">Headers</td>
 	
 	<!-- set flag based on logged in user -->
 	#{set count=0}
 	#{/set}
 	#{list items:columnsOfBoard, as:'col'}	
-	<td style="text-align:center;" class="col_${count}"> 	
+	<td width="50px" style="text-align:center;" class="col_${count}"> 	
 		#{if connected.in(p).can('renameColumns')}<!-- if admin -->
 		<div style="font-size:small;display:inline-block;width:3cm" class="${col.name} editCOL ccolumn" id="${col.id}" title="Edit the column name?">${col.name}</div>
 		#{/if}
@@ -153,22 +153,22 @@ REDIPS.drag.init()
 #{list items:data, as:'component'}  
 #{if component!=null} 
 <tr id="com-${component.id}_hidden" style="display:none;" > <!-- empty rows of the board -->
-	<td>Click here to toggle</td>
+	<td width="50px">Click here to toggle</td>
 	#{set count=0}
 	#{/set}
 	#{list items:columnsOfBoard, as:'col'}
-	<td class="col_${count}"></td> <!-- creating empty cells in each row based on number default columns (onBoard=true) -->
+	<td width="50px" class="col_${count}"></td> <!-- creating empty cells in each row based on number default columns (onBoard=true) -->
 	#{set count=count+1}
 	#{/set}
 	#{/list}
 </tr>
 
 <tr id="com-${component.id}" style="height:100px"> <!-- filling rows with data -->
-	<td id="com-${component.id}" onclick="component(this.id);">${component.title}</td> <!-- 1st cell in each row with component name -->
+	<td width="50px" id="com-${component.id}" onclick="component(this.id);">${component.title}</td> <!-- 1st cell in each row with component name -->
 	#{set count=0}
 	#{/set}
 	#{list items:component, as:'col'}
-	<td class="col_${count}" style="max-width:5000px">  <!--filling cells in each row with tasks -->
+	<td width="50px" class="col_${count}" >  <!--filling cells in each row with tasks -->
 		#{set count=count+1}
 		#{/set}
 		#{list items:col, as:'task'}
@@ -179,13 +179,13 @@ REDIPS.drag.init()
 		#{else}
 		<div style="float:left" id="task-${task.id}_T" class="nostatus nostatus_${task.id}">
 		#{/else}
-		<a id="task-${task.id}_hidden" style="display:none; font-size:large;cursor: pointer !important;text-decoration:none" onclick="showtask(this.id);">+</a>
+		<a id="task-${task.id}_hidden" style="display:none; font-size:large;cursor: pointer !important;text-decoration:none" onclick="showtask(this.id);"><img title="hide?" src="@{'/public/images/famfam/bullet_toggle_plus.png'}"></img></a>
 		<div id="task-${task.id}_TT">
 		<p>		
-		<div class="${task.taskStatus.columns[0].name}" style="max-width:130px"></div>  
-		<div style="max-width:130px" class="status status_${task.id}">
-		<div class="small_${task.id} shadowed" style="-moz-border-radius:10px; border-radius:10px; background-color:${task.taskType.hexColor}; max-width:110px; border:0px; "  id="${task.id}_small">
-		<a id="task-${task.id}" onclick="ctask(this.id);" style="font-size:x-large;cursor: pointer !important;border=0px; text-decoration:none">-</a> 
+		<div class="${task.taskStatus.columns[0].name}"></div>  
+		<div class="status status_${task.id}">
+		<div class="small_${task.id} shadowed" style="-moz-border-radius:10px; border-radius:10px; background-color:${task.taskType.hexColor}; border:0px; "  id="${task.id}_small">
+		<a id="task-${task.id}" onclick="ctask(this.id);" style="cursor:pointer !important;border=0px; float:right;"><img title="hide?" src="@{'/public/images/famfam/bullet_toggle_minus.png'}"></img></a> 
 		<div id="desc_${task.id}">${task.description}</div>
 		<a onclick="SmallSticky(this.id)" title="Edit task info?"  style="cursor: pointer !important" id="${task.id}_button">more info..</a>
 		</div>
@@ -195,7 +195,7 @@ REDIPS.drag.init()
 		
 		<!-- big sticky note -->						
 		<div class="large_${task.id}" id="${task.id}Large" style="display:none;border:hidden">
-		<div style="max-width:165px" id="tas-${task.id}_" >
+		<div id="tas-${task.id}_" >
 		<p style="float:left"> 
 		<div class="shadowed" style="-moz-border-radius:15px; background-color:${task.taskType.hexColor};border-radius:15px; border:0px" id="tas-${task.id}_T">
 		<div  style="border=0px" align="center"></div>
