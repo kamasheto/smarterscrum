@@ -14,6 +14,7 @@ import models.User;
 import play.data.validation.Email;
 import play.data.validation.Required;
 import play.data.validation.Validation;
+import play.mvc.Router;
 import play.mvc.With;
 
 /**
@@ -220,7 +221,7 @@ public class Application extends SmartController
 			user.isActivated = false;
 			user.save();
 			session.put( "username", email );			
-			String url = "http://localhost:9000/accounts/doActivation?hash=" + user.activationHash;
+			String url = Router.getFullUrl("Accounts.doActivation")+"?hash=" + user.activationHash;
 			Notifications.activate(user.email, user.name, url, true);			
 			flash.success( "Successfully saved your data! , please check your new Email and follow the instructions sent by us to confirm your new Email." );
 			profile( id );
