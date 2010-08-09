@@ -26,31 +26,31 @@ REDIPS.drag.init()
 <h1>${comp.name}'s Task Board</h1>
 #{/else}
 
-<a href="#" id="ToggleBoard-open" onclick="ToggleBoardOpen();" title="toggle" class="tiptitize" style="display:none"><img src="@{'/public/images/famfam/show.bmp'}"></a>
-<a href="#" id="ToggleBoard-close" onclick="ToggleBoardClose()" title="toggle" class="tiptitize"><img src="@{'/public/images/famfam/hide.png'}"></a>
+<a href="#" id="ToggleBoard-open" onclick="ToggleBoardOpen();" title="toggle" style="display:none"><img src="@{'/public/images/famfam/show.bmp'}"></a>
+<a href="#" id="ToggleBoard-close" onclick="ToggleBoardClose()" title="toggle"><img src="@{'/public/images/famfam/hide.png'}"></a>
 
 #{set count=0}
 #{/set}
 
 #{if comp==null}
-<a title="view snapshots" class="tiptitize" href="javascript:popUp('/Snapshots/boardsnapshots?sid=${s.id}&pid=${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
-<a title="take a snapshot" class="tiptitize" href="javascript:take_snapshot(${s.id})"><img src="@{'/public/images/famfam/camera_add.png'}"></a>
+<a title="view snapshots" href="javascript:popUp('/Snapshots/boardsnapshots?sid=${s.id}&pid=${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+<a title="take a snapshot" href="javascript:take_snapshot(${s.id})"><img src="@{'/public/images/famfam/camera_add.png'}"></a>
 #{/if}
 #{else}
-<a title="view snapshots" class="tiptitize" href="javascript:popUp('/Snapshots/boardsnapshots?sid=${s.id}&cid=${comp.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
-<a title="take a snapshot" class="tiptitize" href="javascript:take_snap(${comp.id},${s.id})"><img src="@{'/public/images/famfam/camera_add.png'}"></a>
+<a title="view snapshots" href="javascript:popUp('/Snapshots/boardsnapshots?sid=${s.id}&cid=${comp.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+<a title="take a snapshot" href="javascript:take_snap(${comp.id},${s.id})"><img src="@{'/public/images/famfam/camera_add.png'}"></a>
 #{/else}
 
-<a href="#;" class="tiptitize" onclick="$('#changeCol').slideToggle(400)" title="view hidden columns" type="button" ><img src="@{'/public/images/famfam/application_view_columns.png'}"></a>
+<a href="#;" onclick="$('#changeCol').slideToggle(400)" title="view hidden columns" type="button" ><img src="@{'/public/images/famfam/application_view_columns.png'}"></a>
 
 
 <!-- view hidden Col by Hadeer -->
 #{if connected.in(p).can('ShowColumn')}
 #{if hidencolumnsOfBoard.isEmpty()}
-<a class="tiptitize dim" title="all columns are added" type="button"><img src="@{'/public/images/famfam/add.png'}"></a>
+<a class="dim" title="all columns are added" type="button"><img src="@{'/public/images/famfam/add.png'}"></a>
 #{/if}
 #{else}
-<a href="#;" class="tiptitize" onclick="$('#b1').slideToggle()" title="add column?" type="button"><img src="@{'/public/images/famfam/add.png'}"></a>
+<a href="#;" onclick="$('#b1').slideToggle()" title="add column?" type="button"><img src="@{'/public/images/famfam/add.png'}"></a>
 #{/else}
 #{/if}
 
@@ -59,18 +59,18 @@ REDIPS.drag.init()
 <!-- hide Col by Hadeer -->
 #{if connected.in(p).can('HideColumn')}
 #{if columnsOfBoard.isEmpty()}
-<a class="tiptitize dim" title="all columns deleted" type="button"><img src="@{'/public/images/famfam/delete.png'}"></a>
+<a class="dim" title="all columns deleted" type="button"><img src="@{'/public/images/famfam/delete.png'}"></a>
 #{/if}
 #{else}
-<a href="#;" class="tiptitize" onclick="$('#b2').slideToggle(400)" title="delete column?" type="button" ><img src="@{'/public/images/famfam/delete.png'}"></a>
+<a href="#;" onclick="$('#b2').slideToggle(400)" title="delete column?" type="button" ><img src="@{'/public/images/famfam/delete.png'}"></a>
 #{/else}
 #{/if}
 
 #{if comp==null}
-<a title="Meetings" class="tiptitize" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}')"><img src="@{'/public/images/famfam/date.png'}"></a>
+<a title="Meetings" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}')"><img src="@{'/public/images/famfam/date.png'}"></a>
 #{/if}
 #{else}
-<a title="Meetings" class="tiptitize" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}&cid=${comp.id}')"><img src="@{'/public/images/famfam/date.png'}"></a>
+<a title="Meetings" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}&cid=${comp.id}')"><img src="@{'/public/images/famfam/date.png'}"></a>
 #{/else}
 
 <br/>
@@ -141,7 +141,7 @@ REDIPS.drag.init()
 		<span style="display:inline-block" class="ui-icon ui-icon-arrow-4 "></span>
 		</span></a>
 		<a style="color:#FFFFFF"><span style="list:none;padding:1px 1px 1px 1px;display:inline-block" class="ui-state-default ui-corner-all ">
-		<span onclick="myhidecol(id)" title="hide column?" id="${count}" style="display:inline-block !important"class="tiptitize"><img src="@{'/public/images/famfam/toggle-open.gif'}"></span>
+		<span onclick="myhidecol(id)" title="hide column?" id="${count}" style="display:inline-block !important"><img src="@{'/public/images/famfam/toggle-open.gif'}"></span>
 		</span></a>
 		#{set count=count+1}
 		#{/set}
@@ -187,7 +187,7 @@ REDIPS.drag.init()
 		<div class="small_${task.id} shadowed tiptipize" style="background-color:${task.taskType.hexColor};border-radius: 10px; max-width:110px;border=0px"  id="${task.id}_small">
 		<a id="task-${task.id}" onclick="ctask(this.id);" style="font-size:x-large;cursor: pointer !important;border=0px; text-decoration:none">-</a> 
 		<div id="desc_${task.id}">${task.description}</div>
-		<a class="tiptitize" onclick="SmallSticky(this.id)" title="Edit task info?"  style="cursor: pointer !important" id="${task.id}_button">more info..</a>
+		<a onclick="SmallSticky(this.id)" title="Edit task info?"  style="cursor: pointer !important" id="${task.id}_button">more info..</a>
 		</div>
 		</div>
 		</p>
@@ -212,12 +212,12 @@ REDIPS.drag.init()
 		
 		#{if comp==null}
 		#{if connected.in(p).can('changeAssignee')} <!-- if has permission (edit assignee) -->
-		<div><a title="Change Assignee?" value="dddd" class="hidesassi tiptitize" id="usr_${task.id}" href="javascript:popUp('/Tasks/chooseTaskAssi?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
+		<div><a title="Change Assignee?" value="dddd" class="hidesassi" id="usr_${task.id}" href="javascript:popUp('/Tasks/chooseTaskAssi?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Assignee:${task.assignee}</a></div>
 		<div id="usrs_${task.id}" class="showdesc" style="display:none">Assignee:${task.assignee}</div>	
 		#{/if}
 		#{else} <!-- if doesn't have permission (edit assignee) -->
-		<div><a title="Change Assignee?" style="display:none" class="hidesassi tiptitize" id="usr_${task.id}" HREF="javascript:popUp('/Tasks/chooseTaskAssi?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
+		<div><a title="Change Assignee?" style="display:none" class="hidesassi" id="usr_${task.id}" HREF="javascript:popUp('/Tasks/chooseTaskAssi?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Assignee:${task.assignee}</a></div>
 		<div id="usrs_${task.id}" class="showdesc">Assignee:${task.assignee}</div>
 		#{/else}
@@ -225,38 +225,38 @@ REDIPS.drag.init()
 		
 		#{if connected.in(p).can('changeReviewer')} <!-- if has permission (edit reviewer) -->
 		#{if comp==null}
-		<div><a id="rev_${task.id}" title="Change Reviewer?" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
+		<div><a id="rev_${task.id}" title="Change Reviewer?" class="hidesrev"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Reviewer:${task.reviewer}</a></div>
 		#{/if}
 		#{else}
-		<div><a id="rev_${task.id}" title="Change Reviewer?" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${comp.id}&userId='+selectedUser)">
+		<div><a id="rev_${task.id}" title="Change Reviewer?" class="hidesrev"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${comp.id}&userId='+selectedUser)">
 		Reviewer:${task.reviewer}</a></div>
 		#{/else}
 		<div id="revs_${task.id}" class="showrev" style="display:none">Reviewer:${task.reviewer}</div>
 		#{/if}
 		#{else} <!-- if doesn't have permission (edit reviewer) -->
 		#{if comp==null}
-		<div><a id="rev_${task.id}" title="Change Reviewer?" style="display:none" id="rev_${task.id}" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
+		<div><a id="rev_${task.id}" title="Change Reviewer?" style="display:none" id="rev_${task.id}" class="hidesrev"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
 		Reviewer:${task.reviewer}</a></div>
 		#{/if}
 		#{else}
-		<div><a id="rev_${task.id}" title="Change Reviewer?" style="display:none" id="rev_${task.id}" class="hidesrev tiptitize"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${comp.id}&userId='+selectedUser)">
+		<div><a id="rev_${task.id}" title="Change Reviewer?" style="display:none" id="rev_${task.id}" class="hidesrev"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${comp.id}&userId='+selectedUser)">
 		Reviewer:${task.reviewer}</a></div>
 		#{/else}
 		<div id="revs_${task.id}" class="showrev">Reviewer:${task.reviewer}</div>
 		#{/else}
 		
 		#{if connected.in(p).can('changeTaskType') || connected.equals(task.assignee)} <!-- if has permission (type) or assignee -->
-		<div><a id="type_${task.id}" title="Edit type?" class="tiptitize hidestype shows_${task.assignee.id}" HREF="javascript:popUp('/Tasks/chooseType?taskId=${task.id}&userId='+selectedUser)">
+		<div><a id="type_${task.id}" title="Edit type?" class="hidestype shows_${task.assignee.id}" HREF="javascript:popUp('/Tasks/chooseType?taskId=${task.id}&userId='+selectedUser)">
 		Type:${task.taskType.name}</a></div>
 		<div id="types_${task.id}" style="display:none" class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${task.taskType.name}</div>
 		#{/if}
 		#{else} <!-- if doesn't have have permission (type) nor assignee -->
-		<div><a title="Edit type?" style="display:none" id="type_${task.id}" class="tiptitize hidestype shows_${task.assignee.id}" HREF="javascript:popUp('/Tasks/chooseType?taskId=${task.id}&userId='+selectedUser)">
+		<div><a title="Edit type?" style="display:none" id="type_${task.id}" class="hidestype shows_${task.assignee.id}" HREF="javascript:popUp('/Tasks/chooseType?taskId=${task.id}&userId='+selectedUser)">
 		Type:${task.taskType.name}</a></div>
 		<div id="types_${task.id}" class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${task.taskType.name}</div>
 		#{/else}
-		<a href="#" id="${task.id}-done" title="Done Editing?" onclick="done(this.id)" class="tiptitize">Done</a>
+		<a href="#" id="${task.id}-done" title="Done Editing?" onclick="done(this.id)">Done</a>
 		</div>
 		</p>	
 		</div>
@@ -412,8 +412,6 @@ function ctask(id)
 		    return(value);
     	   },{indicator : 'Saving...',});});
 	
-	$('.tiptipize').live('mouseover',function(){$(this).tipTip({delay:0});});
-
 	/**
 	 * swapping with clicking instead of drag and drop.
 	 * 
