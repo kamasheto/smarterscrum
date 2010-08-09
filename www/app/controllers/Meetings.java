@@ -17,6 +17,7 @@ import notifiers.Notifications;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
+import play.mvc.Router;
 import play.mvc.With;
 
 /**
@@ -112,7 +113,7 @@ public class Meetings extends SmartCRUD
 		Logs.addLog( Security.getConnected(), "Ended", "Meeting", M.id, M.project, new Date( System.currentTimeMillis() ) );
 		for( int i = 0; i < attendees.size(); i++ )
 		{
-			String url = "/application/externalopen?id="+M.project.id+"&isOverlay=false&url=/meetings/viewMeetings?id="+M.id;			
+			String url = Router.getFullUrl("Application.externalOpen")+"?id="+M.project.id+"&isOverlay=false&url=/meetings/viewMeetings?id="+M.id;			
 			Notifications.notifyUser( attendees.get( i ).user, "End", url, "Meeting", M.name, (byte) 0, M.project );
 		}
 	}
@@ -543,7 +544,7 @@ public class Meetings extends SmartCRUD
 			meeting.status = false;
 			if( users.isEmpty() == false )
 				{
-					message = "/application/externalopen?id="+meeting.project.id+"&isOverlay=false&url=/meetings/viewMeetings?id="+meeting.project.id;					
+					message = Router.getFullUrl("Application.externalOpen")+"?id="+meeting.project.id+"&isOverlay=false&url=/meetings/viewMeetings?id="+meeting.project.id;					
 					Notifications.notifyUsers(users, "Cancel", message, "Meeting", meeting.name, (byte) -1, meeting.project);
 				}
 			
@@ -582,7 +583,7 @@ public class Meetings extends SmartCRUD
 				String meetingHash = attendance.meetingHash;
 				String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
 				String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;				
-				String meetingURL = "/application/externalopen?id="+attendance.meeting.project.id+"&isOverlay=false&url=/meetings/viewMeeting?id="+attendance.meeting.id;
+				String meetingURL = Router.getFullUrl("Application.externalOpen")+"?id="+attendance.meeting.project.id+"&isOverlay=false&url=/meetings/viewMeeting?id="+attendance.meeting.id;
 				Notifications.invite( invitedUser, meetingURL, attendance.meeting.name, confirmURL, declineURL, attendance.meeting.project, true);
 				if( !invitedUser.equals( Security.getConnected() ) )
 				{
@@ -756,7 +757,7 @@ public class Meetings extends SmartCRUD
 		}
 		if( users.isEmpty() == false )
 		{
-			String url = "/application/externalopen?id="+meeting.project.id+"&isOverlay=false&url=/meetings/viewMeeting?id="+meeting.id;			
+			String url = Router.getFullUrl("Application.externalOpen")+"?id="+meeting.project.id+"&isOverlay=false&url=/meetings/viewMeeting?id="+meeting.id;			
 			Notifications.notifyUsers( users, "Modifi", url, "the meeting", meeting.name, (byte) 0, meeting.project );
 			flag = true;
 		}

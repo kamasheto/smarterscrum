@@ -10,6 +10,7 @@ import models.Meeting;
 import models.MeetingAttendance;
 import models.Project;
 import models.User;
+import play.mvc.Router;
 import play.mvc.With;
 
 @With (Secure.class)
@@ -103,7 +104,7 @@ public class MeetingAttendances extends SmartController {
 				while (attendees.isEmpty() == false) {
 					users.add(attendees.remove(0).user);
 				}
-				String url = "/application/externalopen?id="+attendance.meeting.project.id+"&isOverlay=false&url=/meetings/viewMeetings?id="+attendance.meeting.project.id;								
+				String url = Router.getFullUrl("Application.externalOpen")+"?id="+attendance.meeting.project.id+"&isOverlay=false&url=/meetings/viewMeetings?id="+attendance.meeting.project.id;								
 				Notifications.notifyUsers(users, "Cancel", url, "Meeting", attendance.meeting.name,(byte) -1, attendance.meeting.project);
 			}
 
@@ -187,7 +188,7 @@ public class MeetingAttendances extends SmartController {
 		ma.status = "confirmed";
 		ma.reason = "";
 		ma.save();		
-		String url = "/application/externalopen?id="+ma.meeting.project.id+"&isOverlay=false&url=/meetings/viewAttendeeStatus?id="+ma.meeting.project.id;		
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+ma.meeting.project.id+"&isOverlay=false&url=/meetings/viewAttendeeStatus?id="+ma.meeting.project.id;		
 		Notifications.notifyUser(ma.user, "Confirm", url, "Meeting Attendence", ma.meeting.name,(byte) 1, ma.meeting.project);
 	}
 
@@ -208,7 +209,7 @@ public class MeetingAttendances extends SmartController {
 		ma.status = "declined";
 		ma.reason = reason;
 		ma.save();		
-		String url = "/application/externalopen?id="+ma.meeting.project.id+"&isOverlay=false&url=/meetings/viewAttendeeStatus?id="+ma.id;		
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+ma.meeting.project.id+"&isOverlay=false&url=/meetings/viewAttendeeStatus?id="+ma.id;		
 		Notifications.notifyUser(ma.user, "declin", url, "Meeting Attendence", ma.meeting.name,(byte) -1, ma.meeting.project);		
 	}
 	/**
