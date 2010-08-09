@@ -35,11 +35,6 @@ public class Board extends SmartModel {
 	public Component component;
 
 	/***
-	 * board name
-	 */
-	public String name;
-	
-	/***
 	 * a flag that determines whether the board is deleted or not
 	 */
 	public boolean deleted;
