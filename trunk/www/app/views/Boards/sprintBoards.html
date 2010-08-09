@@ -4,48 +4,55 @@ Sprint ${s.sprintNumber} Boards
 #{/set}
 
 #{if s.ended==false }
-#{if p.components.size()>1}
-<div class="overlay" name="/boards/loadboard1?sprintID=${sprintID}">
-${p.name}'s Task Board
-<a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
-</div>
-#{list boards, as:'board'}
-#{if board.component.number != 0}
-<div class="overlay" name="/boards/loadboard1?sprintID=${sprintID}&componentID=${board.component.id}">
-${board.component.name}'s Task Board
-<a onClick="loadBox('/Snapshots/index?sid=${sprintID}&cid=${board.component.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
-</div>
-#{/if}
-#{/list}
-#{/if}
-#{else}
-<div class="overlay" name="/boards/loadboard1?sprintID=${sprintID}&componentID=${p.components[0].id}">
-${p.name}'s Task Board
-<a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
-</div>
-#{/else}
+	#{if p.components.size()>1}
+		<div class="overlay" name="/boards/loadboard1?sprintID=${sprintID}">
+		${p.name}'s Task Board
+		<a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+		</div>
+		#{list boards, as:'board'}
+			#{if board.component.number != 0}
+				<div class="overlay" name="/boards/loadboard1?sprintID=${sprintID}&componentID=${board.component.id}">
+				${board.component.name}'s Task Board
+				<a onClick="loadBox('/Snapshots/index?sid=${sprintID}&cid=${board.component.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+				</div>
+			#{/if}
+		#{/list}
+	#{/if}
+	#{else}
+		<div class="overlay" name="/boards/loadboard1?sprintID=${sprintID}&componentID=${p.components[0].id}">
+		${p.name}'s Task Board
+		<a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+		</div>
+	#{/else}
 #{/if}
 
 #{else}
-#{if p.components.size()>1}
-<div class="overlay" name="/Snapshots/loadsnapShot?id=${s.finalsnapshot.id}">
-${p.name}'s Final Snapshot
-<a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
-</div>
-#{list components, as:'component'}
-#{if component.number!=0 }
-#{list component.snapshots, as:'snapshot'}
-#{if s.id==snapshot.sprint.id }
-
-<div class="overlay" name="/Snapshots/loadsnapShot?id=${snapshot.id}">
-${component.name}'s Final Snapshot<a  onClick="loadBox('/Snapshots/index?sid=${s.id}&cid=${component.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
-</div>
-#{/if}
-#{/list}
-#{/if}
-#{/list}
-#{/if}
-#{else}
-
-#{/else}
+	#{if p.components.size()>1}
+		<div class="overlay" name="/Snapshots/loadsnapShot?id=${s.finalsnapshot.id}">
+		${p.name}'s Final Snapshot
+		<a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+		</div>
+		#{list components, as:'component'}
+			#{if component.number!=0 }
+				#{list component.snapshots, as:'snapshot'}
+					#{if s.id==snapshot.sprint.id }
+						<div class="overlay" name="/Snapshots/loadsnapShot?id=${snapshot.id}">
+						${component.name}'s Final Snapshot
+						<a onClick="loadBox('/Snapshots/index?sid=${s.id}&cid=${component.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+						</div>
+					#{/if}
+				#{/list}
+			#{/if}
+		#{/list}
+	#{/if}
+	#{else}
+		#{list p.components[0].snapshots, as:'snapshot'}
+			#{if s.id==snapshot.sprint.id }
+				<div class="overlay" name="/Snapshots/loadsnapShot?id=${snapshot.id}">
+				${p.name}'s Final Snapshot
+				<a onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+				</div>
+			#{/if}
+		#{/list}
+	#{/else}
 #{/else}
