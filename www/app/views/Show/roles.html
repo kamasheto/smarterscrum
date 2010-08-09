@@ -32,5 +32,12 @@
 	  </a>
 	#{/elseif}
 	</div>
-	${role.name}</div>
+	#{if !role.baseRole} 
+        ${role.name}  
+    #{/if} 
+      
+    #{else} 
+        <span title="Base Role"> <i>${role.name}</i> </span> 
+    #{/else}
+	</div>
 #{/list}
