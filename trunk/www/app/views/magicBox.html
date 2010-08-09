@@ -37,8 +37,8 @@ $(function(){
 		<tr>
 		<td><input style="width:100%" name="filter_textBox_#{get 'id' /}" type="text" onkeyup="filter_me(this);"></td>
 		<td style="width:60px">
-		<a href="#"  style="display:inline-block" class="normalLinkp" onclick="page--;previousPage(this,page);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
-		<a href="#"  style="display:inline-block" class="filterLinkp" href="" onclick="filter_page--;previousFilterPage(this);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
+		<a href="#"  style="display:inline-block" class="normalLinkp" onclick="previousPage(this);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
+		<a href="#"  style="display:inline-block" class="filterLinkp" href="" onclick="previousFilterPage(this);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
 		<span class="numPages">Error</span>
 		<a href="#"  style="display:inline-block" class="normalLinkn" onclick="nextPage(this);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>	
 		<a href="#"  style="display:inline-block" class="filterLinkn" href="#" onclick="nextFilterPage(this);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
