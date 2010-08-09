@@ -6,6 +6,9 @@ import java.util.List;
 import models.Project;
 import models.User;
 
+import play.mvc.With;
+
+@With(Secure.class)
 public class Ajax extends SmartController
 {
 	/**
@@ -70,5 +73,62 @@ public class Ajax extends SmartController
 			result.add( new User.Object( u.id, u.name ) );
 		}
 		renderJSON( result );
+	}
+	
+	
+
+	/**
+	 * This action handles all drops caused by dragging and dropping items on
+	 * workspaces.
+	 * 
+	 * @author mahmoudsakr
+	 */
+	public static void dynamicDrop(String from, String to) {
+		String[] arr = from.split("-"); // meeting-1
+		String[] arr2 = to.split("-"); // user-3
+
+		from = arr[0].toLowerCase();
+		to = arr2[0].toLowerCase();
+		
+		// id = from's id
+		// id2 = to's id
+		long id = Long.parseLong(arr[1]), id2 = Long.parseLong(arr2[1]);
+
+		if (from.equals("user") && to.equals("component")) {
+			// inviting user id to component id2
+			Users.chooseUsers(id2, id);
+		} else if (from.equals("task") && to.equals("component")) {
+			// associating task to component
+			Tasks.associateToComponent(id, id2);
+		} else if (from.equals("task") && to.equals("meeting")) {
+			// associate task to meeting
+			Meetings.addTask(id2, id);
+		} else if (from.equals("user") && to.equals("meeting")) {
+			// inviting user to a meeting (Amr Hany)
+			Meetings.inviteUser(id2, id);
+		} else if (from.equals("component") && to.equals("meeting")) {
+			// inviting component to a meeting (Amr Hany)
+			Meetings.inviteComponent(id2, id);
+		}else if( from.equals("task") && to.equals( "user" ) )
+		{
+			Tasks.assignTaskAssignee(id,id2);
+		}
+		else if  (from.equals("user") && to.equals( "task" ) )
+		{
+			Tasks.assignTaskReviewer(id2, id);
+		}
+		else if  (from.equals("task") && to.equals( "sprint" ) )
+		{
+			Sprints.addTask(id, id2);
+		}
+		else if  (from.equals("task") && to.equals( "task" ) )
+		{
+			Tasks.setDependency(id, id2);
+		} else if (from.equals("projectusers") && to.equals("meeting")) {
+			Meetings.inviteAllMembers(id2);
+		} else {
+			
+			renderText("Something went wrong. Please try again. " + from + id + ", " + to + id2);
+		}
 	}
 }

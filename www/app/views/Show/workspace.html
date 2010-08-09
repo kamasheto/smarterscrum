@@ -21,6 +21,7 @@
 #{set activity: proj.activity() /}
 <a href="#" onclick="loadBox('@{Projects.settings(proj.id)}','workspace-${proj.id}')">Settings</a> 
 <span class="activity-level activity-level-${activity}" title="Activity level: ${activity}/10"> </span>
+<a href="#" onclick="loadBox('/helptopics/topics?projectId=${proj.id}', 'workspace-${proj.id}')">Help</a>
 <a class="right " href="#" onclick="closeWindows(${proj.id});" title="Close all windows">Close all windows</a>
 </div>
 

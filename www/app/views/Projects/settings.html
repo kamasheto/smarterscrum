@@ -2,9 +2,6 @@
 #{set 'title'}Settings#{/set}
 <div name="/components/listComponentsInProject?projectId=${project.id}" class="reload-components">Components</div>
 <div name="/show/roles?id=${project.id}" class="reload-roles project-${project.id}-in-user-${connected.id}">Roles</div>
-#{if connected.projects.contains(project)}
-	<div name="/show/listTaskTypesInProject?projectId=${project.id}" class="reload-reviewer-requests">Request reviewing</div>
-#{/if}
 #{if connected.in(project).can('manageRequests')}
 	<div name="/projects/requestrespond?id=${project.id}" class="reload-project-requests">Requests</div>
 #{/if}

@@ -107,11 +107,10 @@ public class Users extends SmartCRUD {
 			if(component.number==0 && myUser.components.contains(component)){
 				myUser.components.remove(component);
 				component.componentUsers.remove(myUser);
-				System.out.println("here");
+				// System.out.println("here");
 			}
 		}
 		Date d = new Date();
-		// User user = User.find("byEmail", Security.connected()).first();
 		User user = Security.getConnected();
 		Logs.addLog(user, "assignUser", "User", UId, myComponent.project, d);
 		//Notifications.notifyUsers(myUser, "Assigned to a component", "You were assigned to the component " + myComponent.name + " in the project " + myComponent.project.name, (byte) 0);
