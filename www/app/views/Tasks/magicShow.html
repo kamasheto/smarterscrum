@@ -1,5 +1,6 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}${title} #{if tasks!=null && !mine && connected.in(projectId).can('addTask')}<a href="javascript:overlayOpen('/admin/tasks/new?projectId=${params.get("projectId")}')"><img title = "Add" src="@{'/public/images/famfam/add.png'}"></a>#{/if}
+#{set 'title'}${title} #{if project && connected.in(projectId).can('addTask') }<a href="javascript:overlayOpen('/admin/tasks/new?projectId=${params.get("projectId")}')"><img title = "Add" src="@{'/public/images/famfam/add.png'}"></a>#{/if}
+#{if componentId!=0 && connected.in(projectId).can('addTask') }<a href="javascript:overlayOpen('/admin/tasks/new?componentId=${params.get("componentId")}')"><img title = "Add" src="@{'/public/images/famfam/add.png'}"></a>#{/if}
 #{if mine}
 	<a onclick="loadBox('/tasks/magicShow?projectId=${projectId}','workspace-${projectId}', 'reload-tasks')"><img src="@{'/public/images/famfam/application_cascade.png'}" title="All tasks?"></a>
 #{/if}
