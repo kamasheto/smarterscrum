@@ -2014,7 +2014,8 @@ System.out.println(Security.getConnected().components);
 				}
 				
 			}
-			render(tasks, title, mine, projectId, componentId);
+			boolean isComponent = true;
+			render(tasks, title, mine, projectId, isComponent);
 		} else {
 			if (taskId != 0) {
 				Task task = Task.findById(taskId);
@@ -2059,7 +2060,8 @@ System.out.println(Security.getConnected().components);
 						title = "Project Tasks";
 						Project project = Project.findById(projectId);
 						List<Task> tasks = Task.find("byProjectAndDeletedAndParentIsNull", project, false).fetch();
-						render(tasks, title, mine, projectId);
+						boolean isProject = true;
+						render(tasks, title, mine, projectId, isProject);
 					} else {
 						if (meetingId != 0) {
 							Meeting meeting = Meeting.findById(meetingId);
@@ -2071,8 +2073,8 @@ System.out.println(Security.getConnected().components);
 							}
 
 							title = "Meetings Tasks";
-							boolean project = true;
-							render(title, tasks, projectId, project);
+							
+							render(title, tasks, projectId);
 						}
 					}
 				}
