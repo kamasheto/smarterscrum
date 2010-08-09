@@ -8,11 +8,11 @@
 	#{/if}
 	
 	#{list items:confirmed, as:'attendance'}
-	<div name="/Meetings/viewAttendeeStatus?id=${attendance.id}">${attendance.user.name}</div>
+	<div class="greenBg" name="/Meetings/viewAttendeeStatus?id=${attendance.id}">${attendance.user.name}</div>
 	#{/list}
 	#{list items:waiting, as:'attendance'}
-	<div name="/Meetings/viewAttendeeStatus?id=${attendance.id}">${attendance.user.name}</div>
+	<div class="yellowBg" name="/Meetings/viewAttendeeStatus?id=${attendance.id}">${attendance.user.name}</div>
 	#{/list}
 	#{list items:declined, as:'attendance'}
-	<div name="/Meetings/viewAttendeeStatus?id=${attendance.id}">${attendance.user.name}</div>
+	<div class="redBg" name="/Meetings/viewAttendeeStatus?id=${attendance.id}">${attendance.user.name}</div>
 	#{/list}
