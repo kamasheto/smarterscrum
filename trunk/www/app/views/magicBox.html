@@ -1,6 +1,5 @@
 #{set id:controllers.Application.randomHash() /}
 <script type="text/javascript">
-var page=1;
 $(function(){
 	doOnLoad()
 	magic("#{get 'id' /}");
@@ -24,6 +23,14 @@ $(function(){
 	<div id="#{get 'id'/}_content" class="ui-widget-content actual" style="display:none">
 	#{doLayout /}
 	</div>
+	<script type="text/javascript">
+	var page=1;
+	var filter_page = 1;
+	var filter_smart_array = new Array();
+	var globalSizeOfFilteredChildren;
+	var globalNumPagesNormal;
+	var globalNumPagesFilter;
+	</script>
 		<div class="filter"id="#{get 'id'/}_filter">
 		<table>
 		<tbody>
@@ -33,8 +40,8 @@ $(function(){
 		<a href="#"  style="display:inline-block" class="normalLinkp" onclick="page--;previousPage(this,page);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
 		<a href="#"  style="display:inline-block" class="filterLinkp" href="" onclick="filter_page--;previousFilterPage(this);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
 		<span class="numPages">Error</span>
-		<a href="#"  style="display:inline-block" class="normalLinkn" onclick="page++;nextPage(this,page);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>	
-		<a href="#"  style="display:inline-block" class="filterLinkn" href="#" onclick="filter_page++;nextFilterPage(this);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
+		<a href="#"  style="display:inline-block" class="normalLinkn" onclick="nextPage(this);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>	
+		<a href="#"  style="display:inline-block" class="filterLinkn" href="#" onclick="nextFilterPage(this);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
 		</td>
 		</tr>
 		</tbody>
