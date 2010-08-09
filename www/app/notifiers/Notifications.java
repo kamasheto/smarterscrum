@@ -31,9 +31,12 @@ public class Notifications extends Mailer{
 		send(actionPerformer, user, meeting, objectURL, objectName, confirmURL, declineURL, project);
 	}
 	
-	public static void lostPass()
+	public static void lostPass(User user, String url)
 	{
-		
+		setFrom("se.smartsoft.2@gmail.com");
+		setSubject("Password Recovery");
+		addRecipient(user.email);
+		send(user, url);
 	}
 	
 	public static void welcome()
@@ -45,6 +48,7 @@ public class Notifications extends Mailer{
 	{
 		setFrom("se.smartsoft.2@gmail.com");
 		setSubject("Account Deleted");
+		addRecipient(user.email);
 		send(user, request);
 	}
 	
