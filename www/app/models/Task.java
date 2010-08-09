@@ -399,4 +399,26 @@ public class Task extends SmartModel {
 		return this.description;
 	}
 
+	/***
+	 * Returns a string containing the product role
+	 * (if available) & the description of a task
+	 */
+	public String getSummary()
+	{
+		String summary= "" ;
+		if(this.productRole!=null)
+		{
+			if(this.productRole.name.charAt(0) == 'a'|| this.productRole.name.charAt(0) == 'e' || this.productRole.name.charAt(0) == 'i'||this.productRole.name.charAt(0) == 'o'||this.productRole.name.charAt(0) == 'u'||this.productRole.name.charAt(0) == 'A'||this.productRole.name.charAt(0) == 'E'||this.productRole.name.charAt(0) == 'I'||this.productRole.name.charAt(0) == 'O'||this.productRole.name.charAt(0) == 'U')
+			{
+				summary = "As an "+this.productRole.name+", "+this.description;
+			}
+			else
+			{
+				summary = "As a "+this.productRole.name+", "+this.description;
+			}
+		}
+		else
+			summary = this.description;
+		return summary;
+	}
 }
