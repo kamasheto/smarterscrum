@@ -103,6 +103,12 @@ public class Users extends SmartCRUD {
 		}
 		myUser.components.add(myComponent);
 		myComponent.componentUsers.add(myUser);
+		for(Component component : myComponent.project.components){
+			if(component.number==0 && myUser.components.contains(component)){
+				myUser.components.remove(component);
+				component.componentUsers.remove(myUser);
+			}
+		}
 		Date d = new Date();
 		// User user = User.find("byEmail", Security.connected()).first();
 		User user = Security.getConnected();
