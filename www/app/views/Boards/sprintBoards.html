@@ -1,9 +1,10 @@
 #{extends 'magicBox.html' /}
 #{set 'title'}
-Sprint ${s.id} Boards
+Sprint ${s.sprintNumber} Boards
 #{/set}
 
 #{if s.ended==false }
+#{if p.components.size()>1}
 <div class="overlay" name="/boards/loadboard1?sprintID=${sprintID}">
 ${p.name}'s Task Board
 <a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
@@ -17,8 +18,16 @@ ${board.component.name}'s Task Board
 #{/if}
 #{/list}
 #{/if}
+#{else}
+<div class="overlay" name="/boards/loadboard1?sprintID=${sprintID}&componentID=${p.components[0].id}">
+${p.name}'s Task Board
+<a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+</div>
+#{/else}
+#{/if}
 
 #{else}
+#{if p.components.size()>1}
 <div class="overlay" name="/Snapshots/loadsnapShot?id=${s.finalsnapshot.id}">
 ${p.name}'s Final Snapshot
 <a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
@@ -35,4 +44,8 @@ ${component.name}'s Final Snapshot<a  onClick="loadBox('/Snapshots/index?sid=${s
 #{/list}
 #{/if}
 #{/list}
+#{/if}
+#{else}
+
+#{/else}
 #{/else}
