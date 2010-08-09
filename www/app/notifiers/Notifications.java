@@ -41,9 +41,11 @@ public class Notifications extends Mailer{
 		
 	}
 	
-	public static void byeBye()
+	public static void byeBye(User user, boolean request)
 	{
-		
+		setFrom("se.smartsoft.2@gmail.com");
+		setSubject("Account Deleted");
+		send(user, request);
 	}
 	
 	public static void notifyProjectUsers(Project project , String actionType, String resourceURL, String resourceType, String resourceName, byte importance)

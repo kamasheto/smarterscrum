@@ -10,6 +10,7 @@ import models.Role;
 import models.User;
 import models.UserNotificationProfile;
 import notifiers.Notifications;
+import play.mvc.Router;
 import play.mvc.With;
 
 @With( Secure.class )
@@ -55,7 +56,7 @@ public class Requests extends SmartCRUD
 		Request x = Request.find( "byHash", hash ).first();
 		Project y = x.project;
 		x.user.addRole( x.role );
-		String url = "@{Application.externalOpen("+x.project.id+", '/users/listUserProjects?userId="+x.user.id+"&x=2&projectId="+x.project.id+"&currentProjectId="+x.project.id+"', false)}";
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+x.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+x.user.id+"&x=2&projectId="+x.project.id+"&currentProjectId="+x.project.id;		
 		Notifications.notifyUser( x.user, "Accept", url, "your Role Request", x.role.name, (byte) 1 , x.project);
 		User myUser = Security.getConnected();
 		Logs.addLog( myUser, "RequestAccept", "Request", x.id, y, new Date() );
@@ -112,7 +113,7 @@ public class Requests extends SmartCRUD
 				currentRequest.user.save();
 			}
 		}
-		String url = "@{Application.externalOpen("+currentRequest.project.id+", '#', false)}";
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+currentRequest.project.id+"&isOverlay=false&url=#";
 		Notifications.notifyUser( currentRequest.user, "Accept", url, "your Request to be deleted from project", currentRequest.project.name, (byte) 1 , null);		
 		Logs.addLog( Security.getConnected(), "DeletionRequestAccept", "Request", currentRequest.id, currentRequest.project, new Date() );
 		currentRequest.delete();
@@ -145,8 +146,8 @@ public class Requests extends SmartCRUD
 		Project y = x.project;
 		if( !x.isDeletion )
 		{
-			String url = "@{Application.externalOpen("+x.project.id+", '#', false)}";
-			Notifications.notifyUser( x.user, "Deni", url, "your Role Request", x.role.name, (byte) -1 , x.project);			
+			String url = Router.getFullUrl("Application.externalOpen")+"?id="+x.project.id+"&isOverlay=false&url=#";
+			Notifications.notifyUser( x.user, "Declin", url, "your Role Request", x.role.name, (byte) -1 , x.project);			
 		}
 		else
 		{
@@ -166,8 +167,8 @@ public class Requests extends SmartCRUD
 				i += 6;
 				b = b.substring( i );
 				
-				String url = "@{Application.externalOpen("+x.project.id+", '/users/listUserProjects?userId="+x.user.id+"&x=2&projectId="+x.project.id+"&currentProjectId="+x.project.id+"', false)}";
-				Notifications.notifyUser( x.user, "Accept", url, "your Requestto be deleted from project", x.project.name, (byte) -1 , null);				
+				String url = Router.getFullUrl("Application.externalOpen")+"?id="+x.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+x.user.id+"&x=2&projectId="+x.project.id+"&currentProjectId="+x.project.id;
+				Notifications.notifyUser( x.user, "Accept", url, "your Request to be deleted from project", x.project.name, (byte) -1 , null);				
 			}
 		}
 		User myUser = Security.getConnected();
@@ -229,7 +230,7 @@ public class Requests extends SmartCRUD
 			currentUser.deleted = true;
 			currentUser.pendingDeletion = false;
 			currentUser.save();
-			Notifications.byeBye();
+			Notifications.byeBye(currentUser, true);
 		}
 		flash.success( "Users are now deactivated " );
 		redirect( "/admin/requests" );
