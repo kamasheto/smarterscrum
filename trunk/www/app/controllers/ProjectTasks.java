@@ -57,9 +57,9 @@ public class ProjectTasks extends SmartController {
 		if((!role.baseRole)&&((connectedUser.in(role.project).can("revokeUserRole"))||(user.id == connectedUser.id)))
 		{
 			user.removeRole(role, user);
-			msg="You have revoked a role successfuly|reload('roles', 'project-'+projectId+'-in-user-'+userId);";
-			String url = "@{Application.externalOpen("+role.project+", '#', false)}";
-			Notifications.notifyUser(user, "Delet", url, "you from project", role.project.name, (byte)-1, null);
+			msg="You have revoked a role successfuly|reload('roles', 'project-'+projectId+'-in-user-'+userId);";			
+			String url = "@{Application.externalOpen("+role.project+", '/users/listUserProjects?userId="+user.id+"&boxId=2&projectId="+role.project.id+"&currentProjectId="+role.project+"', false)}";
+			Notifications.notifyUser(user, "Revok", url, "your role", role.name, (byte)-1, role.project);
 			renderText(msg);
 		}
 		
@@ -69,8 +69,8 @@ public class ProjectTasks extends SmartController {
 			{
 				user.removeRole(role, user);
 				msg="You have revoked a role successfuly, The user is no longer a member in this project|reload('roles', 'users', 'projects-in-user-'+userId, 'user-'+userId, 'project-'+projectId+'-in-user-'+userId);";
-				String url = "@{Application.externalOpen("+role.project+", '/users/listUserProjects?userId="+user.id+"&boxId=2&projectId="+role.project.id+"&currentProjectId="+role.project+"', false)}";
-				Notifications.notifyUser(user, "Revok", url, "your role", role.name, (byte)-1, role.project);
+				String url = "@{Application.externalOpen("+role.project+", '#', false)}";
+				Notifications.notifyUser(user, "Delet", url, "you from project", role.project.name, (byte)-1, null);
 				renderText(msg);
 			}
 			else if((user.id == connectedUser.id))
