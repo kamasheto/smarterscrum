@@ -12,7 +12,7 @@ Sprint ${s.sprintNumber} Boards
 		#{list boards, as:'board'}
 			#{if board.component.number != 0}
 				<div class="overlay" name="/boards/loadboard1?sprintID=${sprintID}&componentID=${board.component.id}">
-				${board.component.name}'s Task Board
+				${board.component.name}'s Board
 				<a onClick="loadBox('/Snapshots/index?sid=${sprintID}&cid=${board.component.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
 				</div>
 			#{/if}
@@ -20,7 +20,7 @@ Sprint ${s.sprintNumber} Boards
 	#{/if}
 	#{else}
 		<div class="overlay" name="/boards/loadboard1?sprintID=${sprintID}&componentID=${p.components[0].id}">
-		${p.name}'s Task Board
+		${p.name}'s Board
 		<a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
 		</div>
 	#{/else}
