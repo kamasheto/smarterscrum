@@ -1,9 +1,11 @@
 package controllers;
 
+import notifiers.Notifications;
 import models.Project;
 import models.User;
 import play.data.validation.Required;
 import play.libs.Mail;
+import play.mvc.Router;
 
 /**
  * Security class/controller.. handles all security checks/permissions
@@ -128,10 +130,9 @@ public class Security extends Secure.Security
 		else
 		{
 			u.recoveryHash = Application.randomHash( 10 );
-			u.save();
-			String subject = "Your SmarterScrum account password recovery";
-			String body = "Dear " + u.name + ", Please click the following link to recover your password: " + "http://localhost:9000/security/passwordRecovery?h=" + u.recoveryHash;
-			Mail.send( "se.smartsoft@gmail.com", u.email, subject, body );
+			u.save();			
+			String url = Router.getFullUrl("Security.passwordRecovery")+"?h=" + u.recoveryHash;			
+			Notifications.lostPass(u, url);
 			Logs.addLog( "A guest tried to recover a password of the username " + username );
 			flash.success( "An email was sent to your email address." );
 			try
