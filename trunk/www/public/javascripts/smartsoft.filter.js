@@ -217,7 +217,7 @@ function showFilterLinks(id){
 
 function updatePageNumbers(id){
 	$("#"+id+" .numPages").text(page+"/"+globalNumPagesNormal);
-	if(globalNumPagesNormal==1)
+	if(globalNumPagesNormal<=1)
 	{
 		$("#"+id+"_filter").hide();
 	}
