@@ -360,6 +360,8 @@ $(function() {
 				if (!DRAGGING_ELEMENT) {
 					$(this).children().children('.dragger').show()					
 				}
+				if ($(this).data('init')) return
+				$(this).data('init', true)
 				$(this).draggable(
 						{
 							handle : '.ui-widget-header',
@@ -409,8 +411,8 @@ $(function() {
 			'click',
 			function() {
 				if($(this).next().html()=='')
-					load($(this).parent().attr('name') + ' .actual',$(this).parent().attr('id'),3);
-				
+					load($(this).parent().attr('name'),$(this).parent().attr('id'), 3);
+
 				if($(this).parents().length%4==0)
 				{
 					$(this).toggleClass('selectedBar');
@@ -439,7 +441,7 @@ $(function() {
 		var parent = $(this).parent().parent();
 		// better? Lol
 		$(parent).find('.actual:first').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>')
-		load($(parent).attr('name'), $(parent).attr('id'),2);
+		load($(parent).attr('name'), $(parent).attr('id'), 2);
 	});
 	$('.revertFrom').live('click', function() {
 		var url = $(this).parent().parent().attr('name');
@@ -465,61 +467,58 @@ $(function() {
 function removeFromDiv(url)
 {
 	myDivs = $.grep(myDivs, function(value) {
-
 	    return value != url;
 	});
 	var url2 = url+' .actual';
-	myDivs = $.grep(myDivs, function(value) {
-		
+	myDivs = $.grep(myDivs, function(value) {		
 	    return value != url2;
 	});	
 }
-		
+
+randomId = 100	
 function load(url, el, n) {
-	
 	$('#' + el + '_content').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>');
-	$('#'+el).append('<div id="contentTemp" style="display:none;"></div>');
-	if ($.inArray(url,myDivs) == -1 || n == 2) {
-		$('#contentTemp').load(url, function(){
-			if (n != 3) 
-				$('#'+el+'_header').html($('#contentTemp').find('.ui-widget-header').first().html());
-			$('#'+el+'_content').html($('#contentTemp').find('.actual').first().html());
-			if (n == 1) 
-			{
-			$('#'+ el + '_content').parent().append('<div class="filter"id="'+el+'_filter"></div>');
-				$('#'+ el + '_filter').html($('#contentTemp').find('.filter').first().html());
-					$('#'+ el + '_filter').find('input').first().attr('name','filter_textBox_'+el);
+	// if ($.inArray(url,myDivs) == -1 || n == 2) {
+	$.ajax({
+		url: url,
+		success: function(data) {
+			if (n != 3) {
+				$('#'+el+'_header').html($(data).find('.mainH:first').html());
+			} 
+			$('#'+el+'_content').html($(data).find('.actual:first').html());
+			if (n == 1) {
+				$('#'+ el).append('<div class="filter" id="'+el+'_filter"></div>');
+				$('#'+ el + '_filter').html($(data).find('.filter:first').html());
+				$('#'+ el + '_filter').find('input:first').attr('name', 'filter_textBox_'+el);
 			}
-			if(n==3)
-				magic(el);
-			$('#contentTemp').remove();
-				$('#' + el + '_content').slideDown(400);
-		});
-	}
-	if(n==1)	
-	{	
+			magic(el)
+			$('#' + el + '_content').slideDown(400);
+		},
+		error: function(data) {
+			$.bar({message: 'An error has occured. Please try again.'})
+		}
+	})
+	// }
+	if(n==1){	
 		myDivs.push(url);
-}
+	}
 }
 
 // CURRENT_OFFSET = 10
 function loadBox(url, el, classes) 
 {
 	if($.inArray(url,myDivs)==-1) {
-	$('#' + el).append('<div style="position:absolute;z-index:0"id="myTemp"></div>');
-	element = $('#' + el + ' #myTemp')
-	element.load(url, function() {
-		element.children().attr('name', url);
-		element.children().addClass(classes)
-		// element.children().css('position','absolute!important');
-		// element.children().css('left', CURRENT_OFFSET+'px')
-		// CURRENT_OFFSET += 315
-		element.children().css('z-index','4');
-		element.find('.bar').first().remove();
-		element.find('.actual').first().show();
-		element.replaceWith(element.html());
-		myDivs.push(url);
-	});
+		$.post(url, function(data) {
+
+			element = $(data).filter('div:first')
+			element.attr('name', url)
+			element.addClass(classes)
+			element.css('z-index','4');
+			element.find('.bar:first').remove()
+			element.find('.actual:first').show()
+			$('#'+el).append(element)
+			magic(element.attr('id'))
+		})
 	}
 }
 
@@ -542,8 +541,7 @@ function magic(id) {
 		else
 		{
 						var url = $(this).attr('name');
-						var url2 = url+' .actual';
-			if($.inArray(url,myDivs)==-1 && $.inArray(url2,myDivs)==-1)
+			if($.inArray(url,myDivs)==-1)
 			{
 						var id2 = "ui" +num++;
 						var head = '<div id="'+id2+'_header" class="ui-widget-header mainH"><span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span><span class="refresh ui-icon ui-icon-refresh"></span></span>' + $(this).html() + '</div>';
@@ -552,9 +550,9 @@ function magic(id) {
 
 						$(this).attr('id', id2);
 				$(this).append('<div id="' + id2 + '_content" class="ui-widget-content actual" ></div>');
-						}
-						else
-			{	var id2= $($(this).closest('.workspaceDraggables').find('div[name='+$(this).attr('name')+']')).first().attr('id')+'_2';
+			} else {	
+				var id2 = 						
+				$($(this).closest('.workspaceDraggables').find('div[name='+$(this).attr('name')+']')).first().attr('id')+'_2';
 							var head = '<div id="'+id2+'_header" class="ui-widget-header mainH">' + $(this).html() + '</div>';
 							$(this).html(head);
 							$(this).addClass('clone');
@@ -704,6 +702,7 @@ function reload() {
 		div = $(sel, '#workspace-' + CURRENT_PROJECT)
 		div.each(function() {
 			url = div.attr('name')
+			removeFromDiv(url)
 			// alert('Reloading: ' + url)
 			exit = false
 			$.ajax({
@@ -714,12 +713,10 @@ function reload() {
 				}
 			})
 			if (exit) {
-				// this box should be removed completely.. ;) ya saye3 ya saye3
 				div.remove()
 				return
 			}
-			div.find('.actual:first').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>')
-			load(url, div.attr('id'), 2)	
+			load(url, div.attr('id'), 3)	
 		})
 	}
 }
