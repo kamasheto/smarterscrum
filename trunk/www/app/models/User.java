@@ -254,6 +254,19 @@ public class User extends SmartModel {
 		Project project = Project.findById(projectId);
 		return in(project, true);
 	}
+	public List<Role> getRoles(Project p) {
+		List<Role> projectroles=p.roles;
+		List<Role> roles=new ArrayList<Role>();
+		for(Role R: projectroles){
+		if(R.users.contains(this)){
+			roles.add(R);
+		}
+			
+		}
+		
+		return roles;
+	
+	}
 
 	/**
 	 * returns a role of all the roles this user has in this project
