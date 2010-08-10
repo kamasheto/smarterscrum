@@ -423,6 +423,12 @@ public class User extends SmartModel {
 				if (!role.baseRole) {
 					Role baseRole = Role.find("byProjectAndBaseRole", role.project, true).first();
 					roles.add(baseRole);
+					if( role.project.components.size() != 0 )
+					{
+						role.project.components.get( 0 ).componentUsers.add( this );
+						components.add( role.project.components.get( 0 ) );
+						role.project.components.get( 0 ).save();
+					}
 				}
 			}
 			save();
