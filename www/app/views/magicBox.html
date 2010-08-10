@@ -29,13 +29,13 @@
 		<table>
 		<tbody>
 		<tr>
-		<td><input style="width:100%" name="filter_textBox_#{get 'id' /}" type="text" onkeyup="filter_me(this);"></td>
+		<td><input style="width:100%" name="filter_textBox_#{get 'id' /}" type="text" onkeyup="filter_me(this);fix($('##{get 'id'/}_content'));"></td>
 		<td style="width:60px">
-		<a href="#"  style="display:inline-block" class="normalLinkp" onclick="previousPage(this);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
-		<a href="#"  style="display:inline-block" class="filterLinkp" href="" onclick="previousFilterPage(this);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
+		<a href="#"  style="display:inline-block" class="normalLinkp" onclick="previousPage(this);fix($('##{get 'id'/}_content'));"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
+		<a href="#"  style="display:inline-block" class="filterLinkp" href="" onclick="previousFilterPage(this);fix($('##{get 'id'/}_content'));"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
 		<span class="numPages">Error</span>
-		<a href="#"  style="display:inline-block" class="normalLinkn" onclick="nextPage(this);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>	
-		<a href="#"  style="display:inline-block" class="filterLinkn" href="#" onclick="nextFilterPage(this);"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
+		<a href="#"  style="display:inline-block" class="normalLinkn" onclick="nextPage(this);fix($('##{get 'id'/}_content'));"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>	
+		<a href="#"  style="display:inline-block" class="filterLinkn" href="#" onclick="nextFilterPage(this);fix($('##{get 'id'/}_content'));"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
 		</td>
 		</tr>
 		</tbody>
