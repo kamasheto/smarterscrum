@@ -17,8 +17,11 @@ label {
 	display: inline-block;
 	height: 16px;
 	overflow: hidden;
-	width: 80%;
+	width:90%;
+	white-space:nowrap
 }
+.holder
+{width: 70%;}
 
 button,a button,input[type=submit],input[type=ok],input[type=send],input[type=button],input[type=send]
 	{
@@ -84,7 +87,7 @@ img {
 }
 
 .inline-block {
-	display: inline-block !important;
+	display: inline-block;
 }
 
 .block {
