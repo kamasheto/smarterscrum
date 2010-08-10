@@ -57,7 +57,7 @@ public class Accounts extends SmartController
 				}
 				User user = new User( name, email, password );
 				user.save();
-				String url = Router.getFullUrl("Accounts.doActivation")+"?hash=" + user.activationHash;				
+				String url = Router.getFullUrl("Accounts.doActivation")+"?hash=" + user.activationHash+"&firstTime=true";				
 				Notifications.activate(user.email, user.name, url, false);
 				flash.success( "You have been registered. An Activation link has been sent to your Email Address" );
 				Secure.login();
@@ -141,14 +141,17 @@ public class Accounts extends SmartController
 	 *             thrown here as well.
 	 * @since Sprint2.
 	 */
-	public static void doActivation( String hash ) throws Throwable
+	public static void doActivation( String hash, boolean firstTime ) throws Throwable
 	{
 		User currentUser = User.find( "activationHash", hash ).first();
 		if( currentUser != null && !currentUser.isActivated )
 		{
 			currentUser.isActivated = true;
 			currentUser.save();
-			Notifications.welcome(currentUser);
+			if(firstTime)
+				Notifications.welcome(currentUser, true);
+			else
+				Notifications.welcome(currentUser, false);
 			flash.success( "Thank you , your Account has been Activated! . Login Below" );
 		}
 		else

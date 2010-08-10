@@ -1,6 +1,6 @@
 <html>
 <body>
-<p>Welcome ${user.name},
+#{if welcome}<p>Welcome ${user.name},
 <br/>Congratulations, your account has been activated! 
 <br/>Now you have a full access to SmarterScrum tool where you can easily create projects
 <br/>& manage them. You can add roles, create components(teams), create sprints, add meetings,
@@ -14,6 +14,9 @@
 <br/>
 <br/>Best Regards,
 <br/>SmartSoft team :)  
-</p>
+</p>#{/if}
+#{else}
+<p>Your account with this new email has been activated successfully! </p>
+#{/else}
 </body>
 </html>
