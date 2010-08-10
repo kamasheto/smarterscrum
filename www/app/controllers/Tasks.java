@@ -18,6 +18,7 @@ import models.Task;
 import models.TaskStatus;
 import models.TaskType;
 import models.User;
+import models.Update;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
@@ -231,10 +232,14 @@ public class Tasks extends SmartCRUD
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
 
-			if (tmp.parent != null)
-				Application.overlayKiller("reload('tasks','task-" + tmp.parent.id + "')", "");
-			else
-				Application.overlayKiller("reload('tasks','task-" + "')", "");
+			if (tmp.parent != null) {
+				Update.update(tmp.project, "reload('tasks','task-" + tmp.parent.id + "')");
+				Application.overlayKiller("", "");
+			} else {
+				Update.update(tmp.project, "reload('tasks','task-" + "')");
+				Application.overlayKiller("", "");
+			}
+				
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			redirect(request.controller + ".blank");
@@ -474,7 +479,8 @@ public class Tasks extends SmartCRUD
 		}
 		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			Application.overlayKiller("reload('tasks','task-" + tmp.id + "')", "");
+			Update.update(tmp.project, "reload('tasks','task-" + tmp.id + "')");
+			Application.overlayKiller("", "");
 			Logs.addLog(tmp.project, "edit", "Task", tmp.id);
 		}
 	}
@@ -1705,8 +1711,8 @@ int counter=tasks.size();
 
 		task.component = component;
 		task.save();
-
-		renderText("Associated successfully|reload('component-" + componentId + "', 'task-" + taskId + "')");
+		Update.update(task.project, "reload('component-" + componentId + "', 'task-" + taskId + "')");
+		renderText("Associated successfully");
 	}
 	
 	/**
@@ -1730,7 +1736,8 @@ int counter=tasks.size();
 		Security.check(connected.in(task.project).can("modifyTask") && user.projects.contains(task.project) && task.reviewer != user && (task.component == null || user.components.contains(task.component)));
 		task.assignee = user;
 		task.save();
-		renderText("Assignee added successfully|reload('task-" + taskId + "')");
+		Update.update(task.project, "reload('task-" + taskId + "')");
+		renderText("Assignee added successfully");
 	}
 	
 	/**
@@ -1754,7 +1761,8 @@ int counter=tasks.size();
 		Security.check(connected.in(task.project).can("modifyTask") && user.projects.contains(task.project) && task.assignee != user && (task.component == null || user.components.contains(task.component)));
 		task.reviewer = user;
 		task.save();
-		renderText("Reviewer assigned successfully|reload('task-" + taskId + "')");
+		Update.update(task.project, "reload('task-" + taskId + "')");
+		renderText("Reviewer assigned successfully");
 	}
 	
 	/**
