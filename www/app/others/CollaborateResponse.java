@@ -8,4 +8,6 @@ public class CollaborateResponse {
 	public List<Notification> news;
 	
 	public List<User.Object> online_users;
+	
+	public List<Update> updates;
 }

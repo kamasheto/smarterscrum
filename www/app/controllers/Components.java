@@ -6,6 +6,7 @@ import java.util.List;
 
 import models.Component;
 import models.Project;
+import models.Update;
 import notifiers.Notifications;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
@@ -157,6 +158,7 @@ public class Components extends SmartCRUD {
 		// flash.success(Messages.get("crud.deleted", type.modelName,
 		// object.getEntityId()));
 		// redirect("/projects/" + component.project.id + "/components");
+		Update.update(component.project, "reload('components', 'component-"+component.id+"')");
 		renderText("Component deleted successfully.");
 	}
 

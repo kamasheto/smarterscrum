@@ -7,6 +7,7 @@ import models.Component;
 import models.Project;
 import models.Request;
 import models.Role;
+import models.Update;
 import models.User;
 import models.UserNotificationProfile;
 import notifiers.Notifications;
@@ -54,12 +55,16 @@ public class Requests extends SmartCRUD
 	public static void requestAccept( String hash )
 	{
 		Request x = Request.find( "byHash", hash ).first();
+		notFoundIfNull(x);
 		Project y = x.project;
 		x.user.addRole( x.role );
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+x.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+x.user.id+"&x=2&projectId="+x.project.id+"&currentProjectId="+x.project.id;		
 		Notifications.notifyUser( x.user, "Accept", url, "your Role Request", x.role.name, (byte) 1 , x.project);
 		User myUser = Security.getConnected();
 		Logs.addLog( myUser, "RequestAccept", "Request", x.id, y, new Date() );
+		
+		Update.update(x.user, "reload('roles')");
+		Update.update(Security.getConnected(), "reload('project-requests')");
 		x.delete();
 	}
 
@@ -116,6 +121,10 @@ public class Requests extends SmartCRUD
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+currentRequest.project.id+"&isOverlay=false&url=#";
 		Notifications.notifyUser( currentRequest.user, "Accept", url, "your Request to be deleted from project", currentRequest.project.name, (byte) 1 , null);		
 		Logs.addLog( Security.getConnected(), "DeletionRequestAccept", "Request", currentRequest.id, currentRequest.project, new Date() );
+		
+		
+		Update.update(Security.getConnected(), "reload('project-requests')");
+		// Update.update(Security.getConnected(), ""); // run javascript at client to close workspace?
 		currentRequest.delete();
 	}
 
@@ -174,6 +183,9 @@ public class Requests extends SmartCRUD
 		User myUser = Security.getConnected();
 		Date dd = new Date();
 		Logs.addLog( myUser, "RequestDeny", "Request", x.id, y, dd );
+
+		Update.update(myUser, "reload('project-requests')");
+		
 		x.delete();
 	}
 
@@ -242,6 +254,7 @@ public class Requests extends SmartCRUD
 		User user = Security.getConnected();
 		Request request = Request.find( "byRoleAndUser", role, user ).first();
 		request.delete();
+		Update.update(role.project, "reload('roles')");
 		renderText( "Request removed!" );
 	}
 	

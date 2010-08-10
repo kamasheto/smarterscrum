@@ -340,6 +340,12 @@ public class User extends SmartModel {
 
 		boolean isAdmin;
 
+		public Object (User user) {
+			this.id = user.id;
+			this.name = user.name;
+			this.isAdmin = user.isAdmin;
+		}
+		
 		public Object (long id, String username) {
 			this.id = id;
 			this.name = username;

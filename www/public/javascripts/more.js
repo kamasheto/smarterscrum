@@ -14,14 +14,11 @@ function delete_role(role_id, that) {
 			if (data) {
 				$.bar({message: data})
 			}
-			reload('roles')
 		})
 	}
 }
 function setBaseRole(role, project) {
-	$.post('/roles/setbaserole?id=' + role, function() {
-		reload('roles')
-	})
+	$.post('/roles/setbaserole?id=' + role)
 }
 
 function import_permissions(role_id) {

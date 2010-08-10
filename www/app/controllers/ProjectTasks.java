@@ -3,12 +3,12 @@ package controllers;
 import java.util.LinkedList;
 import java.util.List;
 
-import notifiers.Notifications;
-
 import models.Project;
 import models.Request;
 import models.Role;
+import models.Update;
 import models.User;
+import notifiers.Notifications;
 import play.mvc.Router;
 import play.mvc.With;
 
@@ -29,6 +29,8 @@ public class ProjectTasks extends SmartController {
 		User user = Security.getConnected();
 		Role role = Role.findById(id);
 		notFoundIfNull(role);
+		Update.update(user, "reload('roles')");
+		Update.update(role.project, "reload('project-requests')");
 		if (user.in(role.project).can("manageRequests")) {
 			user.addRole(role);
 			renderText("Successfully added role!");
