@@ -17,7 +17,7 @@ public class Collaborate extends SmartController {
 	/**
 	 * Renders a JSON object of all changes performed for this user (for dynamic udpate)
 	 */
-	public static void index() {
+	public static void index(long lastUpdate) {
 		CollaborateResponse response = new CollaborateResponse();
 		User user = Security.getConnected();
 		
@@ -25,19 +25,29 @@ public class Collaborate extends SmartController {
 		 * Get latest news
 		 */
 		List<Notification> news = Notification.find("unread = true and receiver = ?", user).fetch();
-		for (int i = 0; i < news.size(); i++) {
-			news.get(i).unread = false;
-			news.get(i).save();
-			news.get(i).receiver = null;
-			news.get(i).project = null;
-			news.get(i).actionPerformer = null;
+		for (Notification noti : news) {
+			noti.unread = false;
+			noti.save();
+			
+			noti.receiver = null;
+			noti.project = null;
+			noti.actionPerformer = null;
 		}
 		response.news = news;
 		
 		/**
 		 * Get workspace changes
 		 */
+		// first delete previous updates
+		Update.delete("user = ? and timestamp < ?", user, lastUpdate);
 		
+		// fetch new updates
+		List<Update> updates = Update.find("(user = ? or user is null) and timestamp >= ?", user, lastUpdate).fetch();
+		for (Update update : updates) {
+			// remove the users on the fly
+			update.user = null;
+		}
+		response.updates = updates;
 		
 		/**
 		 * Get online users

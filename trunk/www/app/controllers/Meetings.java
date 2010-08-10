@@ -3,6 +3,7 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import models.Artifact;
 import models.Component;
 import models.Meeting;
@@ -10,6 +11,7 @@ import models.MeetingAttendance;
 import models.Project;
 import models.Sprint;
 import models.Task;
+import models.Update;
 import models.User;
 import notifiers.Notifications;
 import play.db.jpa.JPASupport;
@@ -558,6 +560,8 @@ public class Meetings extends SmartCRUD
 
 		Logs.addLog( Security.getConnected(), "delete", "Meeting", meeting.id, meeting.project, new Date( System.currentTimeMillis() ) );
 		meeting.save();
+
+		Update.update(meeting.project, "reload('meetings', 'meeting-"+meeting.id+"')");
 	}
 
 	/**

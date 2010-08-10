@@ -9,26 +9,17 @@ var CURRENT_PROJECT = 0;
 function request_accept( id, hash )
 {
 	$.post('/requests/requestAccept' ,
-		    {hash:hash, id:id} ,
-		    function(){
-				reload('project-requests')
-		    })
+		    {hash:hash, id:id})
 }
 function request_accept2( id, hash )
 {
 	$.post('/requests/deletionRequestAccept' ,
-		  {hash:hash} ,
-		    function(){
-				reload('project-requests')
-		    })
+		  {hash:hash})
 }
 function request_ignore( id, hash)
 {
 	$.post('/requests/requestIgnore' ,
-		    {hash:hash} ,
-		    function(){
-				reload('project-requests')
-		    })
+		    {hash:hash})
 		}
 function show_comment(id){
 
@@ -41,10 +32,7 @@ function do_ignore(id, hash){
 	else
 	{
 		$.post('/requests/requestIgnore' ,
-		    {hash:hash, body:textValue} ,
-		    function(){
-				reload('project-requests')
-		    })
+		    {hash:hash, body:textValue})
 	}
 }
 function delete_meeting(id)
@@ -54,9 +42,6 @@ function delete_meeting(id)
 	if (confirmation) {
 		$.post('/Meetings/deleteMeeting', {
 			id:id
-		}, function(){
-			reload('meetings');
-			reload('meeting-'+id)
 		});
 	};		
 }
@@ -127,7 +112,6 @@ function confirm_me(id)
 function requestRole(roleIdd){
 	$.post('/projecttasks/requestRole', {id:roleIdd}, function(msg){
 		$.bar({message:msg});
-		reload('roles')
 	});
 }
 
@@ -168,24 +152,10 @@ function deleteRequest(roleIdd){
 	if(confirm("Are you sure you want to cancel your request?")){
 		$.post('/requests/removeRequestRoleInProject', {roleId:roleIdd}, function(msg){
 			$.bar({message:msg});
-			reload('roles')
 		});
 	}
 }
 
-function requestToBeReviewer(taskTypeId){
-	$.post('/requestreviewers/requestToBeReviewer', {ID:taskTypeId}, function(msg){
-		$.bar({message:msg});
-		reload('reviewer-requests')
-	});
-}
-
-function removeRequestToBeReviewer(id){
-	$.post('/requestreviewers/removerequest', {taskTypeId:id}, function(msg){
-		$.bar({message:msg});
-		reload('reviewer-requests')
-	});
-}
 
 function decline_me(id)
 {
@@ -237,7 +207,6 @@ function deleteStory(sId,box,d){
 	{
 		$.post('/Storys/delete', {id:sId}, function(data){
 			$.bar({message:data});
-			// removeMe(box);
 		});
 	}
 }
@@ -300,7 +269,7 @@ $(function() {
 		});
 
 		$(this).parent().find('.dropper').hide();
-	})
+		})
 	
 	
 	$('.draggable').live('mouseover', function() {
@@ -523,15 +492,15 @@ function magic(id) {
 			if($(this).next().width()<=$(this).width())
 				$(this).next().next().hide();
 		});
-		if($(this).attr('class')=='overlay')
-		{
-			var id2 = "ui" +num;
-			num++;
-			var head = '<div id="'+id2+'_header" class="ui-widget-header"><a href="#" onclick="overlayOpen(\''+$(this).attr('name')+'\')"><span class="ui-icon ui-icon-extlink"></span></a>' + $(this).html()+ '</div>';
-			$(this).html(head);
-			$(this).attr('id', id2);
-			
-		}
+						if($(this).attr('class')=='overlay')
+						{
+							var id2 = "ui" +num;
+							num++;
+							var head = '<div id="'+id2+'_header" class="ui-widget-header"><a href="#" onclick="overlayOpen(\''+$(this).attr('name')+'\')"><span class="ui-icon ui-icon-extlink"></span></a>' + $(this).html()+ '</div>';
+							$(this).html(head);
+							$(this).attr('id', id2);
+							
+						}
 		else
 		{
 						var url = $(this).attr('name');
@@ -693,9 +662,8 @@ function reload() {
 			continue
 		}
 		reloaded.push(sel)
-		div = $(sel, '#workspace-' + CURRENT_PROJECT)
-		div.each(function() {
-			url = div.attr('name')
+		$(sel).each(function() {
+			url = $(this).attr('name')
 			removeFromDiv(url)
 			// alert('Reloading: ' + url)
 			exit = false
@@ -707,10 +675,10 @@ function reload() {
 				}
 			})
 			if (exit) {
-				div.remove()
+				$(this).remove()
 				return
 			}
-			load(url, div.attr('id'), 3)	
+			load(url, $(this).attr('id'), 3)	
 		})
 	}
 }
@@ -719,8 +687,6 @@ function deleteTheComponent(cId, box){
 	{
 		$.post('/components/delete', {id:cId}, function(data){ 
 				$.bar({message:data});
-				// removeMe(box);
-				reload('components', 'component-'+cId)
 			});
 	}
 }
