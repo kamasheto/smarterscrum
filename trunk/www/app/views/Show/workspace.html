@@ -7,17 +7,17 @@
 <!-- DO NOT REMOVE THIS! If you want to, hide the class.. this element is used to create the top button! -->
 <span class="project_name_in_header">${proj.name}</span>
 #{if connected.projects.contains(proj)}
-<a href="#" onclick="loadBox('/tasks/magicShow?mine=1&projectId=${proj.id}','workspace-${proj.id}', 'reload-tasks')">Tasks</a>
+<a href="#" onclick="loadBox('/tasks/magicShow?mine=1&projectId=${proj.id}','workspace-${proj.id}', 'reload-tasks')">Tasks(${tasksnumber})</a>
 #{/if}
 #{elseif connected.isAdmin}
-<a href="#" onclick="loadBox('/tasks/magicShow?projectId=${proj.id}','workspace-${proj.id}', 'reload-tasks')">Tasks</a>
+<a href="#" onclick="loadBox('/tasks/magicShow?projectId=${proj.id}','workspace-${proj.id}', 'reload-tasks')">Tasks(${tasksnumber})</a>
 #{/elseif}
 #{if proj.sprints.size()!=0}
 <a href="#" onclick="loadBox('/Projects/Artifacts?projectId=${proj.id}','workspace-${proj.id}')">Artifacts</a>
 #{/if}
-<a href="#" onclick="loadBox('/users/findUsers?projectId=${proj.id}','workspace-${proj.id}', 'reload-users')">Users</a>
-<a  href="#"onclick="loadBox('@{Projects.events(proj.id)}','workspace-${proj.id}')">Events</a>
-<a  href="#"onclick="$('#chatContainer_${proj.id}').slideToggle(400); #{ifnot connected.openChats.contains(proj.chatroom)} signIn(${proj.chatroom.id}); getMessages(${proj.id},${proj.chatroom.id}); #{/ifnot}">Chatroom</a>
+<a href="#" onclick="loadBox('/users/findUsers?projectId=${proj.id}','workspace-${proj.id}', 'reload-users')">Users(${proj.users.size()})</a>
+<a  href="#"onclick="loadBox('@{Projects.events(proj.id)}','workspace-${proj.id}')">Events(${proj.sprints.size()+proj.meetings.size()})</a>
+<a  href="#"onclick="$('#chatContainer_${proj.id}').slideToggle(400); #{ifnot connected.openChats.contains(proj.chatroom)} signIn(${proj.chatroom.id}); getMessages(${proj.id},${proj.chatroom.id}); #{/ifnot}">Chatroom(${chatters} Online)</a>
 #{set activity: proj.activity() /}
 <a href="#" onclick="loadBox('@{Projects.settings(proj.id)}','workspace-${proj.id}')">Settings</a> 
 <span class="activity-level activity-level-${activity}" title="Activity level: ${activity}/10"> </span>
