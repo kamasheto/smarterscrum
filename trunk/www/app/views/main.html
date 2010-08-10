@@ -19,6 +19,7 @@
         <script src="@{'/public/javascripts/requirements.js'}" type="text/javascript" charset="utf-8"></script>
         <script src="@{'/public/javascripts/smartsoft.filter.js'}" type="text/javascript" charset="utf-8"></script>
         <script src="@{'/public/javascripts/functions.js'}" type="text/javascript" charset="utf-8"></script>
+		<script src="@{'/public/javascripts/collaborative.js'}" type="text/javascript" charset="utf-8"></script>
         #{get 'moreScripts' /}
 		
         <script type="text/javascript">
@@ -64,7 +65,6 @@
        		$(function(){
 				doOnLoad();
    			    #{if connected}
-	 			getNotifications();
 				ping();
    			    #{/if}
        		});
@@ -241,5 +241,6 @@
 			})
 			</script>
 			#{/if}
+			<div id="onlineUsers"></div>
 </body>
 </html>
