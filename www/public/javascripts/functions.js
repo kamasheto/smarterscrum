@@ -312,6 +312,7 @@ $(function() {
 			stack  : '.draggable',
 			containment: '#'+con
 		});
+		$(this).resizable({minWidth:300,containment: '#'+con});
 	}).live('mouseout', function() {
 		if ($(this).attr('id') != DRAGGING_ELEMENT) {
 			$(this).children().children('.dragger').hide()
@@ -351,12 +352,7 @@ $(function() {
 									$(this).closest('.workspaceDraggables')
 											.append($(this));
 								}
-								$(this).draggable( {
-									start : function(event, ui) {
-									},
-									stop : function(event, ui) {
-									}
-								});
+								$(this).draggable( {start : function(event, ui) {},stop : function(event, ui) {}});
 								$(this).children().show();
 								$(this).removeClass('draggableChild');
 								$(this).addClass('draggable');
@@ -364,10 +360,17 @@ $(function() {
 							},
 							start : function(event, ui) {
 								var id = $(this).attr('id');
+								$("#" + id + " .selectedBars").each(function(){$(this).removeClass('selectedBars')});
+								$("#" + id + " .selectedBars2").each(function(){$(this).removeClass('selectedBars2')});
+								$("#" + id + " .selectedBar").each(function(){$(this).removeClass('selectedBar')});
+								$("#" + id + " .selectedBar2").each(function(){$(this).removeClass('selectedBar2')});
+								$('#' + id + ' .ui-widget-content').hide();
 								var t = $('#' + id + ' .ui-widget-header')
 										.first().clone();
 								$(t).removeClass('ui-widget-header');
 								$(t).addClass('clone');
+								$(t).removeClass('selectedBar');
+								$(t).removeClass('selectedBar2');
 								$(t).insertBefore($(this));
 								$(t).attr('id', $(this).attr('id') + "_2");
 							}
@@ -412,7 +415,9 @@ $(function() {
 		load($(parent).attr('name'), $(parent).attr('id'), 2);
 	});
 	$('.revertFrom').live('click', function() {
+		$(this).parent().parent().data('init', false);
 		var url = $(this).parent().parent().attr('name');
+		$(this).parent().next().slideUp();
 		removeFromDiv(url);
 		// CURRENT_OFFSET -= 315
 		var theId = $(this).parent().parent().attr('id');
@@ -497,15 +502,15 @@ function magic(id) {
 	$("#" + id + "_content div[name]").each(
 	function() 
 	{
-						if($(this).attr('class')=='overlay')
-						{
-							var id2 = "ui" +num;
-							num++;
-							var head = '<div id="'+id2+'_header" class="ui-widget-header"><a href="#" onclick="overlayOpen(\''+$(this).attr('name')+'\')"><span class="ui-icon ui-icon-extlink"></span></a>' + $(this).html()+ '</div>';
-							$(this).html(head);
-							$(this).attr('id', id2);
-							
-						}
+		if($(this).attr('class')=='overlay')
+		{
+			var id2 = "ui" +num;
+			num++;
+			var head = '<div id="'+id2+'_header" class="ui-widget-header"><a href="#" onclick="overlayOpen(\''+$(this).attr('name')+'\')"><span class="ui-icon ui-icon-extlink"></span></a>' + $(this).html()+ '</div>';
+			$(this).html(head);
+			$(this).attr('id', id2);
+			
+		}
 		else
 		{
 						var url = $(this).attr('name');
