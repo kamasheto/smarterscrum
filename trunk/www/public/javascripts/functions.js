@@ -690,3 +690,12 @@ function deleteTheComponent(cId, box){
 			});
 	}
 }
+function fix(obj)
+{
+	$(obj).find('.taskSummary').each(function(){
+		if($(this).width()>=$(this).next().width())
+			$(this).next().next().hide();
+		else
+			$(this).next().next().show();
+	});
+}
