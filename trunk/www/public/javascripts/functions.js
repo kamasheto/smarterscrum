@@ -1,9 +1,8 @@
-﻿
-			 $.extend($.gritter.options, { 
-				fade_in_speed: 50, // how fast notifications fade in (string or int)
-				fade_out_speed: 300, // how fast the notices fade out
-				time: 5000 // hang on the screen for...
-			});
+﻿ $.extend($.gritter.options, { 
+	fade_in_speed: 50, // how fast notifications fade in (string or int)
+	fade_out_speed: 300, // how fast the notices fade out
+	time: 5000 // hang on the screen for...
+});
 
 var CURRENT_PROJECT = 0;
 
@@ -502,15 +501,15 @@ function magic(id) {
 	$("#" + id + "_content div[name]").each(
 	function() 
 	{
-		if($(this).attr('class')=='overlay')
-		{
-			var id2 = "ui" +num;
-			num++;
-			var head = '<div id="'+id2+'_header" class="ui-widget-header"><a href="#" onclick="overlayOpen(\''+$(this).attr('name')+'\')"><span class="ui-icon ui-icon-extlink"></span></a>' + $(this).html()+ '</div>';
-			$(this).html(head);
-			$(this).attr('id', id2);
-			
-		}
+						if($(this).attr('class')=='overlay')
+						{
+							var id2 = "ui" +num;
+							num++;
+							var head = '<div id="'+id2+'_header" class="ui-widget-header"><a href="#" onclick="overlayOpen(\''+$(this).attr('name')+'\')"><span class="ui-icon ui-icon-extlink"></span></a>' + $(this).html()+ '</div>';
+							$(this).html(head);
+							$(this).attr('id', id2);
+							
+						}
 		else
 		{
 						var url = $(this).attr('name');
