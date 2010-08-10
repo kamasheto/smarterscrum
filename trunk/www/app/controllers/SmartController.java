@@ -33,7 +33,8 @@ public class SmartController extends Controller
 		{
 			Secure.logout();
 		}
-
+if(!Sprint.Last.equals(new Date())){
+	Sprint.Last=new Date();
 		List<Sprint> sprints = Sprint.findAll();
 		for( Sprint s : sprints )
 		{
@@ -196,7 +197,7 @@ public class SmartController extends Controller
 
 			}
 
-		}
+		}}
 	}
 
 }
