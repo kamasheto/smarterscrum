@@ -75,6 +75,7 @@ function smart_pagination(el, view_page){
 		smartObject.numPages = numPages;
 		smartObject.smart_array = new Array();
 		smartObject.page = 1;
+		smartObject.numElements = sizeOfChildren;
 		uniqueArray.push(smartObject);
 	}
 	else if(smartObject.numPages == -1){
@@ -270,7 +271,10 @@ function showFilterLinks(id){
 
 function updatePageNumbers(id){
 	smartObject = getTheUnique(id);
-	$("#"+id+" .numPages").text(smartObject.page+"/"+smartObject.numPages);
+	var items = (smartObject.page*itemsPerPage);
+	if(items>smartObject.numElements)
+		items = smartObject.numElements;
+	$("#"+id+" .numPages").text(items+"/"+smartObject.numElements);
 //	if(globalNumPagesNormal<=1)
 //	{
 //		$("#"+id+"_filter").hide();
@@ -282,7 +286,10 @@ function updatePageNumbers(id){
 
 function updatePageNumbersFilter(id){
 	smartObject = getTheUniqueFilter(id);
-	$("#"+id+" .numPages").text(smartObject.filter_page+"/"+smartObject.numPages);
+	var items = (smartObject.filter_page*itemsPerPage);
+	if(items>smartObject.sizeOfFilteredChildren)
+		items = smartObject.sizeOfFilteredChildren;
+	$("#"+id+" .numPages").text(items+"/"+smartObject.sizeOfFilteredChildren);
 }
 
 function getTheUnique(id){
