@@ -49,11 +49,27 @@ function isBefore(date){
 			</div>
 <div name="@{Boards.sprintBoards(sprint.id)}">Boards
 #{if sprint.ended}
+	#{if sprint.project.components.size()>1}
 		<a href="#" onclick="overlayOpen('@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)}')" title="View sprint board snapshot?">
 		<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
-		#{/if}
-		#{else}
+	#{/if}
+	#{else}
+		#{list sprint.project.components[0].snapshots, as:'snapshot'}
+			#{if snapshot.sprint.id==sprint.id}
+				<a href="#" onclick="overlayOpen('@{Snapshots.loadsnapShot(snapshot.id)}')" title="View sprint board snapshot?">
+				<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
+			#{/if}
+		#{/list}
+	#{/else}
+#{/if}
+#{else}
+	#{if sprint.project.components.size()>1}
 		<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id)}')" title="View project board?">
 		<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
-		#{/else}
-	</div>
+	#{/if}
+	#{else}
+		<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id,sprint.project.components[0].id)}')" title="View project board?">
+		<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
+	#{/else}
+#{/else}
+</div>
