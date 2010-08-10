@@ -274,6 +274,7 @@ function updatePageNumbers(id){
 	var items = (smartObject.page*itemsPerPage);
 	if(items>smartObject.numElements)
 		items = smartObject.numElements;
+	else if(items<1) items = 0;
 	$("#"+id+" .numPages").text(items+"/"+smartObject.numElements);
 //	if(globalNumPagesNormal<=1)
 //	{
@@ -289,6 +290,7 @@ function updatePageNumbersFilter(id){
 	var items = (smartObject.filter_page*itemsPerPage);
 	if(items>smartObject.sizeOfFilteredChildren)
 		items = smartObject.sizeOfFilteredChildren;
+	else if(items<1) items = 0; 
 	$("#"+id+" .numPages").text(items+"/"+smartObject.sizeOfFilteredChildren);
 }
 
