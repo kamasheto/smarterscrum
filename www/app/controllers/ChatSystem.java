@@ -40,7 +40,7 @@ public class ChatSystem extends SmartController
 		if( room.deleted )
 			notFound();
 		Security.check( Security.getConnected().projects.contains( room.project ) );
-		List<Message> messages = Message.find( "room = ?1 and stamp > ?2", room, request.date.getTime() ).fetch();
+		List<Message> messages = Message.find( "room = ?1 and stamp > ?2", room, request.date.getTime() - 400 ).fetch();
 		if( messages.isEmpty() )
 		{
 			suspend( "1s" );
@@ -93,6 +93,23 @@ public class ChatSystem extends SmartController
 		new Message( "notice", currentUser.name + " has left the chat", room ).save();
 		currentUser.openChats.remove( room );
 		currentUser.save();
+		boolean empty = true;
+		for( User U : room.project.users )
+		{
+			if( U.openChats.contains( room ) )
+			{
+				empty = false;
+			}
+		}
+		if( empty )
+		{
+			List<Message> toBeDeleted = Message.find( "byRoom", room ).fetch();
+			for( Message m : toBeDeleted )
+			{
+				m.delete();
+			}
+		}
+
 	}
 
 	/**
