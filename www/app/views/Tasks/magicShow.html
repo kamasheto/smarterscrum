@@ -11,15 +11,7 @@
 		#{/if}
 		#{else}	
 			#{if task!=null}
-			#{if task.productRole==null}
-			${task.description.nl2br()}<br>
-			#{/if}
-			#{elseif task.productRole!=null && (task.productRole.name[0]=='a'||task.productRole.name[0]=='e'||task.productRole.name[0]=='i'||task.productRole.name[0]=='o')}
-			As an ${task.productRole.name}, ${task.description.nl2br()}<br>
-			#{/elseif}
-			#{elseif task.productRole!=null}
-			As a ${task.productRole.name}, ${task.description.nl2br()}<br>
-			#{/elseif}
+			${task.getSummary()}
 			<br>
 			<br>
 			<b style="width:100px;display:inline-block;text-align:right">Assignee</b>
