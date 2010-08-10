@@ -16,6 +16,7 @@ import play.data.validation.Required;
 
 @Entity
 public class Sprint extends SmartModel {
+	public static Date Last=new Date(2312312);
 	/**
 	 * The sprint number in this project.
 	 */
