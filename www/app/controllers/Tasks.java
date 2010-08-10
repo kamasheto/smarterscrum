@@ -2007,15 +2007,18 @@ System.out.println(Security.getConnected().components);
 			List<Task> tasks = new ArrayList<Task>();
 			tasks = Task.find("byComponentAndDeleted", component, false).fetch();
 			System.out.println(tasks);
+			int counter=tasks.size();
 			for(int i =0 ; i<tasks.size();i++){
+			
 				if(tasks.contains(tasks.get(i).parent)){
 					tasks.remove(tasks.get(i));
 					i=0;
+					counter--;
 				}
 				
 			}
 			boolean isComponent = true;
-			render(tasks, title, mine, projectId, isComponent);
+			render(counter,tasks, title, mine, projectId, isComponent);
 		} else {
 			if (taskId != 0) {
 				Task task = Task.findById(taskId);
@@ -2026,7 +2029,8 @@ System.out.println(Security.getConnected().components);
 				else
 					title = "Task " + task.number;
 				List<Task> tasks = task.subTasks;
-				render(task, title, tasks, projectId);
+				int counter=tasks.size();
+				render(counter,task, title, tasks, projectId);
 			} else {
 				if (mine == 1) {
 					title = "My Tasks";
@@ -2053,15 +2057,16 @@ System.out.println(Security.getConnected().components);
 							tasks.add(task1);
 						}
 					}
-
-					render(tasks, title, mine, projectId);
+int counter=tasks.size();
+					render(counter,tasks, title, mine, projectId);
 				} else {
 					if (projectId != 0) {
 						title = "Project Tasks";
 						Project project = Project.findById(projectId);
 						List<Task> tasks = Task.find("byProjectAndDeletedAndParentIsNull", project, false).fetch();
 						boolean isProject = true;
-						render(tasks, title, mine, projectId, isProject);
+						int counter=tasks.size();
+						render(counter,tasks, title, mine, projectId, isProject);
 					} else {
 						if (meetingId != 0) {
 							Meeting meeting = Meeting.findById(meetingId);
@@ -2073,8 +2078,8 @@ System.out.println(Security.getConnected().components);
 							}
 
 							title = "Meetings Tasks";
-							
-							render(title, tasks, projectId);
+							int counter=tasks.size();
+							render(counter,title, tasks, projectId);
 						}
 					}
 				}
