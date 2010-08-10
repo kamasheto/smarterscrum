@@ -6,14 +6,6 @@ How : The magic boxes are created using a certain format. Get the input from the
 /********** Settings *************/
 var itemsPerPage = 5; //how many divs to display per page
 
-/********** Fixing Unique boxes *************/
-var page=1;
-var filter_page = 1;
-var filter_smart_array = new Array();
-var globalSizeOfFilteredChildren;
-var globalNumPagesNormal;
-var globalNumPagesFilter;
-/*********************************************/
 
 /****************** 7ewar el array of objects *************/
 
@@ -140,10 +132,11 @@ function filter_smart_pagination(el,view_page, nextPrevious){
 		id = $(el).closest('.filter').attr('id').split('_')[0];
 	var smartObject = getTheUniqueFilter(id);
 	if(smartObject == false){
+		//alert("==false");
 		smartObject = new Object();
 		smartObject.id = id;
 		smartObject.filter_page = 1;
-		smartObject.numPages = -1;
+		//smartObject.numPages = -1;
 		smartObject.filter_smart_array = new Array();
 		UniqueArrayFilter.push(smartObject);
 	}
@@ -156,12 +149,15 @@ function filter_smart_pagination(el,view_page, nextPrevious){
 	if(extraItems)
 		numPages++;
 	smartObject.numPages = numPages;
+	//alert("num"+numPages)
 	if(view_page<1)
 	{
-		smartObject.filter_page++;
+		if(!(smartObject.numPages == 0))
+			smartObject.filter_page++;
 	}
 	else if(view_page>smartObject.numPages){
-		smartObject.filter_page--;
+		if(!(smartObject.numPages == 0))
+			smartObject.filter_page--;
 	}
 	else
 	{
@@ -203,6 +199,8 @@ function filter_smart_pagination(el,view_page, nextPrevious){
 				$("#"+id+" .filterLinkp").removeClass('dim');
 		}
 	}
+	if(smartObject.numPages == 0)
+		smartObject.filter_page=0;
 	updatePageNumbersFilter(id);
 }
 
