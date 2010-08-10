@@ -22,11 +22,13 @@ REDIPS.drag.init()
 #{if comp==null}
 <h1>${p.name}'s Task Board</h1>
 #{/if}
-#{elseif comp.number==0}
-<h1>${p.name}'s Task Board</h1>
-#{/elseif}
 #{else}
-<h1>${comp.name}'s Task Board</h1>
+	#{if comp.number==0}
+	<h1>${p.name}'s Task Board</h1>
+	#{/if}
+	#{else}
+	<h1>${comp.name}'s Task Board</h1>
+	#{/else}
 #{/else}
 
 <a href="#" id="ToggleBoard-open" onclick="ToggleBoardOpen();" title="toggle" style="display:none"><img src="@{'/public/images/famfam/show.bmp'}"></a>
