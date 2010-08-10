@@ -1,15 +1,11 @@
 package controllers;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.PersistenceException;
-
 import notifiers.Notifications;
-
 import models.Component;
 import models.Project;
 import models.User;
@@ -20,7 +16,7 @@ import play.data.validation.Validation;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
-import play.libs.Mail;
+import play.mvc.Router;
 import play.mvc.With;
 
 /**
@@ -113,7 +109,8 @@ public class Users extends SmartCRUD {
 		Date d = new Date();
 		User user = Security.getConnected();
 		Logs.addLog(user, "assignUser", "User", UId, myComponent.project, d);
-		//Notifications.notifyUsers(myUser, "Assigned to a component", "You were assigned to the component " + myComponent.name + " in the project " + myComponent.project.name, (byte) 0);
+		String url = Router.getFullUrl("Application.externalOpen")+"/components/viewTheComponent?componentId="+myComponent.id;
+		Notifications.notifyUser(myUser, "assign", url , "you to the component", myComponent.name, (byte) 0, myComponent.project);
 		myUser.save();
 		renderText("User assigned to component successfully|reload('component-" + id + "')");
 	}
@@ -515,21 +512,15 @@ public class Users extends SmartCRUD {
 			String oldEmail = userProfile.email;
 			String oldname = userProfile.name;
 			userProfile.name = name;
-			userProfile.email = email;
-			boolean hasErrors = false;
+			userProfile.email = email;			
 			String message = "";
 			if (!userProfile.email.equals(oldEmail)) 
 			{
 				userProfile.activationHash = Application.randomHash(32);
 				userProfile.isActivated = false;
-				session.put("username", email);
-				String emailSubject = "Your SmartSoft new Email activation requires your attention";
-				String emailBody = "Dear "
-						+ userProfile.name
-						+ ", The Email Address associated with your account has been requested to be changed. Please click the following link to activate your account: "
-						+ "http://localhost:9000/accounts/doActivation?hash="
-						+ userProfile.activationHash;
-				Mail.send("se.smartsoft@gmail.com", userProfile.email, emailSubject, emailBody);
+				session.put("username", email);						
+				String url = Router.getFullUrl("Accounts.doActivation")+"?hash="+ userProfile.activationHash+"&firstTime=false";
+				Notifications.activate(userProfile.email, userProfile.name, url, true);				
 				message = "You have successfully edited user personal information, A confirmation email has been sent to the new Email.";
 			} 
 			else 
