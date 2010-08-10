@@ -244,6 +244,8 @@ function deleteStory(sId,box,d){
 
 DRAGGING_ELEMENT = null
 $(function() {
+
+	$(this).parent().find('.dropper').hide();
 	$('.dragger').live('mouseover', function(){
 		if ($(this).data('init')) return
 		$(this).data('init', true)
@@ -257,7 +259,8 @@ $(function() {
 				}
 				that = this
 				$('.dropper').each(function() {
-					$(this).show()
+					$(this).show();
+
 					if ($(this).data('init')) return
 					$(this).data('init', true)
 					$(this).droppable({
@@ -294,7 +297,9 @@ $(function() {
 				$(ui.helper).remove()
 				DRAGGING_ELEMENT = null
 			}
-		})
+		});
+
+		$(this).parent().find('.dropper').hide();
 	})
 	
 	
@@ -311,7 +316,22 @@ $(function() {
 			stack  : '.draggable',
 			containment: '#'+con
 		});
-		$(this).resizable({minWidth:300,containment: '#'+con});
+		$(this).resizable({
+			minWidth:300,
+			minHeight:70,
+			containment: '#'+con,
+			grid: [1, 40],
+			stop:function(event, ui) {
+			$(this).css('height','');
+			},
+			resize: function(event, ui) {
+			$(this).find('.taskSummary').each(function(){
+				if($(this).width()>$(this).next().width())
+					$(this).next().next().hide();
+				else
+					$(this).next().next().show();
+			});
+		}});
 	}).live('mouseout', function() {
 		if ($(this).attr('id') != DRAGGING_ELEMENT) {
 			$(this).children().children('.dragger').hide()
@@ -498,18 +518,20 @@ function magic(id) {
 	doOnLoad();
 	smart_pagination(id,1);
 	hideFilterLinks(id);
-	$("#" + id + "_content div[name]").each(
-	function() 
-	{
-						if($(this).attr('class')=='overlay')
-						{
-							var id2 = "ui" +num;
-							num++;
-							var head = '<div id="'+id2+'_header" class="ui-widget-header"><a href="#" onclick="overlayOpen(\''+$(this).attr('name')+'\')"><span class="ui-icon ui-icon-extlink"></span></a>' + $(this).html()+ '</div>';
-							$(this).html(head);
-							$(this).attr('id', id2);
-							
-						}
+	$("#" + id + "_content div[name]").each(function(){
+		$(this).find('.taskSummary').each(function(){
+			if($(this).next().width()<=$(this).width())
+				$(this).next().next().hide();
+		});
+		if($(this).attr('class')=='overlay')
+		{
+			var id2 = "ui" +num;
+			num++;
+			var head = '<div id="'+id2+'_header" class="ui-widget-header"><a href="#" onclick="overlayOpen(\''+$(this).attr('name')+'\')"><span class="ui-icon ui-icon-extlink"></span></a>' + $(this).html()+ '</div>';
+			$(this).html(head);
+			$(this).attr('id', id2);
+			
+		}
 		else
 		{
 						var url = $(this).attr('name');
