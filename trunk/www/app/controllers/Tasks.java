@@ -2124,6 +2124,8 @@ System.out.println(Security.getConnected().components);
 		User connected = Security.getConnected();
 		if (task.reviewer == user)
 			renderText("You can't be the assignee & reviewer of the same task");
+		if(!user.components.contains(task.component))
+			renderText("The task & the assignee can't be in different components");
 		Security.check(connected.in(task.project).can("modifyTask") && user.projects.contains(task.project) && task.reviewer != user && (task.component == null || user.components.contains(task.component)));
 		task.assignee = user;
 		task.save();
@@ -2146,6 +2148,8 @@ System.out.println(Security.getConnected().components);
 		User connected = Security.getConnected();
 		if (task.assignee == user)
 			renderText("You can't be the reviewer & assignee of the same task");
+		if(!user.components.contains(task.component))
+			renderText("The task & the reviewer can't be in different components");
 		Security.check(connected.in(task.project).can("modifyTask") && user.projects.contains(task.project) && task.assignee != user && (task.component == null || user.components.contains(task.component)));
 		task.reviewer = user;
 		task.save();
