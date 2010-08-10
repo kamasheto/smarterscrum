@@ -223,6 +223,7 @@ public class Tasks extends SmartCRUD
 		 }
 		 } else {
 		 tmp.description = tmp.description;
+		 tmp.productRole=null;
 		 }
 		 }
 		tmp.reporter=Security.getConnected();
@@ -359,6 +360,7 @@ public class Tasks extends SmartCRUD
 		}
 		object.save();
 		/*********** Changes as Comment by Galal Aly **************/
+		tmp.productRole=null;
 		String newdesc = tmp.description;
 		String[] desc = newdesc.split(",");
 		if (desc.length == 1) {
@@ -402,6 +404,7 @@ public class Tasks extends SmartCRUD
 		 }
 		 } else {
 		 tmp.description = tmp.description;
+		 
 		 }
 		 }
 
