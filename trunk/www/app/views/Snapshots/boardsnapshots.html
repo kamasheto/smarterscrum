@@ -4,10 +4,12 @@
 Sorry, There are no snapshots to display now.<br/>
 #{/if}
 #{else}
+<table border="1"><tr><th>View Snapshot</th><th>taken by</th></tr>
 #{list items:snapshots, as:'snapshot'}
-<a href="#" onclick="f(${snapshot.id})" >
-Snapshot ${snapshot.id} taken by ${snapshot.user.name}</a><br/>		
+<tr><td><a href="#" onclick="f(${snapshot.id})" >
+<img src="@{'/public/images/famfam/camera_go.png'}"></a><br/></td><td>${snapshot.user.name}</td></tr>	
 #{/list}
+</table>
 #{/else}
 
 <script>
