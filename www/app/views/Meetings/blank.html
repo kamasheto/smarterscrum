@@ -89,7 +89,6 @@ function showStuff(id) {
 		<div class="crudField hidden" id="types">
 					<label for="object_type">Type of Meeting</label>
 							<select id="object_type" name="object.type">
-							<option value="" style="display:none"></option>
 							#{list items:types, as:'meetingtype'}
 							<option  value="${meetingtype}">${meetingtype}</option>
 							#{/list}
