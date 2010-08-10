@@ -111,7 +111,7 @@ public class Meetings extends SmartCRUD
 		Logs.addLog( Security.getConnected(), "Ended", "Meeting", M.id, M.project, new Date( System.currentTimeMillis() ) );
 		for( int i = 0; i < attendees.size(); i++ )
 		{
-			String url = Router.getFullUrl("Application.externalOpen")+"?id="+M.project.id+"&isOverlay=false&url=/meetings/viewMeetings?id="+M.id;			
+			String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + M.project.id + "&isOverlay=false&url=/meetings/viewMeetings?id=" + M.id;
 			Notifications.notifyUser( attendees.get( i ).user, "End", url, "Meeting", M.name, (byte) 0, M.project );
 		}
 	}
@@ -165,8 +165,9 @@ public class Meetings extends SmartCRUD
 		long longCurrentDate = currentDate.getTime();
 		List<Sprint> sprints = currentProject.upcomingSprints();
 		List<String> types = currentProject.meetingTypes();
-		
-		if (temp.endTime == 0) {
+
+		if( temp.endTime == 0 )
+		{
 			// defaults to 1 hours + start time
 			temp.endTime = temp.startTime + 1000 * 60 * 60;
 		}
@@ -541,20 +542,20 @@ public class Meetings extends SmartCRUD
 		{
 			meeting.status = false;
 			if( users.isEmpty() == false )
-				{
-					message = Router.getFullUrl("Application.externalOpen")+"?id="+meeting.project.id+"&isOverlay=false&url=/meetings/viewMeetings?id="+meeting.project.id;					
-					Notifications.notifyUsers(users, "Cancel", message, "Meeting", meeting.name, (byte) -1, meeting.project);
-				}
-			
+			{
+				message = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + meeting.project.id + "&isOverlay=false&url=/meetings/viewMeetings?id=" + meeting.project.id;
+				Notifications.notifyUsers( users, "Cancel", message, "Meeting", meeting.name, (byte) -1, meeting.project );
+			}
+
 		}
 
 		List<Artifact> artifacts = meeting.artifacts;
-		
+
 		while( artifacts.isEmpty() == false )
 		{
-			artifacts.remove( 0 );			
+			artifacts.remove( 0 );
 		}
-		
+
 		Logs.addLog( Security.getConnected(), "delete", "Meeting", meeting.id, meeting.project, new Date( System.currentTimeMillis() ) );
 		meeting.save();
 	}
@@ -577,12 +578,12 @@ public class Meetings extends SmartCRUD
 			if( MeetingAttendance.find( "byMeetingAndUserAndDeleted", currentMeeting, invitedUser, false ).first() == null )
 			{
 				MeetingAttendance attendance = new MeetingAttendance( invitedUser, currentMeeting );
-				attendance.save();				
+				attendance.save();
 				String meetingHash = attendance.meetingHash;
 				String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
-				String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;				
-				String meetingURL = Router.getFullUrl("Application.externalOpen")+"?id="+attendance.meeting.project.id+"&isOverlay=false&url=/meetings/viewMeeting?id="+attendance.meeting.id;
-				Notifications.invite( invitedUser, meetingURL, attendance.meeting.name, confirmURL, declineURL, attendance.meeting.project, true);
+				String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
+				String meetingURL = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + attendance.meeting.project.id + "&isOverlay=false&url=/meetings/viewMeeting?id=" + attendance.meeting.id;
+				Notifications.invite( invitedUser, meetingURL, attendance.meeting.name, confirmURL, declineURL, attendance.meeting.project, true );
 				if( !invitedUser.equals( Security.getConnected() ) )
 				{
 					renderText( "User invited to meeting successfully.|reload('meetingAttendees-" + currentMeeting.id + "')" );
@@ -638,7 +639,7 @@ public class Meetings extends SmartCRUD
 			meeting.components.add( c );
 			meeting.save();
 		}
-		renderText("Users invited successfully|reload('meeting-"+meetingID+"')");
+		renderText( "Users invited successfully|reload('meeting-" + meetingID + "' , 'meetings-" + meeting.project.id + "')" );
 	}
 
 	/**
@@ -738,7 +739,7 @@ public class Meetings extends SmartCRUD
 		}
 		if( users.isEmpty() == false )
 		{
-			String url = Router.getFullUrl("Application.externalOpen")+"?id="+meeting.project.id+"&isOverlay=false&url=/meetings/viewMeeting?id="+meeting.id;			
+			String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + meeting.project.id + "&isOverlay=false&url=/meetings/viewMeeting?id=" + meeting.id;
 			Notifications.notifyUsers( users, "Modifi", url, "the meeting", meeting.name, (byte) 0, meeting.project );
 			flag = true;
 		}
