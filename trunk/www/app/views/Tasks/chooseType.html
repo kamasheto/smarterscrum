@@ -1,28 +1,21 @@
 
  <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script> 
+<script src="@{'/public/javascripts/functions.js'}" type="text/javascript" charset="utf-8"></script>
 <div id="${taskId}">
 <h2>Task Types</h2>
 #{list items:types, as:'type'}
-<a href="#" onclick="set_type( ${type.id},${taskId},${userId},'${type.name}')"> ${type.name} </a><br/>
+<a href="#" onclick="set_type( ${type.id},${task.id},${userId},'${type.name}',${task.taskSprint.id})"> ${type.name} </a><br/>
 #{/list}
 </div>
 
 <script type="text/javascript">
-function set_type(tyId,tskId,usrId,name)
+function set_type(tyId,tskId,usrId,name,sid)
 {
 	$.post('@{editTaskType()}',
 			{id:tskId, typeId:tyId, userId:usrId},
 			function()
 			{
-			//	window.opener.document.getElementById("type_"+tskId).innerHTML = "Type:"+name;
-			//	window.opener.document.getElementById("types_"+tskId).innerHTML = "Type:"+name;
-				window.opener.$('#task-'+tskId+'_T').load('/boards/loadboard1?sprintID=1 #task-'+tskId+'_T', 
-				function()
-				{
-				window.opener.$('#'+tskId+'_button').click();
-				window.close();
-				});
-				
+				reload_sticky_note(sid, tskId);	
 			});
 				
 						
