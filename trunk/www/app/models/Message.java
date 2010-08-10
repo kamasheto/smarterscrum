@@ -13,7 +13,8 @@ import javax.persistence.ManyToOne;
  * @author Amr Hany
  */
 @Entity
-public class Message extends SmartModel {
+public class Message extends SmartModel
+{
 
 	/**
 	 * Message deleted marker
@@ -55,10 +56,31 @@ public class Message extends SmartModel {
 	 * @param r
 	 *            Chatroom of this message
 	 */
-	public Message (String authr, String mssage, ChatRoom r) {
+	public Message( String authr, String mssage, ChatRoom r )
+	{
 		this.room = r;
 		this.author = authr;
 		this.message = mssage;
 		this.stamp = new Date().getTime();
+	}
+
+	/**
+	 * Default constructor
+	 * 
+	 * @param authr
+	 *            Author of this message
+	 * @param mssage
+	 *            Body of this message
+	 * @param r
+	 *            Chatroom of this message
+	 * @param stmp
+	 *            time stamp to be sent
+	 */
+	public Message( String authr, String mssage, ChatRoom r, long stmp )
+	{
+		this.room = r;
+		this.author = authr;
+		this.message = mssage;
+		this.stamp = stmp;
 	}
 }
