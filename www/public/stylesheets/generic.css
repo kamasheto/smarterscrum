@@ -330,11 +330,7 @@ button {
 }
 
 /**tables**/
-table {
-	border: 1px solid #111111;
-	border-collapse: collapse;
-	width: 100%;
-}
+
 
 tr {
 	margin: 0px !important;
@@ -541,12 +537,12 @@ h1,h2,h3,h4,h5,h6,h7 {
 }
 
 .draggableChild .ui-widget-content.actual {
-	border-left: 5px solid #BF5F91 !important;
 	width: auto;
 }
 
 .ui-widget-content {
 	width: 100%;
+	background: transparent !important;
 }
 
 table {
@@ -792,6 +788,10 @@ img {
 
 .draggableChild .ui-widget-header {
 	cursor: pointer;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	margin: 5px 0px;
 }
 
 .project_name_in_header {
@@ -866,13 +866,6 @@ a:hover {
 	display: none;
 }
 
-.actual .draggableChild .ui-widget-content {
-	width: auto;
-	border-color: #bbb !important;
-	border-style: solid !important;
-	border-width: 0 5px 5px !important;
-}
-
 .makeTransparent {
 	background: url('/public/images/bg2.png') repeat-x fixed left top;
 }
@@ -908,9 +901,9 @@ a {
 	_border-right-color: pink;
 	_border-left-color: pink;
 	margin-top: -2px;
-	_filter: chroma(color =                          
+	_filter: chroma(color =                            
 		                                                          
-		                               pink);
+		                                 pink);
 }
 
 .notchBottom2 {
@@ -928,9 +921,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                          
+	_filter: chroma(color =                            
 		                                                          
-		                               pink);
+		                                 pink);
 }
 
 .notchTop {
@@ -945,9 +938,9 @@ a {
 	margin-left: 30px;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                          
+	_filter: chroma(color =                            
 		                                                          
-		                               pink);
+		                                 pink);
 }
 
 .notchRight {
@@ -964,9 +957,9 @@ a {
 	display: inline-block;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                          
+	_filter: chroma(color =                            
 		                                                          
-		                               pink);
+		                                 pink);
 }
 
 .notchLeft {
@@ -981,9 +974,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                          
+	_filter: chroma(color =                            
 		                                                          
-		                               pink);
+		                                 pink);
 }
 
 .chatboxtextarea:focus {
@@ -1203,7 +1196,7 @@ img.left {
 	left: 0;
 	position: absolute;
 	opacity: 0;
-	filter: Alpha(Opacity =     0);
+	filter: Alpha(Opacity =         0);
 }
 
 /* Interaction Cues
@@ -1357,13 +1350,13 @@ img.left {
 
 .ui-priority-secondary,.ui-widget-content .ui-priority-secondary {
 	opacity: .7;
-	filter: Alpha(Opacity =     70);
+	filter: Alpha(Opacity =         70);
 	font-weight: normal;
 }
 
 .ui-state-disabled,.ui-widget-content .ui-state-disabled {
 	opacity: .35;
-	filter: Alpha(Opacity =     35);
+	filter: Alpha(Opacity =         35);
 	background-image: none;
 }
 
@@ -2184,7 +2177,7 @@ img.left {
 	background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
 		repeat-x;
 	opacity: .30;
-	filter: Alpha(Opacity =     30);
+	filter: Alpha(Opacity =         30);
 }
 
 .ui-widget-shadow {
@@ -2193,7 +2186,7 @@ img.left {
 	background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
 		repeat-x;
 	opacity: .30;
-	filter: Alpha(Opacity =     30);
+	filter: Alpha(Opacity =         30);
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	border-radius: 8px;
@@ -2958,4 +2951,34 @@ a.jbar-cross:hover {
 
 .jbar-bottom a.jbar-cross {
 	bottom: 8px;
+}
+
+.selectedBars {
+	background: none repeat scroll 0 0 #999999 !important;
+	padding: 5px;
+	-webkit-border-radius: 0px 0px 5px 5px;
+	border-radius: 0px 0px 5px 5px;
+	-moz-border-radius: 0px 0px 5px 5px;
+}
+
+.selectedBars2 {
+	background: none repeat scroll 0 0 #eee !important;
+	padding: 5px;
+	-webkit-border-radius: 0px 0px 5px 5px;
+	border-radius: 0px 0px 5px 5px;
+	-moz-border-radius: 0px 0px 5px 5px;
+}
+
+.selectedBar {
+	background: #888 !important;
+	border-bottom: 1px dotted #DDDDDD !important;;
+	margin: 5px 0 -5px 0 !important;
+	color: #fff !important;
+}
+
+.selectedBar2 {
+	background: #ddd !important;
+	border-bottom: 1px dotted #999 !important;;
+	color: #333 !important;
+	margin: 5px 0 -5px 0 !important;
 }

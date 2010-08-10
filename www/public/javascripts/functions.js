@@ -410,7 +410,18 @@ $(function() {
 			function() {
 				if($(this).next().html()=='')
 					load($(this).parent().attr('name') + ' .actual',$(this).parent().attr('id'),3);
-
+				
+				if($(this).parents().length%4==0)
+				{
+					$(this).toggleClass('selectedBar');
+					$(this).next().toggleClass('selectedBars');
+				}
+				else
+				{
+					$(this).toggleClass('selectedBar2');
+					$(this).next().toggleClass('selectedBars2');
+					
+				}
 				$(this).next().slideToggle(400);
 
 			});
