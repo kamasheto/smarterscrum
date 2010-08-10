@@ -29,7 +29,7 @@ public class Project extends SmartModel
 	public String name;
 
 	@Lob
-	@Required
+
 	/**
 	 * project's description
 	 */
