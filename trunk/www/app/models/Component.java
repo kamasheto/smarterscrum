@@ -31,7 +31,7 @@ public class Component extends SmartModel
 	 * component description
 	 */
 	@Lob
-	@Required
+
 	@MaxSize( 10000 )
 	public String description;
 
