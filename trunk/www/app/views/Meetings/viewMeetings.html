@@ -1,6 +1,6 @@
 #{extends 'magicBox.html' /}	
 	#{set 'title'}
-	Meetings
+	Meetings (${project.meetings.size()})
 	#{if connected.in(project).can('addMeeting') }
 	<a href="javascript:overlayOpen('/admin/projects/${id}/meetings/new');"><img title="add" src="@{'/public/images/famfam/add.png'}"></a>
 	#{/if}
