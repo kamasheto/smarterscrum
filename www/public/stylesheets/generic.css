@@ -3003,3 +3003,9 @@ a.jbar-cross:hover {
 	z-index: 9999;
 	overflow: auto
 }
+
+#onlineUsers {
+	font-size:12px;
+	padding: 10px;
+	background: white;
+}

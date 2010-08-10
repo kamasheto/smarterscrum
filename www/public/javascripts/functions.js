@@ -1,36 +1,4 @@
-﻿﻿		var getNotifications = function() {
-				$.getJSON('/notificationtasks/getlatestnews',
-					function(data) {
-						$(data).each(function(){
-							$.gritter.add({
-								title: 'New Notification',
-									text: '<a href = "/show/user?id='+this.receiver.id+'">'+ this.actionPerformer.name +'</a> has '+this.actionType+'ed'+ this.resourceType+': <a href = '+this.resourceURL+'>'+this.resourceName+'</a>',
-								image: this.importance > 0 ? '/public/images/tick.png' : this.importance < 0 ? '/public/images/cross.png' : '/public/images/error.png',
-								sticky: false,
-								time: '10000'
-							});
-							return true;
-						});
-					setTimeout('getNotifications();', 1000);
-					});
-				}
-var ping = function() {
-				$.getJSON('/sessions/ping',
-					function(data) {
-						str = '';
-						$(data).each(function() {
-							// users?
-							if (this.isAdmin) {
-								this.name = '<span class="isAdmin">' + this.name + '</span>';
-							}
-							str += '<a href="/show/user?id='+this.id+'">' + this.name + '</a>, ';
-						});
-						
-						$('#onlineUsers').html(str.substring(0,str.length-2));
-						setTimeout('ping()', 1000*30);
-					});
-				}
-
+﻿
 			 $.extend($.gritter.options, { 
 				fade_in_speed: 50, // how fast notifications fade in (string or int)
 				fade_out_speed: 300, // how fast the notices fade out
