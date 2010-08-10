@@ -5,9 +5,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import models.Board;
+import models.ChatRoom;
 import models.Project;
 import models.Request;
 import models.Role;
+import models.Task;
 import models.TaskType;
 import models.User;
 import play.mvc.With;
@@ -120,6 +122,16 @@ public class Show extends SmartController
 	public static void workspace( long id )
 	{
 		Project proj = Project.findById( id );
-		render( proj );
+		ChatRoom room=proj.chatroom; 
+		int chatters=0;
+		for(User U:proj.users){
+			if(U.openChats.contains(room)){
+				chatters++;
+			}
+			
+		}
+		List<Task> tasks = Task.find("byProjectAndDeletedAndParentIsNull", proj, false).fetch();
+		int tasksnumber=tasks.size();
+		render( tasksnumber,proj,chatters );
 	}
 }
