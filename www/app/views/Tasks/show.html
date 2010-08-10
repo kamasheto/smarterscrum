@@ -249,12 +249,14 @@
 	}
 
 	function deleteComment(cId,tIdd){
+	if(confirm("Are you sure you want to delete this comment? This action can not be undone.")){
 		$.post('/comments/deleteComment', {id:cId}, function(msg){
 			$.bar({message:msg});
 		});
 		$.post('/comments/listCommentsOfTask', {tId:tIdd}, function(data){
 			$("[name='comments']").html(data);
 		});
+	}
 	}
 function getUsers()
 {
