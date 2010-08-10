@@ -2,9 +2,7 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
-
 import models.Artifact;
 import models.Component;
 import models.Meeting;
@@ -626,20 +624,12 @@ public class Meetings extends SmartCRUD
 				if( invitedUser.meetingStatus( meetingID ).equals( "notInvited" ) )
 				{
 					MeetingAttendance attendance = new MeetingAttendance( invitedUser, meeting );
-					attendance.save();
-					List<User> userList = new LinkedList<User>();
-					userList.add( invitedUser );
+					attendance.save();					
 					String meetingHash = attendance.meetingHash;
-					String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
-					String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
-					String header = "Invitation to Meeting in " + meeting.project.name + " project";
-					String body1 = "Hello " + invitedUser.name;
-					String body2 = "You have been invited to attend " + meeting.name + " ";
-					String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
-					String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
-					String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-					// Notifications.notifyProjectUsers( meeting.project,
-					// header, body, "setMeeting", (byte) 0 );
+					String confirmURL = Router.getFullUrl("MeetingAttendances.confirm")+"?meetingHash=" + meetingHash;
+					String declineURL = Router.getFullUrl("MeetingAttendances.decline")+"?meetingHash=" + meetingHash;					
+					String meetingURL = Router.getFullUrl("Application.externalOpen")+"?id="+meeting.project.id+"&isOverlay=false&url=/meetings/viewMeeting?id="+meeting.id;					
+					Notifications.invite(invitedUser, meetingURL, meeting.name, confirmURL, declineURL, meeting.project, true);
 				}
 			}
 		}
@@ -683,21 +673,12 @@ public class Meetings extends SmartCRUD
 							if( user.meetingStatus( meetingID ).equals( "notInvited" ) )
 							{
 								MeetingAttendance attendance = new MeetingAttendance( user, meeting );
-								attendance.save();
-								List<User> userList = new LinkedList<User>();
-								userList.add( user );
-								String meetingHash = attendance.meetingHash;
-								String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
-								String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
-								String header = "Invitation to Meeting in " + meeting.project.name + " project";
-								String body1 = "Hello " + user.name;
-								String body2 = "You have been invited to attend " + meeting.name + " ";
-								String body3 = "To confirm attending please click on this link : " + confirmURL + " ";
-								String body4 = "To Decline the invitation please click this link: " + declineURL + " ";
-								String body = body1 + "\n" + "\n" + body2 + "\n" + body3 + "\n\n" + body4;
-								// Notifications.notifyUsers( userList, header,
-								// body,
-								// (byte) 0 );
+								attendance.save();								
+								String meetingHash = attendance.meetingHash;								
+								String confirmURL = Router.getFullUrl("MeetingAttendances.confirm")+"?meetingHash=" + meetingHash;
+								String declineURL = Router.getFullUrl("MeetingAttendances.decline")+"?meetingHash=" + meetingHash;					
+								String meetingURL = Router.getFullUrl("Application.externalOpen")+"?id="+meeting.project.id+"&isOverlay=false&url=/meetings/viewMeeting?id="+meeting.id;					
+								Notifications.invite(user, meetingURL, meeting.name, confirmURL, declineURL, meeting.project, true);
 							}
 						}
 					}
