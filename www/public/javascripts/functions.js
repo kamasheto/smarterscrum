@@ -5,7 +5,15 @@
 });
 
 var CURRENT_PROJECT = 0;
-
+	
+function reload_sticky_note(sid, taskId) {
+	window.opener.$('#task-'+taskId+'_T').load('/boards/loadboard1?sprintID='+sid+' #task-'+taskId+'_T',
+	function()
+				{
+				window.opener.$('#'+taskId+'_button').click();
+				window.close();
+				});
+}
 function request_accept( id, hash )
 {
 	$.post('/requests/requestAccept' ,

@@ -760,6 +760,7 @@ System.out.println(Security.getConnected().components);
 		}
 		task1.description = desc;
 		task1.save();
+		Update.update(task1.project, "reload_note("+task1.taskSprint.id+","+task1.id+")");
 		List<User> m = new ArrayList();
 		m.add(task1.assignee);
 		m.add(task1.reporter);
@@ -1505,7 +1506,7 @@ System.out.println(Security.getConnected().components);
 		Component c = Component.findById(compId);
 		users = c.componentUsers;
 		users.remove(task.reviewer);
-		render(taskId, users, user1);
+		render(task, users, user1);
 	}
 
 	/**
@@ -1529,7 +1530,7 @@ System.out.println(Security.getConnected().components);
 		Component c = Component.findById(compId);
 		users = c.componentUsers;
 		users.remove(task.assignee);
-		render(taskId, users, user1);
+		render(task, users, user1);
 	}
 
 	/**
@@ -1566,7 +1567,7 @@ System.out.println(Security.getConnected().components);
 		}
 		Task task = Task.findById(taskId);
 		List<TaskType> types = task.taskSprint.project.taskTypes;
-		render(taskId, types, userId);
+		render(task, types, userId);
 	}
 
 	/**
