@@ -39,12 +39,12 @@ public class Notifications extends Mailer{
 		send(user, url);
 	}
 	
-	public static void welcome(User user)
+	public static void welcome(User user, boolean welcome)
 	{
 		setFrom("se.smartsoft.2@gmail.com");
 		setSubject("Welcome To SmarterScrum");
 		addRecipient(user.email);
-		send(user);
+		send(user, welcome);
 	}
 	
 	public static void byeBye(User user, boolean request)

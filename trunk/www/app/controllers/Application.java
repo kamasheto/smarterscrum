@@ -221,7 +221,7 @@ public class Application extends SmartController
 			user.isActivated = false;
 			user.save();
 			session.put( "username", email );			
-			String url = Router.getFullUrl("Accounts.doActivation")+"?hash=" + user.activationHash;
+			String url = Router.getFullUrl("Accounts.doActivation")+"?hash=" + user.activationHash+"&firstTime=false";
 			Notifications.activate(user.email, user.name, url, true);			
 			flash.success( "Successfully saved your data! , please check your new Email and follow the instructions sent by us to confirm your new Email." );
 			profile( id );
