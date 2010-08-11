@@ -5,6 +5,7 @@ import java.util.List;
 import notifiers.Notifications;
 import models.Invite;
 import models.MeetingAttendance;
+import models.Project;
 import models.Role;
 import models.User;
 import play.mvc.Router;
@@ -61,6 +62,17 @@ public class Invites extends SmartController {
 		invite.delete();
 		//flash.success("Invitation successfully accepted and role " + invite.role.name + " added");
 		//Application.index();
+	}
+	
+	/**
+	 * renders the page where the admin can invite users to his project
+	 * @param id the id of the project
+	 */
+	public static void InviteUsers(long id)
+	{
+		Project project = Project.findById(id);
+		//List<User> users = User.find(project + " not in projects").fetch();
+		render(project);
 	}
 	
 	/**
