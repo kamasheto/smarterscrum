@@ -5,7 +5,7 @@
 		<span id="currr_${meeting.id}" style="float: left;font-style: italic; font-size :85%;"></span>
 		<script type="text/javascript">
 		$(function() {
-			showDate(${meeting.id},${meeting.startTime},'${meeting.name}');
+			showDate(${meeting.id},'currr_'+${meeting.id},${meeting.startTime},'${meeting.name}');
 		})
 		</script>
 	#{/if}

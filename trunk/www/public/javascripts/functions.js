@@ -713,11 +713,11 @@ function fix(obj)
 	});
 }
 
-function showDate(id,startTime,name) 
+function showDate(id,place,startTime,name) 
 {
 	var date=startTime;
 	var tz =0;         //  
-	var lab = 'currr_'+id;    //  The id of the page entry where the timezone countdown is to show
+	var lab = place;    //  The id of the page entry where the timezone countdown is to show
 	displayTZCountDown(setTZCountDown(date,tz),lab,id,name);
 }
 function setTZCountDown(date,tz) 
@@ -747,7 +747,7 @@ function displayTZCountDown(countdown,tzcd,id,name)
 
 	if(days>7)
 	{
-		document.getElementById(tzcd).innerHTML = "["+days/7 + " W]"
+		document.getElementById(tzcd).innerHTML = "["+parseInt(days/7) + " W]"
 	}
 	else
 	{
