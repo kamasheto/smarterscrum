@@ -127,7 +127,6 @@ public class Ajax extends SmartController
 		} else if (from.equals("projectusers") && to.equals("meeting")) {
 			Meetings.inviteAllMembers(id2);
 		} else {
-			
 			renderText("Something went wrong. Please try again. " + from + id + ", " + to + id2);
 		}
 	}
