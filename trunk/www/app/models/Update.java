@@ -50,5 +50,20 @@ public class Update extends SmartModel {
 			Update.update(user, javascript);
 		}
 	}
+	
+	/**
+	 * Adds an update for this list except for the given user
+	 * @param users List of users
+	 * @param user User to exclude
+	 * @param javascript Javascript code to execute at client side
+	 */
+	public static void update(List<User> users, User user, String javascript) {
+		for (User tmpUser : users) {
+			if (tmpUser == user) {
+				continue;
+			}
+			Update.update(tmpUser, javascript);
+		}
+	}
 }
 
