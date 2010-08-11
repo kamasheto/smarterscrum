@@ -390,8 +390,7 @@ public class Tasks extends SmartCRUD
 		 flag = true;
 		 }
 		 if (!flag) {
-		 ProductRole pr = new ProductRole(tmp.project.id,
-		 productrole, "");
+		 ProductRole pr = new ProductRole(tmp.project.id, productrole, "");
 		 pr.save();
 		 tmp.productRole = pr;
 		 } else {
@@ -404,6 +403,9 @@ public class Tasks extends SmartCRUD
 		 }
 		 }
 		 for (int i = 1; i < desc.length; i++) {
+		 if(i==desc.length-1)
+			 tmp.description = desc[i];
+		else
 		 tmp.description = desc[i] + " ";
 		 }
 		 }
@@ -760,7 +762,7 @@ System.out.println(Security.getConnected().components);
 		}
 		task1.description = desc;
 		task1.save();
-		Update.update(task1.project, "reload_note("+task1.taskSprint.id+","+task1.id+")");
+		//Update.update(task1.project, "reload_note("+task1.taskSprint.id+","+task1.id+")");
 		List<User> m = new ArrayList();
 		m.add(task1.assignee);
 		m.add(task1.reporter);

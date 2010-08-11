@@ -903,6 +903,8 @@ public class Bootstrap extends Job {
 
 			Task S10 = new Task("I can view all System logs", "", "", 1, "", 1);
 			S10.component = p2.components.get(0);
+			S10.taskStatus = p2.taskStatuses.get(0);
+			S10.taskType = p2.taskTypes.get(0);
 			p2.components.get(0).componentTasks.add(S10);
 			S10.project = p2.components.get(0).project;
 			p2.components.get(0).project.projectTasks.add(S10);
