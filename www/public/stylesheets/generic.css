@@ -214,8 +214,8 @@ img {
 	cursor: pointer;
 	z-index: 9;
 	top: -5px;
-	background-color: #111
-	color: #eee;
+	background-color: #111;
+	color: #eee !important;
 }
 
 .selectedADiv {

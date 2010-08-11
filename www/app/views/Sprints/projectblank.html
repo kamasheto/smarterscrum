@@ -32,7 +32,7 @@ $(function() {
 	
 				
 
-<label for="object_startDate">startDate</label>
+<label for="object_startDate">Start Date</label>
 	
 	<input id="object_startDate" class="" type="text" name="object.startDate" value="" size="10" />		
  
@@ -44,7 +44,7 @@ $(function() {
 	
 				
 
-<label for="object_endDate">endDate</label>
+<label for="object_endDate">End Date</label>
 	
 	<input id="object_endDate" class="" type="text" name="object.endDate" value="" size="10" />		
  
@@ -57,6 +57,8 @@ $(function() {
 			#{crud.custom 'deleted'}
 			#{/crud.custom }
 			#{crud.custom 'sprintNumber'}
+			#{/crud.custom }
+			#{crud.custom 'Last'}
 			#{/crud.custom }
 			#{crud.custom 'project'}
 			<input type="hidden" id="object_project" name="object.project@id" value="${projectId}" >
