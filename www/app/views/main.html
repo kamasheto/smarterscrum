@@ -114,7 +114,7 @@
 #{/if}
 	<!--a class="aDIV topCornersRounded" href="#"  onclick="normalShow('@{About.index}')" title="read aboout SmartSoft?">About Us</a--> 
 	#{if connected}
-		<a class="aDIV topCornersRounded " href="#" onclick="$('#top_header_projects_pane').slideToggle()" style="width: 120px !important" title="">Projects</a>
+		<a class="aDIV topCornersRounded " href="#" onclick="$('#top_header_projects_pane').slideToggle()" style="width: 120px !important" title="">Projects (${connected?.projects.size()})</a>
 	#{/if}
 </div>	
 <div id="top_header_projects_pane" class="hidden bottomCornersRounded">
