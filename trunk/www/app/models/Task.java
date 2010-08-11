@@ -40,7 +40,6 @@ public class Task extends SmartModel {
 	 */
 	public double estimationPoints;
 
-	// ADDED BY HADEER YOUNIS. DO NOT REMOVE.
 	/**
 	 * Estimation points per day used in the backlog.
 	 */
@@ -154,6 +153,7 @@ public class Task extends SmartModel {
 
 	public void init() {
 		this.subTasks = new ArrayList<Task>();
+		this.estimationPointsPerDay = new ArrayList<Double>();
 		if (this.parent == null) {
 			List<Task> tasks = Task.find("byProjectAndParentIsNull",
 					this.project).fetch();
@@ -202,6 +202,8 @@ public class Task extends SmartModel {
 		this.productRole = null;
 		this.component = null;
 		this.subTasks = new ArrayList<Task>();
+
+		this.estimationPointsPerDay = new ArrayList<Double>();
 	}
 
 	/**
@@ -257,7 +259,7 @@ public class Task extends SmartModel {
 	public Task() {
 		meeting = new ArrayList<Meeting>();
 		dependentTasks = new ArrayList<Task>();
-		this.estimationPointsPerDay = new ArrayList<Double>(1);
+		this.estimationPointsPerDay = new ArrayList<Double>();
 	}
 
 	/**
@@ -275,7 +277,7 @@ public class Task extends SmartModel {
 		this.description = des;
 		this.deleted = false;
 		this.estimationPoints = estimationPoints;
-		this.estimationPointsPerDay = new ArrayList<Double>(1);
+		this.estimationPointsPerDay = new ArrayList<Double>();
 		this.save();
 	}
 	/**
