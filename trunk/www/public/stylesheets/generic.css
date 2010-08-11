@@ -3104,3 +3104,15 @@ text-align:center;
 div.jcalendar-links a {
 padding:.2em .4em;
 }
+
+/* amorotto css */
+.meeting_countdown {
+	opacity: 0.2;
+	font-size:18px !important;
+	letter-spacing:-2px;
+	float: none !important;
+	font-family:Arial !important;
+	text-transform:lowercase;
+}
+
+/* end amorotto css */

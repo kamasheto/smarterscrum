@@ -32,7 +32,7 @@
 		<div class="${current.getStatus().equals("current") ? 'greenBg' : current.getStatus().equals("upComing") ? 'yellowBg' : 'redBg'} reload-meeting-${current.id}" name="/meetings/viewmeeting?id=${current.id}">
 		${current.name}
 		#{if current.getStatus().equals("upComing")}
-		<span id="curr_${current.id}" style="float: left; font-style: italic; font-size :85%;"></span>
+		<span id="curr_${current.id}" class="meeting_countdown"></span>
 		<script type="text/javascript">
 		$(function() {
 			showDate(${current.id},'curr_'+${current.id},${current.startTime},'${current.name}');
