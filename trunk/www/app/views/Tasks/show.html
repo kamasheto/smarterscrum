@@ -32,10 +32,7 @@
 
 	<div class="objectForm">
 	#{form action:@save(object.id), enctype:'multipart/form-data'}
-	#{crud.form fields:['parent','description', 'taskType', 'taskStatus', 'component'  , 'estimationPoints', 'reporter',
-	  'dependentTasks','taskSprint', 'assignee', 'reviewer', 'comment', 'subTasks']}	
-			
-			
+	#{crud.form fields:['parent','description', 'taskType', 'taskStatus', 'component'  , 'estimationPoints', 'reporter', 'dependentTasks','taskSprint', 'assignee', 'reviewer', 'comment', 'subTasks']}		
 			#{crud.custom 'parent'}
 			#{if object.parent!=null}
 			<label for="task_parent">Parent</label> 
@@ -47,7 +44,7 @@
 			
 			#{crud.custom 'description' }
 			<label for="object_description">Description	</label>
-			<textarea id="object_description"  name="object.description" ROWS="4" COLS="60" onclick="f();">#{if object.productRole==null}${object.description}#{/if}#{elseif object.productRole!=null && (object.productRole.name[0]=='a'||object.productRole.name[0]=='e'||object.productRole.name[0]=='i'||object.productRole.name[0]=='o')}As an ${object.productRole.name}, ${object.description}#{/elseif}#{elseif object.productRole!=null}As a ${object.productRole.name}, ${object.description}#{/elseif}</textarea>
+			<textarea id="object_description"  name="object.description" ROWS="4" COLS="60" onclick="f();">${object.getSummary()}</textarea>
     		<span class="crudHelp" style="color:red">*</span>
 			<div style="display:none" class="d">Ex: As a/an product role, description</div>
 			<span class="error"></span>
@@ -122,16 +119,9 @@
 			<label for="object_assignee">Assignee</label>
 			<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers();">
 					<option value="">(None)</option>
-				#{list items:users ,as :'User'}
-				#{if object.assignee !=null}
-				#{if User.name != object.reviewer.name}
-				#{if object.assignee!=null}<option value="${User.id}"#{if object.assignee.id == User.id} selected#{/if}>${User.name}</option>#{/if}
-				#{/if}
-				#{/if}
-				#{else}
-				<option value="${User.id}"#{if object.assignee == User} selected#{/if}>${User.name}</option>
-				#{/else}
-				#{/list}		
+					#{list items:users ,as :'User'}
+					<option value="${User.id}"#{if object.assignee == User} selected#{/if}>${User.name}</option>
+					#{/list}		
 	</select>
 			</p>
 			#{/crud.custom}
@@ -141,9 +131,9 @@
 			<select id="object_reviewer" name="object.reviewer@id" >
 				<option value="">(None)</option>
 				#{list items:users ,as :'User'}
-				#{if object.assignee !=null}
-				#{if User.name != object.assignee.name}
-				#{if object.reviewer!=null}<option value="${User.id}"#{if object.reviewer.id == User.id} selected#{/if}>${User.name}</option>#{/if}
+				#{if object.assignee!=null}
+				#{if object.assignee.id!=User.id}
+				<option value="${User.id}"#{if object.reviewer == User} selected#{/if}>${User.name}</option>
 				#{/if}
 				#{/if}
 				#{else}
