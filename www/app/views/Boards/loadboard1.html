@@ -16,7 +16,7 @@
 <script  type="text/javascript" src="@{'/public/javascripts/drag.js/'}"  ></script>
 #{/set}
 #{set 'onLoad'}
-REDIPS.drag.init()
+REDIPS.drag.init();
 #{/set}
 
 #{if comp==null}
@@ -121,7 +121,7 @@ REDIPS.drag.init()
 </select>
 
 <div id="drag">
-<table id="mainBoard" class="draggable" style="" border="1">
+<table id="mainBoard" class="draggable" border="1">
 
 <tr> <!-- headers row -->					
 	<td width="50px">Headers</td>
@@ -155,6 +155,8 @@ REDIPS.drag.init()
 	#{/list}
 </tr>
 
+#{set count2 = 0}
+#{/set}
 #{list items:data, as:'component'}  
 #{if component!=null} 
 <tr id="com-${component.id}_hidden" style="display:none;" > <!-- empty rows of the board -->
@@ -168,12 +170,13 @@ REDIPS.drag.init()
 	#{/list}
 </tr>
 
+
 <tr id="com-${component.id}" style="height:100px"> <!-- filling rows with data -->
 	<td width="50px" id="com-${component.id}" onclick="component(this.id);">${component.title}</td> <!-- 1st cell in each row with component name -->
 	#{set count=0}
 	#{/set}
 	#{list items:component, as:'col'}
-	<td width="50px" class="col_${count}" >  <!--filling cells in each row with tasks -->
+	<td id="${count2}_${count}" width="50px" class="col_${count}" >  <!--filling cells in each row with tasks -->
 		#{set count=count+1}
 		#{/set}
 		#{list items:col, as:'task'}
@@ -188,7 +191,7 @@ REDIPS.drag.init()
 		<div id="task-${task.id}_TT">
 		<p>		
 		<div class="${task.taskStatus.columns[0].name}"></div>  
-		<div class="status status_${task.id}">
+		<div class="drag status status_${task.id}">
 		<div class="small_${task.id} shadowed" style="-moz-border-radius:10px; border-radius:10px; background-color:${task.taskType.hexColor}; border:0px; "  id="${task.id}_small">
 		<a id="task-${task.id}" onclick="ctask(this.id);" style="cursor:pointer !important;border=0px; float:right;"><img title="hide?" src="@{'/public/images/famfam/bullet_toggle_minus.png'}"></img></a> 
 		<div id="desc_${task.id}">${task.description}</div>
@@ -272,6 +275,8 @@ REDIPS.drag.init()
 	</td>
 	#{/list}
 </tr>#{/if}
+#{set count2=count2+1}
+	#{/set}
 #{/list}
 </table>
 </div>
@@ -416,7 +421,8 @@ function ctask(id)
     	    $.post('@{Columns.editColumnName}',{id:colId, name:value, userId:selectedUser});
 		    return(value);
     	   },{indicator : 'Saving...',});});
-	
+	$('.drag').live('mouseover', function(){
+REDIPS.drag.init();})
 	/**
 	 * swapping with clicking instead of drag and drop.
 	 * 
