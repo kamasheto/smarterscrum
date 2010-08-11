@@ -19,7 +19,7 @@
 <a  href="#"onclick="loadBox('@{Projects.events(proj.id)}','workspace-${proj.id}')">Events <small>(${proj.sprints.size()+proj.meetings.size()})</small></a>
 <a  href="#"onclick="$('#chatContainer_${proj.id}').slideToggle(400); #{ifnot connected.openChats.contains(proj.chatroom)} signIn(${proj.chatroom.id}); getMessages(${proj.id},${proj.chatroom.id}); #{/ifnot}">Chatroom <small>(${chatters} Online)</small></a>
 #{set activity: proj.activity() /}
-<a href="#" onclick="loadBox('@{Projects.settings(proj.id)}','workspace-${proj.id}')">Settings</a> 
+<a href="#" onclick="loadBox('@{Projects.settings(proj.id)}','workspace-${proj.id}', 'do_not_paginate')">Settings</a> 
 <span class="activity-level activity-level-${activity}" title="Activity level: ${activity}/10"> </span>
 <a href="#" onclick="loadBox('/helptopics/topics?projectId=${proj.id}', 'workspace-${proj.id}')">Help</a>
 <a class="right " href="#" onclick="closeWindows(${proj.id});" title="Close all windows">Close all windows</a>

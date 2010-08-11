@@ -1,47 +1,32 @@
 #{set id:controllers.Application.randomHash() /}
 <div  id="#{get 'id' /}" class="draggable allCornersRounded">
 	<div  id="#{get 'id' /}_header"class="ui-widget-header mainH">
-		
-		<span class="revertFrom">
-			<span title="close"class="ui-icon ui-icon-circle-close"></span>
-		</span>
-			<span class="min" onclick="$(this).children().toggle();">
+		<span class="revertFrom"><span title="close"class="ui-icon ui-icon-circle-close"></span></span>
+		<span class="min" onclick="$(this).children().toggle();">
 			<span title="show?" class="ui-icon ui-icon-circle-triangle-s" style="display: none;"></span>
 			<span title="hide?"class="ui-icon ui-icon-circle-triangle-n"></span>
 		</span>
-			<span title="refresh?"class="refresh ui-icon ui-icon-refresh"></span>
-			#{get 'title'/}
-			</div>
-			
+		<span title="refresh?"class="refresh ui-icon ui-icon-refresh"></span>
+		#{get 'title'/}
+	</div>		
 	<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>
-	<div id="#{get 'id'/}_content" class="ui-widget-content actual" style="display:none">
+	<div id="#{get 'id'/}_content" class="ui-widget-content actual" style="display:none;">
 	#{doLayout /}
 	</div>
-	<script type="text/javascript">
-	var page=1;
-	var filter_page = 1;
-	var filter_smart_array = new Array();
-	var globalSizeOfFilteredChildren;
-	var globalNumPagesNormal;
-	var globalNumPagesFilter;
-	</script>
 		<div class="filter"id="#{get 'id'/}_filter">
 		<table>
 		<tbody>
 		<tr>
 		<td><input style="width:100%" name="filter_textBox_#{get 'id' /}" type="text" onkeyup="filter_me(this);fix($('##{get 'id'/}_content'));"></td>
 		<td style="width:60px">
-		<a href="#"  style="display:inline-block" class="normalLinkp" onclick="previousPage(this);fix($('##{get 'id'/}_content'));"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
-		<a href="#"  style="display:inline-block" class="filterLinkp" href="" onclick="previousFilterPage(this);fix($('##{get 'id'/}_content'));"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
+		<a href="#"  style="display:inline-block" class="normalLinkp" onclick="previousPage(this);fix($('##{get 'id'/}_content'));"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
+		<a href="#"  style="display:inline-block" class="filterLinkp" href="" onclick="previousFilterPage(this);fix($('##{get 'id'/}_content'));"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
 		<span class="numPages">Error</span>
-		<a href="#"  style="display:inline-block" class="normalLinkn" onclick="nextPage(this);fix($('##{get 'id'/}_content'));"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>	
-		<a href="#"  style="display:inline-block" class="filterLinkn" href="#" onclick="nextFilterPage(this);fix($('##{get 'id'/}_content'));"><span  style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
+		<a href="#"  style="display:inline-block" class="normalLinkn" onclick="nextPage(this);fix($('##{get 'id'/}_content'));"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>	
+		<a href="#"  style="display:inline-block" class="filterLinkn" href="#" onclick="nextFilterPage(this);fix($('##{get 'id'/}_content'));"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
 		</td>
 		</tr>
 		</tbody>
 		</table>
 </div>
-	
-
 </div>
-
