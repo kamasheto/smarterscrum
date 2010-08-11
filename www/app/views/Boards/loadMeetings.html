@@ -28,6 +28,7 @@ Meetings
 var date=${users.meeting.endTime};
 var tz =0;         //  
 var lab = 'tzcd_'+${users.meeting.id};    //  The id of the page entry where the timezone countdown is to show
+
 displayTZCountDown(setTZCountDown(date,tz),lab);
 
 function setTZCountDown(date,tz) 
@@ -47,7 +48,7 @@ function displayTZCountDown(countdown,tzcd)
 		if (answer) 
 		{
 			extend(${users.meeting.id});
-			window.location.reload();	
+			
 		}
 		else
 		{
@@ -55,7 +56,7 @@ function displayTZCountDown(countdown,tzcd)
 			if(answera)
 			{
 				take_meetingsnapshot(${users.meeting.id});
-				window.location.reload();
+			
 			}
 			else{window.location.reload();}
 		}	
@@ -127,12 +128,19 @@ No Attendees
 	$.post('/Meetings/joinMeeting', {meetingID:id},function()
 	{
 		window.location.reload();
-	});
+	});}
+		
 		function extend(id) {
-		$.post('/Meetings/extend', {meetingid:id}, function(){$.bar({message:"Extended!"})});
+		$.post('/Meetings/extend', {meetingid:id}, function(){
+		$.bar({message:"Meeting extended!"});
+		window.location.reload();
+	
+			});
+	
+	
 	}
 	
-		}
+		
 	function take_meetingsnapshot(id) {
 	
 		$.post('/Snapshots/TakeSnapshot', {sprintID:${sid},componentID:0,meetingID:id}, function(){$.bar({message:"Snapshot Associated!"})});
