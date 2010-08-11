@@ -64,6 +64,13 @@ public class Collaborate extends SmartController {
 		response.online_users = users;
 		
 		/**
+		 * Suspend 
+		 */
+		if (response.news.isEmpty() && response.updates.isEmpty()) {
+			suspend("1s");
+		}
+		
+		/**
 		 * Finally render our response, with all details attached
 		 */
 		renderJSON(response);
