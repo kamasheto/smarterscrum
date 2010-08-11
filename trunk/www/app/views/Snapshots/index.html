@@ -10,7 +10,9 @@ Snapshots of ${c.name} board
 
 
 #{if (snapshots.size()==0)}
-Sorry, There are no snapshots to display now.
+
+#{note ''}Sorry, There are no snapshots to display now.#{/note}
+
 #{/if}
 #{if (snapshots.size()!=0)}
 
@@ -18,7 +20,7 @@ Sorry, There are no snapshots to display now.
 		
 #{list items:snapshots, as:'snapshot'}
 <div class="overlay" name="/snapshots/loadsnapShot?id=${snapshot.id}">
-Snapshot ${snapshot.id} taken by ${snapshot.user.name}</div>		
+${snapshot.user.name}   "${snapshot.formatDate()}"</div>		
 #{/list}
 
 #{/if}
