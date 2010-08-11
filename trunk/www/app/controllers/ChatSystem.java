@@ -74,8 +74,9 @@ public class ChatSystem extends SmartController
 		{
 			currentUser.openChats.add( room );
 			currentUser.save();
+			new Message( "notice", currentUser.name + " has entered the chat", room ).save();
 		}
-		new Message( "notice", currentUser.name + " has entered the chat", room ).save();
+
 	}
 
 	/**
