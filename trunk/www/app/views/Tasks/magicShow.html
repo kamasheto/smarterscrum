@@ -48,7 +48,6 @@
 		#{summary}
 		#{if Task.parent!=null} ${Task.parent.number}.#{/if}${Task.number}: ${Task.getSummary()}
 		#{/summary}
-		<div class="item_imgs"><a href="#"onclick="overlayOpen('@{Tasks.getReport(Task.id)}')" title="View the task report"><img src="/public/images/famfam/report.png"/></a>
 		#{if connected.in(projectId).can('deleteTask')}
 		<a onclick="javascript:deleteTheTask(${Task.id},this);">
 		<img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>
@@ -64,6 +63,8 @@
 		</a>
 		#{/if}
 		#{/if}
+		<div class="item_imgs"><a href="#"onclick="overlayOpen('@{Tasks.getReport(Task.id)}')" title="View the task report"><img src="/public/images/famfam/report.png"/></a>
+		
 		</div>
 		#{if Task.taskType!=null}
 			<div class="right" title="Type: ${Task.taskType.name}" style="text-align:center; background:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; display:inline-block; font-family:Verdana; font-weight:Bold;" >T</div>
