@@ -3,16 +3,31 @@
 	${meeting.name} Attendees.
 	#{/set}
 	
-	#{if (confirmed.isEmpty()&&waiting.isEmpty()&&declined.isEmpty()) }
+	#{if (attendance.isEmpty()) }
 	#{note} No Attendees #{/note}
 	#{/if}
 	
-	#{list items:confirmed, as:'attendance'}
-	<div class="greenBg" name="/Meetings/viewAttendeeStatus?id=${attendance.id}">${attendance.user.name}</div>
-	#{/list}
-	#{list items:waiting, as:'attendance'}
-	<div class="yellowBg" name="/Meetings/viewAttendeeStatus?id=${attendance.id}">${attendance.user.name}</div>
-	#{/list}
-	#{list items:declined, as:'attendance'}
-	<div class="redBg" name="/Meetings/viewAttendeeStatus?id=${attendance.id}">${attendance.user.name}</div>
+	#{list items:attendance, as:'attendance'}
+	
+	<div class="${attendance.status.equals("confirmed") ? 'greenBg' : attendance.status.equals("declined") ? 'redBg':'yellowBg'} bar">
+	${attendance.user.name} &nbsp
+	#{if attendance.status.equals("confirmed")}
+	 (attend${(attendance.meeting.endTime>new Date().getTime())?'ing':'ed'})
+	#{/if}
+	#{if attendance.status.equals("waiting")}
+	 (${(attendance.meeting.endTime>new Date().getTime())?'awaiting reply':'did not reply'})
+	#{/if}
+	#{if attendance.status.equals("declined")}
+	 (${(attendance.meeting.endTime>new Date().getTime())?'not attending':'did not attend'})
+	#{/if}
+	#{if attendance.meeting.endTime < new Date().getTime()}
+	#{if connected.in(attendance.meeting.project).can('setMeetingAttendance') || connected.equals(attendance.meeting.creator)}
+	<a onclick="set_didnot_attend(${attendance.id})" title="change the attendance to:did not attend"><img src="@{'/public/images/famfam/application_delete.png'}"></img></a>
+	<a onclick="set_attended(${attendance.id})" title="change the attendance to :attended"><img src="@{'/public/images/famfam/application_add.png'}"></img></a>
+	#{/if}
+	#{/if}
+	#{if (attendance.reason!=null) &&(!attendance.reason.equals(""))}
+	<img src="@{'/public/images/famfam/information.png'}" title="reason: ${attendance.reason}">
+	#{/if} 
+	</div>
 	#{/list}
