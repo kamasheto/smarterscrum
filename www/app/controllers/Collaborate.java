@@ -53,7 +53,7 @@ public class Collaborate extends SmartController {
 		 * Get online users
 		 */
 		Session.update();
-
+		Session.delete("lastClick < ?", new Date().getTime() - 1000 * 60 * 60);
 		List<Session> sessions = Session.find( "order by lastClick desc" ).fetch();
 
 		List<User.Object> users = new ArrayList<User.Object>();
