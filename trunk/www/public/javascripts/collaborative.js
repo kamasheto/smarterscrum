@@ -1,6 +1,6 @@
 last_update = new Date().getTime();
 var ping = function() {
-	$.getJSON('/collaborate?lastUpdate=' + last_update, function(resp) {
+	$.getJSON('/collaborate?lastUpdate=' + last_update + '&currentlyOnline=' + $('.online_user').length, function(resp) {
 		last_update = new Date().getTime()
 		
 		$(resp.news).each(function(){
@@ -18,10 +18,10 @@ var ping = function() {
 			if (this.isAdmin) {
 				this.name = '<span class="isAdmin">' + this.name + '</span>';
 			}
-			str += '<a href="/show/user?id='+this.id+'">' + this.name + '</a> • ';
+			str += '<a href="/show/user?id='+this.id+'" class="online_user">' + this.name + '</a> • ';
 		});
 		
-		$('#onlineUsers').html(str.substring(0,str.length-3));
+		$('#online_users_list').html(str.substring(0,str.length-3));
 		
 		
 		$(resp.updates).each(function() {
