@@ -5,7 +5,7 @@
 });
 
 var CURRENT_PROJECT = 0;
-	
+
 function reload_sticky_note(sid, taskId) {
 	window.opener.$('#task-'+taskId+'_T').load('/boards/loadboard1?sprintID='+sid+' #task-'+taskId+'_T',
 	function()
@@ -247,7 +247,7 @@ $(function() {
 							$(this).attr('src', '/public/images/loading16.gif')
 							// alert($(ui.helper).attr('name'))
 							$.ajax({
-								url: '/ajax/dynamicdrop',
+								url: '/ajax/dynamicdrop',							
 								data: {from: $(that).attr('name'), to: $(this).attr('name')},
 								success: function(response) {
 									arr = response.split('|')
@@ -449,28 +449,31 @@ function removeFromDiv(url)
 randomId = 100	
 function load(url, el, n, hideLoading) {
 	if (!hideLoading) $('#' + el + '_content').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>');
-	// if ($.inArray(url,myDivs) == -1 || n == 2) {
-	$.ajax({
-		url: url,
-		dataType: "html",
-		success: function(data) {
-			if (n != 3) {
-				$('#'+el+'_header').html($(data).find('.mainH:first').html());
-			} 
-			$('#'+el+'_content').html($(data).find('.actual:first').html());
-			if (n == 1) {
-				$('#'+ el).append('<div class="filter" id="'+el+'_filter"></div>');
-				$('#'+ el + '_filter').html($(data).find('.filter:first').html());
-				$('#'+ el + '_filter').find('input:first').attr('name', 'filter_textBox_'+el);
+	if ($.inArray(url,myDivs) == -1) {
+		$.ajax({
+			url: url,
+			success: function(data) {
+				$('body').append('<div id="dummy_data" class="hidden"></div>')
+				$('#dummy_data').html(data)
+				$('#dummy_data').remove()
+				if (n != 3) {
+					$('#'+el+'_header').html($(data).find('.mainH:first').html());
+				} 
+				$('#'+el+'_content').html($(data).find('.actual:first').html());
+				if (n == 1) {
+					$('#'+ el).append('<div class="filter" id="'+el+'_filter"></div>');
+					$('#'+ el + '_filter').html($(data).find('.filter:first').html());
+					$('#'+ el + '_filter').find('input:first').attr('name', 'filter_textBox_'+el);
+				}
+				myDivs.push(url);
+				magic(el)
+				$('#' + el + '_content').slideDown(400)
+			},
+			error: function(data) {
+				$.bar({message: 'An error has occured. Please try again.'})
 			}
-			magic(el)
-			$('#' + el + '_content').slideDown(400);
-		},
-		error: function(data) {
-			$.bar({message: 'An error has occured. Please try again.'})
-		}
-	})
-	// }
+		})
+	}
 	if(n==1){	
 		myDivs.push(url);
 	}
@@ -480,16 +483,22 @@ function load(url, el, n, hideLoading) {
 function loadBox(url, el, classes) 
 {
 	if($.inArray(url,myDivs)==-1) {
-		$.post(url, function(data) {
-
-			element = $(data).filter('div:first')
-			element.attr('name', url)
-			element.addClass(classes)
-			element.css('z-index','4');
-			element.find('.bar:first').remove()
-			element.find('.actual:first').show()
-			$('#'+el).append(element)
-			magic(element.attr('id'))
+		$.ajax({
+			url: url,
+			success: function(data) {
+				$('body').append('<div id="dummy_data" class="hidden"></div>')
+				$('#dummy_data').html(data)
+				$('#dummy_data').remove()
+				myDivs.push(url)
+				element = $(data).filter('div:first')
+				element.attr('name', url)
+				element.addClass(classes)
+				element.css('z-index','4');
+				element.find('.bar:first').remove()
+				element.find('.actual:first').show()
+				$('#'+el).append(element)
+				magic(element.attr('id'))
+			}
 		})
 	}
 }
@@ -701,6 +710,7 @@ function deleteTheComponent(cId, box){
 			});
 	}
 }
+
 function fix(obj)
 {
 	$(obj).find('.taskSummary').each(function(){
@@ -709,4 +719,61 @@ function fix(obj)
 		else
 			$(this).next().next().show();
 	});
+}
+
+function showDate(id,startTime,name) 
+{
+	var date=startTime;
+	var tz =0;         //  
+	var lab = 'currr_'+id;    //  The id of the page entry where the timezone countdown is to show
+	displayTZCountDown(setTZCountDown(date,tz),lab,id,name);
+}
+function setTZCountDown(date,tz) 
+{
+	var toDate=new Date(date);
+	var fromDate = new Date();
+	fromDate.setMinutes(fromDate.getMinutes());
+	var diffDate = new Date(0);
+	diffDate.setMilliseconds(toDate - fromDate);
+	return Math.floor(diffDate.valueOf()/1000);
+}
+function displayTZCountDown(countdown,tzcd,id,name) 
+{
+	var secs = countdown % 60; 
+	if (secs < 10) secs = '0'+secs;
+	var countdown1 = (countdown - secs) / 60;
+	var mins = countdown1 % 60; 
+	if (mins < 10) mins = '0'+mins;
+	countdown1 = (countdown1 - mins) / 60;
+	var hours = countdown1 % 24;
+	var days = (countdown1 - hours) / 24;
+
+	if(days== '00' && hours=='00'&& mins=='05' && secs=='00') 
+	{
+		alert("5 minutes remaining on the meeting "+name)
+	}
+
+	if(days>7)
+	{
+		document.getElementById(tzcd).innerHTML = "["+days/7 + " W]"
+	}
+	else
+	{
+		if(days<=7 && days >0)
+		{
+			document.getElementById(tzcd).innerHTML = "["+days + " D" + (days == 1 ? '' : 's') + ' : ' +hours+ ' H]'
+		}
+		else
+		{
+			if(hours>0)
+			document.getElementById(tzcd).innerHTML = "["+hours + " H : " + mins + " M]"
+			else
+				document.getElementById(tzcd).innerHTML = "["+mins + " M : " + secs + " S]"	
+		}
+	}
+	setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
+}
+
+function message_bar(message) {
+	$.bar({message: message})
 }
