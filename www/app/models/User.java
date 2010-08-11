@@ -346,7 +346,7 @@ public class User extends SmartModel {
 	 */
 	public static class Object {
 
-		long id;
+		public long id;
 
 		String name;
 		long lastClick;

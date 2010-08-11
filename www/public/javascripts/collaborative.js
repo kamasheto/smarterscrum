@@ -1,6 +1,6 @@
 last_update = new Date().getTime();
 var ping = function() {
-	$.getJSON('/collaborate?lastUpdate=' + last_update + '&currentlyOnline=' + $('.online_user').length, function(resp) {
+	$.getJSON('/collaborate?lastUpdate=' + last_update + '&currentlyOnline=' + get_online_users(), function(resp) {
 		last_update = new Date().getTime()
 		
 		$(resp.news).each(function(){
@@ -18,7 +18,7 @@ var ping = function() {
 			if (this.isAdmin) {
 				this.name = '<span class="isAdmin">' + this.name + '</span>';
 			}
-			str += '<a href="/show/user?id='+this.id+'" class="online_user">' + this.name + '</a> • ';
+			str += '<a href="/show/user?id='+this.id+'" class="online-user" user_id="'+this.id+'">' + this.name + '</a> • ';
 		});
 		
 		$('#online_users_list').html(str.substring(0,str.length-3));
@@ -31,4 +31,12 @@ var ping = function() {
 		// ping again in a while, please
 		setTimeout('ping()', 1000)
 	})
+}
+
+function get_online_users() {
+	list = ''
+	$('.online-user').each(function() {
+		list += $(this).attr('user_id') + ','
+	})
+	return list
 }
