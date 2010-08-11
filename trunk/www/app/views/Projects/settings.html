@@ -8,6 +8,9 @@
 #{if connected.projects.contains(project)}
 	<div name="/users/managenotificationprofile?id=${project.id}" class="overlay ">Manage my notifications</div>
 #{/if}
+#{if connected.in(project).can('invite')}
+	<div name="/Invites/InviteUsers?id=${project.id}" class="overlay">Invite Users</div>
+#{/if}
 #{if connected.in(project).can('editProject')}
 	<div name="/admin/projects/${project.id}" class="overlay ">Project Settings</div>
 #{/if}

@@ -1,0 +1,49 @@
+#{extends 'overlay.html' /}
+<h2>Invite Users to ${project.name}:</h2>
+#{note 'highlight'}
+	Click on a user to add him to the invited list
+#{/note}
+<div class="left"><p>Type to filter: <input type="text" id="search_term" onkeyup="search_users();" /> <img id="loading" style="display:none;" src="@{'/public/images/loading16.gif'}" /></p>
+<div id="results">
+	#{list items:users, as:'user'}
+		<div id="resuser_${user.id}"><a href="#" onclick="javascript: user_invited(${user.id}, ${user.name})">${user.name}</a></div>
+	#{/list}
+	
+</div>
+</div>
+
+<div class="left">
+<div id="invited"><h4>invited:</h4></div>
+<input type="submit" value="Send Invitation(s)" onclick="javascript: send_invitations()">
+</div>
+<script type="text/javascript">
+searching = null;
+function search_users() {
+	$('#loading').show();
+	if (searching) {
+		searching.abort();
+	}
+	searching = $.post('/ajax/users?query='+$('#search_term').val(),
+			function(data) {
+				str = '';
+				if (data.length) {
+					$.each(data, function(id,item) {
+						str += '<div id="resuser_'+item.id+'"><a href="#" onclick="javascript: user_invited('+item.id+','+item.name+')">'+item.name+'</a></div>';
+					});
+				} else {
+					str = '<font size=2><img src="/public/images/famfam/error.png"/> No matching results found!</font>';
+				}
+				$('#results').html(str);
+				$('#loading').hide();
+			});
+}
+function user_invited(id, name)
+{
+	$('#invited').append('<div id="invuser_'+id+'"><a href="#">'+name+'</a></div>');
+}
+function send_invitations()
+{
+	
+}
+
+</script>
