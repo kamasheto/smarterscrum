@@ -61,7 +61,7 @@ function smart_pagination(el, view_page){
 	var id = el;
 	if($(el).closest('.filter').attr('id')!=null)
 		id = $(el).closest('.filter').attr('id').split('_')[0];
-	if(!($("#"+id+"_content").parent.hasClass("do_not_paginate")))
+	if(!($("#"+id+"_content").parent().hasClass("do_not_paginate")))
 	{
 		/********** Do not edit anything below this line ******/
 		//CHECKS
