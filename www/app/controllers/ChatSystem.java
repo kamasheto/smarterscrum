@@ -145,8 +145,16 @@ public class ChatSystem extends SmartController
 	{
 		User user = User.findById( userId );
 		Message lastLogMessage = Message.find( "author like ?1 and message like ?2 and room.id = ?3 order by stamp desc", "notice", user.name + " has entered the chat", roomId ).first();
-		Long lastLogIn = lastLogMessage.stamp;
-		List<Message> messages = Message.find( "room.id = ?1 and stamp >= ?2 order by stamp", roomId, lastLogIn ).fetch();
+		List<Message> messages;
+		if( lastLogMessage != null )
+		{
+			Long lastLogIn = lastLogMessage.stamp;
+			messages = Message.find( "room.id = ?1 and stamp >= ?2 order by stamp", roomId, lastLogIn ).fetch();
+		}
+		else
+		{
+			messages = Message.find( "room.id = ?1 order by stamp", roomId ).fetch();
+		}
 		for( Message m : messages )
 		{
 			m.room = null;
