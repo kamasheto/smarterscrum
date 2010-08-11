@@ -6,7 +6,6 @@
         <link rel="stylesheet" type="text/css" media="screen" href="/public/stylesheets/generic.css"/>
 		<link rel="shortcut icon" href="@{'public/images/favicon.ico'}" type="image/x-icon"/> 
         #{get 'moreStyles' /}
- 
         <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" src="@{'public/javascripts/jquery-ui-1.8.custom.min.js'}"> </script>
 		<script type="text/javascript" src="@{'public/javascripts/timepicker.js'}"> </script>
@@ -15,13 +14,11 @@
        	<script src="@{'/public/javascripts/more.js'}" type="text/javascript"charset="utf-8"></script>
 		<script type="text/javascript" src="/public/javascripts/jquery.gritter.min.js"></script>
         <script src="@{'/public/javascripts/jquery.bar.js'}" type="text/javascript" charset="utf-8"></script>
-        
         <script src="@{'/public/javascripts/requirements.js'}" type="text/javascript" charset="utf-8"></script>
         <script src="@{'/public/javascripts/smartsoft.filter.js'}" type="text/javascript" charset="utf-8"></script>
         <script src="@{'/public/javascripts/functions.js'}" type="text/javascript" charset="utf-8"></script>
 		<script src="@{'/public/javascripts/collaborative.js'}" type="text/javascript" charset="utf-8"></script>
         #{get 'moreScripts' /}
-		
         <script type="text/javascript">
 
 		function signIn(id)
@@ -202,7 +199,10 @@
 <div id="normal">
 #{doLayout/}
 </div>
+#{if connected}
 
+			<div id="onlineUsers"></div>
+#{/if}
 
 			#{ifErrors}
 			<script type="text/javascript">
@@ -241,6 +241,5 @@
 			})
 			</script>
 			#{/if}
-			<div id="onlineUsers"></div>
 </body>
 </html>

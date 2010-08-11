@@ -17,11 +17,13 @@ label {
 	display: inline-block;
 	height: 16px;
 	overflow: hidden;
-	width:90%;
-	white-space:nowrap
+	width: 90%;
+	white-space: nowrap
 }
-.holder
-{width: 70%;}
+
+.holder {
+	width: 70%;
+}
 
 button,a button,input[type=submit],input[type=ok],input[type=send],input[type=button],input[type=send]
 	{
@@ -69,7 +71,6 @@ button,a button,input[type=submit],input[type=ok],input[type=send],input[type=bu
 }
 
 body,html {
-	background: #333 url('img/workspace.png') repeat top left;
 	font-family: Verdana;
 	font-size: 10px;
 	margin: 0px;
@@ -213,7 +214,7 @@ img {
 	cursor: pointer;
 	z-index: 9;
 	top: -5px;
-	background-color: #0B8C8F;
+	background-color: #111
 	color: #eee;
 }
 
@@ -671,6 +672,10 @@ img {
 #login form {
 	-moz-border-radius: 11px 11px 11px 11px;
 	-moz-box-shadow: 0 4px 18px #C8C8C8;
+	-webkit-border-radius: 11px 11px 11px 11px;
+	-webkit-box-shadow: 0 4px 18px #C8C8C8;
+	border-radius: 11px 11px 11px 11px;
+	box-shadow: 0 4px 18px #C8C8C8;
 	background: none repeat scroll 0 0 #FFFFFF;
 	border: 1px solid #E5E5E5;
 	font-weight: normal;
@@ -678,6 +683,10 @@ img {
 	overflow: auto;
 	padding: 16px;
 	width: 300px;
+}
+
+#login {
+	margin: 10% auto 0px 0px;
 }
 
 #signin-field {
@@ -693,8 +702,10 @@ img {
 	margin: 5px auto 5px auto;
 	width: 99%;
 	height: 100%;
-	border: 3px dotted #888;
-	border-radius: 30px;
+	border: 2px dotted #888;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
 }
 
 .workspace {
@@ -772,7 +783,7 @@ img {
 	-moz-border-radius: 5px;
 	border-radius: 5px;
 	-webkit-border-radius: 5px;
-	overflow:auto;
+	overflow: auto;
 	margin: 5px 0px;
 }
 
@@ -883,9 +894,9 @@ a {
 	_border-right-color: pink;
 	_border-left-color: pink;
 	margin-top: -2px;
-	_filter: chroma(color =                                   
+	_filter: chroma(color =                                      
 		                                                          
-		                                        pink);
+		                                           pink);
 }
 
 .notchBottom2 {
@@ -903,9 +914,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                   
+	_filter: chroma(color =                                      
 		                                                          
-		                                        pink);
+		                                           pink);
 }
 
 .notchTop {
@@ -920,9 +931,9 @@ a {
 	margin-left: 30px;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                   
+	_filter: chroma(color =                                      
 		                                                          
-		                                        pink);
+		                                           pink);
 }
 
 .notchRight {
@@ -939,9 +950,9 @@ a {
 	display: inline-block;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                   
+	_filter: chroma(color =                                      
 		                                                          
-		                                        pink);
+		                                           pink);
 }
 
 .notchLeft {
@@ -956,9 +967,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                   
+	_filter: chroma(color =                                      
 		                                                          
-		                                        pink);
+		                                           pink);
 }
 
 .chatboxtextarea:focus {
@@ -1011,7 +1022,7 @@ a,a img,span.revertFrom,span.min {
 	font-size: 10px;
 	left: 25%;
 	width: 50%;
-	color: #444;
+	color: #eee;
 }
 
 .dim {
@@ -1178,7 +1189,7 @@ img.left {
 	left: 0;
 	position: absolute;
 	opacity: 0;
-	filter: Alpha(Opacity =                       0);
+	filter: Alpha(Opacity =                             0);
 }
 
 /* Interaction Cues
@@ -1332,13 +1343,13 @@ img.left {
 
 .ui-priority-secondary,.ui-widget-content .ui-priority-secondary {
 	opacity: .7;
-	filter: Alpha(Opacity =                       70);
+	filter: Alpha(Opacity =                             70);
 	font-weight: normal;
 }
 
 .ui-state-disabled,.ui-widget-content .ui-state-disabled {
 	opacity: .35;
-	filter: Alpha(Opacity =                       35);
+	filter: Alpha(Opacity =                             35);
 	background-image: none;
 }
 
@@ -2159,7 +2170,7 @@ img.left {
 	background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
 		repeat-x;
 	opacity: .30;
-	filter: Alpha(Opacity =                       30);
+	filter: Alpha(Opacity =                             30);
 }
 
 .ui-widget-shadow {
@@ -2168,7 +2179,7 @@ img.left {
 	background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
 		repeat-x;
 	opacity: .30;
-	filter: Alpha(Opacity =                       30);
+	filter: Alpha(Opacity =                             30);
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	border-radius: 8px;
@@ -3016,7 +3027,7 @@ a.jbar-cross:hover {
 }
 
 #onlineUsers {
-	font-size:12px;
+	font-size: 12px;
 	padding: 10px;
 	background: white;
 }
