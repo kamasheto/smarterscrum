@@ -129,6 +129,7 @@ function smart_pagination(el, view_page){
 		updatePageNumbers(id);
 	}
 	else{
+		$("#"+id+"_content > div").show();
 		var totalItems = $("#"+id+"_content > div").filter(function(index) { return !($(this).hasClass("do_not_paginate")); }).size();
 		$("#"+id+" .numPages").text(totalItems+"/"+totalItems);
 	}
@@ -138,78 +139,85 @@ function filter_smart_pagination(el,view_page, nextPrevious){
 	var id = el;
 	if($(el).closest('.filter').attr('id')!=null)
 		id = $(el).closest('.filter').attr('id').split('_')[0];
-	var smartObject = getTheUniqueFilter(id);
-	if(smartObject == false){
-		//alert("==false");
-		smartObject = new Object();
-		smartObject.id = id;
-		smartObject.filter_page = 1;
-		//smartObject.numPages = -1;
-		smartObject.filter_smart_array = new Array();
-		UniqueArrayFilter.push(smartObject);
-	}
-	if(!nextPrevious)
+	if(!($("#"+id+"_content").parent().hasClass("do_not_paginate")))
 	{
-		smartObject.sizeOfFilteredChildren = $("#"+id+"_content > div").filter(":visible").filter(function(index) { return !($(this).hasClass("do_not_paginate")); }).size();
-	}
-	var numPages = Math.floor(smartObject.sizeOfFilteredChildren/ itemsPerPage);
-	var extraItems = !((smartObject.sizeOfFilteredChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
-	if(extraItems)
-		numPages++;
-	smartObject.numPages = numPages;
-	//alert("num"+numPages)
-	if(view_page<1)
-	{
-		if(!(smartObject.numPages == 0))
-			smartObject.filter_page++;
-	}
-	else if(view_page>smartObject.numPages){
-		if(!(smartObject.numPages == 0))
-			smartObject.filter_page--;
-	}
-	else
-	{
+		var smartObject = getTheUniqueFilter(id);
+		if(smartObject == false){
+			//alert("==false");
+			smartObject = new Object();
+			smartObject.id = id;
+			smartObject.filter_page = 1;
+			//smartObject.numPages = -1;
+			smartObject.filter_smart_array = new Array();
+			UniqueArrayFilter.push(smartObject);
+		}
 		if(!nextPrevious)
 		{
-			var i = 0;
-			smartObject.filter_page=1;
-			smartObject.filter_smart_array = new Array();
-			$("#"+id+"_content > div").filter(":visible").filter(function(index) { return !($(this).hasClass("do_not_paginate")); }).each(function(index){
-				smartObject.filter_smart_array[i] = this;
-				$(this).hide();
-				i++;
-			});
+			smartObject.sizeOfFilteredChildren = $("#"+id+"_content > div").filter(":visible").filter(function(index) { return !($(this).hasClass("do_not_paginate")); }).size();
 		}
-		
-		//Now display only those in the current page
-		view_page--;//if page 1, the starting index should be zero (array ba2a)
-		var starting_index = view_page * itemsPerPage;
-		var j = 1;//counter
-		$(smartObject.filter_smart_array).each(function(index){ $(this).hide(); });
-		while(j<= itemsPerPage){
-			$(smartObject.filter_smart_array[starting_index]).show();
-			starting_index++;
-			j++;
+		var numPages = Math.floor(smartObject.sizeOfFilteredChildren/ itemsPerPage);
+		var extraItems = !((smartObject.sizeOfFilteredChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
+		if(extraItems)
+			numPages++;
+		smartObject.numPages = numPages;
+		//alert("num"+numPages)
+		if(view_page<1)
+		{
+			if(!(smartObject.numPages == 0))
+				smartObject.filter_page++;
 		}
-		view_page++;
-		if(view_page == smartObject.numPages){
-			$("#"+id+" .filterLinkn").addClass('dim');
+		else if(view_page>smartObject.numPages){
+			if(!(smartObject.numPages == 0))
+				smartObject.filter_page--;
 		}
-		else{
-			if($("#"+id+" .filterLinkn").hasClass('dim'))
-				$("#"+id+" .filterLinkn").removeClass('dim');
+		else
+		{
+			if(!nextPrevious)
+			{
+				var i = 0;
+				smartObject.filter_page=1;
+				smartObject.filter_smart_array = new Array();
+				$("#"+id+"_content > div").filter(":visible").filter(function(index) { return !($(this).hasClass("do_not_paginate")); }).each(function(index){
+					smartObject.filter_smart_array[i] = this;
+					$(this).hide();
+					i++;
+				});
+			}
+			
+			//Now display only those in the current page
+			view_page--;//if page 1, the starting index should be zero (array ba2a)
+			var starting_index = view_page * itemsPerPage;
+			var j = 1;//counter
+			$(smartObject.filter_smart_array).each(function(index){ $(this).hide(); });
+			while(j<= itemsPerPage){
+				$(smartObject.filter_smart_array[starting_index]).show();
+				starting_index++;
+				j++;
+			}
+			view_page++;
+			if(view_page == smartObject.numPages){
+				$("#"+id+" .filterLinkn").addClass('dim');
+			}
+			else{
+				if($("#"+id+" .filterLinkn").hasClass('dim'))
+					$("#"+id+" .filterLinkn").removeClass('dim');
+			}
+			if(view_page == 1){
+				$("#"+id+" .filterLinkp").addClass('dim');
+			}
+			else{
+				if($("#"+id+" .filterLinkp").hasClass('dim'))
+					$("#"+id+" .filterLinkp").removeClass('dim');
+			}
 		}
-		if(view_page == 1){
-			$("#"+id+" .filterLinkp").addClass('dim');
-		}
-		else{
-			if($("#"+id+" .filterLinkp").hasClass('dim'))
-				$("#"+id+" .filterLinkp").removeClass('dim');
-		}
+		if(smartObject.numPages == 0)
+			smartObject.filter_page=0;
+		updatePageNumbersFilter(id);
 	}
-	if(smartObject.numPages == 0)
-		smartObject.filter_page=0;
-	updatePageNumbersFilter(id);
+	else{
+		var totalItems = $("#"+id+"_content > div").filter(":visible").filter(function(index) { return !($(this).hasClass("do_not_paginate")); }).size();
+		$("#"+id+" .numPages").text(totalItems+"/"+totalItems);
+	}
 }
 
 function nextPage(el){
