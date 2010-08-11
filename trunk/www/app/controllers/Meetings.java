@@ -67,22 +67,21 @@ public class Meetings extends SmartCRUD
 	 */
 
 	public static void extend( long meetingid )
+	{System.out.println("test");
+	Meeting M = Meeting.findById( meetingid );
+	boolean mem = false;
+	for( MeetingAttendance att : M.users )
 	{
-		Meeting M = Meeting.findById( meetingid );
-		boolean mem = false;
-		List<MeetingAttendance> att = MeetingAttendance.find( "meeting.id = ?1 and deleted = ?2 and status LIKE ?3", meetingid, false, "confirmed" ).fetch();
-		for( MeetingAttendance at : att )
+		if( att.user == Security.getConnected() )
 		{
-			if( at.user == Security.getConnected() )
-			{
-				mem = true;
-			}
+			mem = true;
 		}
-		if( !mem && !Security.getConnected().isAdmin )
-		{
-			forbidden();
-		}
-		M.endTime += 1000 * 60 * 60;
+	}
+	if( !mem && !Security.getConnected().isAdmin )
+	{
+		forbidden();
+	}
+	M.endTime += 1000 * 60 * 60;
 		M.save();
 	}
 
