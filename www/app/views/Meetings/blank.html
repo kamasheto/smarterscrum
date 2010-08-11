@@ -5,14 +5,14 @@
   <script type="text/javascript"> 
 $(function() {
 
-	$('#object_startTime').datepicker({  
+	$('#object_startTimeShown').datepicker({  
 		changeMonth: true,
 		changeYear: true,
 	    showTime: true,
 		dateFormat: '@'
 	 
 	 });
-	$('#object_endTime').datepicker({  
+	$('#object_endTimeShown').datepicker({  
 		changeMonth: true,
 		changeYear: true,
 	    showTime: true,
@@ -35,7 +35,64 @@ function showStuff(id) {
 		document.getElementById('types').style.display='block';
 	}
 	}
+
+
+function setTime(start)
+{
+	if(start)
+	setTimeout("set_startTime()", 50);
+	else
+	setTimeout("set_endTime()", 50);
+}
+function set_startTime()
+{
+
+		var time= $('#object_startTimeShown').val();
+		$('#object_startTime').val(time);
+		var tobeShown= get_theDate(time);
+		document.getElementById('object_startTimeShown').value= tobeShown;
 	
+}
+
+function set_endTime()
+{
+
+	var time= $('#object_endTimeShown').val();
+	$('#object_endTime').val(time);
+	var tobeShown= get_theDate(time);
+	document.getElementById('object_endTimeShown').value= tobeShown;
+	
+}
+
+function get_theDate(date)
+{
+	var theDate= new Date(parseInt(date));
+	var y= theDate.getFullYear();
+	var m= theDate.getMonth()+1;
+	var d= theDate.getDate();
+	var h= theDate.getHours();
+	var min= theDate.getMinutes();
+	if(m<10)
+	{
+		m='0'+m;
+	}
+	if(d<10)
+	{
+		d='0'+d;
+	}
+	if(h<10)
+	{
+		h='0'+h;
+	}
+	if(min<10)
+	{
+		min='0'+min;
+	}
+	return ""+d+"/"+m+"/"+y+" "+h+" : "+min;
+}
+
+
+
 	</script>
    
 
@@ -62,13 +119,15 @@ function showStuff(id) {
 		</div>
 		<div class="crudField">
 			<label for="object_startTime"> Start time  </label><br> 
-				<input id="object_startTime" class="" type="text" name="object.startTime" value="" size="50" /> 
+				<input id="object_startTimeShown" class="" type="text" name="object.startTimeShown" onChange="setTime(true)" value="" size="50" /> 
+			    <input id="object_startTime" class="" type="text" name="object.startTime" value="" size="50" style="display:none"/> 
 			    <span class="crudHelp" style="color:red">*</span>
 		</div>
 		
 		<div class="crudField more_options">
 			<label for="object_endTime"> End Time </label> <br>
-			<input id="object_endTime" class="" type="text" name="object.endTime" value="" size="50" />
+			<input id="object_endTimeShown" class="" type="text" name="object.endTimeShown" onChange="setTime(false)" value="" size="50" /> 
+			<input id="object_endTime" class="" type="text" name="object.endTime" value="" size="50" style="display:none"/>
 		</div>
 		<div class="crudField more_options">
 			#{if sprints.size()!=0 }
