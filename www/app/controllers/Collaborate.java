@@ -17,7 +17,7 @@ public class Collaborate extends SmartController {
 	/**
 	 * Renders a JSON object of all changes performed for this user (for dynamic udpate)
 	 */
-	public static void index(long lastUpdate) {
+	public static void index(long lastUpdate, int currentlyOnline) {
 		CollaborateResponse response = new CollaborateResponse();
 		User user = Security.getConnected();
 		
@@ -66,7 +66,7 @@ public class Collaborate extends SmartController {
 		/**
 		 * Suspend 
 		 */
-		if (response.news.isEmpty() && response.updates.isEmpty()) {
+		if (response.news.isEmpty() && response.updates.isEmpty() && response.online_users.size() == currentlyOnline) {
 			suspend("1s");
 		}
 		
