@@ -18,6 +18,7 @@
         <script src="@{'/public/javascripts/smartsoft.filter.js'}" type="text/javascript" charset="utf-8"></script>
         <script src="@{'/public/javascripts/functions.js'}" type="text/javascript" charset="utf-8"></script>
 		<script src="@{'/public/javascripts/collaborative.js'}" type="text/javascript" charset="utf-8"></script>
+		<script src="@{'/public/javascripts/plugins/jcalendar.js'}" type="text/javascript" charset="utf-8"></script>
         #{get 'moreScripts' /}
         <script type="text/javascript">
 
@@ -161,6 +162,20 @@
 		</div>
 	</div>
 	<!-- Notifications End -->
+</div>
+<div class="sideHolder">
+	<!-- My events Start -->
+	<div class="notch"style="top: 80px;">
+		<a href="#" title="View your events?" onclick="make('sideEvent',this);$('#sideEvent').load('/Application/showEvents')">
+		<img src="/public/images/myEvents.png" alt="[Events]"/>
+		</a>
+	</div>
+	<div id="sideEvent" class="siderC">
+		<div id="sideEvent_content">
+		
+		</div>
+	</div>
+	<!-- My events End -->
 </div>
 <div class="sideHolder">
 	<!-- MyTasks Start -->
