@@ -282,7 +282,7 @@ public class Application extends SmartController
 	public static void showEvents(){
 		List<Project> projects  = Security.getConnected().projects;
 		List<Sprint> sprints = new ArrayList<Sprint>();
-		List<MeetingAttendance> meetings = MeetingAttendance.find("ByUserAndDeleted", Security.getConnected(),false).fetch();
+		List<MeetingAttendance> meetings = MeetingAttendance.find("byUserAndDeleted", Security.getConnected(),false).fetch();
 		for(Project project : projects){
 			for(Sprint sprint : project.sprints){
 				if(!sprint.deleted)
