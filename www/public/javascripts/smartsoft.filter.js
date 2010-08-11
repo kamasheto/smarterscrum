@@ -65,7 +65,7 @@ function smart_pagination(el, view_page){
 	//CHECKS
 	var smartObject = getTheUnique(id);
 	if(smartObject == false){
-		var sizeOfChildren = $("#"+id+"_content > div").size();
+		var sizeOfChildren = $("#"+id+"_content > div").filter(function(index) { return !($(this).hasClass("do_not_paginate")); }).size();
 		var numPages = Math.floor(sizeOfChildren/ itemsPerPage);
 		var extraItems = !((sizeOfChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
 		if(extraItems)
@@ -92,8 +92,8 @@ function smart_pagination(el, view_page){
 	{
 		//First of all get all "shown" divs and store them in the smart_array
 		var i = 0;
-			$("#"+id+"_content > div").show();
-			$("#"+id+"_content > div").each(function(index){
+			$("#"+id+"_content > div").filter(function(index) { return !($(this).hasClass("do_not_paginate")); }).show();
+			$("#"+id+"_content > div").filter(function(index) { return !($(this).hasClass("do_not_paginate")); }).each(function(index){
 				smartObject.smart_array[i] = this;
 				$(this).hide();
 				i++;
@@ -143,7 +143,7 @@ function filter_smart_pagination(el,view_page, nextPrevious){
 	}
 	if(!nextPrevious)
 	{
-		smartObject.sizeOfFilteredChildren = $("#"+id+"_content > div").filter(":visible").size();
+		smartObject.sizeOfFilteredChildren = $("#"+id+"_content > div").filter(":visible").filter(function(index) { return !($(this).hasClass("do_not_paginate")); }).size();
 	}
 	var numPages = Math.floor(smartObject.sizeOfFilteredChildren/ itemsPerPage);
 	var extraItems = !((smartObject.sizeOfFilteredChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
@@ -167,7 +167,7 @@ function filter_smart_pagination(el,view_page, nextPrevious){
 			var i = 0;
 			smartObject.filter_page=1;
 			smartObject.filter_smart_array = new Array();
-			$("#"+id+"_content > div").filter(":visible").each(function(index){
+			$("#"+id+"_content > div").filter(":visible").filter(function(index) { return !($(this).hasClass("do_not_paginate")); }).each(function(index){
 				smartObject.filter_smart_array[i] = this;
 				$(this).hide();
 				i++;
