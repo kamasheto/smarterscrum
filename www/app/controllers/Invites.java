@@ -25,21 +25,23 @@ public class Invites extends SmartController {
 	/**
 	 * Creates invite and sends email to user with links to accept/decline
 	 * 
-	 * @param id
-	 *            Role id
+	 * @param pid
+	 *            Project id
 	 * @param userId
 	 *            user id
-	 */
-	// @Check ("canInvite")
-	public static void sendInvite(long id, long userId) {
+	 */	
+	public static void sendInvite(long pId, long userId) {		
 		User user = User.findById(userId);
-		Role role = Role.findById(id);
-		Security.check(role.project, "invite");
-		Invite invite = new Invite(user, role).save();
-		//String url = "@{Application.externalOpen("+temp.project.id+", '/components/viewthecomponent?componentId="+temp.id+"', false)}";
-		//Notifications.notifyProjectUsers(temp.project, "onCreateComponent", url, "Component", temp.name, (byte) 0);		
-		//Notifications.notifyUsers(user, "Invitation to " + role.name, String.format("Dear " + user.name + ", you have been invited to " + role.name + " in the project " + role.project.name + ".\n\nTo accept this invitation <a href='%s'>click here</a>. To decline this invitation <a href='%s'>click here</a>.", Router.getFullUrl("Invites.respondInvite") + "?what=1&hash=" + invite.hash + "&id=" + invite.id, Router.getFullUrl("Invites.respondInvite") + "?what=0&hash=" + invite.hash + "&id=" + invite.id), (byte) 0);
-		Logs.addLog(role.project, "invited " + user.name, "Invite", invite.id);
+		Project pro = Project.findById(pId);
+		Role baseRole=Role.find("byProjectAndBaseRole", pro, true).first();
+		Security.check(Security.getConnected().in(pro).can("invite"));
+		Invite invite = new Invite(user, baseRole).save();
+		flash.success("Invitation(s) sent successfully!");
+		String url = Router.getFullUrl("Application.showInvitations");
+		String confirm = Router.getFullUrl("Invites.respondInvite") + "?what=1&hash=" + invite.hash + "&id=" + invite.id;
+		String decline = Router.getFullUrl("Invites.respondInvite") + "?what=0&hash=" + invite.hash + "&id=" + invite.id;
+		Notifications.invite(user, url, "", confirm, decline, pro, false);
+		Logs.addLog(pro, "invited " + user.name, "Invite", invite.id);
 	}
 
 	/**
@@ -59,9 +61,7 @@ public class Invites extends SmartController {
 			invite.user.addRole(invite.role);
 		}
 		Logs.addLog(invite.role.project, "accepted invite to " + invite.role.name, "Invite", invite.id);
-		invite.delete();
-		//flash.success("Invitation successfully accepted and role " + invite.role.name + " added");
-		//Application.index();
+		invite.delete();		
 	}
 	
 	/**
@@ -71,7 +71,6 @@ public class Invites extends SmartController {
 	public static void InviteUsers(long id)
 	{
 		Project project = Project.findById(id);
-		//List<User> users = User.find(project + " not in projects").fetch();
 		render(project);
 	}
 	
