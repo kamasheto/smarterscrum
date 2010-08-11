@@ -388,7 +388,7 @@ public class User extends SmartModel {
 		List<Task> userTasks = new ArrayList<Task>();
 
 		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).assignee.equals(this))
+			if (tasks.get(i).assignee!=null && tasks.get(i).assignee.equals(this))
 				userTasks.add(tasks.get(i));
 		}
 		return userTasks;
