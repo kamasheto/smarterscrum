@@ -23,12 +23,12 @@ function search_users() {
 	if (searching) {
 		searching.abort();
 	}
-	searching = $.post('/ajax/users?query='+$('#search_term').val(),
+	searching = $.post('/ajax/users?query='+$("#search_term").val(),
 			function(data) {
 				str = '';
 				if (data.length) {
 					$.each(data, function(id,item) {
-						str += '<div id="resuser_'+item.id+'"><a href="#" onclick="javascript: user_invited('+item.id+','+item.name+')">'+item.name+'</a></div>';
+						str += '<div id="resuser_'+item.id+'"><a href="#" onclick="javascript: user_invited('+item.id+',\''+item.name+'\');">'+item.name+'</a></div>';
 					});
 				} else {
 					str = '<font size=2><img src="/public/images/famfam/error.png"/> No matching results found!</font>';
@@ -40,6 +40,7 @@ function search_users() {
 function user_invited(id, name)
 {
 	$('#invited').append('<div id="invuser_'+id+'"><a href="#">'+name+'</a></div>');
+	$('#resuser_'+id).hide();
 }
 function send_invitations()
 {
