@@ -445,11 +445,12 @@ function removeFromDiv(url)
 }
 
 randomId = 100	
-function load(url, el, n) {
-	$('#' + el + '_content').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>');
+function load(url, el, n, hideLoading) {
+	if (!hideLoading) $('#' + el + '_content').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>');
 	// if ($.inArray(url,myDivs) == -1 || n == 2) {
 	$.ajax({
 		url: url,
+		dataType: "html",
 		success: function(data) {
 			if (n != 3) {
 				$('#'+el+'_header').html($(data).find('.mainH:first').html());
@@ -686,7 +687,7 @@ function reload() {
 				$(this).remove()
 				return
 			}
-			load(url, $(this).attr('id'), 3)	
+			load(url, $(this).attr('id'), 3, true)
 		})
 	}
 }
