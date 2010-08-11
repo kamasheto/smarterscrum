@@ -13,8 +13,8 @@
 </div>
 
 <div class="left">
-<div id="invited"><h4>invited:</h4></div>
-<input type="submit" value="Send Invitation(s)" onclick="javascript: send_invitations()">
+<div id="invited"><h4>invited:</h4><div id="noinv">#{note 'highlight'}No users chosen yet!#{/note}</div></div>
+<input id ="sendinv" type="submit" value="Send Invitation(s)" onclick="javascript: send_invitations()" style="display:none">
 </div>
 <script type="text/javascript">
 
@@ -48,12 +48,28 @@ function search_users() {
 }
 function user_invited(id, name)
 {
-	$('#invited').append('<div id="invuser_'+id+'"><a href="#">'+name+'</a></div>');
+	$('#invited').append('<div id="invuser_'+id+'"><a onclick ="javascript: undo_inv('+id+',\''+name+'\');"><img src="/public/images/famfam/remove.png"/></a><a href="#"> '+name+'</a></div>');
 	$('#resuser_'+id).hide();
+	$('#noinv').hide();
+	$('#sendinv').show();
 }
 function send_invitations()
 {
-	
+	$("#invited div").each(function(){							
+		var uid = $(this).attr("id").substring(8);		
+		
+		});
+}
+function undo_inv(id)
+{
+	$('#invuser_'+id).remove();
+	$('#resuser_'+id).show();	
+	var items = document.getElementById("invited").getElementsByTagName("div");
+	if(items.length-2 == 0)
+	{
+		$('#noinv').show();
+		$('#sendinv').hide();
+	}
 }
 
 </script>
