@@ -8,7 +8,6 @@
  * and GPL (GPL-LICENSE.txt) licenses.
  */
 jQuery.jcalendar = function() {
-	alert();
 	var events = getEvents();
 	var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 	var days = ['S', 'M', 'Tu', 'W', 'Th', 'F', 'S'];

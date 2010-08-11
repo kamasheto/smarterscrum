@@ -118,12 +118,8 @@
 <script type ="text/javascript">
 $(document).ready(function() {
 	
-  $('fieldset.jcalendar').jcalendar({events:[
-	#{list items:sprints, as :'sprint'}
-      {name:'${_.number}', time:'',onclick:''}
- 	#{/list}
-	  ]});
-
+  $('fieldset.jcalendar').jcalendar();
+	alert();
 });
 
 
