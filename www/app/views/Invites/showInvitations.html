@@ -8,8 +8,8 @@
 #{list items:invitations, as:'inv'}
 	<div id = "pinv_${inv.id}">
 		<img src="/public/images/famfam/user_go.png"/>You have been invited to be ${inv.role} in project <a href = "@{Application.externalOpen(inv.role.project.id, '#', false)}">${inv.role.project.name}</a>
-		<br><a onclick="inv_respond('${inv.id}', '${inv.hash}', 1);"><img src="/public/images/famfam/tick.png" title="Accept"/></a> &nbsp; 
-		<a onclick="inv_respond('${inv.hash}', 0);"><img src="/public/images/famfam/cross.png" title="Decline"/></a>
+		<br><a onclick="javascript: inv_respond('${inv.id}', '${inv.hash}', 1);"><img src="/public/images/famfam/tick.png" title="Confirm"/></a> &nbsp; 
+		<a onclick="javascript: inv_respond('${inv.id}', '${inv.hash}', 0);"><img src="/public/images/famfam/cross.png" title="Decline"/></a>
 	</div>
 #{/list}
 #{/else}
@@ -28,7 +28,7 @@
 #{/list}
 #{/else}
 <script type = text/javascript>
-	function inv_respond(long id, string hash, int res)
+	function inv_respond(id, hash, res)
 	{
 		if(res == 1)
 			$.post('@{respondInvite()}',
