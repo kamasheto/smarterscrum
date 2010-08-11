@@ -10,10 +10,7 @@
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.dateAxisRenderer.js'}"></script>
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.categoryAxisRenderer.js'}"></script>
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.barRenderer.js'}"></script>
-	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/generateFunction.js'}"></script>
 
-<script  type="text/javascript" src="@{'/public/javascripts/dragtablenorm.js/'}" ></script>
-<script  type="text/javascript" src="@{'/public/javascripts/sorttable.js/'}" ></script>
 <script type="text/javascript">
 function graphed(data)
 {
@@ -75,12 +72,18 @@ function graphed(data)
 }
 function graph(data)
 {
+	var xx = '1 day';
+	if(data.length>900)
+		xx =360;
+	if(data.length>365)
+		xx = 30;
+	if(data.length>30)
+		xx= 7;
 	var bla = data;
 	var plot1 = $.jqplot('STATS', [data], 
 	{
 		seriesDefaults:
-		{color:'#E5A1A5',
-			markerOptions:{style:'square'}
+		{color:'#E5A1A5',showMarker:false
 		},
 		axes:
 		{
@@ -90,7 +93,7 @@ function graph(data)
 				labelOptions:{ fontFamily:'Helvetica',fontSize: '13pt'},
 				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
 				//ticks: xTicks
-				tickInterval:1
+				tickInterval:xx
 			}, 
 			yaxis:
 			{
@@ -110,7 +113,7 @@ function graph(data)
 		grid: 
 		{
 			drawGridLines: true,       
-			gridLineColor: '#333333',    
+			gridLineColor: '#999',    
 			background: '#f2f2f2',      
 			borderColor: '#999999',     
 			borderWidth: 2.0,           
@@ -130,79 +133,77 @@ function graph(data)
 </script>
 #{/set}
 #{set 'onLoad'}
-	#{ifnot theTask.taskType.name=='Impediment'}
+;
+#{if theTask.estimationPointsPerDay}
 graph(${efforts});
-#{/ifnot}graphed(${changes});$('#accordion').accordion({autoHeight: false,
-			navigation: true
-});
-#{/set}
-
-<!--
-@author Hadeer Younis
--->
-#{if connected.in(myProject).can('editTask')}
-#{set 'moreLinks'}
-<a href="edit/${theTask.id}">Edit Task</a></h3>
-#{/set}
 #{/if}
-	<h2>Task : ${theTask.id}</h2>
+
+#{if changes.size()!=0}
+graphed(${changes});
+#{/if}
+$('#accordion').accordion({autoHeight: false,navigation: true});
+#{/set}
+	<h1>Task ${theTask.number} : ${theTask.description} </h1>
 	#{if empty}
 		There isn't any change logs associated with this task.
 	#{/if}
 	#{else}
-	    	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
-	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
-	<strong>NOTE: </strong>To zoom in on a graph, simply click and drag and let go. To zoom out just double click the graph!
-	<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
-
-    <br/>
 	<div id="accordion">
-    <h3><a href="#">Task Information</a></h3>
+    <h6><a href="#">Task Information</a></h6>
 
     <div>
         	This task has been changed ${numberOfModifications} time, it was last changed on ${lastModified} by ${temp.get(temp.size()-1).user.getDisplayName(myProject).raw().raw()}
 		<br/><br/>
-		
-	#{ifnot theTask.taskType.name=='Impediment'}
+			#{if theTask.description}
+	Description:<br/>
+	${theTask.description}
+	<dir class="clear"></dir>
+	#{/if}
+	#{else}
+	<div style="padding: 10px;margin:10px"class="ui-state-error ui-corner-all">
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span>This Task doesn't have a description!
+	</div>
+	#{/else}
     #{if theTask.assignee}
-    Assigned to  : <a title="Go to ${theTask.assignee}'s page?"href="@{Show.user(theTask.assignee.id)}">${theTask.assignee.getDisplayName(myProject).raw().raw()}</a><br/>
+    Assigned to  : ${theTask.assignee.getDisplayName(myProject).raw()}<br/>
     #{/if}
     #{else}
     Assigned to  : no one<br/>
     #{/else}
-    #{/ifnot}
+
     #{if theTask.reporter}
-    Reported by  : <a title="Go to ${theTask.reporter}'s page?"href="@{Show.user(theTask.reporter.id)}">${theTask.reporter.getDisplayName(myProject).raw().raw()}</a><br/>
+    Reported by  : ${theTask.reporter.getDisplayName(myProject).raw()}<br/>
 	#{/if}
     #{else}
     Reported by  : no one<br/>
     #{/else}
     
-	#{ifnot theTask.taskType.name=='Impediment'}
 	#{if theTask.reviewer}
-	Reviewed by  : <a title="Go to ${theTask.reviewer}'s page?"href="@{Show.user(theTask.reviewer.id)}">${theTask.reviewer.getDisplayName(myProject).raw().raw().raw().raw()}</a>
+	Reviewed by  : ${theTask.reviewer.getDisplayName(myProject).raw()}<br/>
 	#{/if}
     #{else}
     Reviewed by  : no one<br/>
     #{/else}
-    #{/ifnot}
+
 	<dir class="clear"></dir>
-	#{ifnot theTask.taskType.name=='Impediment'}
 	#{if theTask.taskSprint}
 	Sprint       : ${theTask.taskSprint.id}<br/>
 	#{/if}
     #{else}
     Sprint       : not assigned to a sprint yet<br/>
     #{/else}
-	#{if theTask.taskStory.componentID}
-	Component    : ${theTask.taskStory.componentID.id}<br/>
+	#{if theTask.component}
+	#{if theTask.component.name.equalsIgnoreCase("Default Component")}
+	#{/if}
+	#{else}
+	Component    : ${theTask.component.id}<br/>
+	#{/else}
 	#{/if}
     #{else}
     Component    : not assigned to a component yet<br/>
     #{/else}
-    #{/ifnot}
-	#{if theTask.taskStatus.project}
-	Project      : <a title="Go to ${theTask.taskStatus.project.name}'s main page?"href="@{Show.project(theTask.taskStatus.project.id)}">${theTask.taskStatus.project.name}</a>
+	#{if theTask.project}
+	Project      : ${theTask.project.name}
 	#{/if}
     #{else}
     Project      : doesn't belong to a project yet<br/>
@@ -228,26 +229,29 @@ graph(${efforts});
 	#{/else}
 	<dir class="clear"></dir>
 	
-	#{ifnot theTask.taskType.name=='Impediment'}
-	#{if theTask.taskStory}
-	Belongs to Story ${theTask.taskStory.id}:<br/>
-	${theTask.taskStory.description}
+	#{if theTask.parent}
+	Belongs to Task ${theTask.parent.number}:<br/>
+	${theTask.parent.description}
 		<dir class="clear"></dir>
 	#{/if}
 	#{else}
-	<div style="padding: 10px 10px 10px 10px;" class="ui-state-error ui-corner-all">
-	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span>This Task doesn't belong to a story!
-	</div>
+
 	#{/else}
-	#{/ifnot}
-	#{if theTask.description}
-	Description:<br/>
-	${theTask.description}
-	<dir class="clear"></dir>
+	#{if theTask.subTasks}
+	SubTasks:<br/>
+	#{list items:theTask.subTasks, as:'dt'}
+	#{if dt.id==theTask.subTasks.get(theTask.subTasks.size()-1)}
+	
+	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.number}</a>
 	#{/if}
 	#{else}
-	<div style="padding: 10px 10px 10px 10px"class="ui-state-error ui-corner-all">
-	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span>This Task doesn't have a description!
+	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.number}</a>, 
+	#{/else}
+	#{/list}
+	#{/if}
+	#{else}
+	<div style="padding: 10px;margin:10px" class="ui-state-highlight ui-corner-all"> 
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>This task has no subtasks
 	</div>
 	#{/else}
 	#{if theTask.dependentTasks}
@@ -255,72 +259,102 @@ graph(${efforts});
 	#{list items:theTask.dependentTasks, as:'dt'}
 	#{if dt.id==theTask.dependentTasks.get(theTask.dependentTasks.size()-1)}
 	
-	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.id}</a>
+	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.number}</a>
 	#{/if}
 	#{else}
-	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.id}</a>, 
+	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.number}</a>, 
 	#{/else}
 	#{/list}
 	#{/if}
 	#{else}
-	<div style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+	<div style="padding: 10px;margin:10px" class="ui-state-highlight ui-corner-all"> 
 	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>No other tasks depend on this task!
 	</div>
 	#{/else}
 	
 </div>
-
-     <h3><a href="#">Task Change Log</a></h3>
-  
-    <div>
-<table class="sortable draggable">
-
-#{list items:temp, as:'t'}
-<thead><td>
-${t.date.toString()}</td>
-<td></td>
+<h6><a href="#">Task Comments</a></h6>
+<div>
+#{if theTask.comments}
+#{list items:theTask.comments, as:'t'}
+<b>User: </b>${t.author}<br/>
+<b>Time: </b><span class="formatTime">${t.timeStamp}</span><br/>
+${t.Comment}
+<br/>
+<br/>
+<hr/>
+<br/>
+<br/>
+#{/list}
+#{/if}
+#{else}
+	<div style="padding: 10px;" class="ui-state-error ui-corner-all"> 
+		<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
+		<strong>There are no comments associated with this task. </strong>
+	</div>
+#{/else}
+</div>
+<h6><a href="#">Task Change Log</a></h6>
+<div>
+#{if changes}
+<table id="sprintTable"class="sortable draggable">
+	<thead style="text-align:left !important">
+		<tr><td>Time</td><td>User</td><td>Action</td></tr>
 </thead>
+#{list items:temp, as:'t'}
 <tr>
-<td>Action</td>
-<td>${t.action_type}</td>
-</tr>
-<tr>
-<td>By User</td>
+<td>${t.date.toString().substring(0,9)}</td>
+
 <td>${t.user.name}</td>
+
+<td>${t.action_type}</td>
 </tr>
 
 #{/list}
 </table>
-
+#{/if}
+#{else}
+	<div style="padding: 10px;" class="ui-state-error ui-corner-all"> 
+		<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
+		<strong>There are no changes associated with this task. </strong>
+	</div>
+#{/else}
 </div>
-             <h3><a href="#">Task Change Log Stats</a></h3>
-  <div>
-   <div id="cSTATS" class="jqplot" style="width:95%">
-    </div>
-        	<div style="margin-top:20px;padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+<h6><a href="#">Task Change Log Stats</a></h6>
+<div>
+#{if changes}
+<div style="margin-top:20px;padding: 10px;margin:10px" class="ui-state-highlight ui-corner-all"> 
 	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
 	<strong>NOTE: </strong>click and drag the cursor to zoom into the graph, click it to reset the graph.
-	</div></div>
+</div>
+   <div id="cSTATS" class="jqplot" style="width:95%">
+   </div>
+#{/if}
+#{else}
+	<div style="padding: 10px;" class="ui-state-error ui-corner-all"> 
+		<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
+		<strong>There are no changes associated with this task. </strong>
+	</div>
+#{/else}
+</div>
 	
-	
-	#{ifnot theTask.taskType.name=='Impediment'}
-    <h3><a href="#">Task Progression Stats</a></h3>
-  <div>#{if theTask.taskSprint}
+<h6><a href="#">Task Progression Stats</a></h6>
+<div>
+
+#{if theTask.estimationPointsPerDay}
+	<div style="margin-top:20px;padding: 10px;margin:10px" class="ui-state-highlight ui-corner-all"> 
+		<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+		<strong>NOTE: </strong>click and drag the cursor to zoom into the graph, click it to reset the graph.
+	</div>
     <div id="STATS" class="jqplot"style="width:95%">
     </div>
-    	<div style="margin-top:20px;padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
-	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
-	<strong>NOTE: </strong>click and drag the cursor to zoom into the graph, click it to reset the graph.
+#{/if}
+#{else}
+	<div style="padding: 10px;" class="ui-state-error ui-corner-all"> 
+		<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
+		<strong>There is either not enough data to display, or the current task isnt assigned to a sprint </strong>
 	</div>
-	#{/if}
-	#{else}
-	<div style="padding: 0pt 0.7em;" class="ui-state-error ui-corner-all"> 
-					<p><span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
-					<strong>This task isn't assigned to a certain sprint. Please assign it to a sprint in order to see the task progress </strong></p>
-				</div>
-	#{/else}
-    </div>
-    #{/ifnot}
+#{/else}
 </div>
-	
-	#{/else}
+</div>
+#{/else}

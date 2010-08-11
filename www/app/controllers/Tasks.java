@@ -581,10 +581,13 @@ public class Tasks extends SmartCRUD
 	public static void enterEffort(long id, double effort, int day) {
 		Task temp = Task.findById(id);
 		Security.check(Security.getConnected().in(temp.project).can("modifyTask") || temp.assignee == Security.getConnected());
+		if(temp.estimationPoints<effort)
+			renderText( "The entered effort cannot be more than the estimated effort");
+		else if(effort>=0)
+			renderText( "The entered effort cannot be less than 0");
 		User userWhoChanged = Security.getConnected();
 		Calendar timeChanged = Calendar.getInstance();
 		String changeType = "";
-System.out.println(Security.getConnected().components);
 		if (temp.getEffortPerDay(day) != -1) {
 			changeType = "Edit Attribute Effort";
 		} else {
@@ -608,7 +611,7 @@ System.out.println(Security.getConnected().components);
 	public static void getReport(long id) {
 		List<Log> temp = Log.findAll();
 		Task theTask = Task.findById(id);
-		Security.check(theTask.taskStatus.project.users.contains(Security.getConnected()));
+		Security.check(theTask.project.users.contains(Security.getConnected()));
 		if (theTask.deleted)
 			notFound();
 		boolean empty = temp.isEmpty();
@@ -667,7 +670,7 @@ System.out.println(Security.getConnected().components);
 		mindate.setTime(temp.get(0).date.getTime() - (3 * 86400000));
 		String minDate = mindate.toString().substring(0, 10);
 
-		Project myProject = theTask.taskType.project;
+		Project myProject = theTask.project;
 		render(myProject, minDate, temp, lastModified, empty, efforts, changes, numberOfModifications, theTask, maxDate);
 	}
 
