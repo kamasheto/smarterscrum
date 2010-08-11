@@ -781,3 +781,54 @@ function displayTZCountDown(countdown,tzcd,id,name)
 function message_bar(message) {
 	$.bar({message: message})
 }
+function changeTitle(){
+	var c = $('#month').val();
+	var d = $('#year').val();
+	if(c==1){
+		$('#title').html("January "+d);
+		
+	}
+	if(c==2){
+		$('#title').html("February "+d);
+		
+	}
+	if(c==3){
+		$('#title').html("March "+d);
+		
+	}
+	if(c==4){
+		$('#title').html("April "+d);
+		
+	}
+	if(c==5){
+		$('#title').html("May "+d);
+		
+	}
+	if(c==6){
+		$('#title').html("June "+d);
+		
+	}
+	if(c==7){
+		$('#title').html("July" +d);
+		
+	}
+	if(c==8){
+		$('#title').html("August "+d);
+		
+	}
+	if(c==9){
+		$('#title').html("September "+d);
+		
+	}
+	if(c==10){
+		$('#title').html("October "+d);
+		
+	}
+	if(c==11){
+		$('#title').html("November "+ d);
+	}
+	if(c==12){
+		$('#title').html("December "+ d);
+	}
+
+	}
