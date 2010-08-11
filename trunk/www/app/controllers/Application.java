@@ -2,14 +2,18 @@ package controllers;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import notifiers.Notifications;
 
 import models.Component;
+import models.Meeting;
+import models.MeetingAttendance;
 import models.Notification;
 import models.Project;
+import models.Sprint;
 import models.User;
 import play.data.validation.Email;
 import play.data.validation.Required;
@@ -275,5 +279,16 @@ public class Application extends SmartController
 		List<Notification> notifications = Notification.find( "receiver =" + user.id + " order by id desc" ).fetch();
 		render( notifications );
 	}
-
+	public static void showEvents(){
+		List<Project> projects  = Security.getConnected().projects;
+		List<Sprint> sprints = new ArrayList<Sprint>();
+		List<MeetingAttendance> meetings = MeetingAttendance.find("ByUserAndDeleted", Security.getConnected(),false).fetch();
+		for(Project project : projects){
+			for(Sprint sprint : project.sprints){
+				if(!sprint.deleted)
+					sprints.add(sprint);
+			}
+		}
+		render(sprints, meetings);
+	}
 }
