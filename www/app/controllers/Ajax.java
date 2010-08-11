@@ -67,10 +67,13 @@ public class Ajax extends SmartController
 	 */
 	public static void users( String query )
 	{
+		
 		List<User.Object> result = new LinkedList<User.Object>();
-		for( User u : User.find( "byNameLikeAndDeleted", "%" + query + "%", false ).<User> fetch() )
-		{
-			result.add( new User.Object( u.id, u.name ) );
+		if (!query.isEmpty()) {
+			for (User u : User.find("byNameLikeAndDeleted", "%" + query + "%",
+					false).<User> fetch()) {
+				result.add(new User.Object(u.id, u.name));
+			}
 		}
 		renderJSON( result );
 	}
