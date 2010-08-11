@@ -1,5 +1,6 @@
 package models;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -61,4 +62,9 @@ public class Snapshot extends SmartModel {
 	public Snapshot() {
 		date = new Date();
 	}
+	public String formatDate() {
+
+		return DateFormat.getDateInstance().format(date);
+	}
+
 }
