@@ -1031,8 +1031,7 @@ public class Tasks extends SmartCRUD {
 	 *            Tthe user id.
 	 * @return void
 	 */
-	public static void changeTaskStatusHelper(long id, int columnSequence,
-			String taskString, long user_id) {
+	public static void changeTaskStatusHelper(long id, int columnSequence, String taskString, long user_id, long row, long oldcol) {
 		if (user_id == 0) {
 			user_id = Security.getConnected().id;
 		}
@@ -1065,7 +1064,7 @@ public class Tasks extends SmartCRUD {
 		task_id_helper2 = task_id_helper[0].split("-");
 		task_id = Integer.parseInt(task_id_helper2[1]);
 
-		editTaskStatus(task_id, user_id, status);
+		editTaskStatus( task_id, user_id, status, columnSequence, row, oldcol );
 	}
 
 	/**
@@ -1120,9 +1119,8 @@ public class Tasks extends SmartCRUD {
 	 *            The id of the user who will change the task status.
 	 * @return boolean
 	 */
-	public static boolean editTaskStatus(long id, long userId,
-			TaskStatus newStatus) {
-		Task task1 = Task.findById(id);
+	public static boolean editTaskStatus(long id, long userId, TaskStatus newStatus, long newcol, long row, long oldcol)
+	{	Task task1 = Task.findById(id);
 		Security.check(Security.getConnected().in(task1.project).can(
 				"modifyTask")
 				|| task1.assignee == Security.getConnected());
@@ -1145,7 +1143,7 @@ public class Tasks extends SmartCRUD {
 
 		task1.taskStatus = newStatus;
 		task1.save();
-		// Update.update(task1.project, "ccc()");
+		Update.update(task1.project, "click_note("+row+","+oldcol+","+newcol+","+task1.taskSprint.id+","+task1.id+")");
 		// if (newStatus != null && newStatus.name == "Closed") {
 		// StoryComplete(id);
 		// }

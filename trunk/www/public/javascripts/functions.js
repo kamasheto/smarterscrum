@@ -1,4 +1,4 @@
-﻿﻿ $.extend($.gritter.options, { 
+﻿﻿﻿ $.extend($.gritter.options, { 
 	fade_in_speed: 50, // how fast notifications fade in (string or int)
 	fade_out_speed: 300, // how fast the notices fade out
 	time: 5000 // hang on the screen for...

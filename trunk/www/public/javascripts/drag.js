@@ -18,10 +18,13 @@ Apr 30, 2010.
 // create REDIPS namespace
 var REDIPS = {};
 
-
-
+function click_note(row, oldcol, newcol, sid, taskId)
+{
+	$('#theLoadedContent').contents().find('#'+row+'_'+oldcol).load('/boards/loadboard1?sprintID='+sid+' #'+row+'_'+oldcol);
+	$('#theLoadedContent').contents().find('#'+row+'_'+newcol).load('/boards/loadboard1?sprintID='+sid+' #'+row+'_'+newcol);
+	window.frames['theLoadedContent'].REDIPS.drag.init();
+}
 REDIPS.drag = (function () {
-	
 		// function declaration
 	var	init,					// initialization
 		img_onmousemove,		// needed to set onmousemove event handler for images
@@ -386,6 +389,7 @@ REDIPS.drag = (function () {
 			calculate_cells();
 		}
 		// reset old positions
+		oldPos = cell_source-1;
 		table_old = row_old = cell_old = null;
 		/**
 		 * 
@@ -396,9 +400,11 @@ REDIPS.drag = (function () {
 
 		//checking if the row it came from is the same as the one it went to and in different cell
 		if(row_source==row&&cell_source!=cell){
-		
+	//		alert((row_source/2)-1);
+	//	alert(oldPos);
+	//	alert(cell-1);
 		$.post('/Tasks/changeTaskStatusHelper' ,			
-			{id:gup('sprintID'),columnSequence:cell-1, taskString:obj.id,user_id:selectedUser}
+			{id:gup('sprintID'),columnSequence:cell-1, taskString:obj.id,user_id:selectedUser, row:(row_source/2), oldcol:oldPos}
 		);
 		}
 		else if (row_source!=row && gup('componentID')==0)
