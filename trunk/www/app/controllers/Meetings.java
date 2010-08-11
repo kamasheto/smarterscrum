@@ -227,7 +227,8 @@ public class Meetings extends SmartCRUD
 		{
 			// redirect( request.controller + ".list" );
 			// Meetings.viewMeetings( currentProject.id );
-			Application.overlayKiller( "reload('meetings')", "" );
+			Application.overlayKiller( "", "" );
+			Update.update( temp.project, "reload('meetings-" + temp.project.id + "')" );
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
 		{
@@ -353,7 +354,8 @@ public class Meetings extends SmartCRUD
 		{
 			// redirect( request.controller + ".list" );
 			// Meetings.viewMeetings( currentProject.id );
-			Application.overlayKiller( "reload('meeting-" + temp.id + "')", "" );
+			Application.overlayKiller( "", "" );
+			Update.update( temp.project, "reload('meeting-" + temp.id + "')" );
 		}
 	}
 
@@ -420,7 +422,7 @@ public class Meetings extends SmartCRUD
 	{
 		Task temp = Task.findById( task );
 		Meeting meeting = Meeting.findById( id );
-		Security.check( Security.getConnected().in( meeting.project ).can( "associateTaskToMeeting" ) && meeting.project == temp.project );
+		Security.check( Security.getConnected().in( meeting.project ).can( "editMeeting" ) && meeting.project == temp.project );
 		if( meeting.tasks.contains( temp ) )
 		{
 			renderText( "Task already assigned to this meeting" );
@@ -429,7 +431,8 @@ public class Meetings extends SmartCRUD
 		temp.meeting.add( meeting );
 		meeting.save();
 		temp.save();
-		renderText( "Task assigned to meeting successfully|reload('meeting-" + id + "', 'task-" + task + "')" );
+		Update.update( meeting.project, "reload('meetingTasks-" + id + "')" );
+		renderText( "Task assigned to meeting successfully" );
 	}
 
 	/**
@@ -561,7 +564,7 @@ public class Meetings extends SmartCRUD
 		Logs.addLog( Security.getConnected(), "delete", "Meeting", meeting.id, meeting.project, new Date( System.currentTimeMillis() ) );
 		meeting.save();
 
-		Update.update(meeting.project, "reload('meetings', 'meeting-"+meeting.id+"')");
+		Update.update( meeting.project, "reload('meetings-" + meeting.project.id + "', 'meeting-" + meeting.id + "')" );
 	}
 
 	/**
@@ -590,11 +593,13 @@ public class Meetings extends SmartCRUD
 				Notifications.invite( invitedUser, meetingURL, attendance.meeting.name, confirmURL, declineURL, attendance.meeting.project, true );
 				if( !invitedUser.equals( Security.getConnected() ) )
 				{
-					renderText( "User invited to meeting successfully.|reload('meetingAttendees-" + currentMeeting.id + "')" );
+					Update.update( attendance.meeting.project, "reload('meetingAttendees-" + currentMeeting.id + "')" );
+					renderText( "User invited to meeting successfully." );
 				}
 				else
 				{
-					renderText( "User invited to meeting successfully.|reload('meetingAttendees-" + currentMeeting.id + "','meetings','meeting-" + currentMeeting.id + "')" );
+					Update.update( attendance.meeting.project, "reload('meetingAttendees-" + currentMeeting.id + "','meetings-" + currentMeeting.project.id + "','meeting-" + currentMeeting.id + "')" );
+					renderText( "you are invited to the meeting successfully." );
 				}
 			}
 			else
@@ -629,12 +634,12 @@ public class Meetings extends SmartCRUD
 				if( invitedUser.meetingStatus( meetingID ).equals( "notInvited" ) )
 				{
 					MeetingAttendance attendance = new MeetingAttendance( invitedUser, meeting );
-					attendance.save();					
+					attendance.save();
 					String meetingHash = attendance.meetingHash;
-					String confirmURL = Router.getFullUrl("MeetingAttendances.confirm")+"?meetingHash=" + meetingHash;
-					String declineURL = Router.getFullUrl("MeetingAttendances.decline")+"?meetingHash=" + meetingHash;					
-					String meetingURL = Router.getFullUrl("Application.externalOpen")+"?id="+meeting.project.id+"&isOverlay=false&url=/meetings/viewMeeting?id="+meeting.id;					
-					Notifications.invite(invitedUser, meetingURL, meeting.name, confirmURL, declineURL, meeting.project, true);
+					String confirmURL = Router.getFullUrl( "MeetingAttendances.confirm" ) + "?meetingHash=" + meetingHash;
+					String declineURL = Router.getFullUrl( "MeetingAttendances.decline" ) + "?meetingHash=" + meetingHash;
+					String meetingURL = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + meeting.project.id + "&isOverlay=false&url=/meetings/viewMeeting?id=" + meeting.id;
+					Notifications.invite( invitedUser, meetingURL, meeting.name, confirmURL, declineURL, meeting.project, true );
 				}
 			}
 		}
@@ -643,7 +648,8 @@ public class Meetings extends SmartCRUD
 			meeting.components.add( c );
 			meeting.save();
 		}
-		renderText( "Users invited successfully|reload('meeting-" + meetingID + "' , 'meetings-" + meeting.project.id + "')" );
+		Update.update( meeting.project, "reload('meeting-" + meetingID + "' , 'meetings-" + meeting.project.id + "','meetingAttendees-" + meeting.id + "')" );
+		renderText( "Users invited successfully" );
 	}
 
 	/**
@@ -678,19 +684,20 @@ public class Meetings extends SmartCRUD
 							if( user.meetingStatus( meetingID ).equals( "notInvited" ) )
 							{
 								MeetingAttendance attendance = new MeetingAttendance( user, meeting );
-								attendance.save();								
-								String meetingHash = attendance.meetingHash;								
-								String confirmURL = Router.getFullUrl("MeetingAttendances.confirm")+"?meetingHash=" + meetingHash;
-								String declineURL = Router.getFullUrl("MeetingAttendances.decline")+"?meetingHash=" + meetingHash;					
-								String meetingURL = Router.getFullUrl("Application.externalOpen")+"?id="+meeting.project.id+"&isOverlay=false&url=/meetings/viewMeeting?id="+meeting.id;					
-								Notifications.invite(user, meetingURL, meeting.name, confirmURL, declineURL, meeting.project, true);
+								attendance.save();
+								String meetingHash = attendance.meetingHash;
+								String confirmURL = Router.getFullUrl( "MeetingAttendances.confirm" ) + "?meetingHash=" + meetingHash;
+								String declineURL = Router.getFullUrl( "MeetingAttendances.decline" ) + "?meetingHash=" + meetingHash;
+								String meetingURL = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + meeting.project.id + "&isOverlay=false&url=/meetings/viewMeeting?id=" + meeting.id;
+								Notifications.invite( user, meetingURL, meeting.name, confirmURL, declineURL, meeting.project, true );
 							}
 						}
 					}
 				}
 				meeting.components.add( component );
 				meeting.save();
-				renderText( "All Component Users are invited successfully|reload('meetingAttendees-" + meeting.id + "')" );
+				Update.update( meeting.project, "reload('meetingAttendees-" + meeting.id + "')" );
+				renderText( "All Component Users are invited successfully" );
 			}
 		}
 		else
@@ -852,9 +859,14 @@ public class Meetings extends SmartCRUD
 				if( ma == null )
 				{
 					MeetingAttendance attendance = new MeetingAttendance( Security.getConnected(), m );
+					Update.update( m.project.users, Security.getConnected(), "reload('meetingAttendees-" + m.id + "')" );
+					// Update.update( Security.getConnected(),
+					// "reload('meetingAttendees-" + m.id + "','meeting-" +
+					// m.project.id + "')" );
 					attendance.status = "confirmed";
 					attendance.save();
 				}
+
 				flash.success( "You have succesfully joined meeting " + m.name );
 				renderJSON( true );
 			}
@@ -900,8 +912,11 @@ public class Meetings extends SmartCRUD
 				continue;
 			}
 		}
+		attendance.addAll( confirmed );
+		attendance.addAll( waiting );
+		attendance.addAll( declined );
 
-		render( confirmed, declined, waiting, meeting );
+		render( attendance, meeting );
 
 	}
 
