@@ -327,8 +327,10 @@ $(function() {
 				}
 				if ($(this).data('init')) return
 				$(this).data('init', true)
+				var con = $(this).closest('.workspaceDraggables').attr('id');
 				$(this).draggable(
 						{
+							containment: '#'+con,
 							handle : '.ui-widget-header',
 							cancel : 'img',
 							stop : function(event, ui) {
