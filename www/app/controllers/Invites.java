@@ -37,7 +37,7 @@ public class Invites extends SmartController {
 		Security.check(Security.getConnected().in(pro).can("invite"));
 		Invite invite = new Invite(user, baseRole).save();
 		flash.success("Invitation(s) sent successfully!");
-		String url = Router.getFullUrl("Application.showInvitations");
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+pro.id+"&isOverlay=false&url=#";
 		String confirm = Router.getFullUrl("Invites.respondInvite") + "?what=1&hash=" + invite.hash + "&id=" + invite.id;
 		String decline = Router.getFullUrl("Invites.respondInvite") + "?what=0&hash=" + invite.hash + "&id=" + invite.id;
 		Notifications.invite(user, url, "", confirm, decline, pro, false);
