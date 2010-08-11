@@ -176,10 +176,13 @@ REDIPS.drag.init();
 	#{set count=0}
 	#{/set}
 	#{list items:component, as:'col'}
-	<td id="${count2}_${count}" width="50px" class="col_${count}" >  <!--filling cells in each row with tasks -->
+	<td width="50px" class="col_${count}" >  <!--filling cells in each row with tasks -->
+	<div id="${count2}_${count}">
+		
 		#{set count=count+1}
 		#{/set}
 		#{list items:col, as:'task'}
+		
 		<!-- small sticky note -->
 		#{if connected.in(p).can('changeTaskStatus') || connected.equals(task.assignee) || connected.equals(task.reviewer)}
 		<div style="float:left" id="task-${task.id}_T" class="drag status status_${task.id}">
@@ -272,6 +275,7 @@ REDIPS.drag.init();
 		</div>
 		</div>
 		#{/list}
+	</div>
 	</td>
 	#{/list}
 </tr>#{/if}
