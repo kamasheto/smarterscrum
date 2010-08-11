@@ -41,5 +41,5 @@
 			<p><b>Email: </b>${user.email}</p>
 		</div>
 		<br style="clear:both"/>
-		<div class="reload-projects-in-user-${user.id}" name="/users/listUserProjects?userId=${user.id}&boxId=1&currentProjectId=${currentProject.id}">Projects (${user.projects.size()})</div>
+		<div class="reload-projects-in-user-${user.id}" name="/users/listUserProjects?userId=${user.id}&boxId=1&currentProjectId=${currentProject.id}">Projects <small>(${user.projects.size()})</small></div>
 #{/if}
