@@ -1,8 +1,8 @@
 <html>
 <body>
 <p><a href = "/show/user?id=${user.id}">${user.name}</a> has ${actionType}ed ${resourceType}: <a href = "${n.resourceURL}">${resourceName}</a> 
-#{if project != null}
+#{ifnot project == null}
 in project ${project}
-#{/if}</p>
+#{/ifnot}</p>
 </body>
 </html>
