@@ -3,8 +3,21 @@ package controllers;
 import java.util.Date;
 import java.util.List;
 
+import models.Column;
+import models.Component;
+import models.Invite;
 import models.Log;
+import models.Meeting;
+import models.MeetingAttendance;
+import models.Priority;
+import models.ProductRole;
 import models.Project;
+import models.Request;
+import models.Snapshot;
+import models.Sprint;
+import models.Task;
+import models.TaskStatus;
+import models.TaskType;
 import models.User;
 import play.mvc.With;
 
@@ -29,10 +42,13 @@ public class Logs extends SmartCRUD
 	 * @return
 	 * @see Logs.addLog(User, String, String, long, Project, Date)
 	 */
-	public static boolean addLog( Project project, String action_type, String resource_type, long resource_id )
+	public static Log addLog( Project project, String action_type, String resource_type, long resource_id )
 	{
-		addLog( Security.getConnected(), action_type, resource_type, resource_id, project, new Date() );
-		return true;
+		Log newLog = new Log ( Security.getConnected(), action_type, resource_type, resource_id, project, new Date() );
+		if( Security.getConnected().isAdmin )
+			newLog.madeBySysAdmin = true;
+		newLog.save();
+		return newLog;
 	}
 
 	/**
@@ -52,18 +68,18 @@ public class Logs extends SmartCRUD
 	 *            The project that user is performing the action in.
 	 * @param date
 	 *            Current date/time of action.
-	 * @return <code>true</code> if the log entry was successfully saved.
+	 * @return <code>Log</code> the log entry that was saved.
 	 * @see models.Log
 	 * @Task C1S1
 	 */
-	public static boolean addLog( User user, String action_type, String resource_type, long resource_id, Project project, Date date )
+	public static Log addLog( User user, String action_type, String resource_type, long resource_id, Project project, Date date )
 	{
 		Log newLog = new Log( user, action_type, resource_type, resource_id, project, date );
 		if( user.isAdmin )
 			newLog.madeBySysAdmin = true;
 
 		newLog.save(); /* Save That Log Entry */
-		return true;
+		return newLog;
 	}
 
 	/**
@@ -84,8 +100,136 @@ public class Logs extends SmartCRUD
 	 */
 	public static boolean addLog( String logMessage )
 	{
-		new Log( null, logMessage, "", -1, null, new Date() ).save();
+		Log newLog = new Log( null, "", "", -1, null, new Date() );
+		newLog.logMessage = logMessage;
+		newLog.save();
 		return true;
+	}
+	
+	/**
+	 * <b><font color = "red">WARNING: THIS METHOD SHOULD ONLY BE USED WITH LOGS
+	 * THAT ARE RELATED TO BOTH: A USER AND A PROJECT.</font></b><br />
+	 * <u>You can use Logs.addLog(..).logMessage("your custom log goes here") to 
+	 * customize your log message (Highly recommended in some cases)</u><br />
+	 * Smarter addLog method signature. Indicates that an action was performed on
+	 * an object.
+	 * @param action The action type performed by the connected user
+	 * @param object The resource in which this action was performed
+	 * @return <code>Log</code> The new saved Log.
+	 * @since Sprint4
+	 */
+	public static Log addLog(String action, Object object)
+	{
+		User user = Security.getConnected();
+		Date date = new Date();
+		String resourcetType = object.getClass().getName();
+		Object [] projectAndId = getProjectAndId(object);
+		Project project = (Project) projectAndId[0];
+		long resourceId = (Long) projectAndId[1];
+		Log newLog = new Log (user,action,resourcetType,resourceId,project,date);
+		if(user.isAdmin)
+			newLog.madeBySysAdmin = true;
+		newLog.save();
+		return newLog;
+	}
+	
+	/**
+	 * identifies the project and id of an unknown entity object (someModel)
+	 * @param object The instance of a given entity / model
+	 * @return <code>Object[]</code> an array consisting of two elements:<br />
+	 * 1. The Project Object. <br />
+	 * 2. The id of that object or Entity.
+	 * @since Sprint4
+	 */
+	public static Object[] getProjectAndId(Object object)
+	{
+		Object [] projectAndId = new Object [2];
+		String resourceType = object.getClass().getName();
+		if (resourceType.equalsIgnoreCase("component"))
+		{
+			Component c = (Component) object;
+			projectAndId[0] = c.project;
+			projectAndId[1] = c.id;
+		}
+		else if (resourceType.equalsIgnoreCase("column"))
+		{
+			Column c = (Column) object;
+			projectAndId[0] = c.board.project;
+			projectAndId[1] = c.id;
+		}
+		else if (resourceType.equalsIgnoreCase("task"))
+		{
+			Task t = (Task) object;
+			projectAndId[0] = t.taskSprint.project;
+			projectAndId[1] = t.id;
+		}
+		else if (resourceType.equalsIgnoreCase("invite"))
+		{
+			Invite i = (Invite) object;
+			projectAndId[0] = i.role.project;
+			projectAndId[1] = i.id;
+		}
+		else if(resourceType.equalsIgnoreCase("meetingAttendance"))
+		{
+			MeetingAttendance m = (MeetingAttendance) object;
+			projectAndId[0] = m.meeting.project;
+			projectAndId[1] = m.id;
+		}
+		else if(resourceType.equalsIgnoreCase("meeting"))
+		{
+			Meeting m = (Meeting) object;
+			projectAndId[0] = m.project;
+			projectAndId[1] = m.id;
+		}
+		else if(resourceType.equalsIgnoreCase("ProductRole"))
+		{
+			ProductRole r = (ProductRole) object;
+			projectAndId[0] = r.project;
+			projectAndId[1] = r.id;
+		}
+		else if(resourceType.equalsIgnoreCase("project"))
+		{
+			Project p = (Project) object;
+			projectAndId[0] = p;
+			projectAndId[1] = p.id;
+		}
+		else if(resourceType.equalsIgnoreCase("taskstatus"))
+		{
+			TaskStatus ts = (TaskStatus) object;
+			projectAndId[0] = ts.project;
+			projectAndId[1] = ts.id;
+		}
+		else if(resourceType.equalsIgnoreCase("tasktype"))
+		{
+			TaskType tt = (TaskType) object;
+			projectAndId[0] = tt.project;
+			projectAndId[1] = tt.id;
+		}
+		else if(resourceType.equalsIgnoreCase("priority"))
+		{
+			Priority p = (Priority) object;
+			projectAndId[0] = p.project;
+			projectAndId[1] = p.id;
+		}
+		else if(resourceType.equalsIgnoreCase("request"))
+		{
+			Request r = (Request) object;
+			projectAndId[0] = r.project;
+			projectAndId[1] = r.id;
+		}
+		else if(resourceType.equalsIgnoreCase("snapshot"))
+		{
+			Snapshot s = (Snapshot) object;
+			projectAndId[0] = s.component.project;
+			projectAndId[1] = s.id;
+		}
+		else if(resourceType.equalsIgnoreCase("sprint"))
+		{
+			Sprint s = (Sprint) object;
+			projectAndId[0] = s.project;
+			projectAndId[1] = s.id;
+		}
+		return projectAndId;
 	}
 
 	/**
