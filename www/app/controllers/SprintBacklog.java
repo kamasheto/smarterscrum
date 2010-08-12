@@ -72,8 +72,9 @@ public class SprintBacklog extends SmartController
 			tasks = sprint.tasks;
 		}
 		String sNum = sprint.sprintNumber;
-		boolean flag = user.isAdmin || user.in( project ).can( "editSprintBacklog" );
-		render( tasks, id, daysHeader, sNum, componentID, project, flag, cs );
+		List<TaskType> types = sprint.project.taskTypes;
+		List<TaskStatus> statuses = sprint.project.taskStatuses;
+		render( tasks, id, daysHeader, sNum, componentID, project, cs,types,statuses );
 
 	}
 

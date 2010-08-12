@@ -23,11 +23,22 @@ function hideOrShow(c)
 	$('.'+c).toggle();
 }
 #{if connected.in(project).can('editBacklog') || connected.isAdmin}
-function popUp(URL) 
+
+function changeT (id,id2)
 {
-	day = new Date();
-	id = day.getTime();
-	eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=200,height=400,left = 583,top = 184');");
+	$.post('@{Tasks.editTaskType()}',{id:id,typeId:id2,userId:'${connected.id}'});
+}
+function changeS (id,id2)
+{
+	$.post('@{Tasks.changeTaskStatus()}',{id:id,statusId:id2});
+}
+function changeA (id,id2)
+{
+	$.post('@{Tasks.assignTaskAssignee()}',{taskId:id,assigneeId:id2});
+}
+function changeR (id,id2)
+{
+	$.post('@{Tasks.assignTaskReviewer()}',{taskId:id,reviewerId:id2});
 }
 $(function() 
 {	
@@ -50,26 +61,13 @@ $(function()
         var splitted 	= theId.split("_");
         var taskId 		= parseInt(splitted[1]);
         var dayId 		= parseInt(splitted[2])-1;
-        var max			= parseInt(splitted[3]);
-        var original	= parseInt(splitted[4]);
     	var points 		= parseInt(value);
-    	if(points>max)
-    	{
-    		alert('Please enter a number between 0 & '+max);
-    		return(original);
-    	}
-    	else if(isNaN(points))
-    	{
-    		alert('Please enter a number!');
-    		return(original);
-    	}
-    	else
-    	{	
-    		$.post('@{Tasks.enterEffort()}',
-    				{id:taskId,effort:points,day:dayId});     
-        	
-        	return(value);
-    	}      
+	
+    	$.post('@{Tasks.enterEffort()}',{id:taskId,effort:points,day:dayId},function(ret) 
+        {
+			parent_message_bar(ret);
+	    });            	
+        return(value);      
     },
     {    
         indicator : 'Saving...',
@@ -80,8 +78,7 @@ $(function()
     	    {
     	        var taskId 	= parseInt($('#lolid').closest("td").attr("id"));
     	       
-    	        $.post('@{Tasks.editTaskDesc()}',
-    	            {id:taskId, desc:value});
+    	        $.post('@{Tasks.editTaskDesc()}',{id:taskId, desc:value});
 
         	    return(value);
     	        
@@ -98,33 +95,14 @@ $(function()
     	        var theId 		= $('#lolid').closest("td").attr("id");
     	        var splitted 	= theId.split("_");
     	        var taskId 		= parseInt(splitted[0]);
-    	        var original	= parseInt(splitted[1]);
     	    	var points 		= parseInt(value);
     	        
-    	    	if(isNaN(points))
-    	    	{
-    	    		alert('Please enter a number!');
-    	    		return(original);
-    	    	}
-    	    	else
-    	    	{	
-    	    		$.post('@{Tasks.editTaskEstimation()}',
-    	    				{id:taskId,estimation:points});
-    	    		$('#lolid').closest("td").attr("id",taskId+"_"+points);
-    	    		$("td[id^=EF_"+taskId+"_]").each(function()
-    	    	    		{
-    	    	        		var theId 		= $(this).attr("id");
-    	    	        		var splitted 	= theId.split("_");
-    	    	       			var taskId 		= parseInt(splitted[1]);
-    	    	        		var dayId 		= parseInt(splitted[2])-1;
-    	    	        		var max			= parseInt(splitted[3]);
-    	    	        		var original	= parseInt(splitted[4]);
-	    	    				$(this).attr("id","EF_"+taskId+"_"+dayId+"_"+points+"_"+original);
-	    	    			}
-	    			);
-
-    	        	return(value);  
-    	    	}      
+    	    		$.post('@{Tasks.editTaskEstimation()}',{id:taskId,estimation:points}, function(ret) 
+    	    	    {
+						parent_message_bar(ret);
+    	    		});
+					return(value);  
+    	    	      
     	    },
     	    {    
     	        indicator : 'Saving...',
@@ -137,6 +115,7 @@ $(function()
 
 #{/set}
 <div id="sprint">
+
 <h1 style="float:left">#{if componentID==0}Sprint ${sNum}: ${project.name}'s Backlog#{/if}#{else}Sprint ${sNum}: ${cs}'s Backlog#{/else}</h1>
 <div style="float:right;width:200px;">
 <div class="allCornersRounded" style="background:#333;padding:15px;border-width:10px 10px 0;color:#eee">	
@@ -172,13 +151,13 @@ Show/Hide:
 	</tr>
 	</thead>
 	#{list items:tasks, as:'task'}
-	<tr id="task_${task.id}">
+	<tr name="@{sprintBacklog.index(componentID,id)}"id="task_${task.id}">
 	
 		<td>
 			<a title="view the task reports?" href="@{Tasks.getReport(task.id)}">${task.number}</a>
 		</td>
-		#{ifnot connected.id==task.assignee.id || flag}
-
+		
+		#{ifnot connected.in(project).can('editBacklog') || connected.isAdmin || connected.id==task.assignee.id || connected.id==task.reviewer.id}
           #{ifnot task.description}
           <td class="shDes">No Description stated</td>
           #{/ifnot}
@@ -241,56 +220,129 @@ Show/Hide:
 		<td class="editDES shDes" title="edit the description?" id="${task.id}">${task.description}</td>
 		#{/else} 
 		
-		#{ifnot task.taskType}
 		<td id="${task.id}" class="editTYPE shType">
-		#{if connected.in(project).can('changeTaskType')}
-		<a title="Enter a task type??"HREF="javascript:popUp('@{Tasks.chooseTaskType(task.id)}')">No type chosen</a>
+			#{if connected.in(project).can('changeTaskType')|| connected.id==task.assignee.id}
+		<form>
+			
+			<select id="t_${task.id}_t"onchange="changeT(${task.id},parseInt($('#t_${task.id}_t option:selected').val()));">
+       		#{list items:types, as:'type'}
+       		#{if type.name==task.taskType.name}
+       		<option selected="selected" value="${type.id}">${type.name}</option>
+       		#{/if}
+       		#{else}
+       		#{ifnot task.taskType.name}
+       		<option value="${type.id}">---</option>
+       		#{/ifnot}
+       		#{else}
+       		<option value="${type.id}">${type.name}</option>
+       		#{/else}
+       		#{/else}
+       		#{/list}
+			</select>
+		</form> 
 	    #{/if}
-		No type chosen
-		</td>
-		#{/ifnot} 
-		#{else}
-		<td id="${task.id}" title="edit the task type?" class="editTYPE shType">
-		#{if connected.in(project).can('changeTaskType')}
-		<a title="Enter a task type??"HREF="javascript:popUp('@{Tasks.chooseTaskType(task.id)}')">${task.taskType.name}</a>
-		#{/if}
+	    #{else}
+	    #{ifnot task.taskType}
+	    not set
+	    #{/ifnot}
+	    #{else}
+	    ${task.taskType.name}
+	    #{/else}
+	    #{/else}
 </td>
-		#{/else} 
-		
-		#{ifnot task.taskStatus}
+
 		<td id="${task.id}" class="editStatus shStatus">
-		<a title="Add the task Status??"HREF="javascript:popUp('@{Tasks.chooseTaskStatus(task.id)}')">No status chosen</a>
-		No status chosen
+		#{if connected.in(project).can('changeTaskStatus') ||connected.id==task.reviewer.id || connected.id==task.assignee.id}
+		<form>
+			<select id="t_${task.id}_s"onchange="changeS(${task.id},parseInt($('#t_${task.id}_s option:selected').val()));">
+       		#{list items:statuses, as:'type'}
+       		#{if type.name==task.taskStatus.name}
+       		<option selected="selected" value="${type.id}">${type.name}</option>
+       		#{/if}
+       		#{else}
+       		#{ifnot task.taskStatus.name}
+       		<option value="${type.id}">---</option>
+       		#{/ifnot}
+       		#{else}
+       		<option value="${type.id}">${type.name}</option>
+       		#{/else}
+       		#{/else}
+       		#{/list}
+			</select>
+		</form> 
+	    #{/if}
+	    #{else}
+	    #{ifnot task.taskType}
+	    not set
+	    #{/ifnot}
+	    #{else}
+	    ${task.taskType.name}
+	    #{/else}
+	    #{/else}
 		</td>
-		#{/ifnot}
-		 #{else}
-		<td id="${task.id}" title="edit the task type?" class="editStatus shStatus">
-		<a title="edit the task status??"HREF="javascript:popUp('@{Tasks.chooseTaskStatus(task.id)}')">
-		${task.taskStatus.name}</a></td>
-		#{/else}
+
 		
-		 #{ifnot task.assignee}
-		<td id="${task.id}_assigneee" class="editASSI shAssignee"><a title="Choose an assignee?"HREF="javascript:popUp('@{Tasks.chooseTaskAssiRev(task.id,0)}')">
 		
-		Choose assignee</a></td>
-		#{/ifnot}
-		 #{else}
-		<td id="${task.id}_assigneee" class="editASSI shAssignee"><a  title="change assignee?" HREF="javascript:popUp('@{Tasks.chooseTaskAssiRev(task.id,0)}')">
-		${task.assignee.name}</a>
-		
+		<td id="${task.id}_assigneee" class="editASSI shAssignee">
+			#{if connected.in(project).can('changeTaskAssignee') || connected.id==task.assignee.id}
+		<form>
+			<select id="t_${task.id}_a"onchange="changeA(${task.id},parseInt($('#t_${task.id}_a option:selected').val()));">
+       		#{list items:task.getAssigneeOrReviewer(true), as:'a'}
+       		#{if a.id==task.assignee.id}
+       		<option selected="selected" value="${a.id}">${a.getDisplayName().raw()}</option>
+       		#{/if}
+       		#{else}
+       		#{ifnot task.assignee}
+       		<option value="${a.id}">---</option>
+       		#{/ifnot}
+       		#{else}
+       		<option value="${a.id}">${a.getDisplayName().raw()}</option>
+       		#{/else}
+       		#{/else}
+       		#{/list}
+			</select>
+		</form> 
+	    #{/if}
+	    #{else}
+	    #{ifnot task.assignee}
+	    not set
+	    #{/ifnot}
+	    #{else}
+	    ${a.getDisplayName().raw()}
+	    #{/else}
+	    #{/else}
+
 		</td>
-		#{/else} 
-		
-		#{ifnot task.reviewer}
-		<td id="${task.id}" class="editREV shReviewer"><a title="Add a reviewer?"HREF="javascript:popUp('@{Tasks.chooseTaskAssiRev(task.id,1)}')">
-		No reviewer chosen</a>
+		<td id="${task.id}" class="editREV shReviewer">
+					#{if connected.in(project).can('changeTaskReviewer') || connected.id==task.assignee.id}
+		<form>
+			<select id="t_${task.id}_r"onchange="changeR(${task.id},parseInt($('#t_${task.id}_r option:selected').val()));">
+       		#{list items:task.getAssigneeOrReviewer(false), as:'a'}
+       		#{if a.id==task.reviewer.id}
+       		<option selected="selected" value="${a.id}">${a.getDisplayName().raw()}</option>
+       		#{/if}
+       		#{else}
+       		#{ifnot task.reviewer}
+       		<option value="${a.id}">---</option>
+       		#{/ifnot}
+       		#{else}
+       		<option value="${a.id}">${a.getDisplayName().raw()}</option>
+       		#{/else}
+       		#{/else}
+       		#{/list}
+			</select>
+		</form> 
+	    #{/if}
+	    #{else}
+	    #{ifnot task.reviewer}
+	    not set
+	    #{/ifnot}
+	    #{else}
+	    ${a.getDisplayName().raw()}
+	    #{/else}
+	    #{/else}
 		</td>
-		#{/ifnot} 
-		#{else}
-		<td id="${task.id}" title="Change the reviewer?" class="editREV shReviewer"><a HREF="javascript:popUp('@{Tasks.chooseTaskAssiRev(task.id,1)}')">
-		${task.reviewer.name}</a>
-		</td>
-		#{/else} 
+ 
 		
 		#{ifnot task.estimationPoints}
 		<td id="${task.id}" class="editPOINTS shPoints">No points 

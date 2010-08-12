@@ -13,6 +13,13 @@ label {
 	display: inline-block;
 }
 
+#sprintTable select {
+	font-family: verdana;
+	font-size: 10px;
+	width: 100%;
+	min-width:70px;
+}
+
 button,a button,input[type=submit],input[type=ok],input[type=send],input[type=button],input[type=send]
 	{
 	cursor: pointer;
@@ -588,9 +595,9 @@ a {
 	_border-right-color: pink;
 	_border-left-color: pink;
 	margin-top: -2px;
-	_filter: chroma(color =                         
+	_filter: chroma(color =                          
 		                                                          
-		                              pink);
+		                               pink);
 }
 
 .notchBottom2 {
@@ -608,9 +615,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                         
+	_filter: chroma(color =                          
 		                                                          
-		                              pink);
+		                               pink);
 }
 
 .notchTop {
@@ -625,9 +632,9 @@ a {
 	margin-left: 30px;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                         
+	_filter: chroma(color =                          
 		                                                          
-		                              pink);
+		                               pink);
 }
 
 .notchRight {
@@ -644,9 +651,9 @@ a {
 	display: inline-block;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                         
+	_filter: chroma(color =                          
 		                                                          
-		                              pink);
+		                               pink);
 }
 
 .notchLeft {
@@ -661,9 +668,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                         
+	_filter: chroma(color =                          
 		                                                          
-		                              pink);
+		                               pink);
 }
 
 .chatboxtextarea:focus {
@@ -883,7 +890,7 @@ img.left {
 	left: 0;
 	position: absolute;
 	opacity: 0;
-	filter: Alpha(Opacity =   0);
+	filter: Alpha(Opacity =     0);
 }
 
 /* Interaction Cues
@@ -1037,13 +1044,13 @@ img.left {
 
 .ui-priority-secondary,.ui-widget-content .ui-priority-secondary {
 	opacity: .7;
-	filter: Alpha(Opacity =   70);
+	filter: Alpha(Opacity =     70);
 	font-weight: normal;
 }
 
 .ui-state-disabled,.ui-widget-content .ui-state-disabled {
 	opacity: .35;
-	filter: Alpha(Opacity =   35);
+	filter: Alpha(Opacity =     35);
 	background-image: none;
 }
 
@@ -1864,7 +1871,7 @@ img.left {
 	background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
 		repeat-x;
 	opacity: .30;
-	filter: Alpha(Opacity =   30);
+	filter: Alpha(Opacity =     30);
 }
 
 .ui-widget-shadow {
@@ -1873,7 +1880,7 @@ img.left {
 	background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
 		repeat-x;
 	opacity: .30;
-	filter: Alpha(Opacity =   30);
+	filter: Alpha(Opacity =     30);
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	border-radius: 8px;
