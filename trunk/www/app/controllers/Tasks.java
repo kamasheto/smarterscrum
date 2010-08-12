@@ -596,7 +596,7 @@ public class Tasks extends SmartCRUD {
 		List<User> users = null;
 		Component component = Component.findById(id);
 		User Assignee = User.findById(id2);
-		if (id == 1)
+		if (component.number == 0)
 			users = component.project.users;
 		else
 			users = component.componentUsers;
