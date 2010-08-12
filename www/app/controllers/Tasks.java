@@ -788,7 +788,7 @@ public class Tasks extends SmartCRUD
 		// Notifications.notifyUsers(task1.component.getUsers(), header, body,
 		// (byte) 0);
 
-		Update.update( task.project, "reload('reload-task-'" + id + ");sprintLoad(" + id + ")" );
+		Update.update( task1.project, "reload('reload-task-'" + id + ");sprintLoad(" + id + ")" );
 		return true;
 
 	}
