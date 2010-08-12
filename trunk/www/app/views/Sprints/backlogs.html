@@ -4,7 +4,7 @@
 
 #{list items:sprint.project.components, as:'component'}
 #{if component.number!=0 }
-<div class="overlay" name="@{SprintBacklog.index(component.id,sprint.id)}">${component.name}</div>
+<div class="overlay  do_not_paginate" name="@{SprintBacklog.index(component.id,sprint.id)}">${component.name}</div>
 #{/if}
 #{/list}
 
