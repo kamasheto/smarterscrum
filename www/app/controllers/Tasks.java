@@ -1143,11 +1143,12 @@ public class Tasks extends SmartCRUD {
 
 		task1.taskStatus = newStatus;
 		task1.save();
-		for(int i = 0;i<task1.project.users.size();i++)
-		{
-			if(task1.project.users.get(i).id!=Security.getConnected().id)
-				Update.update(task1.project.users.get(i), "click_note("+row+","+oldcol+","+newcol+","+task1.taskSprint.id+","+task1.id+")");	
-		}
+	//	for(int i = 0;i<task1.project.users.size();i++)
+	//	{
+	//		if(task1.project.users.get(i).id!=Security.getConnected().id)
+		Update.update(task1.project, "click_note("+row+","+oldcol+","+newcol+","+task1.taskSprint.id+","+task1.id+")");	
+		//Update.update(Security.getConnected(), "remove_note("+task1.id+")");
+		//	}
 		// if (newStatus != null && newStatus.name == "Closed") {
 		// StoryComplete(id);
 		// }
