@@ -36,7 +36,7 @@ If you typed a user name and a project name that do not exist on the system, The
 	<div id="list">
 		<br />
 	#{list items:logs, as:'log'}
-		 #{if !(log.logMessage.isEmpty())}
+		 #{if !(log.logMessage)}
 		 #{if !(log.madeBySysAdmin)}
 		 [${log.date}]:  ${log.logMessage}<br />
 		 #{/if}
