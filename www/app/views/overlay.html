@@ -60,42 +60,26 @@ body,html {
 </head>
 <body onload="lo(); #{get 'onLoad'/};">
 			#{doLayout /}
-			#{ifErrors}
+			
 			<script type="text/javascript">
-				$(document).ready(function(){
-					window.parent.$.bar({
-						message : '${errors}'
-					});
-				})
-			</script>
+			$(document).ready(function(){
+
+				#{ifErrors}
+			parent_message_bar('${errors}');
 			#{/ifErrors}
+
 			#{if flash.error}
-			<script type="text/javascript">
-			$(document).ready(function(){
-				window.parent.$.bar({
-					message : '&{flash.error}'
-				});
-			})
-			</script>
+			parent_message_bar('&{flash.error}');
 			#{/if}
+				
 			#{if error}
-			<script type="text/javascript">
-			$(document).ready(function(){
-				window.parent.$.bar({
-					message : '&{error}'
-				});
-			})
-			</script>
+			parent_message_bar('&{error}');
 			#{/if}
 			
 			#{if flash.success}
-			<script type="text/javascript">
-			$(document).ready(function(){
-				window.parent.$.bar({
-					message : '&{flash.success}'
-				});
-			})
-			</script>
+			parent_message_bar('&{flash.success}');
 			#{/if}
+			});
+			</script>
 </body>
 </html>
