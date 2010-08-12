@@ -3,8 +3,8 @@
 <p>Dear ${user.name},
 <br/> You Have been Invited to #{if meeting}attend the meeting <a href = "${objectURL}">${objectName}</a> in project <a href="/application/externalopen?id=${project.id}&isOverlay=false&url=#">${project.name}</a>#{/if}
 #{else}join the project <a href="/application/externalopen?id=${project.id}&isOverlay=false&url=#">${project.name}</a>#{/else} by <a href="/show/user?id=${actionPerformer.id}">${actionPerformer.name}</a>
-<br/>In order to accept this invitation click here: <font size ="3" color ="green"></font><a href = ${confrimURL}>Confirm</a>
-<br/>In order to decline this invitation click here: <font size ="3" color ="red"></font><a href = ${declineURL}>Decline</a>
+<br/>In order to accept this invitation click here: <font size ="3" color ="green"></font><a href = "${confrimURL}">Confirm</a>
+<br/>In order to decline this invitation click here: <font size ="3" color ="red"></font><a href = "${declineURL}">Decline</a>
 </p>
 </body>
 </html>
