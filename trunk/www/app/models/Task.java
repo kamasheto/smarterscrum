@@ -424,6 +424,10 @@ public class Task extends SmartModel {
 		return summary;
 	}
 	
+	/**
+	 * A method that returns the number of the Task.
+	 * @return String
+	 */
 	public String getTaskNumber(){
 		String number="";
 		if(this.parent!=null){

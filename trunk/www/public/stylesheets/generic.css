@@ -3081,6 +3081,7 @@ color:#0b8c8f;
 font-weight:900;
 }
 
+
 div.jcalendar table td a:hover,div.jcalendar table td a:focus,div.jcalendar table td a:active {
 background:#0b8c8f;
 color:#fff;
@@ -3095,7 +3096,13 @@ font-weight:900;
 background-image: url(/public/images/famfam/event.png);
 padding-top:10px;
 }
+div.jcalendar table td.Event a {
+font-weight:900;
+background-image: url(/public/images/famfam/event.png);
+padding-top:10px;
+color: #0b8c8f;
 
+}
 div.jcalendar-links {
 margin:.4em;
 text-align:center;

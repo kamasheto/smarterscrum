@@ -134,20 +134,32 @@ jQuery.jcalendar = function() {
   				// highlight the current selected day
   				if (day.val() == d.getDate()) {
   				  _selectedDate = dayStr;
-  				  _selectedDate.addClass('selected');
+  				//  _selectedDate.addClass('selected');
   				}
   				
   			}
-  			var e = events.getDate();
+  			var thisDate;
+  			arr = events.split('|');
+  			$.each(arr, function(id, item){
+  				arr2 = item.split('.');
+  				if(arr2.length >=2){
+  				arr3 = arr2[1].split('-');
+  				thisDate = d.getMonth()+1 == arr3[1] && d.getFullYear() == arr3[2];
+  				if(atts['title'] ==null)
+  					atts['title']='';
+  				if(thisDate && curDay+1 == arr3[0]){
+  					atts['class'] = 'event';
+  					atts['title'] += arr2[0]+'\n';
+  				}
+  				}
+  				});
+  			thisDate = d.getMonth()+1 == arr3[1] && d.getFullYear() == arr3[2];
   			if (thisMonth && curDay+1 == todayDate) {
-  				atts['class'] += 'today';
-  				alert(e);
-  				alert(curDay);
-  			}
-  			
-  			if (curDay == e) {
-  				atts['class'] += 'event';
-  				alert("here2");
+  				if(thisDate && curDay+1 == arr3[0]){
+  					atts['class'] = 'Event';
+  					atts['title'] += arr2[0]+'\n';
+  				}else
+  					atts['class'] += 'today';
   			}
   			thisRow.append(jQuery("<td></td>").attr(atts).append(dayStr));
   			curDay++;
@@ -278,5 +290,33 @@ jQuery.fn.jcalendar = function(a) {
 };
 
 function getEvents(){
-	return new Date();
+	var sprints;
+	var meetings;
+	$.ajax({
+		url:'/Application/sprints',
+		async: false,
+		success: function(data){
+			sprints =data;
+		}
+	})
+	$.ajax({
+		url:'/Application/meetings',
+		async: false,
+		success: function(data){
+			meetings =data;
+		}
+	})
+	
+	var events='';
+	        $.each(sprints, function(id, item){
+	        events+= item.project+	': Start of Sprint'+item.sprintNumber+'.'+item.startDay+'-'+item.startMonth+'-'+item.startYear+'|'+item.project+': End of Sprint'+item.sprintNumber+'.'+item.endDay+'-'+item.endMonth+'-'+item.endYear+'|';
+			});
+	        
+	        $.each(meetings, function(id, item){
+		        events+= item.project+	': Meeting: '+item.name+', Starts at '+item.StartTime+'.'+item.startDay+'-'+item.startMonth+'-'+item.startYear+'|';
+				});
+	return events;
+	
 }
+
+

@@ -280,15 +280,35 @@ public class Application extends SmartController
 		render( notifications );
 	}
 	public static void showEvents(){
+		Date x = new Date();
+		int year = x.getYear()+1900;
+		List<Integer> years = new ArrayList<Integer>();
+		for(int i =-5 ; i<5;i++ ){
+			years.add(year+i);
+		}
+		render(years);
+	}
+	public static void sprints(){
 		List<Project> projects  = Security.getConnected().projects;
-		List<Sprint> sprints = new ArrayList<Sprint>();
-		List<MeetingAttendance> meetings = MeetingAttendance.find("byUserAndDeleted", Security.getConnected(),false).fetch();
+		List<Sprint.Object> sprints = new ArrayList<Sprint.Object>();
 		for(Project project : projects){
 			for(Sprint sprint : project.sprints){
-				if(!sprint.deleted)
-					sprints.add(sprint);
+				if(!sprint.deleted){
+					sprints.add(new Sprint.Object(sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name));
+				}
 			}
 		}
-		render(sprints, meetings);
+		renderJSON(sprints);
 	}
+	public static void meetings(){
+		List<MeetingAttendance> meetings1 = MeetingAttendance.find("byUserAndDeleted", Security.getConnected(),false).fetch();
+		List<Meeting.Object> meetings = new ArrayList<Meeting.Object>();
+		for(MeetingAttendance meeting : meetings1){
+			if(!meeting.meeting.deleted){
+				meetings.add(new Meeting.Object(meeting.meeting.id, meeting.meeting.startTime, meeting.meeting.project.name, meeting.meeting.name));
+			}
+		}
+		renderJSON(meetings);
+	}
+	
 }
