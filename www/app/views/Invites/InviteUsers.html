@@ -3,11 +3,11 @@
 #{note 'highlight'}
 	Click on a user to add him to the invitations list
 #{/note}<br/><br/>
-<div class="left"><h4><img src="/public/images/famfam/arrow2.png"/>Type to filter: <input type="text" id="search_term" onkeyup="search_users();" /> </h4><br/>
+<div class="left"><h4><img src="/public/images/famfam/arrow2.png"/>Type to filter: <input type="text" id="search_term" onkeyup="search_users(${project.id});" /> </h4><br/>
 <div id="results">
 <img id="loading" style="display:none;" src="@{'/public/images/loading16.gif'}" /><br/>
 	#{list items:users, as:'user'}
-		<div id="resuser_${user.id}"><a href="#" onclick="javascript: user_invited(${user.id}, ${user.name})">${user.name}</a></div>
+		<div id="resuser_${user.id}"><a href="#" onclick="javascript: user_invited(${user.id}, ${user.name})">${user.name}</a></div>	
 	#{/list}
 	
 </div>
@@ -20,12 +20,12 @@
 <script type="text/javascript">
 
 searching = null;
-function search_users() {
+function search_users(pid) {
 	$('#loading').show();
 	if (searching) {
 		searching.abort();
 	}
-	searching = $.post('/ajax/users?query='+$("#search_term").val(),
+	searching = $.post('/ajax/users?projectId='+pid+'&query='+$("#search_term").val(),
 			function(data) {
 				str = '';
 				if (data.length) {					
@@ -38,7 +38,7 @@ function search_users() {
 								flag = false;
 							});
 						if(flag)
-							str += '<div id="resuser_'+item.id+'"><a href="#" onclick="javascript: user_invited('+item.id+',\''+item.name+'\');">'+item.name+'</a></div>';						
+							str += '<div id="resuser_'+item.id+'"><a href="#" onclick="javascript: user_invited('+item.id+',\''+item.name+'\', '+pid+');">'+item.name+'</a></div>';						
 					});
 				} else {
 					str = '<br/><font size=2><img src="/public/images/famfam/error.png"/> No matching results found!</font>';
@@ -47,9 +47,18 @@ function search_users() {
 				$('#loading').hide();
 			});
 }
-function user_invited(id, name)
-{
-	$('#invited').append('<div id="invuser_'+id+'"><a onclick ="javascript: undo_inv('+id+',\''+name+'\');"><img src="/public/images/famfam/remove.png"/></a><a href="#">'+name+'</a></div>');
+function user_invited(id, name, pid)
+{		
+	var str = '<div id="invuser_'+id+'"><a onclick ="javascript: undo_inv('+id+',\''+name+'\');"><img src="/public/images/famfam/remove.png"/></a><a href="#">'+name+'</a><div id="selectrole_'+id+'">';
+	$.post("@{Invites.getProjectRoles()}", {id:pid},
+			function(data){
+				$.each(data, function(id,item){					
+					str += '<br/><input type="radio" value="'+item.id+'">'+item.name+'</input>';
+				});
+			});	
+	str+='</div></div>';
+	alert(str);
+	$('#invited').append(str);
 	$('#resuser_'+id).hide();
 	$('#noinv').hide();
 	$('#sendinv').show();
@@ -72,6 +81,7 @@ function send_invitations(pid)
 function undo_inv(id)
 {
 	$('#invuser_'+id).remove();
+	$(selectrole_+id).remove();
 	$('#resuser_'+id).show();	
 	var items = document.getElementById("invited").getElementsByTagName("div");
 	if(items.length-2 == 0)

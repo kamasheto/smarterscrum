@@ -65,14 +65,24 @@ public class Ajax extends SmartController
 	 * @param query
 	 *            , search query to search for
 	 */
-	public static void users( String query )
-	{
-		
+	public static void users( long projectId, String query )
+	{		
 		List<User.Object> result = new LinkedList<User.Object>();
-		if (!query.isEmpty()) {
-			for (User u : User.find("byNameLikeAndDeleted", "%" + query + "%",
-					false).<User> fetch()) {
-				result.add(new User.Object(u.id, u.name));
+		if (projectId == 0) {
+			if (!query.isEmpty()) {
+				for (User u : User.find("byNameLikeAndDeleted",
+						"%" + query + "%", false).<User> fetch()) {
+					result.add(new User.Object(u.id, u.name));
+				}
+			}
+		}
+		else
+		{
+			Project pro = Project.findById(projectId);
+			for (User u : User.find("byNameLikeAndDeleted",
+					"%" + query + "%", false).<User> fetch()) {
+				//if(!u.projects.contains(pro))
+					result.add(new User.Object(u.id, u.name));
 			}
 		}
 		renderJSON( result );

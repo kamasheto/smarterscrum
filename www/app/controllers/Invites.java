@@ -86,4 +86,17 @@ public class Invites extends SmartController {
 		render(invitations, meetings);
 	}
 	
+	public static void getProjectRoles(long id)
+	{		
+		Project pro = Project.findById(id);
+		List<Role> roles = pro.roles;
+		for(int i=0; i<roles.size(); i++)
+		{
+			roles.get(i).permissions=null;
+			roles.get(i).project=null;
+			roles.get(i).users=null;			
+		}
+		renderJSON(roles);
+	}
+	
 }
