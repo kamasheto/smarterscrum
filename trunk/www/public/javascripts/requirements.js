@@ -17,3 +17,8 @@ function doOnLoad() {
 				}
 		    });
 }
+function parent_message_bar(message) {
+	window.parent.$.bar({
+		message: message
+		});
+}
