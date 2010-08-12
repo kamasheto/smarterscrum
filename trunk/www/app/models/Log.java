@@ -63,6 +63,12 @@ public class Log extends SmartModel {
 	 * permission
 	 */
 	public boolean madeBySysAdmin;
+	
+	/**
+	 * The logMessage that should be displayed in the view.
+	 * @since Sprint4
+	 */
+	public String logMessage;
 
 	/**
 	 * A User "user" Performs a certain Action "action_type" using a certain
@@ -119,6 +125,18 @@ public class Log extends SmartModel {
 	 */
 	public Log prev() {
 		return Log.find("date >= ? order by date asc", date).first();
+	}
+	
+	/**
+	 * Changes the logMessage of the log this method is invoked on
+	 * @param message The log message to be displayed in the view <b>(HTML href tags
+	 * to resource types if available please!)</b>
+	 * @since Sprint4
+	 */
+	public void logMessage(String message)
+	{
+		this.logMessage = message;
+		this.save();
 	}
 
 }
