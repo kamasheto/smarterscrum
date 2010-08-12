@@ -32,6 +32,7 @@ public class ProjectNotificationProfile extends SmartModel {
 	public boolean deleteTaskStatus;
 	public boolean deleteProject;
 	public boolean deletedFromProject;
+	public boolean editTaskType;
 
 	/**
 	 * the constructor that's responsible for adding this profile to the DB
@@ -49,9 +50,13 @@ public class ProjectNotificationProfile extends SmartModel {
 		onDeleteComponent = true;
 		addColumn=true;
 	    deleteColumn=true;
-	    assignStoryToSprint=true;		
+	    assignStoryToSprint=true;
+	    addTaskStatus=true;
+		editTaskStatus=true;
+		deleteTaskStatus=true;
 		deleteProject=true;
 		deletedFromProject=true;
+		editTaskType=true;
 	}
 
 	/**
@@ -79,11 +84,19 @@ public class ProjectNotificationProfile extends SmartModel {
 		else if (action.equalsIgnoreCase("deleteColumn"))
 			return deleteColumn;
 		else if (action.equalsIgnoreCase("assignStoryToSprint"))
-			return assignStoryToSprint;		
+			return assignStoryToSprint;
+		else if (action.equalsIgnoreCase("addTaskStatus"))
+			return addTaskStatus;	
+		else if (action.equalsIgnoreCase("editTaskStatus"))
+			return editTaskStatus;	
+		else if (action.equalsIgnoreCase("deleteTaskStatus"))
+			return deleteTaskStatus;
 		else if (action.equalsIgnoreCase("deleteProject"))
 			return deleteProject;
 		else if (action.equalsIgnoreCase("deletedFromProject"))
-			return deletedFromProject;		
+			return deletedFromProject;	
+		else if (action.equalsIgnoreCase("editTaskType"))
+			return editTaskType;
 		else
 			return false;
 	}
