@@ -516,7 +516,7 @@ function magic(id) {
 			if($(this).next().width()<=$(this).width())
 				$(this).next().next().hide();
 		});
-						if($(this).attr('class')=='overlay')
+						if($(this).hasClass('overlay'))
 						{
 							var id2 = "ui" +num;
 							num++;
