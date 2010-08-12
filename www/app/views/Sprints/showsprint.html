@@ -8,6 +8,19 @@
 <a href="#" onclick="overlayOpen('@{Sprints.projectshow(sprint.id)}')"><img src="/public/images/famfam/pencil.png" /></a>
 #{/else}
 #{/if}
+
+<!-- countdown -->
+	#{if sprint.startDate.after(new Date())}
+	<span id="sppt_${sprint.id}" class="meeting_countdown"></span>
+		<script type="text/javascript">
+		$(function() {
+			showDate(${sprint.id},'sppt_'+${sprint.id},${sprint.startDate.getTime()},"sprint ${sprint.sprintNumber}");
+		})
+		</script>	
+	#{/if}
+	<!-- end countdown -->
+
+
 #{/set}
 <script type="text/javascript">
 function isBefore(date){

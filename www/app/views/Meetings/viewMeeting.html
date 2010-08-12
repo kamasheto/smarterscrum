@@ -2,10 +2,10 @@
 	#{set 'title'}
 	${meeting.name}
 	#{if meeting.getStatus().equals("upComing")}
-		<span id="currr_${meeting.id}" style="float: left;font-style: italic; font-size :85%;"></span>
+		<span id="currr_${meeting.id}" class="meeting_countdown"></span>
 		<script type="text/javascript">
 		$(function() {
-			showDate(${meeting.id},'currr_'+${meeting.id},${meeting.startTime},'${meeting.name}');
+			showDate(${meeting.id},'currr_'+${meeting.id},${meeting.startTime},"${meeting.name.toString()}");
 		})
 		</script>
 	#{/if}

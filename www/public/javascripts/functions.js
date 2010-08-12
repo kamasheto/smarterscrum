@@ -713,11 +713,12 @@ function fix(obj)
 	});
 }
 
-function showDate(id,place,startTime,name) 
+function showDate(id,place,startTime,nam) 
 {
 	var date=startTime;
 	var tz =0;         //  
 	var lab = place;    //  The id of the page entry where the timezone countdown is to show
+	var name= ""+nam
 	displayTZCountDown(setTZCountDown(date,tz),lab,id,name);
 }
 function setTZCountDown(date,tz) 
@@ -731,6 +732,13 @@ function setTZCountDown(date,tz)
 }
 function displayTZCountDown(countdown,tzcd,id,name) 
 {
+	if(document.getElementById(tzcd)==null)
+		return;
+	if(countdown<0)
+	{
+		return;
+	}
+	
 	var secs = countdown % 60; 
 	if (secs < 10) secs = '0'+secs;
 	var countdown1 = (countdown - secs) / 60;
@@ -742,27 +750,28 @@ function displayTZCountDown(countdown,tzcd,id,name)
 
 	if(days== '00' && hours=='00'&& mins=='05' && secs=='00') 
 	{
-		alert("5 minutes remaining on the meeting "+name)
+		alert("5 minutes remaining on  "+name)
 	}
-
+	var timer="";
 	if(days>7)
 	{
-		document.getElementById(tzcd).innerHTML = "["+parseInt(days/7) + " W]"
+		timer = parseInt(days/7) + "W"
 	}
 	else
 	{
 		if(days<=7 && days >0)
 		{
-			document.getElementById(tzcd).innerHTML = "["+days + " D" + (days == 1 ? '' : 's') + ' : ' +hours+ ' H]'
+			timer = days + "D" +hours+ "H"
 		}
 		else
 		{
 			if(hours>0)
-			document.getElementById(tzcd).innerHTML = "["+hours + " H : " + mins + " M]"
+			timer = hours + "H" + mins + "M"
 			else
-				document.getElementById(tzcd).innerHTML = "["+mins + " M : " + secs + " S]"	
+				timer= mins + "M" + secs + "S"	
 		}
 	}
+	document.getElementById(tzcd).innerHTML= timer;
 	setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
 }
 

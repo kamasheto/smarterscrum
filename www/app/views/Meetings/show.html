@@ -149,7 +149,7 @@ function showStuff(id) {
 	       #{crud.custom 'startTime'}	    
  
 	<label for="object_startTime"> Start time  </label><br> 
-	<input id="object_startTimeShown" class="" type="text" name="object.startTimeShown" onChange="setTime(true)" value="" size="50" /> 
+	<input id="object_startTimeShown" class="" type="text" name="object.startTimeShown" onChange="setTime(true)" value="" size="50" readonly/> 
 	<input id="object_startTime" class="" type="text" name="object.startTime" value="${object.startTime}" size="50" style="display:none"/> 
     
     <span class="crudHelp" style="color:red">  * </span> 	
@@ -159,7 +159,7 @@ function showStuff(id) {
 		   
 		   #{crud.custom "endTime"}	
 	<label for="object_endTime"> End Time </label> <br>	  
-	<input id="object_endTimeShown" class="" type="text" name="object.endTimeShown" onChange="setTime(false)" value="" size="50" /> 
+	<input id="object_endTimeShown" class="" type="text" name="object.endTimeShown" onChange="setTime(false)" value="" size="50" readonly/> 
 	<input id="object_endTime" class="" type="text" name="object.endTime" value="${object.endTime}" size="50" style="display:none"/>	
 	
 	
