@@ -17,7 +17,7 @@ label {
 	font-family: verdana;
 	font-size: 10px;
 	width: 100%;
-	min-width:70px;
+	min-width: 70px;
 }
 
 button,a button,input[type=submit],input[type=ok],input[type=send],input[type=button],input[type=send]
@@ -595,9 +595,9 @@ a {
 	_border-right-color: pink;
 	_border-left-color: pink;
 	margin-top: -2px;
-	_filter: chroma(color =                          
+	_filter: chroma(color =                                  
 		                                                          
-		                               pink);
+		                                       pink);
 }
 
 .notchBottom2 {
@@ -615,9 +615,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                          
+	_filter: chroma(color =                                  
 		                                                          
-		                               pink);
+		                                       pink);
 }
 
 .notchTop {
@@ -632,9 +632,9 @@ a {
 	margin-left: 30px;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                          
+	_filter: chroma(color =                                  
 		                                                          
-		                               pink);
+		                                       pink);
 }
 
 .notchRight {
@@ -651,9 +651,9 @@ a {
 	display: inline-block;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                          
+	_filter: chroma(color =                                  
 		                                                          
-		                               pink);
+		                                       pink);
 }
 
 .notchLeft {
@@ -668,9 +668,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                          
+	_filter: chroma(color =                                  
 		                                                          
-		                               pink);
+		                                       pink);
 }
 
 .chatboxtextarea:focus {
@@ -730,29 +730,8 @@ a,a img,span.revertFrom,span.min {
 	opacity: 0.2;
 }
 
-.activity-level {
-	background: url(/public/images/activity-level.png);
-	display: inline-block;
-	width: 16px;
-	height: 16px;
-	background-position: -16px -16px;
-}
-
-.activity-level-0 {
-	background-position: -16px -16px;
-}
-
-.activity-level-1,.activity-level-2,.activity-level-3 {
-	background-position: 0 -16px;
-}
-
-.activity-level-4,.activity-level-5,.activity-level-6,.activity-level-7
-	{
-	background-position: -16px 0;
-}
-
-.activity-level-8,.activity-level-9,.activity-level-10 {
-	background-position: 0 0;
+button:disabled,input:disabled {
+	opacity: 0.5
 }
 
 .center {
@@ -890,7 +869,7 @@ img.left {
 	left: 0;
 	position: absolute;
 	opacity: 0;
-	filter: Alpha(Opacity =     0);
+	filter: Alpha(Opacity =                     0);
 }
 
 /* Interaction Cues
@@ -1044,13 +1023,13 @@ img.left {
 
 .ui-priority-secondary,.ui-widget-content .ui-priority-secondary {
 	opacity: .7;
-	filter: Alpha(Opacity =     70);
+	filter: Alpha(Opacity =                     70);
 	font-weight: normal;
 }
 
 .ui-state-disabled,.ui-widget-content .ui-state-disabled {
 	opacity: .35;
-	filter: Alpha(Opacity =     35);
+	filter: Alpha(Opacity =                     35);
 	background-image: none;
 }
 
@@ -1871,7 +1850,7 @@ img.left {
 	background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
 		repeat-x;
 	opacity: .30;
-	filter: Alpha(Opacity =     30);
+	filter: Alpha(Opacity =                     30);
 }
 
 .ui-widget-shadow {
@@ -1880,7 +1859,7 @@ img.left {
 	background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
 		repeat-x;
 	opacity: .30;
-	filter: Alpha(Opacity =     30);
+	filter: Alpha(Opacity =                     30);
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	border-radius: 8px;
