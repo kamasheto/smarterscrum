@@ -63,12 +63,12 @@ public class Collaborate extends SmartController {
 		response.online_users = users;
 		
 		String[] idsStr = currentlyOnline.split(",");
-		boolean newUsers = idsStr.length != users.size(); // true if they're not equal, false otherwise
-		// remember we'll take that a step further by confirming they're not the same.. next
-		
+		boolean newUsers = false;
+		int realLength = 0;
 		outerLoop : for (String idStr : idsStr) {
 			if (idStr.length() < 1)
 				continue;
+			realLength++;
 			long id = Long.parseLong(idStr);
 			boolean contains = false;
 			innerLoop : for (User.Object usrObj : users) {
@@ -82,6 +82,8 @@ public class Collaborate extends SmartController {
 				break outerLoop;
 			}
 		}
+		
+		newUsers |= realLength != users.size();
 		
 		/**
 		 * Suspend 
