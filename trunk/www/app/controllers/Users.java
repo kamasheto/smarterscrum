@@ -1,6 +1,7 @@
 package controllers;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,15 +9,18 @@ import javax.persistence.PersistenceException;
 import notifiers.Notifications;
 import models.Component;
 import models.Project;
+import models.Task;
+import models.Update;
 import models.User;
 import models.UserNotificationProfile;
 import play.data.validation.Email;
+import play.data.validation.Error;
 import play.data.validation.Required;
 import play.data.validation.Validation;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
-import play.mvc.Router;
+import play.libs.Mail;
 import play.mvc.With;
 
 /**
@@ -99,18 +103,11 @@ public class Users extends SmartCRUD {
 		}
 		myUser.components.add(myComponent);
 		myComponent.componentUsers.add(myUser);
-		for(Component component : myComponent.project.components){
-			if(component.number==0 && myUser.components.contains(component)){
-				myUser.components.remove(component);
-				component.componentUsers.remove(myUser);
-				// System.out.println("here");
-			}
-		}
 		Date d = new Date();
+		// User user = User.find("byEmail", Security.connected()).first();
 		User user = Security.getConnected();
 		Logs.addLog(user, "assignUser", "User", UId, myComponent.project, d);
-		String url = Router.getFullUrl("Application.externalOpen")+"/components/viewTheComponent?componentId="+myComponent.id;
-		Notifications.notifyUser(myUser, "assign", url , "you to the component", myComponent.name, (byte) 0, myComponent.project);
+		//Notifications.notifyUsers(myUser, "Assigned to a component", "You were assigned to the component " + myComponent.name + " in the project " + myComponent.project.name, (byte) 0);
 		myUser.save();
 		renderText("User assigned to component successfully|reload('component-" + id + "')");
 	}
@@ -507,21 +504,38 @@ public class Users extends SmartCRUD {
 		{
 			if (Validation.hasErrors()) 
 			{
+				for(Error error : Validation.errors()) 
+				{ 
+					flash.error(error.message());
+		        }
 				editMiniProfile(userProfileId);
 			}
 			String oldEmail = userProfile.email;
 			String oldname = userProfile.name;
 			userProfile.name = name;
-			userProfile.email = email;			
+			userProfile.email = email;
+			boolean hasErrors = false;
 			String message = "";
 			if (!userProfile.email.equals(oldEmail)) 
 			{
 				userProfile.activationHash = Application.randomHash(32);
 				userProfile.isActivated = false;
-				session.put("username", email);						
-				String url = Router.getFullUrl("Accounts.doActivation")+"?hash="+ userProfile.activationHash+"&firstTime=false";
-				Notifications.activate(userProfile.email, userProfile.name, url, true);				
+				String emailSubject = "Your SmartSoft new Email activation requires your attention";
+				String emailBody = "Dear "
+						+ userProfile.name
+						+ ", The Email Address associated with your account has been requested to be changed. Please click the following link to activate your account: "
+						+ "http://localhost:9000/accounts/doActivation?hash="
+						+ userProfile.activationHash;
+				Mail.send("se.smartsoft@gmail.com", userProfile.email, emailSubject, emailBody);
 				message = "You have successfully edited user personal information, A confirmation email has been sent to the new Email.";
+				
+				if (userProfile.id == connectedUser.id)
+				{
+					if (Security.connected().equals(oldEmail))
+					{
+						session.put("username", email);
+					}
+				}
 			} 
 			else 
 			{
@@ -533,11 +547,27 @@ public class Users extends SmartCRUD {
 				flash.success(message);
 				if (!oldname.equals(name))
 				{
-					Application.overlayKiller("reload('users')", "window.parent.$('#username-in-topbar').html('"+name+"')");
+					for (Project project : userProfile.projects)
+					{
+						Update.update(project, "reload('users')");
+					}
+					Update.update(userProfile, "$('#username-in-topbar').html('"+name+"')");
+					Application.overlayKiller("", "");
+					if (userProfile.id == connectedUser.id)
+					{
+						if (Security.connected().equals(oldname))
+						{
+							session.put("username", name);
+						}
+					}
 				}
 				else
 				{
-					Application.overlayKiller("reload('user-'+userProfileId)", "");
+					for (Project project : userProfile.projects)
+					{
+						Update.update(project, "reload('user-"+userProfileId+"')");
+					}
+					Application.overlayKiller("", "");
 				}
 				
 			} 
@@ -546,17 +576,17 @@ public class Users extends SmartCRUD {
 				List<User> usersWithSameName = User.find("byName", name).fetch();
 				List<User> usersWithSameEmail = User.find("byEmail", email).fetch();
 				message = "";
-				if(usersWithSameName.isEmpty())
+				if(!usersWithSameName.isEmpty())
 				{
 					message = "Sorry, The user name is already used. Please enter another name. ";
-					
 				}
-				else if(usersWithSameEmail.isEmpty())
+				else if(!usersWithSameEmail.isEmpty())
 				{
 					message = message +"The email is already used. Please enter another email.";
 				}
-				flash.success(message);
+				flash.error(message);
 				editMiniProfile (userProfileId);
+				
 			}
 		}
 		else
