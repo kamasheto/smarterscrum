@@ -176,9 +176,7 @@ REDIPS.drag.init();
 	#{set count=0}
 	#{/set}
 	#{list items:component, as:'col'}
-	<td width="50px" class="col_${count}" >  <!--filling cells in each row with tasks -->
-	<div id="${count2}_${count}">
-		
+	<td width="50px" class="col_${count}" id="${count2}_${count}">  <!--filling cells in each row with tasks -->
 		#{set count=count+1}
 		#{/set}
 		#{list items:col, as:'task'}
@@ -275,12 +273,12 @@ REDIPS.drag.init();
 		</div>
 		</div>
 		#{/list}
-	</div>
 	</td>
 	#{/list}
-</tr>#{/if}
+</tr>
+#{/if}
 #{set count2=count2+1}
-	#{/set}
+#{/set}
 #{/list}
 </table>
 </div>
@@ -313,7 +311,6 @@ function showHiddenCol(colid, sid, compid)
 }
 function hideCol(colid,sid,compid)
 {
-	alert(colid);
 	var answer=confirm('Are you sure u want to delete this coulmn?')
 	if (answer) 	
 	{

@@ -20,9 +20,13 @@ var REDIPS = {};
 
 function click_note(row, oldcol, newcol, sid, taskId)
 {
-	$('#theLoadedContent').contents().find('#'+row+'_'+oldcol).load('/boards/loadboard1?sprintID='+sid+' #'+row+'_'+oldcol);
 	$('#theLoadedContent').contents().find('#'+row+'_'+newcol).load('/boards/loadboard1?sprintID='+sid+' #'+row+'_'+newcol);
+	$('#theLoadedContent').contents().find('#'+row+'_'+oldcol).load('/boards/loadboard1?sprintID='+sid+' #'+row+'_'+oldcol);
 }
+//function remove_note(taskId)
+//{
+//	$('#theLoadedContent').contents().find('#task-'+taskId+'_T').remove();
+//}
 REDIPS.drag = (function () {
 		// function declaration
 	var	init,					// initialization
@@ -402,7 +406,8 @@ REDIPS.drag = (function () {
 	//		alert((row_source/2)-1);
 	//	alert(oldPos);
 	//	alert(cell-1);
-	
+	//	alert(obj.id);
+		//$('#'+obj.id).remove();
 		$.post('/Tasks/changeTaskStatusHelper' ,			
 			{id:gup('sprintID'),columnSequence:cell-1, taskString:obj.id,user_id:selectedUser, row:(row_source/2), oldcol:oldPos}
 		);
