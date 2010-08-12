@@ -1,33 +1,25 @@
 <html>
 <head>
 <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
+<script src="@{'/public/javascripts/requirements.js'}" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
-#{ifErrors}
-		window.parent.$.bar({
-			message : '${errors}'
-		});
-#{/ifErrors}
-#{if flash.error}
-	window.parent.$.bar({
-		message : '&{flash.error}'
-	});
-#{/if}
-#{if error}
-	window.parent.$.bar({
-		message : '&{error}'
-	});
-#{/if}
-#{if flash.success}
-	window.parent.$.bar({
-		message : '&{flash.success}'
-	});
-#{/if}	
-	window.parent.$('#getOverlay').hide();
-	#{if js}window.parent.${js}#{/if}
-	${nativeJS}
-	//window.location = "@{Application.loading()}";
-})
+		#{ifErrors}
+		parent_message_bar('${errors}')
+		#{/ifErrors}
+		#{if flash.error}
+		parent_message_bar('&{flash.error}')
+		#{/if}
+		#{if error}
+		parent_message_bar('&{error}')
+		#{/if}
+		#{if flash.success}
+		parent_message_bar('&{flash.success}')
+		#{/if}	
+		window.parent.$('#getOverlay').hide();
+		#{if js}window.parent.${js}#{/if}
+		${nativeJS}
+	})
 
 function addProjectToSearchBar(name, id) {
 	window.parent.$('#projects_my_current_projects').append('<div id="project-search-result-'+id+'"><a onclick="showProjectWorkspace('+id+')">'+name+'</a></div>')
