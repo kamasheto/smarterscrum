@@ -59,6 +59,17 @@ function isBefore(date){
 		#{/else}
 	#{/if}
 	
+	<!-- countdown -->
+	#{if sprint.startDate.after(new Date())}
+	<span id="spt_${sprint.id}" class="meeting_countdown"></span>
+		<script type="text/javascript">
+		$(function() {
+			showDate(${sprint.id},'spt_'+${sprint.id},${sprint.startDate.getTime()},"sprint ${sprint.sprintNumber}");
+		})
+		</script>	
+	#{/if}
+	<!-- end countdown -->
+	
 		</div>
 	
 
