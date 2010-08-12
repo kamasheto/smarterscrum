@@ -160,6 +160,28 @@ public class Meeting extends SmartModel
 		this.status = true;
 
 	}
+	public static class Object {
+
+		long id;
+		int startDay;
+		int startMonth;
+		long startYear;
+		String StartTime;
+		String project;
+		String name;
+		
+
+		public Object(long id, long startDate,  String project, String name) {
+			this.id = id;
+			Date x = new Date(startDate);
+			this.startDay = x.getDate();
+			this.startMonth = x.getMonth()+1;
+			this.startYear = x.getYear()+1900;
+			this.StartTime= ""+x.getHours()+":"+x.getMinutes();
+			this.project = project;
+			this.name= name;
+		}
+	}
 
 	/**
 	 * Override the built in toString method

@@ -60,6 +60,35 @@ public class Sprint extends SmartModel {
 
 	// @OneToMany (mappedBy = "daySprint", cascade = CascadeType.ALL)
 	// public List<Day> days;
+	
+	
+	
+	
+	public static class Object {
+
+		long id;
+		String sprintNumber;
+		int startDay;
+		int startMonth;
+		long startYear;
+		int endDay;
+		int endMonth;
+		long endYear;
+		String project;
+		
+
+		public Object(long id, String sprintNumber, Date startDate, Date endDate, String project) {
+			this.id = id;
+			this.sprintNumber = sprintNumber;
+			this.startDay = startDate.getDate();
+			this.startMonth = startDate.getMonth()+1;
+			this.startYear = startDate.getYear()+1900;
+			this.endDay = endDate.getDay();
+			this.endMonth = endDate.getMonth();
+			this.endYear = endDate.getYear()+1900;
+			this.project = project;
+		}
+	}
 	/**
 	 * Class constructor initializing (Start date, end date ,project and sprint
 	 * number).
