@@ -1,8 +1,8 @@
 <html>
 <body>
 <p><a href = "/show/user?id=${notif.user.id}">${notif.user.name}</a> has ${notif.actionType}ed ${notif.resourceType}: <a href = "${notif.resourceURL}">${notif.resourceName}</a> 
-#{if notif.project != null}
+#{ifnot notif.project == null}
 in project ${notif.project}
-#{/if}</p>
+#{/ifnot}</p>
 </body>
 </html>
