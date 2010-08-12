@@ -423,4 +423,13 @@ public class Task extends SmartModel {
 			summary = this.description;
 		return summary;
 	}
+	
+	public String getTaskNumber(){
+		String number="";
+		if(this.parent!=null){
+			number = this.parent.number+".";
+		}
+		number+= this.number;
+		return number;
+	}
 }
