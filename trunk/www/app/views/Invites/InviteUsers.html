@@ -63,7 +63,8 @@ function send_invitations(pid)
 			$.post('@{Invites.sendInvite}',
 				{pId:pid, userId:uid},
 				function(){
-					window.close();
+					parent_message_bar('Invitation(s) sent successfully!');
+					window.parent.$('#getOverlay').hide();
 					});}
 		count++;
 		});
