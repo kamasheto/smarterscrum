@@ -70,7 +70,20 @@
 			<div class="right" title="Type: ${Task.taskType.name}" style="text-align:center; background:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; display:inline-block; font-family:Verdana; font-weight:Bold;" >T</div>
 			#{/if}
 			#{if connected.equals(Task.assignee)}
+			<a href="#"onclick="overlayOpen('/Tasks/setDeadline?id=${Task.id}')" ><img title="Set deadline for this task"src="/public/images/famfam/clock_stop.png"/></a>
 			<img title="Assignee" src="@{'/public/images/famfam/assignee.png'}"/>
+			
+			<!-- countdown -->
+			#{if Task.deadline!=0}
+			<span id="tsk_${Task.id}" class="meeting_countdown"></span>
+				<script type="text/javascript">
+				$(function() {
+					showDate(${Task.id},'tsk_'+${Task.id},${Task.deadline},"task ${Task.getTaskNumber()}","task");
+				})
+			</script>	
+			#{/if}
+			<!-- end countdown -->
+			
 			#{/if}
 			#{if connected==(Task.reviewer)}
 			<img src="/public/images/famfam/reviewer.png" title="Reviewer" />

@@ -6,6 +6,7 @@ import java.util.List;
 
 import models.Artifact;
 import models.Component;
+import models.Log;
 import models.Meeting;
 import models.MeetingAttendance;
 import models.Project;
@@ -13,7 +14,6 @@ import models.Sprint;
 import models.Task;
 import models.Update;
 import models.User;
-import models.Log;
 import notifiers.Notifications;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
@@ -68,21 +68,22 @@ public class Meetings extends SmartCRUD
 	 */
 
 	public static void extend( long meetingid )
-	{System.out.println("test");
-	Meeting M = Meeting.findById( meetingid );
-	boolean mem = false;
-	for( MeetingAttendance att : M.users )
 	{
-		if( att.user == Security.getConnected() )
+		System.out.println( "test" );
+		Meeting M = Meeting.findById( meetingid );
+		boolean mem = false;
+		for( MeetingAttendance att : M.users )
 		{
-			mem = true;
+			if( att.user == Security.getConnected() )
+			{
+				mem = true;
+			}
 		}
-	}
-	if( !mem && !Security.getConnected().isAdmin )
-	{
-		forbidden();
-	}
-	M.endTime += 1000 * 60 * 60;
+		if( !mem && !Security.getConnected().isAdmin )
+		{
+			forbidden();
+		}
+		M.endTime += 1000 * 60 * 60;
 		M.save();
 	}
 
@@ -110,8 +111,9 @@ public class Meetings extends SmartCRUD
 		M.endTime = new Date().getTime();
 		M.save();
 		List<MeetingAttendance> attendees = MeetingAttendance.find( "byMeeting.idAndDeleted", M.id, false ).fetch();
-		// Logs.addLog( Security.getConnected(), "Ended", "Meeting", M.id, M.project, new Date( System.currentTimeMillis() ) );
-		Log.addUserLog("Ended meeting", M, M.project);
+		// Logs.addLog( Security.getConnected(), "Ended", "Meeting", M.id,
+		// M.project, new Date( System.currentTimeMillis() ) );
+		Log.addUserLog( "Ended meeting", M, M.project );
 		for( int i = 0; i < attendees.size(); i++ )
 		{
 			String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + M.project.id + "&isOverlay=false&url=/meetings/viewMeetings?id=" + M.id;
@@ -221,15 +223,17 @@ public class Meetings extends SmartCRUD
 			ma.status = "confirmed";
 			ma.save();
 		}
-		Log.addUserLog("Created meeting", temp, temp.project);
-		// Logs.addLog( Security.getConnected(), "create", "Meeting", temp.id, temp.project, new Date( System.currentTimeMillis() ) );
+		Log.addUserLog( "Created meeting", temp, temp.project );
+		// Logs.addLog( Security.getConnected(), "create", "Meeting", temp.id,
+		// temp.project, new Date( System.currentTimeMillis() ) );
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
 			// redirect( request.controller + ".list" );
 			// Meetings.viewMeetings( currentProject.id );
-			Application.overlayKiller( "", "" );
 			Update.update( temp.project, "reload('meetings-" + temp.project.id + "')" );
+			Application.overlayKiller( "", "" );
+
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
 		{
@@ -349,15 +353,17 @@ public class Meetings extends SmartCRUD
 
 		object.save();
 
-		Log.addUserLog("Edited meeting", temp, temp.project);
-		// Logs.addLog( Security.getConnected(), "edit", "Meeting", temp.id, temp.project, new Date( System.currentTimeMillis() ) );
+		Log.addUserLog( "Edited meeting", temp, temp.project );
+		// Logs.addLog( Security.getConnected(), "edit", "Meeting", temp.id,
+		// temp.project, new Date( System.currentTimeMillis() ) );
 		flash.success( "Meeting edited successfully" );
 		if( params.get( "_save" ) != null )
 		{
 			// redirect( request.controller + ".list" );
 			// Meetings.viewMeetings( currentProject.id );
-			Application.overlayKiller( "", "" );
 			Update.update( temp.project, "reload('meeting-" + temp.id + "')" );
+			Application.overlayKiller( "", "" );
+
 		}
 	}
 
@@ -562,8 +568,10 @@ public class Meetings extends SmartCRUD
 		{
 			artifacts.remove( 0 );
 		}
-		Log.addUserLog("Deleted meeting", meeting, meeting.project);
-		// Logs.addLog( Security.getConnected(), "delete", "Meeting", meeting.id, meeting.project, new Date( System.currentTimeMillis() ) );
+		Log.addUserLog( "Deleted meeting", meeting, meeting.project );
+		// Logs.addLog( Security.getConnected(), "delete", "Meeting",
+		// meeting.id, meeting.project, new Date( System.currentTimeMillis() )
+		// );
 		meeting.save();
 
 		Update.update( meeting.project, "reload('meetings-" + meeting.project.id + "', 'meeting-" + meeting.id + "')" );
@@ -600,7 +608,7 @@ public class Meetings extends SmartCRUD
 				}
 				else
 				{
-					Update.update( attendance.meeting.project, "reload('meetingAttendees-" + currentMeeting.id + "','meetings-" + currentMeeting.project.id + "','meeting-" + currentMeeting.id + "')" );
+					Update.update( attendance.meeting.project, "reload('meetingAttendees-" + currentMeeting.id + "', 'meetings-" + currentMeeting.project.id + "', 'meeting-" + currentMeeting.id + "')" );
 					renderText( "you are invited to the meeting successfully." );
 				}
 			}
@@ -650,7 +658,7 @@ public class Meetings extends SmartCRUD
 			meeting.components.add( c );
 			meeting.save();
 		}
-		Update.update( meeting.project, "reload('meeting-" + meetingID + "' , 'meetings-" + meeting.project.id + "','meetingAttendees-" + meeting.id + "')" );
+		Update.update( meeting.project, "reload('meeting-" + meetingID + "' , 'meetings-" + meeting.project.id + "' , 'meetingAttendees-" + meeting.id + "')" );
 		renderText( "Users invited successfully" );
 	}
 
@@ -729,8 +737,9 @@ public class Meetings extends SmartCRUD
 		else
 			M.tasks.add( T );
 		M.save();
-		Log.addUserLog("Associated task to meeting", M, M.project, T);
-		// Logs.addLog( Security.getConnected(), "Associated task to meeting", "task", meetingID, M.project, new Date() );
+		Log.addUserLog( "Associated task to meeting", M, M.project, T );
+		// Logs.addLog( Security.getConnected(), "Associated task to meeting",
+		// "task", meetingID, M.project, new Date() );
 		renderText( B );
 	}
 
@@ -862,7 +871,7 @@ public class Meetings extends SmartCRUD
 				if( ma == null )
 				{
 					MeetingAttendance attendance = new MeetingAttendance( Security.getConnected(), m );
-					Update.update( m.project.users, Security.getConnected(), "reload('meetingAttendees-" + m.id + "')" );
+					Update.update( m.project, "reload('meetingAttendees-" + m.id + "')" );
 					// Update.update( Security.getConnected(),
 					// "reload('meetingAttendees-" + m.id + "','meeting-" +
 					// m.project.id + "')" );
@@ -974,5 +983,20 @@ public class Meetings extends SmartCRUD
 		}
 
 		render( attendance, past, status );
+	}
+
+	/**
+	 * reloads the upcoming meetings when they start
+	 * 
+	 * @param id
+	 */
+	public static void reloadMeeting( long id )
+	{
+		Meeting meeting = Meeting.findById( id );
+		while( meeting.startTime >= new Date().getTime() )
+		{
+
+		}
+		Update.update( meeting.project, "reload('meeting-" + meeting.id + "','meetings-" + meeting.project.id + "')" );
 	}
 }

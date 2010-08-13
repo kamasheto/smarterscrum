@@ -4,11 +4,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+
 import models.Component;
 import models.Meeting;
 import models.Project;
 import models.Sprint;
 import models.Task;
+import models.Update;
 import models.User;
 import models.Log;
 import play.db.jpa.JPASupport;
@@ -17,7 +19,8 @@ import play.i18n.Messages;
 import play.mvc.With;
 
 /**
- * Represents the Sprint Entity in the Database and it's relations with other entities.
+ * Represents the Sprint Entity in the Database and it's relations with other
+ * entities.
  * 
  * @author minazai
  */
@@ -25,10 +28,11 @@ import play.mvc.With;
 public class Sprints extends SmartCRUD
 {
 	/**
-	 * Renders a list of the sprints on the project and a the running sprint of a specific project for the board view.
+	 * Renders a list of the sprints on the project and a the running sprint of
+	 * a specific project for the board view.
 	 * 
 	 * @param projectId
-	 *                 The project id.
+	 *            The project id.
 	 * @return void
 	 */
 	public static void BoardSprints( long projectId )
@@ -40,10 +44,11 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * Renders a list of the sprints on the project and a the running sprint of a specific project for the chart view.
+	 * Renders a list of the sprints on the project and a the running sprint of
+	 * a specific project for the chart view.
 	 * 
 	 * @param projectId
-	 *                 The project id.
+	 *            The project id.
 	 * @return void
 	 */
 	public static void ChartSprints( long projectId )
@@ -55,10 +60,11 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * Renders a list of the sprints on the project and a the running sprint of a specific project for the backlog view.
+	 * Renders a list of the sprints on the project and a the running sprint of
+	 * a specific project for the backlog view.
 	 * 
 	 * @param projectId
-	 *                 The project id.
+	 *            The project id.
 	 * @return void
 	 */
 	public static void BacklogSprints( long projectId )
@@ -70,11 +76,12 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * Renders the shows prints page with the sprints and a the running sprint of a specific project and the project it self.
+	 * Renders the shows prints page with the sprints and a the running sprint
+	 * of a specific project and the project it self.
 	 * 
 	 * @author minazaki
 	 * @param projectId
-	 *                 The project id.
+	 *            The project id.
 	 * @return void
 	 */
 	public static void showsprints( long projectId )
@@ -90,7 +97,7 @@ public class Sprints extends SmartCRUD
 	 * 
 	 * @author minazaki
 	 * @param id
-	 *           The sprint id.
+	 *            The sprint id.
 	 * @return void
 	 */
 	public static void showsprint( long id )
@@ -115,7 +122,7 @@ public class Sprints extends SmartCRUD
 	 * 
 	 * @author minazaki
 	 * @param projectId
-	 *                 The project id.
+	 *            The project id.
 	 * @return void
 	 */
 	public static void projectblank( long projectId )
@@ -146,7 +153,7 @@ public class Sprints extends SmartCRUD
 	 * 
 	 * @author Hadeer Younis
 	 * @param id
-	 *          The sprint id
+	 *            The sprint id
 	 * @return void
 	 */
 	public static void backlogs( long id )
@@ -175,7 +182,7 @@ public class Sprints extends SmartCRUD
 	 * 
 	 * @author minazki
 	 * @param projectId
-	 *                 The project id.
+	 *            The project id.
 	 * @throws Exception
 	 * @return void
 	 */
@@ -195,7 +202,7 @@ public class Sprints extends SmartCRUD
 		validation.valid( object.edit( "object", params ) );
 		if( validation.hasErrors() )
 		{
-			
+
 			renderArgs.put( "error", "Please Correct Date Format Error" );
 			try
 			{
@@ -278,10 +285,11 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * Overrides the CRUD show method that renders the edit form, in order to take the project id.
+	 * Overrides the CRUD show method that renders the edit form, in order to
+	 * take the project id.
 	 * 
 	 * @param id
-	 *          The sprint id.
+	 *            The sprint id.
 	 * @return void
 	 */
 	public static void projectshow( long id )
@@ -317,7 +325,7 @@ public class Sprints extends SmartCRUD
 	 * order to check if the edits are acceptable.
 	 * 
 	 * @param id
-	 *          The sprint id.
+	 *            The sprint id.
 	 * @throws Exception
 	 * @return void
 	 */
@@ -382,7 +390,7 @@ public class Sprints extends SmartCRUD
 			// Logs.addLog( Security.getConnected(), "Edit", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
 			Log.addUserLog("Edited sprint", object, proj);
 			// redirect( "/show/project?id=" + projId );
-			Application.overlayKiller("reload('sprints', 'sprint-"+object.id+"')", "");
+			Application.overlayKiller( "reload('sprints', 'sprint-" + object.id + "')", "" );
 		}
 		redirect( request.controller + ".show", object.getEntityId() );
 		// }
@@ -393,10 +401,11 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * Overrides the CRUD list method, in order to list the sprints of the project of a given component.
+	 * Overrides the CRUD list method, in order to list the sprints of the
+	 * project of a given component.
 	 * 
 	 * @param componentId
-	 *                   The component id.
+	 *            The component id.
 	 * @param type
 	 *            The type.
 	 * @return void
@@ -409,7 +418,8 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * Overrides the CRUD show method, in order to make the crud view not accessable.
+	 * Overrides the CRUD show method, in order to make the crud view not
+	 * accessable.
 	 * 
 	 * @param void
 	 * @return void
@@ -420,7 +430,8 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * Overrides the CRUD delete method, in order to make the crud delete action not accessable.
+	 * Overrides the CRUD delete method, in order to make the crud delete action
+	 * not accessable.
 	 * 
 	 * @param void
 	 * @return void
@@ -431,7 +442,8 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * Overrides the CRUD blank method, in order to make the crud view not accessable.
+	 * Overrides the CRUD blank method, in order to make the crud view not
+	 * accessable.
 	 * 
 	 * @param void
 	 * @return void
@@ -442,7 +454,8 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * Overrides the CRUD create method, in order to make the crud create action not accessable.
+	 * Overrides the CRUD create method, in order to make the crud create action
+	 * not accessable.
 	 * 
 	 * @param void
 	 * @return void
@@ -453,7 +466,8 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * Overrides the CRUD save method, in order to make the crud edit action not accessable.
+	 * Overrides the CRUD save method, in order to make the crud edit action not
+	 * accessable.
 	 * 
 	 * @param void
 	 * @return void
@@ -464,7 +478,8 @@ public class Sprints extends SmartCRUD
 	}
 
 	/**
-	 * Overrides the CRUD list method, in order to make the crud view not accessable.
+	 * Overrides the CRUD list method, in order to make the crud view not
+	 * accessable.
 	 * 
 	 * @param void
 	 * @return void
@@ -496,12 +511,27 @@ public class Sprints extends SmartCRUD
 			renderText( "Sorry the requested sprint has ended." );
 		else if( sprint.tasks.contains( task ) )
 			renderText( "Sorry the requested task already belongs to that sprint." );
-		else if( sprint.project.isScrum && sprint.startDate.getTime() <= new Date().getTime())
+		else if( sprint.project.isScrum && sprint.startDate.getTime() <= new Date().getTime() )
 			renderText( "Sorry you can't add a task to a running sprint" );
 		sprint.tasks.add( task );
-		task.taskSprint=sprint;
+		task.taskSprint = sprint;
 		task.save();
 		sprint.save();
 		renderText( "The task was assigned to the requested sprint|reload('task-" + taskId + "','sprint-" + sprintId + ")" );
+	}
+
+	/**
+	 * reload the sprint when the sprint start date come
+	 * 
+	 * @param id
+	 */
+	public static void reloadSprint( long id )
+	{
+		Sprint sprint = Sprint.findById( id );
+		while( sprint.startDate.getTime() > new Date().getTime() )
+		{
+
+		}
+		Update.update( sprint.project, "reload('sprint-" + sprint.id + "','sprints-" + sprint.project.id + "')" );
 	}
 }

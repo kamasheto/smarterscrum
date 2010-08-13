@@ -11,13 +11,13 @@
 	#{/if}
 	#{list items:projectMeetings, as:'current'}
 		
-		<div class="${current.getStatus().equals("current") ? 'greenBg' : current.getStatus().equals("upComing") ? 'yellowBg' : 'redBg'} reload-meeting-${current.id}" name="/meetings/viewmeeting?id=${current.id}">
+		<div class="reload-meeting-${current.id} ${current.getStatus().equals("current") ? 'greenBg' : current.getStatus().equals("upComing") ? 'yellowBg' : 'redBg'} " name="/meetings/viewmeeting?id=${current.id}">
 		${current.name}
 		#{if current.getStatus().equals("upComing")}
 		<span id="curr_${current.id}" class="meeting_countdown"></span>
 		<script type="text/javascript">
 		$(function() {
-			showDate(${current.id},'curr_'+${current.id},${current.startTime},"${current.name.toString()}");
+			showDate(${current.id},'curr_'+${current.id},${current.startTime},"${current.name.toString()}","meeting");
 		})
 		</script>
 		#{/if}
