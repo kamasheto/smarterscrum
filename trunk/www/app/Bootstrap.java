@@ -914,9 +914,11 @@ public class Bootstrap extends Job {
 			// ************ LOGS BEGIN ************
 			for (int l = 0; l < 120; l++) {
 				if (l % 2 == 0)
-					new Log(users.get(0), "TEST", "TEST", 0, projects.get(0), new Date()).save();
+					Log.addLog("Test", users.get(0), projects.get(0));
+					// new Log(users.get(0), "TEST", "TEST", 0, projects.get(0), new Date()).save();
 				else
-					new Log(users.get(1), "TEST", "TEST", 0, projects.get(1), new Date()).save();
+					Log.addLog("Test", users.get(1), projects.get(1));
+					// new Log(users.get(1), "TEST", "TEST", 0, projects.get(1), new Date()).save();
 			}
 			// ************ LOGS END ************
 

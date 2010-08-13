@@ -10,6 +10,7 @@ import models.Project;
 import models.Sprint;
 import models.Task;
 import models.User;
+import models.Log;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
@@ -262,15 +263,17 @@ public class Sprints extends SmartCRUD
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
-			Logs.addLog( Security.getConnected(), "Create", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
+			// Logs.addLog( Security.getConnected(), "Create", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
 			// redirect( "/show/project?id=" + projectId );
 			Application.overlayKiller( "reload('sprints')", "window.parent.$.bar({message:'Sprint created successfully'})" );
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
 		{
-			Logs.addLog( Security.getConnected(), "Create", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
+			// Logs.addLog( Security.getConnected(), "Create", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
 			redirect( "/sprints/projectblank?projectId=" + projectId );
 		}
+		
+		Log.addUserLog("Created sprint", object, proj);
 		redirect( request.controller + ".show", object.getEntityId() );
 	}
 
@@ -376,7 +379,8 @@ public class Sprints extends SmartCRUD
 		if( params.get( "_save" ) != null )
 		{
 
-			Logs.addLog( Security.getConnected(), "Edit", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
+			// Logs.addLog( Security.getConnected(), "Edit", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
+			Log.addUserLog("Edited sprint", object, proj);
 			// redirect( "/show/project?id=" + projId );
 			Application.overlayKiller("reload('sprints', 'sprint-"+object.id+"')", "");
 		}

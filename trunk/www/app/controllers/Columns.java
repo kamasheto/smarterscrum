@@ -2,9 +2,11 @@ package controllers;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
 import models.Board;
 import models.Column;
 import models.Component;
+import models.Log;
 import models.Project;
 import models.Sprint;
 import models.User;
@@ -44,7 +46,8 @@ public class Columns extends SmartController
 		User u = User.findById( userId );		
 		Column c1 = Column.find( "bySequenceAndBoardAndDeleted", pos1 - 1, b, false ).first();
 		Column c2 = Column.find( "bySequenceAndBoardAndDeleted", pos2 - 1, b, false ).first();
-		Logs.addLog( u, "edit", "Column Position", c1.id, p, cal.getTime() );
+		// Logs.addLog( u, "edit", "Column Position", c1.id, p, cal.getTime() );
+		Log.addLog("Edit column position", u, c1, b, p);
 		int x = c2.sequence;
 		if( c1.sequence < c2.sequence )
 		{
@@ -110,7 +113,8 @@ public class Columns extends SmartController
 		c1.save();
 		c2.save();
 		Calendar cal = new GregorianCalendar();		
-		Logs.addLog( user, "edit", "Column Position", c1.id, p, cal.getTime() );
+		// Logs.addLog( user, "edit", "Column Position", c1.id, p, cal.getTime() );
+		Log.addLog("Edit column position", user, c1, p, b);
 	}
 
 	/**
@@ -133,7 +137,8 @@ public class Columns extends SmartController
 			userId = Security.getConnected().id;
 		Calendar cal = new GregorianCalendar();
 		User u = User.findById( userId );
-		Logs.addLog( u, "rename", "Column Name", c.id, c.board.project, cal.getTime() );		
+		// Logs.addLog( u, "rename", "Column Name", c.id, c.board.project, cal.getTime() );		
+		Log.addLog("Renamed column name", c, c.board, c.board.project, u);
 		return true;
 	}
 }

@@ -97,6 +97,7 @@ public class Ajax extends SmartController
 	 * @author mahmoudsakr
 	 */
 	public static void dynamicDrop(String from, String to) {
+		Security.check(Security.isConnected());
 		String[] arr = from.split("-"); // meeting-1
 		String[] arr2 = to.split("-"); // user-3
 

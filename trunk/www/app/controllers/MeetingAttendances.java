@@ -9,6 +9,7 @@ import models.MeetingAttendance;
 import models.Project;
 import models.Update;
 import models.User;
+import models.Log;
 import notifiers.Notifications;
 import play.mvc.Router;
 import play.mvc.With;
@@ -48,7 +49,8 @@ public class MeetingAttendances extends SmartController
 			render( attendance, setbefore, notYet, isUser );
 		}
 		attendance.status = "confirmed";
-		Logs.addLog( Security.getConnected(), "confirm", "Meeting invitation", attendance.id, attendance.meeting.project, new Date( System.currentTimeMillis() ) );
+		// Logs.addLog( Security.getConnected(), "confirm", "Meeting invitation", attendance.id, attendance.meeting.project, new Date( System.currentTimeMillis() ) );
+		Log.addUserLog("Confirmed meeting invitation", attendance, attendance.meeting, attendance.meeting.project);
 		attendance.save();
 		render( attendance, setbefore, notYet, isUser );
 
@@ -87,7 +89,8 @@ public class MeetingAttendances extends SmartController
 			return;
 		}
 		attendance.status = "declined";
-		Logs.addLog( Security.getConnected(), "decline", "Meeting invitation", attendance.id, attendance.meeting.project, new Date( System.currentTimeMillis() ) );
+		Log.addUserLog("Declined meeting invitation", attendance, attendance.meeting, attendance.meeting.project);
+		// Logs.addLog( Security.getConnected(), "decline", "Meeting invitation", attendance.id, attendance.meeting.project, new Date( System.currentTimeMillis() ) );
 		attendance.save();
 		if( notYet )
 		{

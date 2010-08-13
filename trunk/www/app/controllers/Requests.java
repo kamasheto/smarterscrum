@@ -10,6 +10,7 @@ import models.Role;
 import models.Update;
 import models.User;
 import models.UserNotificationProfile;
+import models.Log;
 import notifiers.Notifications;
 import play.mvc.Router;
 import play.mvc.With;
@@ -60,8 +61,9 @@ public class Requests extends SmartCRUD
 		x.user.addRole( x.role );
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+x.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+x.user.id+"&x=2&projectId="+x.project.id+"&currentProjectId="+x.project.id;		
 		Notifications.notifyUser( x.user, "Accept", url, "your Role Request", x.role.name, (byte) 1 , x.project);
-		User myUser = Security.getConnected();
-		Logs.addLog( myUser, "RequestAccept", "Request", x.id, y, new Date() );
+		// User myUser = Security.getConnected();
+		// Logs.addLog( myUser, "RequestAccept", "Request", x.id, y, new Date() );
+		Log.addUserLog("Role request accepted", x.user, x.role, x.role.project);
 		
 		Update.update(x.user, "reload('roles')");
 		Update.update(Security.getConnected(), "reload('project-requests')");
@@ -120,7 +122,8 @@ public class Requests extends SmartCRUD
 		}
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+currentRequest.project.id+"&isOverlay=false&url=#";
 		Notifications.notifyUser( currentRequest.user, "Accept", url, "your Request to be deleted from project", currentRequest.project.name, (byte) 1 , null);		
-		Logs.addLog( Security.getConnected(), "DeletionRequestAccept", "Request", currentRequest.id, currentRequest.project, new Date() );
+		Log.addLog("Deletion request accepted", currentRequest.project, currentRequest.user);
+		// Logs.addLog( Security.getConnected(), "DeletionRequestAccept", "Request", currentRequest.id, currentRequest.project, new Date() );
 		
 		
 		Update.update(Security.getConnected(), "reload('project-requests')");
@@ -182,7 +185,8 @@ public class Requests extends SmartCRUD
 		}
 		User myUser = Security.getConnected();
 		Date dd = new Date();
-		Logs.addLog( myUser, "RequestDeny", "Request", x.id, y, dd );
+		// Logs.addLog( myUser, "RequestDeny", "Request", x.id, y, dd );
+		Log.addUserLog("Request "+(x.isDeletion ? "for deletion" : "role")+" denied", y);
 
 		Update.update(myUser, "reload('project-requests')");
 		

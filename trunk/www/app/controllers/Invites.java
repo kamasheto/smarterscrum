@@ -8,6 +8,7 @@ import models.MeetingAttendance;
 import models.Project;
 import models.Role;
 import models.User;
+import models.Log;
 import play.mvc.Router;
 import play.mvc.With;
 
@@ -41,7 +42,8 @@ public class Invites extends SmartController {
 		String confirm = Router.getFullUrl("Invites.respondInvite") + "?what=1&hash=" + invite.hash + "&id=" + invite.id;
 		String decline = Router.getFullUrl("Invites.respondInvite") + "?what=0&hash=" + invite.hash + "&id=" + invite.id;
 		Notifications.invite(user, url, "", confirm, decline, pro, false);
-		Logs.addLog(pro, "invited " + user.name, "Invite", invite.id);
+		// Logs.addLog(pro, "invited " + user.name, "Invite", invite.id);
+		Log.addUserLog("Invited " + user.name, invite, pro, baseRole);
 	}
 
 	/**
@@ -60,7 +62,8 @@ public class Invites extends SmartController {
 		if (what && !invite.user.roles.contains(invite.role)) {
 			invite.user.addRole(invite.role);
 		}
-		Logs.addLog(invite.role.project, "accepted invite to " + invite.role.name, "Invite", invite.id);
+		// Logs.addLog(invite.role.project, "accepted invite to " + invite.role.name, "Invite", invite.id);
+		Log.addUserLog("Accepted invitation to " + invite.role.name, invite.role.project, invite.role);
 		invite.delete();		
 	}
 	

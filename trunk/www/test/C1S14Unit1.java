@@ -1,17 +1,11 @@
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
-import models.Project;
+
 import models.Request;
 import models.Role;
-import models.User;
+
 import org.junit.Test;
-import controllers.Logs;
-import notifiers.Notifications;
-import controllers.Requests;
-import controllers.Security;
+
 import play.mvc.Before;
-import play.mvc.Controller;
 import play.test.Fixtures;
 import play.test.UnitTest;
 

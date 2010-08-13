@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Component;
+import models.Log;
 import models.Project;
 import models.Sprint;
 import models.Task;
@@ -135,7 +136,8 @@ public class ImpedimentTasks extends SmartController
 		Project project = impedimentTask.taskSprint.project;
 		String url = "@{Application.externalOpen("+project.id+", '/components/viewImpedimentLog?Proj_id="+project.id+"', false)}";
 		Notifications.notifyProjectUsers(project, "reportImpediment", url, "Impediment Task", ""+impedimentTask.number, (byte) -1);
-		Logs.addLog( project, "added", "Task", impedimentTask.id );
+		// Logs.addLog( project, "added", "Task", impedimentTask.id );
+		Log.addUserLog("Added impediment task", project, impedimentTask);
 	}
 
 	/**
@@ -209,7 +211,8 @@ public class ImpedimentTasks extends SmartController
 		users.add( t.reporter );
 		String url = "@{Application.externalOpen("+proj.id+", '/components/viewImpedimentLog?Proj_id="+proj.id+"', false)}";
 		Notifications.notifyProjectUsers(proj, "reportImpediment", url, "Impediment Task", ""+t.number, (byte) 0);		
-		Logs.addLog( proj, "updated", "Task", t.id );
+		// Logs.addLog( proj, "updated", "Task", t.id );
+		Log.addUserLog("Updated impediment task", t, t.project);
 	}
 
 }

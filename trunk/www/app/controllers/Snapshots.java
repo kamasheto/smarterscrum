@@ -8,6 +8,7 @@ import java.util.List;
 import models.Board;
 import models.Column;
 import models.Component;
+import models.Log;
 import models.Meeting;
 import models.Project;
 import models.Snapshot;
@@ -114,9 +115,9 @@ public class Snapshots extends SmartController {
 				snap.type = M.name + " Meeting";
 				snap.save();
 				Calendar cal = new GregorianCalendar();
-				Logs
-						.addLog(user, "Took", "Snapshot", snap.id, p, cal
-								.getTime());
+
+				// Logs.addLog(user, "Took", "Snapshot", snap.id, p, cal.getTime());	
+				Log.addUserLog("Took snapshot", snap, p, b, s);
 			}
 		} else {
 			Component c = Component.findById(componentID);
@@ -163,9 +164,9 @@ public class Snapshots extends SmartController {
 				snap.type = M.name + " Meeting";
 				snap.save();
 				Calendar cal = new GregorianCalendar();
-				Logs
-						.addLog(user, "Took", "Snapshot", snap.id, p, cal
-								.getTime());
+
+				// Logs.addLog(user, "Took", "Snapshot", snap.id, p, cal.getTime());
+				Log.addUserLog("Took snapshot", snap, b, s, p);
 			}
 		}
 	}

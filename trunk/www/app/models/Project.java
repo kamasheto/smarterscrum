@@ -154,15 +154,6 @@ public class Project extends SmartModel
 	 */
 	public ChatRoom chatroom;
 
-	/*                      */
-
-	/* Many To Many Relations */
-	/**
-	 * project's logs
-	 */
-	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
-	public List<Log> logs;
-
 	/**
 	 * project's notifications
 	 */
@@ -632,12 +623,7 @@ public class Project extends SmartModel
 	public boolean hasRunningSprints() {
 		long now = new Date().getTime();
 		List<Sprint> Sprints = Sprint.find("byProject", this).fetch();
-		// System.out.println("Size "+Sprints.size());
-		// for (int i = 0; i < Sprints.size(); i++) {
 		for (Sprint sprint : Sprints) {
-			// System.out.println("sta "+Sprints.get(i).startDate.getTime());
-			// System.out.println("now "+now);
-			// System.out.println("end "+Sprints.get(i).endDate.getTime());
 			if (sprint.startDate != null && sprint.endDate != null && 
 					now > sprint.startDate.getTime() && now < sprint.endDate.getTime()) {
 				return true;
@@ -775,7 +761,7 @@ public class Project extends SmartModel
 	 */
 	public int activity()
 	{
-		List<Log> logs = Log.find( "project = ? and date > ?", this, new Date( new Date().getTime() - 1000 * 60 * 60 * 24 * 10 ) ).fetch();
+		// System.out.println(logs);
 		int s = logs.size() / 10;
 		return s > 10 ? 10 : s < 0 ? 0 : s;
 	}

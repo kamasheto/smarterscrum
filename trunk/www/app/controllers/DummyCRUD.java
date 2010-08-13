@@ -7,7 +7,7 @@ import java.util.*;
 
 import models.*;
 
-@CRUD.For(Update.class)
+@CRUD.For(Project.class)
 public class DummyCRUD extends SmartCRUD {
     
 }
