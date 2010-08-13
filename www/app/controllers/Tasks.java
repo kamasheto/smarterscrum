@@ -323,10 +323,21 @@ public class Tasks extends SmartCRUD
 			else
 				productRoles = productRoles + "As a " + tmp.project.productRoles.get( i ).name + ",-";
 		}
-		if( tmp.component == null )
-			users = tmp.project.users;
+		if(tmp.component!=null)
+		{
+			if(tmp.component.number==0)
+			{
+				users = tmp.project.users;
+			}
+			else
+			{
+				users = tmp.component.componentUsers;
+			}
+		}
 		else
-			users = tmp.component.componentUsers;
+			users = tmp.project.users;
+		
+			
 		try
 		{
 			render( type, object, users, statuses, types, dependencies, message2, deletable, comments, productRoles );
@@ -604,15 +615,18 @@ public class Tasks extends SmartCRUD
 	 *            the task assignee id.
 	 * @return void
 	 */
-	public static void reviewers( long id, long id2 )
+	public static void reviewers( long id, long id2, long taskId )
 	{
+		
 		List<User> users = null;
-		Component component = Component.findById( id );
+		Task task = Task.findById( taskId );
 		User Assignee = User.findById( id2 );
-		if( component.number == 0 )
-			users = component.project.users;
+		
+		
+		if( task.component.number == 0 )
+			users = task.component.project.users;
 		else
-			users = component.componentUsers;
+			users = task.component.componentUsers;
 		List<User.Object> reviewers = new ArrayList<User.Object>();
 		for( User user : users )
 		{
@@ -1178,6 +1192,65 @@ public class Tasks extends SmartCRUD
 		return true;
 	}
 
+	/**
+	 * This method changes the given task type.
+	 * 
+	 * @author Moumen Mohamed
+	 * @param id
+	 *            The id of the given task.
+	 * @param type
+	 *            The new Task Type.
+	 * @param userId
+	 *            The id of the user who will change the task Type.
+	 * @return boolean
+	 */
+	public static boolean editTaskType( long id, long typeId, long userId )
+	{
+		Task task1 = Task.findById( id );
+		Security.check( Security.getConnected().in( task1.project ).can( "modifyTask" ) || task1.assignee == Security.getConnected() );
+		if( task1 == null )
+			return false;
+
+		if( userId == 0 )
+		{
+			userId = Security.getConnected().id;
+		}
+		User user1 = User.findById( userId );
+		if( user1 == null )
+			return false;
+		Project currentProject = task1.project;
+		boolean permession = user1.in( currentProject ).can( "changeTaskType" );
+		if( task1.reviewer.id != userId && task1.assignee.id != userId )
+		{
+			if( !permession )
+				return false;
+		}
+		TaskType type = TaskType.findById( typeId );
+		task1.taskType = type;
+		task1.save();
+		Update.update( task1.project, "reload_note(" + task1.taskSprint.id + "," + task1.id + ");sprintLoad(" + task1.id + ")" );
+		String body = "";
+		String header = "Task: 'T" + task1.id + "\'" + " Task Type has been edited.";
+		// String header = "A Task Type has been edited in Component: " + "\'" +
+		// task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" +
+		// task1.taskStory.componentID.project.name + "\'" + ".";
+		if( userId == Security.getConnected().id )
+		{
+	//		Logs.addLog( user1, "Edit", "Task Type", id, task1.project, new Date( System.currentTimeMillis() ) );
+			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ".";
+
+		}
+		else
+		{
+	//		Logs.addLog( user1 + " has performed action (Edit) using resource (Task Type) in project " + task1.project.name + " from the account of " + Security.getConnected().name );
+			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
+		}
+		// Notifications.notifyUsers(task1.component.getUsers(), header, body,
+		// (byte) 0);
+		return true;
+	}
+
+	
 	public static void chooseTaskPerson()
 	{
 		render();
