@@ -141,6 +141,11 @@ public class Task extends SmartModel
 	@ManyToOne
 	public ProductRole productRole;
 
+	/**
+	 * Task deadline time stamp that is set by the assignee.
+	 */
+	public long deadline;
+
 	// @ManyToOne
 	// public Column Status_on_Board;
 

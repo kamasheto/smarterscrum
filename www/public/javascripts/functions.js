@@ -713,13 +713,13 @@ function fix(obj)
 	});
 }
 
-function showDate(id,place,startTime,nam) 
+function showDate(id,place,startTime,nam,type) 
 {
 	var date=startTime;
 	var tz =0;         //  
 	var lab = place;    //  The id of the page entry where the timezone countdown is to show
 	var name= ""+nam
-	displayTZCountDown(setTZCountDown(date,tz),lab,id,name);
+	displayTZCountDown(setTZCountDown(date,tz),lab,id,nam,type);
 }
 function setTZCountDown(date,tz) 
 {
@@ -730,12 +730,24 @@ function setTZCountDown(date,tz)
 	diffDate.setMilliseconds(toDate - fromDate);
 	return Math.floor(diffDate.valueOf()/1000);
 }
-function displayTZCountDown(countdown,tzcd,id,name) 
+function displayTZCountDown(countdown,place,id,name,type) 
 {
-	if(document.getElementById(tzcd)==null)
+	if(document.getElementById(place)==null)
 		return;
 	if(countdown<0)
 	{
+		if(type=="meeting")
+			{
+				$.post("/Meetings/reloadMeeting",{id:id})
+			}
+		else if(type=="task")
+			{
+				$.post("/Tasks/reloadTask",{id:id})
+			}
+		else if(type=="sprint")
+			{
+				$.post("/Sprints/reloadSprint",{id:id})
+			}
 		return;
 	}
 	
@@ -771,8 +783,8 @@ function displayTZCountDown(countdown,tzcd,id,name)
 				timer= mins + "M" + secs + "S"	
 		}
 	}
-	document.getElementById(tzcd).innerHTML= timer;
-	setTimeout('displayTZCountDown('+(countdown-1)+',\''+tzcd+'\');',999);
+	document.getElementById(place).innerHTML= timer;
+	setTimeout('displayTZCountDown('+(countdown-1)+',\''+place+'\');',999);
 }
 
 function message_bar(message) {

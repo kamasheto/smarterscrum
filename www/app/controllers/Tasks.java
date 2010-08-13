@@ -1495,4 +1495,72 @@ public class Tasks extends SmartCRUD
 		}
 		renderJSON( u );
 	}
+	
+
+	/**
+	 * Set a deadline for a task to remind the assignee to it.
+	 * 
+	 * @param id
+	 */
+	public static void setDeadline( long id )
+	{
+		Task task = Task.findById( id );
+		if( !task.assignee.equals( Security.getConnected() ) )
+		{
+			forbidden();
+		}
+		else
+			render( task );
+	}
+
+	public static void changeTaskDeadline( long id, long newDeadline )
+	{
+		Task task = Task.findById( id );
+		if( !task.assignee.equals( Security.getConnected() ) )
+		{
+			forbidden();
+		}
+		if( newDeadline < new Date().getTime() )
+		{
+			renderJSON( false );
+		}
+		task.deadline = newDeadline;
+		task.save();
+		Update.update( Security.getConnected(), "reload('task-" + task.id + "','tasks" + task.project.id + "')" );
+		renderJSON( true );
+
+	}
+
+	/**
+	 * remove the task deadline
+	 * 
+	 * @param id
+	 */
+	public static void removeTaskDeadline( long id )
+	{
+		Task task = Task.findById( id );
+		if( !task.assignee.equals( Security.getConnected() ) )
+		{
+			forbidden();
+		}
+		task.deadline = 0;
+		task.save();
+		Update.update( Security.getConnected(), "reload('task-" + task.project.id + "')" );
+		renderJSON( true );
+	}
+
+	/**
+	 * reloads the task when the deadline comes
+	 * 
+	 * @param id
+	 */
+	public static void reloadTask( long id )
+	{
+		Task task = Task.findById( id );
+		while( task.deadline >= new Date().getTime() )
+		{
+
+		}
+		Update.update( Security.getConnected(), "reload('task-" + task.id + "','tasks-" + task.project.id + "')" );
+	}
 }

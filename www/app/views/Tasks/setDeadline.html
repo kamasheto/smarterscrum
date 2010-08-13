@@ -1,0 +1,128 @@
+#{extends 'overlay.html' /}
+  <script type="text/javascript"> 
+$(function() {
+
+	$('#deadline_shown').datepicker({  
+		changeMonth: true,
+		changeYear: true,
+	    showTime: true,
+		dateFormat: '@'
+	 
+	 });
+	
+});
+
+
+
+function setTime()
+{
+	
+	setTimeout("set_timer()", 50);
+	
+}
+function set_timer()
+{
+
+		var time= $('#deadline_shown').val();
+		$('#deadline').val(time);
+		var tobeShown= get_theDate(time);
+		document.getElementById('deadline_shown').value= tobeShown;
+	
+}
+
+
+
+function get_theDate(date)
+{
+	var theDate= new Date(parseInt(date));
+	var y= theDate.getFullYear();
+	var m= theDate.getMonth()+1;
+	var d= theDate.getDate();
+	var h= theDate.getHours();
+	var min= theDate.getMinutes();
+	if(m<10)
+	{
+		m='0'+m;
+	}
+	if(d<10)
+	{
+		d='0'+d;
+	}
+	if(h<10)
+	{
+		h='0'+h;
+	}
+	if(min<10)
+	{
+		min='0'+min;
+	}
+	return ""+d+"/"+m+"/"+y+" "+h+" : "+min;
+}
+
+$(function() 
+		{
+	var theValue=${task.deadline}
+	
+	if(theValue!='0')
+	{
+		var x=get_theDate(${task.deadline})
+		$('#deadline_shown').val(x);
+	}
+	
+		})
+
+
+function changeTaskDeadline(id)
+	{
+		var long_value= $('#deadline').val();
+		$.post('/Tasks/changeTaskDeadline',{id:id, newDeadline:long_value},
+				function(flag)
+				{
+					if(flag)
+					{
+						window.parent.$.bar({message:'new deadline is set.'});
+						window.parent.$('#getOverlay').hide();
+					}
+					else
+					{
+						window.parent.$.bar({message:'please set a correct deadline.'});
+						window.reload();
+					}
+				}
+				);
+	}
+
+	function removeTaskDeadline(id)
+	{
+		$.post('/Tasks/removeTaskDeadline',{id:id},
+				function(flag)
+				{
+					if(flag)
+					{
+						window.parent.$.bar({message:'deadline has been removed'});
+						window.parent.$('#getOverlay').hide();
+					}
+				}
+				);
+	}
+
+	</script>
+	
+	<div id="crudBlank" class="${type.name}">
+	
+	<h2 id="crudBlankTitle">Set deadline for task ${task.getTaskNumber()}</h2>
+	
+	<div class="crudField">
+			<label for="deadline_time"> deadline :  </label><br> 
+				<input id="deadline_shown" class="" type="text" name="object.startTimeShown" onChange="setTime()" value="" size="50" readonly /> 
+			    <input id="deadline" class="" type="text" name="deadline" value="${task.deadline}" size="50" style="display:none"/> 
+			    
+	</div>
+	<input type="button" onClick="changeTaskDeadline(${task.id})" value="Set deadline" />
+	#{if task.deadline!=0L}
+	or you can :
+	<input type="button" onClick="removeTaskDeadline(${task.id})" value="Remove the deadline" />
+	#{/if}
+	</div>
+	
+	<br><br><br><br><br><br><br><br>
