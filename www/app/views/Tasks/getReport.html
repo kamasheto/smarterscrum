@@ -152,7 +152,7 @@ $('#accordion').accordion({autoHeight: false,navigation: true});
     <h6><a href="#">Task Information</a></h6>
 
     <div>
-        	This task has been changed ${numberOfModifications} time, it was last changed on ${lastModified} by ${temp.get(temp.size()-1).user.getDisplayName(myProject).raw().raw()}
+        	This task has been changed ${numberOfModifications} time, it was last changed on ${lastModified} by ${temp.get(temp.size()-1).getUser().getDisplayName(myProject).raw()}
 		<br/><br/>
 			#{if theTask.description}
 	Description:<br/>
@@ -303,11 +303,9 @@ ${t.Comment}
 </thead>
 #{list items:temp, as:'t'}
 <tr>
-<td>${t.date.toString().substring(0,9)}</td>
-
+<td>${new Date(t.timestamp).toString().substring(0,9)}</td>
 <td>${t.user.name}</td>
-
-<td>${t.action_type}</td>
+<td>${t.message}</td>
 </tr>
 
 #{/list}

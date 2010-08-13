@@ -13,6 +13,7 @@ import models.Task;
 import models.Update;
 import models.User;
 import models.UserNotificationProfile;
+import models.Log;
 import play.data.validation.Email;
 import play.data.validation.Error;
 import play.data.validation.Required;
@@ -106,7 +107,9 @@ public class Users extends SmartCRUD {
 		Date d = new Date();
 		// User user = User.find("byEmail", Security.connected()).first();
 		User user = Security.getConnected();
-		Logs.addLog(user, "assignUser", "User", UId, myComponent.project, d);
+		// Logs.addLog(user, "assignUser", "User", UId, myComponent.project,
+		 // d);
+		Log.addUserLog("Assign user to component", myComponent, myComponent.project, myUser);
 		//Notifications.notifyUsers(myUser, "Assigned to a component", "You were assigned to the component " + myComponent.name + " in the project " + myComponent.project.name, (byte) 0);
 		myUser.save();
 		renderText("User assigned to component successfully|reload('component-" + id + "')");

@@ -13,6 +13,7 @@ import models.Sprint;
 import models.Task;
 import models.Update;
 import models.User;
+import models.Log;
 import notifiers.Notifications;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
@@ -109,7 +110,8 @@ public class Meetings extends SmartCRUD
 		M.endTime = new Date().getTime();
 		M.save();
 		List<MeetingAttendance> attendees = MeetingAttendance.find( "byMeeting.idAndDeleted", M.id, false ).fetch();
-		Logs.addLog( Security.getConnected(), "Ended", "Meeting", M.id, M.project, new Date( System.currentTimeMillis() ) );
+		// Logs.addLog( Security.getConnected(), "Ended", "Meeting", M.id, M.project, new Date( System.currentTimeMillis() ) );
+		Log.addUserLog("Ended meeting", M, M.project);
 		for( int i = 0; i < attendees.size(); i++ )
 		{
 			String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + M.project.id + "&isOverlay=false&url=/meetings/viewMeetings?id=" + M.id;
@@ -219,8 +221,8 @@ public class Meetings extends SmartCRUD
 			ma.status = "confirmed";
 			ma.save();
 		}
-
-		Logs.addLog( Security.getConnected(), "create", "Meeting", temp.id, temp.project, new Date( System.currentTimeMillis() ) );
+		Log.addUserLog("Created meeting", temp, temp.project);
+		// Logs.addLog( Security.getConnected(), "create", "Meeting", temp.id, temp.project, new Date( System.currentTimeMillis() ) );
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
@@ -347,7 +349,8 @@ public class Meetings extends SmartCRUD
 
 		object.save();
 
-		Logs.addLog( Security.getConnected(), "edit", "Meeting", temp.id, temp.project, new Date( System.currentTimeMillis() ) );
+		Log.addUserLog("Edited meeting", temp, temp.project);
+		// Logs.addLog( Security.getConnected(), "edit", "Meeting", temp.id, temp.project, new Date( System.currentTimeMillis() ) );
 		flash.success( "Meeting edited successfully" );
 		if( params.get( "_save" ) != null )
 		{
@@ -559,8 +562,8 @@ public class Meetings extends SmartCRUD
 		{
 			artifacts.remove( 0 );
 		}
-
-		Logs.addLog( Security.getConnected(), "delete", "Meeting", meeting.id, meeting.project, new Date( System.currentTimeMillis() ) );
+		Log.addUserLog("Deleted meeting", meeting, meeting.project);
+		// Logs.addLog( Security.getConnected(), "delete", "Meeting", meeting.id, meeting.project, new Date( System.currentTimeMillis() ) );
 		meeting.save();
 
 		Update.update( meeting.project, "reload('meetings-" + meeting.project.id + "', 'meeting-" + meeting.id + "')" );
@@ -726,7 +729,8 @@ public class Meetings extends SmartCRUD
 		else
 			M.tasks.add( T );
 		M.save();
-		Logs.addLog( Security.getConnected(), "Associated task to meeting", "task", meetingID, M.project, new Date() );
+		Log.addUserLog("Associated task to meeting", M, M.project, T);
+		// Logs.addLog( Security.getConnected(), "Associated task to meeting", "task", meetingID, M.project, new Date() );
 		renderText( B );
 	}
 

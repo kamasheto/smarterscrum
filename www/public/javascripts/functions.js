@@ -453,7 +453,7 @@ function removeFromDiv(url)
 randomId = 100	
 function load(url, el, n, hideLoading) {
 	if (!hideLoading) $('#' + el + '_content').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>');
-	if ($.inArray(url,myDivs) == -1) {
+	// if ($.inArray(url,myDivs) == -1) {
 		$.ajax({
 			url: url,
 			success: function(data) {
@@ -477,7 +477,7 @@ function load(url, el, n, hideLoading) {
 				$.bar({message: 'An error has occured. Please try again.'})
 			}
 		})
-	}
+	// }
 	if(n==1){	
 		myDivs.push(url);
 	}

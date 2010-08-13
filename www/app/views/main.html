@@ -18,7 +18,9 @@
         <script src="@{'/public/javascripts/smartsoft.filter.js'}" type="text/javascript" charset="utf-8"></script>
         <script src="@{'/public/javascripts/functions.js'}" type="text/javascript" charset="utf-8"></script>
 		<script src="@{'/public/javascripts/collaborative.js'}" type="text/javascript" charset="utf-8"></script>
+#{if connected}
 		<script src="@{'/public/javascripts/plugins/jcalendar.js'}" type="text/javascript" charset="utf-8"></script>
+#{/if}
         <script  type="text/javascript" src="@{'/public/javascripts/drag.js/'}"  ></script>
        #{get 'moreScripts' /}
         <script type="text/javascript">

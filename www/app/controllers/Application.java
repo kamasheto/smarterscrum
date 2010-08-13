@@ -6,15 +6,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import notifiers.Notifications;
-
 import models.Component;
+import models.Log;
 import models.Meeting;
 import models.MeetingAttendance;
 import models.Notification;
 import models.Project;
 import models.Sprint;
 import models.User;
+import notifiers.Notifications;
 import play.data.validation.Email;
 import play.data.validation.Required;
 import play.data.validation.Validation;
@@ -136,7 +136,8 @@ public class Application extends SmartController
 			notFound();
 		Security.check( Security.getConnected().in( c.project ).can( "deleteComponent" ) );
 		c.deleteComponent();
-		Logs.addLog( Security.getConnected(), "Delete", "Component", c.id, c.project, new Date( System.currentTimeMillis() ) );
+		Log.addUserLog("Deleted component", c, c.project);
+//		Logs.addLog( Security.getConnected(), "Delete", "Component", c.id, c.project, new Date( System.currentTimeMillis() ) );
 	}
 
 	/**

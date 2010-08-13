@@ -7,13 +7,10 @@ import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
-import notifiers.Notifications;
-
-import controllers.Security;
-
 import models.Board;
 import models.Column;
 import models.Component;
+import models.Log;
 import models.Meeting;
 import models.MeetingAttendance;
 import models.Project;
@@ -21,6 +18,7 @@ import models.Sprint;
 import models.Task;
 import models.User;
 import models.Component.ComponentRow;
+import notifiers.Notifications;
 import others.MeetingUsers;
 import play.mvc.Router;
 import play.mvc.With;
@@ -480,7 +478,8 @@ public class Boards extends SmartCRUD
 		User u = User.findById( uid );
 		if( u.deleted )
 			notFound();
-		Logs.addLog( u, "shown", "Column", cid, c.board.project, cal.getTime() );
+//		Logs.addLog( u, "shown", "Column", cid, c.board.project, cal.getTime() );
+		Log.addLog("Shown column", u, c.board, c, c.board.project);
 		String url = "";
 		if(compid==0)
 		{
@@ -545,7 +544,8 @@ public class Boards extends SmartCRUD
 			Component component = Component.findById(compid); 
 			Notifications.notifyUsers(component.componentUsers, "deleteColumn", url, "column", c.name, (byte)-1, c.board.project);			
 		}		
-		Logs.addLog( u, "hided", "Column", c.id, c.board.project, cal.getTime() );
+//		Logs.addLog( u, "hided", "Column", c.id, c.board.project, cal.getTime() );
+		Log.addLog("Hided column", c, c.board, c.board.project);
 		
 	}
 

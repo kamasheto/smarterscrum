@@ -21,6 +21,7 @@ import models.TaskStatus;
 import models.TaskType;
 import models.User;
 import models.UserNotificationProfile;
+import models.Log;
 import notifiers.Notifications;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
@@ -98,8 +99,8 @@ public class Projects extends SmartCRUD {
 			pro.init(projectObject.isScrum);
 			Role proAdmin = Role.find("name= 'Project Creator' and project =" + pro.id).first();
 			user.addRole(proAdmin);
-
-			Logs.addLog(Security.getConnected(), "Create", "Project", projectObject.id, projectObject, new Date(System.currentTimeMillis()));
+			Log.addUserLog("Created project", projectObject);
+			// Logs.addLog(Security.getConnected(), "Create", "Project", projectObject.id, projectObject, new Date(System.currentTimeMillis()));
 			if (Security.getConnected().isAdmin) {
 
 				flash.success(projectObject.name + " has been successfully created.");
@@ -180,7 +181,8 @@ public class Projects extends SmartCRUD {
 		p.meetingsTypesInSprint.add(inSprint);
 		p.save();
 
-		Logs.addLog(Security.getConnected(), "Add", "Project Defualt Meeting Types", p.id, p, new Date(System.currentTimeMillis()));
+		Log.addUserLog("Added meeting type: " + meetingType, p);
+		// Logs.addLog(Security.getConnected(), "Add", "Project Defualt Meeting Types", p.id, p, new Date(System.currentTimeMillis()));
 		renderJSON(true);
 		// } else {
 		// forbidden();
@@ -205,7 +207,8 @@ public class Projects extends SmartCRUD {
 		p.meetingsTypes.remove(meetingType);
 		p.meetingsTypesInSprint.remove(index);
 		p.save();
-		Logs.addLog(Security.getConnected(), "Remove", "Project Default Meeting Types ", p.id, p, new Date(System.currentTimeMillis()));
+		Log.addUserLog("Removed meeting type: " + meetingType, p);
+		// Logs.addLog(Security.getConnected(), "Remove", "Project Default Meeting Types ", p.id, p, new Date(System.currentTimeMillis()));
 		renderJSON(true);
 		// } else {
 		// forbidden();
@@ -264,7 +267,8 @@ public class Projects extends SmartCRUD {
 		p.save();
 		t.save();
 		t.init();
-		Logs.addLog(Security.getConnected(), "Create", "TaskStatus", t.id, p, new Date(System.currentTimeMillis()));
+		Log.addUserLog("Added task status", t, p);
+		// Logs.addLog(Security.getConnected(), "Create", "TaskStatus", t.id, p, new Date(System.currentTimeMillis()));
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+p.id+"&isOverlay=false&url=#";
 		Notifications.notifyProjectUsers(p, "addTaskStatus", url, "Task Status", t.name, (byte) 0);
 		renderJSON(t.id);
@@ -294,7 +298,8 @@ public class Projects extends SmartCRUD {
 		if (indicator.equalsIgnoreCase("Closed"))
 			taskStatus.closed = true;
 		taskStatus.save();
-		Logs.addLog(Security.getConnected(), "Edit", "TaskStatus", taskStatus.id, p, new Date(System.currentTimeMillis()));
+		Log.addUserLog("Edit task status", taskStatus, p);
+		// Logs.addLog(Security.getConnected(), "Edit", "TaskStatus", taskStatus.id, p, new Date(System.currentTimeMillis()));
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+p.id+"&isOverlay=false&url=#";
 		Notifications.notifyProjectUsers(p, "editTaskStatus", url, "Task Status", taskStatus.name, (byte) 0);
 		renderJSON(true);
@@ -323,7 +328,8 @@ public class Projects extends SmartCRUD {
 				taskStatus.columns.get(i).deleted = true;
 				taskStatus.columns.get(i).save();
 			}
-			Logs.addLog(Security.getConnected(), "Delete", "TaskStatus", taskStatus.id, taskStatus.project, new Date(System.currentTimeMillis()));
+			Log.addUserLog("Delete task status", taskStatus, taskStatus.project);
+			// Logs.addLog(Security.getConnected(), "Delete", "TaskStatus", taskStatus.id, taskStatus.project, new Date(System.currentTimeMillis()));
 			String url = Router.getFullUrl("Application.externalOpen")+"?id="+taskStatus.project.id+"&isOverlay=false&url=#";
 			Notifications.notifyProjectUsers(taskStatus.project, "deleteTaskStatus", url, "Task Status", taskStatus.name, (byte) -1);
 			renderJSON(true);
@@ -402,7 +408,8 @@ public class Projects extends SmartCRUD {
 
 		p.save();
 		t.save();
-		Logs.addLog(Security.getConnected(), "Add", "Project Default Task Types ", t.id, p, new Date(System.currentTimeMillis()));
+		Log.addUserLog("Added task type", t, p);
+		// Logs.addLog(Security.getConnected(), "Add", "Project Default Task Types ", t.id, p, new Date(System.currentTimeMillis()));
 		renderJSON(t.id);
 		// } else {
 		// forbidden();
@@ -424,7 +431,8 @@ public class Projects extends SmartCRUD {
 		taskType.deleted = true;
 
 		taskType.save();
-		Logs.addLog(Security.getConnected(), "Remove", "Project Default Task Type", taskType.id, taskType.project, new Date(System.currentTimeMillis()));
+		Log.addUserLog("Removed task type", taskType, taskType.project);
+		// Logs.addLog(Security.getConnected(), "Remove", "Project Default Task Type", taskType.id, taskType.project, new Date(System.currentTimeMillis()));
 		renderJSON(true);
 	}
 
@@ -451,7 +459,8 @@ public class Projects extends SmartCRUD {
 		x.save();
 
 		p.save();
-		Logs.addLog(Security.getConnected(), "Add", "Project Default Story Priroity ", x.id, x.project, new Date(System.currentTimeMillis()));
+		Log.addUserLog("Added story priority", x, x.project);
+		// Logs.addLog(Security.getConnected(), "Add", "Project Default Story Priroity ", x.id, x.project, new Date(System.currentTimeMillis()));
 		renderJSON(x.id);
 		// } else {
 		// forbidden();
@@ -474,7 +483,8 @@ public class Projects extends SmartCRUD {
 		priorityInstance.deleted = true;
 
 		priorityInstance.save();
-		Logs.addLog(Security.getConnected(), "Remove", "Project Default Story Priroity ", priorityInstance.id, priorityInstance.project, new Date(System.currentTimeMillis()));
+		Log.addUserLog("Removed story priority", priorityInstance, priorityInstance.project);
+		// Logs.addLog(Security.getConnected(), "Remove", "Project Default Story Priroity ", priorityInstance.id, priorityInstance.project, new Date(System.currentTimeMillis()));
 		renderJSON(true);
 	}
 
@@ -495,7 +505,8 @@ public class Projects extends SmartCRUD {
 		// if (Security.getConnected().in(p).can("editProject")) {
 		p.autoReschedule = autoReschedule;
 		p.save();
-		Logs.addLog(Security.getConnected(), "Edit", "Project Default Auto Meeting Reschedule Option ", p.id, p, new Date(System.currentTimeMillis()));
+		Log.addUserLog("Edit default auto meeting reschedule options", p);
+		// Logs.addLog(Security.getConnected(), "Edit", "Project Default Auto Meeting Reschedule Option ", p.id, p, new Date(System.currentTimeMillis()));
 		renderJSON(true);
 		// } else {
 		// forbidden();
@@ -519,7 +530,8 @@ public class Projects extends SmartCRUD {
 		// if (Security.getConnected().in(p).can("editProject")) {
 		p.sprintDuration = Integer.parseInt(duration);
 		p.save();
-		Logs.addLog(Security.getConnected(), "Edit", "Project Default Sprint Duration ", p.id, p, new Date(System.currentTimeMillis()));
+		Log.addUserLog("Edit default sprint duration", p);
+		// Logs.addLog(Security.getConnected(), "Edit", "Project Default Sprint Duration ", p.id, p, new Date(System.currentTimeMillis()));
 		renderJSON(true);
 		// } else {
 		// forbidden();
@@ -549,7 +561,8 @@ public class Projects extends SmartCRUD {
 
 		p.effortEstimationUnit = selectedUnit;
 		p.save();
-		Logs.addLog(Security.getConnected(), "Edit", "Project Default Effort Estimation Unit", p.id, p, new Date(System.currentTimeMillis()));
+		Log.addUserLog("edit default effort estimation unit", p);
+		// Logs.addLog(Security.getConnected(), "Edit", "Project Default Effort Estimation Unit", p.id, p, new Date(System.currentTimeMillis()));
 		renderJSON(true);
 		// } else {
 		// forbidden();
@@ -592,7 +605,8 @@ public class Projects extends SmartCRUD {
 			}
 			u.save();
 			renderJSON(true);
-			Logs.addLog("User: " + Security.getConnected().name + " has deleted him/herself from project: " + project.name);
+			Log.addUserLog("Request deletion from project", project);
+			// Logs.addLog("User: " + Security.getConnected().name + " has deleted him/herself from project: " + project.name);
 			String url = Router.getFullUrl("Show.user")+"?id=" + u.id;
 			Notifications.notifyProjectUsers(project, "deletedFromProject", url, "himself", u.name, (byte) -1);
 
@@ -974,7 +988,8 @@ public class Projects extends SmartCRUD {
 		project.save();
 		String url = "#";
 		Notifications.notifyProjectUsers(project, "deleteProject", url, "Project", project.name, (byte) -1);
-		Logs.addLog(Security.getConnected(), "Deleted Project", "project", id, project, new Date());
+		Log.addUserLog("Deleted project", project);
+		// Logs.addLog(Security.getConnected(), "Deleted Project", "project", id, project, new Date());
 		renderJSON(true);
 
 	}

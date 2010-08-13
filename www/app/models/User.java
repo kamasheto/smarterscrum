@@ -113,12 +113,6 @@ public class User extends SmartModel {
 	public List<Component> components;
 
 	/**
-	 * user logs
-	 */
-	@OneToMany (mappedBy = "user")
-	public List<Log> logs;
-
-	/**
 	 * tasks
 	 */
 	@OneToMany (mappedBy = "assignee")

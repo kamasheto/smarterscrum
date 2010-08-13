@@ -3,6 +3,7 @@ package controllers;
 import notifiers.Notifications;
 import models.Project;
 import models.User;
+import models.Log;
 import play.data.validation.Required;
 import play.libs.Mail;
 import play.mvc.Router;
@@ -124,7 +125,8 @@ public class Security extends Secure.Security
 		if( u == null || u.deleted == true )
 		{
 			flash.error( "This username/Email does not exist" );
-			Logs.addLog( "A guest tried to recover a password of the username " + username + " but the username was not found" );
+			// Logs.addLog( "A guest tried to recover a password of the username " + username + " but the username was not found" );
+			Log.addLog("Guest submitted a recovery password for " + username + " but was not found");
 			Security.forgotPassword();
 		}
 		else
@@ -133,7 +135,8 @@ public class Security extends Secure.Security
 			u.save();			
 			String url = Router.getFullUrl("Security.passwordRecovery")+"?h=" + u.recoveryHash;			
 			Notifications.lostPass(u, url);
-			Logs.addLog( "A guest tried to recover a password of the username " + username );
+			// Logs.addLog( "A guest tried to recover a password of the username " + username );
+			Log.addLog("Guest tried to recover password for username: " + username);
 			flash.success( "An email was sent to your email address." );
 			try
 			{
@@ -194,7 +197,8 @@ public class Security extends Secure.Security
 			u.recoveryHash = "";
 			u.save();
 			flash.success( "Password changed successfully" );
-			Logs.addLog( u.name + " forgot his/her password and recovered it successfully" );
+			// Logs.addLog( u.name + " forgot his/her password and recovered it successfully" );
+			Log.addLog(u.name + " recovered his password successfully");
 			try
 			{
 				Secure.login();
