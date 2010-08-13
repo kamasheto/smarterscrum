@@ -1097,14 +1097,14 @@ button:disabled,input:disabled {
 
 .notch {
 	display: inline-block;
-	right: -15px;
+	right: -21px;
 	position: relative;
 	vertical-align: top;
 	z-index: 999;
 }
 
 .notch:hover {
-	margin-right: 15px;
+	margin-right: 21px;
 }
 
 .notch2:hover {
