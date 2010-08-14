@@ -690,7 +690,7 @@ public class Tasks extends SmartCRUD
 			renderText( "The entered effort cannot be less than 0" );
 		}
 		temp.setEffortOfDay( effort, day );
-		Update.update( temp.project, ";sprintLoad('" + id + "');" );
+		Update.update( temp.project, "sprintLoad(" + id + ",'"+id+"_day_"+day+"');" );
 		temp.save();
 		renderText("Effort changed successfully");
 		Log.addLog("Effort entered for task", Security.getConnected(), temp, temp.project);
@@ -816,7 +816,7 @@ public class Tasks extends SmartCRUD
 		task1.description = desc;
 		task1.save();
 		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + ")" );
-		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + ");sprintLoad('" + task1.id + "')");		
+		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + ");sprintLoad(" + task1.id + ",'"+task1.id+"_des')");		
 		List<User> m = new ArrayList();
 		m.add( task1.assignee );
 		m.add( task1.reporter );
@@ -831,6 +831,7 @@ public class Tasks extends SmartCRUD
 			Log.addUserLog(user1.name +" has edited task description", task1, user1, task1.project);
 			// Logs.addLog( user1 + " has performed action (Edit) using resource (Task Description) in project " + task1.project.name + " from the account of " + Security.getConnected().name );
 		}
+		renderText("The description was changed successfully");
 		return true;
 	}
 	
@@ -1000,8 +1001,10 @@ public class Tasks extends SmartCRUD
 		task.taskStatus = stat;
 		stat.Tasks.add( task );
 		stat.save();
-		Update.update( task.project, "reload('reload-task-'" + id + ");sprintLoad(" + id + ")" );
+		Update.update( task.project, "reload('task-" + id + "');" );
+		Update.update( task.project, "sprintLoad(" + id + ",'"+id+"_status');" );
 		task.save();
+		renderText("Status updates successfully");
 		Log.addUserLog("Edited task estimation", task, task.project);
 		// Logs.addLog( Security.getConnected(), "Edit", "Task estimation", id, task.project, new Date( System.currentTimeMillis() ) );
 
@@ -1028,9 +1031,10 @@ public class Tasks extends SmartCRUD
 		task.estimationPoints = estimation;
 		task.save();
 
-		Update.update( task.project, "reload('reload-task-" + id + "');sprintLoad(" + id + ");" );
-		// Logs.addLog( Security.getConnected(), "Edit", "Task estimation", id, task.project, new Date( System.currentTimeMillis() ) );
+		Update.update( task.project, "reload('task-" + id + "');" );
+		Update.update( task.project, "sprintLoad(" + id +",'"+id+"_points');" );
 		Log.addUserLog("Edit task estimation", task, task.project);
+		renderText("The task's total points was updated successfully");
 		return true;
 	}
 	/**
@@ -1222,7 +1226,7 @@ public class Tasks extends SmartCRUD
 		task1.save();
 		Update.update( Security.getConnected(), "reload_sticky_note(" + task1.taskSprint.id + "," + task1.id + ")" );
 		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + ")");		
-		Update.update(task1.project, "sprintLoad(" + task1.id + ")");
+		Update.update(task1.project, "sprintLoad(" + task1.id +",'"+id+"_type');" );;
 		String body = "";
 		String header = "Task: 'T" + task1.id + "\'" + " Task Type has been edited.";
 		// String header = "A Task Type has been edited in Component: " + "\'" +
@@ -1505,7 +1509,8 @@ public class Tasks extends SmartCRUD
 		task.assignee = user;
 		task.save();
 		Log.addUserLog("Assigned task assignee", task, user, task.project);
-		Update.update( task.project, "reload('task-" + taskId + "');sprintLoad(" + taskId + ");" );
+		Update.update( task.project, "reload('task-" + taskId + "');" );
+		Update.update( task.project, "sprintLoad(" + taskId + ",'"+taskId+"_reviewer');sprintLoad(" + taskId + ",'"+taskId+"_assignee');" );
 		renderText( "Assignee added successfully" );
 	}
 
@@ -1531,7 +1536,8 @@ public class Tasks extends SmartCRUD
 		task.reviewer = user;
 		task.save();
 		Log.addUserLog("Assigned task reviewer", task, user, task.project);
-		Update.update( task.project, "reload('task-" + taskId + "');sprintLoad(" + taskId + ");" );
+		Update.update( task.project, "reload('task-" + taskId + "');" );
+		Update.update( task.project, "sprintLoad(" + taskId + ",'"+taskId+"_reviewer');sprintLoad(" + taskId + ",'"+taskId+"_assignee');" );
 		renderText( "Reviewer assigned successfully" );
 	}
 

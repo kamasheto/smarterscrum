@@ -22,6 +22,13 @@ function hideOrShow(c)
 {
 	$('.'+c).toggle();
 }
+function magicFix(el)
+{
+	var anId = $(el).closest('select').attr('id');
+	$(el).closest('form').hide();
+	$(el).closest('td').children().first().html($('#'+anId+' option:selected').text());
+	$(el).closest('td').children().first().show();
+}
 #{if connected.in(project).can('editBacklog') || connected.isAdmin}
 
 function changeT (id,id2)
@@ -71,7 +78,7 @@ $(function()
     {
         var theId 		= $('#lolid').closest("td").attr("id");
         var splitted 	= theId.split("_");
-        var taskId 		= parseInt(splitted[1]);
+        var taskId 		= parseInt(splitted[0])
         var dayId 		= parseInt(splitted[2])-1;
     	var points 		= parseInt(value);
 		var flag = true;
@@ -91,12 +98,9 @@ $(function()
     $('.editDES').editable(
     	    function(value)
     	    {
-    	        var taskId 	= parseInt($('#lolid').closest("td").attr("id"));
+    	    	var taskId 	= parseInt($('#lolid').closest("tr").attr("id").split("_")[1]);
     	       
-    	        $.post('@{Tasks.editTaskDesc2()}',{id:taskId, userId:${connected.id},desc:value},function(v){
-        	        if(v)
-        	        	parent_message_bar("The description was changed successfully");
-            	});
+    	        $.post('@{Tasks.editTaskDesc2()}',{id:taskId, userId:${connected.id},desc:value});
 
         	    return(value);
     	        
@@ -110,9 +114,9 @@ $(function()
     $('.editPOINTS').editable(
     	    function(value)
     	    {
-    	        var theId 		= $('#lolid').closest("td").attr("id");
+    	    	var theId 		= $('#lolid').closest("td").attr("id");
     	        var splitted 	= theId.split("_");
-    	        var taskId 		= parseInt(splitted[0]);
+    	        var taskId 		= parseInt(splitted[0])
     	    	var points 		= parseInt(value);
     	        
     	    		$.post('@{Tasks.editTaskEstimation()}',{id:taskId,estimation:points}, function(ret) 
@@ -177,50 +181,50 @@ Show/Hide:
 		
 		#{ifnot connected.in(project).can('editBacklog') || connected.isAdmin || connected.id==task.assignee.id || connected.id==task.reviewer.id}
           #{ifnot task.description}
-          <td class="shDes">No Description stated</td>
+          <td id="${task.id}_des"class="shDes">No Description stated</td>
           #{/ifnot}
           #{else}
-		<td class="shDes">${task.description}</td>
+		<td id="${task.id}_des"class="shDes">${task.description}</td>
           #{/else}
           
           #{ifnot task.taskType}
-          <td class="shType">No Type stated</td>
+          <td id="${task.id}_type"class="shType">No Type stated</td>
           #{/ifnot}
           #{else}
-          <td class="shType">${task.taskType.name}</td>
+          <td id="${task.id}_type"class="shType">${task.taskType.name}</td>
           #{/else}
           
            #{ifnot task.taskStatus}
-          <td class="shStatus">No Status stated</td>
+          <td id="${task.id}_status"class="shStatus">No Status stated</td>
           #{/ifnot}
           #{else}
-          <td class="shStatus">${task.taskStatus.name}</td>
+          <td id="${task.id}_status"class="shStatus">${task.taskStatus.name}</td>
           #{/else}
         
           #{ifnot task.assignee}
-          <td class="shAssignee">No assignee stated</td>
+          <td id="${task.id}_assignee"class="shAssignee">No assignee stated</td>
           #{/ifnot}
           #{else}
-          <td class="shAssignee">${task.assignee.name}</td>
+          <td id="${task.id}_assignee"class="shAssignee">${task.assignee.name}</td>
           #{/else}
         
          #{ifnot task.reviewer}
-          <td class="shReviewer">No reviewer stated</td>
+          <td id="${task.id}_reviewer"class="shReviewer">No reviewer stated</td>
           #{/ifnot}
           #{else}
-          <td class="shReviewer">${task.reviewer.name}</td>
+          <td id="${task.id}_reviewer"class="shReviewer">${task.reviewer.name}</td>
           #{/else}
         
          #{ifnot task.estimationPoints}
-          <td class="shPoints">&nbsp;</td>
+          <td id="${task.id}_points"class="shPoints">&nbsp;</td>
           #{/ifnot}
           #{else}
-          <td class="shPoints">${task.estimationPoints}</td>
+          <td id="${task.id}_points"class="shPoints">${task.estimationPoints}</td>
           #{/else}
         
         <!--@author Hadeer Younis C4 S8-->
         #{list items:daysHeader, as:'day'}
-		<td class="shEfforts"style="text-align: center" id="${day}_${task.id}_${task.estimationPoints}" >
+		<td class="shEfforts"style="text-align: center" id="${task.id}_day_${day}" >
 		#{if task.getEffortPerDay(day-1)==-1.0}&nbsp;
 		#{/if} #{else} ${task.getEffortPerDay(day-1)} #{/else}</td>
 		#{/list}
@@ -232,17 +236,23 @@ Show/Hide:
       
         #{else}
 		#{ifnot task.description}
-		<td class="shDes"><span id="${task.id}" class="editDES">No description stated
+		<td class="shDes" id="${task.id}_des"><span id="${task.id}" class="editDES">No description stated
 		</span></td>
 		#{/ifnot} #{else}
 		<td class="editDES shDes" title="edit the description?" id="${task.id}">${task.description}</td>
 		#{/else} 
 		
-		<td id="${task.id}" class="editTYPE shType">
+		<td id="${task.id}_type" class="editTYPE shType">
 			#{if connected.in(project).can('changeTaskType')|| connected.id==task.assignee.id}
-		<form>
+					#{ifnot task.taskType}
+	    <span onclick="$(this).next().show();$(this).hide()">not set</span>
+	    #{/ifnot}
+	    #{else}
+	    <span onclick="$(this).next().show();$(this).hide()">${task.taskType.name}</span>
+	    #{/else}
+		<form style="display:none">
 			
-			<select id="t_${task.id}_t"onchange="changeT(${task.id},parseInt($('#t_${task.id}_t option:selected').val()));">
+			<select id="t_${task.id}_t"onblur="magicFix(this)" onchange="magicFix(this);changeT(${task.id},parseInt($('#t_${task.id}_t option:selected').val()));">
        		#{list items:types, as:'type'}
        		#{if type.name==task.taskType.name}
        		<option selected="selected" value="${type.id}">${type.name}</option>
@@ -269,10 +279,16 @@ Show/Hide:
 	    #{/else}
 </td>
 
-		<td id="${task.id}" class="editStatus shStatus">
+		<td id="${task.id}_status" class="editStatus shStatus">
 		#{if connected.in(project).can('changeTaskStatus') ||connected.id==task.reviewer.id || connected.id==task.assignee.id}
-		<form>
-			<select id="t_${task.id}_s"onchange="changeS(${task.id},parseInt($('#t_${task.id}_s option:selected').val()));">
+		#{ifnot task.taskStatus}
+	    <span onclick="$(this).next().show();$(this).hide()">not set</span>
+	    #{/ifnot}
+	    #{else}
+	    <span onclick="$(this).next().show();$(this).hide()">${task.taskStatus.name}</span>
+	    #{/else}
+		<form style="display:none">
+			<select id="t_${task.id}_s"onblur="magicFix(this)" onchange="magicFix(this);changeS(${task.id},parseInt($('#t_${task.id}_s option:selected').val()));">
        		#{list items:statuses, as:'type'}
        		#{if type.name==task.taskStatus.name}
        		<option selected="selected" value="${type.id}">${type.name}</option>
@@ -301,10 +317,16 @@ Show/Hide:
 
 		
 		
-		<td id="${task.id}_assigneee" class="editASSI shAssignee">
+		<td id="${task.id}_assignee" class="editASSI shAssignee">
 			#{if connected.in(project).can('changeTaskAssignee') || connected.id==task.assignee.id}
-		<form>
-			<select id="t_${task.id}_a"onchange="changeA(${task.id},parseInt($('#t_${task.id}_a option:selected').val()));">
+		#{ifnot task.assignee}
+	    <span onclick="$(this).next().show();$(this).hide()">not set</span>
+	    #{/ifnot}
+	    #{else}
+	    <span onclick="$(this).next().show();$(this).hide()">${task.assignee.getDisplayName().raw()}</span>
+	    #{/else}
+		<form style="display:none">
+			<select id="t_${task.id}_a"onblur="magicFix(this)" onchange="magicFix(this);changeA(${task.id},parseInt($('#t_${task.id}_a option:selected').val()));">
        		#{list items:task.getAssigneeOrReviewer(true), as:'a'}
        		#{if a.id==task.assignee.id}
        		<option selected="selected" value="${a.id}">${a.getDisplayName().raw()}</option>
@@ -326,15 +348,21 @@ Show/Hide:
 	    not set
 	    #{/ifnot}
 	    #{else}
-	    ${a.getDisplayName().raw()}
+	    ${task.assignee.getDisplayName().raw()}
 	    #{/else}
 	    #{/else}
 
 		</td>
-		<td id="${task.id}" class="editREV shReviewer">
+		<td id="${task.id}_reviewer" class="editREV shReviewer">
 					#{if connected.in(project).can('changeTaskReviewer') || connected.id==task.assignee.id}
-		<form>
-			<select id="t_${task.id}_r"onchange="changeR(${task.id},parseInt($('#t_${task.id}_r option:selected').val()));">
+		#{ifnot task.reviewer}
+	    <span onclick="$(this).next().show();$(this).hide()">not set</span>
+	    #{/ifnot}
+	    #{else}
+	    <span onclick="$(this).next().show();$(this).hide();$(this).hide()">${task.reviewer.getDisplayName().raw()}</span>
+	    #{/else}
+		<form style="display:none">
+			<select id="t_${task.id}_r"onblur="magicFix(this)" onchange="magicFix(this);changeR(${task.id},parseInt($('#t_${task.id}_r option:selected').val()));">
        		#{list items:task.getAssigneeOrReviewer(false), as:'a'}
        		#{if a.id==task.reviewer.id}
        		<option selected="selected" value="${a.id}">${a.getDisplayName().raw()}</option>
@@ -356,24 +384,24 @@ Show/Hide:
 	    not set
 	    #{/ifnot}
 	    #{else}
-	    ${a.getDisplayName().raw()}
+	    ${task.reviewer.getDisplayName().raw()}
 	    #{/else}
 	    #{/else}
 		</td>
  
 		
 		#{ifnot task.estimationPoints}
-		<td id="${task.id}" class="editPOINTS shPoints">No points 
+		<td id="${task.id}_points class="editPOINTS shPoints">No points 
 		</td>
 		#{/ifnot}
 		 #{else}
-		<td id="${task.id}_${task.estimationPoints}" title="edit the estimationpoints?"
+		<td id="${task.id}_points" title="edit the estimationpoints?"
 			class="editPOINTS shPoints" style="text-align: center">${task.estimationPoints}</td>
 		#{/else}
 
 		<!--@author Hadeer Younis C4 S8-->
 		#{list items:daysHeader, as:'day'}
-		<td style="text-align: center"id="EF_${task.id}_${day}_${task.estimationPoints}_${task.getEffortPerDay(day-1)}" class="enterEffort shEfforts">
+		<td style="text-align: center"id="${task.id}_day_${day}" class="enterEffort shEfforts">
 		#{if task.getEffortPerDay(day-1)==-1.0}$nbsp;
 		#{/if} #{else} ${task.getEffortPerDay(day-1)} #{/else}</td>
 		#{/list}

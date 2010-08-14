@@ -39,7 +39,14 @@
        					setHeight(o[i]);
        					addEvent(o[i],'load', doIframe);
        				}}
-	       		}        </script>
+	       		}        
+	       		
+	       		function toggle()
+	       		{
+		       		window.parent.$('#overlayLoading').toggle();
+		       		window.parent.$('#theLoadedContent').toggle();
+		       	}
+	       		</script>
 
 <style type="text/css">
 thead {
@@ -58,7 +65,11 @@ body,html {
 }
 </style>
 </head>
-<body onload="lo(); #{get 'onLoad'/};">
+<body onload="lo();toggle(); #{get 'onLoad'/};" onunload="toggle()">
+<div style="text-align:right">
+<a title="close?"href="#"onclick="window.parent.$('#getOverlay').hide();window.parent.document.getElementById('theLoadedContent').src ='/application/loading'">
+<img src="@{'public/images/close.gif'}"/>
+</a></div>
 			#{doLayout /}
 			
 			<script type="text/javascript">
