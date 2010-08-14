@@ -23,13 +23,12 @@ function parent_message_bar(message) {
 		});
 }
 
-function sprintLoad(el)
+function sprintLoad(el,el2)
 {
-	var url = $('#theLoadedContent').contents().find('#sprintTable #task_'+el).first().attr('name');
-	alert(url);
+	var url = $('#theLoadedContent').contents().find('#sprintTable #task_'+el).first().attr('name');s
 	$('#theLoadedContent').contents().find('body:first').append('<div id="sprintTemp" style="display:none"><div/>');
-	$('#theLoadedContent').contents().find('#sprintTemp:first').load(url+' #sprintTable #task_'+el,function(){
-		$('#theLoadedContent').contents().find('#sprintTable #task_'+el).first().replaceWith($('#theLoadedContent').contents().find('#sprintTemp:first').html());
+	$('#theLoadedContent').contents().find('#sprintTemp:first').load(url+' #sprintTable #task_'+el+" #"+el2,function(){
+		$('#theLoadedContent').contents().find('#sprintTable #task_'+el+" #"+el2).first().replaceWith($('#theLoadedContent').contents().find('#sprintTemp:first').html());
 		$('#theLoadedContent').contents().find('#sprintTemp:first').remove();
 		$('#theLoadedContent').contents().find(".enterEffort").each(function()
 				{
