@@ -684,20 +684,16 @@ public class Tasks extends SmartCRUD
 		if( temp.estimationPoints < effort )
 		{
 			renderText( "The entered effort cannot be more than the estimated effort" );
-			return;
 		}
 		else if( effort < 0 )
 		{
 			renderText( "The entered effort cannot be less than 0" );
-			return;
 		}
 		temp.setEffortOfDay( effort, day );
-		User userWhoChanged = Security.getConnected();
-		Date timeChanged = new Date();
 		Update.update( temp.project, ";sprintLoad('" + id + "');" );
 		temp.save();
-		// Logs.addLog( userWhoChanged, "Effort entered", "Task", id, temp.taskSprint.project, timeChanged );
-		Log.addLog("Effort entered for task", userWhoChanged, temp, temp.project);
+		renderText("Effort changed successfully");
+		Log.addLog("Effort entered for task", Security.getConnected(), temp, temp.project);
 
 	}
 
@@ -820,24 +816,11 @@ public class Tasks extends SmartCRUD
 		task1.description = desc;
 		task1.save();
 		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + ")" );
-		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + ")");		
+		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + ");sprintLoad('" + task1.id + "')");		
 		List<User> m = new ArrayList();
 		m.add( task1.assignee );
 		m.add( task1.reporter );
 		m.add( task1.reviewer );
-		String body = "";
-		String header = "Task: 'T" + task1.id + "\'" + " Task Type has been edited.";
-		if( userId == Security.getConnected().id )
-		{
-			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ".";
-
-		}
-		else
-		{
-			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
-		}
-		// Notifications.notifyUsers(task1.component.getUsers(), header, body,
-		// (byte) 0);
 		if( userId == Security.getConnected().id )
 		{
 			// Logs.addLog( user1, "Edit", "Task Description", id, task1.project, new Date( System.currentTimeMillis() ) );
@@ -1045,7 +1028,7 @@ public class Tasks extends SmartCRUD
 		task.estimationPoints = estimation;
 		task.save();
 
-		Update.update( task.project, "reload('reload-task-'" + id + ");sprintLoad(" + id + ")" );
+		Update.update( task.project, "reload('reload-task-" + id + "');sprintLoad(" + id + ");" );
 		// Logs.addLog( Security.getConnected(), "Edit", "Task estimation", id, task.project, new Date( System.currentTimeMillis() ) );
 		Log.addUserLog("Edit task estimation", task, task.project);
 		return true;

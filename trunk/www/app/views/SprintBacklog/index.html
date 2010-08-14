@@ -26,19 +26,31 @@ function hideOrShow(c)
 
 function changeT (id,id2)
 {
-	$.post('@{Tasks.editTaskType()}',{id:id,typeId:id2,userId:'${connected.id}'});
+	$.post('@{Tasks.editTaskType()}',{id:id,typeId:id2,userId:${connected.id}},function(ret) 
+	{
+		parent_message_bar(ret);
+	});
 }
 function changeS (id,id2)
 {
-	$.post('@{Tasks.changeTaskStatus()}',{id:id,statusId:id2});
+	$.post('@{Tasks.changeTaskStatus()}',{id:id,statusId:id2},function(ret) 
+	{
+		parent_message_bar(ret);
+	});
 }
 function changeA (id,id2)
 {
-	$.post('@{Tasks.assignTaskAssignee()}',{taskId:id,assigneeId:id2});
+	$.post('@{Tasks.assignTaskAssignee()}',{taskId:id,assigneeId:id2},function(ret) 
+	{
+		parent_message_bar(ret);
+	});
 }
 function changeR (id,id2)
 {
-	$.post('@{Tasks.assignTaskReviewer()}',{taskId:id,reviewerId:id2});
+	$.post('@{Tasks.assignTaskReviewer()}',{taskId:id,reviewerId:id2},function(ret) 
+	{
+		parent_message_bar(ret);
+	});
 }
 $(function() 
 {	
@@ -62,11 +74,14 @@ $(function()
         var taskId 		= parseInt(splitted[1]);
         var dayId 		= parseInt(splitted[2])-1;
     	var points 		= parseInt(value);
-	
+		var flag = true;
     	$.post('@{Tasks.enterEffort()}',{id:taskId,effort:points,day:dayId},function(ret) 
         {
 			parent_message_bar(ret);
-	    });            	
+			if(ret.contains("cannot"))
+				flag=false;
+	    });       
+	    if(flag)     	
         return(value);      
     },
     {    
@@ -78,7 +93,10 @@ $(function()
     	    {
     	        var taskId 	= parseInt($('#lolid').closest("td").attr("id"));
     	       
-    	        $.post('@{Tasks.editTaskDesc()}',{id:taskId, desc:value});
+    	        $.post('@{Tasks.editTaskDesc2()}',{id:taskId, userId:${connected.id},desc:value},function(v){
+        	        if(v)
+        	        	parent_message_bar("The description was changed successfully");
+            	});
 
         	    return(value);
     	        
