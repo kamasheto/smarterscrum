@@ -349,7 +349,7 @@ public class Projects extends SmartCRUD {
 		Project p = Project.findById(id);
 		boolean statusExists = false;
 		for (TaskStatus taskStatus : p.taskStatuses) {
-			if (taskStatus.deleted == false) {
+			if (!taskStatus.deleted) {
 				if (taskStatus.name.equalsIgnoreCase(status)) {
 					statusExists = true;
 					break;
@@ -377,7 +377,7 @@ public class Projects extends SmartCRUD {
 		TaskStatus t = TaskStatus.findById(statusID);
 		boolean statusExists = false;
 		for (TaskStatus taskStatus : p.taskStatuses) {
-			if (taskStatus.deleted == false) {
+			if (!taskStatus.deleted) {
 				if (taskStatus.name.equalsIgnoreCase(status) && !(t.name.equalsIgnoreCase(status))) {
 					statusExists = true;
 					break;
@@ -417,6 +417,47 @@ public class Projects extends SmartCRUD {
 
 	}
 
+	public static void newtaskTypesCheck(long taskTypeId, long projectId, String type) {
+		Project project = Project.findById(projectId);
+        TaskType theTaskType = TaskType.findById(taskTypeId);
+		boolean typeExists = false;
+		for (TaskType taskType : project.taskTypes) {
+			if (!taskType.deleted) 
+			{
+				if (taskType.name.equalsIgnoreCase(type) && !(theTaskType.name.equalsIgnoreCase(type))) 
+				{
+					typeExists = true;
+					break;
+				}
+			}
+		}
+		renderJSON(typeExists);
+	}
+	
+	/**
+	 * This method edits a selected Task Status from the list of the task
+	 * statuses in a specific project.
+	 * 
+	 * @author Heba Elsherif
+	 * @param statusID the id of the selected Task Status.
+	 * @param newName the new name of the selected Task Status.
+	 * @param indicator an indicator to indicate weather the Task Status
+	 *       indicates pending or closed.
+	 * @return void
+	 * 
+	 */
+	public static void editTaskType(long typeId, String newName) {
+		TaskType taskType = TaskType.findById(typeId);
+		Project project = Project.findById(taskType.project.id);
+		Security.check(Security.getConnected().in(project).can("editProject"));
+		taskType.name = newName;
+		taskType.save();
+		Logs.addLog(Security.getConnected(), "Edit", "TaskType", taskType.id, project, new Date(System.currentTimeMillis()));
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+project.id+"&isOverlay=false&url=#";
+		Notifications.notifyProjectUsers(project, "editTaskType", url, "Task Type", taskType.name, (byte) 0);
+		renderJSON(true);
+	}
+	
 	/**
 	 * This action method removes a task type from the array list of task types
 	 * in project.
