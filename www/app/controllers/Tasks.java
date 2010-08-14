@@ -819,7 +819,8 @@ public class Tasks extends SmartCRUD
 		}
 		task1.description = desc;
 		task1.save();
-		Update.update( task1.project, "reload_note(" + task1.taskSprint.id + "," + task1.id + ")" );
+		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + ")" );
+		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + ")");		
 		List<User> m = new ArrayList();
 		m.add( task1.assignee );
 		m.add( task1.reporter );
@@ -1091,7 +1092,8 @@ public class Tasks extends SmartCRUD
 		task1.save();
 		assignee.tasks.add( task1 );
 		assignee.save();
-		Update.update( task1.project, "reload_note(" + task1.taskSprint.id + "," + task1.id + ")" );
+		Update.update( Security.getConnected(), "reload_sticky_note(" + task1.taskSprint.id + "," + task1.id + ")" );
+		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + ")");		
 		String header = "Task: 'T" + task1.id + "\'" + " Assignee has been edited.";
 		/*
 		 * ////Long Informative Notification message. Not suitable for online
@@ -1164,7 +1166,8 @@ public class Tasks extends SmartCRUD
 		// String oldReviewer = task1.reviewer.name;
 		task1.reviewer = reviewer;
 		task1.save();
-		Update.update( task1.project, "reload_note(" + task1.taskSprint.id + "," + task1.id + ")" );
+		Update.update( Security.getConnected(), "reload_sticky_note(" + task1.taskSprint.id + "," + task1.id + ")" );
+		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + ")");		
 		reviewer.tasks.add( task1 );
 		reviewer.save();
 		String body = "";
@@ -1234,7 +1237,9 @@ public class Tasks extends SmartCRUD
 		TaskType type = TaskType.findById( typeId );
 		task1.taskType = type;
 		task1.save();
-		Update.update( task1.project, "reload_note(" + task1.taskSprint.id + "," + task1.id + ");sprintLoad(" + task1.id + ")" );
+		Update.update( Security.getConnected(), "reload_sticky_note(" + task1.taskSprint.id + "," + task1.id + ")" );
+		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + ")");		
+		Update.update(task1.project, "sprintLoad(" + task1.id + ")");
 		String body = "";
 		String header = "Task: 'T" + task1.id + "\'" + " Task Type has been edited.";
 		// String header = "A Task Type has been edited in Component: " + "\'" +
