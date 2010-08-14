@@ -615,18 +615,24 @@ public class Tasks extends SmartCRUD
 	 *            the task assignee id.
 	 * @return void
 	 */
-	public static void reviewers( long id, long id2, long taskId )
+	public static void reviewers( long id, long id2, long compId, long taskId )
 	{
-		
 		List<User> users = null;
-		Task task = Task.findById( taskId );
+		Component component = Component.findById( compId );
+		Task task = Task.findById(taskId);
 		User Assignee = User.findById( id2 );
 		
-		
-		if( task.component.number == 0 )
-			users = task.component.project.users;
+		if(component!=null)
+		{
+		if( component.number == 0 )
+			users = component.project.users;
 		else
-			users = task.component.componentUsers;
+			users = component.componentUsers;
+		}
+		else
+		{
+			users = task.project.users;
+		}
 		List<User.Object> reviewers = new ArrayList<User.Object>();
 		for( User user : users )
 		{
@@ -1504,7 +1510,7 @@ public class Tasks extends SmartCRUD
 		User user = User.findById( assigneeId );
 		User connected = Security.getConnected();
 		if( task.reviewer == user )
-			renderText( "You can't be the assignee & reviewer of the same task" );
+			renderText( "The reviewer can't be the assignee" );
 		if( !user.components.contains( task.component ) )
 			renderText( "The task & the assignee can't be in different components" );
 		Security.check( connected.in( task.project ).can( "modifyTask" ) && user.projects.contains( task.project ) && task.reviewer != user && (task.component == null || user.components.contains( task.component )) );
@@ -1530,7 +1536,7 @@ public class Tasks extends SmartCRUD
 		User user = User.findById( reviewerId );
 		User connected = Security.getConnected();
 		if( task.assignee == user )
-			renderText( "You can't be the reviewer & assignee of the same task" );
+			renderText( "The assignee can't be the reviewer" );
 		if( !user.components.contains( task.component ) )
 			renderText( "The task & the reviewer can't be in different components" );
 		Security.check( connected.in( task.project ).can( "modifyTask" ) && user.projects.contains( task.project ) && task.assignee != user && (task.component == null || user.components.contains( task.component )) );
