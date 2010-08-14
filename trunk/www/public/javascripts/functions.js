@@ -18,6 +18,14 @@ function reload_note(sid, taskId)
 {
 	$('#theLoadedContent').contents().find('#task-'+taskId+'_T').load('/boards/loadboard1?sprintID='+sid+' #task-'+taskId+'_T');
 }
+function reload_note_open(sid, taskId)
+{
+	$('#theLoadedContent').contents().find('#task-'+taskId+'_T').load('/boards/loadboard1?sprintID='+sid+' #task-'+taskId+'_T',
+	function()
+	{
+		$('#theLoadedContent').contents().find('#'+taskId+'_button').click();
+	});
+}
 function request_accept( id, hash )
 {
 	$.post('/requests/requestAccept' ,
