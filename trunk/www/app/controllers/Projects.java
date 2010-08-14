@@ -452,7 +452,7 @@ public class Projects extends SmartCRUD {
 		Security.check(Security.getConnected().in(project).can("editProject"));
 		taskType.name = newName;
 		taskType.save();
-		Logs.addLog(Security.getConnected(), "Edit", "TaskType", taskType.id, project, new Date(System.currentTimeMillis()));
+		//Logs.addLog(Security.getConnected(), "Edit", "TaskType", taskType.id, project, new Date(System.currentTimeMillis()));
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+project.id+"&isOverlay=false&url=#";
 		Notifications.notifyProjectUsers(project, "editTaskType", url, "Task Type", taskType.name, (byte) 0);
 		renderJSON(true);
