@@ -287,7 +287,34 @@ public class Application extends SmartController
 		for(int i =-5 ; i<5;i++ ){
 			years.add(year+i);
 		}
-		render(years);
+		Date today = new Date();
+		List<Project> projects  = Security.getConnected().projects;
+		List<Sprint> sprints = new ArrayList<Sprint>();
+		List<Sprint> sprints2 = new ArrayList<Sprint>();
+		for(Project project : projects){
+			for(Sprint sprint : project.sprints){
+				if(!sprint.deleted && sprint.startDate.getDate()== today.getDate() && sprint.startDate.getMonth() == today.getMonth() && sprint.startDate.getYear() == today.getYear()){
+					sprints.add(sprint);
+				}
+				if(!sprint.deleted && sprint.endDate.getDate()== today.getDate() && sprint.endDate.getMonth() == today.getMonth() && sprint.endDate.getYear() == today.getYear()){
+					sprints2.add(sprint);
+				}
+			}
+		}
+		List<MeetingAttendance> meetings1 = MeetingAttendance.find("byUserAndDeleted", Security.getConnected(),false).fetch();
+		List<Meeting> meetings = new ArrayList<Meeting>();
+		for(MeetingAttendance meeting : meetings1){
+			if(!meeting.meeting.deleted){
+				Date start = new Date ( meeting.meeting.startTime);
+				if(start.getDate()== today.getDate() && start.getMonth() == today.getMonth() && start.getYear() == today.getYear())
+					meetings.add(meeting.meeting);
+			}
+		}
+		System.out.println(today);
+		System.out.println(sprints);
+		System.out.println(sprints2);
+		System.out.println(meetings);
+		render(years, sprints, sprints2, meetings);
 	}
 	public static void sprints(){
 		List<Project> projects  = Security.getConnected().projects;
