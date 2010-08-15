@@ -6,33 +6,26 @@
 
 var CURRENT_PROJECT = 0;
 
-function reload_sticky_note(sid, taskId, compId) {
-	//alert('dina'+compId);
-	if(compId!=0)
-	$('#theLoadedContent').contents().find('#task-'+taskId+'_T').load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #task-'+taskId+'_T');
-	window.opener.$('#task-'+taskId+'_T').load('/boards/loadboard1?sprintID='+sid+' #task-'+taskId+'_T',
-	function()
-				{
-				window.opener.$('#'+taskId+'_button').click();
-				window.close();
-				});
-	
-}
-function reload_note(sid, taskId, compId)
-{
-	alert(compId);
-	$('#theLoadedContent').contents().find('#task-'+taskId+'_T').load('/boards/loadboard1?sprintID='+sid+' #task-'+taskId+'_T');
-	if(compId!=0)
-	$('#theLoadedContent').contents().find('#task-'+taskId+'_T').load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #task-'+taskId+'_T');
-}
-function reload_note_open(sid, taskId, compId)
-{
-	$('#theLoadedContent').contents().find('#task-'+taskId+'_T').load('/boards/loadboard1?sprintID='+sid+' #task-'+taskId+'_T',
+function reload_note_open(sid, taskId, compId) {
+	$('#theLoadedContent').contents().find('#task-'+taskId+'_T_0').load('/boards/loadboard1?sprintID='+sid+' #task-'+taskId+'_T_0', 
 	function()
 	{
 		$('#theLoadedContent').contents().find('#'+taskId+'_button').click();
+		
 	});
-	
+	if(compId!=0)
+	$('#theLoadedContent').contents().find('#task-'+taskId+'_T_'+compId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #task-'+taskId+'_T_'+compId,
+	function()
+	{
+		$('#theLoadedContent').contents().find('#'+taskId+'_button').click();
+		
+	});
+}
+function reload_note_close(sid, taskId, compId)
+{
+	$('#theLoadedContent').contents().find('#task-'+taskId+'_T_0').load('/boards/loadboard1?sprintID='+sid+' #task-'+taskId+'_T_0');
+	if(compId!=0)
+	$('#theLoadedContent').contents().find('#task-'+taskId+'_T_'+compId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #task-'+taskId+'_T_'+compId);
 }
 function request_accept( id, hash )
 {

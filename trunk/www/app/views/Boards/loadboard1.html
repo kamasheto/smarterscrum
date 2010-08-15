@@ -18,7 +18,14 @@
 #{set 'onLoad'}
 REDIPS.drag.init();
 #{/set}
-
+#{if comp==null}
+#{set compID=0}
+#{/set}
+#{/if}
+#{else}
+#{set compID=comp.id}
+#{/set}
+#{/else}
 #{if comp==null}
 <h1>${p.name}'s Task Board</h1>
 #{/if}
@@ -31,31 +38,31 @@ REDIPS.drag.init();
 	#{/else}
 #{/else}
 
-<a href="#" id="ToggleBoard-open" onclick="ToggleBoardOpen();" title="toggle" style="display:none"><img src="@{'/public/images/famfam/show.bmp'}"></a>
-<a href="#" id="ToggleBoard-close" onclick="ToggleBoardClose()" title="toggle"><img src="@{'/public/images/famfam/hide.png'}"></a>
+<a href="#" id="ToggleBoard-open" onclick="ToggleBoardOpen();" title="toggle" style="display:none"><img src="@{'/public/images/famfam/show.bmp'}" alt=""/></a>
+<a href="#" id="ToggleBoard-close" onclick="ToggleBoardClose()" title="toggle"><img src="@{'/public/images/famfam/hide.png'}" alt=""/></a>
 
 #{set count=0}
 #{/set}
 
 #{if comp==null}
-<a title="view snapshots" href="javascript:popUp('/Snapshots/boardsnapshots?sid=${s.id}&pid=${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
-<a title="take a snapshot" href="javascript:take_snapshot(${s.id})"><img src="@{'/public/images/famfam/camera_add.png'}"></a>
+<a title="view snapshots" href="javascript:popUp('/Snapshots/boardsnapshots?sid=${s.id}&pid=${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"/></a>
+<a title="take a snapshot" href="javascript:take_snapshot(${s.id})"><img src="@{'/public/images/famfam/camera_add.png'}"/></a>
 #{/if}
 #{else}
-<a title="view snapshots" href="javascript:popUp('/Snapshots/boardsnapshots?sid=${s.id}&cid=${comp.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
-<a title="take a snapshot" href="javascript:take_snap(${comp.id},${s.id})"><img src="@{'/public/images/famfam/camera_add.png'}"></a>
+<a title="view snapshots" href="javascript:popUp('/Snapshots/boardsnapshots?sid=${s.id}&cid=${comp.id}')"><img src="@{'/public/images/famfam/photos.png'}"/></a>
+<a title="take a snapshot" href="javascript:take_snap(${comp.id},${s.id})"><img src="@{'/public/images/famfam/camera_add.png'}"/></a>
 #{/else}
 
-<a href="#;" onclick="$('#changeCol').slideToggle(400)" title="view hidden columns" type="button" ><img src="@{'/public/images/famfam/application_view_columns.png'}"></a>
+<a href="#;" onclick="$('#changeCol').slideToggle()" title="view hidden columns" type="button" ><img src="@{'/public/images/famfam/application_view_columns.png'}"/></a>
 
 
 <!-- view hidden Col by Hadeer -->
 #{if connected.in(p).can('ShowColumn')}
 #{if hidencolumnsOfBoard.isEmpty()}
-<a class="dim" title="all columns are added" type="button"><img src="@{'/public/images/famfam/add.png'}"></a>
+<a class="dim" title="all columns are added" type="button"><img src="@{'/public/images/famfam/add.png'}"/></a>
 #{/if}
 #{else}
-<a href="#;" onclick="$('#b1').slideToggle()" title="add column?" type="button"><img src="@{'/public/images/famfam/add.png'}"></a>
+<a href="#;" onclick="$('#b1').slideToggle()" title="add column?" type="button"><img src="@{'/public/images/famfam/add.png'}"/></a>
 #{/else}
 #{/if}
 
@@ -64,18 +71,18 @@ REDIPS.drag.init();
 <!-- hide Col by Hadeer -->
 #{if connected.in(p).can('HideColumn')}
 #{if columnsOfBoard.isEmpty()}
-<a class="dim" title="all columns deleted" type="button"><img src="@{'/public/images/famfam/delete.png'}"></a>
+<a class="dim" title="all columns deleted" type="button"><img src="@{'/public/images/famfam/delete.png'}"/></a>
 #{/if}
 #{else}
-<a href="#;" onclick="$('#b2').slideToggle(400)" title="delete column?" type="button" ><img src="@{'/public/images/famfam/delete.png'}"></a>
+<a href="#;" onclick="$('#b2').slideToggle()" title="delete column?" type="button" ><img src="@{'/public/images/famfam/delete.png'}"/></a>
 #{/else}
 #{/if}
 
 #{if comp==null}
-<a title="Meetings" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}')"><img src="@{'/public/images/famfam/date.png'}"></a>
+<a title="Meetings" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}')"><img src="@{'/public/images/famfam/date.png'}"/></a>
 #{/if}
 #{else}
-<a title="Meetings" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}&cid=${comp.id}')"><img src="@{'/public/images/famfam/date.png'}"></a>
+<a title="Meetings" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}&cid=${comp.id}')"><img src="@{'/public/images/famfam/date.png'}"/></a>
 #{/else}
 
 <br/>
@@ -183,10 +190,10 @@ REDIPS.drag.init();
 		
 		<!-- small sticky note -->
 		#{if connected.in(p).can('changeTaskStatus') || connected.equals(task.assignee) || connected.equals(task.reviewer)}
-		<div style="float:left" id="task-${task.id}_T" class="drag status status_${task.id}">
+		<div style="float:left" id="task-${task.id}_T_${compID}" class="drag status status_${task.id}">
 		#{/if}
 		#{else}
-		<div style="float:left" id="task-${task.id}_T" class="nostatus nostatus_${task.id}">
+		<div style="float:left" id="task-${task.id}_T_${compID}" class="nostatus nostatus_${task.id}">
 		#{/else}
 		<a id="task-${task.id}_hidden" style="display:none; font-size:large;cursor: pointer !important;text-decoration:none" onclick="showtask(this.id);"><img title="hide?" src="@{'/public/images/famfam/bullet_toggle_plus.png'}"></img></a>
 		<div id="task-${task.id}_TT">
@@ -533,4 +540,19 @@ REDIPS.drag.init();})
 			table.rows[i].cells[to].innerHTML = temp ;
 		}
 		}
+		function ff()
+		{
+			//var children = document.getElementById('1_0').childNodes;
+			//alert(children.length);
+			var dina = $('#1_0').contents();
+			//alert(dina.length);
+			$('#1_0').contents().load('/boards/loadboard1?sprintID=1 '+dina.length);
+		//	alert($('#1_0').contents().length);
+			
+	//	for (var i = 0;i<dina.length;i++ )
+	//	{
+	//		$(dina[i]).load('/boards/loadboard1?sprintID=1 #'+dina[i]);
+	//	}
+		}
+		
 </script>
