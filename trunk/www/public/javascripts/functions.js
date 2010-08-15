@@ -597,7 +597,7 @@ function search_projects() {
 		$('#search_results_h3').hide()
 		return
 	}
-	$('#projects_search_results').html('<img src="/public/images/loadingMagic.gif">')
+	$('#projects_search_results').html('<img src="/public/images/tinyLoading.gif">')
 	if (searching_projects) {
 		searching_projects.abort()
 	}

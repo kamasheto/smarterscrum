@@ -103,12 +103,13 @@
 <body onload="#{get 'onLoad' /}">
 <div id="getOverlay">
 <div style="display:table"class="transparentOverlay">
-<div id="overlayLoading" style="text-align:center;vertical-align:middle;display:table-cell"><img src="/public/images/loadingMagic.gif" alt="Loading"/></div>
+<div id="overlayLoading" style="text-align:center;vertical-align:middle;display:table-cell">
+<img src="/public/images/loading.gif" alt="Loading"/></div>
 	
 </div>
 <div id ="overlayContent">
 	<div id="overlayContentHolder">
-<iframe id="theLoadedContent" name="theLoadedContent" src="@{Application.loading()}"class="autoHeight" style="display:none;">
+<iframe id="theLoadedContent" name="theLoadedContent" class="autoHeight" style="display:none;">
 	</iframe>
 	</div>
 </div>
