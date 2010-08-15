@@ -1,0 +1,24 @@
+#{extends 'overlay.html' /}
+
+<h2>Feedback</h2>
+<p>So you've got something to say. Interesting! Please enter your suggestion or report the bug in details in the form below. Make sure you enter the validation text so that we can make sure unnecessary messages are <i>not</i> delivered. We <b>might</b> contact you once we get to fix or discuss the suggestion/bug.</p>
+<br>
+Title or Summary of the problem/suggestion<br>
+<input type="text" id="title"><br><br>
+Full and detailed description<br>
+<textarea id="description"></textarea><br><br>
+Enter <img src="@{Feedbacks.captcha()}" /> in the text field<br>
+<input type="text" id="smartCaptcha">
+<br><br>
+<input type="button" onclick="sendFeedback()" value="Send!">
+
+<script type="text/javascript">
+
+function sendFeedback(){
+	var codeInput = $("#smartCaptcha").val();
+	var summary = $("#title").val();
+	var desc = $("#description").val();
+	$.post("/feedbacks/sendFeedback", {code:codeInput, title:summary, description:desc}, function(msg){ alert(msg); location.reload(); });
+}
+
+</script>
