@@ -47,30 +47,52 @@ function search_users(pid) {
 				$('#loading').hide();
 			});
 }
-function user_invited(id, name, pid)
-{		
-	var str = '<div id="invuser_'+id+'"><a onclick ="javascript: undo_inv('+id+',\''+name+'\');"><img src="/public/images/famfam/remove.png"/></a><a href="#">'+name+'</a><div id="selectrole_'+id+'">';
+
+function user_invited(uid, name, pid)
+{
+	var str = '<div id="invuser_'+uid+'"><a title = "remove" onclick ="javascript: undo_inv('+uid+',\''+name+'\');"><img src="/public/images/famfam/remove.png"/></a>&nbsp;<font size="2">'+name+'</font>&nbsp;&nbsp;<a title = "specify role ?" href="#" onclick ="javascript: $(\'#selectrole_'+uid+'\').slideToggle(200);"><img src="/public/images/famfam/toggle-open.gif"/></a> <form id="selectrole_'+uid+'" style = "display:none">';
 	$.post("@{Invites.getProjectRoles()}", {id:pid},
-			function(data){
-				$.each(data, function(id,item){					
-					str += '<br/><input type="radio" value="'+item.id+'">'+item.name+'</input>';
+			function(data){			
+			var count= 0;
+			$.each(data, function(id,item){								
+					count++;
+					if(!item.baseRole){						
+						str += '<input type="radio" name="group_'+uid+'" value="'+item.id+'"/>'+item.name;
+						
+					}
+					else{
+						str += '<input type="radio" name="group_'+uid+'" value="'+item.id+'" checked/>'+item.name;
+						
+					}
+					if(count%4==0)
+						str +='<br/>';
 				});
+
+			str+= "</form></div><br/>";
+			$('#resuser_'+uid).hide();
+			$('#noinv').hide();
+			$('#sendinv').show();
+			$('#invited').append(str);
+	
 			});	
-	str+='</div></div>';
-	alert(str);
-	$('#invited').append(str);
-	$('#resuser_'+id).hide();
-	$('#noinv').hide();
-	$('#sendinv').show();
+	
 }
-function send_invitations(pid)
+function send_invitations()
 {
 	var count =0;
 	$("#invited div").each(function(){									 
-		if(count >= 2)
-		{	var uid = $(this).attr("id").substring(8);			
+		var tmpo = $(this).attr("id").substring(0,8);		
+		if(tmpo == "invuser_")
+		{	var uid = $(this).attr("id").substring(8);
+				var rid=-1;
+				$("#selectrole_"+uid+" input").each(function(){
+					var roleId = $(this).attr("value");
+					var checked = $(this).attr("checked");
+					if(checked)
+						rid = roleId;					
+					});
 			$.post('@{Invites.sendInvite}',
-				{pId:pid, userId:uid},
+				{rId:rid, userId:uid},
 				function(){
 					parent_message_bar('Invitation(s) sent successfully!');
 					window.parent.$('#getOverlay').hide();
@@ -81,14 +103,15 @@ function send_invitations(pid)
 function undo_inv(id)
 {
 	$('#invuser_'+id).remove();
-	$(selectrole_+id).remove();
+	$('#selectrole_'+id).remove();
 	$('#resuser_'+id).show();	
 	var items = document.getElementById("invited").getElementsByTagName("div");
 	if(items.length-2 == 0)
 	{
 		$('#noinv').show();
 		$('#sendinv').hide();
-	}
+	}	
 }
+
 
 </script>

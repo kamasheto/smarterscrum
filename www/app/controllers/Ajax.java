@@ -81,7 +81,7 @@ public class Ajax extends SmartController
 			Project pro = Project.findById(projectId);
 			for (User u : User.find("byNameLikeAndDeleted",
 					"%" + query + "%", false).<User> fetch()) {
-				//if(!u.projects.contains(pro))
+				if(!u.projects.contains(pro))
 					result.add(new User.Object(u.id, u.name));
 			}
 		}
