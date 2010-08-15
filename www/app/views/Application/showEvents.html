@@ -65,7 +65,39 @@
     </fieldset> 
     </form> 
   </div> 
-  Ahlan Ahlan :0
+  <br/>
+  <br/>
+  <br/>
+  <div id = "todayEvents">
+  	<img src='/public/images/famfam/date-icon.png'/> Today Events
+  	#{ if sprints.size()!=0 || sprints2.size()!=0 ||  meetings.size()!=0}
+  	#{list items:sprints, as:'sprint'}
+  	<ul>
+		<li><a href="#"><img src='/public/images/famfam/date-icon.png'/> The Start of Sprint${sprint.sprintNumber} in Project ${sprint.project.name}</a></li>				
+	</ul>
+	#{/list}
+	#{list items:sprints2, as:'sprint'}
+	<ul>
+		<li><a href="#"><img src='/public/images/famfam/date-icon.png'/> The End of Sprint${sprint.sprintNumber} in Project ${sprint.project.name}</a></li>				
+	</ul>
+	#{/list}
+	#{list items:meetings, as:'meeting'}
+	<ul>
+	<li><a href="#"><img src='/public/images/famfam/meeting.png'/>${meeting.project.name} Meeting : ${meeting.name}</a></li>				
+	</ul>
+	#{/list}
+	#{/if}
+	#{else}
+	<div>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<img src='/public/images/famfam/exclamation.png'/> There are no events today.
+	</div>
+	#{/else}
+  </div>
+  
+  <div id="selected_date">
+  	
+  </div>
 <script type ="text/javascript">
 $(document).ready(function() {
 	
