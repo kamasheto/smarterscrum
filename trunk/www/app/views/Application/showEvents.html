@@ -68,6 +68,10 @@
   <br/>
   <br/>
   <br/>
+   <div id="selected_date" style = "display:none;">
+  		<img src='/public/images/famfam/date-icon.png'/> Selected Day Events
+  		<ul id="selected_events"></ul>
+  </div>
   <div id = "todayEvents">
   	<img src='/public/images/famfam/date-icon.png'/> Today Events
   	#{ if sprints.size()!=0 || sprints2.size()!=0 ||  meetings.size()!=0}
@@ -95,9 +99,7 @@
 	#{/else}
   </div>
   
-  <div id="selected_date">
-  	
-  </div>
+ 
 <script type ="text/javascript">
 $(document).ready(function() {
 	
