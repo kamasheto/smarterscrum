@@ -117,7 +117,7 @@ public class MeetingAttendances extends SmartController
 					users.add( attendees.remove( 0 ).user );
 				}
 				String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + attendance.meeting.project.id + "&isOverlay=false&url=/meetings/viewMeetings?id=" + attendance.meeting.project.id;
-				Notifications.notifyUsers( users, "Cancel", url, "Meeting", attendance.meeting.name, (byte) -1, attendance.meeting.project );
+				Notifications.notifyUsers( users, "canceled", url, "Meeting", attendance.meeting.name, (byte) -1, attendance.meeting.project );
 			}
 
 			render( attendance, notYet, setbefore, isUser );
@@ -210,7 +210,7 @@ public class MeetingAttendances extends SmartController
 		ma.save();
 		Update.update( ma.meeting.project, "reload('meetingAttendees-" + ma.meeting.id + "')" );
 		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + ma.meeting.project.id + "&isOverlay=false&url=/meetings/viewAttendeeStatus?id=" + ma.meeting.project.id;
-		Notifications.notifyUser( ma.user, "Confirm", url, "Meeting Attendence", ma.meeting.name, (byte) 1, ma.meeting.project );
+		Notifications.notifyUser( ma.user, "confirmed", url, "Meeting Attendence", ma.meeting.name, (byte) 1, ma.meeting.project );
 	}
 
 	/**
@@ -233,7 +233,7 @@ public class MeetingAttendances extends SmartController
 		ma.save();
 		Update.update( ma.meeting.project, "reload('meetingAttendees-" + ma.meeting.id + "')" );
 		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + ma.meeting.project.id + "&isOverlay=false&url=/meetings/viewAttendeeStatus?id=" + ma.id;
-		Notifications.notifyUser( ma.user, "declin", url, "Meeting Attendence", ma.meeting.name, (byte) -1, ma.meeting.project );
+		Notifications.notifyUser( ma.user, "declined", url, "Meeting Attendence", ma.meeting.name, (byte) -1, ma.meeting.project );
 	}
 
 	/**
