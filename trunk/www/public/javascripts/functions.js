@@ -413,11 +413,18 @@ $(function() {
 	$('.min').live(
 			'click',
 			function() {
-				if($(this).parent().next().html()=='')
-					load($(this).parent().parent().attr('name'),$(this).parent().parent().attr('id'),2);
-					$(this).parent().next().slideToggle(400);
-					if($(this).parent().parent().hasClass('draggable'))
-					$(this).parent().next().next().toggle();
+				var el = $(this).parent().parent();
+
+				if($(this).hasClass('draggable'))
+				{	
+					$(this).closest('.workspace').find('.workspaceDraggables').first().append($(this))
+					el.removeClass('min')
+				}
+				else
+				{	
+					$(el).closest('.workspace').find('.dock').first().append($(el))
+					el.addClass('min');
+				}
 			});
 	$('.refresh').live('click',function(){
 		var parent = $(this).parent().parent();
@@ -668,6 +675,7 @@ function showProjectWorkspace(project_id) {
 		success: function(data) {
 			$('#project-tabs').append('<a class="aDIV topCornersRounded selectedADiv project-button " id="project-button-'+project_id+'" href="#" onclick="show('+project_id+')" style="width: 120px !important" title="">'+$(data).find('.project_name_in_header').html()+' <span class="right ui-icon2 ui-icon-circle-close" onclick="close_workspace('+project_id+')"> </span></a>');
 			$('.workspace-' + project_id).html(data)
+			$('.workspace-' + project_id).append('<div class="dock"></div>');
 			$('#top_header_projects_pane').slideUp()
 		}
 	})

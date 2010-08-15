@@ -68,7 +68,7 @@
 				$('#overlayContent').height($('body').height());
 				$('#normal').height($('body').height()-$('#topper').height()-$('.project-tabs').height()-110);
    	
-				$('#workspaces').height($('body').height()-$('#topper').height()-$('.project-tabs').height()-110);
+				$('#workspaces').height($('body').height()-$('#topper').height()-$('.project-tabs').height()-155);
    			    #{if connected}
 				setTimeout('ping();', 1000);
    			    #{/if}
@@ -163,12 +163,12 @@
 		</a>
 	</div>
 	<div id="sideNoti" class="siderC">
-		<div id="sideNoti_content">
-		
-		</div>
+		<div style="display:table;width:100%;height:100%;">
+<div id="overlayLoading" style="text-align:center;vertical-align:middle;display:table-cell">
+<img src="/public/images/loading.gif" alt="Loading"/></div>
 	</div>
 	<!-- Notifications End -->
-</div>
+</div></div>
 <div class="sideHolder">
 	<!-- My events Start -->
 	<div class="notch"style="top: 100px;">
@@ -177,9 +177,10 @@
 		</a>
 	</div>
 	<div id="sideEvent" class="siderC">
-		<div id="sideEvent_content">
-		
-		</div>
+		<div style="display:table;width:100%;height:100%;">
+<div id="overlayLoading" style="text-align:center;vertical-align:middle;display:table-cell">
+<img src="/public/images/loading.gif" alt="Loading"/></div>
+	</div>
 	</div>
 	<!-- My events End -->
 </div>
@@ -190,9 +191,9 @@
 		<img src="" alt="[Tasks]"/></a>
 	</div>
 	<div id="sideTasks" class="siderC">
-		<div id="sideTasks_content">
-		
-		</div>
+		<div style="display:table;width:100%;height:100%;">
+<div id="overlayLoading" style="text-align:center;vertical-align:middle;display:table-cell">
+<img src="/public/images/loading.gif" alt="Loading"/></div></div>
 	</div>
 	<!-- MyTasks End -->
 </div>
@@ -203,9 +204,10 @@
 		<img src="/public/images/myInvitations.png" alt="[Invitations]"/></a>
 	</div>
 	<div id="sideIn" class="siderC">
-		<div id="sideIn_content">
-		
-		</div>
+		<div style="display:table;width:100%;height:100%;">
+<div id="overlayLoading" style="text-align:center;vertical-align:middle;display:table-cell">
+<img src="/public/images/loading.gif" alt="Loading"/></div>
+	</div>
 	</div>
 	<!-- Invitations End -->
 </div>
@@ -222,7 +224,6 @@
 </div>
 #{if connected}
 
-			<div id="onlineUsers"><span class="">Online users: </span><span id="online_users_list"></span></div>
 #{/if}
 			#{ifErrors}
 			<script type="text/javascript">
