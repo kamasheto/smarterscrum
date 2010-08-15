@@ -475,6 +475,7 @@ function load(url, el, n, hideLoading) {
 			success: function(data) {
 				$('body').append('<div id="dummy_data" class="hidden"></div>')
 				$('#dummy_data').html(data)
+				data = $('#dummy_data').html()
 				$('#dummy_data').remove()
 				if (n != 3) {
 					$('#'+el+'_header').html($(data).find('.mainH:first').html());
@@ -508,6 +509,7 @@ function loadBox(url, el, classes)
 			success: function(data) {
 				$('body').append('<div id="dummy_data" class="hidden"></div>')
 				$('#dummy_data').html(data)
+				data = $('#dummy_data').html()
 				$('#dummy_data').remove()
 				myDivs.push(url)
 				element = $(data).filter('div:first')

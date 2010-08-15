@@ -10,11 +10,5 @@
 	<li>Meeting: <span>${log.get(models.Meeting.class)?:''}</span></li>
 </ul>
 <script type="text/javascript" charset="utf-8">
-	$(function() {
-		$('li').each(function() {
-			if ($(this).children('span').html() == '') {
-				$(this).remove()
-			}
-		})
-	})
+	$('li:has(span:empty)').remove()
 </script>
