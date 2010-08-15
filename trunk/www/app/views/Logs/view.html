@@ -1,0 +1,20 @@
+#{extends 'magicBox.html' /}
+#{set title: log.message /}
+#{note}
+	${log.message}
+#{/note}
+<ul>
+	<li>User: <span>${log.get(models.User.class)?:''}</span></li>
+	<li>Project: <span>${log.get(models.Project.class)?:''}</span></li>
+	<li>Task: <span>${log.get(models.Task.class)?:''}</span></li>
+	<li>Meeting: <span>${log.get(models.Meeting.class)?:''}</span></li>
+</ul>
+<script type="text/javascript" charset="utf-8">
+	$(function() {
+		$('li').each(function() {
+			if ($(this).children('span').html() == '') {
+				$(this).remove()
+			}
+		})
+	})
+</script>
