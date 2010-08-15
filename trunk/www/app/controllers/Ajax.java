@@ -1,8 +1,10 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import models.Invite;
 import models.Project;
 import models.User;
 
@@ -79,9 +81,16 @@ public class Ajax extends SmartController
 		else
 		{
 			Project pro = Project.findById(projectId);
+			List<Invite> invs = Invite.findAll();
+			ArrayList<User> invitedUsers = new ArrayList<User>();
+			for(int i=0 ; i<invs.size(); i++)
+			{
+				if(invs.get(i).role.project.equals(pro))
+					invitedUsers.add(invs.get(i).user);
+			}
 			for (User u : User.find("byNameLikeAndDeleted",
 					"%" + query + "%", false).<User> fetch()) {
-				if(!u.projects.contains(pro))
+				if(!u.projects.contains(pro) && !invitedUsers.contains(u))						
 					result.add(new User.Object(u.id, u.name));
 			}
 		}
