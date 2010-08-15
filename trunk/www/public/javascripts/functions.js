@@ -721,13 +721,38 @@ function fix(obj)
 	});
 }
 
+var timer_spans= new Array();
+
+function isPresentInArray(place)
+{
+	for(i=0;i<timer_spans.length;i++){
+		if(timer_spans[i].place == place){
+			return timer_spans[i];
+		}
+	}
+	return false;
+}
+
 function showDate(id,place,startTime,nam,type) 
 {
+	var placeObject=isPresentInArray(place);
+	if(placeObject==false)
+		{
+		placeObject=new Object();
+		placeObject.place=place;
+		placeObject.counter=0;
+		timer_spans.push(placeObject);
+		}
+	else
+		{
+		placeObject.counter++;
+		}
+	var counter= placeObject.counter;
 	var date=startTime;
 	var tz =0;         //  
 	var lab = place;    //  The id of the page entry where the timezone countdown is to show
 	var name= ""+nam
-	displayTZCountDown(setTZCountDown(date,tz),lab,id,nam,type);
+	displayTZCountDown(setTZCountDown(date,tz),lab,id,nam,type,counter);
 }
 function setTZCountDown(date,tz) 
 {
@@ -738,8 +763,9 @@ function setTZCountDown(date,tz)
 	diffDate.setMilliseconds(toDate - fromDate);
 	return Math.floor(diffDate.valueOf()/1000);
 }
-function displayTZCountDown(countdown,place,id,name,type) 
+function displayTZCountDown(countdown,place,id,name,type,counter) 
 {
+	
 	if(document.getElementById(place)==null)
 		return;
 	if(countdown<0)
@@ -791,8 +817,14 @@ function displayTZCountDown(countdown,place,id,name,type)
 				timer= mins + "M" + secs + "S"	
 		}
 	}
+	var placeObject=isPresentInArray(place);
+	
+	if(placeObject.counter==counter)
+	{
+	
 	document.getElementById(place).innerHTML= timer;
-	setTimeout('displayTZCountDown('+(countdown-1)+',\''+place+'\');',999);
+	setTimeout('displayTZCountDown('+(countdown-1)+',"'+place+'",'+id+',"'+name+'" , "'+type+'" , '+counter+');',999);
+	}
 }
 
 function message_bar(message) {
