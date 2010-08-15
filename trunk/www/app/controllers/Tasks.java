@@ -690,10 +690,10 @@ public class Tasks extends SmartCRUD
 			renderText( "The entered effort cannot be less than 0" );
 		}
 		temp.setEffortOfDay( effort, day );
-		Update.update( temp.project, "sprintLoad(" + id + ",'" + id + "_day_" + day + "');" );
+		Update.update( temp.project, "sprintLoad(" + id + ",'"+id+"_day_"+day+"');" );
 		temp.save();
-		renderText( "Effort changed successfully" );
-		Log.addLog( "Effort entered for task", Security.getConnected(), temp, temp.project );
+		renderText("Effort changed successfully");
+		Log.addLog("Effort entered for task", Security.getConnected(), temp, temp.project);
 
 	}
 
@@ -759,19 +759,19 @@ public class Tasks extends SmartCRUD
 				}
 			}
 			if( i == temp.size() - 1 )
-				changes = changes + "['" + new Date( temp.get( i ).timestamp ).toString().substring( 0, 10 ) + "'," + k + "]]";
+				changes = changes + "['" + new Date(temp.get( i ).timestamp).toString().substring( 0, 10 ) + "'," + k + "]]";
 			else
-				changes = changes + "['" + new Date( temp.get( i ).timestamp ).toString().substring( 0, 10 ) + "'," + k + "],";
+				changes = changes + "['" + new Date(temp.get( i ).timestamp).toString().substring( 0, 10 ) + "'," + k + "],";
 
 		}
 
 		if( !empty )
 		{
-			lastModified = new Date( temp.get( temp.size() - 1 ).timestamp ).toString().substring( 0, 10 ) + " @ " + new Date( temp.get( temp.size() - 1 ).timestamp ).toString().substring( 11 );
+			lastModified = new Date(temp.get( temp.size() - 1 ).timestamp).toString().substring( 0, 10 ) + " @ " + new Date(temp.get( temp.size() - 1 ).timestamp).toString().substring( 11 );
 			numberOfModifications = temp.size();
 		}
 		Date maxdate = new Date();
-		if( !temp.isEmpty() )
+			if( !temp.isEmpty() )
 			maxdate.setTime( temp.get( temp.size() - 1 ).timestamp + (3 * 86400000) );
 		String maxDate = maxdate.toString().substring( 0, 10 );
 
@@ -783,7 +783,7 @@ public class Tasks extends SmartCRUD
 		Project myProject = theTask.project;
 		render( myProject, minDate, temp, lastModified, empty, efforts, changes, numberOfModifications, theTask, maxDate );
 	}
-
+	
 	/**
 	 * This method changes the given task description.
 	 * 
@@ -817,30 +817,29 @@ public class Tasks extends SmartCRUD
 		}
 		task1.description = desc;
 		task1.save();
-		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + ")" );
-		Update.update( task1.project.users, Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + ");sprintLoad(" + task1.id + ",'" + task1.id + "_des')" );
+		long compId = 0;
+		if(task1.component!=null)
+			compId = task1.component.id;
+		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")" );
+		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + "," + compId+ ");sprintLoad(" + task1.id + ",'"+task1.id+"_des')");		
 		List<User> m = new ArrayList();
 		m.add( task1.assignee );
 		m.add( task1.reporter );
 		m.add( task1.reviewer );
 		if( userId == Security.getConnected().id )
 		{
-			// Logs.addLog( user1, "Edit", "Task Description", id,
-			// task1.project, new Date( System.currentTimeMillis() ) );
-			Log.addUserLog( "Edited task description", task1, task1.project );
+			// Logs.addLog( user1, "Edit", "Task Description", id, task1.project, new Date( System.currentTimeMillis() ) );
+			Log.addUserLog("Edited task description", task1, task1.project);
 		}
 		else
 		{
-			Log.addUserLog( user1.name + " has edited task description", task1, user1, task1.project );
-			// Logs.addLog( user1 +
-			// " has performed action (Edit) using resource (Task Description) in project "
-			// + task1.project.name + " from the account of " +
-			// Security.getConnected().name );
+			Log.addUserLog(user1.name +" has edited task description", task1, user1, task1.project);
+			// Logs.addLog( user1 + " has performed action (Edit) using resource (Task Description) in project " + task1.project.name + " from the account of " + Security.getConnected().name );
 		}
-		renderText( "The description was changed successfully" );
+		renderText("The description was changed successfully");
 		return true;
 	}
-
+	
 	/**
 	 * FilterS for task id and new status and user_id.
 	 * 
@@ -977,18 +976,14 @@ public class Tasks extends SmartCRUD
 		String header = "Task: 'T" + task1.id + "\'" + " Task Status has been edited.";
 		if( userId == Security.getConnected().id )
 		{
-			Log.addUserLog( "Edited task status", task1, task1.project );
-			// Logs.addLog( user1, "Edit", "Task Status", id, task1.project, new
-			// Date( System.currentTimeMillis() ) );
+			Log.addUserLog("Edited task status", task1, task1.project);
+			// Logs.addLog( user1, "Edit", "Task Status", id, task1.project, new Date( System.currentTimeMillis() ) );
 			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ".";
 		}
 		else
 		{
-			Log.addUserLog( user1.name + " edited task status", user1, task1, task1.project );
-			// Logs.addLog( user1 +
-			// " has performed action (Edit) using resource (Task Status) in project "
-			// + task1.project.name + " from the account of " +
-			// Security.getConnected().name );
+			Log.addUserLog(user1.name + " edited task status", user1, task1, task1.project);
+			// Logs.addLog( user1 + " has performed action (Edit) using resource (Task Status) in project " + task1.project.name + " from the account of " + Security.getConnected().name );
 			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 		}
 		// Notifications.notifyUsers(task1.component.getUsers(), header, body,
@@ -1012,12 +1007,11 @@ public class Tasks extends SmartCRUD
 		stat.Tasks.add( task );
 		stat.save();
 		Update.update( task.project, "reload('task-" + id + "');" );
-		Update.update( task.project, "sprintLoad(" + id + ",'" + id + "_status');" );
+		Update.update( task.project, "sprintLoad(" + id + ",'"+id+"_status');" );
 		task.save();
-		renderText( "Status updates successfully" );
-		Log.addUserLog( "Edited task estimation", task, task.project );
-		// Logs.addLog( Security.getConnected(), "Edit", "Task estimation", id,
-		// task.project, new Date( System.currentTimeMillis() ) );
+		renderText("Status updates successfully");
+		Log.addUserLog("Edited task estimation", task, task.project);
+		// Logs.addLog( Security.getConnected(), "Edit", "Task estimation", id, task.project, new Date( System.currentTimeMillis() ) );
 
 	}
 
@@ -1043,12 +1037,11 @@ public class Tasks extends SmartCRUD
 		task.save();
 
 		Update.update( task.project, "reload('task-" + id + "');" );
-		Update.update( task.project, "sprintLoad(" + id + ",'" + id + "_points');" );
-		Log.addUserLog( "Edit task estimation", task, task.project );
-		renderText( "The task's total points was updated successfully" );
+		Update.update( task.project, "sprintLoad(" + id +",'"+id+"_points');" );
+		Log.addUserLog("Edit task estimation", task, task.project);
+		renderText("The task's total points was updated successfully");
 		return true;
 	}
-
 	/**
 	 * This method changes the given task assignee.
 	 * 
@@ -1089,10 +1082,13 @@ public class Tasks extends SmartCRUD
 		// String oldAssignee = task1.assignee.name;
 		task1.assignee = assignee;
 		task1.save();
+		long compId = 0;
+		if(task1.component!=null)
+			compId = task1.component.id;
 		assignee.tasks.add( task1 );
 		assignee.save();
-		Update.update( Security.getConnected(), "reload_sticky_note(" + task1.taskSprint.id + "," + task1.id + ")" );
-		Update.update( task1.project.users, Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + ")" );
+		Update.update( Security.getConnected(), "reload_sticky_note(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")" );
+		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")");		
 		String header = "Task: 'T" + task1.id + "\'" + " Assignee has been edited.";
 		/*
 		 * ////Long Informative Notification message. Not suitable for online
@@ -1115,21 +1111,16 @@ public class Tasks extends SmartCRUD
 		// (byte) 0);
 		if( userId == Security.getConnected().id )
 		{
-			Log.addUserLog( "Edited task assignee", task1, task1.project );
-			// Logs.addLog( user1, "Edit", "Task Assignee", id, task1.project,
-			// new Date( System.currentTimeMillis() ) );
+			Log.addUserLog("Edited task assignee", task1, task1.project);
+			// Logs.addLog( user1, "Edit", "Task Assignee", id, task1.project, new Date( System.currentTimeMillis() ) );
 		}
 		else
 		{
-			Log.addUserLog( user1.name + " has edited task assignee", user1, task1, task1.project );
-			// Logs.addLog( user1 +
-			// " has performed action (Edit) using resource (Task Assignee) in project "
-			// + task1.project.name + " from the account of " +
-			// Security.getConnected().name );
+			Log.addUserLog(user1.name + " has edited task assignee", user1, task1, task1.project);
+			// Logs.addLog( user1 + " has performed action (Edit) using resource (Task Assignee) in project " + task1.project.name + " from the account of " + Security.getConnected().name );
 		}
 		return true;
 	}
-
 	/**
 	 * Changes the given task reviewer.
 	 * 
@@ -1170,8 +1161,11 @@ public class Tasks extends SmartCRUD
 		// String oldReviewer = task1.reviewer.name;
 		task1.reviewer = reviewer;
 		task1.save();
-		Update.update( Security.getConnected(), "reload_sticky_note(" + task1.taskSprint.id + "," + task1.id + ")" );
-		Update.update( task1.project.users, Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + ")" );
+		long compId = 0;
+		if(task1.component!=null)
+			compId = task1.component.id;
+		Update.update( Security.getConnected(), "reload_sticky_note(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")" );
+		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")");		
 		reviewer.tasks.add( task1 );
 		reviewer.save();
 		String body = "";
@@ -1194,17 +1188,13 @@ public class Tasks extends SmartCRUD
 		// (byte) 0);
 		if( userId == Security.getConnected().id )
 		{
-			Log.addUserLog( "Edit task reviewer", task1, task1.project );
-			// Logs.addLog( user1, "Edit", "Task Reviewer", id, task1.project,
-			// new Date( System.currentTimeMillis() ) );
+			Log.addUserLog("Edit task reviewer", task1, task1.project);
+			// Logs.addLog( user1, "Edit", "Task Reviewer", id, task1.project, new Date( System.currentTimeMillis() ) );
 		}
 		else
 		{
-			Log.addUserLog( user1.name + " has edited task reviewer", user1, task1, task1.project );
-			// Logs.addLog( user1 +
-			// " has performed action (Edit) using resource (Task Reviewer) in project "
-			// + task1.project.name + " from the account of " +
-			// Security.getConnected().name );
+			Log.addUserLog(user1.name + " has edited task reviewer", user1, task1, task1.project);
+			// Logs.addLog( user1 + " has performed action (Edit) using resource (Task Reviewer) in project " + task1.project.name + " from the account of " + Security.getConnected().name );
 		}
 		return true;
 	}
@@ -1245,9 +1235,12 @@ public class Tasks extends SmartCRUD
 		TaskType type = TaskType.findById( typeId );
 		task1.taskType = type;
 		task1.save();
-		Update.update( Security.getConnected(), "reload_sticky_note(" + task1.taskSprint.id + "," + task1.id + ")" );
-		Update.update( task1.project.users, Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + ")" );
-		Update.update( task1.project, "sprintLoad(" + task1.id + ",'" + id + "_type');" );;
+		long compId = 0;
+		if(task1.component!=null)
+			compId = task1.component.id;
+		Update.update( Security.getConnected(), "reload_sticky_note(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")" );
+		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")");		
+		Update.update(task1.project, "sprintLoad(" + task1.id +",'"+id+"_type');" );;
 		String body = "";
 		String header = "Task: 'T" + task1.id + "\'" + " Task Type has been edited.";
 		// String header = "A Task Type has been edited in Component: " + "\'" +
@@ -1255,17 +1248,13 @@ public class Tasks extends SmartCRUD
 		// task1.taskStory.componentID.project.name + "\'" + ".";
 		if( userId == Security.getConnected().id )
 		{
-			// Logs.addLog( user1, "Edit", "Task Type", id, task1.project, new
-			// Date( System.currentTimeMillis() ) );
+	//		Logs.addLog( user1, "Edit", "Task Type", id, task1.project, new Date( System.currentTimeMillis() ) );
 			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ".";
 
 		}
 		else
 		{
-			// Logs.addLog( user1 +
-			// " has performed action (Edit) using resource (Task Type) in project "
-			// + task1.project.name + " from the account of " +
-			// Security.getConnected().name );
+	//		Logs.addLog( user1 + " has performed action (Edit) using resource (Task Type) in project " + task1.project.name + " from the account of " + Security.getConnected().name );
 			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 		}
 		// Notifications.notifyUsers(task1.component.getUsers(), header, body,
@@ -1273,6 +1262,7 @@ public class Tasks extends SmartCRUD
 		return true;
 	}
 
+	
 	public static void chooseTaskPerson()
 	{
 		render();
@@ -1506,7 +1496,7 @@ public class Tasks extends SmartCRUD
 
 		task.component = component;
 		task.save();
-		Log.addUserLog( "Assigned task to component", task, component, component.project );
+		Log.addUserLog("Assigned task to component", task, component, component.project);
 		Update.update( task.project, "reload('component-" + componentId + "', 'task-" + taskId + "')" );
 		renderText( "Associated successfully" );
 	}
@@ -1532,9 +1522,9 @@ public class Tasks extends SmartCRUD
 		Security.check( connected.in( task.project ).can( "modifyTask" ) && user.projects.contains( task.project ) && task.reviewer != user && (task.component == null || user.components.contains( task.component )) );
 		task.assignee = user;
 		task.save();
-		Log.addUserLog( "Assigned task assignee", task, user, task.project );
+		Log.addUserLog("Assigned task assignee", task, user, task.project);
 		Update.update( task.project, "reload('task-" + taskId + "');" );
-		Update.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_reviewer');sprintLoad(" + taskId + ",'" + taskId + "_assignee');" );
+		Update.update( task.project, "sprintLoad(" + taskId + ",'"+taskId+"_reviewer');sprintLoad(" + taskId + ",'"+taskId+"_assignee');" );
 		renderText( "Assignee added successfully" );
 	}
 
@@ -1559,9 +1549,9 @@ public class Tasks extends SmartCRUD
 		Security.check( connected.in( task.project ).can( "modifyTask" ) && user.projects.contains( task.project ) && task.assignee != user && (task.component == null || user.components.contains( task.component )) );
 		task.reviewer = user;
 		task.save();
-		Log.addUserLog( "Assigned task reviewer", task, user, task.project );
+		Log.addUserLog("Assigned task reviewer", task, user, task.project);
 		Update.update( task.project, "reload('task-" + taskId + "');" );
-		Update.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_reviewer');sprintLoad(" + taskId + ",'" + taskId + "_assignee');" );
+		Update.update( task.project, "sprintLoad(" + taskId + ",'"+taskId+"_reviewer');sprintLoad(" + taskId + ",'"+taskId+"_assignee');" );
 		renderText( "Reviewer assigned successfully" );
 	}
 
@@ -1592,6 +1582,7 @@ public class Tasks extends SmartCRUD
 		}
 		renderJSON( u );
 	}
+	
 
 	/**
 	 * Set a deadline for a task to remind the assignee to it.
@@ -1622,7 +1613,7 @@ public class Tasks extends SmartCRUD
 		}
 		task.deadline = newDeadline;
 		task.save();
-		Update.update( Security.getConnected(), "reload('tasks','task-" + task.id + "');" );
+		Update.update( Security.getConnected(), "reload('task-" + task.id + "','tasks" + task.project.id + "')" );
 		renderJSON( true );
 
 	}
