@@ -103,6 +103,12 @@ public class Users extends SmartCRUD {
 			renderText("Cannot assign user to a component he is already a member in");
 		}
 		myUser.components.add(myComponent);
+		for(Component component : myComponent.project.components){
+						if(component.number==0 && myUser.components.contains(component)){
+							myUser.components.remove(component);
+						component.componentUsers.remove(myUser);
+						}
+						}
 		myComponent.componentUsers.add(myUser);
 		Date d = new Date();
 		// User user = User.find("byEmail", Security.connected()).first();
