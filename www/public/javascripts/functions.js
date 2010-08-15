@@ -378,12 +378,12 @@ $(function() {
 								$('#' + id + ' .ui-widget-content').hide();
 								var t = $('#' + id + ' .ui-widget-header')
 										.first().clone();
-								$(t).removeClass('ui-widget-header');
-								$(t).addClass('clone');
-								$(t).removeClass('selectedBar');
-								$(t).removeClass('selectedBar2');
-								$(t).insertBefore($(this));
-								$(t).attr('id', $(this).attr('id') + "_2");
+								// $(t).removeClass('ui-widget-header');
+								// 								$(t).addClass('clone');
+								// 								$(t).removeClass('selectedBar');
+								// 								$(t).removeClass('selectedBar2');
+								// 								$(t).insertBefore($(this));
+								// 								$(t).attr('id', $(this).attr('id') + "_2");
 							}
 						});
 
@@ -544,7 +544,8 @@ function magic(id) {
 		else
 		{
 						var url = $(this).attr('name');
-			if($.inArray(url,myDivs)==-1)
+			// if($.inArray(url,myDivs)==-1)
+			if (true)
 			{
 						var id2 = "ui" +num++;
 						var head = '<div id="'+id2+'_header" class="ui-widget-header mainH"><span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span><span class="refresh ui-icon ui-icon-refresh"></span></span>' + $(this).html() + '</div>';
@@ -553,15 +554,17 @@ function magic(id) {
 
 						$(this).attr('id', id2);
 				$(this).append('<div id="' + id2 + '_content" class="ui-widget-content actual" ></div>');
-			} else {	
-				var id2 = 						
-				$($(this).closest('.workspaceDraggables').find('div[name='+$(this).attr('name')+']')).first().attr('id')+'_2';
-							var head = '<div id="'+id2+'_header" class="ui-widget-header mainH">' + $(this).html() + '</div>';
-							$(this).html(head);
-							$(this).addClass('clone');
-
-							$(this).attr('id', id2);	
-						}
+			} 
+			// else 
+			// 			{	
+			// 				var id2 = 						
+			// 				$($(this).closest('.workspaceDraggables').find('div[name='+$(this).attr('name')+']')).first().attr('id')+'_2';
+			// 							var head = '<div id="'+id2+'_header" class="ui-widget-header mainH">' + $(this).html() + '</div>';
+			// 							$(this).html(head);
+			// 							$(this).addClass('clone');
+			// 
+			// 							$(this).attr('id', id2);	
+			// 			}
 						
 						}
 					});
