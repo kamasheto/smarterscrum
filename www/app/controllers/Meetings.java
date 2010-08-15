@@ -361,7 +361,7 @@ public class Meetings extends SmartCRUD
 		{
 			// redirect( request.controller + ".list" );
 			// Meetings.viewMeetings( currentProject.id );
-			Update.update( temp.project, "reload('meeting-" + temp.id + "')" );
+			Update.update( temp.project, "reload('meeting-" + temp.id + "','meetings-" + temp.project.id + "');" );
 			Application.overlayKiller( "", "" );
 
 		}
