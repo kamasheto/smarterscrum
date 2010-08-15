@@ -17,7 +17,7 @@ function set_person(id,taskId,name, user1Id, sid)
 			{id:taskId, userId:user1Id, reviewerId:id},
 			function()
 			{
-				reload_sticky_note(sid, taskId);
+				window.close();
 			});
 			
 	return true;
