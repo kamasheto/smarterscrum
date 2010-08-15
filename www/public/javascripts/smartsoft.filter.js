@@ -11,6 +11,7 @@ var itemsPerPage = 5; //how many divs to display per page
 
 var uniqueArray = new Array();
 var UniqueArrayFilter = new Array();
+var notificationPage=1;
 
 /**********************************************************/
 
@@ -18,7 +19,6 @@ var UniqueArrayFilter = new Array();
 /******** DO NOT EDIT ANYTHING BELOW THIS LINE .. plz? ***********/
 
 String.prototype.trim = function() { return this.replace(/^\s+|\s+$/, ''); };
-
 
 
 function filter_me(el){
@@ -67,7 +67,12 @@ function smart_pagination(el, view_page){
 		//CHECKS
 		var smartObject = getTheUnique(id);
 		if(smartObject == false){
-			var sizeOfChildren = $("#"+id+"_content > div").filter(function(index) { return !($(this).hasClass("do_not_paginate")); }).size();
+			var sizeOfChildren = $("#"+id+"_content > div").size();
+			var sizeOfNotPaginated= $("#"+id+"_content > div").filter(function(){ return $(this).hasClass("do_not_paginate") }).size();
+			var numPagesNotPaginated = Math.floor(sizeOfNotPaginated/itemsPerPage);
+			var extraNotPaginatedItems = !((sizeOfNotPaginated % itemsPerPage) == 0);
+			if(extraNotPaginatedItems)
+				numPagesNotPaginated++;
 			var numPages = Math.floor(sizeOfChildren/ itemsPerPage);
 			var extraItems = !((sizeOfChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
 			if(extraItems)
@@ -78,6 +83,8 @@ function smart_pagination(el, view_page){
 			smartObject.smart_array = new Array();
 			smartObject.page = 1;
 			smartObject.numElements = sizeOfChildren;
+			smartObject.sizeOfNotPaginated = sizeOfNotPaginated;
+			smartObject.numPagesNotPaginated = numPagesNotPaginated;
 			uniqueArray.push(smartObject);
 		}
 		else if(smartObject.numPages == -1){
@@ -87,7 +94,7 @@ function smart_pagination(el, view_page){
 		{
 			smartObject.page++;
 		}
-		else if(view_page>smartObject.numPages){
+		else if(view_page>(smartObject.numPages-smartObject.numPagesNotPaginated)){
 			smartObject.page--;
 		}
 		else
@@ -111,7 +118,7 @@ function smart_pagination(el, view_page){
 				j++;
 			}
 			view_page++;
-			if(view_page == smartObject.numPages){
+			if(view_page == (smartObject.numPages-smartObject.numPagesNotPaginated)){
 				$("#"+id+" .normalLinkn").addClass('dim');
 			}
 			else{
@@ -220,6 +227,59 @@ function filter_smart_pagination(el,view_page, nextPrevious){
 	}
 }
 
+function notification_pagination(view_page){
+	var smart_array = new Array();
+	var sizeOfChildren = $("#notification_paginated > div").size();
+	var numPages = Math.floor(sizeOfChildren/ itemsPerPage);
+	var extraItems = !((sizeOfChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
+	if(extraItems)
+		numPages++;
+	if(view_page<1)
+	{
+		notificationPage++;
+	}
+	else if(view_page>numPages){
+		notificationPage--;
+	}
+	else
+	{
+		//First of all get all "shown" divs and store them in the smart_array
+		var i = 0;
+			$("#notification_paginated > div").show();
+			$("#notification_paginated > div").each(function(index){
+				smart_array[i] = this;
+				$(this).hide();
+				i++;
+			});
+		
+		//Now display only those in the current page
+		view_page--;//if page 1, the starting index should be zero (array ba2a)
+		var starting_index = view_page * itemsPerPage;
+		var j = 1;//counter
+		$("#notification_paginated > div").hide();
+		while(j<= itemsPerPage){
+			$(smart_array[starting_index]).show();
+			starting_index++;
+			j++;
+		}
+		view_page++;
+		if(view_page == numPages){
+			$(".Notificationn").addClass('dim');
+		}
+		else{
+			if($(".Notificationn").hasClass('dim'))
+				$(".Notificationn").removeClass('dim');
+		}
+		if(view_page == 1){
+			$(".Notificationp").addClass('dim');
+		}
+		else{
+			if($(".Notificationp").hasClass('dim'))
+				$(".Notificationp").removeClass('dim');
+		}
+	}
+}
+
 function nextPage(el){
 	id = el;
 	if($(el).closest('.filter').attr('id')!=null){
@@ -239,6 +299,16 @@ function previousPage(el){
 	smart_pagination(el,smartObject.page);
 }
 
+function nextNotificationPage(){
+	notificationPage++;
+	notification_pagination(notificationPage);
+}
+
+function previousNotificationPage(){
+	notificationPage--;
+	notification_pagination(notificationPage);
+}
+
 function nextFilterPage(el){
 	if($(el).closest('.filter').attr('id')!=null){
 		id = $(el).closest('.filter').attr('id').split('_')[0];
@@ -247,6 +317,7 @@ function nextFilterPage(el){
 	smartObject.filter_page++;
 	filter_smart_pagination(el,smartObject.filter_page,true);
 }
+
 function previousFilterPage(el){
 	if($(el).closest('.filter').attr('id')!=null){
 		id = $(el).closest('.filter').attr('id').split('_')[0];
@@ -287,22 +358,19 @@ function showFilterLinks(id){
 function updatePageNumbers(id){
 	smartObject = getTheUnique(id);
 	var items = (smartObject.page*itemsPerPage);
+	var i = $("#"+id+"_content > div").filter(function(){ return $(this).hasClass("do_not_paginate");}).size();
+	items = items + i;
 	if(items>smartObject.numElements)
 		items = smartObject.numElements;
 	else if(items<1) items = 0;
 	$("#"+id+" .numPages").text(items+"/"+smartObject.numElements);
-//	if(globalNumPagesNormal<=1)
-//	{
-//		$("#"+id+"_filter").hide();
-//	}
-//	else
-//		$("#"+id+"_filter").show();
-		
 }
 
 function updatePageNumbersFilter(id){
 	smartObject = getTheUniqueFilter(id);
 	var items = (smartObject.filter_page*itemsPerPage);
+	var i = $("#"+id+"_content > div").filter(":visible").filter(function(){ return $(this).hasClass("do_not_paginate"); }).size();
+	items = items + i;
 	if(items>smartObject.sizeOfFilteredChildren)
 		items = smartObject.sizeOfFilteredChildren;
 	else if(items<1) items = 0; 
