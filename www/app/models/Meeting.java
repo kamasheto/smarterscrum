@@ -169,9 +169,10 @@ public class Meeting extends SmartModel
 		String StartTime;
 		String project;
 		String name;
+		long projectId;
 		
 
-		public Object(long id, long startDate,  String project, String name) {
+		public Object(long id, long startDate,  String project, String name, long projectId) {
 			this.id = id;
 			Date x = new Date(startDate);
 			this.startDay = x.getDate();
@@ -180,6 +181,7 @@ public class Meeting extends SmartModel
 			this.StartTime= ""+x.getHours()+":"+x.getMinutes();
 			this.project = project;
 			this.name= name;
+			this.projectId=projectId;
 		}
 	}
 

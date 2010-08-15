@@ -75,9 +75,10 @@ public class Sprint extends SmartModel {
 		int endMonth;
 		long endYear;
 		String project;
+		long projectId;
 		
 
-		public Object(long id, String sprintNumber, Date startDate, Date endDate, String project) {
+		public Object(long id, String sprintNumber, Date startDate, Date endDate, String project, long projectId) {
 			this.id = id;
 			this.sprintNumber = sprintNumber;
 			this.startDay = startDate.getDate();
@@ -87,6 +88,7 @@ public class Sprint extends SmartModel {
 			this.endMonth = endDate.getMonth();
 			this.endYear = endDate.getYear()+1900;
 			this.project = project;
+			this.projectId = projectId;
 		}
 	}
 	/**

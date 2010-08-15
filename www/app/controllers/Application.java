@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import others.Event;
+
 import models.Component;
 import models.Log;
 import models.Meeting;
@@ -310,10 +312,6 @@ public class Application extends SmartController
 					meetings.add(meeting.meeting);
 			}
 		}
-		System.out.println(today);
-		System.out.println(sprints);
-		System.out.println(sprints2);
-		System.out.println(meetings);
 		render(years, sprints, sprints2, meetings);
 	}
 	public static void sprints(){
@@ -322,7 +320,7 @@ public class Application extends SmartController
 		for(Project project : projects){
 			for(Sprint sprint : project.sprints){
 				if(!sprint.deleted){
-					sprints.add(new Sprint.Object(sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name));
+					sprints.add(new Sprint.Object(sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id));
 				}
 			}
 		}
@@ -333,10 +331,34 @@ public class Application extends SmartController
 		List<Meeting.Object> meetings = new ArrayList<Meeting.Object>();
 		for(MeetingAttendance meeting : meetings1){
 			if(!meeting.meeting.deleted){
-				meetings.add(new Meeting.Object(meeting.meeting.id, meeting.meeting.startTime, meeting.meeting.project.name, meeting.meeting.name));
+				meetings.add(new Meeting.Object(meeting.meeting.id, meeting.meeting.startTime, meeting.meeting.project.name, meeting.meeting.name, meeting.meeting.project.id));
 			}
 		}
 		renderJSON(meetings);
 	}
 	
+	
+	public static void dayEvents(int day, int month, int year){
+		List<Project> projects  = Security.getConnected().projects;
+		Event events = new Event();
+		for(Project project : projects){
+			for(Sprint sprint : project.sprints){
+				if(!sprint.deleted && sprint.startDate.getDate()== day && sprint.startDate.getMonth()+1 == month && sprint.startDate.getYear()+1900 == year){
+					events.sprints.add(new Sprint.Object(sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id));
+				}
+				if(!sprint.deleted && sprint.endDate.getDate()== day && sprint.endDate.getMonth()+1 == month && sprint.endDate.getYear()+1900 == year){
+					events.sprints.add(new Sprint.Object(sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id));
+				}
+			}
+		}
+		List<MeetingAttendance> meetings1 = MeetingAttendance.find("byUserAndDeleted", Security.getConnected(),false).fetch();
+		for(MeetingAttendance meeting : meetings1){
+			if(!meeting.meeting.deleted){
+				Date start = new Date ( meeting.meeting.startTime);
+				if(start.getDate()== day && start.getMonth()+1 == month && start.getYear()+1900 == year)
+					events.meetings.add(new Meeting.Object(meeting.meeting.id, meeting.meeting.startTime, meeting.meeting.project.name, meeting.meeting.name, meeting.meeting.project.id));
+			}
+		}
+		renderJSON(events);
+	}
 }

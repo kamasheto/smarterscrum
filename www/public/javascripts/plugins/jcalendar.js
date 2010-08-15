@@ -71,7 +71,7 @@ jQuery.jcalendar = function() {
 			});
 		}
 
-		var todayLink = jQuery('<a href="" class="link-today">'+ navLinks.t +'</a>').click(function() {
+		var todayLink = jQuery('<a href="" class="link-today" >'+ navLinks.t +'</a>').click(function() {
 			day.val(today.getDate());
 			jQuery.jcalendar.changeMonth(today, this, day, month, year);
 			changeTitle();
@@ -122,14 +122,38 @@ jQuery.jcalendar = function() {
   				// attach a click handler to every day to select it if clicked
   				// we use the rel attribute to keep track of the day that is being clicked
   				dayStr = jQuery('<a href="" rel="'+ d +'">'+ (curDay+1) +'</a>').click(function(e) {
+  					
+  					
+  					
             if (_selectedDate) {
                _selectedDate.removeClass('selected');
-            }
+            }	
+            
       			_selectedDate = jQuery(this);
       			_selectedDate.addClass('selected');
             day.val(new Date(_selectedDate.attr('rel')).getDate());
-  					return false;
-  				});
+            str='';
+            $.post('/Application/dayEvents',{day : day.val(), month : month.val(), year : year.val()}, function(data){
+            	$.each(data.meetings, function(id, item){
+    				str +=' <li><img src="/public/images/famfam/meeting.png"/><a href="/Application/externalOpen?id='+item.projectId+'&isOverlay=false&url=/meetings/viewmeeting?id='+item.id+'">'+item.project+' Meeting : '+ item.name+'</a></li>';
+    			});
+            	$.each(data.sprints, function(id, item){
+    				str +=' <li><img src="/public/images/famfam/date.png"/><a href="/Application/externalOpen?id='+item.projectId+'&isOverlay=false&url=/sprints/showsprint?id='+item.id+'">'+item.project+' Sprint  '+ item.sprintNumber+'</a></li>';
+    			});
+            	if(str!=''){
+            		$('#selected_events').html(str);
+            		if($('#selected_date').is(":visible"))
+            			$('#selected_date').slideUp(function(){
+            				$('#selected_date').slideDown();});
+            		else
+            		$('#selected_date').slideToggle(400);
+            	}
+        	});
+            
+        	
+            return false;
+  				}
+  				);
 
   				// highlight the current selected day
   				if (day.val() == d.getDate()) {
@@ -138,7 +162,6 @@ jQuery.jcalendar = function() {
   				}
   				
   			}
-  			var thisDate;
   			arr = events.split('|');
   			$.each(arr, function(id, item){
   				arr2 = item.split('.');
@@ -150,6 +173,7 @@ jQuery.jcalendar = function() {
   				if(thisDate && curDay+1 == arr3[0]){
   					atts['class'] = 'event';
   					atts['title'] += arr2[0]+'\n';
+  					atts['onclick'] = '';
   				}
   				}
   				});
@@ -162,6 +186,7 @@ jQuery.jcalendar = function() {
   					atts['class'] += 'today';
   			}
   			thisRow.append(jQuery("<td></td>").attr(atts).append(dayStr));
+  			
   			curDay++;
       }
 
@@ -317,6 +342,11 @@ function getEvents(){
 				});
 	return events;
 	
+}
+function eventHandler (day, month, year){
+	alert("here");
+	
+	alert("here2");
 }
 
 
