@@ -60,7 +60,7 @@ public class Requests extends SmartCRUD
 		Project y = x.project;
 		x.user.addRole( x.role );
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+x.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+x.user.id+"&x=2&projectId="+x.project.id+"&currentProjectId="+x.project.id;		
-		Notifications.notifyUser( x.user, "Accept", url, "your Role Request", x.role.name, (byte) 1 , x.project);
+		Notifications.notifyUser( x.user, "accepted", url, "your Role Request", x.role.name, (byte) 1 , x.project);
 		// User myUser = Security.getConnected();
 		// Logs.addLog( myUser, "RequestAccept", "Request", x.id, y, new Date() );
 		Log.addUserLog("Role request accepted", x.user, x.role, x.role.project);
@@ -121,7 +121,7 @@ public class Requests extends SmartCRUD
 			}
 		}
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+currentRequest.project.id+"&isOverlay=false&url=#";
-		Notifications.notifyUser( currentRequest.user, "Accept", url, "your Request to be deleted from project", currentRequest.project.name, (byte) 1 , null);		
+		Notifications.notifyUser( currentRequest.user, "accepted", url, "your Request to be deleted from project", currentRequest.project.name, (byte) 1 , null);		
 		Log.addLog("Deletion request accepted", currentRequest.project, currentRequest.user);
 		// Logs.addLog( Security.getConnected(), "DeletionRequestAccept", "Request", currentRequest.id, currentRequest.project, new Date() );
 		
@@ -159,7 +159,7 @@ public class Requests extends SmartCRUD
 		if( !x.isDeletion )
 		{
 			String url = Router.getFullUrl("Application.externalOpen")+"?id="+x.project.id+"&isOverlay=false&url=#";
-			Notifications.notifyUser( x.user, "Declin", url, "your Role Request", x.role.name, (byte) -1 , x.project);			
+			Notifications.notifyUser( x.user, "declined", url, "your Role Request", x.role.name, (byte) -1 , x.project);			
 		}
 		else
 		{
@@ -180,7 +180,7 @@ public class Requests extends SmartCRUD
 				b = b.substring( i );
 				
 				String url = Router.getFullUrl("Application.externalOpen")+"?id="+x.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+x.user.id+"&x=2&projectId="+x.project.id+"&currentProjectId="+x.project.id;
-				Notifications.notifyUser( x.user, "Accept", url, "your Request to be deleted from project", x.project.name, (byte) -1 , null);				
+				Notifications.notifyUser( x.user, "accepted", url, "your Request to be deleted from project", x.project.name, (byte) -1 , null);				
 			}
 		}
 		User myUser = Security.getConnected();

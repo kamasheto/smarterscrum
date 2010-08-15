@@ -780,7 +780,7 @@ public class Projects extends SmartCRUD {
 		User user = p.user;
 		p.approvalStatus = true;
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+p.id+"&isOverlay=false&url=#";		 
-		Notifications.notifyUser(user, "Approv", url, "Project", p.name, (byte) 1, null);
+		Notifications.notifyUser(user, "approved", url, "Project", p.name, (byte) 1, null);
 		p.save();
 		p.init();
 		Role proAdmin = Role.find("name= 'Project Creator' and project =" + p.id).first();
@@ -803,7 +803,7 @@ public class Projects extends SmartCRUD {
 		p.deleted = true;
 		User user = p.user;
 		String url = "#";
-		Notifications.notifyUser(user, "Declin", url, "Project", p.name, (byte) -1, null);
+		Notifications.notifyUser(user, "declined", url, "Project", p.name, (byte) -1, null);
 		p.save();
 		renderJSON(true);
 	}
