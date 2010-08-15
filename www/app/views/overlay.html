@@ -21,10 +21,12 @@
         <script type="text/javascript">
        		$(function(){
        			doOnLoad();
-       			if((window.parent.$('#theLoadedContent').contents().width()+50)<=$(window).width())
-       				window.parent.$('#theLoadedContent').width(window.parent.$('#theLoadedContent').contents().width()+100);
-       			else
-       				window.parent.$('#theLoadedContent').width($(window).width()-100);
+alert(($('#theWidth').width()+100));
+alert(window.parent.$('body').width());
+			if(($('#theWidth').width()+100)<=window.parent.$('body').width()){
+       				window.parent.$('#theLoadedContent').width($('#theWidth').width()+100);alert('1')}
+       			else{
+       				window.parent.$('#theLoadedContent').width(window.parent.$('body').width()-100);alert('2')}
        			$('*').live('mouseover',function(){
 
            			var o = window.parent.document.getElementsByTagName('iframe');
@@ -74,18 +76,16 @@ h6 a,h6 {
 
 body,html {
 	background: #fff !important;
-	overflow: auto;
 	padding: 10px;
-	overflow: hidden;
 }
 </style>
 </head>
 <body onload="lo();show(); #{get 'onLoad'/};">
 <div style="text-align:right">
 <img onclick="hide();" style="cursor:pointer"src="@{'public/images/close.gif'}"/>
-</div>
+</div><div id="theWidth"style="display:table">
 			#{doLayout /}
-			
+			</div>
 			<script type="text/javascript">
 			$(document).ready(function(){
 

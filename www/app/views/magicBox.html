@@ -2,9 +2,7 @@
 <div  id="#{get 'id' /}" class="draggable allCornersRounded">
 	<div  id="#{get 'id' /}_header"class="ui-widget-header mainH">
 		<span class="revertFrom"><span title="close"class="ui-icon ui-icon-circle-close"></span></span>
-		<span class="min" onclick="$(this).children().toggle();">
-			<span title="show?" class="ui-icon ui-icon-circle-triangle-s" style="display: none;"></span>
-			<span title="hide?"class="ui-icon ui-icon-circle-triangle-n"></span>
+		<span  title="minimize?"class="ui-icon ui-icon-circle-minus min">
 		</span>
 		<span title="refresh?"class="refresh ui-icon ui-icon-refresh"></span>
 		#{get 'title'/}
