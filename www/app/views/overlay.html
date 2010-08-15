@@ -21,6 +21,10 @@
         <script type="text/javascript">
        		$(function(){
        			doOnLoad();
+       			if((window.parent.$('#theLoadedContent').contents().width()+50)<=$(window).width())
+       				window.parent.$('#theLoadedContent').width(window.parent.$('#theLoadedContent').contents().width()+100);
+       			else
+       				window.parent.$('#theLoadedContent').width($(window).width()-100);
        			$('*').live('mouseover',function(){
 
            			var o = window.parent.document.getElementsByTagName('iframe');
@@ -41,35 +45,45 @@
        				}}
 	       		}        
 	       		
-	       		function toggle()
+	       		function show()
 	       		{
-		       		window.parent.$('#overlayLoading').toggle();
-		       		window.parent.$('#theLoadedContent').toggle();
+		       		window.parent.$('#overlayLoading').hide();
+		       		window.parent.$('#theLoadedContent').show();
+		       	}
+	       		function hide()
+	       		{
+		       		window.parent.$('#overlayLoading').show();
+		       		window.parent.$('#theLoadedContent').hide();
+		       		window.parent.$('#getOverlay').hide();
+		       		window.parent.document.getElementById('theLoadedContent').src ='/application/loading'
 		       	}
 	       		</script>
 
 <style type="text/css">
 thead {
-background:none repeat scroll 0 0 #333333;
-color:#EEEEEE;
-cursor:move;
-font-size:12px;
+	background: none repeat scroll 0 0 #333333;
+	color: #EEEEEE;
+	cursor: move;
+	font-size: 12px;
 }
-h6 a, h6{font-family:verdana !important;
-font-style:normal!important;}
+
+h6 a,h6 {
+	font-family: verdana !important;
+	font-style: normal !important;
+}
+
 body,html {
 	background: #fff !important;
-	overflow:auto;
-	padding:10px;
-	overflow:auto;
+	overflow: auto;
+	padding: 10px;
+	overflow: hidden;
 }
 </style>
 </head>
-<body onload="lo();toggle(); #{get 'onLoad'/};" onunload="toggle()">
+<body onload="lo();show(); #{get 'onLoad'/};">
 <div style="text-align:right">
-<a title="close?"href="#"onclick="window.parent.$('#getOverlay').hide();window.parent.document.getElementById('theLoadedContent').src ='/application/loading'">
-<img src="@{'public/images/close.gif'}"/>
-</a></div>
+<img onclick="hide();" style="cursor:pointer"src="@{'public/images/close.gif'}"/>
+</div>
 			#{doLayout /}
 			
 			<script type="text/javascript">
