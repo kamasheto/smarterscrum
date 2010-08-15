@@ -31,19 +31,18 @@ public class Invites extends SmartController {
 	 * @param userId
 	 *            user id
 	 */	
-	public static void sendInvite(long pId, long userId) {		
+	public static void sendInvite(long rId, long userId) {		
 		User user = User.findById(userId);
-		Project pro = Project.findById(pId);
-		Role baseRole=Role.find("byProjectAndBaseRole", pro, true).first();
-		Security.check(Security.getConnected().in(pro).can("invite"));
-		Invite invite = new Invite(user, baseRole).save();
+		Role role = Role.findById(rId);		
+		Security.check(Security.getConnected().in(role.project).can("invite"));
+		Invite invite = new Invite(user, role).save();
 		flash.success("Invitation(s) sent successfully!");
-		String url = Router.getFullUrl("Application.externalOpen")+"?id="+pro.id+"&isOverlay=false&url=#";
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+role.project.id+"&isOverlay=false&url=#";
 		String confirm = Router.getFullUrl("Invites.respondInvite") + "?what=1&hash=" + invite.hash + "&id=" + invite.id;
 		String decline = Router.getFullUrl("Invites.respondInvite") + "?what=0&hash=" + invite.hash + "&id=" + invite.id;
-		Notifications.invite(user, url, "", confirm, decline, pro, false);
+		Notifications.invite(user, url, "", confirm, decline, role.project, false);
 		// Logs.addLog(pro, "invited " + user.name, "Invite", invite.id);
-		Log.addUserLog("Invited " + user.name, invite, pro, baseRole);
+		Log.addUserLog("Invited " + user.name, invite, role.project, role);
 	}
 
 	/**
