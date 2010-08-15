@@ -821,7 +821,7 @@ public class Tasks extends SmartCRUD
 		if(task1.component!=null)
 			compId = task1.component.id;
 		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")" );
-		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + "," + compId+ ");sprintLoad(" + task1.id + ",'"+task1.id+"_des')");		
+		Update.update(task1.project.users,Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId+ ");sprintLoad(" + task1.id + ",'"+task1.id+"_des')");		
 		List<User> m = new ArrayList();
 		m.add( task1.assignee );
 		m.add( task1.reporter );
@@ -1087,8 +1087,8 @@ public class Tasks extends SmartCRUD
 			compId = task1.component.id;
 		assignee.tasks.add( task1 );
 		assignee.save();
-		Update.update( Security.getConnected(), "reload_sticky_note(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")" );
-		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")");		
+		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")" );
+		Update.update(task1.project.users,Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")");		
 		String header = "Task: 'T" + task1.id + "\'" + " Assignee has been edited.";
 		/*
 		 * ////Long Informative Notification message. Not suitable for online
@@ -1164,8 +1164,8 @@ public class Tasks extends SmartCRUD
 		long compId = 0;
 		if(task1.component!=null)
 			compId = task1.component.id;
-		Update.update( Security.getConnected(), "reload_sticky_note(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")" );
-		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")");		
+		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")" );
+		Update.update(task1.project.users,Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")");		
 		reviewer.tasks.add( task1 );
 		reviewer.save();
 		String body = "";
@@ -1238,8 +1238,8 @@ public class Tasks extends SmartCRUD
 		long compId = 0;
 		if(task1.component!=null)
 			compId = task1.component.id;
-		Update.update( Security.getConnected(), "reload_sticky_note(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")" );
-		Update.update(task1.project.users,Security.getConnected(), "reload_note(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")");		
+		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")" );
+		Update.update(task1.project.users,Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")");		
 		Update.update(task1.project, "sprintLoad(" + task1.id +",'"+id+"_type');" );;
 		String body = "";
 		String header = "Task: 'T" + task1.id + "\'" + " Task Type has been edited.";
