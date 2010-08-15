@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.management.Notification;
+
 import models.Artifact;
 import models.Component;
 import models.HelpTopic;
@@ -1015,6 +1017,20 @@ public class Bootstrap extends Job {
 
 			S6.productRole = pr;
 			S6.save();
+
+			//moataz			
+			for (int i=0 ; i<9;i++) {
+				new models.Notification(users.get(10), users.get(1), "added", "#", "test", "noti", (byte) 1).save();
+			}
+			new models.Notification(users.get(10), users.get(2), "deleted", "#", "test", "noti", (byte) -1).save();
+			for (int i=0 ; i<9;i++) {
+			new models.Notification(users.get(10), users.get(3), "edited", "#", "test", "noti", (byte) 0).save();
+			}
+			new models.Notification(users.get(10), users.get(5), "added", "#", "test", "noti", (byte) 1).save();
+			for (int i=0 ; i<9;i++) {
+			new models.Notification(users.get(10), users.get(7), "removed", "#", "test", "noti", (byte) -1).save();
+			}
+			new models.Notification(users.get(10), users.get(9), "added", "#", "test", "noti", (byte) 1).save();
 
 		}
 	}
