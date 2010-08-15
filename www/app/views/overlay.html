@@ -20,14 +20,7 @@
 		
         <script type="text/javascript">
        		$(function(){
-       			doOnLoad();
-alert(($('#theWidth').width()+100));
-alert(window.parent.$('body').width());
-			if(($('#theWidth').width()+100)<=window.parent.$('body').width()){
-       				window.parent.$('#theLoadedContent').width($('#theWidth').width()+100);alert('1')}
-       			else{
-       				window.parent.$('#theLoadedContent').width(window.parent.$('body').width()-100);alert('2')}
-       			$('*').live('mouseover',function(){
+       			doOnLoad();$('*').live('mouseover',function(){
 
            			var o = window.parent.document.getElementsByTagName('iframe');
            			for(i=0;i<o.length;i++){
@@ -45,12 +38,16 @@ alert(window.parent.$('body').width());
        					setHeight(o[i]);
        					addEvent(o[i],'load', doIframe);
        				}}
-	       		}        
+}        
 	       		
 	       		function show()
 	       		{
 		       		window.parent.$('#overlayLoading').hide();
 		       		window.parent.$('#theLoadedContent').show();
+		       		if(($('#theWidth').width()+100)<=window.parent.$('body').width()){
+	       				window.parent.$('#theLoadedContent').width($('#theWidth').width()+100);}
+	       			else{
+	       				window.parent.$('#theLoadedContent').width(window.parent.$('body').width()-100);}
 		       	}
 	       		function hide()
 	       		{
@@ -83,7 +80,7 @@ body,html {
 <body onload="lo();show(); #{get 'onLoad'/};">
 <div style="text-align:right">
 <img onclick="hide();" style="cursor:pointer"src="@{'public/images/close.gif'}"/>
-</div><div id="theWidth"style="display:table">
+</div><div id="theWidth"style="display:table;width:auto">
 			#{doLayout /}
 			</div>
 			<script type="text/javascript">
@@ -105,6 +102,9 @@ body,html {
 			parent_message_bar('&{flash.success}');
 			#{/if}
 			});
+		
 			</script>
+		
 </body>
+
 </html>
