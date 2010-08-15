@@ -657,7 +657,7 @@ function showProjectWorkspace(project_id) {
 		show(project_id)
 		return
 	}
-	$('#workspaces').append('<div class="workspace workspace-'+project_id+'"><div style="width:32px;margin:auto;margin-top:200px;"><img src="/public/images/loadingMagic.gif"></div></div>')
+	$('#workspaces').append('<div class="workspace workspace-'+project_id+'"><div style="display:table"class="transparentOverlay"><div style="text-align:center;vertical-align:middle;display:table-cell"><img src="/public/images/loading.gif"></div></div>');
 	show(project_id)
 	// return
 	$.ajax({
