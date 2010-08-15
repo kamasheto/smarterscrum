@@ -117,7 +117,7 @@ public class Meetings extends SmartCRUD
 		for( int i = 0; i < attendees.size(); i++ )
 		{
 			String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + M.project.id + "&isOverlay=false&url=/meetings/viewMeetings?id=" + M.id;
-			Notifications.notifyUser( attendees.get( i ).user, "End", url, "Meeting", M.name, (byte) 0, M.project );
+			Notifications.notifyUser( attendees.get( i ).user, "ended", url, "Meeting", M.name, (byte) 0, M.project );
 		}
 	}
 
@@ -557,7 +557,7 @@ public class Meetings extends SmartCRUD
 			if( users.isEmpty() == false )
 			{
 				message = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + meeting.project.id + "&isOverlay=false&url=/meetings/viewMeetings?id=" + meeting.project.id;
-				Notifications.notifyUsers( users, "Cancel", message, "Meeting", meeting.name, (byte) -1, meeting.project );
+				Notifications.notifyUsers( users, "canceled", message, "Meeting", meeting.name, (byte) -1, meeting.project );
 			}
 
 		}
@@ -763,7 +763,7 @@ public class Meetings extends SmartCRUD
 		if( users.isEmpty() == false )
 		{
 			String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + meeting.project.id + "&isOverlay=false&url=/meetings/viewMeeting?id=" + meeting.id;
-			Notifications.notifyUsers( users, "Modifi", url, "the meeting", meeting.name, (byte) 0, meeting.project );
+			Notifications.notifyUsers( users, "modified", url, "the meeting", meeting.name, (byte) 0, meeting.project );
 			flag = true;
 		}
 		renderJSON( flag );
