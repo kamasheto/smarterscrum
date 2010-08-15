@@ -7,8 +7,9 @@
 #{/if}
 #{else}
 <b><font size = 3><img src="/public/images/famfam/arrow_grey_right.png"/>Latest: </font></b>
+<div id ="notification_paginated">
 #{list items:notifications, as:'notif'}	
-	<div id = "#notif_${notif.id}">		
+	<div id = "notif_${notif.id}">		
 		<p>#{if notif.importance == 0}<img alt="!" src="/public/images/famfam/error.png">
 			#{/if} #{elseif notif.importance == -1}<img alt="bad" src="/public/images/famfam/cross.png">
 			#{/elseif} #{elseif notif.importance == 1}<img alt="good" src="/public/images/famfam/tick.png">
@@ -19,4 +20,13 @@ in project ${notif.project}
 #{/if}</p>
 	</div>
 #{/list}
+</div>
 #{/else} 
+<a href="#"  style="display:inline-block" class="Notificationp" onclick="previousNotificationPage();"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
+<a href="#"  style="display:inline-block" class="Notificationn" onclick="nextNotificationPage();"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
+
+<script type="text/javascript">
+
+notification_pagination(1);
+
+</script>
