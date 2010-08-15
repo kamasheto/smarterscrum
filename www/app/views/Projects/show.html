@@ -45,7 +45,7 @@ var m=document.getElementById('meetingText').value;
 var x=document.getElementById('assocSprint').checked;
 
 if(m==""){
-alert("You Must Enter a Meeting Type.");
+$.bar({message:'You Must Enter a Meeting Type.'});
 hideLoader('addMB','loaderMB');
 return;
 }
@@ -67,7 +67,7 @@ select.options.add(optn);
 
 }
 else{
-alert("Meeting Type couldn't be added.");
+$.bar({message:"Meeting Type couldn'"+'t be added.'});
 }
 
 
@@ -75,8 +75,7 @@ hideLoader('addMB','loaderMB');
 },'json')
 }
 	else
-	alert("Meeting type name is already used.");
-	
+	$.bar({message:'Meeting type name is already used.'});
 })
 document.getElementById('meetingText').value="";
 hideLoader('addMB', 'loaderMB');
@@ -118,7 +117,7 @@ if(flag){
 select.remove(i);
 }
 else{
-alert("Meeting Type was not Removed.");
+$.bar({message:"Meeting Type was not Removed."});
 }
 },'json')
 }
@@ -522,7 +521,7 @@ var m=document.getElementById('storyText').value;
 var x=document.getElementById('priorityText').value;
 if(m=="" || !is_int(x)){
 
-alert("You Must Enter a Valid Priority Title and an Integer Priority Value.");
+$.bar({message:"You Must Enter a Valid Priority Title and an Integer Priority Value."});
 hideLoader('addST','loaderST');
 return;
 }
@@ -547,14 +546,14 @@ select.options.add(optn);
 
 }
 else{
-alert("Story Type couldn't be added.");
+$.bar({message:"Story Type couldn't be added."});
 }
 
 hideLoader('addST','loaderST');
 },'json')
 }
 	else
-	alert("Priority Title is already used.");
+	$.bar({message:"Priority Title is already used."});
 })
 hideLoader('addST', 'loaderST');
 document.getElementById('storyText').value="";
@@ -581,7 +580,8 @@ select.remove(i);
 
 }
 else{
-alert("Story Type was not Removed.");
+$.bar({message:"Story Type was not Removed."});
+
 }
 
 },'json')
@@ -600,7 +600,7 @@ if(flag && conf){
 
 }
 else{
-alert("Could not Commit Action! Please Try again.");
+$.bar({message:"Could not Commit Action! Please Try again."});
 }
 },'json')
 }
@@ -625,8 +625,7 @@ var d=parseInt(m);
 var dn=d;
 
 if((!is_int(m)) || d<=0){
-
-alert("The duration entered is invalid. Please enter a valid Integer Duration.");
+$.bar({message:"The duration entered is invalid. Please enter a valid Integer Duration."});
 hideLoader('addSP','loaderSP');
 return;
 }
@@ -654,7 +653,7 @@ document.getElementById('durationLabel').innerHTML=dn;
 
 }
 else{
-alert("Duration Coudln't be Set.");
+$.bar({message:"Duration Coudln't be Set."});
 }
 hideLoader('addSP','loaderSP');
 },'json');
@@ -671,7 +670,7 @@ var n=&{object.id};
 
 $.post('@{setEffortEstimationUnit()}',{id:n,unit:param},function (flag){
 if(flag){
-alert("You Have set the Effort Estimation Unit to :"+param);
+$.bar({message:"You Have set the Effort Estimation Unit to :"+param});
 document.getElementById('estimationLabel').innerHTML=param;
 }
 },'json')
@@ -693,7 +692,7 @@ hideLoader('addES','loaderES');
 
 <div id="accordion">
 #{if connected.in(object).can('editProject') }
-	<h6><a href="#">Default Sprint Duration:</a></h6>
+	<h6><a href="#">Default Sprint Duration</a></h6>
 	
 	<div id="sd" class="sprintsDuration">
 	
@@ -709,12 +708,12 @@ hideLoader('addES','loaderES');
 		</div>
 		<div class="crudField">
 	<input id="addSP"type="button" name="add" value="Set" onclick="setSprintDuration()" />
-	<img id="loaderSP"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
+	<img id="loaderSP"  style="visibility:hidden" src="/public/images/loading16.gif"/>
 	</div>
 		</div>
 		#{/if}
 		#{if connected.in(object).can('editProject') }
-	<h6><a href="#">Default Meeting Types</a></h6>
+	<h6><a href="#">Meeting Types</a></h6>
 	<div class="meetingTypes">
 	
 	#{note}Click On a Meeting Type to view Sprint Association#{/note}
@@ -742,7 +741,7 @@ Add new <input id="meetingText" class="" type="text" name="object.name"  />
 	
 	<input id="removeMB" type="button" name="add" value="Remove" onclick="removeMeeting()"/>
 	
-	<img id="loaderMB"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
+	<img id="loaderMB"  style="visibility:hidden" src="/public/images/loading16.gif"/>
 	</div>
 	</div>
 	</div>
@@ -770,7 +769,7 @@ Add new <input id="meetingText" class="" type="text" name="object.name"  />
         <input id="addTaskTypeButton" type="button" title="Add a new Task Type"  name="add" value="Add" onclick="addTaskType()" />
         <input id="editTaskTypeButton" type="button" title="Save after editing" name="edit" value="Save" onclick="editTaskType()" />
         <input id="removeTaskTypeButton" type="button" title="Remove from project"  name="remove" value="Remove" onclick="removeTaskType()"/>
-        <img id="taskTypesLoader"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
+        <img id="taskTypesLoader"  style="visibility:hidden" src="/public/images/loading16.gif"/>
       </div>
     </div>
   </div>
@@ -807,7 +806,7 @@ Add new <input id="meetingText" class="" type="text" name="object.name"  />
 	    <input id="addTaskStatusButton"" type="button" title="Add a new Task Status" name="add" value="Add" onclick="addTaskStatus()" />
 	    <input id="editTaskStatusButton" type="button" title="Save after editing" name="edit" value="Save" onclick="editTaskStatus()" disabled/>
 	    <input id="removeTaskStatusButton" type="button" title="Remove from project" name="remove" value="Remove" onclick="removeTaskStatus()" disabled/>
-	    <img id="loaderTST"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
+	    <img id="loaderTST"  style="visibility:hidden" src="/public/images/loading16.gif"/>
 	  </div>
 	</div>
   </div>
@@ -815,7 +814,7 @@ Add new <input id="meetingText" class="" type="text" name="object.name"  />
 		
 #{if connected.in(object).can('editProject') }
 	<h6>
-		<a href="#">Edit Story Priorities:</a>
+		<a href="#">Story Priorities</a>
 		</h6>
 	<div class="storyPriorities">
 	
@@ -847,14 +846,14 @@ Add new <input id="meetingText" class="" type="text" name="object.name"  />
 	<input id="addST" type="button" name="add" value="Add" onclick="addStory()" />
 	<input id="removeST" type="button" name="add" value="Remove" onclick="removeStory()"/>
 	
-		<img id="loaderST"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
+		<img id="loaderST"  style="visibility:hidden" src="/public/images/loading16.gif"/>
 		</div>
 		</div>
 		</div>
 		#{/if}
 		#{if connected.in(object).can('editProject') }
 	<h6>
-		<a href="#">Edit Meeting Rescheduling Policies:</a>
+		<a href="#">Meeting Rescheduling Policies</a>
 		</h6>
 		<div class="meetingReSchedule">
 		#{note}
@@ -865,7 +864,7 @@ Add new <input id="meetingText" class="" type="text" name="object.name"  />
 		</div>
 		#{/if}
 		#{if connected.in(object).can('editProject') }
-	<h6><a href="#">Edit Effort Estimation Points Unit:</a></h6>
+	<h6><a href="#">Effort Estimation Points Unit</a></h6>
 				<div class="mee">
 				#{note}
 		You can Set the Effort Estimation Unit either in Hours or Points.
@@ -887,7 +886,7 @@ Add new <input id="meetingText" class="" type="text" name="object.name"  />
 		</select>
 		
 	<input id="addES"type="button" name="add" value="Set" onclick="setEffortUnit()" />
-	<img id="loaderES"  style="visibility:hidden" src="/public/images/ajax-loader.gif"/>
+	<img id="loaderES"  style="visibility:hidden" src="/public/images/loading16.gif"/>
 
 		</div>
 	#{/if}
