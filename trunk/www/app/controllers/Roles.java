@@ -7,7 +7,7 @@ import models.Project;
 import models.Role;
 import models.User;
 import models.Update;
-
+import models.Log;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
@@ -239,7 +239,7 @@ public class Roles extends SmartCRUD
 			redirect( "/admin/roles/new?id=" + id );
 		}
 		object.save();
-		Log.addUserLog("Added new role", object, role.project);
+		Log.addUserLog("Added new role", role, role.project);
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{

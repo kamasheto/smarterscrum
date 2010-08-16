@@ -8,6 +8,8 @@ import models.Request;
 import models.Role;
 import models.Update;
 import models.User;
+import models.Log;
+
 import notifiers.Notifications;
 import play.mvc.Router;
 import play.mvc.With;
