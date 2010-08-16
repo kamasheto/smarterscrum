@@ -25,13 +25,16 @@ public class Notifications extends Mailer{
 			new Notification(user, actionPerformer, "invited", objectURL, "you to the meeting", objectName, (byte)0).save();
 		else
 			new Notification(user, actionPerformer, "Invited", objectURL, "you to the project", project.name, (byte)0).save();
-		addRecipient(user.email);
-		setFrom("se.smartsoft.2@gmail.com");
-		if(meeting)
-			setSubject("Meeting Invitation");
-		else
-			setSubject("Project Invitation");
-		send(actionPerformer, user, meeting, objectURL, objectName, confirmURL, declineURL, project);
+		
+		if (user.enableEmails) {
+			addRecipient(user.email);
+			setFrom("se.smartsoft.2@gmail.com");
+			if (meeting)
+				setSubject("Meeting Invitation");
+			else
+				setSubject("Project Invitation");
+			send(actionPerformer, user, meeting, objectURL, objectName,	confirmURL, declineURL, project);
+		}
 	}
 	
 	public static void lostPass(User user, String url)
