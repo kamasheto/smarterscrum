@@ -601,7 +601,7 @@ function deleteTheTask(tId, box){
 
 function delete_meetingNote(nid,mid)
 {
-	if(confirm("delete this note?"))
+	if(confirm("Are you sure you want to delete this note?"))
 		$.post('/meetings/deleteTheNote',{noteId: nid , meetingId:mid},
 				function(flag)
 				{

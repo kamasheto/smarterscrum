@@ -9,11 +9,12 @@
 <span class="crudHelp" style="color:red">*</span>
 </div>
 <p class="crudButtons">
-			<input type="button" value="Add note" onClick="edit_note(${n.id},${meeting.id})" />
+			<input type="button" value="Edit note" onClick="edit_note(${n.id},${meeting.id})" />
 </p>
 
 <script type="text/javascript">
 
+$(function(){$('#note_field').val('${n.description}');});
 function edit_note(nid,mid)
 {
 	var text= $('#note_field').val();
@@ -28,7 +29,7 @@ function edit_note(nid,mid)
 				{
 					if(flag)
 					{
-						window.parent.$.bar({message:'Note edited added'});
+						window.parent.$.bar({message:'Note edited successfully'});
 						window.parent.$('#getOverlay').hide();
 						
 					}
