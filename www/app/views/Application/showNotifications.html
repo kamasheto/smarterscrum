@@ -25,8 +25,24 @@ in project ${notif.project}
 <a href="#"  style="display:inline-block" class="Notificationp" onclick="previousNotificationPage();"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
 <a href="#"  style="display:inline-block" class="Notificationn" onclick="nextNotificationPage();"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
 
+<div style=" position: absolute; bottom: 0;"><b><font size="2">#{if emailing}<img src="/public/images/famfam/stop.png" /> <a id = "modify_emailing" onclick="modify_emailing(0);">Stop receiving Emails?</a>#{/if}
+#{else}<img src="/public/images/famfam/forward.png" /> <a id = "modify_emailing" onclick="modify_emailing(1);">Enable receiving Emails?</a>#{/else}</font></b></div>
+
 <script type="text/javascript">
 
 notification_pagination(notificationPage);
+
+function modify_emailing(i)
+{
+	var currentText = document.getElementById("modify_emailing").text;
+	if(i==0)
+		var res = confirm('Are you sure you want to stop receiving emails?');
+	else
+		var res = confirm('Are you sure you want to enable receiving emails?');
+	if(res==true)
+		$.post("@{Application.modifyEmailing}", {enable:i}, function(){
+				$('#sideNoti').load('/Application/showNotifications');
+			});
+}
 
 </script>
