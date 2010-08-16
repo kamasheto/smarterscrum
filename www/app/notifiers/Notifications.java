@@ -168,7 +168,7 @@ public class Notifications extends Mailer{
 		}
 		setFrom("se.smartsoft.2@gmail.com");
 		addRecipient("se.smartsoft.2@gmail.com");
-		setSubject(subject);
+		setSubject(Router.getFullUrl("Feedbacks.sendFeedback")+" , "+subject);
 		send(sender, message, importance);
 	}
 	
