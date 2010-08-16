@@ -22,9 +22,9 @@ public class Notifications extends Mailer{
 	{
 		User actionPerformer = Security.getConnected();
 		if(meeting)
-			new Notification(user, actionPerformer, "Invit", objectURL, "you to the meeting", objectName, (byte)0).save();
+			new Notification(user, actionPerformer, "invited", objectURL, "you to the meeting", objectName, (byte)0).save();
 		else
-			new Notification(user, actionPerformer, "Invit", objectURL, "you to the project", project.name, (byte)0).save();
+			new Notification(user, actionPerformer, "Invited", objectURL, "you to the project", project.name, (byte)0).save();
 		addRecipient(user.email);
 		setFrom("se.smartsoft.2@gmail.com");
 		if(meeting)
@@ -63,7 +63,7 @@ public class Notifications extends Mailer{
 		User user = Security.getConnected();
 		String actionType2="";
 		if (actionType.equalsIgnoreCase("setSprint"))
-			actionType2= "set";
+			actionType2= "created";
 		else if (actionType.equalsIgnoreCase("addRole"))
 			actionType2= "added";		
 		else if (actionType.equalsIgnoreCase("reportImpediment"))
