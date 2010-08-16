@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.Random;
 
+import notifiers.Notifications;
+
 import play.cache.Cache;
 import play.data.validation.Error;
 import play.libs.Images;
@@ -19,7 +21,7 @@ public class Feedbacks extends SmartController{
 		validation.required(description);
 		if(code.equalsIgnoreCase((String) Cache.get("smart_captcha"))){
 			if(!(validation.hasErrors())){
-				System.out.println("eshta!!");
+				Notifications.feedbacks(Security.getConnected(), title, description, 0);
 				renderText("Thank you for contacting us.");
 			}
 		}
