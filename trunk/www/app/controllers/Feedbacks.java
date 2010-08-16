@@ -19,11 +19,9 @@ public class Feedbacks extends SmartController{
 	public static void sendFeedback(String code, String title, String description){
 		validation.required(title);
 		validation.required(description);
-		if(code.equalsIgnoreCase((String) Cache.get("smart_captcha"))){
-			if(!(validation.hasErrors())){
+		if(code.equalsIgnoreCase((String) Cache.get("smart_captcha")) && !(validation.hasErrors())){
 				Notifications.feedbacks(Security.getConnected(), title, description, 0);
 				renderText("Thank you for contacting us.");
-			}
 		}
 		else{
 			String errorMsg = "";
