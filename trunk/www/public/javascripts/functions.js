@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿ $.extend($.gritter.options, { 
+﻿﻿﻿﻿﻿﻿ $.extend($.gritter.options, { 
 	fade_in_speed: 50, // how fast notifications fade in (string or int)
 	fade_out_speed: 300, // how fast the notices fade out
 	time: 5000 // hang on the screen for...
@@ -27,22 +27,38 @@ function reload_note_close(sid, taskId, compId)
 	if(compId!=0)
 	$('#theLoadedContent').contents().find('#task-'+taskId+'_T_'+compId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #task-'+taskId+'_T_'+compId);
 }
-function drag_note_status(sid, assigneeId, oldcol, newcol, compId)
+function drag_note_status(sid, assigneeId, oldcol, newcol, compId,taskId)
 {
-	$('#theLoadedContent').contents().find('#'+oldcol+'_'+compId+'_0').load('/boards/loadboard1?sprintID='+sid+' #'+oldcol+'_'+compId+'_0');
-	$('#theLoadedContent').contents().find('#'+newcol+'_'+compId+'_0').load('/boards/loadboard1?sprintID='+sid+' #'+newcol+'_'+compId+'_0');
+	$.post('/boards/loadboard1?sprintID='+sid, function(data)
+	{
+		$('#theLoadedContent').contents().find('#'+oldcol+'_'+compId+'_0').find('#task-'+taskId+'_T_0').remove();
+		$('#theLoadedContent').contents().find('#'+newcol+'_'+compId+'_0').find('#task-'+taskId+'_T_0').remove();
+		$('#theLoadedContent').contents().find('#'+newcol+'_'+compId+'_0').append($(data).find('#task-'+taskId+'_T_0'));
+	})
+	
 	if (compId != 0) 
 	{
-		$('#theLoadedContent').contents().find('#'+oldcol+'_'+assigneeId+'_'+compId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #'+oldcol+'_'+assigneeId+'_'+compId);
-		$('#theLoadedContent').contents().find('#'+newcol+'_'+assigneeId+'_'+compId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #'+newcol+'_'+assigneeId+'_'+compId);
+		
+		$.post('/boards/loadboard1?sprintID='+sid+'&componentID='+compId, function(data2)
+		{
+			
+			$('#theLoadedContent').contents().find('#'+oldcol+'_'+assigneeId+'_'+compId).find('#task-'+taskId+'_T_'+compId).remove();
+			$('#theLoadedContent').contents().find('#'+newcol+'_'+assigneeId+'_'+compId).find('#task-'+taskId+'_T_'+compId).remove();
+			$('#theLoadedContent').contents().find('#'+newcol+'_'+assigneeId+'_'+compId).append($(data2).find('#task-'+taskId+'_T_'+compId));
+		})
 	}
 }
-function drag_note_assignee(sid, oldassi, newassi, col, compId)
+function drag_note_assignee(sid, oldassi, newassi, col, compId, taskId)
 {
 	if (compId != 0) 
 	{
-		$('#theLoadedContent').contents().find('#'+col+'_'+oldassi+'_'+compId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #'+col+'_'+oldassi+'_'+compId);
-		$('#theLoadedContent').contents().find('#'+col+'_'+newassi+'_'+compId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #'+col+'_'+newassi+'_'+compId);
+		$.post('/boards/loadboard1?sprintID='+sid+'&componentID='+compId, function(data)
+		{
+			
+			$('#theLoadedContent').contents().find('#'+col+'_'+oldassi+'_'+compId).find('#task-'+taskId+'_T_'+compId).remove();
+			$('#theLoadedContent').contents().find('#'+col+'_'+newassi+'_'+compId).find('#task-'+taskId+'_T_'+compId).remove();
+			$('#theLoadedContent').contents().find('#'+col+'_'+newassi+'_'+compId).append($(data).find('#task-'+taskId+'_T_'+compId));
+		})
 	}
 }
 function request_accept( id, hash )
