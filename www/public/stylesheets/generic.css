@@ -1,3 +1,12 @@
+.points {
+	color: black;
+	font-family: tahoma;
+	font-size: 18px !important;
+	font-variant: small-caps;
+	color:#333;
+	line-height: 14px;
+}
+
 label {
 	width: 100px !important;
 	display: inline-block;
@@ -885,9 +894,9 @@ a {
 	_border-right-color: pink;
 	_border-left-color: pink;
 	margin-top: -2px;
-	_filter: chroma(color =                                                 
+	_filter: chroma(color =                                                  
 		                                                          
-		                                                      pink);
+		                                                       pink);
 }
 
 .notchBottom2 {
@@ -905,9 +914,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                 
+	_filter: chroma(color =                                                  
 		                                                          
-		                                                      pink);
+		                                                       pink);
 }
 
 .notchTop {
@@ -922,9 +931,9 @@ a {
 	margin-left: 30px;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                 
+	_filter: chroma(color =                                                  
 		                                                          
-		                                                      pink);
+		                                                       pink);
 }
 
 .notchRight {
@@ -941,9 +950,9 @@ a {
 	display: inline-block;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                 
+	_filter: chroma(color =                                                  
 		                                                          
-		                                                      pink);
+		                                                       pink);
 }
 
 .notchLeft {
@@ -958,9 +967,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                 
+	_filter: chroma(color =                                                  
 		                                                          
-		                                                      pink);
+		                                                       pink);
 }
 
 .chatboxtextarea:focus {
@@ -1185,7 +1194,7 @@ img.left {
 	left: 0;
 	position: absolute;
 	opacity: 0;
-	filter: Alpha(Opacity =                                                   0)
+	filter: Alpha(Opacity =                                                     0)
 		;
 }
 
@@ -1340,14 +1349,14 @@ img.left {
 
 .ui-priority-secondary,.ui-widget-content .ui-priority-secondary {
 	opacity: .7;
-	filter: Alpha(Opacity =                                                   70)
+	filter: Alpha(Opacity =                                                     70)
 		;
 	font-weight: normal;
 }
 
 .ui-state-disabled,.ui-widget-content .ui-state-disabled {
 	opacity: .35;
-	filter: Alpha(Opacity =                                                   35)
+	filter: Alpha(Opacity =                                                     35)
 		;
 	background-image: none;
 }
@@ -2169,7 +2178,7 @@ img.left {
 	background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
 		repeat-x;
 	opacity: .30;
-	filter: Alpha(Opacity =                                                   30)
+	filter: Alpha(Opacity =                                                     30)
 		;
 }
 
@@ -2179,7 +2188,7 @@ img.left {
 	background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
 		repeat-x;
 	opacity: .30;
-	filter: Alpha(Opacity =                                                   30)
+	filter: Alpha(Opacity =                                                     30)
 		;
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
@@ -3163,8 +3172,7 @@ div.jcalendar-links a {
 
 .dock .draggable .ui-widget-header:hover {
 	color: #111 !important;
-	font-weight:bold;
-	
+	font-weight: bold;
 }
 
 .dock .draggable .ui-widget-header {
