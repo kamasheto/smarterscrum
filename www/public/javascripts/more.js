@@ -99,6 +99,7 @@ function doIframe(){
 		if (/\bautoHeight\b/.test(o[i].className)){
 			setHeight(o[i]);
 			addEvent(o[i],'load', doIframe);
+			$('body').css('overflow','auto');
 		}
 	}
 }
@@ -128,3 +129,12 @@ if (document.getElementById && document.createTextNode){
  addEvent(window,'load', doIframe);	
 }
 
+
+function refresh(el){
+	alert('done');
+
+	$('#theLoadedContent').contents().find('#'+el).first().load($('#theLoadedContent').attr('src')+' #'+el, function(){
+		$('#theLoadedContent').contents().find('#'+el).first().replaceWith($('#theLoadedContent').contents().find('#'+el).first().html());alert('bare;pad')
+	});
+	
+}
