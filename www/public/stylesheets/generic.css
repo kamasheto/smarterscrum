@@ -789,7 +789,7 @@ body,html,.workspace {
 	color: #FFC4F1;
 }
 
-.draggableChild .ui-widget-header,.clone,.bar,.overlay .ui-widget-heaader
+.draggableChild .ui-widget-header,.clone,.bar,.overlay .ui-widget-header
 	{
 	cursor: pointer;
 	-moz-border-radius: 5px !important;

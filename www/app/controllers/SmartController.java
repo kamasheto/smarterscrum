@@ -39,7 +39,7 @@ if(!Sprint.Last.equals(new Date())){
 		for( Sprint s : sprints )
 		{
 			Date now = Calendar.getInstance().getTime();
-			if( s.endDate != null && s.endDate.before( now ) && s.ended == false )
+			if( s.endDate != null && s.endDate.before( now ) || s.ended == true )
 			{
 				s.ended = true;
 				Project p = s.project;

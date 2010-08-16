@@ -44,10 +44,14 @@
 	       		{
 		       		window.parent.$('#overlayLoading').hide();
 		       		window.parent.$('#theLoadedContent').show();
-		       		if(($('#theWidth').width()+100)<=window.parent.$('body').width()){
-	       				window.parent.$('#theLoadedContent').width($('#theWidth').width()+100);}
+		       		if($('#theWidth').width()<=window.parent.$('body').width()){
+	       				window.parent.$('#theLoadedContent').width($('#theWidth').width());
+	       				$('#theWidth').css('width','90%');
+	       			}
 	       			else{
-	       				window.parent.$('#theLoadedContent').width(window.parent.$('body').width()-100);}
+	       				window.parent.$('#theLoadedContent').width(window.parent.$('body').width()-100);
+	       				$('#theWidth').css('width','90%');
+	       			}
 		       	}
 	       		function hide()
 	       		{

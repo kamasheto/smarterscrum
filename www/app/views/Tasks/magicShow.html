@@ -65,6 +65,7 @@
 		#{/if}
 		<div class="item_imgs"><a href="#"onclick="overlayOpen('@{Tasks.getReport(Task.id)}')" title="View the task report"><img src="/public/images/famfam/report.png"/></a>
 		
+		
 		</div>
 		#{if Task.taskType!=null}
 			<div class="right" title="Type: ${Task.taskType.name}" style="text-align:center; background:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; display:inline-block; font-family:Verdana; font-weight:Bold;" >T</div>
@@ -82,7 +83,8 @@
 				})
 			</script>	
 			#{/if}
-			<!-- end countdown -->
+
+<span class="points" title="The task's points">${Task.estimationPoints}</span>			<!-- end countdown -->
 			
 			#{/if}
 			#{if connected==(Task.reviewer)}

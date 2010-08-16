@@ -176,7 +176,7 @@ Show/Hide:
 	<tr name="@{sprintBacklog.index(componentID,id)}"id="task_${task.id}">
 	
 		<td>
-			<a title="view the task reports?" href="@{Tasks.getReport(task.id)}">${task.number}</a>
+			<a title="view the task reports?" href="@{Tasks.getReport(task.id)}">${task.getTaskNumber()}</a>
 		</td>
 		
 		#{ifnot connected.in(project).can('editBacklog') || connected.isAdmin || connected.id==task.assignee.id || connected.id==task.reviewer.id}
