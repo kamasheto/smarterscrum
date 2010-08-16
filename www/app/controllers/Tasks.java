@@ -616,11 +616,11 @@ public class Tasks extends SmartCRUD
 	 *            the task assignee id.
 	 * @return void
 	 */
-	public static void reviewers( long id, long id2, long compId, long taskId )
+	public static void reviewers( long id, long id2, long compId, long projId )
 	{
 		List<User> users = null;
 		Component component = Component.findById( compId );
-		Task task = Task.findById( taskId );
+		Project project = Project.findById( projId );
 		User Assignee = User.findById( id2 );
 
 		if( component != null )
@@ -632,7 +632,7 @@ public class Tasks extends SmartCRUD
 		}
 		else
 		{
-			users = task.project.users;
+			users = project.users;
 		}
 		List<User.Object> reviewers = new ArrayList<User.Object>();
 		for( User user : users )
