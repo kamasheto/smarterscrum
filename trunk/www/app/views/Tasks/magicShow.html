@@ -82,13 +82,16 @@
 					showDate(${Task.id},'tsk_'+${Task.id},${Task.deadline},"task ${Task.getTaskNumber()}","task");
 				})
 			</script>	
-			#{/if}
-
-<span class="points" title="The task's points">${Task.estimationPoints}</span>			<!-- end countdown -->
+			#{/if}		
+<!-- end countdown -->
 			
 			#{/if}
+			
 			#{if connected==(Task.reviewer)}
 			<img src="/public/images/famfam/reviewer.png" title="Reviewer" />
-			#{/if}</div>
+			#{/if}
+			
+<span class="points" title="The task's points">${Task.estimationPoints}</span>	
+			</div>
 		#{/list}
 		#{/else}
