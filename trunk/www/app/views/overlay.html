@@ -20,7 +20,26 @@
 		
         <script type="text/javascript">
        		$(function(){
-       			doOnLoad();$('*').live('mouseover',function(){
+       			doOnLoad();
+       			$('button').live('click',function(){
+
+           			var o = window.parent.document.getElementsByTagName('iframe');
+           			for(i=0;i<o.length;i++){
+           				if (/\bautoHeight\b/.test(o[i].className)){
+           					setHeight(o[i]);
+           					addEvent(o[i],'load', doIframe);
+           				}
+           			}});
+       			$('a').live('click',function(){
+
+           			var o = window.parent.document.getElementsByTagName('iframe');
+           			for(i=0;i<o.length;i++){
+           				if (/\bautoHeight\b/.test(o[i].className)){
+           					setHeight(o[i]);
+           					addEvent(o[i],'load', doIframe);
+           				}
+           			}});
+       			$('input').live('click',function(){
 
            			var o = window.parent.document.getElementsByTagName('iframe');
            			for(i=0;i<o.length;i++){
@@ -44,13 +63,14 @@
 	       		{
 		       		window.parent.$('#overlayLoading').hide();
 		       		window.parent.$('#theLoadedContent').show();
-		       		if($('#theWidth').width()<=window.parent.$('body').width()){
-	       				window.parent.$('#theLoadedContent').width($('#theWidth').width());
+		       		if(($('#theWidth').width()+200)<=window.parent.$('body').width()){
+	       				window.parent.$('#theLoadedContent').width($('#theWidth').width()+200);
 	       				$('#theWidth').css('width','100%');
 	       			}
 	       			else{
 	       				window.parent.$('#theLoadedContent').width(window.parent.$('body').width()-100);
 	       				$('#theWidth').css('width','90%');
+	       				$('body').css('overflow-x','auto');
 	       			}
 		       	}
 	       		function hide()
@@ -78,6 +98,7 @@ h6 a,h6 {
 body,html {
 	background: #fff !important;
 	padding: 10px;
+	overflow:hidden;
 }
 </style>
 </head>
