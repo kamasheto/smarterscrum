@@ -375,58 +375,6 @@ public class Meetings extends SmartCRUD
 	}
 
 	/**
-	 * @param id
-	 *            the id of the meeting that this method shows its associations
-	 */
-	public static void associations( long id )
-	{
-		// amr hany part :
-		User currentUser = Security.getConnected();
-		// here will go our tasks
-		// ghada();
-		// behairy();
-		// hossam();
-		// mina();
-		Meeting meeting = Meeting.findById( id );
-		Security.check( Security.getConnected().in( meeting.project ).can( "editMeeting" ) || Security.getConnected().equals( meeting.creator ) );
-		List<Artifact> temp = Artifact.findAll();
-		List<Artifact> artifacts = new ArrayList<Artifact>();
-		for( int i = 0; i < temp.size(); i++ )
-		{
-			if( !temp.get( i ).meetingsArtifacts.contains( meeting ) )
-			{
-				artifacts.add( temp.get( i ) );
-			}
-		}
-		List<Task> temp2 = Task.findAll();
-		List<Task> tasks = new ArrayList<Task>();
-		for( int i = 0; i < temp2.size(); i++ )
-		{
-			if( !temp2.get( i ).meeting.contains( meeting ) )
-				tasks.add( temp2.get( i ) );
-		}
-		render( meeting, currentUser, artifacts, tasks );
-	}
-
-	/**
-	 * this method to add artifact from the meeting
-	 * 
-	 * @author minazaki
-	 * @param id
-	 * @param artifact
-	 */
-	public static void addArtifact( long id, long artifact )
-	{
-		Artifact temp = Artifact.findById( artifact );
-		Meeting meeting = Meeting.findById( id );
-		Security.check( Security.getConnected().in( meeting.project ).can( "AssociateArtifacts" ) );
-		meeting.artifacts.add( temp );
-		temp.meetingsArtifacts.add( meeting );
-		meeting.save();
-		temp.save();
-	}
-
-	/**
 	 * @author minazakiz
 	 * @param id
 	 *            - the meeting id
@@ -449,42 +397,6 @@ public class Meetings extends SmartCRUD
 		Log.addUserLog( "Added task to meeting", temp, meeting, meeting.project );
 		Update.update( meeting.project, "reload('meetingTasks-" + id + "')" );
 		renderText( "Task assigned to meeting successfully" );
-	}
-
-	/**
-	 * this method to remove artifact from the meeting
-	 * 
-	 * @author minazaki
-	 * @param id
-	 * @param artifact
-	 */
-	public static void removeArtifact( long id, long artifact )
-	{
-		Artifact temp = Artifact.findById( artifact );
-		Meeting meeting = Meeting.findById( id );
-		Security.check( Security.getConnected().in( meeting.project ).can( "AssociateArtifacts" ) );
-		meeting.artifacts.remove( temp );
-		temp.meetingsArtifacts.remove( temp );
-		meeting.save();
-		temp.save();
-	}
-
-	/**
-	 * @author minazaki
-	 * @param id
-	 *            - meeting id
-	 * @param task
-	 *            - task id this method to remove the task from the meeting
-	 */
-	public static void removetask( long id, long task )
-	{
-		Task temp = Task.findById( task );
-		Meeting meeting = Meeting.findById( id );
-		Security.check( Security.getConnected().in( meeting.project ).can( "associateTaskToMeeting" ) );
-		meeting.tasks.remove( temp );
-		temp.meeting.remove( temp );
-		meeting.save();
-		temp.save();
 	}
 
 	/**
@@ -723,59 +635,6 @@ public class Meetings extends SmartCRUD
 		{
 			renderText( "The meeting has already ended" );
 		}
-	}
-
-	/**
-	 * Associating a Task to Meeting
-	 * 
-	 * @author hossam sharaf
-	 * @param meetingID
-	 *            , taskID
-	 */
-	public static void toggleTask( long meetingID, long taskID )
-	{
-		Meeting M = Meeting.findById( meetingID );
-		Task T = Task.findById( taskID );
-		Security.check( Security.getConnected().in( M.project ).can( "AssociateTaskToMeeting" ) );
-		boolean B = false;
-		if( M.tasks.contains( T ) )
-		{
-			M.tasks.remove( T );
-			B = true;
-		}
-		else
-			M.tasks.add( T );
-		M.save();
-		Log.addUserLog( "Associated task to meeting", M, M.project, T );
-		// Logs.addLog( Security.getConnected(), "Associated task to meeting",
-		// "task", meetingID, M.project, new Date() );
-		renderText( B );
-	}
-
-	/**
-	 * This action takes the id of a meeting as a parameter and notifies
-	 * attending users with the modifications.
-	 * 
-	 * @param id
-	 * @author Behairy
-	 */
-	public static void notifyUsersWithModifications( long id )
-	{
-		boolean flag = false;
-		Meeting meeting = Meeting.findById( id );
-		List<MeetingAttendance> attendees = MeetingAttendance.find( "byMeeting.id", meeting.id ).fetch();
-		List<User> users = new ArrayList<User>();
-		while( attendees.isEmpty() == false )
-		{
-			users.add( attendees.remove( 0 ).user );
-		}
-		if( users.isEmpty() == false )
-		{
-			String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + meeting.project.id + "&isOverlay=false&url=/meetings/viewMeeting?id=" + meeting.id;
-			Notifications.notifyUsers( users, "modified", url, "the meeting", meeting.name, (byte) 0, meeting.project );
-			flag = true;
-		}
-		renderJSON( flag );
 	}
 
 	/**
