@@ -269,6 +269,7 @@ public class Tasks extends SmartCRUD
 		}
 		tmp.reporter = Security.getConnected();
 		object.save();
+		Log.addUserLog("Created new task", tmp, tmp.project);
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
@@ -559,9 +560,9 @@ public class Tasks extends SmartCRUD
 		if( params.get( "_save" ) != null )
 		{
 			Update.update( tmp.project, "reload('tasks','task-" + tmp.id + "')" );
+			Log.addUserLog( "Edit task", tmp, tmp.project );
 			Application.overlayKiller( "", "" );
 			// Logs.addLog( tmp.project, "edit", "Task", tmp.id );
-			Log.addUserLog( "Edit task", tmp, tmp.project );
 		}
 	}
 

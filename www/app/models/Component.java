@@ -336,7 +336,7 @@ public class Component extends SmartModel
 	/**
 	 * Returns the name of this component in the format: C1: User and Roles
 	 */
-	public String getName() {
+	public String getFullName() {
 		return "C" + number + ": " + name;
 	}
 
