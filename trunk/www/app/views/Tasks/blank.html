@@ -25,12 +25,14 @@
 	#{form action:@create(), enctype:'multipart/form-data'}
 	#{crud.form fields:['description']}	
 	#{crud.custom 'description' }
-	<label for="object_description">Description	</label>
+	<label for="object_description">Description	</label><span class="crudHelp" style="color:red">*</span><br/>
 	<textarea id="example"  name="object.description" ROWS="4" COLS="60" onclick="f();"></textarea>
-    <span class="crudHelp" style="color:red">*</span>
 	<div style="display:none" class="d">Ex: As a/an product role, description</div>
 	
 	<span class="error"></span>
+	<br/><br/>
+		<a href="#" onclick = "toggleOptions()" name="view-more-link">View more options</a>
+	<br/><br/>
 	#{/crud.custom}
 	#{/crud.form}			
 	
@@ -40,13 +42,13 @@
 	</div>
 	
 	<div class="crudField" name="view-more" style="display:none">
-	<label for="object_successScenario">Success Scenario</label>
-	<textarea id="object.successScenario"  name="object.successScenario"></textarea>
+	<label for="object_successScenario">Success Scenario</label><br/>
+	<textarea id="object.successScenario"  ROWS="4" COLS="60" name="object.successScenario"></textarea>
 	</div>
 
 	<div class="crudField" name="view-more" style="display:none">
-	<label for="object_failureScenario">Failure Scenario</label>
-	<textarea id="object.failureScenario"  name="object.failureScenario"></textarea>
+	<label for="object_failureScenario">Failure Scenario</label><br/>
+	<textarea id="object.failureScenario" ROWS="4" COLS="60"  name="object.failureScenario"></textarea>
 	</div>
 
 	#{if project.taskStatuses.size()>0}
@@ -180,7 +182,7 @@
 	
 	#{if project.projectTasks.size()>0}
 	<div class="crudField" name="view-more" style="display:none">	
-	<label for="object_dependentTasks">Dependent Tasks</label>
+	<label for="object_dependentTasks">Dependent Tasks</label><br/>
 	<input type="hidden" name="object.dependentTasks@id" value="" />
 	<select id="object_dependentStories" name="object.dependentTasks@id" multiple="yes">
 	#{list items:project.projectTasks ,as :'task2'}
@@ -217,7 +219,6 @@
 	<input type="hidden" id="object_parent" name="object.parent@id" value="${task.id}" >
 	#{/elseif}
 		
-		<a href="#" onclick = "toggleOptions()" name="view-more-link">View more options</a>
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" onclick="product_role();"/>
 			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" onclick="product_role();" />
