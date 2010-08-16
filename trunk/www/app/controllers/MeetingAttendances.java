@@ -110,23 +110,6 @@ public class MeetingAttendances extends SmartController
 	}
 
 	/**
-	 * this method takes a status and a meetingHash and gets the corresponding
-	 * meetingAttendance and sets it's excuse to the input excuse
-	 * 
-	 * @author Ghada Fakhry
-	 * @param meetingHash
-	 * @param excuse
-	 */
-
-	public static void setExcuse( String meetingHash, String excuse )
-	{
-		MeetingAttendance attendance = MeetingAttendance.find( "byMeetingHashAndDeleted", meetingHash, false ).first();
-		attendance.reason = excuse;
-		attendance.save();
-
-	}
-
-	/**
 	 * View invites method It takes a user id which is actually the current user
 	 * on the system sent from the view and
 	 * 
