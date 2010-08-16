@@ -16,7 +16,7 @@
 			#{/elseif}
 		<a href = "/show/user?id=${notif.actionPerformer.id}">${notif.actionPerformer.name}</a> has ${notif.actionType} ${notif.resourceType}: <a href = ${notif.resourceURL}>${notif.resourceName}</a> 
 #{if notif.project != null}
-in project ${notif.project}
+in project <a href="/application/externalOpen?id=${notif.project.id}&isOverlay=false&url=#">${notif.project.name}</a>
 #{/if}</p>
 	</div>
 #{/list}
