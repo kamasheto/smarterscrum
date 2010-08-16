@@ -530,7 +530,7 @@ table {
 }
 
 .draggable {
-	width: 300px;
+	width: 450px;
 	position: absolute !important;
 }
 
@@ -817,17 +817,17 @@ body,html,.workspace {
 	color: red;
 }
 
-.draggableChild.yellowBg .ui-widget-header,.yellowBg.bar {
+.draggableChild.yellowBg>.ui-widget-header,.yellowBg.bar {
 	background: #FCFFB3 !important;
 	color: #000;
 }
 
-.redBg.draggableChild .ui-widget-header,.redBg.bar {
+.redBg.draggableChild>.ui-widget-header,.redBg.bar {
 	background: #FFB3B3 !important;
 	color: #000;
 }
 
-.greenBg.draggableChild  .ui-widget-header,.greenBg.bar {
+.greenBg.draggableChild>.ui-widget-header,.greenBg.bar {
 	background: #DDFFB3 !important;
 	color: #000;
 }
