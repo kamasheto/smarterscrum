@@ -138,7 +138,7 @@ public class Application extends SmartController
 			notFound();
 		Security.check( Security.getConnected().in( c.project ).can( "deleteComponent" ) );
 		c.deleteComponent();
-		Log.addUserLog("Deleted component", c, c.project);
+		Log.addUserLog("Deleted " + c.getName(), c, c.project);
 //		Logs.addLog( Security.getConnected(), "Delete", "Component", c.id, c.project, new Date( System.currentTimeMillis() ) );
 	}
 

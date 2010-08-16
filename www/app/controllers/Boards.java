@@ -479,7 +479,7 @@ public class Boards extends SmartCRUD
 		if( u.deleted )
 			notFound();
 //		Logs.addLog( u, "shown", "Column", cid, c.board.project, cal.getTime() );
-		Log.addLog("Shown column", u, c.board, c, c.board.project);
+		Log.addLog("Shown column: " + c.name, u, c.board, c, c.board.project);
 		String url = "";
 		if(compid==0)
 		{
@@ -545,7 +545,7 @@ public class Boards extends SmartCRUD
 			Notifications.notifyUsers(component.componentUsers, "deleteColumn", url, "column", c.name, (byte)-1, c.board.project);			
 		}		
 //		Logs.addLog( u, "hided", "Column", c.id, c.board.project, cal.getTime() );
-		Log.addLog("Hided column", c, c.board, c.board.project);
+		Log.addLog("Hided column: " + c.name, c, c.board, c.board.project);
 		
 	}
 

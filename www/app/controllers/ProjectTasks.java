@@ -31,6 +31,7 @@ public class ProjectTasks extends SmartController {
 		notFoundIfNull(role);
 		Update.update(user, "reload('roles')");
 		Update.update(role.project, "reload('project-requests')");
+		Log.addUserLog("Requested role", role, role.project);
 		if (user.in(role.project).can("manageRequests")) {
 			user.addRole(role);
 			renderText("Successfully added role!");
@@ -57,6 +58,7 @@ public class ProjectTasks extends SmartController {
 		Role role = Role.findById(roleId);
 		String msg = "";
 		notFoundIfNull(role);
+		Log.addUserLog("Revoked role from user: " + user.name, role, role.project);
 		if((!role.baseRole)&&((connectedUser.in(role.project).can("revokeUserRole"))||(user.id == connectedUser.id)))
 		{
 			user.removeRole(role, user);

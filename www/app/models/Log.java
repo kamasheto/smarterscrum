@@ -27,7 +27,7 @@ public class Log extends SmartModel {
 	 * timestamp of this log
 	 */
 	public long timestamp;
-
+	
 	/**
 	 * Adds a log with the models attached
 	 * @param message log message
@@ -67,7 +67,7 @@ public class Log extends SmartModel {
 	 * @return User that performed this action/log
 	 */
 	public User getUser() {
-		return (User) get(User.class);
+		return get(User.class);
 	}
 	
 	/**
@@ -75,17 +75,16 @@ public class Log extends SmartModel {
 	 * @param clazz class to check for, example: Meeting.class, User.class, etc
 	 * @return List of this class that have this log
 	 */
-	public List<? extends SmartModel> getAll(Class<?> clazz) {
+	public <T extends SmartModel> List<T> getAll(Class<T> clazz) {
 		try {
 			// find the method with the following signature (remember Object... maps to an array)
 			Method method = clazz.getMethod("find", String.class, Object[].class);
 			
-			// invoke this method on an object null (static method), remember there's a difference between sending the class name as a ?, and hardcoding it in the string
+			// invoke this method on a null object (hence a static method), remember there's a difference between sending the class name as a ?, and hardcoding it in the query string
 			Object result = method.invoke(null, "select m from " + clazz.getName() + " m join m.logs as l where l = ?", new Object[] {this});
 			
 			// cast the result, and fetch the list
-			List<? extends SmartModel> models = ((JPASupport.JPAQuery) result).fetch();
-			return models;
+			return ((JPASupport.JPAQuery) result).fetch();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

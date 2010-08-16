@@ -42,7 +42,7 @@ public class Invites extends SmartController {
 		String decline = Router.getFullUrl("Invites.respondInvite") + "?what=0&hash=" + invite.hash + "&id=" + invite.id;
 		Notifications.invite(user, url, "", confirm, decline, role.project, false);
 		// Logs.addLog(pro, "invited " + user.name, "Invite", invite.id);
-		Log.addUserLog("Invited " + user.name, invite, role.project, role);
+		Log.addUserLog("Invited " + user.name + " with role: " + role.name, invite, role.project, role);
 	}
 
 	/**

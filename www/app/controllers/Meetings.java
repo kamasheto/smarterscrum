@@ -85,7 +85,7 @@ public class Meetings extends SmartCRUD
 		}
 		M.endTime += 1000 * 60 * 60;
 		M.save();
-		Log.addUserLog( "Extend meeting", M, M.project );
+		Log.addUserLog( "Extended meeting with 1 hour", M, M.project );
 	}
 
 	/**
