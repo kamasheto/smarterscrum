@@ -12,9 +12,9 @@ ${myMeeting.name} Notes
 #{list items:notes, as:'note'}
 #{if !note.deleted }
 %{i++}%
-	<div name="@{Meetings.note(note.id,i,noteFlag)}">Note #%{i; out.print(i)}% #{if noteFlag}
-	<a href="#" onclick="overlayOpen('')"><img src="@{'public/images/famfam/delete.png'}" alt="[-]"/></a>
-	<a href="#" onclick="overlayOpen('')"><img src="@{'public/images/famfam/pencil.png'}" alt="[e]"/></a>
+	<div class="reload-meetingNote-${note.id}" name="@{Meetings.note(myMeeting.id,note.id,i,noteFlag)}">Note #%{i; out.print(i)}% #{if noteFlag}
+	<a href="#" onclick="delete_meetingNote(${note.id},${myMeeting.id})"><img src="@{'public/images/famfam/delete.png'}" alt="[-]"/></a>
+	<a href="#" onclick="overlayOpen('/meetings/editNote?noteId=${note.id}&meetingId=${myMeeting.id}')"><img src="@{'public/images/famfam/pencil.png'}" alt="[e]"/></a>
 #{/if}</div> 
 #{/if}
 #{/list}

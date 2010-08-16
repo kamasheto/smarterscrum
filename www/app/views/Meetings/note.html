@@ -2,8 +2,8 @@
 #{set 'title'}
 Note #${i}
 #{if noteFlag}
-	<a href="#" onclick="overlayOpen('')"><img src="@{'public/images/famfam/delete.png'}" alt="[-]"/></a>
-	<a href="#" onclick="overlayOpen('')"><img src="@{'public/images/famfam/pencil.png'}" alt="[e]"/></a>
+	<a href="#" onclick="delete_meetingNote(${note.id},${meeting.id})"><img src="@{'public/images/famfam/delete.png'}" alt="[-]"/></a>
+	<a href="#" onclick="overlayOpen('/meetings/editNote?noteId=${note.id}&meetingId=${meeting.id}')"><img src="@{'public/images/famfam/pencil.png'}" alt="[e]"/></a>
 #{/if}
 #{/set}
 ${note.description}
