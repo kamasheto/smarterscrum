@@ -434,7 +434,6 @@ REDIPS.drag = (function () {
 		}
 		else if (row_source!=row && gup('componentID')!=0)
 		{
-			alert(row/2);
 			$.post('/Tasks/changeTaskAssigneeHelper' ,			
 					{id:gup('componentID'),taskString:obj.id, user_id:selectedUser,row:(row/2)-1});
 			

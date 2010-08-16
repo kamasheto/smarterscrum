@@ -1,4 +1,4 @@
-﻿﻿﻿﻿ $.extend($.gritter.options, { 
+﻿﻿﻿﻿﻿ $.extend($.gritter.options, { 
 	fade_in_speed: 50, // how fast notifications fade in (string or int)
 	fade_out_speed: 300, // how fast the notices fade out
 	time: 5000 // hang on the screen for...
@@ -29,25 +29,21 @@ function reload_note_close(sid, taskId, compId)
 }
 function drag_note_status(sid, assigneeId, oldcol, newcol, compId)
 {
-	$('#theLoadedContent').contents().find('#'+oldcol+'_'+compId).load('/boards/loadboard1?sprintID='+sid+' #'+oldcol+'_'+compId);
-	$('#theLoadedContent').contents().find('#'+newcol+'_'+compId).load('/boards/loadboard1?sprintID='+sid+' #'+newcol+'_'+compId);
+	$('#theLoadedContent').contents().find('#'+oldcol+'_'+compId+'_0').load('/boards/loadboard1?sprintID='+sid+' #'+oldcol+'_'+compId+'_0');
+	$('#theLoadedContent').contents().find('#'+newcol+'_'+compId+'_0').load('/boards/loadboard1?sprintID='+sid+' #'+newcol+'_'+compId+'_0');
 	if (compId != 0) 
 	{
-		$('#theLoadedContent').contents().find('#'+oldcol+'_'+assigneeId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #'+oldcol+'_'+assigneeId);
-		$('#theLoadedContent').contents().find('#'+newcol+'_'+assigneeId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #'+newcol+'_'+assigneeId);
+		$('#theLoadedContent').contents().find('#'+oldcol+'_'+assigneeId+'_'+compId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #'+oldcol+'_'+assigneeId+'_'+compId);
+		$('#theLoadedContent').contents().find('#'+newcol+'_'+assigneeId+'_'+compId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #'+newcol+'_'+assigneeId+'_'+compId);
 	}
 }
 function drag_note_assignee(sid, oldassi, newassi, col, compId)
 {
 	if (compId != 0) 
 	{
-		$('#theLoadedContent').contents().find('#'+col+'_'+oldassi).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #'+col+'_'+oldassi);
-		$('#theLoadedContent').contents().find('#'+col+'_'+newassi).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #'+col+'_'+newassi);
+		$('#theLoadedContent').contents().find('#'+col+'_'+oldassi+'_'+compId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #'+col+'_'+oldassi+'_'+compId);
+		$('#theLoadedContent').contents().find('#'+col+'_'+newassi+'_'+compId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #'+col+'_'+newassi+'_'+compId);
 	}
-}
-function drag_note_assignee(oldcol, newcol, oldassi, newassi)
-{
-	
 }
 function request_accept( id, hash )
 {
