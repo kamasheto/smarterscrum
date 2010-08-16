@@ -157,4 +157,19 @@ public class Notifications extends Mailer{
 		}
 	}
 	
+	public static void feedbacks(User sender, String subject, String message, int priority)
+	{
+		String importance="";
+		switch(priority)
+		{
+		case 0: importance="low";
+		case 1: importance="Medium";
+		case 2: importance="High";
+		}
+		setFrom("se.smartsoft.2@gmail.com");
+		addRecipient("se.smartsoft.2@gmail.com");
+		setSubject(subject);
+		send(sender, message, importance);
+	}
+	
 }
