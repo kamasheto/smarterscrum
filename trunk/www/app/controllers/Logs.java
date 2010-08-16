@@ -6,6 +6,7 @@ import play.mvc.*;
 import java.util.*;
 
 import models.*;
+import others.*;
 
 @With(Secure.class)
 public class Logs extends SmartController {
@@ -31,7 +32,15 @@ public class Logs extends SmartController {
 	public static void view(long logId) {
 		Log log = Log.findById(logId);
 		Security.check(Security.getConnected().in(log.get(Project.class)).can("manageLogs"));
-		render(log);
+		LogInfo[] logInfo = {new LogInfo("User", User.class),
+							// new LogInfo("Project", Project.class),
+							new LogInfo("Component", Component.class),
+							new LogInfo("Task", Task.class),
+							new LogInfo("Meeting", Meeting.class),
+							new LogInfo("Board", Board.class),
+							new LogInfo("Column", Column.class),
+							new LogInfo("Snapshot", Snapshot.class)};
+		render(log, logInfo);
 	}
 }
 

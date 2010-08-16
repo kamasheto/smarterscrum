@@ -47,7 +47,7 @@ public class Columns extends SmartController
 		Column c1 = Column.find( "bySequenceAndBoardAndDeleted", pos1 - 1, b, false ).first();
 		Column c2 = Column.find( "bySequenceAndBoardAndDeleted", pos2 - 1, b, false ).first();
 		// Logs.addLog( u, "edit", "Column Position", c1.id, p, cal.getTime() );
-		Log.addLog("Edit column position", u, c1, b, p);
+		Log.addLog("Edit column ("+c1.name+") position", u, c1, b, p);
 		int x = c2.sequence;
 		if( c1.sequence < c2.sequence )
 		{
@@ -114,7 +114,7 @@ public class Columns extends SmartController
 		c2.save();
 		Calendar cal = new GregorianCalendar();		
 		// Logs.addLog( user, "edit", "Column Position", c1.id, p, cal.getTime() );
-		Log.addLog("Edit column position", user, c1, p, b);
+		Log.addLog(user.name + "edited column ("+c1.name+") position", user, c1, p, b);
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class Columns extends SmartController
 		Calendar cal = new GregorianCalendar();
 		User u = User.findById( userId );
 		// Logs.addLog( u, "rename", "Column Name", c.id, c.board.project, cal.getTime() );		
-		Log.addLog("Renamed column name", c, c.board, c.board.project, u);
+		Log.addLog(u.name + " renamed column ("+c.name+") name", c, c.board, c.board.project, u);
 		return true;
 	}
 }

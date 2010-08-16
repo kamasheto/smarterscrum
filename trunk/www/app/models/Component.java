@@ -332,5 +332,12 @@ public class Component extends SmartModel
 			this.title = title;
 		}
 	}
+	
+	/**
+	 * Returns the name of this component in the format: C1: User and Roles
+	 */
+	public String getName() {
+		return "C" + number + ": " + name;
+	}
 
 }

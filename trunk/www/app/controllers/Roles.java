@@ -54,7 +54,7 @@ public class Roles extends SmartCRUD
 				user.save();
 			}
 		}
-		
+		Log.addUserLog("Set new base role", role, role.project);
 		Update.update(role.project, "reload('roles')");
 	}
 
@@ -153,6 +153,7 @@ public class Roles extends SmartCRUD
 			redirect( "/admin/roles/" + id );
 		}
 		object.save();
+		Log.addUserLog("Edited role", role, role.project);
 		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
@@ -238,6 +239,7 @@ public class Roles extends SmartCRUD
 			redirect( "/admin/roles/new?id=" + id );
 		}
 		object.save();
+		Log.addUserLog("Added new role", object, role.project);
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
@@ -280,6 +282,7 @@ public class Roles extends SmartCRUD
 					user.save();
 				}
 
+				Log.addUserLog("Deleted role: " + role.name, role.project);
 				role.delete();
 			}
 			catch( Exception e )
@@ -309,5 +312,6 @@ public class Roles extends SmartCRUD
 		Security.check( Security.getConnected().in( role.project ).can( "editRole" ) );
 		role.permissions.remove( Permission.<Permission> findById( permId ) );
 		role.save();
+		Log.addUserLog("Edited role", role, role.project);
 	}
 }

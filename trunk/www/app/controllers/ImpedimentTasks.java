@@ -137,7 +137,7 @@ public class ImpedimentTasks extends SmartController
 		String url = "@{Application.externalOpen("+project.id+", '/components/viewImpedimentLog?Proj_id="+project.id+"', false)}";
 		Notifications.notifyProjectUsers(project, "reportImpediment", url, "Impediment Task", ""+impedimentTask.number, (byte) -1);
 		// Logs.addLog( project, "added", "Task", impedimentTask.id );
-		Log.addUserLog("Added impediment task", project, impedimentTask);
+		Log.addUserLog("Added impediment task: " + impedimentTask.getSummary(), project, impedimentTask);
 	}
 
 	/**
@@ -212,7 +212,7 @@ public class ImpedimentTasks extends SmartController
 		String url = "@{Application.externalOpen("+proj.id+", '/components/viewImpedimentLog?Proj_id="+proj.id+"', false)}";
 		Notifications.notifyProjectUsers(proj, "reportImpediment", url, "Impediment Task", ""+t.number, (byte) 0);		
 		// Logs.addLog( proj, "updated", "Task", t.id );
-		Log.addUserLog("Updated impediment task", t, t.project);
+		Log.addUserLog("Updated impediment task: " + t.getSummary(), t, t.project);
 	}
 
 }
