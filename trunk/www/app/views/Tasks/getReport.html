@@ -1,4 +1,67 @@
 #{extends 'overlay.html' /} #{set title:'Task Report' /}
+#{set 'moreStyles'}
+<style type="text/css">
+label {
+	background: none repeat scroll 0 0 #EFEFEF;
+	color: #333333;
+	font-weight: bold;
+	height: 100%;
+	margin-bottom: -10px;
+	margin-left: -10px;
+	margin-top: -10px;
+	margin-right: 10px;
+	width: 150px;
+	padding: 10px 0 10px 10px;
+	position: relative;
+	top: 0;
+}
+
+td {
+	border: 1px solid #555555;
+	padding: 7px;
+}
+
+.red {
+	color: red !important
+}
+
+div {
+	font-size: 10px
+}
+
+.comment {
+	padding: 10px;
+	margin: 10px 0px;
+	border: 1px dashed #ddd
+}
+
+.comment label {
+	background: transparent;
+	margin: 0px;
+	padding: 0px;
+	height: auto;
+}
+
+.comment .crudField {
+	border-bottom: 1px solid #EEEEEE;
+	margin: -10px -10px 10px;
+	padding: 10px;
+	position: relative;
+}
+
+#info .crudField {
+	border-right: 1px solid #EEEEEE;
+}
+
+.big {
+	border-right: 0px !important;
+}
+
+.i {font-size: 14px;
+	
+}
+</style>
+#{/set}
 #{set 'moreScripts'}
 	<link rel="stylesheet" type="text/css" href="@{'/public/stylesheets/jquery.jqplot.css'}"/>
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/jquery.jqplot.js'}"></script>
@@ -10,7 +73,6 @@
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.dateAxisRenderer.js'}"></script>
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.categoryAxisRenderer.js'}"></script>
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.barRenderer.js'}"></script>
-
 <script type="text/javascript">
 function graphed(data)
 {
@@ -46,7 +108,7 @@ function graphed(data)
 			labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
 			renderer: $.jqplot.LinearAxisRenderer,  
 			showTicks: true, 
-
+			tickInterval:1,
 			min:0,
 		}
 	},
@@ -72,14 +134,13 @@ function graphed(data)
 }
 function graph(data)
 {
-	var xx = '1 day';
+	var xx = 1;
 	if(data.length>900)
 		xx =360;
 	if(data.length>365)
 		xx = 30;
 	if(data.length>30)
 		xx= 7;
-	var bla = data;
 	var plot1 = $.jqplot('STATS', [data], 
 	{
 		seriesDefaults:
@@ -93,7 +154,7 @@ function graph(data)
 				labelOptions:{ fontFamily:'Helvetica',fontSize: '13pt'},
 				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
 				//ticks: xTicks
-				tickInterval:xx
+			tickInterval:xx
 			}, 
 			yaxis:
 			{
@@ -143,148 +204,136 @@ graphed(${changes});
 #{/if}
 $('#accordion').accordion({autoHeight: false,navigation: true});
 #{/set}
-	<h1>Task ${theTask.number} : ${theTask.description} </h1>
-	#{if empty}
-		There isn't any change logs associated with this task.
-	#{/if}
-	#{else}
+	<h1>Task ${theTask.getTaskNumber()} : ${theTask.description} </h1>
 	<div id="accordion">
     <h6><a href="#">Task Information</a></h6>
 
-    <div>
-        	This task has been changed ${numberOfModifications} time, it was last changed on ${lastModified} by ${temp.get(temp.size()-1).getUser().getDisplayName(myProject).raw()}
-		<br/><br/>
-			#{if theTask.description}
-	Description:<br/>
-	${theTask.description}
-	<dir class="clear"></dir>
-	#{/if}
-	#{else}
-	<div style="padding: 10px;margin:10px"class="ui-state-error ui-corner-all">
-	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span>This Task doesn't have a description!
+    <div id="info">
+    <div class="crudField i">
+		#{if theTask.description}
+			<span class="big">${theTask.description}</span>
+		#{/if}
+		#{else}
+			<div style="padding: 10px;margin:10px"class="ui-state-error ui-corner-all">
+				<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span>This Task doesn't have a description.
+			</div>
+		#{/else}
 	</div>
-	#{/else}
-    #{if theTask.assignee}
-    Assigned to  : ${theTask.assignee.getDisplayName(myProject).raw()}<br/>
-    #{/if}
-    #{else}
-    Assigned to  : no one<br/>
-    #{/else}
-
-    #{if theTask.reporter}
-    Reported by  : ${theTask.reporter.getDisplayName(myProject).raw()}<br/>
-	#{/if}
-    #{else}
-    Reported by  : no one<br/>
-    #{/else}
-    
-	#{if theTask.reviewer}
-	Reviewed by  : ${theTask.reviewer.getDisplayName(myProject).raw()}<br/>
-	#{/if}
-    #{else}
-    Reviewed by  : no one<br/>
-    #{/else}
-
-	<dir class="clear"></dir>
-	#{if theTask.taskSprint}
-	Sprint       : ${theTask.taskSprint.id}<br/>
-	#{/if}
-    #{else}
-    Sprint       : not assigned to a sprint yet<br/>
-    #{/else}
+	<div class="crudField">
+	    #{if theTask.project}
+	    <label>Project</label>${theTask.project.name}
+	    #{/if}
+	    #{else}
+	     <div class="red"><label>Project</label>This task doesn't belong to a project!</div>
+	    #{/else}
+	</div>
 	#{if theTask.component}
 	#{if theTask.component.name.equalsIgnoreCase("Default Component")}
 	#{/if}
 	#{else}
-	Component    : ${theTask.component.id}<br/>
+	<div class="crudField">
+	<label>Component</label>${theTask.component.getFullName()}
+	</div>
 	#{/else}
 	#{/if}
-    #{else}
-    Component    : not assigned to a component yet<br/>
-    #{/else}
-	#{if theTask.project}
-	Project      : ${theTask.project.name}
-	#{/if}
-    #{else}
-    Project      : doesn't belong to a project yet<br/>
-    #{/else}
-	<dir class="clear"></dir>
-	#{if theTask.taskType}
-	Type         : ${theTask.taskType.name}<br/>
-	#{/if}
-	#{else}
-	Type         : undefined<br/>
-	#{/else}
-	#{if theTask.taskStatus}
-	Status       : ${theTask.taskStatus.name}<br/>
-	#{/if}
-	#{else}
-	Status       : undefined<br/>
-	#{/else}
+	<div class="crudField">
+	    #{if theTask.reporter}
+	    <label>Reporter</label>${theTask.reporter.getDisplayName(myProject).raw()}
+	    #{/if}
+	    #{else}
+	     <div class="red"><label>Reporter</label>No one reported this task!</div>
+	    #{/else}
+	</div>
+	<div class="crudField">
+	    #{if theTask.assignee}
+	    <label>Assignee</label>${theTask.assignee.getDisplayName(myProject).raw()}
+	    #{/if}
+	    #{else}
+	     <div class="red"><label>Assignee</label>No one is assigned to this task!</div>
+	    #{/else}
+	</div>
+    <div class="crudField">
+	    #{if theTask.reviewer}
+	    <label>Reviewer</label>${theTask.reviewer.getDisplayName(myProject).raw()}
+	    #{/if}
+	    #{else}
+	     <div class="red"><label>Reviewer</label>No one is reviewing this task!</div>
+	    #{/else}
+	</div>
+  	<div class="crudField">
+	    #{if theTask.taskSprint}
+	    <label>Sprint</label>${theTask.taskSprint.sprintNumber}
+	    #{/if}
+	    #{else}
+	     <div class="red"><label>Sprint</label>This task isn't assigned to a sprint!</div>
+	    #{/else}
+	</div>
+	<div class="crudField">
+	    #{if theTask.taskType}
+	    <label>Type</label>${theTask.taskType.name}
+	    #{/if}
+	    #{else}
+	     <div class="red"><label>Type</label>This task doesn't have a type!</div>
+	    #{/else}
+	</div>
+	<div class="crudField">
+	    #{if theTask.taskStatus}
+	    <label>Status</label>${theTask.taskStatus.name}
+	    #{/if}
+	    #{else}
+	     <div class="red"><label>Status</label>This task doesn't have a type!</div>
+	    #{/else}
+	</div>
 	#{if theTask.estimationPoints}
-	Total Points : ${theTask.estimationPoints}
+	<div class="crudField">   
+	    <label>Estimation Points</label>${theTask.estimationPoints}
+	</div>
 	#{/if}
-	#{else}
-	Total Points : not set yet<br/>
-	#{/else}
-	<dir class="clear"></dir>
-	
-	#{if theTask.parent}
-	Belongs to Task ${theTask.parent.number}:<br/>
-	${theTask.parent.description}
-		<dir class="clear"></dir>
+ 	#{if theTask.parent}
+	<div class="crudField">   
+	    <label>Belongs to</label>${theTask.parent.getTaskNumber()}
+	</div>
 	#{/if}
-	#{else}
-
-	#{/else}
 	#{if theTask.subTasks}
-	SubTasks:<br/>
+	<div class="crudField"> 
+	<label>SubTasks</label>
 	#{list items:theTask.subTasks, as:'dt'}
-	#{if dt.id==theTask.subTasks.get(theTask.subTasks.size()-1)}
-	
-	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.number}</a>
+	#{if dt.id==theTask.subTasks.get(theTask.subTasks.size()-1).id}
+	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.getTaskNumber()}</a>
 	#{/if}
 	#{else}
-	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.number}</a>, 
+	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.getTaskNumber()}</a>, 
 	#{/else}
 	#{/list}
-	#{/if}
-	#{else}
-	<div style="padding: 10px;margin:10px" class="ui-state-highlight ui-corner-all"> 
-	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>This task has no subtasks
 	</div>
-	#{/else}
+	#{/if}
 	#{if theTask.dependentTasks}
-	Dependent Tasks:<br/>
+	<div class="crudField"> 
+	<label>Dependant tasks</label>
 	#{list items:theTask.dependentTasks, as:'dt'}
-	#{if dt.id==theTask.dependentTasks.get(theTask.dependentTasks.size()-1)}
-	
-	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.number}</a>
+	#{if dt.id==theTask.dependentTasks.get(theTask.dependentTasks.size()-1).id}
+	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.getTaskNumber()}</a>
 	#{/if}
 	#{else}
-	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.number}</a>, 
+	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.getTaskNumber()}</a>, 
 	#{/else}
 	#{/list}
-	#{/if}
-	#{else}
-	<div style="padding: 10px;margin:10px" class="ui-state-highlight ui-corner-all"> 
-	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>No other tasks depend on this task!
 	</div>
-	#{/else}
-	
-</div>
-<h6><a href="#">Task Comments</a></h6>
-<div>
+	#{/if}
+	<div id="comments_${theTask.id}"style="margin-top:10px">
+	<h1>Comments</h1>
 #{if theTask.comments}
 #{list items:theTask.comments, as:'t'}
-<b>User: </b>${t.author}<br/>
-<b>Time: </b><span class="formatTime">${t.timeStamp}</span><br/>
-${t.Comment}
-<br/>
-<br/>
-<hr/>
-<br/>
-<br/>
+<div class="comment">
+<div class="crudField">
+<label>Author</label>${t.author}
+</div>
+<div class="crudField">
+<label>Time</label>${new Date(t.timeOfComment)}
+</div>
+${t.comment}
+<div class="red" style="text-align:right"><a href="" class="red"onclick="$.post('@{Comments.deleteComment()}',{id:${theTask.id}})">delete?</a></div>
+</div>
 #{/list}
 #{/if}
 #{else}
@@ -292,7 +341,25 @@ ${t.Comment}
 		<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
 		<strong>There are no comments associated with this task. </strong>
 	</div>
-#{/else}
+#{/else}</div>
+#{if connected.projects.contains(theTask.project)}
+<div id=""class="comment">
+<div class="crudField">
+<h1>Add a comment?</h1>
+<label>Comment</label>
+</div>
+<div class="crudField">
+<textarea id="theComment"style="width:100%;"></textarea>
+</div>
+<button onclick="send()">Add comment</button>
+<script type="text/javascript">
+function send(){
+	$.post("@{Comments.addComment()}",{taskId:${theTask.id},comment:$("#theComment").val()});
+	
+}</script>
+</div>
+	#{/if}
+
 </div>
 <h6><a href="#">Task Change Log</a></h6>
 <div>
@@ -355,4 +422,4 @@ ${t.Comment}
 #{/else}
 </div>
 </div>
-#{/else}
+</div>

@@ -710,7 +710,7 @@ img {
 	height: 100%;
 }
 
-body,html {
+html {
 	overflow: auto !important;
 }
 

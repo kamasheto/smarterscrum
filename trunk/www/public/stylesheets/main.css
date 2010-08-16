@@ -1982,7 +1982,7 @@ img.left {
 
 .ui-accordion .ui-accordion-content-active {
 	display: block;
-	font-size: 12px !important;
+	font-size: 10px !important;
 }  /* Autocomplete
 ----------------------------------*/
 .ui-autocomplete {
