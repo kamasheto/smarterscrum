@@ -1,20 +1,20 @@
 #{extends 'overLay.html'/}
 
-<h2 id="crudBlankTitle">Add a note to ${meeting.name}</h2>
+<h2 id="crudBlankTitle">Edit the meeting note</h2>
 	
 <div class="objectForm">
 
 <label for="object_name"> Note :</label> <br>
-<textArea id="note_field" type="text"  rows ="5" cols="52" ></textArea> 
+<textArea id="note_field" type="text"  rows ="5" cols="52" value="${n.description}" ></textArea> 
 <span class="crudHelp" style="color:red">*</span>
 </div>
 <p class="crudButtons">
-			<input type="button" value="Add note" onClick="add_note(${meeting.id})" />
+			<input type="button" value="Add note" onClick="edit_note(${n.id},${meeting.id})" />
 </p>
 
 <script type="text/javascript">
 
-function add_note(id)
+function edit_note(nid,mid)
 {
 	var text= $('#note_field').val();
 	if(text=="")
@@ -23,18 +23,18 @@ function add_note(id)
 	}
 	else
 	{
-		$.post('/Meetings/addNote',{id:id , note:text},
+		$.post('/Meetings/editTheNote',{noteId:nid , meetingId:mid , note:text},
 				function(flag)
 				{
 					if(flag)
 					{
-						window.parent.$.bar({message:'Note successfully added'});
+						window.parent.$.bar({message:'Note edited added'});
 						window.parent.$('#getOverlay').hide();
 						
 					}
 					else
 					{
-						window.parent.$.bar({message:'Error occurred while adding the note.'});
+						window.parent.$.bar({message:'Error occurred while editing the note.'});
 						window.parent.$('#getOverlay').hide();
 					}
 				})
