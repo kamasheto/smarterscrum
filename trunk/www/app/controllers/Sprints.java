@@ -223,7 +223,7 @@ public class Sprints extends SmartCRUD
 			int startmonth = Integer.parseInt( startdate[1] );
 			int startday = Integer.parseInt( startdate[2] );
 			startDate = new GregorianCalendar( startyear, startmonth - 1, startday ).getTime();
-
+			String today = new Date().toString();
 			if( params.get( "object.endDate" ).length() < 2 )
 			{
 				int defaultDays = proj.sprintDuration;
@@ -250,7 +250,7 @@ public class Sprints extends SmartCRUD
 				renderArgs.put( "error", "Sprint Start Date is after Sprint End Date" );
 				render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
 			}
-			else if( startDate.before( new Date() ) || endDate.before( new Date() ) )
+			else if( today.contains( object.startDate.toString() ) || today.contains( object.endDate.toString() ) )
 			{
 				renderArgs.put( "error", "Cant Create Sprint with Past Date" );
 				render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
@@ -273,17 +273,19 @@ public class Sprints extends SmartCRUD
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
-			// Logs.addLog( Security.getConnected(), "Create", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
+			// Logs.addLog( Security.getConnected(), "Create", "Sprint",
+			// object.id, proj, Calendar.getInstance().getTime() );
 			// redirect( "/show/project?id=" + projectId );
 			Application.overlayKiller( "reload('sprints')", "window.parent.$.bar({message:'Sprint created successfully'})" );
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
 		{
-			// Logs.addLog( Security.getConnected(), "Create", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
+			// Logs.addLog( Security.getConnected(), "Create", "Sprint",
+			// object.id, proj, Calendar.getInstance().getTime() );
 			redirect( "/sprints/projectblank?projectId=" + projectId );
 		}
-		
-		Log.addUserLog("Created sprint", object, proj);
+
+		Log.addUserLog( "Created sprint", object, proj );
 		String resourceURL = Router.getFullUrl("Application.externalOpen")+"?id="+proj.id+"&isOverlay=false&url=/sprints/showsprint?id="+object.id;
 		Notifications.notifyProjectUsers(proj, "setSprint", resourceURL, "Sprint", object.sprintNumber, (byte)0);
 		redirect( request.controller + ".show", object.getEntityId() );
@@ -339,9 +341,9 @@ public class Sprints extends SmartCRUD
 		Sprint sprint = Sprint.findById( id );
 		long projId = sprint.project.id;
 		Security.check( Security.getConnected().in( sprint.project ).can( "editSprint" ) );
-		// if( Security.getConnected().in( (Project) Project.findById( projId )
-		// ).can( "editSprint" ) )
-		// {
+		if( sprint.deleted )
+			notFound();
+		String today = new Date().toString();
 		Project proj = Project.findById( projId );
 		ObjectType type = ObjectType.get( getControllerClass() );
 		notFoundIfNull( type );
@@ -359,41 +361,85 @@ public class Sprints extends SmartCRUD
 				render( "CRUD/show.html", type, object );
 			}
 		}
-		if( object.endDate == null || object.startDate == null )
+		if( object.id == object.project.runningSprint() )
 		{
-			renderArgs.put( "error", "Please Enter Missing Dates" );
+			object.startDate = sprint.startDate;
+			if( object.ended )
+			{
+				object.endDate = new Date();
 
-			render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
-		}
-		else if( object.startDate.after( object.endDate ) )
-		{
-			renderArgs.put( "error", "Sprint Start Date is after Sprint End Date" );
+				object.Last = object.startDate;
+			}
+			else
+			{
+				if( object.endDate == null )
+				{
+					object.endDate = sprint.endDate;
+				}
+				if( object.startDate.after( object.endDate ) )
+				{
+					renderArgs.put( "error", "Sprint Start Date is after Sprint End Date" );
 
-			render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+					render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
 
-		}
-		else if( object.startDate.before( new Date() ) || object.endDate.before( new Date() ) )
-		{
-			renderArgs.put( "error", "Cant Create Sprint with Past Date" );
+				}
+				if( today.contains( object.startDate.toString() ) )
+				{
+					renderArgs.put( "error", "Cant Create Sprint with Past Date" );
 
-			render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
-		}
-		else if( (proj.inSprint( object.startDate, object.endDate )) )
-		{
-			renderArgs.put( "error", "Sprint is Overlapping with other Sprint time" );
-
-			render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+					render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+				}
+			}
 		}
 		else
 		{
-			object.save();
+			if( object.ended )
+			{
+				object.endDate = new Date();
+				object.Last = object.startDate;
+			}
+			else
+			{
+				if( object.endDate == null )
+				{
+					object.endDate = sprint.endDate;
+				}
+				if( object.startDate == null )
+				{
+					object.startDate = sprint.endDate;
+				}
+				if( object.startDate.after( object.endDate ) )
+				{
+					renderArgs.put( "error", "Sprint Start Date is after Sprint End Date" );
+
+					render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+
+				}
+				if( today.contains( object.startDate.toString() ) || today.contains( object.endDate.toString() ) )
+
+				{
+					renderArgs.put( "error", "Cant Create Sprint with Past Date" );
+
+					render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+				}
+				if( (proj.inSprint( object.startDate, object.endDate )) )
+				{
+					renderArgs.put( "error", "Sprint is Overlapping with other Sprint time" );
+
+					render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
+				}
+			}
 		}
+
+		object.save();
+
 		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
 
-			// Logs.addLog( Security.getConnected(), "Edit", "Sprint", object.id, proj, Calendar.getInstance().getTime() );
-			Log.addUserLog("Edited sprint", object, proj);
+			// Logs.addLog( Security.getConnected(), "Edit", "Sprint",
+			// object.id, proj, Calendar.getInstance().getTime() );
+			Log.addUserLog( "Edited sprint", object, proj );
 			// redirect( "/show/project?id=" + projId );
 			Application.overlayKiller( "reload('sprints', 'sprint-" + object.id + "')", "" );
 		}
