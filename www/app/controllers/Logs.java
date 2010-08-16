@@ -26,6 +26,7 @@ public class Logs extends SmartController {
 	
 	/**
 	 * Shows the log with its details
+	 * @param logId the log's id
 	 */
 	public static void view(long logId) {
 		Log log = Log.findById(logId);
