@@ -35,7 +35,7 @@
 					{what:true, hash:hash, id:id},
 					function()
 					{
-						$('#pinv_'+id).hide();
+						$('#pinv_'+id).text('* Invitation confirmed');
 					}					
 					);
 		else
@@ -43,7 +43,7 @@
 					{what:false, hash:hash, id:id},
 					function()
 					{
-						$('#pinv_'+id).hide();
+						$('#pinv_'+id).text('* Invitation declined');
 					}					
 					);		
 	}	

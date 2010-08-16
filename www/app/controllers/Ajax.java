@@ -81,6 +81,7 @@ public class Ajax extends SmartController
 		else
 		{
 			Project pro = Project.findById(projectId);
+			User user = Security.getConnected();
 			List<Invite> invs = Invite.findAll();
 			ArrayList<User> invitedUsers = new ArrayList<User>();
 			for(int i=0 ; i<invs.size(); i++)
@@ -90,7 +91,7 @@ public class Ajax extends SmartController
 			}
 			for (User u : User.find("byNameLikeAndDeleted",
 					"%" + query + "%", false).<User> fetch()) {
-				if(!u.projects.contains(pro) && !invitedUsers.contains(u))						
+				if(!user.equals(u) && !u.projects.contains(pro) && !invitedUsers.contains(u))						
 					result.add(new User.Object(u.id, u.name));
 			}
 		}
