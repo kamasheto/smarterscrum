@@ -998,7 +998,7 @@ public class Tasks extends SmartCRUD
 		long compId = 0;
 		if( task1.component != null )
 			compId = task1.component.id;
-		Update.update( task1.project, "drag_note_status(" + task1.taskSprint.id + "," + task1.assignee.id + "," + oldstatus + "," + newstatus + "," + compId + ")" );
+		Update.update( task1.project, "drag_note_status(" + task1.taskSprint.id + "," + task1.assignee.id + "," + oldstatus + "," + newstatus + "," + compId +"," + task1.id + ")");
 		String body = "";
 		String header = "Task: 'T" + task1.id + "\'" + " Task Status has been edited.";
 		if( userId == Security.getConnected().id )
@@ -1126,7 +1126,7 @@ public class Tasks extends SmartCRUD
 			compId = task1.component.id;
 		assignee.tasks.add( task1 );
 		assignee.save();
-		Update.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + oldassi + "," + newassi + "," + task1.taskStatus.id + "," + compId + ")" );
+		Update.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + oldassi + "," + newassi + ","+ task1.taskStatus.id+"," + compId + "," + task1.id +")" );
 		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 		Update.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 		String header = "Task: 'T" + task1.id + "\'" + " Assignee has been edited.";
