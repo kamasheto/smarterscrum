@@ -855,7 +855,7 @@ public class Tasks extends SmartCRUD
 	 *            Tthe user id.
 	 * @return void
 	 */
-	public static void changeTaskStatusHelper( long id, int columnSequence, String taskString, long user_id, long row, long oldcol )
+	public static void changeTaskStatusHelper( long id, int columnSequence, String taskString, long user_id, long cid)
 	{
 		if( user_id == 0 )
 		{
@@ -869,6 +869,9 @@ public class Tasks extends SmartCRUD
 		Project p = s.project;
 		// defining the board of the project
 		Board b = p.board;
+		Component component = null;
+		if (cid!=0)
+		component = Component.findById(cid);
 		// defining the status
 		TaskStatus status = new TaskStatus();
 		// defining the cols of the board only
@@ -882,7 +885,10 @@ public class Tasks extends SmartCRUD
 
 		// getting the actual status
 		Column col;
-		col = Column.find( "bySequenceAndBoard", columnSequence, b ).first();
+		if (cid==0)
+			col = Column.find( "bySequenceAndBoard", columnSequence, b ).first();
+		else
+			col = Column.find( "bySequenceAndBoard", columnSequence, component.componentBoard ).first();
 		status = col.taskStatus;
 
 		// get the actual task_id in an int
@@ -890,7 +896,7 @@ public class Tasks extends SmartCRUD
 		task_id_helper2 = task_id_helper[0].split( "-" );
 		task_id = Integer.parseInt( task_id_helper2[1] );
 
-		editTaskStatus( task_id, user_id, status, columnSequence, row, oldcol );
+		editTaskStatus( task_id, user_id, status);
 	}
 
 	/**
@@ -946,7 +952,7 @@ public class Tasks extends SmartCRUD
 	 *            The id of the user who will change the task status.
 	 * @return boolean
 	 */
-	public static boolean editTaskStatus( long id, long userId, TaskStatus newStatus, long newcol, long row, long oldcol )
+	public static boolean editTaskStatus( long id, long userId, TaskStatus newStatus)
 	{
 		Task task1 = Task.findById( id );
 		Security.check( Security.getConnected().in( task1.project ).can( "modifyTask" ) || task1.assignee == Security.getConnected() );
@@ -968,10 +974,14 @@ public class Tasks extends SmartCRUD
 			if( !permession )
 				return false;
 		}
-
+		long oldstatus = task1.taskStatus.id;
 		task1.taskStatus = newStatus;
 		task1.save();
-		Update.update( task1.project, "click_note(" + row + "," + oldcol + "," + newcol + "," + task1.taskSprint.id + "," + task1.id + ")" );
+		long newstatus = task1.taskStatus.id;
+		long compId = 0;
+		if(task1.component!=null)
+			compId = task1.component.id;
+		Update.update( task1.project, "drag_note_status(" + task1.taskSprint.id + "," + task1.assignee.id + "," + oldstatus + "," + newstatus + "," + compId + ")" );
 		String body = "";
 		String header = "Task: 'T" + task1.id + "\'" + " Task Status has been edited.";
 		if( userId == Security.getConnected().id )
@@ -1080,13 +1090,20 @@ public class Tasks extends SmartCRUD
 		if( !permession )
 			return false;
 		// String oldAssignee = task1.assignee.name;
+		
+		long oldassi = task1.assignee.id;
+		
 		task1.assignee = assignee;
 		task1.save();
+		
+		long newassi = task1.assignee.id;
+		
 		long compId = 0;
 		if(task1.component!=null)
 			compId = task1.component.id;
 		assignee.tasks.add( task1 );
 		assignee.save();
+		Update.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + oldassi + "," + newassi + ","+ task1.taskStatus.id+"," + compId + ")" );
 		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")" );
 		Update.update(task1.project.users,Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id+ "," + compId + ")");		
 		String header = "Task: 'T" + task1.id + "\'" + " Assignee has been edited.";
