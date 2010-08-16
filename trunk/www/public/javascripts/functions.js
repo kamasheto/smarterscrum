@@ -27,6 +27,28 @@ function reload_note_close(sid, taskId, compId)
 	if(compId!=0)
 	$('#theLoadedContent').contents().find('#task-'+taskId+'_T_'+compId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #task-'+taskId+'_T_'+compId);
 }
+function drag_note_status(sid, assigneeId, oldcol, newcol, compId)
+{
+	$('#theLoadedContent').contents().find('#'+oldcol+'_'+compId).load('/boards/loadboard1?sprintID='+sid+' #'+oldcol+'_'+compId);
+	$('#theLoadedContent').contents().find('#'+newcol+'_'+compId).load('/boards/loadboard1?sprintID='+sid+' #'+newcol+'_'+compId);
+	if (compId != 0) 
+	{
+		$('#theLoadedContent').contents().find('#'+oldcol+'_'+assigneeId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #'+oldcol+'_'+assigneeId);
+		$('#theLoadedContent').contents().find('#'+newcol+'_'+assigneeId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #'+newcol+'_'+assigneeId);
+	}
+}
+function drag_note_assignee(sid, oldassi, newassi, col, compId)
+{
+	if (compId != 0) 
+	{
+		$('#theLoadedContent').contents().find('#'+col+'_'+oldassi).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #'+col+'_'+oldassi);
+		$('#theLoadedContent').contents().find('#'+col+'_'+newassi).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #'+col+'_'+newassi);
+	}
+}
+function drag_note_assignee(oldcol, newcol, oldassi, newassi)
+{
+	
+}
 function request_accept( id, hash )
 {
 	$.post('/requests/requestAccept' ,

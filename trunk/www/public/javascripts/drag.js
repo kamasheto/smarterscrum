@@ -18,15 +18,28 @@ Apr 30, 2010.
 // create REDIPS namespace
 var REDIPS = {};
 
-function click_note(row, oldcol, newcol, sid, taskId)
-{
-	$('#theLoadedContent').contents().find('#'+row+'_'+newcol).load('/boards/loadboard1?sprintID='+sid+' #'+row+'_'+newcol);
-	$('#theLoadedContent').contents().find('#'+row+'_'+oldcol).load('/boards/loadboard1?sprintID='+sid+' #'+row+'_'+oldcol);
+/*
+function click_note(row, oldcol, newcol, sid, taskId){
+		
+//		$('#theLoadedContent').contents().find('#'+row+'_'+newcol).load('/boards/loadboard1?sprintID='+sid+' #'+row+'_'+newcol);
+//		$('#theLoadedContent').contents().find('#'+row+'_'+oldcol).load('/boards/loadboard1?sprintID='+sid+' #'+row+'_'+oldcol);
+		
+		$('#theLoadedContent').contents().find('#'+row+'_'+newcol).load('/boards/loadboard1?sprintID='+sid+' #'+row+'_'+newcol);
+		
+		$('#theLoadedContent').contents().find('#'+row+'_'+oldcol).load('/boards/loadboard1?sprintID='+sid+' #'+row+'_'+oldcol);
+		
+
+//	var dina = $('#theLoadedContent').contents().find($('#1_0').contents());
+		//$('#theLoadedContent').contents().find('#'+row+'_'+newcol).load('/boards/loadboard1?sprintID='+sid+' '+dina.length);
+
+	//	$('#theLoadedContent').contents().find($('#'+row+'_'+newcol).contents()).load('/boards/loadboard1?sprintID='+sid);
+	//	$('#theLoadedContent').contents().find($('#'+row+'_'+oldcol).contents()).load('/boards/loadboard1?sprintID='+sid);
+
+	
+//	var children = ($('#theLoadedContent').contents()).getElementById('1_0').childNodes;
+//	alert(children.length);
 }
-//function remove_note(taskId)
-//{
-//	$('#theLoadedContent').contents().find('#task-'+taskId+'_T').remove();
-//}
+*/
 REDIPS.drag = (function () {
 		// function declaration
 	var	init,					// initialization
@@ -403,13 +416,8 @@ REDIPS.drag = (function () {
 
 		//checking if the row it came from is the same as the one it went to and in different cell
 		if(row_source==row&&cell_source!=cell){
-	//		alert((row_source/2)-1);
-	//	alert(oldPos);
-	//	alert(cell-1);
-	//	alert(obj.id);
-		//$('#'+obj.id).remove();
 		$.post('/Tasks/changeTaskStatusHelper' ,			
-			{id:gup('sprintID'),columnSequence:cell-1, taskString:obj.id,user_id:selectedUser, row:(row_source/2), oldcol:oldPos}
+			{id:gup('sprintID'),columnSequence:cell-1, taskString:obj.id,user_id:selectedUser, cid:gup('componentID')}
 		);
 		}
 		else if (row_source!=row && gup('componentID')==0)
@@ -418,15 +426,15 @@ REDIPS.drag = (function () {
 		}
 		else if(row_source!=row &&cell_source!=cell && gup('componentID')!=0)
 		{
-			
 			$.post('/Tasks/changeTaskStatusHelper' ,			
-					{id:gup('sprintID'),columnSequence:cell-1, taskString:obj.id,user_id:selectedUser});
+					{id:gup('sprintID'),columnSequence:cell-1, taskString:obj.id,user_id:selectedUser, cid:gup('componentID')});
 			$.post('/Tasks/changeTaskAssigneeHelper' ,			
 					{id:gup('componentID'),taskString:obj.id, user_id:selectedUser,row:(row/2)-1});
 			
 		}
 		else if (row_source!=row && gup('componentID')!=0)
 		{
+			alert(row/2);
 			$.post('/Tasks/changeTaskAssigneeHelper' ,			
 					{id:gup('componentID'),taskString:obj.id, user_id:selectedUser,row:(row/2)-1});
 			

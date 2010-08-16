@@ -162,8 +162,6 @@ REDIPS.drag.init();
 	#{/list}
 </tr>
 
-#{set count2 = 0}
-#{/set}
 #{list items:data, as:'component'}  
 #{if component!=null} 
 <tr id="com-${component.id}_hidden" style="display:none;" > <!-- empty rows of the board -->
@@ -183,7 +181,7 @@ REDIPS.drag.init();
 	#{set count=0}
 	#{/set}
 	#{list items:component, as:'col'}
-	<td width="50px" class="col_${count}" id="${count2}_${count}">  <!--filling cells in each row with tasks -->
+	<td width="50px" class="col_${count}" id="${columnsOfBoard[count].taskStatus.id}_${component.id}">  <!--filling cells in each row with tasks -->
 		#{set count=count+1}
 		#{/set}
 		#{list items:col, as:'task'}
@@ -284,14 +282,11 @@ REDIPS.drag.init();
 	#{/list}
 </tr>
 #{/if}
-#{set count2=count2+1}
-#{/set}
 #{/list}
 </table>
 </div>
 
 <script type="text/javascript">
-
 var selectedUser = 0;
 var col_from = -1;
 var col_to = -1;
