@@ -603,6 +603,19 @@ function deleteTheTask(tId, box){
 	}
 }
 
+function delete_meetingNote(nid,mid)
+{
+	if(confirm("delete this note?"))
+		$.post('/meetings/deleteTheNote',{noteId: nid , meetingId:mid},
+				function(flag)
+				{
+					if(flag)
+						{
+						$.bar({message: 'note deleted succesfully.'});
+						}
+				})
+}
+
 function set_attended(id)
 {
 	if(confirm("change status to attended??"))

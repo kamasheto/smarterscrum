@@ -85,6 +85,7 @@ public class Meetings extends SmartCRUD
 		}
 		M.endTime += 1000 * 60 * 60;
 		M.save();
+		Log.addUserLog( "Extend meeting", M, M.project );
 	}
 
 	/**
@@ -217,13 +218,19 @@ public class Meetings extends SmartCRUD
 		}
 
 		object.save();
+		boolean attending = false;
 		if( params.get( "attending" ) != null )
 		{
 			MeetingAttendance ma = new MeetingAttendance( temp.creator, temp );
 			ma.status = "confirmed";
 			ma.save();
+			attending = true;
 		}
 		Log.addUserLog( "Created meeting", temp, temp.project );
+		if( attending )
+		{
+			Log.addUserLog( "Confirmed attendance to meeting", temp, temp.project );
+		}
 		// Logs.addLog( Security.getConnected(), "create", "Meeting", temp.id,
 		// temp.project, new Date( System.currentTimeMillis() ) );
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
@@ -381,7 +388,7 @@ public class Meetings extends SmartCRUD
 		// hossam();
 		// mina();
 		Meeting meeting = Meeting.findById( id );
-		Security.check( Security.getConnected().in( meeting.project ).can( "manageMeetingAssociations" ) || Security.getConnected().equals( meeting.creator ) );
+		Security.check( Security.getConnected().in( meeting.project ).can( "editMeeting" ) || Security.getConnected().equals( meeting.creator ) );
 		List<Artifact> temp = Artifact.findAll();
 		List<Artifact> artifacts = new ArrayList<Artifact>();
 		for( int i = 0; i < temp.size(); i++ )
@@ -439,6 +446,7 @@ public class Meetings extends SmartCRUD
 		temp.meeting.add( meeting );
 		meeting.save();
 		temp.save();
+		Log.addUserLog( "Added task to meeting", temp, meeting, meeting.project );
 		Update.update( meeting.project, "reload('meetingTasks-" + id + "')" );
 		renderText( "Task assigned to meeting successfully" );
 	}
@@ -568,12 +576,9 @@ public class Meetings extends SmartCRUD
 		{
 			artifacts.remove( 0 );
 		}
-		Log.addUserLog( "Deleted meeting", meeting, meeting.project );
-		// Logs.addLog( Security.getConnected(), "delete", "Meeting",
-		// meeting.id, meeting.project, new Date( System.currentTimeMillis() )
-		// );
-		meeting.save();
 
+		meeting.save();
+		Log.addUserLog( "Deleted meeting", meeting, meeting.project );
 		Update.update( meeting.project, "reload('meetings-" + meeting.project.id + "', 'meeting-" + meeting.id + "')" );
 	}
 
@@ -588,7 +593,7 @@ public class Meetings extends SmartCRUD
 	public static void inviteUser( long meetingID, long userID )
 	{
 		Meeting currentMeeting = Meeting.findById( meetingID );
-		Security.check( Security.getConnected().in( currentMeeting.project ).can( "manageMeetingAssociations" ) || Security.getConnected().equals( currentMeeting.creator ) );
+		Security.check( Security.getConnected().in( currentMeeting.project ).can( "editMeeting" ) || Security.getConnected().equals( currentMeeting.creator ) );
 		User invitedUser = User.findById( userID );
 		if( currentMeeting.endTime > new Date().getTime() )
 		{
@@ -597,17 +602,19 @@ public class Meetings extends SmartCRUD
 				MeetingAttendance attendance = new MeetingAttendance( invitedUser, currentMeeting );
 				attendance.save();
 				String meetingHash = attendance.meetingHash;
-				String confirmURL = "http://localhost:9000/meetingAttendances/confirm?meetingHash=" + meetingHash;
-				String declineURL = "http://localhost:9000/meetingAttendances/decline?meetingHash=" + meetingHash;
+				String confirmURL = Router.getFullUrl( "MeetingAttendances.confirm" ) + "?meetingHash=" + meetingHash;
+				String declineURL = Router.getFullUrl( "MeetingAttendances.decline" ) + "?meetingHash=" + meetingHash;
 				String meetingURL = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + attendance.meeting.project.id + "&isOverlay=false&url=/meetings/viewMeeting?id=" + attendance.meeting.id;
 				Notifications.invite( invitedUser, meetingURL, attendance.meeting.name, confirmURL, declineURL, attendance.meeting.project, true );
 				if( !invitedUser.equals( Security.getConnected() ) )
 				{
+					Log.addUserLog( "invited user to meeting", attendance.user, attendance.meeting, attendance.meeting.project );
 					Update.update( attendance.meeting.project, "reload('meetingAttendees-" + currentMeeting.id + "')" );
 					renderText( "User invited to meeting successfully." );
 				}
 				else
 				{
+					Log.addUserLog( "invited him/herself to meeting", attendance.meeting, attendance.meeting.project );
 					Update.update( attendance.meeting.project, "reload('meetingAttendees-" + currentMeeting.id + "', 'meetings-" + currentMeeting.project.id + "', 'meeting-" + currentMeeting.id + "')" );
 					renderText( "you are invited to the meeting successfully." );
 				}
@@ -636,7 +643,7 @@ public class Meetings extends SmartCRUD
 	{
 		Meeting meeting = Meeting.findById( meetingID );
 		List<User> projectMembers = meeting.project.users;
-		Security.check( Security.getConnected().in( meeting.project ).can( "manageMeetingAssociations" ) || Security.getConnected().equals( meeting.creator ) );
+		Security.check( Security.getConnected().in( meeting.project ).can( "editMeeting" ) || Security.getConnected().equals( meeting.creator ) );
 		for( User invitedUser : projectMembers )
 		{
 			if( invitedUser.deleted == false )
@@ -658,6 +665,7 @@ public class Meetings extends SmartCRUD
 			meeting.components.add( c );
 			meeting.save();
 		}
+		Log.addUserLog( "Invited all users in project to meeting", meeting, meeting.project );
 		Update.update( meeting.project, "reload('meeting-" + meetingID + "' , 'meetings-" + meeting.project.id + "' , 'meetingAttendees-" + meeting.id + "')" );
 		renderText( "Users invited successfully" );
 	}
@@ -676,7 +684,7 @@ public class Meetings extends SmartCRUD
 		Meeting meeting = Meeting.findById( meetingID );
 		Component component = Component.findById( componentID );
 
-		Security.check( Security.getConnected().in( meeting.project ).can( "manageMeetingAssociations" ) || Security.getConnected().equals( meeting.creator ) );
+		Security.check( Security.getConnected().in( meeting.project ).can( "editMeeting" ) || Security.getConnected().equals( meeting.creator ) );
 		if( meeting.endTime > new Date().getTime() )
 		{
 			if( !component.deleted )
@@ -706,6 +714,7 @@ public class Meetings extends SmartCRUD
 				}
 				meeting.components.add( component );
 				meeting.save();
+				Log.addUserLog( "Invited component to meeting", component, meeting, meeting.project );
 				Update.update( meeting.project, "reload('meetingAttendees-" + meeting.id + "')" );
 				renderText( "All Component Users are invited successfully" );
 			}
@@ -783,11 +792,13 @@ public class Meetings extends SmartCRUD
 	{
 
 		Meeting meeting = Meeting.findById( id );
-		Security.check( meeting.project, "addNote" );
+		Security.check( Security.getConnected().in( meeting.project ).can( "editMeeting" ) || Security.getConnected().meetingStatus( meeting.id ).equals( "confirmed" ) );
 		Artifact n = new Artifact( "Notes", note );
 		n.save();
 		meeting.artifacts.add( n );
 		meeting.save();
+		Log.addUserLog( "Added a note to a meeting", n, meeting, meeting.project );
+		Update.update( meeting.project, "reload('meetingNotes-" + meeting.id + "')" );
 		renderJSON( true );
 
 	}
@@ -806,16 +817,76 @@ public class Meetings extends SmartCRUD
 	}
 
 	/**
+	 * render the view of editing the meeting note
+	 * 
+	 * @param noteId
+	 *            the note id
+	 * @param meetingId
+	 *            the meeting id
+	 */
+	public static void editNote( long noteId, long meetingId )
+	{
+		Artifact n = Artifact.findById( noteId );
+		Meeting meeting = Meeting.findById( meetingId );
+		render( n, meeting );
+
+	}
+
+	/**
+	 * edit a note in a meeting
+	 * 
+	 * @param noteId
+	 *            the id of the note
+	 * @param meetingId
+	 *            the id of the meeting
+	 * @param note
+	 *            the new note descirption
+	 */
+	public static void editTheNote( long noteId, long meetingId, String note )
+	{
+		Artifact n = Artifact.findById( noteId );
+		Meeting meeting = Meeting.findById( meetingId );
+		Security.check( Security.getConnected().in( meeting.project ).can( "editMeeting" ) || Security.getConnected().meetingStatus( meeting.id ).equals( "confirmed" ) );
+		n.description = note;
+		n.save();
+		Log.addUserLog( "edited a note in a meeting", n, meeting, meeting.project );
+		Update.update( meeting.project, "reload('meetingNotes-" + meeting.id + "','meetingNote-" + n.id + "')" );
+		renderJSON( true );
+
+	}
+
+	/**
+	 * delete the meeting note
+	 * 
+	 * @param noteId
+	 *            the id of the note
+	 * @param meetingId
+	 *            the id of the meeting
+	 */
+	public static void deleteTheNote( long noteId, long meetingId )
+	{
+		Artifact n = Artifact.findById( noteId );
+		Meeting meeting = Meeting.findById( meetingId );
+		Security.check( Security.getConnected().in( meeting.project ).can( "editMeeting" ) );
+		n.deleted = true;
+		n.save();
+		Log.addUserLog( "deleted a note in a meeting", n, meeting, meeting.project );
+		Update.update( meeting.project, "reload('meetingNotes-" + meeting.id + "','meetingNote-" + n.id + "')" );
+		renderJSON( true );
+	}
+
+	/**
 	 * Renders a note.
 	 * 
 	 * @author Hadeer Younis
 	 * @param id
 	 *            , note id
 	 */
-	public static void note( long id, int i, boolean noteFlag )
+	public static void note( long meetingId, long noteId, int i, boolean noteFlag )
 	{
-		Artifact note = Artifact.findById( id );
-		render( note, i, noteFlag );
+		Meeting meeting = Meeting.findById( meetingId );
+		Artifact note = Artifact.findById( noteId );
+		render( meeting, note, i, noteFlag );
 	}
 
 	/**
@@ -839,7 +910,7 @@ public class Meetings extends SmartCRUD
 		}
 
 		User theUser = Security.getConnected();
-		if( (theUser.meetingStatus( id ).equals( "confirmed" )) && (myMeeting.endTime > longCurrentDate) )
+		if( (theUser.meetingStatus( id ).equals( "confirmed" )) || theUser.in( myMeeting.project ).can( "editMeeting" ) )
 			noteFlag = true;
 
 		render( noteFlag, notes, id, myMeeting );
@@ -875,10 +946,11 @@ public class Meetings extends SmartCRUD
 					// Update.update( Security.getConnected(),
 					// "reload('meetingAttendees-" + m.id + "','meeting-" +
 					// m.project.id + "')" );
+
 					attendance.status = "confirmed";
 					attendance.save();
 				}
-
+				Log.addUserLog( "Join a meeting", m, m.project );
 				flash.success( "You have succesfully joined meeting " + m.name );
 				renderJSON( true );
 			}

@@ -1,74 +1,12 @@
-#{extends 'CRUD/layout.html' /}
-
-#{set 'crumbs'}
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${attendance.meeting.project.id}">${attendance.meeting.project.name}</a></li>
-<li><a href="/projects/${attendance.meeting.project.id}/meetings"> Meetings and Events</a> </li>
-<li><a href="/meetings/${attendance.meeting.id}"> ${attendance.meeting.name}</a></li>
-
-#{/set}
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Decline</title>
-</head>
-<body>
-
-#{if isUser}
-#{if notYet}
-
-#{if !setbefore}
-<div>
-You have declined the invitations to the ${attendance.meeting.name} meeting !
-
-<br>
-
-Please enter the excuse :
-
-<TextArea id="excuse" type="text" value="" rows="5" cols="50"> </TextArea>
-
-<button onClick="setExcuse()" >submit</button>
-
-</div>
-#{/if}
-
-#{if setbefore}
-you've decided your status before
-#{/if}
-
-#{/if}
-
-#{if !notYet}
-
-Unfortunately the meeting is over.
-#{/if}
-
-#{/if}
-
-#{ if !isUser}
-You are not allowed to view this page
-#{/if}
-
-</body>
-</html>
-
-<script>
-
-function setExcuse()
-{
-	var meetingHash = "${attendance.meetingHash}" ;
-	var excuse= $('#excuse').val();
-	$.post('@{setExcuse()}',{meetingHash:meetingHash,excuse:excuse},function(){
-		window.location="/projects/${attendance.meeting.project.id}/meetings"
-	});	
-
-
-
-
-
-
-}
-
+#{extends 'main.html' /}
+#{set title:'Home' /}
+#{set 'moreScripts'}
+<script type="text/javascript">
+ 		$(function(){
+ 			showProjectWorkspace(${pId});
+ 			loadBox('${url}','workspace-${pId}','');	
+ 			decline_me(${mId});
+ 			
+ 		});
 </script>
+#{/set}
