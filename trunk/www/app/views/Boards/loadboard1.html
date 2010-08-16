@@ -181,7 +181,7 @@ REDIPS.drag.init();
 	#{set count=0}
 	#{/set}
 	#{list items:component, as:'col'}
-	<td width="50px" class="col_${count}" id="${columnsOfBoard[count].taskStatus.id}_${component.id}">  <!--filling cells in each row with tasks -->
+	<td width="50px" class="col_${count}" id="${columnsOfBoard[count].taskStatus.id}_${component.id}_${compID}">  <!--filling cells in each row with tasks -->
 		#{set count=count+1}
 		#{/set}
 		#{list items:col, as:'task'}
