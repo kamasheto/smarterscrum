@@ -704,13 +704,13 @@ img {
 	float: right
 }
 
-body,html,.workspace {
+.workspace {
 	width: 100%;
 	height: 100%;
 }
 
-body {
-	overflow: auto
+body,html {
+	overflow: auto !important;
 }
 
 .workspaceDraggables {
@@ -3003,12 +3003,14 @@ a.jbar-cross:hover {
 	width: 100%;
 	overflow: hidden;
 	z-index: 987654;
+	overflow:auto;
 }
 
 #overlayContentHolder {
 	display: table-cell;
 	vertical-align: middle;
 	margin: auto;
+	overflow:auto;
 }
 
 .transparentOverlay {
