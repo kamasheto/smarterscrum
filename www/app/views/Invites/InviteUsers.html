@@ -52,23 +52,15 @@ function user_invited(uid, name, pid)
 {
 	var str = '<div id="invuser_'+uid+'"><a title = "remove" onclick ="javascript: undo_inv('+uid+',\''+name+'\');"><img src="/public/images/famfam/remove.png"/></a>&nbsp;<font size="2">'+name+'</font>&nbsp;&nbsp;<a title = "specify role ?" href="#" onclick ="javascript: $(\'#selectrole_'+uid+'\').slideToggle(200);"><img src="/public/images/famfam/toggle-open.gif"/></a> <form id="selectrole_'+uid+'" style = "display:none">';
 	$.post("@{Invites.getProjectRoles()}", {id:pid},
-			function(data){			
-			var count= 0;
-			$.each(data, function(id,item){								
-					count++;
-					if(!item.baseRole){						
-						str += '<input type="radio" name="group_'+uid+'" value="'+item.id+'"/>'+item.name;
-						
-					}
-					else{
-						str += '<input type="radio" name="group_'+uid+'" value="'+item.id+'" checked/>'+item.name;
-						
-					}
-					if(count%4==0)
-						str +='<br/>';
+			function(data){
+			$.each(data, function(id,item){
+					if(!item.baseRole)
+						str += '<input type="radio" name="group_'+uid+'" value="'+item.id+'"/>'+item.name+'<br/>';					
+					else
+						str += '<input type="radio" name="group_'+uid+'" value="'+item.id+'" checked/>'+item.name+'<br/>';
 				});
 
-			str+= "</form></div><br/>";
+			str+= "</form></div>";
 			$('#resuser_'+uid).hide();
 			$('#noinv').hide();
 			$('#sendinv').show();
