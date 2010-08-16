@@ -97,7 +97,7 @@
 	#{if p!=null && project.users.size()>0}
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_assignee">Assignee</label>
-	<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers();">
+	<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers(${project.id});">
 	<option value="">None</option>
 	#{list items:project.users ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
@@ -108,7 +108,7 @@
 	
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_assignee">Assignee</label>
-	<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers();">
+	<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers(${project.id});">
 	<option value="">None</option>
 	#{list items:component.componentUsers ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
@@ -118,7 +118,7 @@
 	#{elseif task!=null && task.component.componentUsers.size()>0}
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_assignee">Assignee</label>
-	<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers();">
+	<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers(${project.id});">
 	<option value="">None</option>
 	#{list items:task.component.componentUsers ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
@@ -270,16 +270,16 @@ function getUsers()
 	}); 
     
 }
-function change_reviewers(){
+function change_reviewers(projId){
     var value = $('#object_component').val();
-	var value2 = $('#object_assignee').val(); 
-    $.post('@{reviewers}', {id:value, id2 : value2}, function(data){
+	var value2 = $('#object_assignee').val();
+	var compId = $('#object_component').val();
+    $.post('@{reviewers}', {id:value, id2 : value2, compId: compId, projId:projId}, function(data){
 		str = '<option value="">(None)</option>';
 		$.each(data, function(id, item){
 			str += '<option value='+item.id+'>'+item.name+'</option>';
 		});
 		$('#object_reviewer').html( str );
-	}); 
-    
-	}
+	});
+    }
 </script>

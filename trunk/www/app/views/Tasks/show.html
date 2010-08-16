@@ -116,7 +116,7 @@
 			#{crud.custom 'assignee'}
 			<p>
 			<label for="object_assignee">Assignee</label>
-			<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers(${object.id});">
+			<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers(${object.project.id});">
 					<option value="">(None)</option>
 					#{list items:users ,as :'User'}
 					<option value="${User.id}"#{if object.assignee == User} selected#{/if}>${User.name}</option>
@@ -224,11 +224,11 @@
 			description:$("#example").val()});
 	} 
 
-	function change_reviewers(taskId){
+	function change_reviewers(projId){
     var value = $('#object_component').val();
 	var value2 = $('#object_assignee').val();
 	var compId = $('#object_component').val();
-    $.post('@{reviewers}', {id:value, id2 : value2, compId: compId, taskId:taskId}, function(data){
+    $.post('@{reviewers}', {id:value, id2 : value2, compId: compId, projId:projId}, function(data){
 		str = '<option value="">(None)</option>';
 		$.each(data, function(id, item){
 			str += '<option value='+item.id+'>'+item.name+'</option>';
