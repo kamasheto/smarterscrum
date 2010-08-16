@@ -104,7 +104,9 @@ public class Notifications extends Mailer{
 			{
 				if(unps.get(i).checkAction(actionType) && !(unps.get(i).user.equals(Security.getConnected())))
 				{
-					new Notification(unps.get(i).user, user, actionType2, resourceURL, resourceType, resourceName, importance).save();
+					Notification n = new Notification(unps.get(i).user, user, actionType2, resourceURL, resourceType, resourceName, importance).save();
+					n.project=project;
+					n.save();
 					if(unps.get(i).user.enableEmails)
 						addRecipient(unps.get(i).user.email);
 				}
