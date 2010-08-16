@@ -279,8 +279,22 @@ public class Application extends SmartController
 	public static void showNotifications()
 	{
 		User user = Security.getConnected();
+		boolean emailing = user.enableEmails;
 		List<Notification> notifications = Notification.find( "receiver =" + user.id + " order by id desc" ).fetch();
-		render( notifications );
+		render( notifications , emailing);
+	}
+	/**
+	 * perform the action of choosing the option whether to receive emails or not
+	 * @param enable : 0 if to stop 1 for enabling 
+	 */
+	public static void modifyEmailing(int enable)
+	{
+		User user = Security.getConnected();		
+		if(enable==1)
+			user.enableEmails=true;
+		else
+			user.enableEmails=false;
+		user.save();		
 	}
 	public static void showEvents(){
 		Date x = new Date();
