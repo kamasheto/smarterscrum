@@ -217,7 +217,7 @@ public class User extends SmartModel {
 		this.pwdHash = Application.hash(password);
 		this.avatar = "";
 		this.activationHash = Application.randomHash(32);
-
+		this.enableEmails = true;
 		openChats = new ArrayList<ChatRoom>();
 	}
 
