@@ -22,7 +22,11 @@ public class Notifications extends Mailer{
 	{
 		User actionPerformer = Security.getConnected();
 		if(meeting)
-			new Notification(user, actionPerformer, "invited", objectURL, "you to the meeting", objectName, (byte)0).save();
+			{
+				Notification n = new Notification(user, actionPerformer, "invited", objectURL, "you to the meeting", objectName, (byte)0).save();
+				n.project=project;
+				n.save();
+			}
 		else
 			new Notification(user, actionPerformer, "Invited", objectURL, "you to the project", project.name, (byte)0).save();
 		
