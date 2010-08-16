@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import notifiers.Notifications;
+
 import models.Component;
 import models.Meeting;
 import models.Project;
@@ -16,6 +18,7 @@ import models.Log;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
+import play.mvc.Router;
 import play.mvc.With;
 
 /**
@@ -281,6 +284,8 @@ public class Sprints extends SmartCRUD
 		}
 		
 		Log.addUserLog("Created sprint", object, proj);
+		String resourceURL = Router.getFullUrl("Application.externalOpen")+"?id="+proj.id+"&isOverlay=false&url=/sprints/showsprint?id="+object.id;
+		Notifications.notifyProjectUsers(proj, "setSprint", resourceURL, "Sprint", object.sprintNumber, (byte)0);
 		redirect( request.controller + ".show", object.getEntityId() );
 	}
 
