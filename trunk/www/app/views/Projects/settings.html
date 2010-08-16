@@ -21,7 +21,7 @@
 	<div name="/admin/projects/${project.id}" class="overlay ">Project Settings</div>
 #{/if}
 #{if connected.in(project).can('manageLogs')}
-	<div name="/logs/list?projectId=${project.id}" class="overlay">Manage Logs</div>
+	<div name="/logs/view?projectId=${project.id}" class="overlay">Manage Logs</div>
 #{/if}
 #{if connected.projects.contains(project)}
 	<div name="/projects/projectDeletionRequest?id=${project.id}" class="overlay ">Request to be deleted from the project</div>

@@ -1,13 +1,31 @@
-#{extends 'magicBox.html' /}
-#{set title: log.message /}
-#{note}
-	${log.message}
-#{/note}
-<ul>
-	#{list items:logInfo, as:'info'}
-		<li>${info.label}: <span>${log.get(info.clazz)?:''}</span></li>
-	#{/list}
-</ul>
+#{extends 'overlay.html' /}
+<table id="logs" class="pretty_big">
+	<tbody>
+	</tbody>
+</table>
+<input type="text" id="search_query">
+<style type="text/css" media="screen">
+	.pretty_big th {
+		padding:15px;
+	}
+	.pretty_big td {
+		font-size:20px;
+	}
+</style>
 <script type="text/javascript" charset="utf-8">
-	$('li:has(span:empty)').remove()
+	$(function() {
+		search_logs();
+	})
+	function search_logs() {
+		body = $('#logs tbody')
+		body.empty()
+		body.append('<tr><td><center><img src="/public/images/loading.gif"></center></td></tr>')
+		// return
+		$.post('/logs/list', {projectId: ${project.id}, filter: $('#search_query').text(), page: 0}, function(logs){
+			body.empty()
+			$(logs).each(function() {
+				body.append('<tr><td>'+this.message+'</td></tr>')
+			})
+		})
+	}
 </script>

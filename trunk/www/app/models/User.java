@@ -142,6 +142,7 @@ public class User extends SmartModel {
 	 */
 
 	public User () {
+		this.avatar = "";
 		roles = new ArrayList<Role>();
 		openChats = new ArrayList<ChatRoom>();
 		attendantusers = new ArrayList<MeetingAttendance>();
@@ -152,6 +153,8 @@ public class User extends SmartModel {
 		userNotificationProfiles = new ArrayList<UserNotificationProfile>();
 		notifications = new ArrayList<Notification>();
 		requests = new ArrayList<Request>();
+		this.enableEmails = true;
+		this.activationHash = Application.randomHash(32);
 	}
 
 	/**
@@ -172,29 +175,6 @@ public class User extends SmartModel {
 		this(name, email, pass);
 		this.avatar = avatar;
 		this.isAdmin = isAdmin;
-		this.activationHash = Application.randomHash(32);
-
-		openChats = new ArrayList<ChatRoom>();
-	}
-
-	/**
-	 * method to set the picture of the user giving it a URL
-	 * 
-	 * @param avatar
-	 *            given a String will be stored as string
-	 */
-	public void setAvatar(String avatar) {
-		this.avatar = avatar.toString();
-	}
-
-	/**
-	 * this method returns a list of the project related to a certain user
-	 * requested by C1S24, C5S1
-	 * 
-	 * @return : List of user's projects
-	 */
-	public List<Project> getProjects() {
-		return projects;
 	}
 
 	/**
@@ -215,10 +195,26 @@ public class User extends SmartModel {
 		this.name = name;
 		this.email = email.toLowerCase();
 		this.pwdHash = Application.hash(password);
-		this.avatar = "";
-		this.activationHash = Application.randomHash(32);
-		this.enableEmails = true;
-		openChats = new ArrayList<ChatRoom>();
+	}
+
+	/**
+	 * method to set the picture of the user giving it a URL
+	 * 
+	 * @param avatar
+	 *            given a String will be stored as string
+	 */
+	public void setAvatar(String avatar) {
+		this.avatar = avatar.toString();
+	}
+
+	/**
+	 * this method returns a list of the project related to a certain user
+	 * requested by C1S24, C5S1
+	 * 
+	 * @return : List of user's projects
+	 */
+	public List<Project> getProjects() {
+		return projects;
 	}
 
 	/**

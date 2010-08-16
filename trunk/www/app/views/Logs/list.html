@@ -1,7 +1,0 @@
-#{extends 'magicBox.html' /}
-#{set title: project.name + ' logs' /}
-#{list items:logs, as:'log'}
-	<div name="/logs/view?logId=${log.id}">
-		${log.message}
-	</div>
-#{/list}
