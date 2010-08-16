@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import models.Log;
 import models.Meeting;
 import models.MeetingAttendance;
 import models.Project;
 import models.Update;
 import models.User;
-import models.Log;
 import notifiers.Notifications;
 import play.mvc.Router;
 import play.mvc.With;
@@ -33,27 +33,35 @@ public class MeetingAttendances extends SmartController
 	public static void confirm( String meetingHash )
 	{
 		MeetingAttendance attendance = MeetingAttendance.find( "byMeetingHashAndDeleted", meetingHash, false ).first();
-		String status = attendance.status;
-		Date currentDate = new Date();
-		Date tempStart = new Date( attendance.meeting.endTime );
-		boolean notYet = tempStart.after( currentDate );
-		boolean setbefore = false;
-		User user = Security.getConnected();
-		boolean isUser = false;
-		if( user.id == attendance.user.id )
-			isUser = true;
-		if( !status.equals( "waiting" ) )
+		if( attendance == null )
+			notFound();
+		if( !attendance.user.equals( Security.getConnected() ) )
 		{
-			setbefore = true;
-			attendance.save();
-			render( attendance, setbefore, notYet, isUser );
+			forbidden();
 		}
-		attendance.status = "confirmed";
-		// Logs.addLog( Security.getConnected(), "confirm", "Meeting invitation", attendance.id, attendance.meeting.project, new Date( System.currentTimeMillis() ) );
-		Log.addUserLog("Confirmed meeting invitation", attendance, attendance.meeting, attendance.meeting.project);
-		attendance.save();
-		render( attendance, setbefore, notYet, isUser );
+		if( attendance.status.equals( "waiting" ) )
+		{
+			if( attendance.meeting.endTime > new Date().getTime() )
+			{
+				attendance.status = "confirmed";
+				attendance.reason = "";
+				attendance.save();
+				flash.success( "You accepted the invitation" );
+				Log.addUserLog( "Confirmed meeting invitation", attendance, attendance.meeting, attendance.meeting.project );
+				Update.update( attendance.meeting.project.users, Security.getConnected(), "reload('meeting-" + attendance.meeting.id + "')" );
+			}
+			else
+			{
+				flash.error( "Meeting has already ended." );
+			}
+		}
+		else
+		{
+			flash.error( "You have already cofirmed/declined this invitation" );
+		}
 
+		String meetingURL = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + attendance.meeting.project.id + "&isOverlay=false&url=/meetings/viewMeeting?id=" + attendance.meeting.id;
+		redirect( meetingURL );
 	}
 
 	/**
@@ -71,61 +79,32 @@ public class MeetingAttendances extends SmartController
 	public static void decline( String meetingHash )
 	{
 		MeetingAttendance attendance = MeetingAttendance.find( "byMeetingHash", meetingHash ).first();
-		String status = attendance.status;
-		Date currentDate = new Date();
-		Date tempStart = new Date( attendance.meeting.endTime );
-		boolean notYet = tempStart.after( currentDate );
-		boolean setbefore = false;
-		User user = Security.getConnected();
-		boolean isUser = false;
-
-		if( user.id == attendance.user.id )
-			isUser = true;
-
-		if( !status.equals( "waiting" ) )
+		if( attendance == null )
+			notFound();
+		String meetingURL = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + attendance.meeting.project.id + "&isOverlay=false&url=/meetings/viewMeeting?id=" + attendance.meeting.id;
+		if( !attendance.user.equals( Security.getConnected() ) )
 		{
-			setbefore = true;
-			render( attendance, setbefore, notYet, isUser );
-			return;
+			forbidden();
 		}
-		attendance.status = "declined";
-		Log.addUserLog("Declined meeting invitation", attendance, attendance.meeting, attendance.meeting.project);
-		// Logs.addLog( Security.getConnected(), "decline", "Meeting invitation", attendance.id, attendance.meeting.project, new Date( System.currentTimeMillis() ) );
-		attendance.save();
-		if( notYet )
+		if( attendance.status.equals( "waiting" ) )
 		{
-
-			boolean flag = true;
-			List<MeetingAttendance> attendees = MeetingAttendance.find( "byMeeting.idAndDeleted", attendance.meeting.id, false ).fetch();
-			while( attendees.isEmpty() == false )
+			if( attendance.meeting.endTime > new Date().getTime() )
 			{
-				MeetingAttendance temp = (MeetingAttendance) attendees.remove( 0 );
-				String tempStatus = temp.status;
-				if( tempStatus.equals( "confirmed" ) || tempStatus.equals( "waiting" ) )
-					flag = false;
+				String url = "/meetings/viewMeeting?id=" + attendance.meeting.id;
+				long pId = attendance.meeting.project.id;
+				long mId = attendance.meeting.id;
+				render( url, pId, mId );
 			}
-			if( flag == true )
+			else
 			{
-
-				attendance.meeting.status = false;
-				attendance.meeting.save();
-				attendance.save();
-				attendees = MeetingAttendance.find( "byMeeting.idAndDeleted", attendance.meeting.id, false ).fetch();
-				List<User> users = new ArrayList<User>();
-				while( attendees.isEmpty() == false )
-				{
-					users.add( attendees.remove( 0 ).user );
-				}
-				String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + attendance.meeting.project.id + "&isOverlay=false&url=/meetings/viewMeetings?id=" + attendance.meeting.project.id;
-				Notifications.notifyUsers( users, "canceled", url, "Meeting", attendance.meeting.name, (byte) -1, attendance.meeting.project );
+				flash.error( "Meeting has already ended." );
+				redirect( meetingURL );
 			}
-
-			render( attendance, notYet, setbefore, isUser );
-
 		}
 		else
 		{
-			render( attendance, notYet, setbefore, isUser );
+			flash.error( "You have already confirmed/declined this invitation" );
+			redirect( meetingURL );
 		}
 
 	}
@@ -210,7 +189,8 @@ public class MeetingAttendances extends SmartController
 		ma.save();
 		Update.update( ma.meeting.project, "reload('meetingAttendees-" + ma.meeting.id + "')" );
 		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + ma.meeting.project.id + "&isOverlay=false&url=/meetings/viewAttendeeStatus?id=" + ma.meeting.project.id;
-		Notifications.notifyUser( ma.user, "confirmed", url, "Meeting Attendence", ma.meeting.name, (byte) 1, ma.meeting.project );
+		Notifications.notifyUser( ma.user, "Confirm", url, "Meeting Attendence", ma.meeting.name, (byte) 1, ma.meeting.project );
+		Log.addLog( "Changed meeting attendance to attended", Security.getConnected(), ma.user, ma.meeting, ma.meeting.project );
 	}
 
 	/**
@@ -233,7 +213,8 @@ public class MeetingAttendances extends SmartController
 		ma.save();
 		Update.update( ma.meeting.project, "reload('meetingAttendees-" + ma.meeting.id + "')" );
 		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + ma.meeting.project.id + "&isOverlay=false&url=/meetings/viewAttendeeStatus?id=" + ma.id;
-		Notifications.notifyUser( ma.user, "declined", url, "Meeting Attendence", ma.meeting.name, (byte) -1, ma.meeting.project );
+		Notifications.notifyUser( ma.user, "declin", url, "Meeting Attendence", ma.meeting.name, (byte) -1, ma.meeting.project );
+		Log.addLog( "Changed meeting attendance to did not attend", Security.getConnected(), ma.user, ma.meeting, ma.meeting.project );
 	}
 
 	/**
@@ -251,6 +232,7 @@ public class MeetingAttendances extends SmartController
 			ma.status = "confirmed";
 			ma.reason = "";
 			ma.save();
+			Log.addUserLog( "Confirmed meeting invitation", ma.meeting, ma.meeting.project );
 			Update.update( m.project.users, Security.getConnected(), "reload('meeting-" + m.id + "')" );
 			renderJSON( true );
 		}
@@ -272,6 +254,7 @@ public class MeetingAttendances extends SmartController
 			ma.status = "declined";
 			ma.reason = reason;
 			ma.save();
+			Log.addUserLog( "Declined meeting invitation", ma.meeting, ma.meeting.project );
 			Update.update( m.project.users, Security.getConnected(), "reload('meeting-" + m.id + "')" );
 			renderJSON( true );
 		}
