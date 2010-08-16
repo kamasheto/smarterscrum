@@ -133,7 +133,7 @@ public class Notifications extends Mailer{
 		}		
 		setFrom("se.smartsoft.2@gmail.com");
 		setSubject("SmarterScrum Notification System");
-		send(actionType, resourceURL, resourceType, resourceName, importance, project);
+		send(user, actionType, resourceURL, resourceType, resourceName, importance, project);
 	}
 	
 	public static void notifyUser(User receiver, String actionType, String resourceURL, String resourceType, String resourceName, byte importance, Project project)
