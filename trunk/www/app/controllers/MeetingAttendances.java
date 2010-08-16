@@ -1,15 +1,11 @@
 package controllers;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import models.Log;
 import models.Meeting;
 import models.MeetingAttendance;
-import models.Project;
 import models.Update;
-import models.User;
 import notifiers.Notifications;
 import play.mvc.Router;
 import play.mvc.With;
@@ -47,7 +43,7 @@ public class MeetingAttendances extends SmartController
 				attendance.reason = "";
 				attendance.save();
 				flash.success( "You accepted the invitation" );
-				Log.addUserLog( "Confirmed meeting invitation", attendance, attendance.meeting, attendance.meeting.project );
+				Log.addUserLog( "Confirmed meeting invitation", attendance.meeting, attendance.meeting.project );
 				Update.update( attendance.meeting.project.users, Security.getConnected(), "reload('meeting-" + attendance.meeting.id + "')" );
 			}
 			else
@@ -93,6 +89,7 @@ public class MeetingAttendances extends SmartController
 				String url = "/meetings/viewMeeting?id=" + attendance.meeting.id;
 				long pId = attendance.meeting.project.id;
 				long mId = attendance.meeting.id;
+				Log.addUserLog( "Declined meeting invitation", attendance.meeting, attendance.meeting.project );
 				render( url, pId, mId );
 			}
 			else
@@ -107,51 +104,6 @@ public class MeetingAttendances extends SmartController
 			redirect( meetingURL );
 		}
 
-	}
-
-	/**
-	 * View invites method It takes a user id which is actually the current user
-	 * on the system sent from the view and
-	 * 
-	 * @param projectID
-	 * @param userID
-	 */
-	public static void viewInvites( long projectID )
-	{
-		// long userID = Security.getConnected().id;
-		User currentUser = Security.getConnected(); // User.findById(userID);
-		Project currentProject = Project.findById( projectID );
-		if( currentProject.deleted )
-			notFound();
-		List<MeetingAttendance> allmeetings = MeetingAttendance.find( "byUserAndMeeting.project.idAndDeletedAndStatusLike", currentUser, projectID, false, "waiting" ).fetch();
-		List<MeetingAttendance> meetings = new ArrayList<MeetingAttendance>();
-		Date currentDate = new Date();
-		for( MeetingAttendance meeting : allmeetings )
-		{
-			Date meetingDate = new Date( meeting.meeting.endTime );
-			if( currentDate.before( meetingDate ) )
-			{
-				meetings.add( meeting );
-			}
-		}
-		render( meetings, currentUser, currentProject );
-	}
-
-	/**
-	 * Set attendance page that Renders to the user all the meetingAttendances
-	 * associated to that meeting in order to change in the attendance of the
-	 * meeting attendees
-	 * 
-	 * @param meetingID
-	 */
-	public static void setAttendance( long meetingID )
-	{
-		Meeting meeting = Meeting.findById( meetingID );
-		if( meeting.deleted )
-			notFound();
-		Security.check( Security.getConnected().in( meeting.project ).can( "setMeetingAttendance" ) || Security.getConnected().equals( meeting.creator ) );
-		List<MeetingAttendance> attendances = MeetingAttendance.find( "byMeeting.idAndDeleted", meetingID, false ).fetch();
-		render( attendances, meeting );
 	}
 
 	/**
