@@ -4,6 +4,9 @@ import play.*;
 import play.mvc.*;
 
 import java.util.*;
+import java.lang.reflect.*;
+
+import com.google.gson.reflect.TypeToken;
 
 import models.*;
 import others.*;
@@ -22,7 +25,12 @@ public class Logs extends SmartController {
 		Project project = Project.findById(projectId);
 		Security.check(Security.getConnected().in(project).can("manageLogs"));
 		List<Log> logs = Log.find(filter).from(page * perPage).from(perPage * page).fetch(perPage);
-		renderJSON(logs);
+		LogSearchResult result = new LogSearchResult();
+		result.logs = logs;
+		result.currentPage = page;
+		result.totalPages = (int) Log.count() / perPage;
+		Type listType = new TypeToken<List<String>>() {}.getType();
+		renderJSON(result);
 	}
 	
 	/**
