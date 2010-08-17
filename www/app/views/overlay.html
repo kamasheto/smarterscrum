@@ -19,12 +19,16 @@
         #{get 'moreScripts' /}
 		
         <script type="text/javascript">
+        var flag = false;
        		$(function(){
        			doOnLoad();
-       			$('*').live('mouseover',function(){
-				window.parent.$('#theLoadedContent').height($('#theWidth').height()+50);
-           		});
        		});
+       		function start()
+       		{
+       			if(!flag)
+       			{	window.parent.$('#theLoadedContent').height($('#theWidth').height()+50);
+       				setTimeout("start()",1)}
+       		}
 
 	       		function show()
 	       		{
@@ -40,6 +44,7 @@
 		       		window.parent.$('#theLoadedContent').show();
 		       		window.parent.$('#theLoadedContent').height($('#theWidth').height()+50);
 		       		window.parent.$('#overlayLoading').hide();
+		       		start();
 		       	}
 	       		function hide()
 	       		{
