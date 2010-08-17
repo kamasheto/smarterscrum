@@ -77,17 +77,17 @@
   	#{ if sprints.size()!=0 || sprints2.size()!=0 ||  meetings.size()!=0}
   	#{list items:sprints, as:'sprint'}
   	<ul>
-		<li><img src='/public/images/famfam/date.png'/><a href="/Application/externalOpen?id=${sprint.project.id}&isOverlay=false&url=/sprints/showsprint?id=${sprint.id}">The Start of Sprint${sprint.sprintNumber} in Project ${sprint.project.name}</a></li>				
+		<li><img src='/public/images/famfam/date.png'/><a onClick="showProjectWorkspace(${sprint.project.id});loadBox('/sprints/showsprint?id=${sprint.id}','workspace-${sprint.project.id}','');">The Start of Sprint${sprint.sprintNumber} in Project ${sprint.project.name}</a></li>				
 	</ul>
 	#{/list}
 	#{list items:sprints2, as:'sprint'}
 	<ul>
-		<li><img src='/public/images/famfam/date.png'/><a href="/Application/externalOpen?id=${sprint.project.id}&isOverlay=false&url=/sprints/showsprint?id=${sprint.id}">The End of Sprint${sprint.sprintNumber} in Project ${sprint.project.name}</a></li>				
+		<li><img src='/public/images/famfam/date.png'/><a onClick="showProjectWorkspace(${sprint.project.id});loadBox('/sprints/showsprint?id=${sprint.id}','workspace-${sprint.project.id}','');">The End of Sprint${sprint.sprintNumber} in Project ${sprint.project.name}</a></li>				
 	</ul>
 	#{/list}
 	#{list items:meetings, as:'meeting'}
 	<ul>
-	<li><img src='/public/images/famfam/meeting.png'/><a href="/Application/externalOpen?id=${meeting.project.id}&isOverlay=false&url=/meetings/viewmeeting?id=${meeting.id}">${meeting.project.name} Meeting : ${meeting.name}</a></li>				
+	<li><img src='/public/images/famfam/meeting.png'/><a onclick="showProjectWorkspace(${meeting.project.id});loadBox('/meetings/viewMeeting?id=${meeting.id}','workspace-${meeting.project.id}','');">${meeting.project} Meeting : ${meeting.name}</a></li>				
 	</ul>
 	#{/list}
 	#{/if}
