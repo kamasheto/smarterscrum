@@ -1,0 +1,18 @@
+#{extends 'magicBox.html' /}
+
+#{list items:components, as:'component'}
+<div class= "bar">
+#{if component.name.equals("default component")}
+Project game
+#{/if}
+#{else}
+${component.getFullName()}
+#{/else}
+#{if connected.in(component.project).can("startGame")}
+<a onClick="overlayOpen('/games/chooseStories?cId=${component.id}');"><img src="@{'/public/images/famfam/joystick_add.png'}" title="create a game"/></a>
+#{/if}
+#{if component.hasRunningGames()}
+<a onClick="overlayOpen('/games/chooseGame?cId=${component.id}');"><img src="@{'/public/images/famfam/joystick.png'}" title="join a running game"/></a>
+#{/if}
+</div>
+#{/list}

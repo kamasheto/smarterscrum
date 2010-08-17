@@ -20,7 +20,7 @@ public class Component extends SmartModel
 	/**
 	 * Component Entity : consists of name,description up till now
 	 */
-	
+
 	/***
 	 * component name
 	 */
@@ -31,7 +31,6 @@ public class Component extends SmartModel
 	 * component description
 	 */
 	@Lob
-
 	@MaxSize( 10000 )
 	public String description;
 
@@ -41,7 +40,8 @@ public class Component extends SmartModel
 	public boolean deleted;
 
 	/***
-	 * each project can have many components & each component belongs only to one project
+	 * each project can have many components & each component belongs only to
+	 * one project
 	 */
 	@ManyToOne
 	@Required
@@ -60,7 +60,8 @@ public class Component extends SmartModel
 	public List<Snapshot> snapshots;
 
 	/***
-	 * a component can have many meetings & a meeting can include many components
+	 * a component can have many meetings & a meeting can include many
+	 * components
 	 */
 	@ManyToMany( mappedBy = "components", cascade = CascadeType.ALL )
 	public List<Meeting> componentMeetings;
@@ -83,8 +84,8 @@ public class Component extends SmartModel
 	public List<Task> componentTasks;
 
 	/***
-	 * Component constructor that initializes a list
-	 * of users, meetings & tasks for the component
+	 * Component constructor that initializes a list of users, meetings & tasks
+	 * for the component
 	 */
 	public Component()
 	{
@@ -94,7 +95,7 @@ public class Component extends SmartModel
 	}
 
 	/***
-	 * Overrides toString() method 
+	 * Overrides toString() method
 	 */
 	@Override
 	public String toString()
@@ -103,8 +104,7 @@ public class Component extends SmartModel
 	}
 
 	/**
-	 * Returns a list of the users in this component
-	 * API for C3 & it's S28
+	 * Returns a list of the users in this component API for C3 & it's S28
 	 * 
 	 * @return List of component's users
 	 */
@@ -114,14 +114,13 @@ public class Component extends SmartModel
 	}
 
 	/**
-	 * Returns a list of tasks associated to a certain sprint for this component 
+	 * Returns a list of tasks associated to a certain sprint for this component
 	 * Story: 4,5,6.
 	 * 
-	 * @author menna_ghoneim 
+	 * @author menna_ghoneim
 	 * @param s
-	 * 		given a sprint
-	 * @return
-	 * 		List of tasks in this sprint of this component
+	 *            given a sprint
+	 * @return List of tasks in this sprint of this component
 	 */
 	@SuppressWarnings( "null" )
 	public List<Task> returnComponentSprintTasks( Sprint s )
@@ -151,8 +150,7 @@ public class Component extends SmartModel
 	 * Returns list of tasks in sprint s in this component
 	 * 
 	 * @param s
-	 * 		 sprint
-	 * 
+	 *            sprint
 	 */
 	public List<Task> componentSprintTasks( Sprint s )
 	{
@@ -171,13 +169,13 @@ public class Component extends SmartModel
 	}
 
 	/**
-	 * Returns a list of tasks associated to a certain sprint for a certain component
+	 * Returns a list of tasks associated to a certain sprint for a certain
+	 * component
 	 * 
-	 * @author Hadeer Diwan 
+	 * @author Hadeer Diwan
 	 * @param s
-	 * 		given a sprint
-	 * @return 
-	 * 		List of tasks in this sprint of this component
+	 *            given a sprint
+	 * @return List of tasks in this sprint of this component
 	 */
 	public List<Task> returnComponentTasks( Sprint s )
 	{
@@ -216,15 +214,14 @@ public class Component extends SmartModel
 	}
 
 	/**
-	 * Meeting status method returns the status of the component in attending the meeting 
-	 * either 'all invited' or 'confirmed' or 'waiting' or 'declined' or 'not invited'
+	 * Meeting status method returns the status of the component in attending
+	 * the meeting either 'all invited' or 'confirmed' or 'waiting' or
+	 * 'declined' or 'not invited'
 	 * 
-	 * @author 
-	 * 		Amr Hany
+	 * @author Amr Hany
 	 * @param meetingID
-	 * 			meeting ID
-	 * @return 
-	 * 			the status of the meeting
+	 *            meeting ID
+	 * @return the status of the meeting
 	 */
 	public String meetingStatus( long meetingID )
 	{
@@ -277,7 +274,6 @@ public class Component extends SmartModel
 
 	}
 
-	
 	/***
 	 * Creates component board & sets the component number
 	 */
@@ -289,22 +285,22 @@ public class Component extends SmartModel
 			Column c = new Column( project.board.columns.get( i ).name, componentBoard, project.board.columns.get( i ).taskStatus );
 			c.save();
 		}
-			this.number = this.project.components.size()-1;
-			for( Component component : this.project.components )
+		this.number = this.project.components.size() - 1;
+		for( Component component : this.project.components )
+		{
+			if( component.number >= this.number && !component.equals( this ) )
 			{
-				if( component.number >= this.number && !component.equals( this ) )
-				{
-					this.number = component.number + 1;
-				}
+				this.number = component.number + 1;
 			}
-		
+		}
 
 		this.save();
 
 	}
 
 	/***
-	 * Class used to store 2 dimensional ArrayList of tasks to be rendered to the project board
+	 * Class used to store 2 dimensional ArrayList of tasks to be rendered to
+	 * the project board
 	 */
 	public static class ComponentRowh extends ArrayList<ArrayList<String>>
 	{
@@ -319,7 +315,8 @@ public class Component extends SmartModel
 	}
 
 	/***
-	 * Class used to store 2 dimensional ArrayList of tasks to be rendered to the component board
+	 * Class used to store 2 dimensional ArrayList of tasks to be rendered to
+	 * the component board
 	 */
 	public static class ComponentRow extends ArrayList<ArrayList<Task>>
 	{
@@ -332,12 +329,26 @@ public class Component extends SmartModel
 			this.title = title;
 		}
 	}
-	
+
 	/**
 	 * Returns the name of this component in the format: C1: User and Roles
 	 */
-	public String getFullName() {
+	public String getFullName()
+	{
 		return "C" + number + ": " + name;
+	}
+
+	public boolean hasRunningGames()
+	{
+		List<Game> games = Game.find( "byComponent", this ).fetch();
+		for( Game g : games )
+		{
+			if( !g.getRound().isDone() )
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import models.Component;
 import models.Game;
 import models.GameSession;
+import models.Project;
 import models.Round;
 import models.Task;
 import models.Trick;
@@ -296,5 +297,23 @@ public class Games extends SmartController
 			}
 		}
 		render( finalGames, moderators, component );
+	}
+
+	public static void userGameComponents( long projectId )
+	{
+		Project project = Project.findById( projectId );
+		List<Component> userComponents = Security.getConnected().components;
+		List<Component> components = new ArrayList<Component>();
+		for( Component c : userComponents )
+		{
+			if( !c.deleted )
+			{
+				if( c.project.id == projectId )
+				{
+					components.add( c );
+				}
+			}
+		}
+		render( components, projectId );
 	}
 }
