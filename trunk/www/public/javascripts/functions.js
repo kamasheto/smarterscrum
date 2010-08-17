@@ -346,7 +346,7 @@ $(function() {
 			containment: '#'+con,
 			grid: [1, 40],
 			stop:function(event, ui) {
-			$(this).css('height','');
+			//$(this).css('height','');
 			//for pagination purpose
 			var test = ($(this).find(".normalLinkn span")).first();
 			smart_pagination(test, 1, true);
