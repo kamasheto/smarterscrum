@@ -4,7 +4,7 @@ How : The magic boxes are created using a certain format. Get the input from the
 ***********************************/
 
 /********** Settings *************/
-var itemsPerPage = 5; //how many divs to display per page
+var itemsPerPage = 5; //default number of items per page
 
 
 /****************** 7ewar el array of objects *************/
@@ -35,6 +35,7 @@ function filter_me(el){
 			smartObject.numPages = -1;
 			smartObject.smart_array = new Array();
 			smartObject.page = 1;
+			smartObject.itemsPerPage = itemsPerPage;
 			uniqueArray.push(smartObject);
 		}
 		smart_pagination(id,smartObject.page);
@@ -57,34 +58,42 @@ function filter_me(el){
 	}
 }
 
-function smart_pagination(el, view_page){
+function smart_pagination(el, view_page, itemsChanged){
 	var id = el;
 	if($(el).closest('.filter').attr('id')!=null)
 		id = $(el).closest('.filter').attr('id').split('_')[0];
 	if(!($("#"+id+"_content").parent().hasClass("do_not_paginate")))
 	{
 		/********** Do not edit anything below this line ******/
-		//CHECKS
 		var smartObject = getTheUnique(id);
+		//CHECKS
 		if(smartObject == false){
 			var sizeOfChildren = $("#"+id+"_content > div").size();
 			var sizeOfNotPaginated= $("#"+id+"_content > div").filter(function(){ return $(this).hasClass("do_not_paginate") }).size();
-			var numPagesNotPaginated = Math.floor(sizeOfNotPaginated/itemsPerPage);
-			var extraNotPaginatedItems = !((sizeOfNotPaginated % itemsPerPage) == 0);
+			var numPagesNotPaginated = Math.floor(sizeOfNotPaginated/smartObject.itemsPerPage);
+			var extraNotPaginatedItems = !((sizeOfNotPaginated % smartObject.itemsPerPage) == 0);
 			if(extraNotPaginatedItems)
 				numPagesNotPaginated++;
-			var numPages = Math.floor(sizeOfChildren/ itemsPerPage);
-			var extraItems = !((sizeOfChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
+			var numPages = Math.floor(sizeOfChildren/ smartObject.itemsPerPage);
+			var extraItems = !((sizeOfChildren % smartObject.itemsPerPage) == 0); //whether there are items to be added in an extra page
 			if(extraItems)
 				numPages++;
 			smartObject = new Object();
 			smartObject.id = id;
 			smartObject.numPages = numPages;
 			smartObject.smart_array = new Array();
-			smartObject.page = 1;
+			if(!itemsChanged)
+				smartObject.page = 1;
 			smartObject.numElements = sizeOfChildren;
 			smartObject.sizeOfNotPaginated = sizeOfNotPaginated;
 			smartObject.numPagesNotPaginated = numPagesNotPaginated;
+			if(itemsChanged){
+				//alert($('#'+el).closest(".galal").first().html());
+				alert($(el).html());
+				smartObject.itemsPerPage = calculateItems(el);
+			}
+			else
+				smartObject.itemsPerPage = itemsPerPage;
 			uniqueArray.push(smartObject);
 		}
 		else if(smartObject.numPages == -1){
@@ -107,12 +116,13 @@ function smart_pagination(el, view_page){
 					$(this).hide();
 					i++;
 				});
-			
+			if(itemsChanged)
+				smartObject.itemsPerPage = calculateItems(el);
 			//Now display only those in the current page
 			view_page--;//if page 1, the starting index should be zero (array ba2a)
-			var starting_index = view_page * itemsPerPage;
+			var starting_index = view_page * smartObject.itemsPerPage;
 			var j = 1;//counter
-			while(j<= itemsPerPage){
+			while(j<= smartObject.itemsPerPage){
 				$(smartObject.smart_array[starting_index]).show();
 				starting_index++;
 				j++;
@@ -149,6 +159,8 @@ function filter_smart_pagination(el,view_page, nextPrevious){
 	if(!($("#"+id+"_content").parent().hasClass("do_not_paginate")))
 	{
 		var smartObject = getTheUniqueFilter(id);
+		var original = getTheUnique(id);
+		var height = original.itemsPerPage;
 		if(smartObject == false){
 			//alert("==false");
 			smartObject = new Object();
@@ -162,8 +174,8 @@ function filter_smart_pagination(el,view_page, nextPrevious){
 		{
 			smartObject.sizeOfFilteredChildren = $("#"+id+"_content > div").filter(":visible").filter(function(index) { return !($(this).hasClass("do_not_paginate")); }).size();
 		}
-		var numPages = Math.floor(smartObject.sizeOfFilteredChildren/ itemsPerPage);
-		var extraItems = !((smartObject.sizeOfFilteredChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
+		var numPages = Math.floor(smartObject.sizeOfFilteredChildren/ height);
+		var extraItems = !((smartObject.sizeOfFilteredChildren % height) == 0); //whether there are items to be added in an extra page
 		if(extraItems)
 			numPages++;
 		smartObject.numPages = numPages;
@@ -193,10 +205,10 @@ function filter_smart_pagination(el,view_page, nextPrevious){
 			
 			//Now display only those in the current page
 			view_page--;//if page 1, the starting index should be zero (array ba2a)
-			var starting_index = view_page * itemsPerPage;
+			var starting_index = view_page * height;
 			var j = 1;//counter
 			$(smartObject.filter_smart_array).each(function(index){ $(this).hide(); });
-			while(j<= itemsPerPage){
+			while(j<= height){
 				$(smartObject.filter_smart_array[starting_index]).show();
 				starting_index++;
 				j++;
@@ -357,7 +369,7 @@ function showFilterLinks(id){
 
 function updatePageNumbers(id){
 	smartObject = getTheUnique(id);
-	var items = (smartObject.page*itemsPerPage);
+	var items = (smartObject.page*smartObject.itemsPerPage);
 	var i = $("#"+id+"_content > div").filter(function(){ return $(this).hasClass("do_not_paginate");}).size();
 	items = items + i;
 	if(items>smartObject.numElements)
@@ -368,7 +380,9 @@ function updatePageNumbers(id){
 
 function updatePageNumbersFilter(id){
 	smartObject = getTheUniqueFilter(id);
-	var items = (smartObject.filter_page*itemsPerPage);
+	original = getTheUnique(id);
+	height = original.itemsPerPage;
+	var items = (smartObject.filter_page*height);
 	var i = $("#"+id+"_content > div").filter(":visible").filter(function(){ return $(this).hasClass("do_not_paginate"); }).size();
 	items = items + i;
 	if(items>smartObject.sizeOfFilteredChildren)
@@ -393,4 +407,13 @@ function getTheUniqueFilter(id){
 		}
 	}
 	return false;
+}
+
+function calculateItems(el){
+	var height = $(el).parent().parent().parent().parent().parent().parent().parent().height();
+	var items = Math.floor(height/40);
+//	var extra = !(height%40 == 0);
+//	if(extra)
+//		items++;
+	return items;
 }
