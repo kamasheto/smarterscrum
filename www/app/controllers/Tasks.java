@@ -1552,7 +1552,16 @@ public class Tasks extends SmartCRUD
 		Task task = Task.findById( taskId );
 		Component component = Component.findById( componentId );
 		User connected = Security.getConnected();
-		Security.check( connected.in( task.project ).can( "modifyTask" ) && task.project == component.project && task.component.project == component.project && task.parent == null );
+		boolean flag=false;
+		Date now = Calendar.getInstance().getTime();
+		if(task.taskSprint!=null)
+		{
+			if( task.taskSprint.startDate.before(now) && task.taskSprint.endDate.after(now) )
+			{
+				flag=true;
+			}
+		}
+		Security.check( connected.in( task.project ).can( "modifyTask" ) && task.project == component.project && task.component.project == component.project && task.parent == null && flag );
 
 		// first remove task from the component
 		task.component.componentTasks.remove( task );
