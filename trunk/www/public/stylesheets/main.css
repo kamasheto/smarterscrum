@@ -3,7 +3,7 @@
 }
 
 label {
-	width: 100px !important;
+	min-width: 100px !important;
 	display: inline-block;
 }
 
@@ -480,10 +480,6 @@ ul.project_links a {
 	background-color: #b7568d;
 	padding: 7px;
 	color: #ffffff;
-}
-
-body {
-	background: transparent url('img/workspace.png') repeat top left scroll;
 }
 
 input[type=text],input[type=password],textarea {
