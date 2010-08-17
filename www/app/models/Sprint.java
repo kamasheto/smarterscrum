@@ -84,8 +84,8 @@ public class Sprint extends SmartModel {
 			this.startDay = startDate.getDate();
 			this.startMonth = startDate.getMonth()+1;
 			this.startYear = startDate.getYear()+1900;
-			this.endDay = endDate.getDay();
-			this.endMonth = endDate.getMonth();
+			this.endDay = endDate.getDate();
+			this.endMonth = endDate.getMonth()+1;
 			this.endYear = endDate.getYear()+1900;
 			this.project = project;
 			this.projectId = projectId;

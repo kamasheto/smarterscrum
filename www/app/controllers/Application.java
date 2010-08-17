@@ -296,6 +296,9 @@ public class Application extends SmartController
 			user.enableEmails=false;
 		user.save();		
 	}
+	/**
+	 * A method that renders the calendar page with the day's events in the side bar.
+	 */
 	public static void showEvents(){
 		Date x = new Date();
 		int year = x.getYear()+1900;
@@ -328,6 +331,9 @@ public class Application extends SmartController
 		}
 		render(years, sprints, sprints2, meetings);
 	}
+	/**
+	 * A method that returns the sprints of the connected user's projects.
+	 */
 	public static void sprints(){
 		List<Project> projects  = Security.getConnected().projects;
 		List<Sprint.Object> sprints = new ArrayList<Sprint.Object>();
@@ -340,6 +346,9 @@ public class Application extends SmartController
 		}
 		renderJSON(sprints);
 	}
+	/**
+	 * A method that returns the meetings of the connected user's projects.
+	 */
 	public static void meetings(){
 		List<MeetingAttendance> meetings1 = MeetingAttendance.find("byUserAndDeleted", Security.getConnected(),false).fetch();
 		List<Meeting.Object> meetings = new ArrayList<Meeting.Object>();
@@ -351,7 +360,12 @@ public class Application extends SmartController
 		renderJSON(meetings);
 	}
 	
-	
+	/**
+	 * A method that returns a selected day Events (Sprints and meetings)
+	 * @param day : the day of the month from 1-31.
+	 * @param month : the month of the year from 1-12.
+	 * @param year : the year.
+	 */
 	public static void dayEvents(int day, int month, int year){
 		List<Project> projects  = Security.getConnected().projects;
 		Event events = new Event();
