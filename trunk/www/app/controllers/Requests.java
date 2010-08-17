@@ -286,6 +286,7 @@ public class Requests extends SmartCRUD
 		{
 			rev.accepted=true;
 			rev.save();
+			Notifications.notifyProjectUsers(tt.project, "addReviewer", "", "to the reviewers for the task type", tt.name, (byte)0);
 			renderText("You are now "+tt.name+" reviewer in"+tt.project.name+"!");
 		}
 		else
