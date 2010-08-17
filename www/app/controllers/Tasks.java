@@ -617,15 +617,18 @@ public class Tasks extends SmartCRUD
 			object.save();
 			String text = "The Task was deleted successfully";
 			System.out.println( "here" );
+			Application.overlayKiller( "", "" );
+			flash.success( Messages.get( "crud.deleted", type.modelName, object.getEntityId() ) );
+			renderText( "Task deleted successfully." );
 			renderText( text );
+			Update.update( tmp.project, "reload('tasks')" );
 		}
 		catch( Exception e )
 		{
 			flash.error( Messages.get( "crud.delete.error", type.modelName, object.getEntityId() ) );
 			renderText( "Task can't be deleted" );
 		}
-		flash.success( Messages.get( "crud.deleted", type.modelName, object.getEntityId() ) );
-		renderText( "Task deleted successfully." );
+		
 	}
 
 	/**
