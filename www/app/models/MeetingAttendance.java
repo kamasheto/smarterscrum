@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 import controllers.Application;
+import controllers.Security;
 
 /**
  * a meeting attendance holds information about the attendance of a user in a
@@ -11,13 +12,19 @@ import controllers.Application;
  * etc.
  */
 @Entity
-public class MeetingAttendance extends SmartModel {
+public class MeetingAttendance extends SmartModel
+{
 
 	/**
 	 * User involved
 	 */
 	@ManyToOne
 	public User user;
+
+	/**
+	 * User who invited
+	 */
+	public User invitedBy;
 
 	/**
 	 * Meeting involved
@@ -55,8 +62,10 @@ public class MeetingAttendance extends SmartModel {
 	 * @param meeting
 	 *            Meeting of this attedance
 	 */
-	public MeetingAttendance (User user, Meeting meeting) {
+	public MeetingAttendance( User user, Meeting meeting )
+	{
 		this.user = user;
+		this.invitedBy = Security.getConnected();
 		this.meeting = meeting;
 		this.status = "waiting";
 		this.meetingHash = Application.randomHash();
@@ -69,7 +78,8 @@ public class MeetingAttendance extends SmartModel {
 	 * @author Hossam Amer
 	 * @return true if it is confirmed and false otherwise
 	 */
-	public boolean checkConfirmed() {
-		return this.status.equals("confirmed");
+	public boolean checkConfirmed()
+	{
+		return this.status.equals( "confirmed" );
 	}
 }
