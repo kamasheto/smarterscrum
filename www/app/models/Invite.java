@@ -36,6 +36,7 @@ public class Invite extends SmartModel {
 	/**
 	 * the user who made the invitation
 	 */
+	@ManyToOne
 	public User invitedBy;
 
 	/**
