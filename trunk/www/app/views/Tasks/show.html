@@ -167,8 +167,7 @@
 			<p>
 			<label for="object_taskSprint">Sprint</label>
 			#{if object.taskSprint!=null}
-			#{if object.taskSprint.ended}
-			<label for="task_taskSprint">Reporter</label> 
+			#{if object.taskSprint.ended} 
 			<span id="task_taskSprint" ><font color="green">sprint ${object.taskSprint.sprintNumber}</font></span>
 			#{/if}
 			#{else}
