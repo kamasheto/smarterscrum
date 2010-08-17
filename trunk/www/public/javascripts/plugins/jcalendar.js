@@ -138,7 +138,7 @@ jQuery.jcalendar = function() {
     				str +=' <div><img src="/public/images/famfam/meeting.png"/>&nbsp;<a onClick="showProjectWorkspace('+item.projectId+');loadBox(\'/meetings/viewMeeting?id='+item.id+'\',\'workspace-'+item.projectId+'\',\'\');">'+item.project+' Meeting : '+item.name+'</a></div>';
     			});
             	$.each(data.sprints, function(id, item){
-    				str +='<div><img src="/public/images/famfam/date.png"/>&nbsp;<a onClick="showProjectWorkspace('+item.projectId+');loadBox(\'/sprints/showsprint?id='+item.id+'\',\'workspace+'+item.projectId+'\',\'\');">The Start of Sprint'+item.sprintNumber+' in Project '+item.project+'</a></div>';
+    				str +='<div><img src="/public/images/famfam/date.png"/>&nbsp;<a onClick="showProjectWorkspace('+item.projectId+');loadBox(\'/sprints/showsprint?id='+item.id+'\',\'workspace-'+item.projectId+'\',\'\');">The Start of Sprint'+item.sprintNumber+' in Project '+item.project+'</a></div>';
     			});
             	if(str!=''){
             		thisday=day.val()+'-'+month.val()+'-'+year.val();
