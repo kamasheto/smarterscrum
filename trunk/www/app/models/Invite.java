@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 import controllers.Application;
+import controllers.Security;
 
 /**
  * Invite model
@@ -31,6 +32,11 @@ public class Invite extends SmartModel {
 	 * invite hash
 	 */
 	public String hash;
+	
+	/**
+	 * the user who made the invitation
+	 */
+	public User invitedBy;
 
 	/**
 	 * Full constructor. Sets a default 20-char (random) hash
@@ -44,5 +50,6 @@ public class Invite extends SmartModel {
 		this.user = user;
 		this.role = role;
 		hash = Application.randomHash();
+		this.invitedBy = Security.getConnected();
 	}
 }
