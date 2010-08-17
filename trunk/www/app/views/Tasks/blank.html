@@ -249,13 +249,25 @@ function toggleOptions(){
 	current_text = $("[name='view-more-link']").text();
 	if(current_text == "View more options"){
 		$("[name='view-more-link']").text("Hide extra options");
-		$("[name='view-more']").slideDown();
+		flag = false;
+		start();
+		$("[name='view-more']").slideDown(400,function(){flag = true});	
 	}
 	else
 	{
 		$("[name='view-more-link']").text("View more options");
-		$("[name='view-more']").slideUp();
+		flag= false;
+		start();
+		$("[name='view-more']").slideUp(400,function(){flag = true});
+		
 	}	
+}
+var flag = false;
+function start()
+{
+	if(!flag)
+	{	window.parent.$('#theLoadedContent').height($('#theWidth').height()+100);
+		setTimeout("start()",1)}
 }
 function getUsers()
 {
