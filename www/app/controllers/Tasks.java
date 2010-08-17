@@ -858,6 +858,7 @@ public class Tasks extends SmartCRUD
 			// + task1.project.name + " from the account of " +
 			// Security.getConnected().name );
 		}
+		Update.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
 		renderText( "The description was changed successfully" );
 		return true;
 	}
@@ -1022,6 +1023,7 @@ public class Tasks extends SmartCRUD
 			// Security.getConnected().name );
 			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 		}
+		Update.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
 		// Notifications.notifyUsers(task1.component.getUsers(), header, body,
 		// (byte) 0);
 		return true;
@@ -1175,6 +1177,7 @@ public class Tasks extends SmartCRUD
 			// + task1.project.name + " from the account of " +
 			// Security.getConnected().name );
 		}
+		Update.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
 		return true;
 	}
 
@@ -1257,6 +1260,7 @@ public class Tasks extends SmartCRUD
 			// + task1.project.name + " from the account of " +
 			// Security.getConnected().name );
 		}
+		Update.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
 		return true;
 	}
 
@@ -1322,6 +1326,7 @@ public class Tasks extends SmartCRUD
 			// Security.getConnected().name );
 			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 		}
+		Update.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
 		// Notifications.notifyUsers(task1.component.getUsers(), header, body,
 		// (byte) 0);
 		return true;
