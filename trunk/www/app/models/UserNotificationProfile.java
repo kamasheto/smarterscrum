@@ -20,19 +20,18 @@ public class UserNotificationProfile extends SmartModel {
 	public boolean deleted;
 	// *********** List Of Action Types Below ***********	
 	public boolean setSprint;
-	public boolean addRole;	
-	public boolean reportImpediment;
+	public boolean addRole;		
 	public boolean onCreateComponent;
 	public boolean onEditComponent;
 	public boolean onDeleteComponent;
 	public boolean addColumn;
-	public boolean deleteColumn;
-	public boolean assignStoryToSprint;
+	public boolean deleteColumn;	
 	public boolean addTaskStatus;
 	public boolean editTaskStatus;
 	public boolean deleteTaskStatus;
 	public boolean deleteProject;
 	public boolean deletedFromProject;
+	public boolean editTaskType;
 	// *********** List Of Action Types Ended ***********
 
 	/**
@@ -51,19 +50,18 @@ public class UserNotificationProfile extends SmartModel {
 		this.user = user;
 		this.project = project;		
 		this.setSprint = project.notificationProfile.setSprint;
-		this.addRole = project.notificationProfile.addRole;			
-		this.reportImpediment = project.notificationProfile.reportImpediment;
+		this.addRole = project.notificationProfile.addRole;
 		this.onCreateComponent = project.notificationProfile.onCreateComponent;
 		this.onEditComponent = project.notificationProfile.onEditComponent;
 		this.onDeleteComponent = project.notificationProfile.onDeleteComponent;
 		this.addColumn=project.notificationProfile.addColumn;
 	    this.deleteColumn=project.notificationProfile.deleteColumn;
-	    this.assignStoryToSprint = project.notificationProfile.assignStoryToSprint;		
 		this.addTaskStatus = project.notificationProfile.addTaskStatus;
 		this.editTaskStatus = project.notificationProfile.editTaskStatus;
 		this.deleteTaskStatus = project.notificationProfile.deleteTaskStatus;
 	    this.deleteProject = project.notificationProfile.deleteProject;
 	    this.deletedFromProject=project.notificationProfile.deletedFromProject;
+	    this.editTaskType=project.notificationProfile.editTaskType;
 	}
 
 	/**
@@ -78,9 +76,7 @@ public class UserNotificationProfile extends SmartModel {
 		if (action.equalsIgnoreCase("setSprint"))
 			return setSprint;
 		else if (action.equalsIgnoreCase("addRole"))
-			return addRole;				
-		else if (action.equalsIgnoreCase("reportImpediment"))
-			return reportImpediment;
+			return addRole;
 		else if (action.equalsIgnoreCase("onCreateComponent"))
 			return onCreateComponent;
 		else if (action.equalsIgnoreCase("onEditComponent"))
@@ -91,8 +87,6 @@ public class UserNotificationProfile extends SmartModel {
 			return addColumn;
 		else if (action.equalsIgnoreCase("deleteColumn"))
 			return deleteColumn;
-		else if (action.equalsIgnoreCase("assignStoryToSprint"))
-			return assignStoryToSprint;
 		else if (action.equalsIgnoreCase("addTaskStatus"))
 			return addTaskStatus;
 		else if (action.equalsIgnoreCase("editTaskStatus"))
@@ -103,6 +97,8 @@ public class UserNotificationProfile extends SmartModel {
 			return deleteProject;
 		else if (action.equalsIgnoreCase("deletedFromProject"))
 			return deletedFromProject;
+		else if (action.equalsIgnoreCase("editTaskType"))
+			return editTaskType;
 		else
 			return false;
 	}
