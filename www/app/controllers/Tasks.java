@@ -569,10 +569,13 @@ public class Tasks extends SmartCRUD
 			changesComment.save();
 		}
 		// /********** End of Changes as Comment ********/
-		if( tmp.comment.trim().length() != 0 )
+		if(tmp.comment!=null)
 		{
-			Comment comment = new Comment( Security.getConnected(), tmp.id, tmp.comment );
-			comment.save();
+			if( tmp.comment.trim().length() != 0 )
+			{
+				Comment comment = new Comment( Security.getConnected(), tmp.id, tmp.comment );
+				comment.save();
+			}
 		}
 		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
