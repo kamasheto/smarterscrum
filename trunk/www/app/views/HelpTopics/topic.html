@@ -1,4 +1,11 @@
 #{extends 'overlay.html' /}
+#{set 'moreScripts'}
+<script src="@{'/public/javascripts/detectFlash.js'}" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+if (pluginlist.indexOf("Flash")==-1)
+	alert("It seems that you do not have the flash player installed and most probably you will not be able to play our help videos. Sorry about that.");
+</script>
+#{/set}
 <h1 id="">${topic.summary}</h1>
 <center>
 	<object width="800" height="600">
