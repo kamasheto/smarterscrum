@@ -1,16 +1,9 @@
-#{extends 'main.html'/}
+#{extends 'Overlay.html'/}
 
-#{set title:'Play Game' /}
-#{set 'crumbs'}
-<li><a href="/">Home</a></li>
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${game.component.project.id}">${game.component.project.name}</a></li>
-<li><a href="/components/${game.component.id}">${game.component.name}</a></li>
-#{/set}
 
-#{set 'moreLinks'}
+
 <a href="#" onclick="window.open('/chatsystem/viewroom?id=${game.chatroom.id}', 'Chatroom','width=620,height=520,scrollbar=0,resize=0,toolbar=0');return false;">Join Chatroom</a>
-#{/set}
+
 <div id="game">
 	#{list rounds}
 	<h3><a href="#">Story ${game.tasks.indexOf(_.round.task) + 1}/${game.tasks.size()}, Round: ${_.round.roundNo}</a></h3>
