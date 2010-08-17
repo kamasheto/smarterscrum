@@ -24,6 +24,7 @@ public class MeetingAttendance extends SmartModel
 	/**
 	 * User who invited
 	 */
+	@ManyToOne
 	public User invitedBy;
 
 	/**
@@ -70,6 +71,23 @@ public class MeetingAttendance extends SmartModel
 		this.status = "waiting";
 		this.meetingHash = Application.randomHash();
 
+	}
+
+	/**
+	 * Constructor with invited by
+	 * 
+	 * @param user
+	 *            User of this attendance
+	 * @param meeting
+	 *            Meeting of this attedance
+	 */
+	public MeetingAttendance( User invited, User by, Meeting meeting )
+	{
+		this.user = invited;
+		this.invitedBy = by;
+		this.meeting = meeting;
+		this.status = "waiting";
+		this.meetingHash = Application.randomHash();
 	}
 
 	/**
