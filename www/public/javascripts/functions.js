@@ -472,8 +472,7 @@ $(function() {
 	$('.revertFrom').live('click', function() {
 		$(this).parent().parent().data('init', false);
 		var url = $(this).parent().parent().attr('name');
-
-		$(this).parent().next().slideUp();
+		$(this).parent().next().hide();
 		removeFromDiv(url);
 		// CURRENT_OFFSET -= 315
 		var theId = $(this).parent().parent().attr('id');
@@ -589,9 +588,9 @@ function magic(id) {
 				$(this).attr('id', id2);
 				$(this).append('<div id="' + id2 + '_content" class="ui-widget-content actual" ></div>');
 			} else {	
-				var id2 = $(this).closest('.workspaceDraggables').find('div[name='+$(this).attr('name')+']').first().attr('id')+'_2';
-				var head = '<div id="'+id2+'_header" class="mainH clone">' + $(this).html() + '</div>';
-				$(this).html(head);	alert('');
+				var id2 = $(this).closest('.workspaceDraggables').find('.draggable[name='+$(this).attr('name')+']').first().attr('id')+'_2';
+				var head = '<div id="'+id2+'" class="mainH clone">' + $(this).html() + '</div>';
+				$(this).replaceWith(head);
 			}						
 		}
 	});
