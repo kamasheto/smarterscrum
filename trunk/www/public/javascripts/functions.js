@@ -885,6 +885,13 @@ function request_reviewer(tasktypeId)
 	});
 }
 
+function revoke_reviewer(uid, ttid)
+{
+	$.post('/requests/revokeReviewer', {uId:uid, taskTypeId:ttid}, function(msg){
+		$.bar({message:msg});
+	});
+}
+
 function message_bar(message) {
 	$.bar({message: message})
 }
