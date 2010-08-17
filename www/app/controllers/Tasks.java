@@ -1561,7 +1561,7 @@ public class Tasks extends SmartCRUD
 				flag=true;
 			}
 		}
-		Security.check( connected.in( task.project ).can( "modifyTask" ) && task.project == component.project && task.component.project == component.project && task.parent == null && flag );
+		Security.check( connected.in( task.project ).can( "modifyTask" ) && task.project == component.project && task.component.project == component.project && task.parent == null && !flag );
 
 		// first remove task from the component
 		task.component.componentTasks.remove( task );
