@@ -451,27 +451,28 @@ public class Project extends SmartModel
 		meetingsTypes = new ArrayList<String>();
 		meetingsTypesInSprint = new ArrayList<Boolean>();
 
+		
 		TaskType t1 = new TaskType();
 		t1.project = this;
-		t1.name = "Documentation";
+		t1.name = "Implementation";
 		t1.save();
 		taskTypes.add( t1 );
-
+		
 		TaskType t2 = new TaskType();
 		t2.project = this;
-		t2.name = "Impediment";
+		t2.name = "Test";
 		t2.save();
 		taskTypes.add( t2 );
-
+		
 		TaskType t3 = new TaskType();
 		t3.project = this;
-		t3.name = "Implementation";
+		t3.name = "Documentation";
 		t3.save();
 		taskTypes.add( t3 );
 
 		TaskType t4 = new TaskType();
 		t4.project = this;
-		t4.name = "Test";
+		t4.name = "Impediment";
 		t4.save();
 		taskTypes.add( t4 );
 
