@@ -19,14 +19,12 @@ public class ProjectNotificationProfile extends SmartModel {
 	public Project project;
 	public boolean deleted;	
 	public boolean setSprint;
-	public boolean addRole;	
-	public boolean reportImpediment;	
+	public boolean addRole;
 	public boolean onCreateComponent;
 	public boolean onEditComponent;
 	public boolean onDeleteComponent;
 	public boolean addColumn;
-	public boolean deleteColumn;
-	public boolean assignStoryToSprint;	
+	public boolean deleteColumn;	
 	public boolean addTaskStatus;
 	public boolean editTaskStatus;
 	public boolean deleteTaskStatus;
@@ -43,14 +41,12 @@ public class ProjectNotificationProfile extends SmartModel {
 	public ProjectNotificationProfile (@Required Project project) {
 		this.project = project;		
 		setSprint = true;
-		addRole = true;		
-		reportImpediment = true;
+		addRole = true;
 		onCreateComponent = true;
 		onEditComponent = true;
 		onDeleteComponent = true;
 		addColumn=true;
 	    deleteColumn=true;
-	    assignStoryToSprint=true;
 	    addTaskStatus=true;
 		editTaskStatus=true;
 		deleteTaskStatus=true;
@@ -70,9 +66,7 @@ public class ProjectNotificationProfile extends SmartModel {
 		if (action.equalsIgnoreCase("setSprint"))
 			return setSprint;
 		else if (action.equalsIgnoreCase("addRole"))
-			return addRole;		
-		else if (action.equalsIgnoreCase("reportImpediment"))
-			return reportImpediment;
+			return addRole;
 		else if (action.equalsIgnoreCase("onCreateComponent"))
 			return onCreateComponent;
 		else if (action.equalsIgnoreCase("onEditComponent"))
@@ -83,8 +77,6 @@ public class ProjectNotificationProfile extends SmartModel {
 			return addColumn;
 		else if (action.equalsIgnoreCase("deleteColumn"))
 			return deleteColumn;
-		else if (action.equalsIgnoreCase("assignStoryToSprint"))
-			return assignStoryToSprint;
 		else if (action.equalsIgnoreCase("addTaskStatus"))
 			return addTaskStatus;	
 		else if (action.equalsIgnoreCase("editTaskStatus"))
