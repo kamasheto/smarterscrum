@@ -410,10 +410,9 @@ function getTheUniqueFilter(id){
 }
 
 function calculateItems(el){
-	var height = $(el).parent().parent().parent().parent().parent().parent().parent().height();
+	var obj = $(el).parent().parent().parent().parent().parent().parent().parent();
+	var height = obj.height();
 	var items = Math.floor(height/40);
-//	var extra = !(height%40 == 0);
-//	if(extra)
-//		items++;
+	$(obj).css('height','');
 	return items;
 }
