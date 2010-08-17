@@ -332,7 +332,7 @@ $('#accordion').accordion({autoHeight: false,navigation: true});
 <label>Time</label>${new Date(t.timeOfComment)}
 </div>
 ${t.comment}
-<div class="red" style="text-align:right"><a href="" class="red"onclick="$.post('@{Comments.deleteComment()}',{id:${theTask.id}})">delete?</a></div>
+<div class="red" style="text-align:right"><a href="#" class="red"onclick="$.post('@{Comments.deleteComment()}',{id:${theTask.id}})">delete?</a></div>
 </div>
 #{/list}
 #{/if}
