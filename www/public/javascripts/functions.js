@@ -878,6 +878,13 @@ function displayTZCountDown(countdown,place,id,name,type,counter)
 	}
 }
 
+function request_reviewer(tasktypeId)
+{
+	$.post('/requests/requestReviewer', {taskTypeId:tasktypeId},function(msg){
+		$.bar({message:msg});
+	});
+}
+
 function message_bar(message) {
 	$.bar({message: message})
 }

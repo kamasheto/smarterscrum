@@ -1,12 +1,15 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import models.Component;
 import models.Project;
 import models.Request;
+import models.Reviewer;
 import models.Role;
+import models.TaskType;
 import models.Update;
 import models.User;
 import models.UserNotificationProfile;
@@ -260,6 +263,33 @@ public class Requests extends SmartCRUD
 		request.delete();
 		Update.update(role.project, "reload('roles')");
 		renderText( "Request removed!" );
+	}
+	
+	public static void viewTypesToReview(long pId)
+	{		
+		User user = Security.getConnected();
+		Project pro = Project.findById(pId);
+		List<TaskType> taskTypes = pro.taskTypes;
+		List<Reviewer> rev = Reviewer.find("byUserAndProjectAndAccepted", user, pro, true).fetch();
+		ArrayList<TaskType> taken = new ArrayList<TaskType>();
+		for(Reviewer taskreviewer : rev)
+			taken.add(taskreviewer.taskType);		
+		render(taskTypes, taken);
+	}
+		
+	public static void requestReviewer(long taskTypeId)
+	{
+		TaskType tt = TaskType.findById(taskTypeId);
+		User user = Security.getConnected();
+		Reviewer rev = new Reviewer(user, tt.project, tt).save();		
+		if (user.in(tt.project).can("manageRequests"))
+		{
+			rev.accepted=true;
+			rev.save();
+			renderText("You are now "+tt.name+" reviewer in"+tt.project.name+"!");
+		}
+		else
+			renderText("Your request to be "+tt.name+" reviewer has been sent successfully!");
 	}
 	
 	/**
