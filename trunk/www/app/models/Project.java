@@ -134,6 +134,8 @@ public class Project extends SmartModel
 	@OneToMany( mappedBy = "project" )
 	public List<Request> requests;
 
+	@OneToMany( mappedBy = "project" )
+	public List<Reviewer> reviewers;
 	
 	/* One To One Relations */
 	
