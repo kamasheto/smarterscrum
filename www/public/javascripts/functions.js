@@ -275,7 +275,7 @@ $(function() {
 		$(this).data('init', true)
 		$(this).draggable({
 			helper: 'clone',
-			zIndex: 2700,
+			zIndex: 9999999999999999999999,
 			start: function(event, ui) {
 				DRAGGING_ELEMENT = $(this).closest('.draggableChild').attr('id')
 				if (!DRAGGING_ELEMENT) {
@@ -344,14 +344,15 @@ $(function() {
 			minWidth:300,
 			minHeight:70,
 			containment: '#'+con,
-			grid: [1, 40],
+			grid: [1, 60],
 			stop:function(event, ui) {
 			//$(this).css('height','');
 			//for pagination purpose
-			var test = ($(this).find(".normalLinkn span")).first();
-			smart_pagination(test, 1, true);
 			},
 			resize: function(event, ui) {
+				var test = ($(this).find(".normalLinkn span")).first();
+				smart_pagination(test, 1, true);
+				
 			$(this).find('.taskSummary').each(function(){
 				if($(this).width()>$(this).next().width())
 					$(this).next().next().hide();
@@ -465,18 +466,19 @@ $(function() {
 			});
 	$('.refresh').live('click',function(){
 		var parent = $(this).parent().parent();
-		// better? Lol
 		$(parent).find('.actual:first').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>')
-		load($(parent).attr('name'), $(parent).attr('id'), 2);
+		load($(parent).attr('name'), $(parent).attr('id'), 1);
 	});
 	$('.revertFrom').live('click', function() {
 		$(this).parent().parent().data('init', false);
 		var url = $(this).parent().parent().attr('name');
+		alert(url)
 		$(this).parent().next().slideUp();
 		removeFromDiv(url);
 		// CURRENT_OFFSET -= 315
 		var theId = $(this).parent().parent().attr('id');
 		var theSecondId = theId + "_2";
+		alert(theId);alert(theSecondId);
 		if ($('#' + theSecondId).attr('id') == null)
 			$('#' + theId).remove();
 		else {
@@ -531,10 +533,6 @@ function load(url, el, n, hideLoading) {
 				$.bar({message: 'An error has occured. Please try again.'})
 			}
 		})
-	// }
-	if(n==1){	
-		myDivs.push(url);
-	}
 }
 
 // CURRENT_OFFSET = 10
@@ -571,20 +569,19 @@ function magic(id) {
 			if($(this).next().width()<=$(this).width())
 				$(this).next().next().hide();
 		});
-						if($(this).hasClass('overlay'))
-						{
-							var id2 = "ui" +num;
-							num++;
-							var head = '<div id="'+id2+'_header" class="ui-widget-header"><a href="#" onclick="overlayOpen(\''+$(this).attr('name')+'\')"><span class="ui-icon ui-icon-extlink"></span></a>' + $(this).html()+ '</div>';
-							$(this).html(head);
-							$(this).attr('id', id2);
-							
-						}
+		if($(this).hasClass('overlay'))
+		{
+			var id2 = "ui" +num;
+			num++;
+			var head = '<div id="'+id2+'_header" class="ui-widget-header"><a href="#" onclick="overlayOpen(\''+$(this).attr('name')+'\')"><span class="ui-icon ui-icon-extlink"></span></a>' + $(this).html()+ '</div>';
+			$(this).html(head);
+			$(this).attr('id', id2);
+			
+		}
 		else
 		{
-						var url = $(this).attr('name');
+			var url = $(this).attr('name');
 			if($.inArray(url,myDivs)==-1)
-			// if (true)
 			{
 				var id2 = "ui" +num++;
 				var head = '<div id="'+id2+'_header" class="ui-widget-header mainH"><span class="revertFrom"><span class="ui-icon ui-icon-circle-close"></span><span class="refresh ui-icon ui-icon-refresh"></span></span>' + $(this).html() + '</div>';
@@ -593,12 +590,9 @@ function magic(id) {
 				$(this).attr('id', id2);
 				$(this).append('<div id="' + id2 + '_content" class="ui-widget-content actual" ></div>');
 			} else {	
-				var id2 = 						
-				$($(this).closest('.workspaceDraggables').find('div[name='+$(this).attr('name')+']')).first().attr('id')+'_2';
-				var head = '<div id="'+id2+'_header" class="ui-widget-header mainH">' + $(this).html() + '</div>';
-				$(this).html(head);
-				$(this).addClass('clone');
-				$(this).attr('id', id2);	
+				var id2 = $(this).closest('.workspaceDraggables').find('div[name='+$(this).attr('name')+']').first().attr('id')+'_2';
+				var head = '<div id="'+id2+'_header" class="mainH clone">' + $(this).html() + '</div>';
+				$(this).html(head);	alert('');
 			}						
 		}
 	});
