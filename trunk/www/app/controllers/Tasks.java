@@ -488,7 +488,7 @@ public class Tasks extends SmartCRUD
 			}
 		}
 		// start resetting the deadline
-		if( oldAssignee != tmp.assignee.id )
+		if( tmp.assignee == null || oldAssignee != tmp.assignee.id )
 		{
 			tmp.deadline = 0;
 		}
