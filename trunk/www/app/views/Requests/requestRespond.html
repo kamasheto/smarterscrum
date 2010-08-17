@@ -26,3 +26,11 @@
 #{else}
 	#{note 'error'}There are no new deletion requests#{/note}
 #{/else}
+#{list items:revrequests, as:'rev'}
+	<div class="bar">${rev.user.name} has  requested to be reviewer for task type ${rev.taskType.name}.	
+	<a onclick="review_request_respond('${rev.id}', 0);" href="#"><img src="/public/images/famfam/group_delete.png" title="Ignore request"></a><a onclick="review_request_respond('${rev.id}', 1);" href="#"><img src="/public/images/famfam/group_go.png" title="Grant role request"></a>
+	</div>
+#{/list}
+#{else}
+	#{note 'error'}There are no new reviewing requests#{/note}
+#{/else}

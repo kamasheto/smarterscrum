@@ -43,7 +43,8 @@ public class Requests extends SmartCRUD
 		Security.check( pro, "manageRequests" );
 		List<Request> requests = Request.find( "isDeletion = false and project = " + pro.id + " order by id desc" ).fetch();
 		List<Request> drequests = Request.find( "isDeletion = true and project = " + pro.id + " order by id desc" ).fetch();
-		render( requests, drequests, pro);
+		List<Reviewer> revrequests = Reviewer.find("accepted = false and project = "+pro.id + " order by id desc" ).fetch();
+		render( requests, drequests, pro, revrequests);
 	}
 
 	/**
@@ -271,10 +272,14 @@ public class Requests extends SmartCRUD
 		Project pro = Project.findById(pId);
 		List<TaskType> taskTypes = pro.taskTypes;
 		List<Reviewer> rev = Reviewer.find("byUserAndProjectAndAccepted", user, pro, true).fetch();
+		List<Reviewer> pend = Reviewer.find("byUserAndProjectAndAccepted", user, pro, false).fetch();
+		ArrayList<TaskType> pending = new ArrayList<TaskType>();
 		ArrayList<TaskType> taken = new ArrayList<TaskType>();
 		for(Reviewer taskreviewer : rev)
-			taken.add(taskreviewer.taskType);		
-		render(taskTypes, taken);
+			taken.add(taskreviewer.taskType);
+		for(Reviewer pendingreviewer : pend)
+			pending.add(pendingreviewer.taskType);
+		render(taskTypes, taken, pending);
 	}
 		
 	public static void requestReviewer(long taskTypeId)
@@ -291,6 +296,22 @@ public class Requests extends SmartCRUD
 		}
 		else
 			renderText("Your request to be "+tt.name+" reviewer has been sent successfully!");
+	}
+	
+	public static void reviewRequestRespond(long revId, int response)
+	{
+		Reviewer rev = Reviewer.findById(revId);
+		if(response == 1)
+			{
+				rev.accepted=true;
+				rev.save();
+				Notifications.notifyProjectUsers(rev.project, "addReviewer", "", "to the reviewers for the task type", rev.taskType.name, (byte)0);
+			}
+		else
+			{
+				Notifications.notifyUser(rev.user, "declined", "", "your request to be reviewer for task type", rev.taskType.name, (byte)-1, rev.project);
+				rev.delete();				
+			}
 	}
 	
 	public static void revokeReviewer(long uId, long taskTypeId)
