@@ -372,6 +372,9 @@ public class Tasks extends SmartCRUD
 		String message2 = "Are you Sure you want to delete the task ?!";
 		boolean deletable = tmp.isDeletable();
 		String oldDescription = tmp.description;// done
+		long oldComponent=0;
+		if(tmp.component != null)
+			oldComponent = tmp.component.id;
 		long oldTaskType;
 		if( tmp.taskType != null )
 			oldTaskType = tmp.taskType.id;// done
@@ -548,10 +551,20 @@ public class Tasks extends SmartCRUD
 				changes += "Task " + newTask.number + " was added to dependent tasks.<br>";
 			}
 		}
-
+		if(tmp.component != null && oldComponent != 0){
+			if(tmp.component.id != oldComponent){
+				Component c = Component.findById(oldComponent);
+				changes+="Component changed from <i>"+c.name+"</i> to <i>"+tmp.component.name+"</i><br>";
+			}
+		}
+		else if(tmp.component != null && oldComponent == 0){
+			changes+="Task's component is now <i>"+tmp.component.name+"</i><br>";
+		}
 		// Now finally save the comment
 		if( !changes.equals( "" ) )
 		{
+			changes = "<font color=\"green\">" + changes;
+			changes = changes + "</font>";
 			Comment changesComment = new Comment( Security.getConnected(), tmp.id, changes );
 			changesComment.save();
 		}
