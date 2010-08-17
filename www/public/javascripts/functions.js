@@ -472,13 +472,12 @@ $(function() {
 	$('.revertFrom').live('click', function() {
 		$(this).parent().parent().data('init', false);
 		var url = $(this).parent().parent().attr('name');
-		alert(url)
+
 		$(this).parent().next().slideUp();
 		removeFromDiv(url);
 		// CURRENT_OFFSET -= 315
 		var theId = $(this).parent().parent().attr('id');
 		var theSecondId = theId + "_2";
-		alert(theId);alert(theSecondId);
 		if ($('#' + theSecondId).attr('id') == null)
 			$('#' + theId).remove();
 		else {
