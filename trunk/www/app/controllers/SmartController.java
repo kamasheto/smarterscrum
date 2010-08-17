@@ -101,7 +101,7 @@ if(!Sprint.Last.equals(new Date())){
 								}
 							}
 
-							if( pcol.onBoard && !pcol.deleted )
+							if( pcol.onBoard && !pcol.deleted && task.assignee!=null)
 							{
 								data.get( i ).get( CS.indexOf( pcol ) ).add( "T" + task.id + "-" + task.description + "-" + task.assignee.name );
 							}

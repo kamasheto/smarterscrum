@@ -148,9 +148,9 @@
 			<label for="object_dependentTasks"> Dependent Tasks</label> 
 			<input type="hidden" name="object.dependentTasks@id" value="" /> 
 			<select id="object_dependentTasks" name="object.dependentTasks@id" multiple="yes"> 
-									#{list items:dependencies ,as :'Task'}
-											<option value="${Task.id}" #{if object.dependentTasks.contains(Task)}selected#{/if}>${Task.description}</option>
-									#{/list} 
+			#{list items:dependencies ,as :'Task'}
+			<option value="${Task.id}" #{if object.dependentTasks.contains(Task)}selected#{/if}>${Task.description}</option>
+			#{/list} 
 			</select> 
 			</p>
 			#{/crud.custom }
@@ -158,9 +158,12 @@
 			#{crud.custom 'taskSprint'}
 			<p>
 			<label for="object_taskSprint">Sprint</label> 
-			<span>
-			<font color="green">&nbsp;&nbsp;#{if object.taskSprint}Sprint ${object.taskSprint.sprintNumber}#{/if}#{else} The Task is not assigned to a Sprint.#{/else}</font>
-			</span>
+			<select id="object_taskSprint" name="object.taskSprint@id">
+			<option value="">(None)</option>
+			#{list items:object.project.sprints ,as :'sprint'}
+			<option value="${sprint.id}"#{if object.taskSprint == sprint} selected#{/if}>sprint ${sprint.sprintNumber}</option>
+			#{/list}		
+			</select>
 			</p>
 			#{/crud.custom }
 			
