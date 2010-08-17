@@ -167,8 +167,8 @@
 			#{crud.custom 'comment'}
 				<label for="object_comment">Comments and Actions</label><br/>
 				<input type="hidden" name="object.comment@id" value="" />
-				<textarea id="object_comment" name="object.comment" style="width:100%"></textarea>
-				<div id="comments_${theTask.id}"name="comments">
+				<textarea id="object_comment" name="object.comment@id" style="width:100%"></textarea>
+				<div name="comments">
 				<table>
 				#{list items:comments, as:'comment'}
 					#{ifnot comment.deleted}
