@@ -32,6 +32,7 @@ public class UserNotificationProfile extends SmartModel {
 	public boolean deleteProject;
 	public boolean deletedFromProject;
 	public boolean editTaskType;
+	public boolean addReviewer;
 	// *********** List Of Action Types Ended ***********
 
 	/**
@@ -62,6 +63,7 @@ public class UserNotificationProfile extends SmartModel {
 	    this.deleteProject = project.notificationProfile.deleteProject;
 	    this.deletedFromProject=project.notificationProfile.deletedFromProject;
 	    this.editTaskType=project.notificationProfile.editTaskType;
+	    this.addReviewer=project.notificationProfile.addReviewer;
 	}
 
 	/**
@@ -99,6 +101,8 @@ public class UserNotificationProfile extends SmartModel {
 			return deletedFromProject;
 		else if (action.equalsIgnoreCase("editTaskType"))
 			return editTaskType;
+		else if (action.equalsIgnoreCase("addReviewer"))
+			return addReviewer;
 		else
 			return false;
 	}

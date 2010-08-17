@@ -40,3 +40,4 @@ deleteTaskStatus = Someone deletes a task status.
 deleteProject = The project is deleted.
 deletedFromProject = Someone is removed from project.
 editTaskType = Someone edits a task type.
+addReviewer = A new reviewer is assigned to the project.
