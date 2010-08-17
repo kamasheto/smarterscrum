@@ -135,19 +135,25 @@ jQuery.jcalendar = function() {
             str='';
             $.post('/Application/dayEvents',{day : day.val(), month : month.val(), year : year.val()}, function(data){
             	$.each(data.meetings, function(id, item){
-    				str +=' <li><img src="/public/images/famfam/meeting.png"/><a href="/Application/externalOpen?id='+item.projectId+'&isOverlay=false&url=/meetings/viewmeeting?id='+item.id+'">'+item.project+' Meeting : '+ item.name+'</a></li>';
+    				str +=' <div><img src="/public/images/famfam/meeting.png"/>&nbsp;<a onClick="showProjectWorkspace('+item.projectId+');loadBox(\'/meetings/viewMeeting?id='+item.id+'\',\'workspace-'+item.projectId+'\',\'\');">'+item.project+' Meeting : '+item.name+'</a></div>';
     			});
             	$.each(data.sprints, function(id, item){
-    				str +=' <li><img src="/public/images/famfam/date.png"/><a href="/Application/externalOpen?id='+item.projectId+'&isOverlay=false&url=/sprints/showsprint?id='+item.id+'">'+item.project+' Sprint  '+ item.sprintNumber+'</a></li>';
+    				str +='<div><img src="/public/images/famfam/date.png"/>&nbsp;<a onClick="showProjectWorkspace('+item.projectId+');loadBox(\'/sprints/showsprint?id='+item.id+'\',\'workspace+'+item.projectId+'\',\'\');">The Start of Sprint'+item.sprintNumber+' in Project '+item.project+'</a></div>';
     			});
             	if(str!=''){
-            		$('#selected_events').html(str);
-            		if($('#selected_date').is(":visible"))
-            			$('#selected_date').slideUp(function(){
-            				$('#selected_date').slideDown();});
-            		else
-            		$('#selected_date').slideToggle(400);
-            	}
+            		thisday=day.val()+'-'+month.val()+'-'+year.val();
+            		if(thisday == lastday){
+            			$('#selected_date').slideUp();
+            			lastday='';
+            		}else{
+            			lastday=thisday;
+            			$('#selected_events').html(str);
+            			if($('#selected_date').is(":visible"))
+            				$('#selected_date').slideUp(function(){
+            					$('#selected_date').slideDown();});
+            			else
+            				$('#selected_date').slideToggle(400);
+            		}}
         	});
             
         	
@@ -348,5 +354,5 @@ function eventHandler (day, month, year){
 	
 	alert("here2");
 }
-
+var lastday='';
 

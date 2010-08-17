@@ -369,6 +369,8 @@ public class Application extends SmartController
 	public static void dayEvents(int day, int month, int year){
 		List<Project> projects  = Security.getConnected().projects;
 		Event events = new Event();
+		Date today = new Date();
+		if(!(day == today.getDate() && month==today.getMonth()+1 && year == today.getYear()+1900)){
 		for(Project project : projects){
 			for(Sprint sprint : project.sprints){
 				if(!sprint.deleted && sprint.startDate.getDate()== day && sprint.startDate.getMonth()+1 == month && sprint.startDate.getYear()+1900 == year){
@@ -386,6 +388,7 @@ public class Application extends SmartController
 				if(start.getDate()== day && start.getMonth()+1 == month && start.getYear()+1900 == year)
 					events.meetings.add(new Meeting.Object(meeting.meeting.id, meeting.meeting.startTime, meeting.meeting.project.name, meeting.meeting.name, meeting.meeting.project.id));
 			}
+		}
 		}
 		renderJSON(events);
 	}
