@@ -293,6 +293,16 @@ public class Requests extends SmartCRUD
 			renderText("Your request to be "+tt.name+" reviewer has been sent successfully!");
 	}
 	
+	public static void revokeReviewer(long uId, long taskTypeId)
+	{
+		User user = User.findById(uId);
+		TaskType tt = TaskType.findById(taskTypeId);
+		Reviewer rev = Reviewer.find("byUserAndTaskType", user, tt).first();
+		rev.delete();
+		Notifications.notifyProjectUsers(tt.project, "deleteReviewer", "", "from the reviewers for the task type", tt.name, (byte)-1);
+		renderText("The review role has been revoked successfully!");
+	}
+	
 	/**
 	 * Overriding the CRUD method show and making it forbidden
 	 */

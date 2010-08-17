@@ -143,6 +143,8 @@ public class Notifications extends Mailer{
 			actionType2= "edited";
 		else if (actionType.equalsIgnoreCase("addReviewer"))
 			actionType2= "been added";
+		else if (actionType.equalsIgnoreCase("deleteReviewer"))
+			actionType2= "been removed";		
 		
 		if(project.notificationProfile.checkAction(actionType))
 		{

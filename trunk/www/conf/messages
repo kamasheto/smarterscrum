@@ -41,3 +41,4 @@ deleteProject = The project is deleted.
 deletedFromProject = Someone is removed from project.
 editTaskType = Someone edits a task type.
 addReviewer = A new reviewer is assigned to the project.
+deleteReviewer = A reviewer role is revoked.
