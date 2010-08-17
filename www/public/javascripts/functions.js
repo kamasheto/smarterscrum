@@ -892,6 +892,11 @@ function revoke_reviewer(uid, ttid)
 	});
 }
 
+function review_request_respond(revid , res)
+{
+	$.post('/requests/reviewRequestRespond', {revId:revid, response:res});
+}
+
 function message_bar(message) {
 	$.bar({message: message})
 }
