@@ -3,6 +3,6 @@
 
 #{list taskTypes, as:'tasktype'}
 <div class="bar">${tasktype.name} #{ifnot taken.contains(tasktype)}<a title="request to review tasks of this type?" href="#" onclick="request_reviewer(${tasktype.id});"><img src="/public/images/famfam/add-user.png" /></a>#{/ifnot}
-#{else}<a title="stop reviewing tasks of this type?" href="#" onclick=""><img src="/public/images/famfam/remove-user.png" /></a>#{/else}
+#{else}<a title="stop reviewing tasks of this type?" href="#" onclick="revoke_reviewer(${connected.id}, ${tasktype.id});"><img src="/public/images/famfam/remove-user.png" /></a>#{/else}
 </div>
 #{/list}
