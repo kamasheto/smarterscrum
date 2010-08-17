@@ -13,10 +13,10 @@
 #{/set}
 <div id="game">
 	#{list rounds}
-	<h3><a href="#">Story ${game.stories.indexOf(_.round.story) + 1}/${game.stories.size()}, Round: ${_.round.roundNo}</a></h3>
+	<h3><a href="#">Story ${game.tasks.indexOf(_.round.task) + 1}/${game.tasks.size()}, Round: ${_.round.roundNo}</a></h3>
 	<div>
-		<div>${_.round.story.description.nl2br()}</div>
-		<div class="tiny_info">Tasks are: #{list _.round.story.storiesTask, as:'__'}${__.description}, #{/list}#{else}No Tasks are defined yet for this story.#{/else}</div>
+		<div>${_.round.task.description.nl2br()}</div>
+		<div class="tiny_info">Tasks are: #{list _.round.task.subTasks, as:'__'}${__.description}, #{/list}#{else}No sub Tasks are defined yet for this task.#{/else}</div>
 		#{if _.round == round}<div>Round Progress: <ul id="round_progress"></ul></div>#{/if}
 		#{else}
 			<ul>

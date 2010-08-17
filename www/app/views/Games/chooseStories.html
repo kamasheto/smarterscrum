@@ -1,21 +1,15 @@
 #{extends 'main.html'/}
 #{set title:'Choose Stories' /}
-#{set 'crumbs'}
-<li><a href="/">Home</a></li>
-<li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${c.project.id}">${c.project.name}</a></li>
-<li><a href="/components/${c.id}">${c.name}</a></li>
-
-
-#{/set}
 
 <h2>Estimation Game</h2>
 
-#{if c.stories}
+#{if c.componentTasks}
 <form action="/games/startgame" method="POST">
 <ul>
-#{list c.stories}
-		<li><input type="checkbox" name="stories[]" value="${_.id}">  ${_.description}</li>		
+#{list c.componentTasks}
+		
+		<li><input type="checkbox" name="tasks[]" value="${_.id}">  ${_.description}</li>	
+		
 #{/list}
 </ul>
 <input type="submit" value="Start Game">

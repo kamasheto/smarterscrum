@@ -42,13 +42,14 @@
  * @param stories
  * array of story ids
  */
- public static void startGame(long[] Tasks) {
+ public static void startGame(long [] tasks) {
  Game game = new Game().save();
+ 
  // game.init(); moved down by Amr Hany in order to have project id in
  // the chatroom
  	Component component = null;
  	User user = Security.getConnected();
- 	for (long s : Tasks) {
+ 	for (long s : tasks) {
  			Task task = Task.findById(s);
  			if (!user.in(task.project).can("startGame")) {
  				forbidden();
