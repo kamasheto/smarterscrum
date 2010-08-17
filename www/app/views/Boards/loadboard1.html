@@ -7,6 +7,16 @@
   -webkit-box-shadow: 2px 2px 3px #969696;
   padding:10px;
 }
+
+.sideHolder {
+	position: fixed;
+	right: 0px;
+	top: 0px;
+	height: 100%;
+	margin: auto 0px;
+	color: white !important;
+	margin: auto 0px;
+}
 </style>
 
 #{set 'moreScripts'}
@@ -37,6 +47,19 @@ REDIPS.drag.init();
 	<h1>${comp.name}'s Task Board</h1>
 	#{/else}
 #{/else}
+
+<div class="sideHolder">
+	<div class="notch"style="top: 190px;">
+		<a href="#" title="View meetings?"onclick="make('sideMeet',this);$('#sideMeet').load('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}')">
+		<img src="/public/images/meetings.png" alt="[Notifications]"/>
+		</a>
+	</div>
+	<div id="sideMeet" class="siderC">
+		<div style="display:table;width:100%;height:100%;">
+<div id="overlayLoading" style="text-align:center;vertical-align:middle;display:table-cell">
+<img src="/public/images/loading.gif" alt="Loading"/></div>
+	</div>
+</div></div>
 
 <a href="#" id="ToggleBoard-open" onclick="ToggleBoardOpen();" title="toggle" style="display:none"><img src="@{'/public/images/famfam/show.bmp'}" alt=""/></a>
 <a href="#" id="ToggleBoard-close" onclick="ToggleBoardClose()" title="toggle"><img src="@{'/public/images/famfam/hide.png'}" alt=""/></a>
@@ -197,12 +220,10 @@ REDIPS.drag.init();
 		<div id="task-${task.id}_TT">
 		<p>		
 		<div class="${task.taskStatus.columns[0].name}"></div>  
-		<div class="drag status status_${task.id}">
 		<div class="small_${task.id} shadowed" style="-moz-border-radius:10px; border-radius:10px; background-color:${task.taskType.hexColor}; border:0px; "  id="${task.id}_small">
 		<a id="task-${task.id}" onclick="ctask(this.id);" style="cursor:pointer !important;border=0px; float:right;"><img title="hide?" src="@{'/public/images/famfam/bullet_toggle_minus.png'}"></img></a> 
 		<div id="desc_${task.id}">${task.description}</div>
 		<a onclick="SmallSticky(this.id)" title="Edit task info?"  style="cursor: pointer !important" id="${task.id}_button">more info..</a>
-		</div>
 		</div>
 		</p>
 		
@@ -535,19 +556,22 @@ REDIPS.drag.init();})
 			table.rows[i].cells[to].innerHTML = temp ;
 		}
 		}
-		function ff()
-		{
-			//var children = document.getElementById('1_0').childNodes;
-			//alert(children.length);
-			var dina = $('#1_0').contents();
-			//alert(dina.length);
-			$('#1_0').contents().load('/boards/loadboard1?sprintID=1 '+dina.length);
-		//	alert($('#1_0').contents().length);
-			
-	//	for (var i = 0;i<dina.length;i++ )
-	//	{
-	//		$(dina[i]).load('/boards/loadboard1?sprintID=1 #'+dina[i]);
-	//	}
-		}
+		function make(el,me)
+       {
+    	   var $marginLefty = $('#'+el);
+    	   $marginLefty.animate({
+        	   marginRight: parseInt($marginLefty.css('marginRight'),10) == 0 ?$marginLefty.outerWidth() :0
+           });
+           var $ana = $(me).parent();
+           $ana.animate({
+        	   right: parseInt($ana.css('right'),10) == 0 ? -21 : 0
+           },
+           function(){
+        	   $(me).parent().toggleClass('notch2');
+           });
+
+           
+       }
+ 
 		
 </script>
