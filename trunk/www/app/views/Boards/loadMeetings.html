@@ -1,4 +1,4 @@
-#{extends 'overlay.html' /}
+#{extends 'sidebar.html' /}
 #{set 'title'}
 Meetings
 #{/set}
@@ -109,6 +109,8 @@ No Attendees
 
 <script>
 	
+	
+	
 	function end(id) {
 	var ans=confirm('are you sure you want to end the meeting?');
 	if(ans){
@@ -149,59 +151,59 @@ No Attendees
 		$.post('/Snapshots/TakeSnapshot', {sprintID:${sid},componentID:${cid},meetingID:id}, function(){$.bar({message:"Snapshot Associated!"})});
 	}
 	function select_user(id, str) 
- {
- 	 $('.status').css('display','none');
-	 $('.nostatus').css('display','none');
-	 
- 	 window.opener.$('.editDES').css('display','none');
-	 window.opener.$('.noedit').css('display','none');
-	 window.opener.$('.shwtype').css('display','none');		
-	window.opener.$('.hidestype').css('display','none');
+ 	{
+ 	
+	 var statusList = ${us};
+	 var f_status = false;
+	 for(var j=0; j<statusList.length; j++)
+     {
+     if(statusList[j]==id)
+	 {
+	 	f_status = true;
+	 }
+     }
+	if(f_status)
+	{
+		alert('yes');
+		$('.status').addClass('drag status');
+		$('.nostatus').addClass('drag status');
+	}
+	else
+	{
+		alert('no');
+		$('.status').removeClass('drag status');
+		$('.nostatus').removeClass('drag status');
+	}	
+
+		
+	$('.editDES').css('display','none');
+	$('.noedit').css('display','none');
+	$('.shwtype').css('display','none');		
+	$('.hidestype').css('display','none');
 	 selectedUser = id;
 	 $('#myLayer').html(str+' is editing the Board now '+ '<br/><br/>').effect('highlight',{}, 6000).fadeOut();
 	 var descList = ${ud};
 	 var f_desc = false;
      for(var j=0; j<descList.length; j++)
-    {
+     {
      if(descList[j]==id)
 	 {
 	 	f_desc = true;
 	 }
-    }
+     }
 	if(f_desc)
 	{
-		window.opener.$('.noedit').css('display','none');
-		window.opener.$('.editDES').css('display','inline-block');			
+	$('.noedit').css('display','none');
+	$('.editDES').css('display','inline-block');			
 	}
 	else
 	{
-		window.opener.$('.noedit').css('display','inline-block');
-		window.opener.$('.noedit_'+id).css('display','none');
-		window.opener.$('.editdesc_'+id).css('display','inline-block');	
+	$('.noedit').css('display','inline-block');
+	$('.noedit_'+id).css('display','none');
+	$('.editdesc_'+id).css('display','inline-block');	
 	}
 	
-	 var statusList = ${us};
-	 var f_status = false;
-	for(var j=0; j<statusList.length; j++)
-    {
-     if(statusList[j]==id)
-	 {
-	 	f_status = true;
-	 }
-    }
-	if(f_status)
-	{
-		 window.opener.$('.status').css('display','inline-block');
-		 window.opener.$('.nostatus').css('display','none');		
-	}
-	else
-	{
-		 window.opener.$('.status').css('display','none');
-		 window.opener.$('.nostatus').css('display','inline-block');
-	 	window.opener.$('.nostatus_'+id).css('display','none');
-		window.opener.$('.status_'+id).css('display','inline-block');	
-	}	
-		
+	 		
 			
 	 var assiList = ${ua};
 	 var f_assi = false;
@@ -215,14 +217,14 @@ No Attendees
     }
 	if(f_assi)
 	{
-		window.opener.$('.showdesc').css('display','none');
-		window.opener.$('.hidesassi').css('display','inline-block');		
+	$('.showdesc').css('display','none');
+	$('.hidesassi').css('display','inline-block');		
 	
 	}
 	else
 	{
-		window.opener.$('.hidesassi').css('display','none');
-		window.opener.$('.showdesc').css('display','inline-block');
+	$('.hidesassi').css('display','none');
+	$('.showdesc').css('display','inline-block');
 	}
 	
 	 
@@ -238,14 +240,14 @@ No Attendees
     }
 	if(f_rev)
 	{
-		window.opener.$('.showrev').css('display','none');
-		window.opener.$('.hidesrev').css('display','inline-block');		
+	$('.showrev').css('display','none');
+	$('.hidesrev').css('display','inline-block');		
 	
 	}
 	else
 	{
-		window.opener.$('.showrev').css('display','inline-block');
-		window.opener.$('.hidesrev').css('display','none');		
+	$('.showrev').css('display','inline-block');
+	$('.hidesrev').css('display','none');		
 	
 	}
 	
@@ -261,14 +263,14 @@ No Attendees
     }
 	if(f_type)
 	{
-		window.opener.$('.shwtype').css('display','none');		
-		window.opener.$('.hidestype').css('display','inline-block');		
+	$('.shwtype').css('display','none');		
+	$('.hidestype').css('display','inline-block');		
 	}
 	else
 	{
-		window.opener.$('.shwtype').css('display','inline-block');
-		window.opener.$('.shwtype_'+id).css('display','none');		
-		window.opener.$('.shows_'+id).css('display','inline-block');
+	$('.shwtype').css('display','inline-block');
+	$('.shwtype_'+id).css('display','none');		
+	$('.shows_'+id).css('display','inline-block');
 					
 	}
 	
