@@ -269,7 +269,7 @@ public class Tasks extends SmartCRUD
 		}
 		tmp.reporter = Security.getConnected();
 		object.save();
-		Log.addUserLog("Created new task", tmp, tmp.project);
+		Log.addUserLog( "Created new task", tmp, tmp.project );
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
@@ -487,7 +487,12 @@ public class Tasks extends SmartCRUD
 
 			}
 		}
-
+		// start resetting the deadline
+		if( oldAssignee != tmp.assignee.id )
+		{
+			tmp.deadline = 0;
+		}
+		// end resetting the deadline
 		tmp.save();
 		if( !(tmp.description.equals( oldDescription )) )
 			changes += "Description changed from <i>" + oldDescription + "</i> to <i>" + tmp.description + "</i><br>";
@@ -704,7 +709,7 @@ public class Tasks extends SmartCRUD
 		int d = c.get( GregorianCalendar.DATE );
 		String mm = Integer.toString( m );
 		String dd = Integer.toString( d );
-		return "" + c.get( GregorianCalendar.YEAR ) +'-'+ (m < 10 ? "0" + mm : mm) +'-'+ (d < 10 ? "0" + dd : dd);
+		return "" + c.get( GregorianCalendar.YEAR ) + '-' + (m < 10 ? "0" + mm : mm) + '-' + (d < 10 ? "0" + dd : dd);
 	}
 
 	/**
@@ -722,7 +727,7 @@ public class Tasks extends SmartCRUD
 		Security.check( theTask.project.users.contains( Security.getConnected() ) );
 		if( theTask.deleted )
 			notFound();
-		System.out.println(temp);
+		System.out.println( temp );
 		boolean empty = temp.isEmpty();
 		String lastModified = null;
 		int numberOfModifications = 0;
@@ -760,15 +765,15 @@ public class Tasks extends SmartCRUD
 			if( i < temp.size() - 1 )
 			{
 				GregorianCalendar tomorrow = new GregorianCalendar();
-				tomorrow.setTimeInMillis( temp.get( i+1 ).timestamp );
+				tomorrow.setTimeInMillis( temp.get( i + 1 ).timestamp );
 
-				keepLoop : while( getStrDate( today ).equals( getStrDate( tomorrow )) )
+				keepLoop : while( getStrDate( today ).equals( getStrDate( tomorrow ) ) )
 				{
 					i++;
 					k++;
 					if( i == temp.size() - 1 )
 						break keepLoop;
-					
+
 				}
 			}
 			if( i == temp.size() - 1 )
@@ -785,13 +790,13 @@ public class Tasks extends SmartCRUD
 		}
 		GregorianCalendar maxdate = new GregorianCalendar();
 		maxdate.setTimeInMillis( temp.get( temp.size() - 1 ).timestamp );
-		if( !temp.isEmpty() || temp.size()==1)
-		maxdate.setTimeInMillis( temp.get( temp.size() - 1 ).timestamp + (3 * 86400000) );
+		if( !temp.isEmpty() || temp.size() == 1 )
+			maxdate.setTimeInMillis( temp.get( temp.size() - 1 ).timestamp + (3 * 86400000) );
 		String maxDate = getStrDate( maxdate );
 		GregorianCalendar mindate = new GregorianCalendar();
-		mindate.setTimeInMillis( temp.get( 0).timestamp );
-		if( !temp.isEmpty() || temp.size()==1)
-		mindate.setTimeInMillis( temp.get( 0 ).timestamp - (3 * 86400000) );
+		mindate.setTimeInMillis( temp.get( 0 ).timestamp );
+		if( !temp.isEmpty() || temp.size() == 1 )
+			mindate.setTimeInMillis( temp.get( 0 ).timestamp - (3 * 86400000) );
 		String minDate = getStrDate( mindate );
 		Project myProject = theTask.project;
 		render( myProject, minDate, temp, lastModified, empty, efforts, changes, numberOfModifications, theTask, maxDate );
@@ -998,7 +1003,7 @@ public class Tasks extends SmartCRUD
 		long compId = 0;
 		if( task1.component != null )
 			compId = task1.component.id;
-		Update.update( task1.project, "drag_note_status(" + task1.taskSprint.id + "," + task1.assignee.id + "," + oldstatus + "," + newstatus + "," + compId +"," + task1.id + ")");
+		Update.update( task1.project, "drag_note_status(" + task1.taskSprint.id + "," + task1.assignee.id + "," + oldstatus + "," + newstatus + "," + compId + "," + task1.id + ")" );
 		String body = "";
 		String header = "Task: 'T" + task1.id + "\'" + " Task Status has been edited.";
 		if( userId == Security.getConnected().id )
@@ -1090,9 +1095,11 @@ public class Tasks extends SmartCRUD
 	public static boolean editTaskAssignee2( long id, long userId, long assigneeId )
 	{
 		Task task1 = Task.findById( id );
-		Security.check( Security.getConnected().in( task1.project ).can( "modifyTask" ) || task1.assignee == Security.getConnected() );
 		if( task1 == null )
 			return false;
+		Security.check( Security.getConnected().in( task1.project ).can( "modifyTask" ) || task1.assignee == Security.getConnected() );
+
+		User oldAssignee = task1.assignee;
 		User assignee = User.findById( assigneeId );
 		if( assignee == null )
 			return false;
@@ -1117,6 +1124,10 @@ public class Tasks extends SmartCRUD
 		long oldassi = task1.assignee.id;
 
 		task1.assignee = assignee;
+		if( !oldAssignee.equals( assignee ) )
+		{
+			task1.deadline = 0;
+		}
 		task1.save();
 
 		long newassi = task1.assignee.id;
@@ -1126,7 +1137,8 @@ public class Tasks extends SmartCRUD
 			compId = task1.component.id;
 		assignee.tasks.add( task1 );
 		assignee.save();
-		Update.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + oldassi + "," + newassi + ","+ task1.taskStatus.id+"," + compId + "," + task1.id +")" );
+
+		Update.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + oldassi + "," + newassi + "," + task1.taskStatus.id + "," + compId + "," + task1.id + ")" );
 		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 		Update.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 		String header = "Task: 'T" + task1.id + "\'" + " Assignee has been edited.";
