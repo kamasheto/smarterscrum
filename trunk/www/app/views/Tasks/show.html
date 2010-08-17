@@ -142,30 +142,63 @@
 			</select>
 			#{/crud.custom}
 			
-			
+			#{if dependencies.size()>1}
 			#{crud.custom 'dependentTasks'}
 			<p>
 			<label for="object_dependentTasks"> Dependent Tasks</label> 
 			<input type="hidden" name="object.dependentTasks@id" value="" /> 
 			<select id="object_dependentTasks" name="object.dependentTasks@id" multiple="yes"> 
 			#{list items:dependencies ,as :'Task'}
+			#{if object!=Task}
 			<option value="${Task.id}" #{if object.dependentTasks.contains(Task)}selected#{/if}>${Task.description}</option>
+			#{/if}
 			#{/list} 
 			</select> 
 			</p>
 			#{/crud.custom }
+			#{/if}
+			#{else}
+			#{crud.custom 'dependentTasks'}
+			#{/crud.custom }
+			#{/else}
 			
+			#{if object.project.sprints.size()>0}
 			#{crud.custom 'taskSprint'}
 			<p>
-			<label for="object_taskSprint">Sprint</label> 
+			<label for="object_taskSprint">Sprint</label>
+			#{if object.taskSprint!=null}
+			#{if object.taskSprint.ended}
+			<label for="task_taskSprint">Reporter</label> 
+			<span id="task_taskSprint" ><font color="green">sprint ${object.taskSprint.sprintNumber}</font></span>
+			#{/if}
+			#{else}
 			<select id="object_taskSprint" name="object.taskSprint@id">
 			<option value="">(None)</option>
 			#{list items:object.project.sprints ,as :'sprint'}
+			#{ifnot sprint.ended}
 			<option value="${sprint.id}"#{if object.taskSprint == sprint} selected#{/if}>sprint ${sprint.sprintNumber}</option>
+			#{/ifnot}
 			#{/list}		
 			</select>
+			#{/else}
+			#{/if}
+			#{else} 
+			<select id="object_taskSprint" name="object.taskSprint@id">
+			<option value="">(None)</option>
+			#{list items:object.project.sprints ,as :'sprint'}
+			#{ifnot sprint.ended}
+			<option value="${sprint.id}"#{if object.taskSprint == sprint} selected#{/if}>sprint ${sprint.sprintNumber}</option>
+			#{/ifnot}
+			#{/list}		
+			</select>
+			#{/else}
 			</p>
 			#{/crud.custom }
+			#{/if}
+			#{else}
+			#{crud.custom 'taskSprint'}
+			#{/crud.custom }
+			#{/else}
 			
 			#{crud.custom 'comment'}
 				<label for="object_comment">Comments and Actions</label><br/>

@@ -200,7 +200,9 @@
 	<select id="object_taskSprint" name="object.taskSprint@id">
 	<option value="">None</option>
 	#{list items:sprints ,as :'sprint'}
+	#{ifnot sprint.ended}
 	<option value="${sprint.id}">Sprint ${sprint.sprintNumber}</option>
+	#{/ifnot}
 	#{/list}
 	</select>
 	</div>
