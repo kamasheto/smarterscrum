@@ -326,7 +326,14 @@ $(function() {
 		$(this).parent().find('.dropper').hide();
 		})
 	
-	
+	$('.draggable').live('click',function(){
+		$(this).css('position','absolute');
+		$(this).css('z-index','9994');
+	});
+	$('.draggable *').live('click',function(){
+		$(this).closest('.draggable').css('position','absolute');
+		$(this).closest('.draggable').css('z-index','9994');
+	});
 	$('.draggable').live('mouseover', function() {
 		if (!DRAGGING_ELEMENT) {
 			$(this).children().children('.dragger').show()					
@@ -346,8 +353,8 @@ $(function() {
 			containment: '#'+con,
 			grid: [1, 60],
 			stop:function(event, ui) {
-			//$(this).css('height','');
-			//for pagination purpose
+			// $(this).css('height','');
+			// for pagination purpose
 			},
 			resize: function(event, ui) {
 				var test = ($(this).find(".normalLinkn span")).first();
@@ -384,6 +391,7 @@ $(function() {
 							containment: '#'+con,
 							handle : '.ui-widget-header',
 							cancel : 'img',
+							stack  : '.draggable',
 							stop : function(event, ui) {
 								is = $(this).hasClass('draggableChild')							
 								if (is) {
@@ -395,6 +403,7 @@ $(function() {
 										position : "absolute",
 										marginLeft : 0,
 										marginTop : 0,
+										zIndex  : 9999999999999999999999,
 										top : pos2.top + pos.top,
 										left : pos2.left + pos.left
 									});
@@ -809,7 +818,8 @@ function showDate(id,place,startTime,nam,type)
 	var counter= placeObject.counter;
 	var date=startTime;
 	var tz =0;         //  
-	var lab = place;    //  The id of the page entry where the timezone countdown is to show
+	var lab = place;    // The id of the page entry where the timezone countdown
+						// is to show
 	var name= ""+nam
 	displayTZCountDown(setTZCountDown(date,tz),lab,id,nam,type,counter);
 }
@@ -978,7 +988,8 @@ function approveProjectRequest(id){
 	if(conf){
 		$.post('/projects/approveRequest',{id:id,message:msg},function (flag){
 			if(flag){
-				// alert("Project Has Been Approved. A Notification Has Been sent to Project Owner !");
+				// alert("Project Has Been Approved. A Notification Has Been
+				// sent to Project Owner !");
 				message_bar("Project has been approved. A notification has been sent to the project owner.")
 			}
 		},'json')
@@ -993,7 +1004,8 @@ function declineProjectRequest(id){
 	if(conf){
 		$.post('/projects/declineRequest',{id:id,message:msg},function (flag){
 			if(flag){
-				// alert("Project Has Been Declined. A Notification Has Been sent to Project Owner !");
+				// alert("Project Has Been Declined. A Notification Has Been
+				// sent to Project Owner !");
 				message_bar("Project has been declined. A notification has been sent to project owner.")
 			}
 		},'json')
