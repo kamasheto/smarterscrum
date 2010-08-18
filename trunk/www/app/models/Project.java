@@ -18,9 +18,6 @@ import play.data.validation.Required;
 /**
  * @author Kash
  */
-/**
- * @author Kash
- */
 @Entity
 public class Project extends SmartModel
 {
