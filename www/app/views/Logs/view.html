@@ -1,8 +1,8 @@
 #{if logs}
 	#{extends 'overlay.html' /}
-	Filter: <input type="text" id="search_query" onkeyup="search_logs(1)"> 
+	Filter: <input type="text" id="search_query" onkeyup="search_logs(1)"> <img id="loading_img" class="hidden" src="/public/images/loading.gif">
 	<ul id="logs"></ul>
-	<img id="loading_img" class="hidden" src="/public/images/loading.gif">
+	
 	<style type="text/css" media="screen">
 
 		#logs {
@@ -36,7 +36,7 @@
 			})
 		}
 		function show_log_content(id) {
-			$.post('/logs/view', {logId: id}, function(data) {
+			$.post('/logs/view', {logId: id, projectId: ${projectId}}, function(data) {
 				$('#log_' + id + ' div').html(data)
 			})
 		}
@@ -45,8 +45,9 @@
 #{elseif log}
 	<ul>
 		#{list items:logInfo, as:'info'}
-			#{if ${log.get(info.clazz)}}
-				<li>${info.label} <span>${log.get(info.clazz)}</span></li>
+			#{set tmp: log.get(info.clazz) /}
+			#{if tmp}
+				<li>${info.label}: <span>${tmp}</span></li>
 			#{/if}
 		#{/list}
 	</ul>

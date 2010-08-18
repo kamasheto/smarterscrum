@@ -19,6 +19,7 @@ import models.Meeting;
 import models.MeetingAttendance;
 import models.Notification;
 import models.Project;
+import models.Setting;
 import models.Sprint;
 import models.User;
 import notifiers.Notifications;
@@ -106,7 +107,8 @@ public class Application extends SmartController
 	 */
 	public static void index()
 	{		
-		render();
+		Setting settings = Setting.findById(1L);
+		render(settings);
 	}
 
 	/**

@@ -4,7 +4,10 @@ How : The magic boxes are created using a certain format. Get the input from the
 ***********************************/
 
 /********** Settings *************/
-var itemsPerPage = 5; //default number of items per page
+// commented out by mahmoudsakr
+// this variable definition has moved to Application/index.html
+// var itemsPerPage = 5; //default number of items per page
+
 
 
 /****************** 7ewar el array of objects *************/

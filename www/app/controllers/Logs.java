@@ -6,8 +6,6 @@ import play.mvc.*;
 import java.util.*;
 import java.lang.reflect.*;
 
-import com.google.gson.reflect.TypeToken;
-
 import models.*;
 import others.*;
 
@@ -23,13 +21,26 @@ public class Logs extends SmartController {
 		}
 		
 		Project project = Project.findById(projectId);
-		Security.check(Security.getConnected().in(project).can("manageLogs"));
-		List<Log> logs = Log.find(filter).from(page * perPage).from(perPage * page).fetch(perPage);
+		List<Log> toFilter = null;
+		if (project == null) {
+			Security.check(Security.getConnected().isAdmin);
+			toFilter = Log.findAll();
+		} else {
+			Security.check(Security.getConnected().in(project).can("manageLogs"));
+			toFilter = project.logs;
+		}
+		List<Log> filteredLogs = new ArrayList<Log>();
+		for (Log log : toFilter) {
+			if (filter.length() == 0 || log.message.contains(filter)) {
+				filteredLogs.add(log);
+			}
+		}
+		page--;
+		List<Log> pageOfLogs = filteredLogs.subList(page * perPage, page * perPage + perPage <= filteredLogs.size() ? page * perPage + perPage : filteredLogs.size());		
 		LogSearchResult result = new LogSearchResult();
-		result.logs = logs;
-		result.currentPage = page;
-		result.totalPages = (int) Log.count() / perPage;
-		Type listType = new TypeToken<List<String>>() {}.getType();
+		result.logs = pageOfLogs;
+		result.currentPage = page + 1;
+		result.totalPages = (int) filteredLogs.size() / perPage;
 		renderJSON(result);
 	}
 	
@@ -41,19 +52,38 @@ public class Logs extends SmartController {
 	public static void view(long projectId, long logId) {
 		if (logId == 0 && projectId != 0) {
 			Project project = Project.findById(projectId);
-			Security.check(Security.getConnected().in(project).can("manageLogs"));
-			render(project);
+			List<Log> logs = null;
+			if (project == null) {
+				Security.check(Security.getConnected().isAdmin);
+				logs = Log.findAll();
+			} else {
+				Security.check(Security.getConnected().in(project).can("manageLogs"));	
+				logs = project.logs;
+			}
+			render(logs, projectId);
 		} else if(logId != 0) {
 			Log log = Log.findById(logId);
 			Security.check(Security.getConnected().in(log.get(Project.class)).can("manageLogs"));
-			LogInfo[] logInfo = {new LogInfo("User", User.class),
-								// new LogInfo("Project", Project.class),
-								new LogInfo("Component", Component.class),
-								new LogInfo("Task", Task.class),
-								new LogInfo("Meeting", Meeting.class),
-								new LogInfo("Board", Board.class),
-								new LogInfo("Column", Column.class),
-								new LogInfo("Snapshot", Snapshot.class)};
+			LogInfo[] logInfo = projectId > 0 ? 
+								new LogInfo[] 
+									{new LogInfo("User", User.class),
+									// new LogInfo("Project", Project.class),
+									new LogInfo("Component", Component.class),
+									new LogInfo("Task", Task.class),
+									new LogInfo("Meeting", Meeting.class),
+									new LogInfo("Board", Board.class),
+									new LogInfo("Column", Column.class),
+									new LogInfo("Snapshot", Snapshot.class)} : 
+								new LogInfo[] 
+									{new LogInfo("User", User.class),
+									new LogInfo("Project", Project.class),
+									new LogInfo("Component", Component.class),
+									new LogInfo("Task", Task.class),
+									new LogInfo("Meeting", Meeting.class),
+									new LogInfo("Board", Board.class),
+									new LogInfo("Column", Column.class),
+									new LogInfo("Snapshot", Snapshot.class)};
+								
 			render(log, logInfo);	
 		}
 	}
