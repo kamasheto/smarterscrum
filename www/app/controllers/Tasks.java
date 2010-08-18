@@ -98,7 +98,7 @@ public class Tasks extends SmartCRUD
 						Security.check( user.in( task.project ).can( "AddTask" ) );
 						project = task.project;
 					}
-					
+
 				}
 			}
 		}
@@ -123,10 +123,10 @@ public class Tasks extends SmartCRUD
 			else
 				productRoles = productRoles + "As a " + project.productRoles.get( i ).name + ",-";
 		}
-		
+
 		try
 		{
-			render( project, p, component, task, type, sprints, productRoles, projectId, componentId, taskId);
+			render( project, p, component, task, type, sprints, productRoles, projectId, componentId, taskId );
 
 		}
 		catch( TemplateNotFoundException e )
@@ -273,6 +273,15 @@ public class Tasks extends SmartCRUD
 			}
 		}
 		tmp.reporter = Security.getConnected();
+		Double t = tmp.estimationPoints;
+		if(t.isNaN())
+		{
+			tmp.estimationPoints=0.0;
+		}
+		for(int i =0; i<tmp.estimationPointsPerDay.size();i++)
+		{
+			tmp.estimationPointsPerDay.set( i, tmp.estimationPoints );
+		}
 		object.save();
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+tmp.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+tmp.id;
 		ArrayList<User> users= new ArrayList<User>();
@@ -305,8 +314,10 @@ public class Tasks extends SmartCRUD
 
 	/**
 	 * Overrides the CRUD show method that renders the edit form.
+	 * 
 	 * @author Monayri
-	 * @param id the task been edited id.
+	 * @param id
+	 *            the task been edited id.
 	 * @return void
 	 */
 	public static void show( String id )
@@ -349,11 +360,11 @@ public class Tasks extends SmartCRUD
 			users = tmp.project.users;
 		boolean insprint = false;
 		Date now = Calendar.getInstance().getTime();
-		if(tmp.taskSprint!=null)
+		if( tmp.taskSprint != null )
 		{
-			if( tmp.taskSprint.startDate.before(now) && tmp.taskSprint.endDate.after(now) )
+			if( tmp.taskSprint.startDate.before( now ) && tmp.taskSprint.endDate.after( now ) )
 			{
-				insprint=true;
+				insprint = true;
 			}
 		}
 
@@ -402,9 +413,9 @@ public class Tasks extends SmartCRUD
 			{
 				tmp.subTasks.get( i ).component = tmp.component;
 				tmp.subTasks.get( i ).component.componentTasks.add( tmp.subTasks.get( i ) );
-				tmp.subTasks.get( i ).save(); 
+				tmp.subTasks.get( i ).save();
 				tmp.subTasks.get( i ).component.save();
-				
+
 			}
 		}
 		long oldTaskType;
@@ -421,14 +432,15 @@ public class Tasks extends SmartCRUD
 				tmp.subTasks.get( i ).taskStatus = tmp.taskStatus;
 				tmp.subTasks.get( i ).taskStatus.Tasks.add( tmp.subTasks.get( i ) );
 				tmp.subTasks.get( i ).taskStatus.save();
-				tmp.subTasks.get( i ).save(); 
+				tmp.subTasks.get( i ).save();
 			}
 
 			if( tmp.parent != null )
 			{
 				boolean flag = true;
 				loop : for( int i = 0; i < tmp.parent.subTasks.size(); i++ )
-				{System.out.println(tmp.parent.subTasks.get( i ).taskStatus.name +" "+tmp.taskStatus );
+				{
+					System.out.println( tmp.parent.subTasks.get( i ).taskStatus.name + " " + tmp.taskStatus );
 					if( tmp.parent.subTasks.get( i ).taskStatus != tmp.taskStatus )
 					{
 						flag = false;
@@ -451,7 +463,7 @@ public class Tasks extends SmartCRUD
 			double sum = 0;
 			for( int i = 0; i < tmp.subTasks.size(); i++ )
 			{
-				sum = tmp.subTasks.get( i ).estimationPoints + sum; 
+				sum = tmp.subTasks.get( i ).estimationPoints + sum;
 			}
 			tmp.estimationPoints = sum;
 		}
@@ -474,19 +486,19 @@ public class Tasks extends SmartCRUD
 				tmp.subTasks.get( i ).assignee = tmp.assignee;
 				tmp.subTasks.get( i ).assignee.tasks.add( tmp );
 				tmp.subTasks.get( i ).assignee.save();
-				tmp.subTasks.get( i ).save(); 
+				tmp.subTasks.get( i ).save();
 			}
 		}
 		else
 			oldAssignee = 0;
 		long oldReviewer;
-		if( tmp.taskSprint!= null )
+		if( tmp.taskSprint != null )
 		{
 			for( int i = 0; i < tmp.subTasks.size(); i++ )
 			{
 				tmp.subTasks.get( i ).taskSprint = tmp.taskSprint;
-				tmp.subTasks.get( i ).taskSprint.tasks.add(tmp.subTasks.get( i ) );
-				tmp.subTasks.get( i ).save(); 
+				tmp.subTasks.get( i ).taskSprint.tasks.add( tmp.subTasks.get( i ) );
+				tmp.subTasks.get( i ).save();
 				tmp.subTasks.get( i ).taskSprint.save();
 			}
 		}
@@ -498,7 +510,7 @@ public class Tasks extends SmartCRUD
 				tmp.subTasks.get( i ).reviewer = tmp.reviewer;
 				tmp.subTasks.get( i ).reviewer.tasks.add( tmp );
 				tmp.subTasks.get( i ).reviewer.save();
-				tmp.subTasks.get( i ).save(); 
+				tmp.subTasks.get( i ).save();
 			}
 		}
 		else
@@ -620,7 +632,7 @@ public class Tasks extends SmartCRUD
 		{
 			changes += "Task's assignee is now <i>" + tmp.assignee.name + "</i><br>";
 		}
-		else if(tmp.assignee == null && oldAssignee != 0)
+		else if( tmp.assignee == null && oldAssignee != 0 )
 		{
 			changes += "Task's assignee was removed<br>";
 		}
@@ -636,9 +648,9 @@ public class Tasks extends SmartCRUD
 		{
 			changes += "Task's reviewer is now <i>" + tmp.reviewer.name + "</i><br>";
 		}
-		else if(tmp.reviewer == null && oldReviewer != 0)
+		else if( tmp.reviewer == null && oldReviewer != 0 )
 		{
-			changes+= "Task's reviewer was removed.<br>";
+			changes += "Task's reviewer was removed.<br>";
 		}
 		for( Task oldTask : oldDependencies )
 		{
@@ -654,16 +666,19 @@ public class Tasks extends SmartCRUD
 				changes += "Task " + newTask.number + " was added to dependent tasks.<br>";
 			}
 		}
-		if(tmp.component != null && oldComponent != 0){
-			if(tmp.component.id != oldComponent){
-				Component c = Component.findById(oldComponent);
-				changes+="Component changed from <i>"+c.name+"</i> to <i>"+tmp.component.name+"</i><br>";
+		if( tmp.component != null && oldComponent != 0 )
+		{
+			if( tmp.component.id != oldComponent )
+			{
+				Component c = Component.findById( oldComponent );
+				changes += "Component changed from <i>" + c.name + "</i> to <i>" + tmp.component.name + "</i><br>";
 			}
 		}
-		else if(tmp.component != null && oldComponent == 0){
-			changes+="Task's component is now <i>"+tmp.component.name+"</i><br>";
+		else if( tmp.component != null && oldComponent == 0 )
+		{
+			changes += "Task's component is now <i>" + tmp.component.name + "</i><br>";
 		}
-		
+
 		// Now finally save the comment
 		if( !changes.equals( "" ) )
 		{
@@ -673,11 +688,11 @@ public class Tasks extends SmartCRUD
 			changesComment.save();
 		}
 		// /********** End of Changes as Comment ********/
-			if( tmp.comment != null && tmp.comment.trim().length() != 0 )
-			{
-				Comment comment = new Comment( Security.getConnected(), tmp.id, tmp.comment );
-				comment.save();
-			}
+		if( tmp.comment != null && tmp.comment.trim().length() != 0 )
+		{
+			Comment comment = new Comment( Security.getConnected(), tmp.id, tmp.comment );
+			comment.save();
+		}
 		
 			boolean flag = true;
 			Date now = Calendar.getInstance().getTime();
@@ -768,7 +783,7 @@ public class Tasks extends SmartCRUD
 		{
 			flash.error( Messages.get( "crud.delete.error", type.modelName, object.getEntityId() ) );
 		}
-		
+
 	}
 
 	/**
@@ -853,8 +868,12 @@ public class Tasks extends SmartCRUD
 	{
 		Task temp = Task.findById( id );
 		Security.check( Security.getConnected().in( temp.project ).can( "modifyTask" ) || temp.assignee == Security.getConnected() );
-
-		if( temp.estimationPoints < effort )
+		Double e = effort;
+		if( e.isNaN() )
+		{
+			renderText( "Please enter a number!" );
+		}
+		else if( temp.estimationPoints < effort )
 		{
 			renderText( "The entered effort cannot be more than the estimated effort" );
 		}
@@ -862,6 +881,7 @@ public class Tasks extends SmartCRUD
 		{
 			renderText( "The entered effort cannot be less than 0" );
 		}
+
 		temp.setEffortOfDay( effort, day );
 		Update.update( temp.project, "sprintLoad(" + id + ",'" + id + "_day_" + day + "');" );
 		temp.save();
@@ -875,6 +895,14 @@ public class Tasks extends SmartCRUD
 		renderText( "Effort changed successfully" );
 	}
 
+	/**
+	 * Returns a the inputed date in the yyyy-mm-dd format
+	 * 
+	 * @author Hadeer Youni
+	 * @param c
+	 *            , A certain date
+	 * @return
+	 */
 	public static String getStrDate( GregorianCalendar c )
 	{
 		int m = c.get( GregorianCalendar.MONTH ) + 1;
@@ -889,7 +917,7 @@ public class Tasks extends SmartCRUD
 	 * 
 	 * @author Hadeer Younis
 	 * @param id
-	 *            The id of the task whose report will be generated.
+	 *            , The id of the task whose report will be generated.
 	 * @return void
 	 */
 	public static void getReport( long id )
@@ -979,11 +1007,11 @@ public class Tasks extends SmartCRUD
 	 * 
 	 * @author Moumen Mohamed
 	 * @param id
-	 *            The id of the given task.
+	 *            , The id of the given task.
 	 * @param userId
-	 *            The id of the user who will do the change in description.
+	 *            , The id of the user who will do the change in description.
 	 * @param desc
-	 *            The new description.
+	 *            , The new description.
 	 * @return boolean
 	 */
 	public static boolean editTaskDesc2( long id, long userId, String desc )
@@ -1205,6 +1233,15 @@ public class Tasks extends SmartCRUD
 		return true;
 	}
 
+	/**
+	 * Changes the status of a given task to the specified status
+	 * 
+	 * @author Hadeer Younis
+	 * @param id
+	 *            , the id of the task to be edited
+	 * @param statusId
+	 *            , the id of the new status
+	 */
 	public static void changeTaskStatus( long id, long statusId )
 	{
 		Task task = Task.findById( id );
@@ -1223,10 +1260,7 @@ public class Tasks extends SmartCRUD
 		Update.update( task.project, "sprintLoad(" + id + ",'" + id + "_status');" );
 		task.save();
 		renderText( "Status updates successfully" );
-		Log.addUserLog( "Edited task estimation", task, task.project );
-		// Logs.addLog( Security.getConnected(), "Edit", "Task estimation", id,
-		// task.project, new Date( System.currentTimeMillis() ) );
-
+		Log.addUserLog( "Edited task status", task, task.project );
 	}
 
 	/**
@@ -1244,9 +1278,16 @@ public class Tasks extends SmartCRUD
 		Task task = Task.findById( id );
 		Security.check( Security.getConnected().in( task.project ).can( "modifyTask" ) || task.assignee == Security.getConnected() );
 		if( task == null )
-			return false;
+			notFound();
 		if( estimation < 0 )
-			return false;
+		{
+			renderText( "Please enter a number more than 0" );
+		}
+		Double e = estimation;
+		if( e.isNaN() )
+		{
+			renderText( "Please enter a number!" );
+		}
 		task.estimationPoints = estimation;
 		task.save();
 
@@ -1726,13 +1767,13 @@ public class Tasks extends SmartCRUD
 		Task task = Task.findById( taskId );
 		Component component = Component.findById( componentId );
 		User connected = Security.getConnected();
-		boolean flag=false;
+		boolean flag = false;
 		Date now = Calendar.getInstance().getTime();
-		if(task.taskSprint!=null)
+		if( task.taskSprint != null )
 		{
-			if( task.taskSprint.startDate.before(now) && task.taskSprint.endDate.after(now) )
+			if( task.taskSprint.startDate.before( now ) && task.taskSprint.endDate.after( now ) )
 			{
-				flag=true;
+				flag = true;
 			}
 		}
 		Security.check( connected.in( task.project ).can( "modifyTask" ) && task.project == component.project && task.component.project == component.project && task.parent == null && !flag );

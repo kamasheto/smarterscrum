@@ -8,7 +8,7 @@
 	#{list items:sprints, as:'sprint'}
 		#{if (sprint.id==runningSprint) }
 			<div class="greenBg" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs
-			${sprint.id}#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
+			#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
 <img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>
 #{if connected.in(sprint.project).can("editSprint")}
 
@@ -19,9 +19,7 @@
 		#{/if}
 		#{else}
 		#{if (sprint.ended) }
-			<div class="redBg" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs
-			
-		${sprint.id}<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
+			<div class="redBg" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
 <img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>
 #{if connected.in(sprint.project).can("editSprint")}
 
@@ -31,9 +29,7 @@
 			</div>
 		#{/if}
 		#{else}
-		<div class="yellowBg" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs
-			
-		${sprint.id}#{drop 'sprint-' + sprint.id /}	<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
+		<div class="yellowBg" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} Backlogs#{drop 'sprint-' + sprint.id /}	<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
 <img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>
 #{if connected.in(sprint.project).can("editSprint")}
 
