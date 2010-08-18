@@ -8,8 +8,10 @@
 		<a href="javascript:overlayOpen('/admin/roles/new?id=${project.id}')" title="Add new role"><img src="@{'/public/images/famfam/add.png'}"></a>
 #{/if}
 </div>
-<div name="/requests/viewTypesToReview?pId=${project.id}" class="reload-">Request to be reviewer
+#{if connected.projects.contains(project)}
+<div name="/requests/viewTypesToReview?pId=${project.id}" class="reload-reviewers">Request to be reviewer
 </div>
+#{/if}
 #{if connected.in(project).can('manageRequests')}
 	<div name="/projects/requestrespond?id=${project.id}" class="reload-project-requests ">Requests</div>
 #{/if}
