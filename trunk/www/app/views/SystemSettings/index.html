@@ -1,0 +1,14 @@
+#{extends 'magicBox.html' /}
+#{set title:'System Settings' /}
+<div class="bar">Site Name <div class="bar_more_info editable" id="sitename">${settings.siteName}</div></div>
+<div class="bar">Twitter Hash <div class="bar_more_info editable" id="twitterhash">${settings.twitterHash}</div></div>
+<div class="bar">Entries/Box <div class="bar_more_info editable" id="entriesperbox">${settings.defaultEntriesPerBox}</div></div>
+<script type="text/javascript" charset="utf-8">
+$('.editable')
+	.attr('contenteditable', true)
+	.live('change', function() {
+		alert(2)
+	})
+
+
+</script>

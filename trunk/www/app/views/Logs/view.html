@@ -1,36 +1,53 @@
-#{extends 'overlay.html' /}
-<ul id="logs"></ul>
-<input type="text" id="search_query"> <img id="loading_img" class="hidden" src="/public/images/loading.gif">
-<style type="text/css" media="screen">
+#{if logs}
+	#{extends 'overlay.html' /}
+	Filter: <input type="text" id="search_query" onkeyup="search_logs(1)"> 
+	<ul id="logs"></ul>
+	<img id="loading_img" class="hidden" src="/public/images/loading.gif">
+	<style type="text/css" media="screen">
 
-	#logs {
-		font-size:20px;
-		list-style:none;
-	}
-</style>
-<script type="text/javascript" charset="utf-8">
-	$(function() {
-		search_logs(0);
-	})
-	function search_logs(page) {
-		$('#loading_img').show()
-		$.post('/logs/list', {projectId: ${project.id}, filter: $('#search_query').text(), page: page}, function(logs){
-			
-			body = $('#logs')
-			body.empty()
-			$('#loading_img').hide()
-			$(logs.logs).each(function() {
-				body.append('<li>'+this.message+'</li>')
-			})
-			$('#logs_pages').remove()
-			body.after('<div id="logs_pages">')
-			div = $('#logs_pages')
-			if (logs.currentPage != 0) {
-				div.append('<a onclick="search_logs('+(page-1)+')">Previous</a> ')
-			}
-			if (logs.currentPage != logs.totalPages) {
-				div.append('<a onclick="search_logs('+(page+1)+')">Next</a>')
-			}
+		#logs {
+			font-size:20px;
+			list-style:none;
+		}
+	</style>
+	<script type="text/javascript" charset="utf-8">
+		$(function() {
+			search_logs(1);
 		})
-	}
-</script>
+		function search_logs(page) {
+			$('#loading_img').show()
+			$.post('/logs/list', {projectId: ${projectId}, filter: $('#search_query').val(), page: page}, function(logs){
+				body = $('#logs')
+				body.empty()
+				$('#loading_img').hide()
+				$(logs.logs).each(function() {
+					body.append('<li id="log_'+this.id+'" class="log_item"><a onclick="show_log_content('+this.id+')">'+this.message+'</a><div></div></li>')
+				})
+				$('#logs_pages').remove()
+				body.after('<div id="logs_pages" class="page_numbers _14">')
+				div = $('#logs_pages')
+				if (logs.currentPage != 1) {
+					div.append('<a onclick="search_logs('+(page-1)+')">Previous</a> ')
+				}
+				if (logs.currentPage <= logs.totalPages) div.append(logs.currentPage + ' / ' + logs.totalPages + ' ')
+				if (logs.currentPage != logs.totalPages && logs.totalPages) {
+					div.append('<a onclick="search_logs('+(page+1)+')">Next</a>')
+				}
+			})
+		}
+		function show_log_content(id) {
+			$.post('/logs/view', {logId: id}, function(data) {
+				$('#log_' + id + ' div').html(data)
+			})
+		}
+	</script>
+#{/if}
+#{elseif log}
+	<ul>
+		#{list items:logInfo, as:'info'}
+			#{if ${log.get(info.clazz)}}
+				<li>${info.label} <span>${log.get(info.clazz)}</span></li>
+			#{/if}
+		#{/list}
+	</ul>
+#{/elseif}

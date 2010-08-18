@@ -2610,3 +2610,10 @@ a.jbar-cross:hover {
 .jbar-bottom a.jbar-cross {
 	bottom: 8px;
 }
+
+.page_numbers {
+	text-align: center;
+}
+._14 {
+	font-size:14px;
+}

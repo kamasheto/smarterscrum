@@ -196,8 +196,8 @@ img {
 	color: #111 !important;
 	display: inline-block;
 	font-family: Verdana;
-	font-size: 14px;
-	font-variant: small-caps;
+/*	font-size: 12px;*/
+/*	font-variant: small-caps;*/
 	margin-right: 10px;
 	margin-top: 10px;
 	margin-bottom: -15px;
@@ -762,10 +762,11 @@ html {
 #top_header_projects_pane {
 	background-color: #111;
 	color: white;
-	text-transform: uppercase;
+	text-transform: lowercase;
 	position: absolute;
+	letter-spacing:-1px;
 	left: 0px;
-	top: 42px;
+	top: 35px;
 	width: 200px;
 	z-index: 100;
 	padding: 8px;
@@ -778,8 +779,7 @@ html {
 	width: 195px;
 }
 
-#projects_my_current_projects,#projects_search_results,#add-new-project-link
-	{
+#projects_my_current_projects,#projects_search_results,#add-new-project-link, #acp_link{
 	text-align: center;
 	font-size: 18px;
 }
@@ -1020,7 +1020,7 @@ a,a img,span.revertFrom,span.min {
 	cursor: pointer;
 }
 
-#workspace-help {
+#workspace-help, #acp-workspace-help {
 	background: url(/public/images/famfam/error.png) no-repeat center left;
 	position: absolute;
 	padding-left: 22px;
@@ -3051,9 +3051,13 @@ a.jbar-cross:hover {
 }
 
 #onlineUsers {
-	font-size: 12px;
+	font-size: 10px;
 	padding: 10px;
 	background: white;
+/*	position:fixed;
+	bottom:0;
+	width: 100%;
+	height: 10px;*/
 }
 
 fieldset.jcalendar {
@@ -3199,3 +3203,8 @@ div.jcalendar-links a {
 	overflow: auto;
 }
 /*end dock*/
+.bar_more_info {
+	display: inline;
+	font-size: 11px;
+	color: #999;
+}

@@ -46,7 +46,16 @@ public class Update extends SmartModel {
 	 * @param javascript javascript code to execute at client side
 	 */
 	public static void update(Project project, String javascript) {
-		for (User user : project.users) {
+		update(project.users, javascript);
+	}
+	
+	/**
+	 * Adds an update for the list of users
+	 * @param users list of users to update
+	 * @param javascript javascript code to execute at client side
+	 */
+	public static void update(List<User> users, String javascript) {
+		for (User user : users) {
 			Update.update(user, javascript);
 		}
 	}

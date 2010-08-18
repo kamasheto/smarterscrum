@@ -119,6 +119,10 @@ public class Show extends SmartController
 	 */
 	public static void workspace( long id )
 	{
+		if (id < 0) {
+			Security.check(Security.getConnected().isAdmin);
+			render();
+		}
 		Project proj = Project.findById( id );
 		ChatRoom room = proj.chatroom;
 		int chatters = 0;
