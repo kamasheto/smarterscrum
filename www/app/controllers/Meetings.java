@@ -352,11 +352,10 @@ public class Meetings extends SmartCRUD
 		 */
 		if( params.get( "associateSprintBox" ) != null )
 		{
-			System.out.println( "not in null area" );
+
 			Sprint sprint = Sprint.findById( Long.parseLong( params.get( "object.sprintid" ) ) );
 			if( !sprint.meetings.contains( temp ) )
 			{
-				System.out.println( "mawgood abl keda" );
 				sprint.meetings.add( temp );
 				sprint.save();
 				temp.sprint = sprint;
@@ -365,13 +364,11 @@ public class Meetings extends SmartCRUD
 		}
 		else
 		{
-			System.out.println( "in null area" );
 			temp.sprint = null;
 			temp.type = null;
 		}
 
 		object.save();
-		System.out.println( "the type:" + temp.type );
 
 		Log.addUserLog( "Edited meeting", temp, temp.project );
 		// Logs.addLog( Security.getConnected(), "edit", "Meeting", temp.id,
