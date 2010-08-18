@@ -681,7 +681,10 @@ public class Tasks extends SmartCRUD
 				Comment comment = new Comment( Security.getConnected(), tmp.id, tmp.comment );
 				comment.save();
 			}
-
+		
+			
+			
+			
 		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
@@ -1215,7 +1218,14 @@ public class Tasks extends SmartCRUD
 		Task task1 = Task.findById( id );
 		if( task1 == null )
 			return false;
-		Security.check( Security.getConnected().in( task1.project ).can( "modifyTask" ) || task1.assignee == Security.getConnected() );
+		if( userId == 0 )
+		{
+			userId = Security.getConnected().id;
+		}
+		User user1 = User.findById( userId );
+		if( user1 == null )
+			return false;
+		Security.check( user1.in( task1.project ).can( "modifyTask" ) || task1.assignee == user1 );
 
 		User oldAssignee = task1.assignee;
 		User assignee = User.findById( assigneeId );
@@ -1224,14 +1234,7 @@ public class Tasks extends SmartCRUD
 		if( task1.reviewer.getId() == assigneeId )
 			return false;
 
-		if( userId == 0 )
-		{
-			userId = Security.getConnected().id;
-		}
-		User user1 = User.findById( userId );
-		if( user1 == null )
-			return false;
-
+		
 		Project currentProject = task1.project;
 		boolean permession = user1.in( currentProject ).can( "changeAssignee" );
 
@@ -1312,7 +1315,14 @@ public class Tasks extends SmartCRUD
 	public static boolean editTaskReviewer2( long id, long userId, long reviewerId )
 	{
 		Task task1 = Task.findById( id );
-		Security.check( Security.getConnected().in( task1.project ).can( "modifyTask" ) || task1.assignee == Security.getConnected() );
+		if( userId == 0 )
+		{
+			userId = Security.getConnected().id;
+		}
+		User user1 = User.findById( userId );
+		if( user1 == null )
+			return false;
+		Security.check( user1.in( task1.project ).can( "modifyTask" ) || task1.assignee == user1 );
 		if( task1 == null )
 			return false;
 		User reviewer = User.findById( reviewerId );
@@ -1321,14 +1331,7 @@ public class Tasks extends SmartCRUD
 		if( task1.assignee.getId() == reviewerId )
 			return false;
 
-		if( userId == 0 )
-		{
-			userId = Security.getConnected().id;
-		}
-		User user1 = User.findById( userId );
-		if( user1 == null )
-			return false;
-
+		
 		Project currentProject = task1.project;
 		boolean permession = user1.in( currentProject ).can( "changeReviewer" );
 
@@ -1395,10 +1398,6 @@ public class Tasks extends SmartCRUD
 	public static boolean editTaskType( long id, long typeId, long userId )
 	{
 		Task task1 = Task.findById( id );
-		Security.check( Security.getConnected().in( task1.project ).can( "modifyTask" ) || task1.assignee == Security.getConnected() );
-		if( task1 == null )
-			return false;
-
 		if( userId == 0 )
 		{
 			userId = Security.getConnected().id;
@@ -1406,6 +1405,11 @@ public class Tasks extends SmartCRUD
 		User user1 = User.findById( userId );
 		if( user1 == null )
 			return false;
+		
+		Security.check( user1.in( task1.project ).can( "modifyTask" ) || task1.assignee == user1 );
+		if( task1 == null )
+			return false;
+
 		Project currentProject = task1.project;
 		boolean permession = user1.in( currentProject ).can( "changeTaskType" );
 		if( task1.reviewer.id != userId && task1.assignee.id != userId )
@@ -1843,31 +1847,4 @@ public class Tasks extends SmartCRUD
 		}
 		Update.update( Security.getConnected(), "reload('task-" + task.id + "','tasks-" + task.project.id + "')" );
 	}
-
-	
-	/**
-	 * A method that renders the reviewer of a certain type in a certain component. 
-	 * and if that reviewer doesnt exist then it returns the component users.
-	 * 
-	 * @param typeId  the Id of the required type to be reviewed.
-	 * @param componentId the Id of the component in which the task belong.
-	 */
-	public static void typeReviewer(long typeId, long componentId){
-		TaskType type = TaskType.findById(typeId);
-		Component component = Component.findById(componentId);
-		List<Reviewer> reviewers = Reviewer.find("byProjectAndAccepted", component.project, true).fetch();
-		List<User.Object> users = new ArrayList<User.Object>();
-		for(Reviewer rev : reviewers){
-			if(rev.user.components.contains(component))
-				users.add(new User.Object(rev.user));
-		}
-		if(users.size()==0){
-			for(User user: component.componentUsers){
-				users.add(new User.Object(user));
-			}
-		}
-		renderJSON(users);
-	}
-	
-
-	}
+}
