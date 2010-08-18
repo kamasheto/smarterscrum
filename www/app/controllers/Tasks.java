@@ -534,6 +534,10 @@ public class Tasks extends SmartCRUD
 		{
 			changes += "Task's assignee is now <i>" + tmp.assignee.name + "</i><br>";
 		}
+		else if(tmp.assignee == null && oldAssignee != 0)
+		{
+			changes += "Task's assignee was removed<br>";
+		}
 		if( tmp.reviewer != null && oldReviewer != 0 )
 		{
 			if( tmp.reviewer.id != oldReviewer )
@@ -545,6 +549,10 @@ public class Tasks extends SmartCRUD
 		else if( tmp.reviewer != null && oldReviewer == 0 )
 		{
 			changes += "Task's reviewer is now <i>" + tmp.reviewer.name + "</i><br>";
+		}
+		else if(tmp.reviewer == null && oldReviewer != 0)
+		{
+			changes+= "Task's reviewer was removed.<br>";
 		}
 		for( Task oldTask : oldDependencies )
 		{
@@ -569,6 +577,7 @@ public class Tasks extends SmartCRUD
 		else if(tmp.component != null && oldComponent == 0){
 			changes+="Task's component is now <i>"+tmp.component.name+"</i><br>";
 		}
+		
 		// Now finally save the comment
 		if( !changes.equals( "" ) )
 		{
@@ -578,14 +587,12 @@ public class Tasks extends SmartCRUD
 			changesComment.save();
 		}
 		// /********** End of Changes as Comment ********/
-		if(tmp.comment!=null)
-		{
-			if( tmp.comment.trim().length() != 0 )
+			if( tmp.comment != null && tmp.comment.trim().length() != 0 )
 			{
 				Comment comment = new Comment( Security.getConnected(), tmp.id, tmp.comment );
 				comment.save();
 			}
-		}
+		
 		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
