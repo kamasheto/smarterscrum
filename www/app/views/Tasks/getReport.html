@@ -203,7 +203,7 @@ graph(${efforts});
 #{if changes.size()!=0}
 graphed(${changes});
 #{/if}
-$('#accordion').accordion({autoHeight: false,navigation: true});
+$('#accordion').accordion({autoHeight: false});
 #{/set}
 	<h1>Task ${theTask.getTaskNumber()} : ${theTask.description} </h1>
 	<div id="accordion">
@@ -326,16 +326,17 @@ $('#accordion').accordion({autoHeight: false,navigation: true});
 <div class="comment">
 #{if theTask.comments}
 #{list items:theTask.comments, as:'t'}
+#{ifnot t.deleted}
 <div class="crudField">
-<label>Author</label>${t.author}
+<label>Author</label>${t.author.getDisplayName(theTask.project).raw()}
 </div>
 <div class="crudField">
 <label>Time</label>${new Date(t.timeOfComment)}
 </div>
-${t.comment}#{if connected.in(theTask.project).can("modifyTask") || connected.id == t.author.id}
-<div class="red" style="text-align:right"><a href="#" class="red"onclick="$.post('@{Comments.deleteComment()}',{id:${theTask.id}})">delete?</a></div>
+${t.comment.raw()}#{if connected.in(theTask.project).can("modifyTask") || connected.id == t.author.id}
+<div class="red" style="text-align:right"><a href="#" class="red"onclick="$.post('@{Comments.deleteComment()}',{id:${t.id}})">delete?</a></div>
 #{/if}
-
+#{/ifnot}
 #{/list}
 #{/if}
 #{else}

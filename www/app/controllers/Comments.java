@@ -26,7 +26,9 @@ public class Comments extends SmartController
 			renderText( "Comment not found." );
 		else
 		{
+			Task task = comment.task;
 			comment.deleteComment();
+			Update.update( task.project , "refresh('comments_"+task.id+"')" );
 			renderText( "Comment deleted successfully." );
 		}
 	}
