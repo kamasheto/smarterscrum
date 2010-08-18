@@ -61,7 +61,7 @@ function changeR (id,id2)
 	});
 }
 $(function() 
-{	
+{
 	$(".enterEffort").each(function()
 	{
 		if($(this).html()!='')
@@ -86,7 +86,7 @@ $(function()
     	$.post('@{Tasks.enterEffort()}',{id:taskId,effort:points,day:dayId},function(ret) 
         {
 			parent_message_bar(ret);
-			if(ret.contains("cannot"))
+			if(ret.indexOf("cannot")!=-1)
 				flag=false;
 	    });       
 	    if(flag)     	
@@ -119,12 +119,15 @@ $(function()
     	        var splitted 	= theId.split("_");
     	        var taskId 		= parseInt(splitted[0])
     	    	var points 		= parseInt(value);
-    	        
+    	        var flage       = true;
     	    		$.post('@{Tasks.editTaskEstimation()}',{id:taskId,estimation:points}, function(ret) 
     	    	    {
-						parent_message_bar(ret);
+    	    			parent_message_bar(ret);
+    	    			if(ret.indexOf("cannot")!=-1)
+							flage = false;
     	    		});
-					return(value);  
+    	    		if(flage)
+						return(value);  
     	    	      
     	    },
     	    {    
@@ -140,7 +143,7 @@ $(function()
 <div id="sprint">
 
 <h1 style="float:left">#{if componentID==0}Sprint ${sNum}: ${project.name}'s Backlog#{/if}#{else}Sprint ${sNum}: ${cs}'s Backlog#{/else}</h1>
-<div style="float:right;width:200px;">
+<div style="position:fixed;right:10px;text-align:right;z-index:2147483647;">
 <div class="allCornersRounded" style="background:#333;padding:15px;border-width:10px 10px 0;color:#eee">	
 Show/Hide:
 
@@ -158,7 +161,7 @@ Show/Hide:
 <div class="notchBottom" style="border-top-color:#333"></div>
 </div>
 <br style="clear:both"/>
-<table id="sprintTable" class="draggable sortable">
+<table id="sprintTable" class="draggable sortable" style="margin-top:40px">
 	<thead>
 	<tr>
 		<td>ID</td>
@@ -180,7 +183,7 @@ Show/Hide:
 			<a title="view the task reports?" href="@{Tasks.getReport(task.id)}">${task.getTaskNumber()}</a>
 		</td>
 		
-		#{ifnot connected.in(project).can('editBacklog') || connected.isAdmin || connected.id==task.assignee.id || connected.id==task.reviewer.id}
+		#{ifnot connected.in(project).can('editBacklog') || connected.isAdmin || (task.assignee.id != null & connected.id==task.assignee.id) || connected.id==task.reviewer.id}
           #{ifnot task.description}
           <td id="${task.id}_des"class="shDes">No Description stated</td>
           #{/ifnot}
@@ -254,17 +257,20 @@ Show/Hide:
 		<form style="display:none">
 			
 			<select id="t_${task.id}_t"onblur="magicFix(this)" onchange="magicFix(this);changeT(${task.id},parseInt($('#t_${task.id}_t option:selected').val()));">
+       		#{ifnot task.taskType.name}
+       			<option value="${type.id}">---</option>
+       		#{/ifnot}
        		#{list items:types, as:'type'}
-       		#{if type.name==task.taskType.name}
-       		<option selected="selected" value="${type.id}">${type.name}</option>
+       		#{if task.taskType}
+       			#{if type.name==task.taskType.name}
+       				<option selected="selected" value="${type.id}">${type.name}</option>
+       			#{/if}
+       			#{else}
+       				<option value="${type.id}">${type.name}</option>	
+       			#{/else}
        		#{/if}
        		#{else}
-       		#{ifnot task.taskType.name}
-       		<option value="${type.id}">---</option>
-       		#{/ifnot}
-       		#{else}
-       		<option value="${type.id}">${type.name}</option>
-       		#{/else}
+       			<option value="${type.id}">${type.name}</option>
        		#{/else}
        		#{/list}
 			</select>
@@ -290,17 +296,20 @@ Show/Hide:
 	    #{/else}
 		<form style="display:none">
 			<select id="t_${task.id}_s"onblur="magicFix(this)" onchange="magicFix(this);changeS(${task.id},parseInt($('#t_${task.id}_s option:selected').val()));">
+       		#{ifnot task.taskStatus.name}
+       			<option value="${type.id}">---</option>
+       		#{/ifnot}
        		#{list items:statuses, as:'type'}
-       		#{if type.name==task.taskStatus.name}
-       		<option selected="selected" value="${type.id}">${type.name}</option>
+       		#{if task.taskStatus}
+       			#{if type.name==task.taskStatus.name}
+       				<option selected="selected" value="${type.id}">${type.name}</option>
+       			#{/if}
+       			#{else}
+       				<option value="${type.id}">${type.name}</option>	
+       			#{/else}
        		#{/if}
        		#{else}
-       		#{ifnot task.taskStatus.name}
-       		<option value="${type.id}">---</option>
-       		#{/ifnot}
-       		#{else}
-       		<option value="${type.id}">${type.name}</option>
-       		#{/else}
+       			<option value="${type.id}">${type.name}</option>
        		#{/else}
        		#{/list}
 			</select>
@@ -328,17 +337,20 @@ Show/Hide:
 	    #{/else}
 		<form style="display:none">
 			<select id="t_${task.id}_a"onblur="magicFix(this)" onchange="magicFix(this);changeA(${task.id},parseInt($('#t_${task.id}_a option:selected').val()));">
-       		#{list items:task.getAssigneeOrReviewer(true), as:'a'}
-       		#{if a.id==task.assignee.id}
-       		<option selected="selected" value="${a.id}">${a.getDisplayName().raw()}</option>
+       		#{ifnot task.assignee}
+       			<option value="${type.id}">---</option>
+       		#{/ifnot}
+       		#{list items:task.getAssigneeOrReviewer(true), as:'type'}
+       		#{if task.assignee}
+       			#{if type.id==task.assignee.id}
+       				<option selected="selected" value="${type.id}">${type.getDisplayName().raw()}</option>
+       			#{/if}
+       			#{else}
+       				<option value="${type.id}">${type.getDisplayName().raw()}</option>	
+       			#{/else}
        		#{/if}
        		#{else}
-       		#{ifnot task.assignee}
-       		<option value="${a.id}">---</option>
-       		#{/ifnot}
-       		#{else}
-       		<option value="${a.id}">${a.getDisplayName().raw()}</option>
-       		#{/else}
+       			<option value="${type.id}">${type.getDisplayName().raw()}</option>
        		#{/else}
        		#{/list}
 			</select>
@@ -364,17 +376,20 @@ Show/Hide:
 	    #{/else}
 		<form style="display:none">
 			<select id="t_${task.id}_r"onblur="magicFix(this)" onchange="magicFix(this);changeR(${task.id},parseInt($('#t_${task.id}_r option:selected').val()));">
-       		#{list items:task.getAssigneeOrReviewer(false), as:'a'}
-       		#{if a.id==task.reviewer.id}
-       		<option selected="selected" value="${a.id}">${a.getDisplayName().raw()}</option>
+       		#{ifnot task.reviewer}
+       			<option value="${type.id}">---</option>
+       		#{/ifnot}
+       		#{list items:task.getAssigneeOrReviewer(false), as:'type'}
+       		#{if task.reviewer}
+       			#{if type.id==task.reviewer.id}
+       				<option selected="selected" value="${type.id}">${type.getDisplayName().raw()}</option>
+       			#{/if}
+       			#{else}
+       				<option value="${type.id}">${type.getDisplayName().raw()}</option>	
+       			#{/else}
        		#{/if}
        		#{else}
-       		#{ifnot task.reviewer}
-       		<option value="${a.id}">---</option>
-       		#{/ifnot}
-       		#{else}
-       		<option value="${a.id}">${a.getDisplayName().raw()}</option>
-       		#{/else}
+       			<option value="${type.id}">${type.getDisplayName().raw()}</option>
        		#{/else}
        		#{/list}
 			</select>
@@ -390,9 +405,9 @@ Show/Hide:
 	    #{/else}
 		</td>
  
-		
+		#{ifnot task.subTasks}
 		#{ifnot task.estimationPoints}
-		<td id="${task.id}_points class="editPOINTS shPoints">No points 
+		<td id="${task.id}_points" class="editPOINTS shPoints">No points 
 		</td>
 		#{/ifnot}
 		 #{else}
@@ -406,7 +421,9 @@ Show/Hide:
 		#{if task.getEffortPerDay(day-1)==-1.0}$nbsp;
 		#{/if} #{else} ${task.getEffortPerDay(day-1)} #{/else}</td>
 		#{/list}
+		#{/ifnot}
 		#{/else}
+		
 	</tr>
 
 	#{/list}

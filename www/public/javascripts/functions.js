@@ -516,10 +516,11 @@ function load(url, el, n, hideLoading) {
 				$('#dummy_data').remove()
 				if (n != 3) {
 					$('#'+el+'_header').html($(data).find('.mainH:first').html());
+					if(n!=4)
 					myDivs.push(url);
 				} 
 				$('#'+el+'_content').html($(data).find('.actual:first').html());
-				if (n == 1) {
+				if (n == 1 || n==4) {
 					$('#'+ el).append('<div class="filter" id="'+el+'_filter"></div>');
 					$('#'+ el + '_filter').html($(data).find('.filter:first').html());
 					$('#'+ el + '_filter').find('input:first').attr('name', 'filter_textBox_'+el);
@@ -756,7 +757,7 @@ function reload() {
 				$(this).remove()
 				return
 			}
-			load(url, $(this).attr('id'), 3, true)
+			load(url, $(this).attr('id'), 4, true)
 		})
 	}
 }
