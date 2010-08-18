@@ -982,17 +982,17 @@ public class Bootstrap extends Job
 				}
 				else if( i < 7 )
 				{
-					ma = new MeetingAttendance( users.get( i ), users.get( i ), m3 );
+					ma = new MeetingAttendance( users.get( i ), users.get( i ), M );
 					ma.status = "confirmed";
-					m3.users.add( ma );
+					M.users.add( ma );
 					users.get( i ).attendantusers.add( ma );
 					ma.save();
 				}
 				else
 				{
-					ma = new MeetingAttendance( users.get( i ), users.get( i ), M );
-					ma.status = "waiting";
-					M.users.add( ma );
+					ma = new MeetingAttendance( users.get( i ), users.get( i ), m3 );
+					ma.status = "confirmed";
+					m3.users.add( ma );
 					users.get( i ).attendantusers.add( ma );
 					ma.save();
 				}
