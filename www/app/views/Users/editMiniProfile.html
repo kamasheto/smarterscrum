@@ -1,20 +1,26 @@
 #{extends 'overlay.html' /}
 
  <h2>Edit personal information</h2>
- <div class="left">
+
+ <form action="/users/miniprofileaction">
+  <input type="hidden"name="userProfileId" value="${userProfile.id}">
+  <div>
    #{if userProfile.avatar !=""} 
      <img src="${userProfile.avatar}"/> 
    #{/if}
    #{else} 
      <img src="@{'public/images/no-profile.png'}"/> 
    #{/else}
- </div>
- <form action="/users/miniprofileaction">
- <input type="hidden"name="userProfileId" value="${userProfile.id}">
- <div class="left" style="padding:15px 10px">
+   <div id="new_sub">
+		<form action="@{Users.uploadAvatar(userProfile.id)}" method="POST" enctype="multipart/form-data">
+			<input type="file" name="file" />
+		</form>
+	</div>
+  </div>
+  <div>
    <p><b>Name: </b><input type = "text" name="name" value="${userProfile.name}"></p>
    <p><b>Email: </b><input type = "text" name="email" value="${userProfile.email}"></p>
    <input type="submit" value="Save" />
- </div>
- <br style="clear:both"/>
+  </div>
+  <br style="clear:both"/>
  </form>
