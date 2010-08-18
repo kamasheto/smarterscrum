@@ -941,13 +941,6 @@ public class Bootstrap extends Job
 			}
 			// ************ LOGS END ************
 
-			// ************ USER NOTIFICATION PROFILES BEGIN ************
-			for( int w = 0; w < users.size(); w++ )
-			{
-				new UserNotificationProfile( users.get( w ), projects.get( 0 ) ).save();
-			}
-			// ************ USER NOTIFICATION PROFILES END ************
-
 			Artifact a1 = new Artifact( "Notes", "First note" );
 			a1.save();
 			Artifact a2 = new Artifact( "Notes", "Second note" );

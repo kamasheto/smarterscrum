@@ -467,6 +467,11 @@ public class User extends SmartModel
 			if( !projects.contains( role.project ) )
 			{
 				projects.add( role.project );
+				// create me a usernotificationprofile?
+				UserNotificationProfile profile = UserNotificationProfile.find("byProjectAndUser", role.project, this).first();
+				if (profile == null) {
+					new UserNotificationProfile(this, role.project).save();
+				}
 				if( !role.baseRole )
 				{
 					Role baseRole = Role.find( "byProjectAndBaseRole", role.project, true ).first();

@@ -169,14 +169,14 @@ public class Users extends SmartCRUD {
 		Project currentProject = Project.findById(id);
 		User currentUser = Security.getConnected();
 		// Security.check(currentUser.in(currentProject).can("editUserNotificationProfile"));
-		UserNotificationProfile currentNotificationProfile = UserNotificationProfile.find("user = " + currentUser.id + " and project = " + currentProject.id).first();
+		UserNotificationProfile currentNotificationProfile = UserNotificationProfile.find("user = ? and project = ?", currentUser, currentProject).first();
 		ObjectType type = ObjectType.get(UserNotificationProfiles.class);
 		notFoundIfNull(type);
 		Security.check(currentUser.projects.contains(currentProject));
-		if (currentNotificationProfile == null) {
-			// create me a notification profile please
-			currentNotificationProfile = new UserNotificationProfile(currentUser, currentProject).save();
-		}
+		// if (currentNotificationProfile == null) {
+		// 			// create me a notification profile please
+		// 			currentNotificationProfile = new UserNotificationProfile(currentUser, currentProject).save();
+		// 		}
 		JPASupport object = type.findById(currentNotificationProfile.id);
 		try {
 
@@ -216,7 +216,7 @@ public class Users extends SmartCRUD {
 		object.save();
 		flash.success("You Notificaton Profile modifications have been saved");
 		if (params.get("_save") != null) {
-			redirect("/users/managenotificationprofile?projectId=" + id);
+			redirect("/users/managenotificationprofile?id=" + id);
 		}
 		redirect(request.controller + ".show", object.getEntityId());
 	}
