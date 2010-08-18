@@ -563,7 +563,7 @@ public class Users extends SmartCRUD {
 				if(file!=null)
 				{
 					FileInputStream avatar = new FileInputStream(file);
-					String url = "/usersAvatars/" + userProfileId + "_" + file.getName();
+					String url = "/public/Avatars/" + userProfileId + "_" + file.getName();
 					IOUtils.copy(avatar, new FileOutputStream(Play.getFile(url)));
 					userProfile.avatar = url;
 				}
