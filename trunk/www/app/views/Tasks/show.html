@@ -97,12 +97,14 @@
 			#{/crud.custom }
 			
 			#{crud.custom 'estimationPoints'}
+			#{ifnot object.subTasks}
 			<p> 
 			<label for="object_estimationPoints">Estimation Points</label> 
 			<input id="object_estimationPoints" type="text" name="object.estimationPoints" 
 			size="5"  value = "${object.estimationPoints}"/> 
 			<span class="crudHelp" ><font color="Red">*</font>Numeric.</span> 
- 			</p> 
+ 			</p>
+ 			#{/ifnot} 
 			#{/crud.custom }
 			
 			

@@ -516,6 +516,7 @@ function load(url, el, n, hideLoading) {
 				$('#dummy_data').remove()
 				if (n != 3) {
 					$('#'+el+'_header').html($(data).find('.mainH:first').html());
+					myDivs.push(url);
 				} 
 				$('#'+el+'_content').html($(data).find('.actual:first').html());
 				if (n == 1) {
@@ -523,7 +524,6 @@ function load(url, el, n, hideLoading) {
 					$('#'+ el + '_filter').html($(data).find('.filter:first').html());
 					$('#'+ el + '_filter').find('input:first').attr('name', 'filter_textBox_'+el);
 				}
-				myDivs.push(url);
 				magic(el)
 				$('#' + el + '_content').slideDown(400)
 			},
