@@ -534,9 +534,6 @@ function load(url, el, n, hideLoading) {
 				}
 				magic(el)
 				$('#' + el + '_content').slideDown(400)
-			},
-			error: function(data) {
-				$.bar({message: 'An error has occured. Please try again.'})
 			}
 		})
 }

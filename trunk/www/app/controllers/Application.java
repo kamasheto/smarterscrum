@@ -296,27 +296,23 @@ public class Application extends SmartController
 
 	}
 
-	public static void list( int page, int perPage )
+	public static void listNotifications( int page, int perPage )
 	{
-		if( perPage == 0 )
-		{
+		if (perPage == 0) {
 			perPage = 10;
 		}
-		List<Notification> notifications = Notification.find( "byReciever", Security.getConnected() ).from( perPage * page ).fetch( perPage );
-		for( Notification noti : notifications )
-		{
-			if( noti.unread )
-			{
-				Security.getConnected().ReadNotifications++;
-				Security.getConnected().save();
+		NotificationSearchResult result = new NotificationSearchResult();		
+		List<Notification> allNotifications = Notification.find("byReceiver", Security.getConnected()).fetch();
+		List<Notification> pageOfNotifications = allNotifications.subList(page * perPage, page * perPage + perPage <= allNotifications.size() ? page * perPage + perPage : allNotifications.size());		
+		for (Notification notification : allNotifications) {
+			if (notification.unread) {
+				result.newNotifications++;
 			}
-
 		}
-		NotificationSearchResult result = new NotificationSearchResult();
-		result.notifications = notifications;
-		result.currentPage = page;
-		result.totalPages = (int) Notification.find( "byReciever", Security.getConnected().id + " order by id desc" ).fetch().size() / perPage;
-		renderJSON( result );
+		result.notifications = pageOfNotifications;
+		result.currentPage = page + 1;
+		result.totalPages = (int) allNotifications.size() / perPage;
+		renderJSON(result);
 	}
 
 	/**

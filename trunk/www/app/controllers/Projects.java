@@ -82,7 +82,6 @@ public class Projects extends SmartCRUD {
 			}
 		} else {		
 			Project pro = (Project) object;
-			String nativeJS = "";
 	
 			projectObject.user = user;
 			if (params.get("object_isPrivate") != null) {
@@ -95,7 +94,7 @@ public class Projects extends SmartCRUD {
 			if (user.isAdmin) {
 				// add it to the top bar immediately
 				projectObject.approvalStatus = true;
-				nativeJS = "addProjectToSearchBar('"+projectObject.name+"', "+projectObject.id+")";
+				Update.update(user, "addProjectToSearchBar('"+projectObject.name+"', "+projectObject.id+")");
 				pro.init(projectObject.isScrum);
 				// Role proAdmin = Role.find("name= 'Project Owner' and project =" + pro).first();
 				Role proAdmin = Role.find("name = ? and project = ?", "Project Owner", pro).first();
@@ -110,10 +109,10 @@ public class Projects extends SmartCRUD {
 			if (Security.getConnected().isAdmin) {
 
 				flash.success(projectObject.name + " has been successfully created.");
-				Application.overlayKiller("", nativeJS);
+				Application.overlayKiller("", "");
 			} else {
 				flash.success("Your Project Request Has Been Sent.You Will Be Notified Upon Approval");
-				Application.overlayKiller("", nativeJS);
+				Application.overlayKiller("", "");
 			}
 		}
 	}
@@ -795,20 +794,20 @@ public class Projects extends SmartCRUD {
 	public static void approveRequest(long id, String message) {
 		Security.check(Security.getConnected().isAdmin);
 		Project p = Project.findById(id);
-		User user = p.user;
+		User user = User.findById(p.user.id);
 		p.approvalStatus = true;
-		String url = Router.getFullUrl("Application.externalOpen")+"?id="+p.id+"&isOverlay=false&url=#";
-		Log.addUserLog("Approved project request", p);		 
-		Notifications.notifyUser(user, "approved", url, "Project", p.name, (byte) 1, null);
 		p.save();
 		p.init(p.isScrum);
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+p.id+"&isOverlay=false&url=#";
+		Log.addUserLog("Approved project request", p);
 		Role proAdmin = Role.find("name= ? and project = ?", "Project Owner", p).first();
-		// Security.getConnected().addRole(proAdmin);
+
 		user.addRole(proAdmin);
 		Update.update(user, "addProjectToSearchBar('"+p.name+"', "+p.id+")");
 		for (User admin : User.getAdmins()) {
 			Update.update(admin, "reload('pending-project-requests')");	
 		}
+		Notifications.notifyUser(user, "approved", url, "Project", p.name, (byte) 1, null);
 		renderJSON(true);
 	}
 

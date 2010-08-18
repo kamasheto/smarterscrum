@@ -90,7 +90,7 @@ public class User extends SmartModel
 	/**
 	 * user roles
 	 */
-	@ManyToMany
+	@ManyToMany(mappedBy="users")
 	public List<Role> roles;
 
 	/**
@@ -265,11 +265,11 @@ public class User extends SmartModel
 			{
 				roles.add( R );
 			}
-
+	
 		}
-
+	
 		return roles;
-
+	
 	}
 
 	/**
@@ -484,6 +484,8 @@ public class User extends SmartModel
 					}
 				}
 			}
+			role.save();
+			role.project.save();
 			save();
 		}
 	}
@@ -499,15 +501,15 @@ public class User extends SmartModel
 	 * @issue 94, 96
 	 * @sprint 4
 	 */
-	public void removeRole( Role role, User user )
+	public void removeRole( Role role )
 	{
 		if( role.baseRole )
 		{
 			projects.remove( role.project );
-			role.project.users.remove( user );
+			role.project.users.remove( this );
 		}
 		roles.remove( role );
-		role.users.remove( user );
+		role.users.remove( this );
 		role.project.save();
 		role.save();
 		save();

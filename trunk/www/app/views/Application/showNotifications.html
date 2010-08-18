@@ -11,7 +11,6 @@
 <script type="text/javascript">
 
 
-
 function modify_emailing(i)
 {
 	var currentText = document.getElementById("modify_emailing").text;
@@ -24,31 +23,26 @@ function modify_emailing(i)
 				$('#sideNoti').load('/Application/showNotifications');
 			});
 }
-
-
-
-	$(function() {
-
-		search_notifications(0);
-	})
+	search_notifications(0);
 	function search_notifications(page) {
 		$('#loading_img').show()
-		$.post('/Application/list?page=page', function(Any){
-			
+		$.post('/application/listNotifications', {page: page}, function(response){
 			body = $('#notifications')
 			body.empty()
 			$('#loading_img').hide()
-			$(Any.notifications).each(function() {
-				body.append('<li>'+this.message+'</li>')
+			$(response.logs).each(function() {
+				body.append('<li id="log_'+this.id+'" class="log_item"><a onclick="show_log_content('+this.id+')">'+this.message+'</a><div></div></li>')
 			})
 			$('#notifications_pages').remove()
-			body.after('<div id="notifications_pages">')
+			body.after('<div id="notifications_pages" class="page_numbers _14">')
 			div = $('#notifications_pages')
-			if (Any.currentPage != 0) {
+			if (response.currentPage != 1) {
 				div.append('<a onclick="search_notifications('+(page-1)+')">Previous</a> ')
 			}
-			if (Any.currentPage != notifications.totalPages) {
+			if (response.currentPage <= response.totalPages) div.append(response.currentPage + ' / ' + response.totalPages + ' ')
+			if (response.currentPage != response.totalPages && response.totalPages) {
 				div.append('<a onclick="search_notifications('+(page+1)+')">Next</a>')
 			}
-		}
-		</script>
+		})
+	}
+</script>

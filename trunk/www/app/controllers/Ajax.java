@@ -31,7 +31,7 @@ public class Ajax extends SmartController
 			User me = Security.getConnected();
 			List<Project> myProjects = new LinkedList<Project>();
 			if( me.isAdmin )
-				myProjects = Project.find( "byNameLikeAndDeleted", "%" + query + "%", false ).fetch();
+				myProjects = Project.find( "byNameLikeAndDeletedAndApprovalStatus", "%" + query + "%", false, true ).fetch();
 			else
 				for( Project project : me.projects )
 				{
@@ -48,7 +48,7 @@ public class Ajax extends SmartController
 		else
 		{
 			List<Project.Object> result = new LinkedList<Project.Object>();
-			for( Project u : Project.find( "byNameLikeAndDeleted", "%" + query + "%", false ).<Project> fetch() )
+			for( Project u : Project.find( "byNameLikeAndDeletedAndApprovalStatus", "%" + query + "%", false, true ).<Project> fetch() )
 			{
 				if( Security.isConnected() && Security.getConnected().projects.contains( u ) && notMine )
 				{
