@@ -604,4 +604,8 @@ public class Users extends SmartCRUD {
 			flash.error("You are not allowed to edit these personal information.");
 		}	
 	}
+	
+	public static void uploadAvatar (long userProfileId)
+	{
+	}
 }
