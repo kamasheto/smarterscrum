@@ -1,4 +1,5 @@
 #{extends 'overlay.html' /}
+<style> label {width:550px !important}</style>
 <div id="crudShow" class="${type.name}">
 	
 	<h2 id="crudShowTitle">manage notifications for Project: ${currentNotificationProfile.project}</h2>
@@ -9,6 +10,7 @@
 		#{crud.custom 'user'}#{/crud.custom}
 		#{crud.custom 'project'}#{/crud.custom}
 		#{crud.custom 'deleted'}#{/crud.custom}
+		#{crud.custom 'logs'}#{/crud.custom}
 	#{/crud.form}
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />

@@ -1,31 +1,22 @@
-#{extends 'main.html' /}
-#{set title:'Edit Notification Profile' /}
+#{extends 'overlay.html' /}
 <!--Author: Moataz_Mekki-->
-<head>
-	
-</head>
+<style> label {width:550px !important}</style>
 <div id="crudShow" class="${type.name}">
 	
 	<h2 id="crudShowTitle">manage notifications for Project: ${currentNotificationProfile.project}</h2>
 	<h3> Please send Notifications when: </h3>
 	<div id="mnf"class="objectForm">
 	#{form action:@saveNotificationProfile(object.id), enctype:'multipart/form-data'}
-		#{crud.form /}
+		#{crud.form}
+			#{crud.custom 'project'}#{/crud.custom}
+			#{crud.custom 'deleted'}#{/crud.custom}
+			#{crud.custom 'logs'}#{/crud.custom}
+		#{/crud.form}
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
 			
 		</p>
-		#{set 'crumbs'}
-		<li><a href="/show/projects">Projects</a></li>
-		<li><a href="/show/project?id=${currentNotificationProfile.project.id}">${currentNotificationProfile.project}</a></li>
-		#{/set}	
 	#{/form}
 	</div>
 	
 </div>
-<script type="text/javascript">
-	
-		var project = document.getElementsByClassName('crudField')[0];
-		(project.parentNode).removeChild(project);
-		
-</script>
