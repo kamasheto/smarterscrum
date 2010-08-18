@@ -1,4 +1,4 @@
-#{if connected.projects.contains(room.project)}
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
@@ -7,10 +7,8 @@
 	<head>
 		 <title>Chat System :showing room</title>
 		<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/main.css'}">
-        <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/jquery-ui-1.8.custom.css'}"> 
         #{get 'moreStyles' /}
         <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
-		<script type="text/javascript" src="@{'public/javascripts/jquery-ui-1.8.custom.min.js'}"> </script>
         <script src="@{'/public/javascripts/date.js'}" type="text/javascript" charset="utf-8"></script>
        	<script src="@{'/public/javascripts/more.js'}" type="text/javascript"charset="utf-8"></script>
 		<script type="text/javascript" src="/public/javascripts/jquery.gritter.min.js"></script>
@@ -18,7 +16,7 @@
 </head>
 <body onload=" signIn(${room.id}) " onunload=" signOut(${room.id})" style="height:520px"> 
 								<div class="chatContainerHeader" style="text-align:center; width:100% !important;height:20px">
-									${room.project} Chat 
+									Estimation game Chat 
 				</div>
 								<div id="chatHolder" style="width:100% !important;height:500px">
 									<div id="thread" class="thread" style="width:100% !important;height:415px">
@@ -39,12 +37,13 @@
 
 <script type="text/javascript">
 
-	$('#send').click(function(e) {
-		var message = $('#message').val();
-		$('#message').val('');
-		$.post('@{ChatSystem.addMessage()}', {message: message , id:${room.id}});
-		$('#message').focus(); 
-    });
+	$('#message').keypress(function(event){
+		if (event.keyCode == '13')
+		{	var message = $('#message').val();
+			$('#message').val('');
+			$.post('@{ChatSystem.addMessage()}', {message: message , id:${room.id}}); 
+			$('#message').focus(); }
+	  });
 
 	// Retrieve new messages
 	var getMessages = function() {
@@ -52,7 +51,7 @@
 			$(messages).each(function() {
 				display(this);
 			});
-			setTimeout('getMessages();', 1000);
+			setTimeout('getMessages();', 600);
 		});
 	}	
 	$(function() {
@@ -80,4 +79,3 @@
 </body>
 <!--CHAT SYSTEM End-->
 </html>
-#{/if}
