@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 /**
  * Chat room Model ,done to make chatroom to each project
@@ -27,9 +26,6 @@ public class ChatRoom extends SmartModel
 	@OneToMany( mappedBy = "room" )
 	public List<Message> chats;
 
-	@OneToOne( mappedBy = "chatroom" )
-	public Project project;
-
 	/***
 	 * Project chat room constructor that associates to the room a list of chat
 	 * messages
@@ -37,10 +33,9 @@ public class ChatRoom extends SmartModel
 	 * @param p
 	 *            project that contains the chat room
 	 */
-	public ChatRoom( Project p )
+	public ChatRoom()
 	{
 		chats = new ArrayList<Message>();
-		project = p;
 	}
 
 }

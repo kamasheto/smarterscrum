@@ -440,7 +440,7 @@ public class Project extends SmartModel
 		board = new Board( this ).save();
 
 		// chat room added by amr hany
-		chatroom = new ChatRoom( this ).save();
+		chatroom = new ChatRoom().save();
 
 		List<Role> roles = Role.find( "select r from Role r where r.project = null" ).fetch();
 		for( Role role : roles )

@@ -3,7 +3,9 @@ package controllers;
 import java.util.List;
 
 import models.ChatRoom;
+import models.Game;
 import models.Message;
+import models.Project;
 import models.User;
 
 public class ChatSystem extends SmartController
@@ -23,7 +25,15 @@ public class ChatSystem extends SmartController
 		ChatRoom room = ChatRoom.findById( id );
 		if( room.deleted )
 			notFound();
-		Security.check( Security.getConnected().projects.contains( room.project ) );
+		Project project = Project.find( "byChatroomAndDeleted", room, false ).first();
+		if( project == null )
+		{
+			Game game = Game.find( "byChatroom", room ).first();
+			if( game != null )
+				project = game.component.project;
+
+		}
+		Security.check( Security.getConnected().projects.contains( project ) );
 		new Message( Security.getConnected().name, message, room ).save();
 	}
 
@@ -39,7 +49,15 @@ public class ChatSystem extends SmartController
 		ChatRoom room = ChatRoom.findById( id );
 		if( room.deleted )
 			notFound();
-		Security.check( Security.getConnected().projects.contains( room.project ) );
+		Project project = Project.find( "byChatroomAndDeleted", room, false ).first();
+		if( project == null )
+		{
+			Game game = Game.find( "byChatroom", room ).first();
+			if( game != null )
+				project = game.component.project;
+
+		}
+		Security.check( Security.getConnected().projects.contains( project ) );
 		List<Message> messages = Message.find( "room = ?1 and stamp > ?2", room, request.date.getTime() - 400 ).fetch();
 		if( messages.isEmpty() )
 		{
@@ -67,7 +85,17 @@ public class ChatSystem extends SmartController
 		if( room.deleted )
 			notFound();
 		User currentUser = Security.getConnected();
-		Security.check( currentUser.projects.contains( room.project ) );// ||
+		Project project = Project.find( "byChatroomAndDeleted", room, false ).first();
+		if( project == null )
+		{
+
+			Game game = Game.find( "byChatroom", room ).first();
+
+			if( game != null )
+				project = game.component.project;
+
+		}
+		Security.check( Security.getConnected().projects.contains( project ) );// ||
 		// !(currentUser.openChats.size()==1)
 		// );
 		if( !currentUser.openChats.contains( room ) )
@@ -91,13 +119,20 @@ public class ChatSystem extends SmartController
 	public static void leaveChat( long id )
 	{
 		ChatRoom room = ChatRoom.findById( id );
-		Security.check( Security.getConnected().projects.contains( room.project ) );
+		Project project = Project.find( "byChatroomAndDeleted", room, false ).first();
+		if( project == null )
+		{
+			Game game = Game.find( "byChatroom", room ).first();
+			project = game.component.project;
+
+		}
+		Security.check( Security.getConnected().projects.contains( project ) );
 		User currentUser = Security.getConnected();
 		new Message( "notice", currentUser.name + " has left the chat", room ).save();
 		currentUser.openChats.remove( room );
 		currentUser.save();
 		boolean empty = true;
-		for( User U : room.project.users )
+		for( User U : project.users )
 		{
 			if( U.openChats.contains( room ) )
 			{
@@ -126,10 +161,21 @@ public class ChatSystem extends SmartController
 	public static void viewRoom( long id )
 	{
 		ChatRoom room = ChatRoom.findById( id );
+
 		if( room.deleted )
 			notFound();
-		Security.check( Security.getConnected().projects.contains( room.project ) );
+		Project project = Project.find( "byChatroomAndDeleted", room, false ).first();
+		if( project == null )
+		{
+			Game game = Game.find( "byChatroom", room ).first();
+			if( game != null )
+				project = game.component.project;
+
+		}
+
+		Security.check( Security.getConnected().projects.contains( project ) );
 		User currentUser = Security.getConnected();
+
 		render( room, currentUser );
 	}
 

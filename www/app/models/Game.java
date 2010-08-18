@@ -1,61 +1,62 @@
- package models;
+package models;
 
- import java.util.ArrayList;
- import java.util.Collections;
- import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
- import javax.persistence.Entity;
- import javax.persistence.ManyToMany;
- import javax.persistence.ManyToOne;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
- @Entity
- public class Game extends SmartModel
- {
- //
- // @OneToMany
- // public List<Round> rounds;
+@Entity
+public class Game extends SmartModel
+{
+	//
+	// @OneToMany
+	// public List<Round> rounds;
 
- @ManyToMany
- public List<Task> tasks;
+	@ManyToMany
+	public List<Task> tasks;
 
- @ManyToOne
- public Component component;
+	@ManyToOne
+	public Component component;
 
- @ManyToOne
- public Task currentTask;
+	@ManyToOne
+	public Task currentTask;
 
- public ChatRoom chatroom;
- 
- public boolean gameOver;
+	@OneToOne
+	public ChatRoom chatroom;
 
- public Game()
- {
- tasks = new ArrayList<Task>();
- }
+	public boolean gameOver;
 
- public void init()
- {
+	public Game()
+	{
+		tasks = new ArrayList<Task>();
+	}
 
- chatroom = new ChatRoom( component.project ).save();
- this.save();
- }
+	public void init()
+	{
 
- public Round getRound()
- {
- List<Round> rounds = Round.find( "game = ? order by id desc", this ).fetch();
- if( rounds.isEmpty() )
- {
- return null;
- }
- return rounds.get( 0 );
- }
+		chatroom = new ChatRoom().save();
+		this.save();
+	}
 
- public User getModerator()
- {
+	public Round getRound()
+	{
+		List<Round> rounds = Round.find( "game = ? order by id desc", this ).fetch();
+		if( rounds.isEmpty() )
+		{
+			return null;
+		}
+		return rounds.get( 0 );
+	}
 
- List<GameSession> sessionsInGame = GameSession.find( "byGame", this
- ).fetch();
- Collections.sort( sessionsInGame );
- return sessionsInGame.get( 0 ).user;
- }
- }
+	public User getModerator()
+	{
+
+		List<GameSession> sessionsInGame = GameSession.find( "byGame", this ).fetch();
+		Collections.sort( sessionsInGame );
+		return sessionsInGame.get( 0 ).user;
+	}
+}
