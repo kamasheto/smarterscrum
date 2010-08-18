@@ -292,10 +292,15 @@ public class Requests extends SmartCRUD
 			rev.accepted=true;
 			rev.save();
 			Notifications.notifyProjectUsers(tt.project, "addReviewer", "", "to the reviewers for the task type", tt.name, (byte)0);
+			Update.update(rev.user, "reload('reviewers')");
 			renderText("You are now "+tt.name+" reviewer in"+tt.project.name+"!");
 		}
 		else
-			renderText("Your request to be "+tt.name+" reviewer has been sent successfully!");
+			{
+				Update.update(rev.user, "reload('reviewers')");
+				Update.update(tt.project, "reload('project-requests')");
+				renderText("Your request to be "+tt.name+" reviewer has been sent successfully!");
+			}
 	}
 	
 	public static void reviewRequestRespond(long revId, int response)
@@ -310,8 +315,10 @@ public class Requests extends SmartCRUD
 		else
 			{
 				Notifications.notifyUser(rev.user, "declined", "", "your request to be reviewer for task type", rev.taskType.name, (byte)-1, rev.project);
-				rev.delete();				
+				rev.delete();
 			}
+		Update.update(rev.project, "reload('project-requests')");
+		Update.update(rev.user, "reload('reviewers')");
 	}
 	
 	public static void revokeReviewer(long uId, long taskTypeId)
@@ -321,6 +328,7 @@ public class Requests extends SmartCRUD
 		Reviewer rev = Reviewer.find("byUserAndTaskType", user, tt).first();
 		rev.delete();
 		Notifications.notifyProjectUsers(tt.project, "deleteReviewer", "", "from the reviewers for the task type", tt.name, (byte)-1);
+		Update.update(rev.user, "reload('reviewers')");
 		renderText("The review role has been revoked successfully!");
 	}
 	
