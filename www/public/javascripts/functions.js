@@ -887,9 +887,11 @@ function request_reviewer(tasktypeId)
 
 function revoke_reviewer(uid, ttid)
 {
-	$.post('/requests/revokeReviewer', {uId:uid, taskTypeId:ttid}, function(msg){
+	var r = confirm('Are you sure you want to revoke that reviewing role ?');
+	if(r==true)
+	{$.post('/requests/revokeReviewer', {uId:uid, taskTypeId:ttid}, function(msg){
 		$.bar({message:msg});
-	});
+	});}
 }
 
 function review_request_respond(revid , res)

@@ -43,5 +43,12 @@
       #{/if}
      #{/list}
     #{/list}
+    #{list items:revroles , as:'rev'}
+    <div class="bar">Reviewer for the tasks of the  type: ${rev.taskType.name}
+    #{if ((connected.in(project).can('revokeUserRole'))||(user.id == connected.id))}
+    <a title="revoke reviewing role?" href="#" onclick="revoke_reviewer(${user.id}, ${rev.taskType.id});"><img src="/public/images/famfam/remove-user.png" /></a>
+    #{/if}
+    </div>
+    #{/list}
    #{/if}
 #{/if}
