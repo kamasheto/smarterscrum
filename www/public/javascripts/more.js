@@ -90,10 +90,7 @@ function overlayClose()
 }
 
 function refresh(el){
-
-
 	$('#theLoadedContent').contents().find('#'+el).first().load($('#theLoadedContent').attr('src')+' #'+el, function(){
-		$('#theLoadedContent').contents().find('#'+el).first().replaceWith($('#theLoadedContent').contents().find('#'+el).first().html());alert('bare;pad')
+		$('#theLoadedContent').contents().find('#'+el).first().replaceWith($('#theLoadedContent').contents().find('#'+el).first().html());
 	});
-	
 }

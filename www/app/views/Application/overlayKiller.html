@@ -16,7 +16,9 @@
 		#{if flash.success}
 		parent_message_bar('&{flash.success}')
 		#{/if}	
-		window.parent.$('#getOverlay').hide();
+     	window.parent.$('#overlayLoading').show();
+     	window.parent.$('#theLoadedContent').hide();
+     	window.parent.$('#getOverlay').hide();
 		#{if js}window.parent.${js}#{/if}
 		${nativeJS}
 	})
