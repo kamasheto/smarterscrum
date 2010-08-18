@@ -530,6 +530,7 @@ public class Meetings extends SmartCRUD
 					Update.update( attendance.meeting.project, "reload('meetingAttendees-" + currentMeeting.id + "', 'meetings-" + currentMeeting.project.id + "', 'meeting-" + currentMeeting.id + "')" );
 					renderText( "you are invited to the meeting successfully." );
 				}
+				Update.update( invitedUser, "reload('meeting-" + currentMeeting.id + "');" );
 			}
 			else
 			{
@@ -620,6 +621,7 @@ public class Meetings extends SmartCRUD
 								String declineURL = Router.getFullUrl( "MeetingAttendances.decline" ) + "?meetingHash=" + meetingHash;
 								String meetingURL = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + meeting.project.id + "&isOverlay=false&url=/meetings/viewMeeting?id=" + meeting.id;
 								Notifications.invite( user, meetingURL, meeting.name, confirmURL, declineURL, meeting.project, true );
+								Update.update( user, "reload('meeting-" + meeting.id + "');" );
 							}
 						}
 					}
