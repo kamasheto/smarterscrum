@@ -1,5 +1,5 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}Sprint ${sprint.sprintNumber} Backlogs<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
+#{set 'title'}Sprint ${sprint.sprintNumber}<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
 <img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>#{/set}
 
 #{list items:sprint.project.components, as:'component'}
