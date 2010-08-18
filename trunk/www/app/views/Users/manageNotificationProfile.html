@@ -2,10 +2,10 @@
 <style> label {width:550px !important}</style>
 <div id="crudShow" class="${type.name}">
 	
-	<h2 id="crudShowTitle">manage notifications for Project: ${currentNotificationProfile.project}</h2>
-	<h3> Please Notify me when: </h3>
+	<h2 id="crudShowTitle">Manage my notifications for ${currentNotificationProfile.project}</h2>
+	<h3>Notify me when</h3>
 	<div id="mnf"class="objectForm">
-	#{form action:@saveNotificationProfile(object.id), enctype:'multipart/form-data'}
+	#{form action:@saveNotificationProfile(object.project.id), enctype:'multipart/form-data'}
 	#{crud.form}
 		#{crud.custom 'user'}#{/crud.custom}
 		#{crud.custom 'project'}#{/crud.custom}

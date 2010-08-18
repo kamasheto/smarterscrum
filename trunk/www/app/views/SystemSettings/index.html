@@ -1,14 +1,16 @@
 #{extends 'magicBox.html' /}
 #{set title:'System Settings' /}
-<div class="bar">Site Name <div class="bar_more_info editable" id="sitename">${settings.siteName}</div></div>
-<div class="bar">Twitter Hash <div class="bar_more_info editable" id="twitterhash">${settings.twitterHash}</div></div>
-<div class="bar">Entries/Box <div class="bar_more_info editable" id="entriesperbox">${settings.defaultEntriesPerBox}</div></div>
+<div class="bar">Site Name <div class="bar_more_info " contenteditable id="sitename">${settings.siteName}</div></div>
+<div class="bar">Twitter Hash <div class="bar_more_info " contenteditable id="twitterhash">${settings.twitterHash}</div></div>
+<div class="bar">Entries/Box <div class="bar_more_info " contenteditable id="entriesperbox">${settings.defaultEntriesPerBox}</div></div>
 <script type="text/javascript" charset="utf-8">
 $('.editable')
-	.attr('contenteditable', true)
-	.live('change', function() {
-		alert(2)
+	.live('mouseover', function() {
+		if ($(this).data('init')) return
+		$(this).data('init', true)
+		alert(this)
+		$(this).blur(function() {
+			alert(1)
+		})
 	})
-
-
 </script>
