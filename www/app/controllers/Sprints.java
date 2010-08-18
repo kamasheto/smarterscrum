@@ -365,7 +365,7 @@ public class Sprints extends SmartCRUD
 		{
 			object.startDate = sprint.startDate;
 			if( object.ended )
-			{
+			{    object.ended=false;
 				object.endDate = new Date();
 
 				object.Last = object.startDate;
@@ -394,7 +394,7 @@ public class Sprints extends SmartCRUD
 		else
 		{
 			if( object.ended )
-			{
+			{    object.ended=false;
 				object.endDate = new Date();
 				object.Last = object.startDate;
 			}
