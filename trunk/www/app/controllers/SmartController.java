@@ -176,8 +176,8 @@ public class SmartController extends Controller
 								}
 							}
 							if( pcol.onBoard == true && !pcol.deleted )
-							{
-								data.get( i ).get( CS.indexOf( pcol ) ).add( "T" + task.id + "-" + task.description + "-" + task.assignee.name );
+							{System.out.println(task.description);
+								data1.get( i ).get( CS.indexOf( pcol ) ).add( "T" + task.id + "-" + task.description + "-" + task.assignee.name );
 							}
 						}
 					}
