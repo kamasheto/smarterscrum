@@ -1,11 +1,18 @@
 package controllers;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.PersistenceException;
+
+import org.apache.commons.io.IOUtils;
+
 import notifiers.Notifications;
 import models.Component;
 import models.Project;
@@ -15,6 +22,7 @@ import models.Update;
 import models.User;
 import models.UserNotificationProfile;
 import models.Log;
+import play.Play;
 import play.data.validation.Email;
 import play.data.validation.Error;
 import play.data.validation.Required;
@@ -501,7 +509,7 @@ public class Users extends SmartCRUD {
 	 */
 	public static void miniProfileAction ( @Required(message = "You must enter a name") String name,
 			@Required(message = "You must enter an email") @Email(message = "You must enter a valid email") String email,
-			long userProfileId)
+			long userProfileId, File file) throws IOException
 	{
 		User userProfile = User.findById(userProfileId);
 		User connectedUser = Security.getConnected();
@@ -552,6 +560,13 @@ public class Users extends SmartCRUD {
 			}
 			try 
 			{
+				if(file!=null)
+				{
+					FileInputStream avatar = new FileInputStream(file);
+					String url = "/usersAvatars/" + userProfileId + "_" + file.getName();
+					IOUtils.copy(avatar, new FileOutputStream(Play.getFile(url)));
+					userProfile.avatar = url;
+				}
 				userProfile.save();
 				flash.success(message);
 				if (!oldname.equals(name))
@@ -605,7 +620,4 @@ public class Users extends SmartCRUD {
 		}	
 	}
 	
-	public static void uploadAvatar (long userProfileId)
-	{
-	}
 }
