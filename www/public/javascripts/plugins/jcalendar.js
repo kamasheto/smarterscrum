@@ -8,7 +8,7 @@
  * and GPL (GPL-LICENSE.txt) licenses.
  */
 jQuery.jcalendar = function() {
-	var events = getEvents();
+	// var events = allEvents;
 	var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 	var days = ['S', 'M', 'Tu', 'W', 'Th', 'F', 'S'];
 	var navLinks = {p:'Prev', n:'Next', t:'Today'};
@@ -166,8 +166,8 @@ jQuery.jcalendar = function() {
   				  _selectedDate = dayStr;
   				//  _selectedDate.addClass('selected');
   				}
-  				
   			}
+
   			arr = events.split('|');
   			$.each(arr, function(id, item){
   				arr2 = item.split('.');
@@ -319,34 +319,24 @@ jQuery.fn.jcalendar = function(a) {
 	});
 	return this;
 };
-
-function getEvents(){
+var events = ''
+function loadEvents(){
 	var sprints;
 	var meetings;
-	$.ajax({
-		url:'/Application/sprints',
-		async: false,
-		success: function(data){
-			sprints =data;
-		}
-	})
-	$.ajax({
-		url:'/Application/meetings',
-		async: false,
-		success: function(data){
-			meetings =data;
-		}
-	})
 	
-	var events='';
+	$.post('/Application/sprints', function(sprints){
+		$.post('/Application/meetings', function(meetings) {
 	        $.each(sprints, function(id, item){
-	        events+= item.project+	': Start of Sprint'+item.sprintNumber+'.'+item.startDay+'-'+item.startMonth+'-'+item.startYear+'|'+item.project+': End of Sprint'+item.sprintNumber+'.'+item.endDay+'-'+item.endMonth+'-'+item.endYear+'|';
+	        	events+= item.project+	': Start of Sprint'+item.sprintNumber+'.'+item.startDay+'-'+item.startMonth+'-'+item.startYear+'|'+item.project+': End of Sprint'+item.sprintNumber+'.'+item.endDay+'-'+item.endMonth+'-'+item.endYear+'|';
 			});
-	        
+			
 	        $.each(meetings, function(id, item){
 		        events+= item.project+	': Meeting: '+item.name+', Starts at '+item.StartTime+'.'+item.startDay+'-'+item.startMonth+'-'+item.startYear+'|';
-				});
-	return events;
+			});
+			$('fieldset.jcalendar').jcalendar();
+			changeTitle();
+		})
+	}) 
 	
 }
 

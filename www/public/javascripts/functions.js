@@ -665,6 +665,13 @@ function search_projects() {
 }
 
 function show(id) {
+	if (id < 0) {
+		$('#acp-workspace-help').show()
+		$('#workspace-help').hide()
+	} else {
+		$('#acp-workspace-help').hide()
+		$('#workspace-help').show()
+	}
 	if (!id) {
 		$('#workspaces').hide()
 		$('#normal').show()
@@ -962,3 +969,32 @@ function changeTitle(){
 	}
 
 	}
+
+
+function approveProjectRequest(id){
+	var conf=confirm("Are you sure you want to approve this Project?");
+	var msg=document.getElementById("message_"+id).value;
+	if(conf){
+		$.post('/projects/approveRequest',{id:id,message:msg},function (flag){
+			if(flag){
+				// alert("Project Has Been Approved. A Notification Has Been sent to Project Owner !");
+				message_bar("Project has been approved. A notification has been sent to the project owner.")
+			}
+		},'json')
+	}
+
+}
+
+
+function declineProjectRequest(id){
+	var conf=confirm("Are you sure you want to Decline this Project?");
+	var msg=document.getElementById("message_"+id).value;
+	if(conf){
+		$.post('/projects/declineRequest',{id:id,message:msg},function (flag){
+			if(flag){
+				// alert("Project Has Been Declined. A Notification Has Been sent to Project Owner !");
+				message_bar("Project has been declined. A notification has been sent to project owner.")
+			}
+		},'json')
+	}
+}

@@ -22,6 +22,8 @@ import models.TaskType;
 import models.User;
 import models.UserNotificationProfile;
 import models.Log;
+import models.Update;
+
 import notifiers.Notifications;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
@@ -78,11 +80,10 @@ public class Projects extends SmartCRUD {
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/blank.html", type);
 			}
-		} else {	
+		} else {		
+			Project pro = (Project) object;
 			String nativeJS = "";
-			if (user.isAdmin) {
-				projectObject.approvalStatus = true;
-			}
+	
 			projectObject.user = user;
 			if (params.get("object_isPrivate") != null) {
 				projectObject.isPrivate = true;
@@ -93,12 +94,17 @@ public class Projects extends SmartCRUD {
 			object.save();
 			if (user.isAdmin) {
 				// add it to the top bar immediately
+				projectObject.approvalStatus = true;
 				nativeJS = "addProjectToSearchBar('"+projectObject.name+"', "+projectObject.id+")";
+				Role proAdmin = Role.find("name= 'Project Owner' and project =" + pro).first();
+				user.addRole(proAdmin);
+				user.save();
+				pro.init(projectObject.isScrum);
+			} else {
+				for (User admin : User.getAdmins()) {
+					Update.update(admin, "reload('pending-project-requests')");
+				}
 			}
-			Project pro = (Project) object;
-			pro.init(projectObject.isScrum);
-			Role proAdmin = Role.find("name= 'Project Creator' and project =" + pro.id).first();
-			user.addRole(proAdmin);
 			Log.addUserLog("Created project", projectObject);
 			// Logs.addLog(Security.getConnected(), "Create", "Project", projectObject.id, projectObject, new Date(System.currentTimeMillis()));
 			if (Security.getConnected().isAdmin) {
@@ -765,6 +771,15 @@ public class Projects extends SmartCRUD {
 		List<Project> pendingProjects = Project.find("approvalStatus=false AND deleted=false").fetch();
 		render(pendingProjects);
 	}
+	
+	/**
+	 * Views the project details
+	 */
+	public static void manageProjectRequest(long projectId) {
+		Security.check(Security.getConnected().isAdmin);
+		Project project = Project.findById(projectId);
+		render(project);
+	}
 
 	/**
 	 * This method approves the pending request for the project given by the ID
@@ -779,12 +794,18 @@ public class Projects extends SmartCRUD {
 		Project p = Project.findById(id);
 		User user = p.user;
 		p.approvalStatus = true;
-		String url = Router.getFullUrl("Application.externalOpen")+"?id="+p.id+"&isOverlay=false&url=#";		 
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+p.id+"&isOverlay=false&url=#";
+		Log.addUserLog("Approved project request", p);		 
 		Notifications.notifyUser(user, "approved", url, "Project", p.name, (byte) 1, null);
 		p.save();
-		p.init();
-		Role proAdmin = Role.find("name= 'Project Creator' and project =" + p.id).first();
-		Security.getConnected().addRole(proAdmin);
+		p.init(p.isScrum);
+		Role proAdmin = Role.find("name= 'Project Owner' and project =" + p.id).first();
+		// Security.getConnected().addRole(proAdmin);
+		user.addRole(proAdmin);
+		Update.update(user, "addProjectToSearchBar('"+p.name+"', "+p.id+")");
+		for (User admin : User.getAdmins()) {
+			Update.update(admin, "reload('pending-project-requests')");	
+		}
 		renderJSON(true);
 	}
 
@@ -800,11 +821,16 @@ public class Projects extends SmartCRUD {
 	public static void declineRequest(long id, String message) {
 		Security.check(Security.getConnected().isAdmin);
 		Project p = Project.findById(id);
-		p.deleted = true;
+		Log.addUserLog("Declined project request: " + p.name);
+		// p.deleted = true;
 		User user = p.user;
-		String url = "#";
+		String url = Router.getFullUrl("Application.index");
 		Notifications.notifyUser(user, "declined", url, "Project", p.name, (byte) -1, null);
-		p.save();
+		// p.save();
+		p.delete();	
+		for (User admin : User.getAdmins()) {
+			Update.update(admin, "reload('pending-project-requests')");
+		}
 		renderJSON(true);
 	}
 

@@ -51,15 +51,15 @@ To Create a Project , You Must make sure the name you enter is available.
 			<b><label id="isAvailable"></label></b>
 			
 		</div> 
-  		
-		<div class="crudField">
+ 		<a onclick="$('.moreOptions').toggle()">Toggle more options</a>
+		<div class="crudField moreOptions hidden">
 			<label for="object_description"> 
 				Description
 			</label> <br/>
 			<textarea id="object_description" name="object.description" cols="53" rows="5"  /></textarea>
 		</div>
 		
-		<div class="crudField">
+		<div class="crudField moreOptions hidden">
 		<input type="checkbox" name="object_isPrivate"/>
 			<label for="object_isPrivate">
 				Private
@@ -67,10 +67,11 @@ To Create a Project , You Must make sure the name you enter is available.
 			
 		</div>
 		
-		<div class="crudField">
-		<input type="checkbox" name="object_isScrum">
+		<div class="crudField hidden">
+		<input type="checkbox" name="object_isScrum" checked="checked">
 			<label for="object_isScrum">Check this box if this is a SCRUM project</label>
 		</div>
+
 		
 		<p class="crudButtons">
 			<input type="submit" name="_save" value="Create Project"  onclick=""/>

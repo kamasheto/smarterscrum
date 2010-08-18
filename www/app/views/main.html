@@ -98,6 +98,10 @@
     	   
 
        }
+
+		function addProjectToSearchBar(name, id) {
+			$('#projects_my_current_projects').append('<div id="project-search-result-'+id+'"><a onclick="showProjectWorkspace('+id+')">'+name+'</a></div>')
+		}
         </script>
 </head>
 <body onload="#{get 'onLoad' /}">
@@ -121,7 +125,7 @@
 #{/if}
 	<!--a class="aDIV topCornersRounded" href="#"  onclick="normalShow('@{About.index}')" title="read aboout SmartSoft?">About Us</a--> 
 	#{if connected}
-		<a class="aDIV topCornersRounded " href="#" onclick="$('#top_header_projects_pane').slideToggle()" style="width: 120px !important" title="">Projects <small>(${connected?.projects.size()})</small></a>
+		<a class="aDIV topCornersRounded " href="#" onclick="$('#top_header_projects_pane').slideToggle()" style="width: 120px !important" title="Start here">Main Navigation</a>
 	#{/if}
 </div>	
 <div id="top_header_projects_pane" class="hidden bottomCornersRounded">
@@ -134,7 +138,11 @@
 	#{/list}</div>
 	<h3 id="search_results_h3">Search results</h3>
 	<div id="projects_search_results"></div>
-	<div id="add-new-project-link"><a href="#" onclick="overlayOpen('/admin/projects/new'); $('#top_header_projects_pane').slideUp()" style=""><img src="/public/images/famfam/add.png" alt="[+]"/> Add New</a></div>
+	<div id="add-new-project-link"><a href="#" onclick="overlayOpen('/admin/projects/new'); $('#top_header_projects_pane').slideUp()" style=""><img src="/public/images/famfam/add.png" alt="[+]"/> Request New</a></div>
+	#{if connected?.isAdmin}
+		<h3>ACP Link</h3>
+		<div id="acp_link"><a onclick="showProjectWorkspace(-1);">Admin CP</a></div>
+	#{/if}
 </div>
 <div class="topper">
 						<div class="left">
@@ -146,9 +154,7 @@
 						
 							
 							<div class="right">
-							
 								<a href="/sessions/logout" title="Logout from the system">Logout</a>
-						
 							</div>
 							<br style="clear:both"/>
 						</div>
@@ -200,9 +206,11 @@
 	<!-- Invitations End -->
 </div>
 #{/if}
-
 	<div id="workspace-help">
 		This is your projects workspace. You could click on the links in the top header to show boxes of respective content. You could then browse through by clicking links in the boxes, or, for more focus on what you need most, by dragging the links outside to create new boxes of that content separately. <strong>For more information click the Help link near the top</strong>
+	</div>
+	<div id="acp-workspace-help">
+		This is the admin control panel. You could change system settings, approve project requests, and manage defaults for newly created projects.
 	</div>
 </div>
 #{/if}

@@ -21,13 +21,13 @@ public class Role extends SmartModel {
 	 */
 	@Required
 	public String name;
-/**
- * whether this role is being invoked on a system admin
- */
+	/**
+	 * whether this role is being invoked on a system admin
+	 */
 	public boolean systemAdmin;
-/**
- * the project that the role belongs to
- */
+	/**
+	 * the project that the role belongs to
+	 */
 	@ManyToOne
 	public Project project;
 

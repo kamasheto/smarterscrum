@@ -15,6 +15,8 @@ import models.Sprint;
 import models.Task;
 import models.User;
 import models.UserNotificationProfile;
+import models.Setting;
+
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import edu.emory.mathcs.backport.java.util.Arrays;
@@ -31,6 +33,8 @@ public class Bootstrap extends Job
 	{
 		if( User.count() == 0 )
 		{
+			new Setting().save();
+			
 			// add help topics as well
 			HelpTopic.Object[] topics = { // remember the trailing comment, even
 											// if empty!
@@ -70,13 +74,12 @@ public class Bootstrap extends Job
 				users.add( u );
 			}
 
-			Role r = new Role( "Project Creator" ).save();
+			Role r = new Role( "Project Owner" ).save();
 			for( Permission p : Permission.<Permission> findAll() )
 			{
 				r.permissions.add( p );
 			}
 			r.save();
-			new Role( "Project Owner" ).save();
 			new Role( "Project Admin" ).save();
 			new Role( "Scrum Master" ).save();
 			new Role( "Developer" ).save();

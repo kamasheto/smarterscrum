@@ -136,9 +136,8 @@ public class User extends SmartModel
 	@OneToMany
 	public List<ChatRoom> openChats;
 	public long ReadNotifications;
-public boolean haveInvites;
-public long InviteNumber;
-
+	public boolean haveInvites;
+	public long InviteNumber;
 	
 	/**
 	 * Class constructor just initializing the lists a user should have.
@@ -507,5 +506,9 @@ public long InviteNumber;
 		role.project.save();
 		role.save();
 		save();
+	}
+	
+	public static List<User> getAdmins() {
+		return User.find("byIsAdmin", true).<User> fetch();
 	}
 }
