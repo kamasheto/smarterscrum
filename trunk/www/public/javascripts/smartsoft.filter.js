@@ -70,12 +70,13 @@ function smart_pagination(el, view_page, itemsChanged){
 		if(smartObject == false){
 			var sizeOfChildren = $("#"+id+"_content > div").size();
 			var sizeOfNotPaginated= $("#"+id+"_content > div").filter(function(){ return $(this).hasClass("do_not_paginate") }).size();
-			var numPagesNotPaginated = Math.floor(sizeOfNotPaginated/smartObject.itemsPerPage);
-			var extraNotPaginatedItems = !((sizeOfNotPaginated % smartObject.itemsPerPage) == 0);
+			var numPagesNotPaginated = Math.floor(sizeOfNotPaginated/itemsPerPage);
+			var extraNotPaginatedItems = !((sizeOfNotPaginated % itemsPerPage) == 0);
 			if(extraNotPaginatedItems)
 				numPagesNotPaginated++;
-			var numPages = Math.floor(sizeOfChildren/ smartObject.itemsPerPage);
-			var extraItems = !((sizeOfChildren % smartObject.itemsPerPage) == 0); //whether there are items to be added in an extra page
+			//alert(numPagesNotPaginated);
+			var numPages = Math.floor(sizeOfChildren/ itemsPerPage);
+			var extraItems = !((sizeOfChildren % itemsPerPage) == 0); //whether there are items to be added in an extra page
 			if(extraItems)
 				numPages++;
 			smartObject = new Object();
@@ -89,7 +90,6 @@ function smart_pagination(el, view_page, itemsChanged){
 			smartObject.numPagesNotPaginated = numPagesNotPaginated;
 			if(itemsChanged){
 				//alert($('#'+el).closest(".galal").first().html());
-				alert($(el).html());
 				smartObject.itemsPerPage = calculateItems(el);
 			}
 			else
@@ -104,7 +104,14 @@ function smart_pagination(el, view_page, itemsChanged){
 			smartObject.page++;
 		}
 		else if(view_page>(smartObject.numPages-smartObject.numPagesNotPaginated)){
-			smartObject.page--;
+			if(!view_page == 1)
+				smartObject.page--;
+			else
+			{
+				$("#"+id+" .normalLinkp").addClass('dim');
+				if(view_page >= (smartObject.numPages - smartObject.numPagesNotPaginated))
+					$("#"+id+" .normalLinkn").addClass('dim');
+			}
 		}
 		else
 		{
@@ -116,8 +123,23 @@ function smart_pagination(el, view_page, itemsChanged){
 					$(this).hide();
 					i++;
 				});
-			if(itemsChanged)
+			if(itemsChanged){
 				smartObject.itemsPerPage = calculateItems(el);
+				sizeOfChildren = $("#"+id+"_content > div").size();
+				sizeOfNotPaginated= $("#"+id+"_content > div").filter(function(){ return $(this).hasClass("do_not_paginate") }).size();
+				numPagesNotPaginated = Math.floor(sizeOfNotPaginated/smartObject.itemsPerPage);
+				extraNotPaginatedItems = !((sizeOfNotPaginated % smartObject.itemsPerPage) == 0);
+				if(extraNotPaginatedItems)
+					numPagesNotPaginated++;
+				numPages = Math.floor(sizeOfChildren/ smartObject.itemsPerPage);
+				extraItems = !((sizeOfChildren % smartObject.itemsPerPage) == 0); //whether there are items to be added in an extra page
+				if(extraItems)
+					numPages++;
+				smartObject.numElements = sizeOfChildren;
+				smartObject.sizeOfNotPaginated = sizeOfNotPaginated;
+				smartObject.numPagesNotPaginated = numPagesNotPaginated;
+				smartObject.numPages = numPages;
+			}
 			//Now display only those in the current page
 			view_page--;//if page 1, the starting index should be zero (array ba2a)
 			var starting_index = view_page * smartObject.itemsPerPage;
@@ -128,6 +150,7 @@ function smart_pagination(el, view_page, itemsChanged){
 				j++;
 			}
 			view_page++;
+			//alert("view page:"+view_page+" out of "+(smartObject.numPages-smartObject.numPagesNotPaginated));
 			if(view_page == (smartObject.numPages-smartObject.numPagesNotPaginated)){
 				$("#"+id+" .normalLinkn").addClass('dim');
 			}
@@ -149,6 +172,8 @@ function smart_pagination(el, view_page, itemsChanged){
 		$("#"+id+"_content > div").show();
 		var totalItems = $("#"+id+"_content > div").filter(function(index) { return !($(this).hasClass("do_not_paginate")); }).size();
 		$("#"+id+" .numPages").text(totalItems+"/"+totalItems);
+		$("#"+id+" .normalLinkp").addClass('dim');
+		$("#"+id+" .normalLinkn").addClass('dim');
 	}
 }
 
