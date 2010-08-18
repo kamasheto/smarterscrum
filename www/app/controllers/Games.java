@@ -55,7 +55,7 @@ public class Games extends SmartController
 		Component component = null;
 		User user = Security.getConnected();
 		for( long s : tasks )
-		{	System.out.println(s);
+		{	
 			Task task = Task.findById( s );
 			if( !user.in( task.project ).can( "startGame" ) )
 			{
@@ -63,10 +63,9 @@ public class Games extends SmartController
 			}
 			game.tasks.add( task );
 			
-			System.out.println(task);
+			
 			if(game.tasks.contains(task.parent)){
 				game.tasks.remove(task.parent);
-				System.out.println("here");
 			}
 			component = task.component;
 		}
@@ -84,7 +83,6 @@ public class Games extends SmartController
 		session.game = game;
 		session.lastClick = new Date().getTime();
 		session.save();
-		System.out.println(game.tasks);
 		playGame( game.id );
 	}
 

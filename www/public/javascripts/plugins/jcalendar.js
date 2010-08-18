@@ -349,10 +349,6 @@ function getEvents(){
 	return events;
 	
 }
-function eventHandler (day, month, year){
-	alert("here");
-	
-	alert("here2");
-}
+
 var lastday='';
 
