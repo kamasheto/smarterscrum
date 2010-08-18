@@ -95,10 +95,8 @@ function delete_meeting(id)
 	var confirmation= confirm("Are you sure you want to delete this meeting ?");
 	
 	if (confirmation) {
-		$.post('/Meetings/deleteMeeting', {
-			id:id
-		});
-	};		
+		$.post('/Meetings/deleteMeeting', {id:id},function(){$.bar({ message:'Meeting deleted successfully.' })});
+	}	
 }
 
 function join_meeting(id)
