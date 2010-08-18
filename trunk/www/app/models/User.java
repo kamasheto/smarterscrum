@@ -135,7 +135,11 @@ public class User extends SmartModel
 	// public List<Comment> allComments;
 	@OneToMany
 	public List<ChatRoom> openChats;
+	public long ReadNotifications;
+public boolean haveInvites;
+public long InviteNumber;
 
+	
 	/**
 	 * Class constructor just initializing the lists a user should have.
 	 */
