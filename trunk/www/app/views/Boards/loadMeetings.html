@@ -20,7 +20,7 @@ Meetings
 <div class="formatTime">${users.meeting.startTime}</div>
 <div id="amr" class="formatTime">${users.meeting.endTime}</div>
 #{list items:users , as:'user'}
-<a id="${user.id}" href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a><br/>
+<a id="${user.id}_user" href="javascript: select_user(${user.id}, '${user.name}');" class="select">${user.name}</a><br/>
 #{/list}
 <span id="tzcd_${users.meeting.id}"></span><br/>
 <script type="text/javascript" charset="utf-8"> 
@@ -152,8 +152,8 @@ No Attendees
 	}
 	function select_user(id, str) 
  	{
- 	
-	 var statusList = ${us};
+	$('.nostatus').addClass('drag');	
+ 	 var statusList = ${us};
 	 var f_status = false;
 	 for(var j=0; j<statusList.length; j++)
      {
@@ -164,24 +164,32 @@ No Attendees
      }
 	if(f_status)
 	{
-		alert('yes');
-		$('.status').addClass('drag status');
-		$('.nostatus').addClass('drag status');
+		$('.status').css('cursor','move');
+		$('.nostatus').css('cursor','move');
+		$('.drag').live('mouseover', function(){
+		REDIPS.drag.enable_drag(true);		
+		});
 	}
 	else
 	{
-		alert('no');
-		$('.status').removeClass('drag status');
-		$('.nostatus').removeClass('drag status');
+		$('.status').attr('onmouseover',"");
+		$('.status').attr('onhover',"");
+		$('.nostatus').attr('onmouseover',"");
+		$('.nostatus').attr('onhover',"");
+		$('.drag').live('mouseover', function(){
+		REDIPS.drag.enable_drag(false);		
+		});
+		$('.status_'+id).live('mouseover', function(){
+		REDIPS.drag.enable_drag(true);		
+		});
 	}	
-
-		
 	$('.editDES').css('display','none');
 	$('.noedit').css('display','none');
 	$('.shwtype').css('display','none');		
 	$('.hidestype').css('display','none');
 	 selectedUser = id;
 	 $('#myLayer').html(str+' is editing the Board now '+ '<br/><br/>').effect('highlight',{}, 6000).fadeOut();
+	 $('#myLayer').css("color","black");
 	 var descList = ${ud};
 	 var f_desc = false;
      for(var j=0; j<descList.length; j++)

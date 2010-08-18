@@ -206,10 +206,10 @@ REDIPS.drag.init();
 		
 		<!-- small sticky note -->
 		#{if connected.in(p).can('changeTaskStatus') || connected.equals(task.assignee) || connected.equals(task.reviewer)}
-		<div style="float:left" id="task-${task.id}_T_${compID}" class="drag status status_${task.id}">
+		<div style="float:left" id="task-${task.id}_T_${compID}" class="drag status_${task.assignee.id} status_${task.reviewer.id}">
 		#{/if}
 		#{else}
-		<div style="float:left" id="task-${task.id}_T_${compID}" class="nostatus nostatus_${task.id}">
+		<div style="float:left" id="task-${task.id}_T_${compID}" class="nostatus status_${task.assignee.id} status_${task.reviewer.id}">
 		#{/else}
 		<a id="task-${task.id}_hidden" style="display:none; font-size:large;cursor: pointer !important;text-decoration:none" onclick="showtask(this.id);"><img title="hide?" src="@{'/public/images/famfam/bullet_toggle_plus.png'}"></img></a>
 		<div id="task-${task.id}_TT">
@@ -441,7 +441,7 @@ function ctask(id)
 		    return(value);
     	   },{indicator : 'Saving...',});});
 	$('.drag').live('mouseover', function(){
-REDIPS.drag.init();})
+	REDIPS.drag.init();})
 	/**
 	 * swapping with clicking instead of drag and drop.
 	 * 
