@@ -30,11 +30,11 @@ public class SprintBacklog extends SmartController
 	 * backlog : 1,4,5,6.
 	 * 
 	 * @param componentID
-	 *                   The given compenent id.
+	 *            The given compenent id.
 	 * @param id
-	 *          The given sprint id.
+	 *            The given sprint id.
 	 *@param projectId
-	 *                The id of a given project.
+	 *            The id of a given project.
 	 *@return void
 	 */
 
@@ -44,7 +44,7 @@ public class SprintBacklog extends SmartController
 		User user = Security.getConnected();
 		Sprint sprint = Sprint.findById( id );
 		Security.check( user.projects.contains( sprint.project ) );
-		String cs ="";
+		String cs = "";
 		Component component = null;
 		if( componentID != 0 )
 		{
@@ -74,20 +74,22 @@ public class SprintBacklog extends SmartController
 		String sNum = sprint.sprintNumber;
 		List<TaskType> types = sprint.project.taskTypes;
 		List<TaskStatus> statuses = sprint.project.taskStatuses;
-		render( tasks, id, daysHeader, sNum, componentID, project, cs,types,statuses );
+		render( tasks, id, daysHeader, sNum, componentID, project, cs, types, statuses );
 
 	}
 
 	/**
-	 * Renders the burn down chart for a certain sprint and or certain component.
+	 * Renders the burn down chart for a certain sprint and or certain
+	 * component.
 	 * 
 	 * @author eabdelrahman
 	 * @author Hadeer Younis
 	 * @param id
-	 *          The sprint id.
+	 *            The sprint id.
 	 * @param cid
-	 *           The component id.
-	 * @return String containing the data of the sprint to draw the burn down chart.
+	 *            The component id.
+	 * @return String containing the data of the sprint to draw the burn down
+	 *         chart.
 	 */
 	public static void showGraph( long id, long componentID )
 	{
@@ -97,76 +99,5 @@ public class SprintBacklog extends SmartController
 		if( Data.contains( "NONE" ) )
 			Data = null;
 		render( Data, temp, componentID );
-	}
-
-	/**
-	 * Returns a list of users of given task to choose from them  a reviewer or an assignee.
-	 * 
-	 * @author menna_ghoneime
-	 * @param taskId
-	 *            the task to be edited
-	 * @param aORr
-	 *            weather reviewer or assignee
-	 * @return void
-	 */
-	public static List<User> chooseTaskAssiRev( long taskId, int aORr )
-	{
-		List<User> users = new ArrayList<User>();
-		Task task = Task.findById( taskId );
-
-		if( aORr == 0 )
-		{
-			users = task.component.componentUsers;
-			users.remove( task.reviewer );
-		}
-		else
-		{
-
-			users = task.component.componentUsers;
-			users.remove( task.assignee );
-			if( users.isEmpty() )
-				users = task.component.componentUsers;
-
-		}
-		return users;
-		// render(taskId, users, aORr);
-	}
-
-	/**
-	 * Returns the task types of a certain project of the given task id.
-	 * 
-	 * @author menna_ghoneim
-	 * @param taskId
-	 *              The task id to be edited.
-	 * @return List<TaskType>
-	 *                      A list of the task project task types.
-	 */
-
-	public static List<TaskType> chooseTaskType( long taskId )
-	{
-		Task task = Task.findById( taskId );
-		List<TaskType> types = task.taskSprint.project.taskTypes;
-		// User user = Security.getConnected();
-		return types;
-
-		// render(taskId, types, user);
-	}
-
-	/**
-	 * Returns the task status of a certain project of the given task id.
-	 * 
-	 * @author menna_ghoneim 
-	 * @param taskId
-	 *            The task id to be edited.
-	 * @return void
-	 */
-	public static List<TaskStatus> chooseTaskStatus( long taskId )
-	{
-		Task task = Task.findById( taskId );
-		List<TaskStatus> states = task.taskSprint.project.taskStatuses;
-		// User user = Security.getConnected();
-
-		return states;
-		// render(taskId, states, user);
 	}
 }

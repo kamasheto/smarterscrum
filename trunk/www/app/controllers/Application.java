@@ -106,9 +106,9 @@ public class Application extends SmartController
 	 * Retrieves the home page
 	 */
 	public static void index()
-	{		
-		Setting settings = Setting.findById(1L);
-		render(settings);
+	{
+		Setting settings = Setting.findById( 1L );
+		render( settings );
 	}
 
 	/**
@@ -145,8 +145,9 @@ public class Application extends SmartController
 			notFound();
 		Security.check( Security.getConnected().in( c.project ).can( "deleteComponent" ) );
 		c.deleteComponent();
-		Log.addUserLog("Deleted " + c.getFullName(), c, c.project);
-//		Logs.addLog( Security.getConnected(), "Delete", "Component", c.id, c.project, new Date( System.currentTimeMillis() ) );
+		Log.addUserLog( "Deleted " + c.getFullName(), c, c.project );
+		// Logs.addLog( Security.getConnected(), "Delete", "Component", c.id,
+		// c.project, new Date( System.currentTimeMillis() ) );
 	}
 
 	/**
@@ -234,9 +235,9 @@ public class Application extends SmartController
 			user.activationHash = Application.randomHash( 32 );
 			user.isActivated = false;
 			user.save();
-			session.put( "username", email );			
-			String url = Router.getFullUrl("Accounts.doActivation")+"?hash=" + user.activationHash+"|firstTime=false";
-			Notifications.activate(user.email, user.name, url, true);			
+			session.put( "username", email );
+			String url = Router.getFullUrl( "Accounts.doActivation" ) + "?hash=" + user.activationHash + "&firstTime=false";
+			Notifications.activate( user.email, user.name, url, true );
 			flash.success( "Successfully saved your data! , please check your new Email and follow the instructions sent by us to confirm your new Email." );
 			profile( id );
 		}
@@ -277,6 +278,9 @@ public class Application extends SmartController
 	 */
 	public static void externalOpen( long id, String url, boolean isOverlay )
 	{
+
+		url.replace( '|', '&' );
+
 		render( id, url, isOverlay );
 	}
 
@@ -287,136 +291,175 @@ public class Application extends SmartController
 	{
 		User user = Security.getConnected();
 		boolean emailing = user.enableEmails;
-			
-		render(  emailing);
 
-	}public static void list( int page, int perPage) {
-		if (perPage == 0) {
+		render( emailing );
+
+	}
+
+	public static void list( int page, int perPage )
+	{
+		if( perPage == 0 )
+		{
 			perPage = 10;
 		}
-		List<Notification> notifications = Notification.find("byReciever",Security.getConnected()).from(perPage * page).fetch(perPage);
-		for(Notification noti:notifications){
-			if(noti.unread){
+		List<Notification> notifications = Notification.find( "byReciever", Security.getConnected() ).from( perPage * page ).fetch( perPage );
+		for( Notification noti : notifications )
+		{
+			if( noti.unread )
+			{
 				Security.getConnected().ReadNotifications++;
 				Security.getConnected().save();
 			}
-			
-			
+
 		}
 		NotificationSearchResult result = new NotificationSearchResult();
 		result.notifications = notifications;
 		result.currentPage = page;
-		result.totalPages = (int) Notification.find("byReciever",Security.getConnected().id+ " order by id desc").fetch().size() / perPage;
-		renderJSON(result);
+		result.totalPages = (int) Notification.find( "byReciever", Security.getConnected().id + " order by id desc" ).fetch().size() / perPage;
+		renderJSON( result );
 	}
-	
+
 	/**
-	 * perform the action of choosing the option whether to receive emails or not
-	 * @param enable : 0 if to stop 1 for enabling 
+	 * perform the action of choosing the option whether to receive emails or
+	 * not
+	 * 
+	 * @param enable
+	 *            : 0 if to stop 1 for enabling
 	 */
-	public static void modifyEmailing(int enable)
+	public static void modifyEmailing( int enable )
 	{
-		User user = Security.getConnected();		
-		if(enable==1)
-			user.enableEmails=true;
+		User user = Security.getConnected();
+		if( enable == 1 )
+			user.enableEmails = true;
 		else
-			user.enableEmails=false;
-		user.save();		
+			user.enableEmails = false;
+		user.save();
 	}
+
 	/**
-	 * A method that renders the calendar page with the day's events in the side bar.
+	 * A method that renders the calendar page with the day's events in the side
+	 * bar.
 	 */
-	public static void showEvents(){
+	public static void showEvents()
+	{
 		Date x = new Date();
-		int year = x.getYear()+1900;
+		int year = x.getYear() + 1900;
 		List<Integer> years = new ArrayList<Integer>();
-		for(int i =-5 ; i<5;i++ ){
-			years.add(year+i);
+		for( int i = -5; i < 5; i++ )
+		{
+			years.add( year + i );
 		}
 		Date today = new Date();
-		List<Project> projects  = Security.getConnected().projects;
+		List<Project> projects = Security.getConnected().projects;
 		List<Sprint> sprints = new ArrayList<Sprint>();
 		List<Sprint> sprints2 = new ArrayList<Sprint>();
-		for(Project project : projects){
-			for(Sprint sprint : project.sprints){
-				if(!sprint.deleted && sprint.startDate.getDate()== today.getDate() && sprint.startDate.getMonth() == today.getMonth() && sprint.startDate.getYear() == today.getYear()){
-					sprints.add(sprint);
+		for( Project project : projects )
+		{
+			for( Sprint sprint : project.sprints )
+			{
+				if( !sprint.deleted && sprint.startDate.getDate() == today.getDate() && sprint.startDate.getMonth() == today.getMonth() && sprint.startDate.getYear() == today.getYear() )
+				{
+					sprints.add( sprint );
 				}
-				if(!sprint.deleted && sprint.endDate.getDate()== today.getDate() && sprint.endDate.getMonth() == today.getMonth() && sprint.endDate.getYear() == today.getYear()){
-					sprints2.add(sprint);
+				if( !sprint.deleted && sprint.endDate.getDate() == today.getDate() && sprint.endDate.getMonth() == today.getMonth() && sprint.endDate.getYear() == today.getYear() )
+				{
+					sprints2.add( sprint );
 				}
 			}
 		}
-		List<MeetingAttendance> meetings1 = MeetingAttendance.find("byUserAndDeleted", Security.getConnected(),false).fetch();
+		List<MeetingAttendance> meetings1 = MeetingAttendance.find( "byUserAndDeleted", Security.getConnected(), false ).fetch();
 		List<Meeting> meetings = new ArrayList<Meeting>();
-		for(MeetingAttendance meeting : meetings1){
-			if(!meeting.meeting.deleted){
-				Date start = new Date ( meeting.meeting.startTime);
-				if(start.getDate()== today.getDate() && start.getMonth() == today.getMonth() && start.getYear() == today.getYear())
-					meetings.add(meeting.meeting);
+		for( MeetingAttendance meeting : meetings1 )
+		{
+			if( !meeting.meeting.deleted )
+			{
+				Date start = new Date( meeting.meeting.startTime );
+				if( start.getDate() == today.getDate() && start.getMonth() == today.getMonth() && start.getYear() == today.getYear() )
+					meetings.add( meeting.meeting );
 			}
 		}
-		render(years, sprints, sprints2, meetings);
+		render( years, sprints, sprints2, meetings );
 	}
+
 	/**
 	 * A method that returns the sprints of the connected user's projects.
 	 */
-	public static void sprints(){
-		List<Project> projects  = Security.getConnected().projects;
+	public static void sprints()
+	{
+		List<Project> projects = Security.getConnected().projects;
 		List<Sprint.Object> sprints = new ArrayList<Sprint.Object>();
-		for(Project project : projects){
-			for(Sprint sprint : project.sprints){
-				if(!sprint.deleted){
-					sprints.add(new Sprint.Object(sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id));
+		for( Project project : projects )
+		{
+			for( Sprint sprint : project.sprints )
+			{
+				if( !sprint.deleted )
+				{
+					sprints.add( new Sprint.Object( sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id ) );
 				}
 			}
 		}
-		renderJSON(sprints);
+		renderJSON( sprints );
 	}
+
 	/**
 	 * A method that returns the meetings of the connected user's projects.
 	 */
-	public static void meetings(){
-		List<MeetingAttendance> meetings1 = MeetingAttendance.find("byUserAndDeleted", Security.getConnected(),false).fetch();
+	public static void meetings()
+	{
+		List<MeetingAttendance> meetings1 = MeetingAttendance.find( "byUserAndDeleted", Security.getConnected(), false ).fetch();
 		List<Meeting.Object> meetings = new ArrayList<Meeting.Object>();
-		for(MeetingAttendance meeting : meetings1){
-			if(!meeting.meeting.deleted){
-				meetings.add(new Meeting.Object(meeting.meeting.id, meeting.meeting.startTime, meeting.meeting.project.name, meeting.meeting.name, meeting.meeting.project.id));
+		for( MeetingAttendance meeting : meetings1 )
+		{
+			if( !meeting.meeting.deleted )
+			{
+				meetings.add( new Meeting.Object( meeting.meeting.id, meeting.meeting.startTime, meeting.meeting.project.name, meeting.meeting.name, meeting.meeting.project.id ) );
 			}
 		}
-		renderJSON(meetings);
+		renderJSON( meetings );
 	}
-	
+
 	/**
 	 * A method that returns a selected day Events (Sprints and meetings)
-	 * @param day : the day of the month from 1-31.
-	 * @param month : the month of the year from 1-12.
-	 * @param year : the year.
+	 * 
+	 * @param day
+	 *            : the day of the month from 1-31.
+	 * @param month
+	 *            : the month of the year from 1-12.
+	 * @param year
+	 *            : the year.
 	 */
-	public static void dayEvents(int day, int month, int year){
-		List<Project> projects  = Security.getConnected().projects;
+	public static void dayEvents( int day, int month, int year )
+	{
+		List<Project> projects = Security.getConnected().projects;
 		Event events = new Event();
 		Date today = new Date();
-		if(!(day == today.getDate() && month==today.getMonth()+1 && year == today.getYear()+1900)){
-		for(Project project : projects){
-			for(Sprint sprint : project.sprints){
-				if(!sprint.deleted && sprint.startDate.getDate()== day && sprint.startDate.getMonth()+1 == month && sprint.startDate.getYear()+1900 == year){
-					events.sprints.add(new Sprint.Object(sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id));
+		if( !(day == today.getDate() && month == today.getMonth() + 1 && year == today.getYear() + 1900) )
+		{
+			for( Project project : projects )
+			{
+				for( Sprint sprint : project.sprints )
+				{
+					if( !sprint.deleted && sprint.startDate.getDate() == day && sprint.startDate.getMonth() + 1 == month && sprint.startDate.getYear() + 1900 == year )
+					{
+						events.sprints.add( new Sprint.Object( sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id ) );
+					}
+					if( !sprint.deleted && sprint.endDate.getDate() == day && sprint.endDate.getMonth() + 1 == month && sprint.endDate.getYear() + 1900 == year )
+					{
+						events.sprints.add( new Sprint.Object( sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id ) );
+					}
 				}
-				if(!sprint.deleted && sprint.endDate.getDate()== day && sprint.endDate.getMonth()+1 == month && sprint.endDate.getYear()+1900 == year){
-					events.sprints.add(new Sprint.Object(sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id));
+			}
+			List<MeetingAttendance> meetings1 = MeetingAttendance.find( "byUserAndDeleted", Security.getConnected(), false ).fetch();
+			for( MeetingAttendance meeting : meetings1 )
+			{
+				if( !meeting.meeting.deleted )
+				{
+					Date start = new Date( meeting.meeting.startTime );
+					if( start.getDate() == day && start.getMonth() + 1 == month && start.getYear() + 1900 == year )
+						events.meetings.add( new Meeting.Object( meeting.meeting.id, meeting.meeting.startTime, meeting.meeting.project.name, meeting.meeting.name, meeting.meeting.project.id ) );
 				}
 			}
 		}
-		List<MeetingAttendance> meetings1 = MeetingAttendance.find("byUserAndDeleted", Security.getConnected(),false).fetch();
-		for(MeetingAttendance meeting : meetings1){
-			if(!meeting.meeting.deleted){
-				Date start = new Date ( meeting.meeting.startTime);
-				if(start.getDate()== day && start.getMonth()+1 == month && start.getYear()+1900 == year)
-					events.meetings.add(new Meeting.Object(meeting.meeting.id, meeting.meeting.startTime, meeting.meeting.project.name, meeting.meeting.name, meeting.meeting.project.id));
-			}
-		}
-		}
-		renderJSON(events);
+		renderJSON( events );
 	}
 }
