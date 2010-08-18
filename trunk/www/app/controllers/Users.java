@@ -9,6 +9,7 @@ import javax.persistence.PersistenceException;
 import notifiers.Notifications;
 import models.Component;
 import models.Project;
+import models.Reviewer;
 import models.Task;
 import models.Update;
 import models.User;
@@ -442,21 +443,20 @@ public class Users extends SmartCRUD {
 	 */
 	public static void listUserProjects(long userId, int boxId, long projectId, long currentProjectId)
 	{
-		String title;
+		String title = "";
+		User user = User.findById(userId);
+		Project currentProject = Project.findById(currentProjectId);		
 		if(boxId==1)
 		{
-			Project currentProject = Project.findById(currentProjectId);
-			User user = User.findById(userId);
 			title= user.name+"'s Projects";
 			render(user, title, boxId, currentProject);
 		}
 		if(boxId==2)
 		{
-			Project currentProject = Project.findById(currentProjectId);
-			User user = User.findById(userId);
 			Project project = Project.findById(projectId);
+			List<Reviewer> revroles = Reviewer.find("byUserAndProjectAndAccepted", user, project, true).fetch();
 			title= user.name+"'s Roles in Project: " + project.name;
-			render(user, title, boxId, project, currentProject);
+			render(user, title, boxId, project, currentProject, revroles);
 		}
 		
 	}

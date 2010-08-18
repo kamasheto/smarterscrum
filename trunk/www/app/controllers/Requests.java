@@ -293,6 +293,7 @@ public class Requests extends SmartCRUD
 			rev.save();
 			Notifications.notifyProjectUsers(tt.project, "addReviewer", "", "to the reviewers for the task type", tt.name, (byte)0);
 			Update.update(rev.user, "reload('reviewers')");
+			Update.update(rev.project, "reload('project-"+rev.project.id+"-in-user-"+rev.user.id+"')");
 			renderText("You are now "+tt.name+" reviewer in"+tt.project.name+"!");
 		}
 		else
@@ -310,6 +311,7 @@ public class Requests extends SmartCRUD
 			{
 				rev.accepted=true;
 				rev.save();
+				Update.update(rev.project, "reload('project-"+rev.project.id+"-in-user-"+rev.user.id+"')");
 				Notifications.notifyProjectUsers(rev.project, "addReviewer", "", "to the reviewers for the task type", rev.taskType.name, (byte)0);
 			}
 		else
@@ -329,6 +331,7 @@ public class Requests extends SmartCRUD
 		rev.delete();
 		Notifications.notifyProjectUsers(tt.project, "deleteReviewer", "", "from the reviewers for the task type", tt.name, (byte)-1);
 		Update.update(rev.user, "reload('reviewers')");
+		Update.update(rev.project, "reload('project-"+rev.project.id+"-in-user-"+rev.user.id+"')");		
 		renderText("The review role has been revoked successfully!");
 	}
 	
