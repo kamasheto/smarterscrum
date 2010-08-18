@@ -144,7 +144,9 @@ public class Notifications extends Mailer{
 		else if (actionType.equalsIgnoreCase("addReviewer"))
 			actionType2= "been added";
 		else if (actionType.equalsIgnoreCase("deleteReviewer"))
-			actionType2= "been removed";		
+			actionType2= "been removed";
+		else if (actionType.equalsIgnoreCase("addProductRole"))
+			actionType2 = "added";
 		
 		if(project.notificationProfile.checkAction(actionType))
 		{

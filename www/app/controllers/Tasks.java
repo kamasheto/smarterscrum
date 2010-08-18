@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import notifiers.Notifications;
+
 import models.Board;
 import models.Column;
 import models.Comment;
@@ -24,6 +26,7 @@ import models.User;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
+import play.mvc.Router;
 import play.mvc.With;
 
 /**
@@ -243,7 +246,8 @@ public class Tasks extends SmartCRUD
 					if( !flag )
 					{
 						ProductRole pr = new ProductRole( tmp.project.id, productrole, "" );
-						pr.save();
+						pr.save();						
+						Notifications.notifyProjectUsers(pr.project, "addProductRole", "", "product role", pr.name, (byte) 0);
 						tmp.productRole = pr;
 					}
 					else
@@ -270,6 +274,11 @@ public class Tasks extends SmartCRUD
 		}
 		tmp.reporter = Security.getConnected();
 		object.save();
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+tmp.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+tmp.id;
+		ArrayList<User> users= new ArrayList<User>();
+		users.add(tmp.assignee);
+		users.add(tmp.reviewer);
+		Notifications.notifyUsers(users, "added", url, "task", "task "+tmp.number, (byte)0, tmp.project);
 		Log.addUserLog( "Created new task", tmp, tmp.project );
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
@@ -548,6 +557,7 @@ public class Tasks extends SmartCRUD
 					{
 						ProductRole pr = new ProductRole( tmp.project.id, productrole, "" );
 						pr.save();
+						Notifications.notifyProjectUsers(pr.project, "addProductRole", "", "product role", pr.name, (byte) 0);
 						tmp.productRole = pr;
 					}
 					else
@@ -702,6 +712,18 @@ public class Tasks extends SmartCRUD
 		if( params.get( "_save" ) != null )
 		{
 			Update.update( tmp.project, "reload('tasks','task-" + tmp.id + "')" );
+			String url = Router.getFullUrl("Application.externalOpen")+"?id="+tmp.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+tmp.id;
+			ArrayList<User> nusers= new ArrayList<User>();
+			nusers.add(tmp.assignee);
+			nusers.add(tmp.reviewer);
+			nusers.add(tmp.reporter);
+			User oldAssign = User.findById(oldAssignee);
+			User oldrev = User.findById(oldAssignee);
+			if(!oldAssign.equals(tmp.assignee))
+				nusers.add(oldAssign);
+			if(!oldrev.equals(tmp.reviewer))
+				nusers.add(oldrev);
+			Notifications.notifyUsers(nusers, "edited", url, "task", "task "+tmp.number, (byte)0, tmp.project);
 			Log.addUserLog( "Edit task", tmp, tmp.project );
 			Application.overlayKiller( "", "" );
 			// Logs.addLog( tmp.project, "edit", "Task", tmp.id );
@@ -727,14 +749,16 @@ public class Tasks extends SmartCRUD
 		Security.check( Security.getConnected().in( tmp.project ).can( "modifyTask" ) );
 		try
 		{
-			tmp.deleted = true;
-			String header = "Task: 'T" + tmp.id + "\'" + " has been deleted.";
-			String body = "In Project: " + "\'" + tmp.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + tmp.component.name + "\'" + "." + '\n' + "." + '\n' + " Deleted by: " + "\'" + Security.getConnected().name + "\'" + ".";
+			tmp.deleted = true;			
 			// Logs.addLog( Security.getConnected(), "delete", "Task", tmp.id,
 			// tmp.project, new Date( System.currentTimeMillis() ) );
 			Log.addUserLog( "Deleted task", tmp, tmp.project );
-			// Notifications.notifyUsers( tmp.component.componentUsers, header,
-			// body, (byte) -1 );
+			ArrayList<User> users = new ArrayList<User>();
+			users.add(tmp.assignee);
+			users.add(tmp.reviewer);
+			users.add(tmp.reporter);
+			String url = Router.getFullUrl("Application.externalOpen")+"?id="+tmp.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+tmp.project.id;
+			Notifications.notifyUsers( users, "deleted", url, "task", "task "+tmp.number, (byte)-1, tmp.project);
 			object.save();
 			flash.success( Messages.get( "crud.deleted", type.modelName, object.getEntityId() ) );
 			Update.update( tmp.project, "reload('tasks')" );
@@ -800,6 +824,15 @@ public class Tasks extends SmartCRUD
 		Security.check( Security.getConnected().in( taskFrom.project ).can( "modifyTask" ) );
 		taskFrom.dependentTasks.add( taskTo );
 		taskFrom.save();
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+taskFrom.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+taskFrom.id;
+		ArrayList<User> nusers= new ArrayList<User>();
+		nusers.add(taskFrom.assignee);
+		nusers.add(taskFrom.reviewer);
+		nusers.add(taskFrom.reporter);
+		nusers.add(taskTo.assignee);
+		nusers.add(taskTo.reviewer);
+		nusers.add(taskTo.reporter);
+		Notifications.notifyUsers(nusers, "added", url, "task "+taskTo.number+"to the dependent tasks on", "task "+taskFrom.number, (byte)0, taskFrom.project);
 	}
 
 	/**
@@ -832,9 +865,14 @@ public class Tasks extends SmartCRUD
 		temp.setEffortOfDay( effort, day );
 		Update.update( temp.project, "sprintLoad(" + id + ",'" + id + "_day_" + day + "');" );
 		temp.save();
-		renderText( "Effort changed successfully" );
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+temp.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+temp.id;
+		ArrayList<User> nusers= new ArrayList<User>();
+		nusers.add(temp.assignee);
+		nusers.add(temp.reviewer);
+		nusers.add(temp.reporter);		
+		Notifications.notifyUsers(nusers, "changed", url, "the effort points for the", "task "+temp.number, (byte)0, temp.project);
 		Log.addLog( "Effort entered for task", Security.getConnected(), temp, temp.project );
-
+		renderText( "Effort changed successfully" );
 	}
 
 	public static String getStrDate( GregorianCalendar c )
@@ -993,6 +1031,12 @@ public class Tasks extends SmartCRUD
 			// Security.getConnected().name );
 		}
 		Update.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task1.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task1.id;
+		ArrayList<User> nusers= new ArrayList<User>();
+		nusers.add(task1.assignee);
+		nusers.add(task1.reviewer);
+		nusers.add(task1.reporter);		
+		Notifications.notifyUsers(nusers, "changed", url, "the description of the", "task "+task1.number, (byte)0, task1.project);
 		renderText( "The description was changed successfully" );
 		return true;
 	}
