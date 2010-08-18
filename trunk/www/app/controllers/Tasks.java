@@ -123,7 +123,7 @@ public class Tasks extends SmartCRUD
 		
 		try
 		{
-			render( project, p, component, task, type, sprints, productRoles, projectId, componentId, taskId, reviewers );
+			render( project, p, component, task, type, sprints, productRoles, projectId, componentId, taskId);
 
 		}
 		catch( TemplateNotFoundException e )
