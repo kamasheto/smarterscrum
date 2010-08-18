@@ -24,7 +24,8 @@ $(function() {
 });
 
 function showStuff(id) {
-	if(document.getElementById(id).style.display == 'block'){
+	if(document.getElementById(id).style.display == 'block')
+		{
 		document.getElementById(id).style.display = 'none';
 		document.getElementById('types').style.display='none';
 		var o=document.getElementById('object_sprint');
@@ -131,21 +132,20 @@ function get_theDate(date)
 			<input id="object_endTimeShown" class="" type="text" name="object.endTimeShown" onChange="setTime(false)" value="" size="50" readonly/> 
 			<input id="object_endTime" class="" type="text" name="object.endTime" value="" size="50" style="display:none"/>
 		</div>
-		<div class="crudField more_options">
-			#{if sprints.size()!=0 }
-			#{if connected.in(currentProject).can('AssociateSprinttoMeeting') }
+		#{if sprints.size()!=0 }
+		<div class="crudField more_options">	
 				<label for="object_sprint">Associate to Sprint</label>
-				<input type="checkbox" onclick="showStuff('span');">
+				<input type="checkbox" name="associateSprintBox" onclick="showStuff('span');">
 				<span id="span" style="display: none;">
 				<select id="object_sprint" name="object.sprintid"  >
-				<option value="" style="display:none"></option>
+				
 				#{list items:sprints, as:'sprint'}
 					<option   value="${sprint.id}">Sprint ${sprint.sprintNumber}</option>
 						#{/list}
 						</select>
 						</span>
 	    	<span class="crudHelp"></span>
-			#{/if}#{/if}
+			
 		</div>
 		<div class="crudField hidden" id="types">
 					<label for="object_type">Type of Meeting</label>
@@ -155,7 +155,8 @@ function get_theDate(date)
 							#{/list}
 							</select>
 		</div>
-		<div class="crudField more_options">
+		#{/if}
+		<div class="crudField">
 			<label for="user_attending"> I'm attending this meeting:</label>
 			<input type=checkbox name="attending" class="" id="attending"> 
 		</div>

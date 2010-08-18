@@ -201,20 +201,23 @@ public class Meetings extends SmartCRUD
 			// render( request.controller.replace( ".", "/" ) + "/blank.html",
 			// type );
 		}
+		object.save();
 		/*
 		 * adding the selected sprint to the meeting
 		 * @author minazaki
 		 */
-		if( params.get( "object.sprintid" ) != null && !params.get( "object.sprintid" ).equals( "" ) )
+		if( params.get( "associateSprintBox" ) != null )
 		{
 			Sprint sprint = Sprint.findById( Long.parseLong( params.get( "object.sprintid" ) ) );
 			sprint.meetings.add( temp );
 			sprint.save();
 			temp.sprint = sprint;
-		}
-		if( params.get( "object.type" ) != null )
-		{
 			temp.type = params.get( "object.type" );
+		}
+		else
+		{
+			temp.sprint = null;
+			temp.type = null;
 		}
 
 		object.save();
@@ -342,23 +345,33 @@ public class Meetings extends SmartCRUD
 			// render( request.controller.replace( ".", "/" ) + "/blank.html",
 			// type );
 		}
+		object.save();
 		/*
 		 * adding the selected sprint to the meeting
 		 * @author minazaki
 		 */
-		if( params.get( "object.sprintid" ) != null && !params.get( "object.sprintid" ).equals( "" ) )
+		if( params.get( "associateSprintBox" ) != null )
 		{
+			System.out.println( "not in null area" );
 			Sprint sprint = Sprint.findById( Long.parseLong( params.get( "object.sprintid" ) ) );
-			sprint.meetings.add( temp );
-			sprint.save();
-			temp.sprint = sprint;
-		}
-		if( params.get( "object.type" ) != null )
-		{
+			if( !sprint.meetings.contains( temp ) )
+			{
+				System.out.println( "mawgood abl keda" );
+				sprint.meetings.add( temp );
+				sprint.save();
+				temp.sprint = sprint;
+			}
 			temp.type = params.get( "object.type" );
+		}
+		else
+		{
+			System.out.println( "in null area" );
+			temp.sprint = null;
+			temp.type = null;
 		}
 
 		object.save();
+		System.out.println( "the type:" + temp.type );
 
 		Log.addUserLog( "Edited meeting", temp, temp.project );
 		// Logs.addLog( Security.getConnected(), "edit", "Meeting", temp.id,
