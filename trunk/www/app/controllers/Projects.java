@@ -96,10 +96,10 @@ public class Projects extends SmartCRUD {
 				// add it to the top bar immediately
 				projectObject.approvalStatus = true;
 				nativeJS = "addProjectToSearchBar('"+projectObject.name+"', "+projectObject.id+")";
-				Role proAdmin = Role.find("name= 'Project Owner' and project =" + pro).first();
-				user.addRole(proAdmin);
-				user.save();
 				pro.init(projectObject.isScrum);
+				// Role proAdmin = Role.find("name= 'Project Owner' and project =" + pro).first();
+				Role proAdmin = Role.find("name = ? and project = ?", "Project Owner", pro).first();
+				user.addRole(proAdmin);
 			} else {
 				for (User admin : User.getAdmins()) {
 					Update.update(admin, "reload('pending-project-requests')");
@@ -799,7 +799,7 @@ public class Projects extends SmartCRUD {
 		Notifications.notifyUser(user, "approved", url, "Project", p.name, (byte) 1, null);
 		p.save();
 		p.init(p.isScrum);
-		Role proAdmin = Role.find("name= 'Project Owner' and project =" + p.id).first();
+		Role proAdmin = Role.find("name= ? and project = ?", "Project Owner", p).first();
 		// Security.getConnected().addRole(proAdmin);
 		user.addRole(proAdmin);
 		Update.update(user, "addProjectToSearchBar('"+p.name+"', "+p.id+")");
