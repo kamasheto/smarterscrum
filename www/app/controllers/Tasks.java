@@ -337,10 +337,19 @@ public class Tasks extends SmartCRUD
 		}
 		else
 			users = tmp.project.users;
+		boolean insprint = false;
+		Date now = Calendar.getInstance().getTime();
+		if(tmp.taskSprint!=null)
+		{
+			if( tmp.taskSprint.startDate.before(now) && tmp.taskSprint.endDate.after(now) )
+			{
+				insprint=true;
+			}
+		}
 
 		try
 		{
-			render( type, object, users, statuses, types, dependencies, message2, deletable, comments, productRoles );
+			render( type, object, users, statuses, types, dependencies, message2, deletable, comments, productRoles, insprint );
 		}
 		catch( TemplateNotFoundException e )
 		{
@@ -991,6 +1000,8 @@ public class Tasks extends SmartCRUD
 	 */
 	public static boolean editTaskStatus( long id, long userId, TaskStatus newStatus )
 	{
+		System.out.println(userId);
+		
 		Task task1 = Task.findById( id );
 		Security.check( Security.getConnected().in( task1.project ).can( "modifyTask" ) || task1.assignee == Security.getConnected() );
 		if( task1 == null )
