@@ -57,8 +57,9 @@ div {
 	border-right: 0px !important;
 }
 
-.i {font-size: 14px;
-	
+.crudField.i {
+	font-size: 14px;
+	border-right: 0px !important;
 }
 </style>
 #{/set}
@@ -322,26 +323,27 @@ $('#accordion').accordion({autoHeight: false,navigation: true});
 	#{/if}
 	<div id="comments_${theTask.id}"style="margin-top:10px">
 	<h1>Comments</h1>
+<div class="comment">
 #{if theTask.comments}
 #{list items:theTask.comments, as:'t'}
-<div class="comment">
 <div class="crudField">
 <label>Author</label>${t.author}
 </div>
 <div class="crudField">
 <label>Time</label>${new Date(t.timeOfComment)}
 </div>
-${t.comment}
+${t.comment}#{if connected.in(theTask.project).can("modifyTask") || connected.id == t.author.id}
 <div class="red" style="text-align:right"><a href="#" class="red"onclick="$.post('@{Comments.deleteComment()}',{id:${theTask.id}})">delete?</a></div>
-</div>
+#{/if}
+
 #{/list}
 #{/if}
 #{else}
 	<div style="padding: 10px;" class="ui-state-error ui-corner-all"> 
 		<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-alert"></span> 
 		<strong>There are no comments associated with this task. </strong>
-	</div>
-#{/else}</div>
+</div>
+#{/else}</div>	</div>
 #{if connected.projects.contains(theTask.project)}
 <div id=""class="comment">
 <div class="crudField">
@@ -370,7 +372,7 @@ function send(){
 </thead>
 #{list items:temp, as:'t'}
 <tr>
-<td>${new Date(t.timestamp).toString().substring(0,9)}</td>
+<td>${new Date(t.timestamp).toString()}</td>
 <td>${t.user.name}</td>
 <td>${t.message}</td>
 </tr>
