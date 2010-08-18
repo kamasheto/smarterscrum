@@ -500,19 +500,6 @@ public class Tasks extends SmartCRUD
 			oldDependencies.add( current );
 		}
 		object = object.edit( "object", params );
-		// Look if we need to deserialize
-		// for( ObjectType.ObjectField field : type.getFields() )
-		// {
-		// if( field.type.equals( "serializedText" ) && params.get( "object." +
-		// field.name ) != null )
-		// {
-		// Field f = object.getClass().getDeclaredField( field.name );
-		// f.set( object, CRUD.collectionDeserializer( params.get( "object." +
-		// field.name ), (Class) ((ParameterizedType)
-		// f.getGenericType()).getActualTypeArguments()[0] ) );
-		// }
-		// }
-
 		validation.valid( object );
 		if( validation.hasErrors() )
 		{
@@ -700,7 +687,16 @@ public class Tasks extends SmartCRUD
 				Update.update( tmp.project.users, Security.getConnected(), "reload_note_close(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ");sprintLoad(" + tmp.id + ",'" + tmp.id + "_des')" );	
 			}
 			
-			
+			if(tmp.component!=null && (tmp.assignee != null && oldAssignee != 0 && tmp.assignee.id!=oldAssignee))
+			{
+				Update.update( tmp.project, "drag_note_assignee(" + tmp.taskSprint.id + "," + oldAssignee + "," + tmp.assignee.id + "," + tmp.taskStatus.id + "," + compId + "," + tmp.id + ")" );
+				Update.update( Security.getConnected(), "reload_note_open(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ")" );
+				Update.update( tmp.project.users, Security.getConnected(), "reload_note_close(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ")" );
+			}
+			if(tmp.taskStatus != null && oldTaskStatus != 0)
+			{
+				Update.update( tmp.project, "drag_note_status(" + tmp.taskSprint.id + "," + tmp.assignee.id + "," + oldTaskStatus + "," + tmp.taskStatus.id + "," + compId + "," + tmp.id + ")" );
+			}
 			
 		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
