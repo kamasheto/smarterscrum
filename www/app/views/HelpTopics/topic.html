@@ -2,11 +2,15 @@
 #{set 'moreScripts'}
 <script src="@{'/public/javascripts/detectFlash.js'}" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
-if (pluginlist.indexOf("Flash")==-1)
-	alert("It seems that you do not have the flash player installed and most probably you will not be able to play our help videos. Sorry about that.");
+$(document).ready(function() {
+if (pluginlist.indexOf("Flash")==-1){
+	$("#flash_problem").show();
+}
+});
 </script>
 #{/set}
 <h1 id="">${topic.summary}</h1>
+<div id="flash_problem" style="display:none">It seems that you do not have the flash player installed. <a href="http://www.adobe.com/go/getflash/" target="_blank">Click Here</a> to visit their official website and download it.</div>
 <center>
 	<object width="800" height="600">
 	<param name="movie" value="${topic.url}">
