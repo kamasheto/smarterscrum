@@ -90,7 +90,7 @@ public class User extends SmartModel
 	/**
 	 * user roles
 	 */
-	@ManyToMany(mappedBy="users")
+	@ManyToMany
 	public List<Role> roles;
 
 	/**

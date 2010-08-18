@@ -34,7 +34,7 @@ public class Role extends SmartModel {
 	/**
 	 * users who have this role
 	 */
-	@ManyToMany
+	@ManyToMany (mappedBy="roles")
 	public List<User> users;
 
 	/**
