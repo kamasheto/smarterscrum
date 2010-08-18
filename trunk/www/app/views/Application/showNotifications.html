@@ -1,12 +1,9 @@
 #{extends 'sidebar.html' /}
-<br/>
 #{if notifications.isEmpty()}
-<font size=2><img src = "/public/images/famfam/exclamation.png"/><b> Sorry, You have no Notifications yet!</b>
-<br/><br/>- you must be new to the system
-<br/><br/>- or, we may be going through maintenance,<br/>Sorry for disturbance & will be back soon!</font> 
+#{note}<b> Sorry, You have no Notifications yet!</b> You must be new to the system or, we may be going through maintenance, Sorry for disturbance & will be back soon!#{/note}
 #{/if}
 #{else}
-<b><font size = 3><img src="/public/images/famfam/arrow_grey_right.png"/>Latest: </font></b>
+<b><img src="/public/images/famfam/arrow_grey_right.png"/>Latest:</b>
 <div id ="notification_paginated">
 #{list items:notifications, as:'notif'}	
 	<div id = "notif_${notif.id}">		
@@ -21,12 +18,13 @@ in project <a href="/application/externalOpen?id=${notif.project.id}&isOverlay=f
 	</div>
 #{/list}
 </div>
-#{/else} 
+#{/else} #{ifnot notifications.isEmpty()}
 <a href="#"  style="display:inline-block" class="Notificationp" onclick="previousNotificationPage();"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
 <a href="#"  style="display:inline-block" class="Notificationn" onclick="nextNotificationPage();"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
+#{/ifnot}
+#{if emailing}<img src="/public/images/famfam/cross.png" /><a id = "modify_emailing" onclick="modify_emailing(0);">Stop receiving Emails?</a>#{/if}
+#{else}<img src="/public/images/famfam/accept.png" /> <a id = "modify_emailing" onclick="modify_emailing(1);">Enable receiving Emails?</a>#{/else}
 
-<div style=" position: absolute; bottom: 0;"><b><font size="2">#{if emailing}<img src="/public/images/famfam/stop.png" /> <a id = "modify_emailing" onclick="modify_emailing(0);">Stop receiving Emails?</a>#{/if}
-#{else}<img src="/public/images/famfam/forward.png" /> <a id = "modify_emailing" onclick="modify_emailing(1);">Enable receiving Emails?</a>#{/else}</font></b></div>
 
 <script type="text/javascript">
 
