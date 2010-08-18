@@ -1,11 +1,5 @@
-.do_not_paginate
-.points {
-	color: black;
-	font-family: tahoma;
-	font-size: 18px !important;
-	font-variant: small-caps;
-	color: #333;
-	line-height: 14px;
+.do_not_paginate .filter {
+	display: none
 }
 
 label {
@@ -75,7 +69,7 @@ body,html {
 	font-size: 10px;
 	margin: 0px;
 	padding: 0px;
-	height:100%;
+	height: 100%;
 }
 
 a.white {
@@ -196,8 +190,7 @@ img {
 	color: #111 !important;
 	display: inline-block;
 	font-family: Verdana;
-/*	font-size: 12px;*/
-/*	font-variant: small-caps;*/
+	/*	font-size: 12px;*/ /*	font-variant: small-caps;*/
 	margin-right: 10px;
 	margin-top: 10px;
 	margin-bottom: -15px;
@@ -646,6 +639,14 @@ table {
 	vertical-align: middle;
 }
 
+.selectedBar2 {
+	background: #0B8C8F !important;
+	background: -moz-linear-gradient(center bottom, #0B8E91 10%, #0B8C8F 90%)
+		!important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #0B8E91),
+		color-stop(0.9, #0B8C8F) ) !important;
+}
+
 .draggable {
 	background: #0B8C8F !important;
 	background: -moz-linear-gradient(center bottom, #0B8E91 10%, #0B8C8F 90%)
@@ -764,7 +765,7 @@ html {
 	color: white;
 	text-transform: lowercase;
 	position: absolute;
-	letter-spacing:-1px;
+	letter-spacing: -1px;
 	left: 0px;
 	top: 35px;
 	width: 200px;
@@ -779,7 +780,8 @@ html {
 	width: 195px;
 }
 
-#projects_my_current_projects,#projects_search_results,#add-new-project-link, #acp_link{
+#projects_my_current_projects,#projects_search_results,#add-new-project-link,#acp_link
+	{
 	text-align: center;
 	font-size: 18px;
 }
@@ -833,17 +835,17 @@ html {
 }
 
 .draggableChild.yellowBg>.ui-widget-header,.yellowBg.bar {
-	background: #FCFFB3 !important;
+	background: #FCFFB3;
 	color: #000;
 }
 
 .redBg.draggableChild>.ui-widget-header,.redBg.bar {
-	background: #FFB3B3 !important;
+	background: #FFB3B3;
 	color: #000;
 }
 
 .greenBg.draggableChild>.ui-widget-header,.greenBg.bar {
-	background: #DDFFB3 !important;
+	background: #DDFFB3;
 	color: #000;
 }
 
@@ -900,9 +902,9 @@ a {
 	_border-right-color: pink;
 	_border-left-color: pink;
 	margin-top: -2px;
-	_filter: chroma(color =                                                   
+	_filter: chroma(color =                                                      
 		                                                          
-		                                                        pink);
+		                                                           pink);
 }
 
 .notchBottom2 {
@@ -920,9 +922,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                   
+	_filter: chroma(color =                                                      
 		                                                          
-		                                                        pink);
+		                                                           pink);
 }
 
 .notchTop {
@@ -937,9 +939,9 @@ a {
 	margin-left: 30px;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                   
+	_filter: chroma(color =                                                      
 		                                                          
-		                                                        pink);
+		                                                           pink);
 }
 
 .notchRight {
@@ -956,9 +958,9 @@ a {
 	display: inline-block;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                   
+	_filter: chroma(color =                                                      
 		                                                          
-		                                                        pink);
+		                                                           pink);
 }
 
 .notchLeft {
@@ -973,9 +975,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                   
+	_filter: chroma(color =                                                      
 		                                                          
-		                                                        pink);
+		                                                           pink);
 }
 
 .chatboxtextarea:focus {
@@ -1020,7 +1022,7 @@ a,a img,span.revertFrom,span.min {
 	cursor: pointer;
 }
 
-#workspace-help, #acp-workspace-help {
+#workspace-help,#acp-workspace-help {
 	background: url(/public/images/famfam/error.png) no-repeat center left;
 	position: absolute;
 	padding-left: 22px;
@@ -1079,10 +1081,6 @@ button:disabled,input:disabled {
 
 .clickable {
 	cursor: pointer;
-}
-
-.draggableChild .ui-widget-content {
-	
 }
 
 .draggableChild .min,.draggableChild .ui-icon-refresh {
@@ -1200,8 +1198,9 @@ img.left {
 	left: 0;
 	position: absolute;
 	opacity: 0;
-	filter: Alpha(Opacity =                                                       0)
-		;
+	filter: Alpha(Opacity =
+		                                                         
+		  0);
 }
 
 /* Interaction Cues
@@ -1355,15 +1354,17 @@ img.left {
 
 .ui-priority-secondary,.ui-widget-content .ui-priority-secondary {
 	opacity: .7;
-	filter: Alpha(Opacity =                                                       70
-		);
+	filter: Alpha(Opacity =
+		                                                         
+		  70);
 	font-weight: normal;
 }
 
 .ui-state-disabled,.ui-widget-content .ui-state-disabled {
 	opacity: .35;
-	filter: Alpha(Opacity =                                                       35
-		);
+	filter: Alpha(Opacity =
+		                                                         
+		  35);
 	background-image: none;
 }
 
@@ -2184,8 +2185,9 @@ img.left {
 	background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
 		repeat-x;
 	opacity: .30;
-	filter: Alpha(Opacity =                                                       30
-		);
+	filter: Alpha(Opacity =
+		                                                         
+		  30);
 }
 
 .ui-widget-shadow {
@@ -2194,8 +2196,9 @@ img.left {
 	background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
 		repeat-x;
 	opacity: .30;
-	filter: Alpha(Opacity =                                                       30
-		);
+	filter: Alpha(Opacity =
+		                                                         
+		  30);
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	border-radius: 8px;
@@ -2989,7 +2992,11 @@ a.jbar-cross:hover {
 }
 
 .selectedBars2 {
-	background: none repeat scroll 0 0 #eee !important;
+		background: #0B8C8F !important;
+	background: -moz-linear-gradient(center bottom, #0B8E91 10%, #0B8C8F 90%)
+		!important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #0B8E91),
+		color-stop(0.9, #0B8C8F) ) !important;
 	padding: 5px;
 	-webkit-border-radius: 0px 0px 5px 5px;
 	border-radius: 0px 0px 5px 5px;
@@ -3005,14 +3012,14 @@ a.jbar-cross:hover {
 	width: 100%;
 	overflow: hidden;
 	z-index: 987654;
-	overflow:auto;
+	overflow: auto;
 }
 
 #overlayContentHolder {
 	display: table-cell;
 	vertical-align: middle;
 	margin: auto;
-	overflow:auto;
+	overflow: auto;
 }
 
 .transparentOverlay {
@@ -3023,20 +3030,6 @@ a.jbar-cross:hover {
 	width: 100%;
 	height: 100%;
 	z-index: 9997
-}
-
-.selectedBar {
-	background: #888 !important;
-	border-bottom: 1px dotted #DDDDDD !important;;
-	margin: 5px 0 -5px 0 !important;
-	color: #fff !important;
-}
-
-.selectedBar2 {
-	background: #ddd !important;
-	border-bottom: 1px dotted #999 !important;;
-	color: #333 !important;
-	margin: 5px 0 -5px 0 !important;
 }
 
 #getOverlay {
@@ -3054,7 +3047,7 @@ a.jbar-cross:hover {
 	font-size: 10px;
 	padding: 10px;
 	background: white;
-/*	position:fixed;
+	/*	position:fixed;
 	bottom:0;
 	width: 100%;
 	height: 10px;*/
@@ -3202,4 +3195,16 @@ div.jcalendar-links a {
 	height: 20px;
 	overflow: auto;
 }
+
 /*end dock*/
+.selectedBar {
+	background: #888 !important;
+	margin: 5px 0 -5px 0 !important;
+	color: #fff !important;
+}
+
+.selectedBar2 {
+	background: #0B8E91 !important;
+	color: #eee;
+	margin: 5px 0 -5px 0 !important;
+}
