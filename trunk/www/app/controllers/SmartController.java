@@ -10,6 +10,9 @@ import models.Board;
 import models.Column;
 import models.Component;
 import models.Component.ComponentRowh;
+import models.Invite;
+import models.MeetingAttendance;
+import models.Notification;
 import models.Project;
 import models.Snapshot;
 import models.Sprint;
@@ -33,7 +36,25 @@ public class SmartController extends Controller
 		if( Security.isConnected() && Security.getConnected().deleted )
 		{
 			Secure.logout();
+		}		List<Invite> invitations = Invite.find("byUser",
+				Security.getConnected()).fetch();
+		Security.getConnected().haveInvites = false;
+
+		List<MeetingAttendance> meetings = MeetingAttendance.find(
+				"byUserAndDeletedAndStatus", Security.getConnected(), false,
+				"waiting").fetch();
+		Security.getConnected().InviteNumber = meetings.size()
+				+ invitations.size();
+		Security.getConnected().save();
+		if (invitations.size() != 0 || meetings.size() != 0) {
+			Security.getConnected().haveInvites = true;
+			Security.getConnected().save();
 		}
+
+		List<Notification> notifications = Notification
+				.find(
+						"receiver =" + Security.getConnected().id
+								+ " order by id desc").fetch();
 		if (!((DateFormat.getDateInstance().format(Sprint.Last)).equals((DateFormat.getDateInstance().format(new Date()))))) {
 			Sprint.Last = new Date();
 			List<Sprint> sprints = Sprint.findAll();
