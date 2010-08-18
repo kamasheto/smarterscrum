@@ -25,6 +25,8 @@
  public Task currentTask;
 
  public ChatRoom chatroom;
+ 
+ public boolean gameOver;
 
  public Game()
  {

@@ -5,7 +5,8 @@
 <h2>Game's Summary</h2>
 <table border="1">
 #{list stories}
-	<tr><td>${_.description.nl2br()} <font color="green">(Story estimate = ${_.estimationPoints})</font></td>
+	<tr><td>Task ${_.getTaskNumber()}:${_.getSummary().nl2br()} <font color="green">
+	#{if _.parent!=null}<br/>Task Parent (${_.parent.getSummary()}) final estimate ${_.parent.estimationPoints}<br/>#{/if}(Task final estimate = ${_.estimationPoints})</font></td>
 	<td WIDTH=200>
 	<ul>
 	#{list items : rounds, as: 'roundTricks'}
