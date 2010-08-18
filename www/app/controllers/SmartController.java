@@ -1,5 +1,6 @@
 package controllers;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,15 +34,14 @@ public class SmartController extends Controller
 		{
 			Secure.logout();
 		}
-if(!Sprint.Last.equals(new Date())){
-	Sprint.Last=new Date();
-		List<Sprint> sprints = Sprint.findAll();
-		for( Sprint s : sprints )
-		{
-			Date now = Calendar.getInstance().getTime();
-			if( s.endDate != null && s.endDate.before( now ) || s.ended == true )
-			{
-				s.ended = true;
+		if (!((DateFormat.getDateInstance().format(Sprint.Last)).equals((DateFormat.getDateInstance().format(new Date()))))) {
+			Sprint.Last = new Date();
+			List<Sprint> sprints = Sprint.findAll();
+			for (Sprint s : sprints) {
+				Date now = Calendar.getInstance().getTime();
+				if (s.endDate != null
+						&& (s.endDate.equals(now) || s.endDate.before(now))
+						&& s.ended == false) {				s.ended = true;
 				Project p = s.project;
 				Board b = p.board;
 				User user = Security.getConnected();
