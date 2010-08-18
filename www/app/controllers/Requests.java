@@ -63,7 +63,7 @@ public class Requests extends SmartCRUD
 		notFoundIfNull(x);
 		Project y = x.project;
 		x.user.addRole( x.role );
-		String url = Router.getFullUrl("Application.externalOpen")+"?id="+x.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+x.user.id+"&x=2&projectId="+x.project.id+"&currentProjectId="+x.project.id;		
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+x.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+x.user.id+"|boxId=2&projectId="+x.project.id+"|currentProjectId="+x.project.id;		
 		Notifications.notifyUser( x.user, "accepted", url, "your Role Request", x.role.name, (byte) 1 , x.project);
 		// User myUser = Security.getConnected();
 		// Logs.addLog( myUser, "RequestAccept", "Request", x.id, y, new Date() );
@@ -183,7 +183,7 @@ public class Requests extends SmartCRUD
 				i += 6;
 				b = b.substring( i );
 				
-				String url = Router.getFullUrl("Application.externalOpen")+"?id="+x.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+x.user.id+"&x=2&projectId="+x.project.id+"&currentProjectId="+x.project.id;
+				String url = Router.getFullUrl("Application.externalOpen")+"?id="+x.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+x.user.id+"|boxId=2&projectId="+x.project.id+"|currentProjectId="+x.project.id;
 				Notifications.notifyUser( x.user, "accepted", url, "your Request to be deleted from project", x.project.name, (byte) -1 , null);				
 			}
 		}
@@ -291,7 +291,8 @@ public class Requests extends SmartCRUD
 		{
 			rev.accepted=true;
 			rev.save();
-			Notifications.notifyProjectUsers(tt.project, "addReviewer", "", "to the reviewers for the task type", tt.name, (byte)0);
+			String url = Router.getFullUrl("Application.externalOpen")+"?id="+rev.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+rev.user.id+"|boxId=2&projectId="+rev.project.id+"|currentProjectId="+rev.project.id;
+			Notifications.notifyProjectUsers(tt.project, "addReviewer", url, "to the reviewers for the task type", tt.name, (byte)0);
 			Update.update(rev.user, "reload('reviewers')");
 			Update.update(rev.project, "reload('project-"+rev.project.id+"-in-user-"+rev.user.id+"')");
 			renderText("You are now "+tt.name+" reviewer in"+tt.project.name+"!");
@@ -318,16 +319,17 @@ public class Requests extends SmartCRUD
 	public static void reviewRequestRespond(long revId, int response)
 	{
 		Reviewer rev = Reviewer.findById(revId);
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+rev.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+rev.user.id+"|boxId=2&projectId="+rev.project.id+"|currentProjectId="+rev.project.id;
 		if(response == 1)
 			{
 				rev.accepted=true;
 				rev.save();
-				Update.update(rev.project, "reload('project-"+rev.project.id+"-in-user-"+rev.user.id+"')");
-				Notifications.notifyProjectUsers(rev.project, "addReviewer", "", "to the reviewers for the task type", rev.taskType.name, (byte)0);
+				Update.update(rev.project, "reload('project-"+rev.project.id+"-in-user-"+rev.user.id+"')");				
+				Notifications.notifyProjectUsers(rev.project, "addReviewer", url, "to the reviewers for the task type", rev.taskType.name, (byte)0);
 			}
 		else
 			{
-				Notifications.notifyUser(rev.user, "declined", "", "your request to be reviewer for task type", rev.taskType.name, (byte)-1, rev.project);
+				Notifications.notifyUser(rev.user, "declined", url, "your request to be reviewer for task type", rev.taskType.name, (byte)-1, rev.project);
 				rev.delete();
 			}
 		Update.update(rev.project, "reload('project-requests')");
@@ -340,7 +342,8 @@ public class Requests extends SmartCRUD
 		TaskType tt = TaskType.findById(taskTypeId);
 		Reviewer rev = Reviewer.find("byUserAndTaskType", user, tt).first();
 		rev.delete();
-		Notifications.notifyProjectUsers(tt.project, "deleteReviewer", "", "from the reviewers for the task type", tt.name, (byte)-1);
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+rev.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+rev.user.id+"|boxId=2&projectId="+rev.project.id+"|currentProjectId="+rev.project.id;
+		Notifications.notifyProjectUsers(tt.project, "deleteReviewer", url, "from the reviewers for the task type", tt.name, (byte)-1);
 		Update.update(rev.user, "reload('reviewers')");
 		Update.update(rev.project, "reload('project-"+rev.project.id+"-in-user-"+rev.user.id+"')");		
 		renderText("The review role has been revoked successfully!");
