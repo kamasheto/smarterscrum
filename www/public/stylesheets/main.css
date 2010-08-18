@@ -369,13 +369,12 @@ thead td {
 }
 
 #sprintTable td form input,#sprintTable td form input {
-	width: inherit !important;
-	height: inherit !important;
+
 	border: 0px !important;
 	font: inherit;
 	margin: 0px;
 	padding: 0px;
-	background: #efefef;
+	background: inherit
 
 }
 
