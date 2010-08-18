@@ -555,18 +555,19 @@ public class Project extends SmartModel
 
 	public void init( boolean isScrum )
 	{
-		Component defaultComponent = init();
-		if( !isScrum )
-		{
-			// Default creations in case not a scrum project
-
-			// Sprint defaultSprint = new Sprint().save();
-			// defaultSprint
-			// defaultSprint.project = this;
-			// defaultSprint.save();
-		}
-
-		this.save();
+		init();
+		// Component defaultComponent = init();
+		// if( !isScrum )
+		// {
+		// 	// Default creations in case not a scrum project
+		// 
+		// 	// Sprint defaultSprint = new Sprint().save();
+		// 	// defaultSprint
+		// 	// defaultSprint.project = this;
+		// 	// defaultSprint.save();
+		// }
+		// 
+		// this.save();
 	}
 
 	/**

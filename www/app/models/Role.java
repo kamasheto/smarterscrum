@@ -34,7 +34,7 @@ public class Role extends SmartModel {
 	/**
 	 * users who have this role
 	 */
-	@ManyToMany (mappedBy = "roles")
+	@ManyToMany
 	public List<User> users;
 
 	/**
@@ -91,9 +91,7 @@ public class Role extends SmartModel {
 	 * @Task C1S14
 	 */
 	public void removeUser(User user) {
-		this.users.remove(user);
-		this.save();
-
+		user.removeRole(this);
 	}
 	/*
 	 * (non-Javadoc)
