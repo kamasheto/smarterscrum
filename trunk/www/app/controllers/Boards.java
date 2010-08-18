@@ -110,6 +110,8 @@ public class Boards extends SmartCRUD
 					}
 					for( Task task : tasks )
 					{
+						if(task.assignee!=null && task.reviewer!=null && task.taskType!=null)
+						{
 						Column pcol = new Column();
 						for( int k = 0; k < task.taskStatus.columns.size(); k++ )
 						{
@@ -122,6 +124,7 @@ public class Boards extends SmartCRUD
 						if( pcol.onBoard && !pcol.deleted )
 						{
 							data.get( i ).get( columnsOfBoard.indexOf( pcol ) ).add( task );
+						}
 						}
 					}
 				}

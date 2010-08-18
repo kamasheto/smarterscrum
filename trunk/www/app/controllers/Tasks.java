@@ -682,6 +682,23 @@ public class Tasks extends SmartCRUD
 				comment.save();
 			}
 		
+			boolean flag = true;
+			Date now = Calendar.getInstance().getTime();
+			if(tmp.taskSprint!=null)
+			{
+				if( tmp.taskSprint.startDate.before(now) && tmp.taskSprint.endDate.after(now) )
+				{
+					flag=true;
+				}
+			}
+			long compId = 0;
+			if( tmp.component != null )
+				compId = tmp.component.id;
+			if(!(tmp.description.equals( oldDescription )) || (tmp.assignee != null && oldAssignee != 0 && tmp.assignee.id!=oldAssignee) || (tmp.reviewer != null && oldReviewer == 0 && tmp.reviewer.id!=oldReviewer) || (tmp.taskType != null && oldTaskType != 0 && tmp.taskType.id!=oldTaskType) )
+			{
+				Update.update( Security.getConnected(), "reload_note_open(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ")" );
+				Update.update( tmp.project.users, Security.getConnected(), "reload_note_close(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ");sprintLoad(" + tmp.id + ",'" + tmp.id + "_des')" );	
+			}
 			
 			
 			
