@@ -55,7 +55,8 @@ public class Notifications extends Mailer{
 				setSubject("Meeting Invitation");
 			else
 				setSubject("Project Invitation");
-			send(actionPerformer, user, meeting, objectURL, objectName,	confirmURL, declineURL, project);
+			String projectURL = Router.getFullUrl("Application.externalOpen")+"?id="+project.id+"&isOverlay=false&url=#";
+			send(actionPerformer, user, meeting, objectURL, objectName,	confirmURL, declineURL, project, projectURL);
 		}
 	}
 	
@@ -165,7 +166,8 @@ public class Notifications extends Mailer{
 			if (unps.size() > 0) {				
 				setFrom("se.smartsoft.2@gmail.com");
 				setSubject("SmarterScrum Notification System");
-				send(user, project , actionType2, resourceURL, resourceType, resourceName, importance);	
+				String projectURL = Router.getFullUrl("Application.externalOpen")+"?id="+project.id+"&isOverlay=false&url=#";
+				send(user, project , actionType2, resourceURL, resourceType, resourceName, importance, projectURL);	
 			}
 		}
 	}
@@ -183,6 +185,7 @@ public class Notifications extends Mailer{
 	public static void notifyUsers(List<User> receivers, String actionType, String resourceURL, String resourceType, String resourceName, byte importance, Project project)
 	{		
 		User user = Security.getConnected();
+		String projectURL ="";
 		for(int i=0 ; i<receivers.size(); i++)
 		{			
 			if (!receivers.get(i).equals(user)) {
@@ -191,6 +194,7 @@ public class Notifications extends Mailer{
 						importance).save();
 				if (project != null) {
 					nn.project = project;
+					projectURL = Router.getFullUrl("Application.externalOpen")+"?id="+project.id+"&isOverlay=false&url=#";
 					nn.save();
 				}
 				if (receivers.get(i).enableEmails)
@@ -199,7 +203,7 @@ public class Notifications extends Mailer{
 		}		
 		setFrom("se.smartsoft.2@gmail.com");
 		setSubject("SmarterScrum Notification System");
-		send(user, actionType, resourceURL, resourceType, resourceName, importance, project);
+		send(user, actionType, resourceURL, resourceType, resourceName, importance, project, projectURL);
 	}
 	
 	/**
@@ -215,12 +219,14 @@ public class Notifications extends Mailer{
 	public static void notifyUser(User receiver, String actionType, String resourceURL, String resourceType, String resourceName, byte importance, Project project)
 	{		
 		User usr = Security.getConnected();
+		String projectURL="";
 		if(!usr.equals(receiver))
 		{
 			Notification notif = new Notification(receiver, usr, actionType, resourceURL, resourceType, resourceName, importance).save();
 			if(project != null)
 				{
 					notif.project = project;
+					projectURL = Router.getFullUrl("Application.externalOpen")+"?id="+project.id+"&isOverlay=false&url=#";
 					notif.save();
 				}				
 			if(receiver.enableEmails)
@@ -228,7 +234,7 @@ public class Notifications extends Mailer{
 				setFrom("se.smartsoft.2@gmail.com");
 				setSubject("SmarterScrum Notification System");
 				addRecipient(receiver.email);
-				send(notif);
+				send(notif, projectURL);
 			}
 		}
 	}
