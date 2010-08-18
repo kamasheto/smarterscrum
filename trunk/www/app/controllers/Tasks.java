@@ -1843,4 +1843,31 @@ public class Tasks extends SmartCRUD
 		}
 		Update.update( Security.getConnected(), "reload('task-" + task.id + "','tasks-" + task.project.id + "')" );
 	}
-}
+
+	
+	/**
+	 * A method that renders the reviewer of a certain type in a certain component. 
+	 * and if that reviewer doesnt exist then it returns the component users.
+	 * 
+	 * @param typeId  the Id of the required type to be reviewed.
+	 * @param componentId the Id of the component in which the task belong.
+	 */
+	public static void typeReviewer(long typeId, long componentId){
+		TaskType type = TaskType.findById(typeId);
+		Component component = Component.findById(componentId);
+		List<Reviewer> reviewers = Reviewer.find("byProjectAndAccepted", component.project, true).fetch();
+		List<User.Object> users = new ArrayList<User.Object>();
+		for(Reviewer rev : reviewers){
+			if(rev.user.components.contains(component))
+				users.add(new User.Object(rev.user));
+		}
+		if(users.size()==0){
+			for(User user: component.componentUsers){
+				users.add(new User.Object(user));
+			}
+		}
+		renderJSON(users);
+	}
+	
+
+	}
