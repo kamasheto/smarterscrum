@@ -33,6 +33,7 @@ public class ProjectNotificationProfile extends SmartModel {
 	public boolean editTaskType;
 	public boolean addReviewer;
 	public boolean deleteReviewer;
+	public boolean addProductRole;
 	/**
 	 * the constructor that's responsible for adding this profile to the DB
 	 * 
@@ -56,6 +57,7 @@ public class ProjectNotificationProfile extends SmartModel {
 		editTaskType=true;
 		addReviewer=true;
 		deleteReviewer=true;
+		addProductRole=true;
 	}
 
 	/**
@@ -96,6 +98,8 @@ public class ProjectNotificationProfile extends SmartModel {
 			return addReviewer;
 		else if (action.equalsIgnoreCase("deleteReviewer"))
 			return deleteReviewer;
+		else if (action.equalsIgnoreCase("addProductRole"))
+			return addProductRole;		
 		else
 			return false;
 	}
