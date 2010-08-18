@@ -32,14 +32,13 @@
 
 	       		function show()
 	       		{
-		       		if(#{get 'board'/})
-		       		{
+		       		#{if board}
+		       	
 		       			window.parent.$('#theLoadedContent').width(window.parent.$('body').width()-100);
 	       				$('#theWidth').css('width','100%');
 	       				$('body').css('overflow-x','auto');
-			       	}
-		       		else
-				    {
+			       #{/if}
+		       		#{else}
 		       			if(($('#theWidth').width()+200)<=window.parent.$('body').width()){
 		       				window.parent.$('#theLoadedContent').width($('#theWidth').width()+200);
 		       				$('#theWidth').css('width','100%');
@@ -49,7 +48,7 @@
 		       				$('#theWidth').css('width','100%');
 		       				$('body').css('overflow-x','auto');
 		       			}
-				     }
+				     #{/else}
 		       		window.parent.$('#theLoadedContent').show();
 		       		window.parent.$('#theLoadedContent').height($('#theWidth').height()+50);
 		       		window.parent.$('#overlayLoading').hide();
