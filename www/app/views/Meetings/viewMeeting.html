@@ -59,9 +59,11 @@
 <br> 
 <b> Location </b>:   ${meeting.location} 
 <br> 
-#{if !meeting.type.equals("")}
+#{ifnot meeting.type==null}
+<br>
 <b> Meeting Type </b>:  ${meeting.type} <br>
-#{/if}
+#{/ifnot}
+<br>
 #{if !meeting.description==null}
 <b> Description </b>:  ${meeting.description.nl2br()}<br>
 #{/if}
