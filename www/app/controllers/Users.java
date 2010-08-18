@@ -31,6 +31,7 @@ import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
 import play.libs.Mail;
+import play.mvc.Router;
 import play.mvc.With;
 
 /**
@@ -119,13 +120,16 @@ public class Users extends SmartCRUD {
 						}
 						}
 		myComponent.componentUsers.add(myUser);
-		Date d = new Date();
-		// User user = User.find("byEmail", Security.connected()).first();
-		User user = Security.getConnected();
 		// Logs.addLog(user, "assignUser", "User", UId, myComponent.project,
 		 // d);
 		Log.addUserLog("Assign user to component", myComponent, myComponent.project, myUser);
-		//Notifications.notifyUsers(myUser, "Assigned to a component", "You were assigned to the component " + myComponent.name + " in the project " + myComponent.project.name, (byte) 0);
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+myComponent.project.id+"&isOverlay=false&url=/components/viewthecomponent?componentId="+myComponent.id;
+		for(User u :myComponent.componentUsers)
+		{
+			if(!u.equals(myUser))
+				Notifications.notifyUser(u, "assigned", url, myUser.name+" to the component", myComponent.name, (byte) 0, myComponent.project);
+		}
+		Notifications.notifyUser(myUser, "assigned", url, "you to the component", myComponent.name, (byte) 1, myComponent.project);
 		myUser.save();
 		renderText("User assigned to component successfully|reload('component-" + id + "')");
 	}

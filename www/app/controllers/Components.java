@@ -79,7 +79,7 @@ public class Components extends SmartCRUD {
 		Log.addUserLog("Created " + temp.getFullName(), temp, currentProject);
 		// Logs.addLog(Security.getConnected(), "Create", "Component", temp.id, currentProject, new Date(System.currentTimeMillis()));
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+temp.project.id+"&isOverlay=false&url=/components/viewthecomponent?componentId="+temp.id;		
-		Notifications.notifyProjectUsers(temp.project, "onCreateComponent", url, "Component", temp.name, (byte) 0);
+		Notifications.notifyProjectUsers(temp.project, "onCreateComponent", url, "Component", temp.getFullName(), (byte) 0);
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
 			Application.overlayKiller("reload('components')", "");
@@ -117,7 +117,7 @@ public class Components extends SmartCRUD {
 		object.save();
 
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+temp.project.id+"&isOverlay=false&url=/components/viewthecomponent?componentId="+temp.id;
-		Notifications.notifyProjectUsers(temp.project, "onEditComponent", url, "Component", temp.name, (byte) 0);
+		Notifications.notifyProjectUsers(temp.project, "onEditComponent", url, "Component", temp.getFullName(), (byte) 0);
 		Log.addUserLog("Edited " + temp.getFullName(), temp, temp.project);
 		// Logs.addLog(Security.getConnected(), "Edit", "Component", temp.id, temp.project, new Date(System.currentTimeMillis()));
 		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
@@ -151,7 +151,7 @@ public class Components extends SmartCRUD {
 			Log.addUserLog("Delete " + component.getFullName(), component, component.project);
 			// Logs.addLog(Security.getConnected(), "Delete", "Component", component.id, component.project, new Date(System.currentTimeMillis()));
 			String url = Router.getFullUrl("Application.externalOpen")+"?id="+component.project.id+"&isOverlay=false&url=/components/listcomponentsinproject?projectId="+component.project.id;			
-			Notifications.notifyProjectUsers(component.project, "onDeleteComponent", url, "Component", component.name, (byte) -1);
+			Notifications.notifyProjectUsers(component.project, "onDeleteComponent", url, "Component", component.getFullName(), (byte) -1);
 		} catch (Exception e) {
 			// flash.error(Messages.get("crud.delete.error", type.modelName,
 			// object.getEntityId()));
