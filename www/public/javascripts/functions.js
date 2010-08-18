@@ -894,6 +894,15 @@ function revoke_reviewer(uid, ttid)
 	});}
 }
 
+function cancel_reviewer_request(ttid)
+{
+	var r = confirm('Are you sure you want to cancel the request ?');
+	if(r==true)
+	{$.post('/requests/cancelReviewerRequest', {taskTypeId:ttid}, function(msg){
+		$.bar({message:msg});
+	});}
+}
+
 function review_request_respond(revid , res)
 {
 	$.post('/requests/reviewRequestRespond', {revId:revid, response:res});

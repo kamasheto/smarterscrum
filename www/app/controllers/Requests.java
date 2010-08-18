@@ -304,6 +304,17 @@ public class Requests extends SmartCRUD
 			}
 	}
 	
+	public static void cancelReviewerRequest(long taskTypeId)
+	{
+		TaskType tt = TaskType.findById(taskTypeId);
+		User user = Security.getConnected();
+		Reviewer rev = Reviewer.find("byUserAndProjectAndTaskTypeAndAccepted", user, tt.project, tt, false).first();
+		rev.delete();
+		Update.update(rev.user, "reload('reviewers')");
+		Update.update(tt.project, "reload('project-requests')");
+		renderText("Request has been cancelled successfully");
+	}
+	
 	public static void reviewRequestRespond(long revId, int response)
 	{
 		Reviewer rev = Reviewer.findById(revId);
