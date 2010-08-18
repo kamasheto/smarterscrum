@@ -6,10 +6,19 @@
 
 <div id="game">
 	#{list rounds}
-	<h3><a href="#">Story ${game.tasks.indexOf(_.round.task) + 1}/${game.tasks.size()}, Round: ${_.round.roundNo}</a></h3>
+	<h3><a href="#">Task ${game.tasks.indexOf(_.round.task) + 1}/${game.tasks.size()}, Round: ${_.round.roundNo}</a></h3>
 	<div>
-		<div>${_.round.task.description.nl2br()}</div>
-		<div class="tiny_info">Tasks are: #{list _.round.task.subTasks, as:'__'}${__.description}, #{/list}#{else}No sub Tasks are defined yet for this task.#{/else}</div>
+		<div>Task ${_.round.task.getTaskNumber()}:${_.round.task.getSummary()}</div>
+		<br/>
+		#{if _.round.task.parent==null}
+		<div class="tiny_info">subTasks are: #{list _.round.task.subTasks, as:'__'}${__.getTaskNumber()}: ${__.getSummary()}, #{/list}
+		#{else}No sub Tasks are defined yet for this task.#{/else}</div>
+		#{/if}
+		#{else}
+		<div class="tiny_info">
+		The Parent Task ${_.round.task.parent.getTaskNumber()}: ${_.round.task.parent.getSummary()}
+		</div>
+		#{/else}
 		#{if _.round == round}<div>Round Progress: <ul id="round_progress"></ul></div>#{/if}
 		#{else}
 			<ul>
@@ -52,6 +61,9 @@ var make_estimate = function(est) {
 var connect = function(){
 	$.post("/games/connect?gameId=${game.id}&roundId=${round.id}", function(data){
 		var options = data.split(",");
+		if(options[0] =="end"){
+			window.location= '/games/gameover?gameId='+options[1];
+		}
 		if (options[0] == "1") {
 			$('#main_form').hide();
 			//alert('All players voted. Waiting for mod to take decision.');

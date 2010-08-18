@@ -33,10 +33,11 @@ public class Games extends SmartController
 	public static void chooseStories( long cId )
 	{
 		Component c = Component.findById( cId );
+		List<Task> tasks = Task.find("byComponentAndDeletedAndParentIsNull", c, false).fetch();
 		if( c.deleted )
 			notFound();
 		Security.check( Security.getConnected().in( c.project ).can( "startGame" ) );
-		render( c );
+		render( c , tasks);
 	}
 
 	/**
@@ -54,13 +55,19 @@ public class Games extends SmartController
 		Component component = null;
 		User user = Security.getConnected();
 		for( long s : tasks )
-		{
+		{	System.out.println(s);
 			Task task = Task.findById( s );
 			if( !user.in( task.project ).can( "startGame" ) )
 			{
 				forbidden();
 			}
 			game.tasks.add( task );
+			
+			System.out.println(task);
+			if(game.tasks.contains(task.parent)){
+				game.tasks.remove(task.parent);
+				System.out.println("here");
+			}
 			component = task.component;
 		}
 		if( component == null )
@@ -77,6 +84,7 @@ public class Games extends SmartController
 		session.game = game;
 		session.lastClick = new Date().getTime();
 		session.save();
+		System.out.println(game.tasks);
 		playGame( game.id );
 	}
 
@@ -168,10 +176,14 @@ public class Games extends SmartController
 	 *            round id
 	 */
 	public static void connect( long gameId, long roundId )
-	{
+	{	
 		Game game = Game.findById( gameId );
 		User user = Security.getConnected();
 		Security.check( game.component.componentUsers.contains( user ) );
+		if(game.gameOver){
+			renderText("end,"+game.id);
+		}
+		
 		Round current = Round.findById( roundId );
 		GameSession session = GameSession.find( "byUserAndGame", user, game ).first();
 		if( session == null )
@@ -230,15 +242,23 @@ public class Games extends SmartController
 		{
 			Task task = game.getRound().task;
 			task.estimationPoints = estimate;
+			if(task.parent!=null){
+				task.parent.estimationPoints=0;
+				for(Task task2: task.parent.subTasks){
+					task.parent.estimationPoints+= task2.estimationPoints;
+				}
+				task.parent.save();
+			}
 			task.save();
-			boolean gameOver = false;
+			
+			
 			if( game.tasks.indexOf( game.currentTask ) == game.tasks.size() - 1 )
 			{
-				gameOver = true;
+				game.gameOver = true;
 			}
 
 			game.save();
-			if( gameOver )
+			if( game.gameOver )
 				gameOver( game.id );
 			game.currentTask = game.tasks.get( game.tasks.indexOf( game.currentTask ) + 1 );
 			game.save();

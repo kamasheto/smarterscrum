@@ -4,12 +4,22 @@
 <h2>Estimation Game</h2>
 
 #{if c.componentTasks}
-<form action="/games/startgame" method="POST">
+<form name="myForm" action="/games/startgame" method="POST">
 <ul>
-#{list c.componentTasks}
+#{list tasks}
 		
-		<li><input type="checkbox" name="tasks[]" value="${_.id}">  ${_.description}</li>	
+		<li><input id ="parent_${_.id}" onchange="checkAll(document.myForm.tasks, ${_.id})" type="checkbox" name="tasks" value="${_.id}">Task:${_.getTaskNumber()}  ${_.getSummary()}	
+		<ul>
+			#{list _.subTasks, as: '__'}
+			<li><input id ="task_${_.id}"  type="checkbox" name="tasks" value="${__.id}">Task:${__.getTaskNumber()}  ${__.getSummary()}</li>	
+			#{/list}
+			
+		#{if _.subTasks.size()!=0}
+		<a href="#" onclick ="unCheckAll(document.myForm.tasks, ${_.id})"  >unCheck all</a>
+		#{/if}
+		</ul>
 		
+	</li>
 #{/list}
 </ul>
 <input type="submit" value="Start Game">
@@ -18,3 +28,27 @@
 #{else}
 No stories found.
 #{/else}
+
+<script LANGUAGE="JavaScript">
+
+function checkAll(field, id)
+{ 	
+	var x = $('#parent_'+id).attr('checked');
+	for (i = 0; i < field.length; i++){
+		if(field[i].id== "task_"+id){
+		field[i].checked = x ;
+	}
+}
+}
+function unCheckAll(field, id)
+{ 	
+for (i = 0; i < field.length; i++){
+	if(field[i].id== "task_"+id){
+	field[i].checked = false ;
+	}
+}
+}
+
+
+</script>
+
