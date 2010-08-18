@@ -1427,7 +1427,7 @@ public class Tasks extends SmartCRUD
 
 		if( !permession )
 			return false;
-		// String oldReviewer = task1.reviewer.name;
+		User oldReviewer = task1.reviewer;
 		task1.reviewer = reviewer;
 		task1.save();
 		long compId = 0;
@@ -1437,24 +1437,13 @@ public class Tasks extends SmartCRUD
 		Update.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 		reviewer.tasks.add( task1 );
 		reviewer.save();
-		String body = "";
-		// String header = "A Task Reviewer has been changed in Component: " +
-		// "\'" + task1.taskStory.componentID.name + "\'" + " in Project: " +
-		// "\'" + task1.taskStory.componentID.project.name + "\'" + ".";
-		// String header = "Task: 'T" + task1.id + "\'" +
-		// " Reviewer has been edited.";
-		if( userId == Security.getConnected().id )
-		{
-			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ".";
-
-		}
-		else
-		{
-			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
-
-		}
-		// Notifications.notifyUsers(task1.component.getUsers(), header, body,
-		// (byte) 0);
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task1.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task1.id;
+		ArrayList<User> nusers= new ArrayList<User>();
+		nusers.add(task1.assignee);
+		nusers.add(task1.reviewer);
+		nusers.add(task1.reporter);
+		nusers.add(oldReviewer);
+		Notifications.notifyUsers(nusers, "changed", url, "the reviewer of the", "task "+task1.number, (byte)0, task1.project);
 		if( userId == Security.getConnected().id )
 		{
 			Log.addUserLog( "Edit task reviewer", task1, task1.project );
@@ -1516,17 +1505,16 @@ public class Tasks extends SmartCRUD
 		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 		Update.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 		Update.update( task1.project, "sprintLoad(" + task1.id + ",'" + id + "_type');" );;
-		String body = "";
-		String header = "Task: 'T" + task1.id + "\'" + " Task Type has been edited.";
-		// String header = "A Task Type has been edited in Component: " + "\'" +
-		// task1.taskStory.componentID.name + "\'" + " in Project: " + "\'" +
-		// task1.taskStory.componentID.project.name + "\'" + ".";
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task1.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task1.id;
+		ArrayList<User> nusers= new ArrayList<User>();
+		nusers.add(task1.assignee);
+		nusers.add(task1.reviewer);
+		nusers.add(task1.reporter);
+		Notifications.notifyUsers(nusers, "changed", url, "the type of the", "task "+task1.number, (byte)0, task1.project);		
 		if( userId == Security.getConnected().id )
 		{
 			// Logs.addLog( user1, "Edit", "Task Type", id, task1.project, new
 			// Date( System.currentTimeMillis() ) );
-			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ".";
-
 		}
 		else
 		{
@@ -1534,11 +1522,8 @@ public class Tasks extends SmartCRUD
 			// " has performed action (Edit) using resource (Task Type) in project "
 			// + task1.project.name + " from the account of " +
 			// Security.getConnected().name );
-			body = "In Project: " + "\'" + task1.project.name + "\'" + "." + '\n' + " In Component: " + "\'" + task1.component.name + "\'" + "." + '\n' + "\'" + "." + '\n' + " Edited by: " + "\'" + user1.name + "\'" + ", From " + "\'" + Security.getConnected().name + "\'" + "'s account.";
 		}
 		Update.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
-		// Notifications.notifyUsers(task1.component.getUsers(), header, body,
-		// (byte) 0);
 		return true;
 	}
 
@@ -1784,6 +1769,17 @@ public class Tasks extends SmartCRUD
 
 		task.component = component;
 		task.save();
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task.project.id+"&isOverlay=false&url=/components/viewthecomponent?componentId="+component.id;
+		ArrayList<User> nusers= new ArrayList<User>();		
+		nusers.add(task.assignee);
+		nusers.add(task.reviewer);
+		nusers.add(task.reporter);
+		for(User u : component.componentUsers)
+			{
+				if(!nusers.contains(u))
+					nusers.add(u);
+			}
+		Notifications.notifyUsers(nusers, "associated", url, "task "+task.number+" to the component", component.getFullName(), (byte)0, task.project);
 		Log.addUserLog( "Assigned task to component", task, component, component.project );
 		Update.update( task.project, "reload('component-" + componentId + "', 'task-" + taskId + "')" );
 		renderText( "Associated successfully" );
@@ -1810,6 +1806,12 @@ public class Tasks extends SmartCRUD
 		Security.check( connected.in( task.project ).can( "modifyTask" ) && user.projects.contains( task.project ) && task.reviewer != user && (task.component == null || user.components.contains( task.component )) );
 		task.assignee = user;
 		task.save();
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task.id;
+		ArrayList<User> nusers= new ArrayList<User>();
+		nusers.add(task.assignee);
+		nusers.add(task.reviewer);
+		nusers.add(task.reporter);
+		Notifications.notifyUsers(nusers, "assigned", url, user.name+" to the", "task "+task.number, (byte)0, task.project);
 		Log.addUserLog( "Assigned task assignee", task, user, task.project );
 		Update.update( task.project, "reload('task-" + taskId + "');" );
 		Update.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_reviewer');sprintLoad(" + taskId + ",'" + taskId + "_assignee');" );
@@ -1837,6 +1839,12 @@ public class Tasks extends SmartCRUD
 		Security.check( connected.in( task.project ).can( "modifyTask" ) && user.projects.contains( task.project ) && task.assignee != user && (task.component == null || user.components.contains( task.component )) );
 		task.reviewer = user;
 		task.save();
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task.id;
+		ArrayList<User> nusers= new ArrayList<User>();
+		nusers.add(task.assignee);
+		nusers.add(task.reviewer);
+		nusers.add(task.reporter);
+		Notifications.notifyUsers(nusers, "assigned", url, user.name+" to review the", "task "+task.number, (byte)0, task.project);
 		Log.addUserLog( "Assigned task reviewer", task, user, task.project );
 		Update.update( task.project, "reload('task-" + taskId + "');" );
 		Update.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_reviewer');sprintLoad(" + taskId + ",'" + taskId + "_assignee');" );
@@ -1900,6 +1908,12 @@ public class Tasks extends SmartCRUD
 		}
 		task.deadline = newDeadline;
 		task.save();
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task.id;
+		ArrayList<User> nusers= new ArrayList<User>();
+		nusers.add(task.assignee);
+		nusers.add(task.reviewer);
+		nusers.add(task.reporter);
+		Notifications.notifyUsers(nusers, "changed", url, "the deadline of the", "task "+task.number, (byte)0, task.project);
 		Update.update( Security.getConnected(), "reload('task-" + task.id + "','tasks" + task.project.id + "')" );
 		renderJSON( true );
 
@@ -1919,6 +1933,12 @@ public class Tasks extends SmartCRUD
 		}
 		task.deadline = 0;
 		task.save();
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task.id;
+		ArrayList<User> nusers= new ArrayList<User>();
+		nusers.add(task.assignee);
+		nusers.add(task.reviewer);
+		nusers.add(task.reporter);
+		Notifications.notifyUsers(nusers, "removed", url, "the deadline of the", "task "+task.number, (byte)-1, task.project);
 		Update.update( Security.getConnected(), "reload('task-" + task.project.id + "')" );
 		renderJSON( true );
 	}
