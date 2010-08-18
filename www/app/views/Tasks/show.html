@@ -53,7 +53,7 @@
 					
 			#{crud.custom 'taskStatus'}
 			<p>
-			<label for="task_type">Status</label>
+			<label for="task_taskStatus">Status</label>
 			<select id="object_taskStatus" name="object.taskStatus@id">
 								#{list items:statuses ,as :'Status'}
 									<option value="${Status.id}"#{if object.taskStatus == Status} selected#{/if}>${Status.name}</option>
@@ -67,7 +67,7 @@
 			#{crud.custom 'taskType'}
 			<p>
 			<label for="task_type">Type</label> 
-			<select id="object_taskType" name="object.taskType@id">
+			<select id="object_taskType" name="object.taskType@id" onchange="getType();">
 								#{list items:types ,as :'Type'}
 									<option value="${Type.id}"#{if object.taskType == Type} selected#{/if}>${Type.name}</option>
 								#{/list}		
@@ -118,7 +118,7 @@
 			#{crud.custom 'assignee'}
 			<p>
 			<label for="object_assignee">Assignee</label>
-			<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers(${object.project.id});">
+			<select id="object_assignee" name="object.assignee@id"  onchange="getType();">
 					<option value="">(None)</option>
 					#{list items:users ,as :'User'}
 					<option value="${User.id}"#{if object.assignee == User} selected#{/if}>${User.name}</option>
@@ -131,7 +131,7 @@
 			<label for="object_reviewer">Reviewer</label>
 			<select id="object_reviewer" name="object.reviewer@id" >
 				<option value="">(None)</option>
-				#{list items:users ,as :'User'}
+				#{list items:revs ,as :'User'}
 				#{if object.assignee!=null}
 				#{if object.assignee.id!=User.id}
 				<option value="${User.id}"#{if object.reviewer == User} selected#{/if}>${User.name}</option>
@@ -287,15 +287,34 @@
 function getUsers()
 {
 	var compId = $('#object_component').val();
+	var typeId = $('#object_taskType').val();
 	$.post('@{componentUsers}', {cid : compId}, function(data){
 		str = '<option value="">(None)</option>';
 		$.each(data, function(id, item){
 			str += '<option value='+item.id+'>'+item.name+'</option>';
 		});
 		$('#object_assignee').html( str );
+	}); 
+	$.post('@{typeReviewer}', {typeId : typeId, componentId:compId}, function(data){
+		str = '<option value="">(None)</option>';
+		$.each(data, function(id, item){
+			str += '<option value='+item.id+'>'+item.name+'</option>';
+		});
 		$('#object_reviewer').html( str );
 	}); 
-    
+}
+function getType()
+{
+	var compId = $('#object_component').val();
+	var typeId = $('#object_taskType').val();
+	var assigneeId = $('#object_assignee').val();
+	$.post('@{typeReviewer}', {typeId : typeId, componentId:compId, assigneeId:assigneeId}, function(data){
+		str = '<option value="">(None)</option>';
+		$.each(data, function(id, item){
+			str += '<option value='+item.id+'>'+item.name+'</option>';
+		});
+		$('#object_reviewer').html( str );
+	}); 
 }
 	</script>
 

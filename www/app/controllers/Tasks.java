@@ -345,19 +345,50 @@ public class Tasks extends SmartCRUD
 			else
 				productRoles = productRoles + "As a " + tmp.project.productRoles.get( i ).name + ",-";
 		}
+		List <User> revs = null;
+		List<Reviewer> reviewers = null;
+		if(tmp.project.taskTypes.size()>0)
+		{
+			if(tmp.taskType!=null)
+			{
+				reviewers = Reviewer.find("byProjectAndAcceptedAndtaskType", tmp.project, true, tmp.taskType).fetch();
+			}
+		}
 		if( tmp.component != null )
 		{
 			if( tmp.component.number == 0 )
 			{
 				users = tmp.project.users;
+				if(reviewers!=null)
+				{	
+					for(Reviewer rev : reviewers)
+						revs.add(rev.user);
+				}	
 			}
 			else
 			{
 				users = tmp.component.componentUsers;
+				if(reviewers!=null)
+				{	
+				
+				for(Reviewer rev : reviewers)
+				{
+					if(rev.user.components.contains(tmp.component))
+					revs.add(rev.user);
+				}
+				}
 			}
 		}
 		else
 			users = tmp.project.users;
+		if(reviewers!=null)
+		{	
+			
+		for(Reviewer rev : reviewers)
+			{
+				revs.add(rev.user);
+			}
+		}
 		boolean insprint = false;
 		Date now = Calendar.getInstance().getTime();
 		if( tmp.taskSprint != null )
@@ -370,7 +401,7 @@ public class Tasks extends SmartCRUD
 
 		try
 		{
-			render( type, object, users, statuses, types, dependencies, message2, deletable, comments, productRoles, insprint );
+			render( type, object, users, revs, statuses, types, dependencies, message2, deletable, comments, productRoles, insprint );
 		}
 		catch( TemplateNotFoundException e )
 		{
@@ -1957,4 +1988,33 @@ public class Tasks extends SmartCRUD
 		}
 		Update.update( Security.getConnected(), "reload('task-" + task.id + "','tasks-" + task.project.id + "')" );
 	}
+	/**
+	 * A method that renders the reviewer of a certain type in a certain component. 
+	 * and if that reviewer doesnt exist then it returns the component users.
+	 * 
+	 * @param typeId  the Id of the required type to be reviewed.
+	 * @param componentId the Id of the component in which the task belong.
+	 */
+	public static void typeReviewer(long typeId, long componentId, long assigneeId){
+		TaskType type = TaskType.findById(typeId);
+		Component component = Component.findById(componentId);
+		List<Reviewer> reviewers = Reviewer.find("byProjectAndAcceptedAndtaskType", type.project, true, type).fetch();
+		List<User.Object> users = new ArrayList<User.Object>();
+		for(Reviewer rev : reviewers){
+			if(component!=null)
+			{
+				if(rev.user.components.contains(component) && rev.user.id!= assigneeId)
+					users.add(new User.Object(rev.user));
+			}
+			else
+			{
+				if(rev.user.id!= assigneeId)
+				users.add(new User.Object(rev.user));
+			}
+		}
+		renderJSON(users);
+	}
+	
+
+	
 }
