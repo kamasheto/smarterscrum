@@ -159,9 +159,15 @@
 <div class="sideHolder">
 	<!-- Notifications Start -->
 	<div class="notch"style="top: 190px;">
+	#{if connected.notifications.size()==connected.ReadNotifications}
 		<a href="#" title="View your notifications?"onclick="make('sideNoti',this);$('#sideNoti').load('/Application/showNotifications')">
 		<img src="/public/images/myNotifications.png" alt="[Notifications]"/>
+		</a>#{/if}
+		#{if connected.notifications.size()!=connected.ReadNotifications}
+		<a href="#" title="View your notifications?"onclick="make('sideNoti',this);$('#sideNoti').load('/Application/showNotifications')">
+		<img src="/public/images/myNotifications1.png" alt="[Notifications1]"/>${connected.notifications.size()-connected.ReadNotifications}
 		</a>
+		#{/if}
 	</div>
 	<div id="sideNoti" class="siderC">
 		<div style="display:table;width:100%;height:100%;">
@@ -187,7 +193,7 @@
 </div>
 <div class="sideHolder">
 	<!-- MyTasks Start -->
-	<div class="notch"style="top: 380px;">
+	<!--<div class="notch"style="top: 380px;">
 		<a href="#" onclick="make('sideTasks',this)">
 		<img src="" alt="[Tasks]"/></a>
 	</div>
@@ -195,14 +201,20 @@
 		<div style="display:table;width:100%;height:100%;">
 <div id="overlayLoading" style="text-align:center;vertical-align:middle;display:table-cell">
 <img src="/public/images/loading.gif" alt="Loading"/></div></div>
-	</div>
+	</div>-->
 	<!-- MyTasks End -->
 </div>
 <div class="sideHolder">
 	<!-- MyTasks Start -->
 	<div class="notch"style="top: 345px;">
+		#{if connected.haveInvites}
 		<a href="#" title = "Check your ivitations" onclick="make('sideIn',this);$('#sideIn').load('/Invites/showInvitations')">
-		<img src="/public/images/myInvitations.png" alt="[Invitations]"/></a>
+		<img src="/public/images/myInvitations1.png" alt="[Invitations]"/>${connected.InviteNumber}</a>
+	#{/if}
+	#{else}
+		<a href="#" title = "Check your ivitations" onclick="make('sideIn',this);$('#sideIn').load('/Invites/showInvitations')">
+		<img src="/public/images/myInvitations.png" alt="[Invitations]"/></a>	
+	#{/else}
 	</div>
 	<div id="sideIn" class="siderC">
 		<div style="display:table;width:100%;height:100%;">
