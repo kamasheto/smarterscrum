@@ -1,34 +1,16 @@
 #{extends 'sidebar.html' /}
-#{if notifications.isEmpty()}
-#{note}<b> Sorry, You have no Notifications yet!</b> You must be new to the system or, we may be going through maintenance, Sorry for disturbance & will be back soon!#{/note}
-#{/if}
-#{else}
-<b><img src="/public/images/famfam/arrow_grey_right.png"/>Latest:</b>
-<div id ="notification_paginated">
-#{list items:notifications, as:'notif'}	
-	<div id = "notif_${notif.id}">		
-		<p>#{if notif.importance == 0}<img alt="!" src="/public/images/famfam/error.png">
-			#{/if} #{elseif notif.importance == -1}<img alt="bad" src="/public/images/famfam/cross.png">
-			#{/elseif} #{elseif notif.importance == 1}<img alt="good" src="/public/images/famfam/tick.png">
-			#{/elseif}
-		<a href = "/show/user?id=${notif.actionPerformer.id}">${notif.actionPerformer.name}</a> has ${notif.actionType} ${notif.resourceType}: <a href = ${notif.resourceURL}>${notif.resourceName}</a> 
-#{if notif.project != null}
-in project <a href="/application/externalOpen?id=${notif.project.id}&isOverlay=false&url=#">${notif.project.name}</a>
-#{/if}</p>
-	</div>
-#{/list}
-</div>
-#{/else} #{ifnot notifications.isEmpty()}
+
+<ul id="notifications"></ul>
+
 <a href="#"  style="display:inline-block" class="Notificationp" onclick="previousNotificationPage();"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
 <a href="#"  style="display:inline-block" class="Notificationn" onclick="nextNotificationPage();"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
-#{/ifnot}
-#{if emailing}<img src="/public/images/famfam/cross.png" /><a id = "modify_emailing" onclick="modify_emailing(0);">Stop receiving Emails?</a>#{/if}
-#{else}<img src="/public/images/famfam/accept.png" /> <a id = "modify_emailing" onclick="modify_emailing(1);">Enable receiving Emails?</a>#{/else}
 
+<div  style=" position: absolute; bottom: 0;"><b><font size="2">#{if emailing}<img src="/public/images/famfam/stop.png" /> <a id = "modify_emailing" onclick="modify_emailing(0);">Stop receiving Emails?</a>#{/if}
+#{else}<img src="/public/images/famfam/forward.png" /> <a id = "modify_emailing" onclick="modify_emailing(1);">Enable receiving Emails?</a>#{/else}</font></b></div>
 
 <script type="text/javascript">
 
-notification_pagination(notificationPage);
+
 
 function modify_emailing(i)
 {
@@ -43,4 +25,30 @@ function modify_emailing(i)
 			});
 }
 
-</script>
+
+
+	$(function() {
+
+		search_notifications(0);
+	})
+	function search_notifications(page) {
+		$('#loading_img').show()
+		$.post('/Application/list?page=page', function(Any){
+			
+			body = $('#notifications')
+			body.empty()
+			$('#loading_img').hide()
+			$(Any.notifications).each(function() {
+				body.append('<li>'+this.message+'</li>')
+			})
+			$('#notifications_pages').remove()
+			body.after('<div id="notifications_pages">')
+			div = $('#notifications_pages')
+			if (Any.currentPage != 0) {
+				div.append('<a onclick="search_notifications('+(page-1)+')">Previous</a> ')
+			}
+			if (Any.currentPage != notifications.totalPages) {
+				div.append('<a onclick="search_notifications('+(page+1)+')">Next</a>')
+			}
+		}
+		</script>
