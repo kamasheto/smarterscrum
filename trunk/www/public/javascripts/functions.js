@@ -815,6 +815,8 @@ function showDate(id,place,startTime,nam,type)
 		}
 	var counter= placeObject.counter;
 	var date=startTime;
+	if(startTime<new Date().getTime())
+		return;
 	var tz =0;         //  
 	var lab = place;    // The id of the page entry where the timezone countdown
 						// is to show
