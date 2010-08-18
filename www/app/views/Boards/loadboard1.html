@@ -60,55 +60,20 @@ REDIPS.drag.init();
 <img src="/public/images/loading.gif" alt="Loading"/></div>
 	</div>
 </div></div>
-
-<a href="#" id="ToggleBoard-open" onclick="ToggleBoardOpen();" title="toggle" style="display:none"><img src="@{'/public/images/famfam/show.bmp'}" alt=""/></a>
-<a href="#" id="ToggleBoard-close" onclick="ToggleBoardClose()" title="toggle"><img src="@{'/public/images/famfam/hide.png'}" alt=""/></a>
-
+<div class="notchTop"></div>
+<div class="proj allCornersRounded" style="margin-bottom:10px;padding:10px; text-align:center">
 #{set count=0}
 #{/set}
 
 #{if comp==null}
-<a title="view snapshots" href="javascript:popUp('/Snapshots/boardsnapshots?sid=${s.id}&pid=${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"/></a>
-<a title="take a snapshot" href="javascript:take_snapshot(${s.id})"><img src="@{'/public/images/famfam/camera_add.png'}"/></a>
+<a title="view snapshots" href="javascript:popUp('/Snapshots/boardsnapshots?sid=${s.id}&pid=${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"/>View snapshots</a> | <a title="take a snapshot" href="javascript:take_snapshot(${s.id})"><img src="@{'/public/images/famfam/camera_add.png'}"/>Take a snapshot</a>
 #{/if}
 #{else}
-<a title="view snapshots" href="javascript:popUp('/Snapshots/boardsnapshots?sid=${s.id}&cid=${comp.id}')"><img src="@{'/public/images/famfam/photos.png'}"/></a>
-<a title="take a snapshot" href="javascript:take_snap(${comp.id},${s.id})"><img src="@{'/public/images/famfam/camera_add.png'}"/></a>
+<a title="view snapshots" href="javascript:popUp('/Snapshots/boardsnapshots?sid=${s.id}&cid=${comp.id}')"><img src="@{'/public/images/famfam/photos.png'}"/>View snapshots</a> | <a title="take a snapshot" href="javascript:take_snap(${comp.id},${s.id})"><img src="@{'/public/images/famfam/camera_add.png'}"/>Take a snapshot</a>
 #{/else}
 
-<a href="#;" onclick="$('#changeCol').slideToggle()" title="view hidden columns" type="button" ><img src="@{'/public/images/famfam/application_view_columns.png'}"/></a>
+<a href="#;" onclick="$('#changeCol').slideToggle()" title="view hidden columns" type="button" ><img src="@{'/public/images/famfam/application_view_columns.png'}"/>View hidden columns</a> |
 
-
-<!-- view hidden Col by Hadeer -->
-#{if connected.in(p).can('ShowColumn')}
-#{if hidencolumnsOfBoard.isEmpty()}
-<a class="dim" title="all columns are added" type="button"><img src="@{'/public/images/famfam/add.png'}"/></a>
-#{/if}
-#{else}
-<a href="#;" onclick="$('#b1').slideToggle()" title="add column?" type="button"><img src="@{'/public/images/famfam/add.png'}"/></a>
-#{/else}
-#{/if}
-
-
-
-<!-- hide Col by Hadeer -->
-#{if connected.in(p).can('HideColumn')}
-#{if columnsOfBoard.isEmpty()}
-<a class="dim" title="all columns deleted" type="button"><img src="@{'/public/images/famfam/delete.png'}"/></a>
-#{/if}
-#{else}
-<a href="#;" onclick="$('#b2').slideToggle()" title="delete column?" type="button" ><img src="@{'/public/images/famfam/delete.png'}"/></a>
-#{/else}
-#{/if}
-
-#{if comp==null}
-<a title="Meetings" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}')"><img src="@{'/public/images/famfam/date.png'}"/></a>
-#{/if}
-#{else}
-<a title="Meetings" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}&cid=${comp.id}')"><img src="@{'/public/images/famfam/date.png'}"/></a>
-#{/else}
-
-<br/>
 <select id="changeCol" onchange="showCol(changeCol.value)" style="display:none">
 <option id="d" value="d">Columns</option>
 #{list items:columnsOfBoard, as:'c'}
@@ -117,6 +82,15 @@ REDIPS.drag.init();
 #{/set}
 #{/list}	
 </select>
+<!-- view hidden Col by Hadeer -->
+#{if connected.in(p).can('ShowColumn')}
+#{if hidencolumnsOfBoard.isEmpty()}
+ <a class="dim" title="all columns are added" href="#"type="button"><img src="@{'/public/images/famfam/add.png'}"/></a> Show columns |
+#{/if}
+#{else}
+ <a href="#;" onclick="$('#b1').slideToggle()" title="add column?" type="button"><img src="@{'/public/images/famfam/add.png'}"/>Show columns</a> |
+#{/else}
+#{/if}
 
 #{if comp==null}
 <select id="b1" onchange="javascript: showHiddenCol(b1.value, ${s.id},0);" style="display:none" class="hidecol">
@@ -132,8 +106,15 @@ REDIPS.drag.init();
 <option onclick="showHiddenCol(${c.id}, ${s.id},${comp.id})" value= "${c.id}">${c.name}</option>
 #{/list}
 #{/else}
-</select>
-
+</select><!-- hide Col by Hadeer -->
+#{if connected.in(p).can('HideColumn')}
+#{if columnsOfBoard.isEmpty()}
+ <a class="dim" title="all columns deleted" type="button"><img src="@{'/public/images/famfam/delete.png'}"/></a> Hide columns |
+#{/if}
+#{else}
+ <a href="#;" onclick="$('#b2').slideToggle()" title="delete column?" type="button" ><img src="@{'/public/images/famfam/delete.png'}"/>Hide columns</a> |
+#{/else}
+#{/if}
 #{if comp==null}
 <select id="b2"  style="display:none" onchange="hideCol(b2.value, ${s.id},0)" class="showcol">
 <option id="x" value="">Columns</option>
@@ -149,7 +130,21 @@ REDIPS.drag.init();
 #{/list}
 #{/else}
 </select>
+#{if comp==null}
+ <a title="Meetings" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}')"><img src="@{'/public/images/famfam/date.png'}"/>View meetings</a>
+#{/if}
+#{else}
+ <a title="Meetings" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}&cid=${comp.id}')"><img src="@{'/public/images/famfam/date.png'}"/>View meetings</a>
+#{/else}
 
+
+
+
+
+
+
+
+</div>
 <div id="drag">
 <table id="mainBoard" class="draggable" border="1">
 
