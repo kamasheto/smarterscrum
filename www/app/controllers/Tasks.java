@@ -14,6 +14,7 @@ import models.Log;
 import models.Meeting;
 import models.ProductRole;
 import models.Project;
+import models.Reviewer;
 import models.Sprint;
 import models.Task;
 import models.TaskStatus;
@@ -94,7 +95,7 @@ public class Tasks extends SmartCRUD
 						Security.check( user.in( task.project ).can( "AddTask" ) );
 						project = task.project;
 					}
-
+					
 				}
 			}
 		}
@@ -119,10 +120,10 @@ public class Tasks extends SmartCRUD
 			else
 				productRoles = productRoles + "As a " + project.productRoles.get( i ).name + ",-";
 		}
-
+		
 		try
 		{
-			render( project, p, component, task, type, sprints, productRoles, projectId, componentId, taskId );
+			render( project, p, component, task, type, sprints, productRoles, projectId, componentId, taskId, reviewers );
 
 		}
 		catch( TemplateNotFoundException e )
@@ -592,7 +593,7 @@ public class Tasks extends SmartCRUD
 				Comment comment = new Comment( Security.getConnected(), tmp.id, tmp.comment );
 				comment.save();
 			}
-		
+
 		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
@@ -657,7 +658,6 @@ public class Tasks extends SmartCRUD
 		Component component = Component.findById( compId );
 		Project project = Project.findById( projId );
 		User Assignee = User.findById( id2 );
-
 		if( component != null )
 		{
 			if( component.number == 0 )
@@ -948,7 +948,6 @@ public class Tasks extends SmartCRUD
 		task_id_helper = taskString.split( "_" );
 		task_id_helper2 = task_id_helper[0].split( "-" );
 		task_id = Integer.parseInt( task_id_helper2[1] );
-
 		editTaskStatus( task_id, user_id, status );
 	}
 
@@ -1007,10 +1006,7 @@ public class Tasks extends SmartCRUD
 	 */
 	public static boolean editTaskStatus( long id, long userId, TaskStatus newStatus )
 	{
-		System.out.println(userId);
-		
 		Task task1 = Task.findById( id );
-		Security.check( Security.getConnected().in( task1.project ).can( "modifyTask" ) || task1.assignee == Security.getConnected() );
 		if( task1 == null )
 			return false;
 		if( userId == 0 )
@@ -1020,7 +1016,7 @@ public class Tasks extends SmartCRUD
 		User user1 = User.findById( userId );
 		if( user1 == null )
 			return false;
-
+		Security.check( user1.in( task1.project ).can( "modifyTask" ) || task1.assignee == user1 );
 		Project currentProject = task1.project;
 		boolean permession = user1.in( currentProject ).can( "changeTaskStatus" );
 
