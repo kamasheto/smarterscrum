@@ -97,7 +97,7 @@ public class Boards extends SmartCRUD
 			for( int i = 0; i < components.size(); i++ )
 			{
 				data.add( null );
-				if( components.get( i ).number != 0 )
+				if( components.get( i ).number != 0 && !components.get(i).deleted )
 				{
 
 					data.set( i, new ComponentRow( components.get( i ).id, components.get( i ).name ) );
@@ -110,7 +110,7 @@ public class Boards extends SmartCRUD
 					}
 					for( Task task : tasks )
 					{
-						if(task.assignee!=null && task.reviewer!=null && task.taskType!=null)
+						if(task.assignee!=null && task.reviewer!=null && task.taskType!=null && !task.deleted)
 						{
 						Column pcol = new Column();
 						for( int k = 0; k < task.taskStatus.columns.size(); k++ )
@@ -163,6 +163,8 @@ public class Boards extends SmartCRUD
 
 				for( Task task : tasks )
 				{
+					if(task.assignee!=null && task.reviewer!=null && task.taskType!=null && !task.deleted)
+					{
 					Column pcmp = new Column();
 					for( int k = 0; k < task.taskStatus.columns.size(); k++ )
 					{
@@ -175,6 +177,7 @@ public class Boards extends SmartCRUD
 					if( pcmp.onBoard && !pcmp.deleted )
 					{
 						data.get( i ).get( columnsOfBoard.indexOf( pcmp ) ).add( task );
+					}
 					}
 				}
 
