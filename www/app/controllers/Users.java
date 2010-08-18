@@ -199,11 +199,15 @@ public class Users extends SmartCRUD {
 	 * @see {@link views/Users/manageNotificationProfile.html}
 	 * @return void
 	 */
-	public static void saveNotificationProfile(String id) throws Exception {
+	public static void saveNotificationProfile(long id) throws Exception {
 		ObjectType type = ObjectType.get(UserNotificationProfiles.class);
 		notFoundIfNull(type);
-		JPASupport object = type.findById(id);
-		Security.check(((UserNotificationProfile) object).user == Security.getConnected());
+		Project project = Project.findById(id);
+		// NA3AM!! TYPE.FINDBYID EZAY YA3NI!
+		// JPASupport object = type.findById(id);
+		JPASupport object = UserNotificationProfile.find("user = ? and project = ?", Security.getConnected(), project).first();
+		// Security.check(((UserNotificationProfile) object).user == Security.getConnected());
+		Security.check(object != null);
 		validation.valid(object.edit("object", params));
 		if (validation.hasErrors()) {
 			renderArgs.put("error", Messages.get("crud.hasErrors"));

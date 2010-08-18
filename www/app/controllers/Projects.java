@@ -714,10 +714,13 @@ public class Projects extends SmartCRUD {
 	 *            notification profile
 	 * @throws Exception
 	 */
-	public static void saveNotificationProfile(String id) throws Exception {
+	public static void saveNotificationProfile(long id) throws Exception {
 		ObjectType type = ObjectType.get(ProjectNotificationProfiles.class);
 		notFoundIfNull(type);
-		JPASupport object = type.findById(id);
+
+		Project project = Project.findById(id);
+		// JPASupport object = type.findById(id);
+		JPASupport object = project.notificationProfile;
 		Security.check(((ProjectNotificationProfile) object).project, "editProjectNotificationProfile");
 		validation.valid(object.edit("object", params));
 		if (validation.hasErrors()) {

@@ -3,8 +3,8 @@
 <style> label {width:550px !important}</style>
 <div id="crudShow" class="${type.name}">
 	
-	<h2 id="crudShowTitle">manage notifications for Project: ${currentNotificationProfile.project}</h2>
-	<h3> Please send Notifications when: </h3>
+	<h2 id="crudShowTitle">Manage notifications for ${currentNotificationProfile.project}</h2>
+	<h3>Notify users of changes when*</h3>
 	<div id="mnf"class="objectForm">
 	#{form action:@saveNotificationProfile(object.id), enctype:'multipart/form-data'}
 		#{crud.form}
@@ -18,5 +18,6 @@
 		</p>
 	#{/form}
 	</div>
+	<div class="more_info">* Only users that opt to receiving these email(s) will receive notifications</div>
 	
 </div>
