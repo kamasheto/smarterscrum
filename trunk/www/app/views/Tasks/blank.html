@@ -86,7 +86,7 @@
 	#{if project.taskTypes.size()>0}
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_taskType">Type</label>
-	<select id="object_taskType" name="object.taskType@id">
+	<select id="object_taskType" name="object.taskType@id" onchange="getType();">
 	#{list items:project.taskTypes ,as :'taskType'}
 	<option value="${taskType.id}">${taskType.name}</option>
 	#{/list}
@@ -97,7 +97,7 @@
 	#{if p!=null && project.users.size()>0}
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_assignee">Assignee</label>
-	<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers(${project.id});">
+	<select id="object_assignee" name="object.assignee@id" onchange = "getType();">
 	<option value="">None</option>
 	#{list items:project.users ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
@@ -108,7 +108,7 @@
 	
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_assignee">Assignee</label>
-	<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers(${project.id});">
+	<select id="object_assignee" name="object.assignee@id" onChange = "getType();">
 	<option value="">None</option>
 	#{list items:component.componentUsers ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
@@ -118,7 +118,7 @@
 	#{elseif task!=null && task.component.componentUsers.size()>0}
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_assignee">Assignee</label>
-	<select id="object_assignee" name="object.assignee@id" onChange = "change_reviewers(${project.id});">
+	<select id="object_assignee" name="object.assignee@id" onChange = "getType();">
 	<option value="">None</option>
 	#{list items:task.component.componentUsers ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
@@ -132,9 +132,6 @@
 	<label for="object_reviewer">Reviewer</label>
 	<select id="object_reviewer" name="object.reviewer@id">
 	<option value="">None</option>
-	#{list items:project.users ,as :'user'}
-	<option value="${user.id}">${user.name}</option>
-	#{/list}
 	</select>
 	#{/if}
 	
@@ -262,26 +259,33 @@ function toggleOptions(){
 function getUsers()
 {
 	var compId = $('#object_component').val();
+	var typeId = $('#object_taskType').val();
 	$.post('@{componentUsers}', {cid : compId}, function(data){
 		str = '<option value="">(None)</option>';
 		$.each(data, function(id, item){
 			str += '<option value='+item.id+'>'+item.name+'</option>';
 		});
 		$('#object_assignee').html( str );
-		$('#object_reviewer').html( str );
 	}); 
-    
-}
-function change_reviewers(projId){
-    var value = $('#object_component').val();
-	var value2 = $('#object_assignee').val();
-	var compId = $('#object_component').val();
-    $.post('@{reviewers}', {id:value, id2 : value2, compId: compId, projId:projId}, function(data){
+	$.post('@{typeReviewer}', {typeId : typeId, componentId:compId}, function(data){
 		str = '<option value="">(None)</option>';
 		$.each(data, function(id, item){
 			str += '<option value='+item.id+'>'+item.name+'</option>';
 		});
 		$('#object_reviewer').html( str );
-	});
-    }
+	}); 
+}
+function getType()
+{
+	var compId = $('#object_component').val();
+	var typeId = $('#object_taskType').val();
+	var assigneeId = $('#object_assignee').val();
+	$.post('@{typeReviewer}', {typeId : typeId, componentId:compId, assigneeId:assigneeId}, function(data){
+		str = '<option value="">(None)</option>';
+		$.each(data, function(id, item){
+			str += '<option value='+item.id+'>'+item.name+'</option>';
+		});
+		$('#object_reviewer').html( str );
+	}); 
+}
 </script>
