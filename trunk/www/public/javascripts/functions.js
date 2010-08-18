@@ -325,20 +325,63 @@ $(function() {
 		})
 	
 	$('.draggable').live('click',function(){
+		var that = $(this);
+		$('.draggable').each(function(){
+			if($(this)!=that)
+			{
+				$(this).css('position','absolute');
+				$(this).css('z-index','9993');
+				$(this).addClass('dim');
+			}	
+		});
+		$(this).removeClass('dim');
 		$(this).css('position','absolute');
 		$(this).css('z-index','9994');
+		
 	});
-	$('.draggable *').live('click',function(){
+	$('.draggable>.actual').live('click',function(){
+		var that = $(this).closest('.draggable');
+		$('.draggable').each(function(){
+			if($(this)!=that)
+			{
+				$(this).css('position','absolute');
+				$(this).css('z-index','9993');
+				$(this).addClass('dim');
+			}	
+		});
+		$(this).removeClass('dim');
 		$(this).closest('.draggable').css('position','absolute');
 		$(this).closest('.draggable').css('z-index','9994');
 	});
+	$('.draggable>.mainH').live('click',function(){
+		var that = $(this).closest('.draggable');
+		$('.draggable').each(function(){
+			if($(this)!=that)
+			{
+				$(this).css('position','absolute');
+				$(this).css('z-index','9993');
+				$(this).addClass('dim');
+			}	
+		});
+		$(this).removeClass('dim');
+		$(this).closest('.draggable').css('position','absolute');
+		$(this).closest('.draggable').css('z-index','9994');
+	});
+	$('.draggable').live('mouseenter', function() {
+		$(this).removeClass('dim');	});
+
+	$('.draggable').live('mouseleave', function() {
+		if($(this).css('z-index')<=9993)
+		$(this).addClass('dim');	});
 	$('.draggable').live('mouseover', function() {
+	
 		if (!DRAGGING_ELEMENT) {
 			$(this).children().children('.dragger').show()					
 		}
 		if ($(this).data('init')) return
 		$(this).data('init', 1);
 		var con = $(this).closest('.workspaceDraggables').attr('id');
+		$(this).css('z-index','9995');
 		$(this).draggable( {
 			handle : '.ui-widget-header',
 			cancel : 'img',
@@ -383,6 +426,7 @@ $(function() {
 				}
 				if ($(this).data('init')) return
 				$(this).data('init', true)
+				$(this).css('z-index','9995');
 				var con = $(this).closest('.workspaceDraggables').attr('id');
 				$(this).draggable(
 						{
@@ -477,7 +521,11 @@ $(function() {
 		load($(parent).attr('name'), $(parent).attr('id'), 1);
 	});
 	$('.revertFrom').live('click', function() {
+		$(this).closest('.draggable').css('position','static');
+		$(this).closest('.draggable').css('z-index','1');
+		//alert($(this).closest('.draggable').attr('class'))
 		$(this).parent().parent().data('init', false);
+		
 		var url = $(this).parent().parent().attr('name');
 		$(this).parent().next().hide();
 		removeFromDiv(url);
@@ -491,8 +539,11 @@ $(function() {
 			$('#' + theId).removeAttr('style');
 			$('#' + theId).removeClass('draggable');
 			$('#' + theId).addClass('draggableChild');
+			
 			$('#' + theSecondId).replaceWith($('#' + theId));
 			$('#' + theId).find('.mainH').first().html(elHtml);
+			$('#' + theId).css('position','static');
+			$('#' + theId).css('z-index','1');
 		}
 	
 		});
@@ -517,6 +568,16 @@ function load(url, el, n, hideLoading) {
 		$.ajax({
 			url: url,
 			success: function(data) {
+			if(n==1)
+			{var that = $('#'+ el);
+				$('.draggable').each(function(){
+					if($(this)!=that)
+					{
+						$(this).css('position','absolute');
+						$(this).css('z-index','9993');
+						$(this).addClass('dim');
+					}});
+			}
 				$('body').append('<div id="dummy_data" class="hidden"></div>')
 				$('#dummy_data').html(data)
 				data = $('#dummy_data').html()
@@ -528,12 +589,14 @@ function load(url, el, n, hideLoading) {
 				} 
 				$('#'+el+'_content').html($(data).find('.actual:first').html());
 				if (n == 1 || n==4) {
+					
 					$('#'+ el).append('<div class="filter" id="'+el+'_filter"></div>');
 					$('#'+ el + '_filter').html($(data).find('.filter:first').html());
 					$('#'+ el + '_filter').find('input:first').attr('name', 'filter_textBox_'+el);
 				}
-				magic(el)
-				$('#' + el + '_content').slideDown(400)
+				magic(el);
+				
+				$('#' + el + '_content').slideDown(400);
 			}
 		})
 }
@@ -542,6 +605,7 @@ function load(url, el, n, hideLoading) {
 function loadBox(url, el, classes) 
 {
 	if($.inArray(url,myDivs)==-1) {
+				
 		$.ajax({
 			url: url,
 			success: function(data) {
@@ -551,6 +615,14 @@ function loadBox(url, el, classes)
 				$('#dummy_data').remove()
 				myDivs.push(url)
 				element = $(data).filter('div:first')
+						var that = element;
+			$('.draggable').each(function(){
+				if($(this)!=that)
+				{
+					$(this).css('position','absolute');
+					$(this).css('z-index','9993');
+					$(this).addClass('dim');
+				}});
 				element.attr('name', url)
 				element.addClass(classes)
 				element.css('z-index','4');
