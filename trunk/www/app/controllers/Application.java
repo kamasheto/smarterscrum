@@ -1,12 +1,17 @@
 package controllers;
 
+import java.lang.reflect.Type;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gson.reflect.TypeToken;
+
 import others.Event;
+import others.LogSearchResult;
+import others.NotificationSearchResult;
 
 import models.Component;
 import models.Log;
@@ -280,9 +285,29 @@ public class Application extends SmartController
 	{
 		User user = Security.getConnected();
 		boolean emailing = user.enableEmails;
-		List<Notification> notifications = Notification.find( "receiver =" + user.id + " order by id desc" ).fetch();
-		render( notifications , emailing);
+			
+		render(  emailing);
+
+	}public static void list( int page, int perPage) {
+		if (perPage == 0) {
+			perPage = 10;
+		}
+		List<Notification> notifications = Notification.find("byReciever",Security.getConnected()).from(perPage * page).fetch(perPage);
+		for(Notification noti:notifications){
+			if(noti.unread){
+				Security.getConnected().ReadNotifications++;
+				Security.getConnected().save();
+			}
+			
+			
+		}
+		NotificationSearchResult result = new NotificationSearchResult();
+		result.notifications = notifications;
+		result.currentPage = page;
+		result.totalPages = (int) Notification.find("byReciever",Security.getConnected().id+ " order by id desc").fetch().size() / perPage;
+		renderJSON(result);
 	}
+	
 	/**
 	 * perform the action of choosing the option whether to receive emails or not
 	 * @param enable : 0 if to stop 1 for enabling 
