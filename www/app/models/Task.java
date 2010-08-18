@@ -169,7 +169,7 @@ public class Task extends SmartModel
 		{
 			this.project = this.parent.project;
 			this.component = this.parent.component;
-			this.number = this.parent.subTasks.size() +1;//kan fee +1 hena shelto 3ashan el subtasks numbering system yetzebet - El Sanfoor
+			this.number = this.parent.subTasks.size() +1;
 			for( Task task : this.parent.subTasks )
 			{
 				if( task.number >= this.number && !this.equals( task ) )
