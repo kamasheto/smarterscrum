@@ -29,7 +29,6 @@ public class Project extends SmartModel
 	public String name;
 
 	@Lob
-
 	/**
 	 * project's description
 	 */
@@ -39,7 +38,7 @@ public class Project extends SmartModel
 	 * whether the project is deleted
 	 */
 	public boolean deleted;
-	
+
 	/**
 	 * whether the project is private
 	 */
@@ -85,9 +84,9 @@ public class Project extends SmartModel
 	 */
 	@OneToMany( mappedBy = "project" )
 	public List<Component> components;
-/**
- * project's sprints
- */
+	/**
+	 * project's sprints
+	 */
 	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
 	public List<Sprint> sprints;
 
@@ -136,9 +135,9 @@ public class Project extends SmartModel
 
 	@OneToMany( mappedBy = "project" )
 	public List<Reviewer> reviewers;
-	
+
 	/* One To One Relations */
-	
+
 	/**
 	 * the project's board
 	 */
@@ -154,12 +153,13 @@ public class Project extends SmartModel
 	/**
 	 * project's chatroom
 	 */
+	@OneToOne
 	public ChatRoom chatroom;
 
 	/**
 	 * project's notifications
 	 */
-	@OneToMany (mappedBy = "project", cascade = CascadeType.ALL)
+	@OneToMany( mappedBy = "project", cascade = CascadeType.ALL )
 	public List<Notification> notifications;
 
 	/**
@@ -179,7 +179,7 @@ public class Project extends SmartModel
 	 * project's meetings' types
 	 */
 	public ArrayList<String> meetingsTypes;
-	
+
 	/**
 	 * project's meetings' types in a sprint
 	 */
@@ -197,7 +197,7 @@ public class Project extends SmartModel
 	 */
 	public int sprintDuration;
 	/**
-	 * project's effort estimation unit 
+	 * project's effort estimation unit
 	 */
 	public int effortEstimationUnit;
 
@@ -243,10 +243,14 @@ public class Project extends SmartModel
 		// init();
 
 	}
+
 	/**
 	 * Creates a project with name and description
-	 * @param name the name or the title of the project
-	 * @param desc the description of the project
+	 * 
+	 * @param name
+	 *            the name or the title of the project
+	 * @param desc
+	 *            the description of the project
 	 */
 	public Project( String name, String desc )
 	{
@@ -276,8 +280,10 @@ public class Project extends SmartModel
 		}
 		return ProjectTasks;
 	}
+
 	/**
 	 * gets the roles of the project
+	 * 
 	 * @return list of roles of a project
 	 */
 	public List<Role> getRoles()
@@ -337,9 +343,10 @@ public class Project extends SmartModel
 		return FULL + data;
 
 	}
-	
+
 	/**
-	 * Get all the users in  this project
+	 * Get all the users in this project
+	 * 
 	 * @return all users in this project
 	 */
 	public List<User> getUsers()
@@ -364,10 +371,12 @@ public class Project extends SmartModel
 
 	/**
 	 * @author minazaki i just modified the insprint to my need it checks if the
-	 * start date of a sprint overlaps with any sprints OR the end date overlaps
-	 * with any sprints
-	 * @param start the start date of the sprint
-	 * @param endate the end date of the sprint
+	 *         start date of a sprint overlaps with any sprints OR the end date
+	 *         overlaps with any sprints
+	 * @param start
+	 *            the start date of the sprint
+	 * @param endate
+	 *            the end date of the sprint
 	 * @return boolean
 	 */
 	public boolean inSprint( Date start, Date end )
@@ -425,7 +434,8 @@ public class Project extends SmartModel
 	 * 
 	 * @author mahmoudsakr
 	 */
-	public Component init() {
+	public Component init()
+	{
 		// this.save();
 		board = new Board( this ).save();
 
@@ -433,7 +443,8 @@ public class Project extends SmartModel
 		chatroom = new ChatRoom( this ).save();
 
 		List<Role> roles = Role.find( "select r from Role r where r.project = null" ).fetch();
-		for (Role role : roles) {
+		for( Role role : roles )
+		{
 			Role r = new Role();
 			this.roles.add( r );
 			r.name = role.name;
@@ -453,19 +464,18 @@ public class Project extends SmartModel
 		meetingsTypes = new ArrayList<String>();
 		meetingsTypesInSprint = new ArrayList<Boolean>();
 
-		
 		TaskType t1 = new TaskType();
 		t1.project = this;
 		t1.name = "Implementation";
 		t1.save();
 		taskTypes.add( t1 );
-		
+
 		TaskType t2 = new TaskType();
 		t2.project = this;
 		t2.name = "Test";
 		t2.save();
 		taskTypes.add( t2 );
-		
+
 		TaskType t3 = new TaskType();
 		t3.project = this;
 		t3.name = "Documentation";
@@ -487,7 +497,7 @@ public class Project extends SmartModel
 		TaskStatus s1 = new TaskStatus();
 		s1.project = this;
 		s1.name = "New";
-		s1.isNew=true;
+		s1.isNew = true;
 		s1.save();
 		s1.init();
 		taskStatuses.add( s1 );
@@ -495,7 +505,7 @@ public class Project extends SmartModel
 		TaskStatus s2 = new TaskStatus();
 		s2.project = this;
 		s2.name = "Started";
-		s2.isNew=false;
+		s2.isNew = false;
 		s2.save();
 		s2.init();
 		taskStatuses.add( s2 );
@@ -503,7 +513,7 @@ public class Project extends SmartModel
 		TaskStatus s3 = new TaskStatus();
 		s3.project = this;
 		s3.name = "Pending";
-		s3.isNew=false;
+		s3.isNew = false;
 		s3.pending = true;
 		s3.closed = false;
 		s3.save();
@@ -513,14 +523,14 @@ public class Project extends SmartModel
 		TaskStatus s4 = new TaskStatus();
 		s4.project = this;
 		s4.name = "Reopened";
-		s4.isNew=false;
+		s4.isNew = false;
 		s4.save();
 		s4.init();
 		taskStatuses.add( s4 );
 
 		TaskStatus s5 = new TaskStatus();
 		s5.project = this;
-		s5.isNew=false;
+		s5.isNew = false;
 		s5.name = "Verified";
 		s5.closed = true;
 		s5.pending = false;
@@ -538,24 +548,26 @@ public class Project extends SmartModel
 
 		Component defaultComponent = new Component().save();
 		defaultComponent.name = "default component";
-		this.addComponent(defaultComponent);
+		this.addComponent( defaultComponent );
 		defaultComponent.save();
 		defaultComponent.init();
-		
+
 		this.save();
 		return defaultComponent;
 	}
 
-	public void init(boolean isScrum) {
+	public void init( boolean isScrum )
+	{
 		Component defaultComponent = init();
-		if (!isScrum) {
+		if( !isScrum )
+		{
 			// Default creations in case not a scrum project
 
 			// Sprint defaultSprint = new Sprint().save();
-			// 	defaultSprint
-			// 	defaultSprint.project = this;
-			// 	defaultSprint.save();
- 		}
+			// defaultSprint
+			// defaultSprint.project = this;
+			// defaultSprint.save();
+		}
 
 		this.save();
 	}
@@ -588,8 +600,10 @@ public class Project extends SmartModel
 	public static boolean isUnique( String name )
 	{
 		List<Project> projects = Project.find( "name='" + name + "'" ).fetch();
-		for(Project p: projects){
-			if(p.name.equalsIgnoreCase(name)){
+		for( Project p : projects )
+		{
+			if( p.name.equalsIgnoreCase( name ) )
+			{
 				return false;
 			}
 		}
@@ -623,12 +637,14 @@ public class Project extends SmartModel
 	 * @author hossam sharaf
 	 * @return boolean
 	 */
-	public boolean hasRunningSprints() {
+	public boolean hasRunningSprints()
+	{
 		long now = new Date().getTime();
-		List<Sprint> Sprints = Sprint.find("byProject", this).fetch();
-		for (Sprint sprint : Sprints) {
-			if (sprint.startDate != null && sprint.endDate != null && 
-					now > sprint.startDate.getTime() && now < sprint.endDate.getTime()) {
+		List<Sprint> Sprints = Sprint.find( "byProject", this ).fetch();
+		for( Sprint sprint : Sprints )
+		{
+			if( sprint.startDate != null && sprint.endDate != null && now > sprint.startDate.getTime() && now < sprint.endDate.getTime() )
+			{
 				return true;
 			}
 		}
@@ -684,12 +700,15 @@ public class Project extends SmartModel
 	public List<Meeting> meetingsAssoccToEndOfSprint( Sprint sprint )
 	{
 		ArrayList<Meeting> temp = new ArrayList<Meeting>();
-		
-		for (Meeting meeting : meetings) {
-			if (meeting.sprint != null && meeting.sprint == sprint) {
-				int index = meetingsTypes.indexOf(meeting.type);
-				if (index >= 0 && meetingsTypesInSprint.get(index)) {
-					temp.add(meeting);
+
+		for( Meeting meeting : meetings )
+		{
+			if( meeting.sprint != null && meeting.sprint == sprint )
+			{
+				int index = meetingsTypes.indexOf( meeting.type );
+				if( index >= 0 && meetingsTypesInSprint.get( index ) )
+				{
+					temp.add( meeting );
 				}
 			}
 		}
@@ -711,10 +730,12 @@ public class Project extends SmartModel
 		}
 		return temp;
 	}
-	
+
 	/**
 	 * Adds a component to this project
-	 * @param c the component to be added
+	 * 
+	 * @param c
+	 *            the component to be added
 	 */
 	public void addComponent( Component c )
 	{
@@ -722,9 +743,10 @@ public class Project extends SmartModel
 		c.project = this;
 		c.save();
 	}
-	
+
 	/**
 	 * Gets the number of non-deletion requests in this project
+	 * 
 	 * @return the number of non-deletion requests in this project
 	 */
 	public int getNumberOfRequests()
@@ -732,9 +754,10 @@ public class Project extends SmartModel
 		List<Request> requests = Request.find( "byIsDeletionAndProject", false, this ).fetch();
 		return requests.size();
 	}
-	
+
 	/**
 	 * Gets the number of deletion requests in this project
+	 * 
 	 * @return the number of deletion requests in this project
 	 */
 	public int getNumberOfDeletionRequests()
@@ -742,9 +765,10 @@ public class Project extends SmartModel
 		List<Request> requests = Request.find( "byIsDeletionAndProject", true, this ).fetch();
 		return requests.size();
 	}
-	
+
 	/**
 	 * Gets the number of all requests in a project
+	 * 
 	 * @return the number of all requests in a project
 	 */
 	public int getNumberOfTotalRequests()
