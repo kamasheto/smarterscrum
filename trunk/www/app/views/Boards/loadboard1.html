@@ -58,9 +58,18 @@ REDIPS.drag.init();
 
 <div class="sideHolder">
 	<div class="notch"style="top: 190px;">
+	
+#{if comp==null}
 		<a href="#" title="View meetings?"onclick="make('sideMeet',this);$('#sideMeet').load('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}')">
-		<img src="/public/images/meetings.png" alt="[Notifications]"/>
+		<img src="/public/images/meetings.png" alt="[Meeting]"/>
 		</a>
+		#{/if}
+#{else}
+<a href="#" title="View meetings?"onclick="make('sideMeet',this);$('#sideMeet').load('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}&cid=${comp.id}')">
+		<img src="/public/images/meetings.png" alt="[Meeting]"/>
+		</a>
+		#{/else}
+
 	</div>
 	<div id="sideMeet" class="siderC">
 		<div style="display:table;width:100%;height:100%;">
@@ -138,12 +147,6 @@ REDIPS.drag.init();
 #{/list}
 #{/else}
 </select>
-#{if comp==null}
- <a title="Meetings" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}')"><img src="@{'/public/images/famfam/date.png'}"/>View meetings</a>
-#{/if}
-#{else}
- <a title="Meetings" href="javascript:popUpmeeting('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}&cid=${comp.id}')"><img src="@{'/public/images/famfam/date.png'}"/>View meetings</a>
-#{/else}
 
 
 
