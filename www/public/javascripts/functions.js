@@ -1064,7 +1064,7 @@ $(function() {
 			if ($(this).data('init')) return
 			$(this).data('init', true)
 			$(this).blur(function() {
-				$.post($(this).attr('update_url'), {new_value: $(this).html()})
+				$.post($(this).attr('update_url'), {new_value: $(this).text()})
 			})
 		})
 })
