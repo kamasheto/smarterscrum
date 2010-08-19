@@ -2,6 +2,7 @@ package models;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
@@ -370,5 +371,14 @@ public class Sprint extends SmartModel {
 		String k = ",";
 		return m + k + xTicks + k + yTicks + k + xLabel + k + yLabel + k
 				+ title + k + xMax + k + yMax;
+	}
+	public boolean running()
+	{
+		Date now = Calendar.getInstance().getTime();
+		if( startDate.before( now ) && endDate.after( now ) )
+		{
+			return true;
+		}
+		return false;
 	}
 }
