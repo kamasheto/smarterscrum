@@ -287,12 +287,43 @@ public class Application extends SmartController
 	/**
 	 * Renders all the notifications for the currently connected user
 	 */
-	public static void showNotifications()
+	public static void showNotifications(int page)
 	{
 		User user = Security.getConnected();
+		boolean first=false;
+		boolean last=false;
+		List<Notification> allNotifications = Notification.find("byReceiver", user).fetch();
+		int totalPages = (int) allNotifications.size() / 10;
+		if(allNotifications.size() % 10!=0){
+			totalPages++;
+		}
+		if(page==totalPages){
+			last=true;
+		}else{
+			if(page==1){
+				first=true;
+			}
+		}
+	
+		List<Notification> pageOfNotifications;
+	if(first){
+		 pageOfNotifications = Notification.find("byReceiver", user).from(1).fetch(10);				
+	}
+	else{pageOfNotifications = Notification.find("byReceiver", user).from((page-1)*10).fetch(10);				
+}
+	for(Notification noti:pageOfNotifications){
+		System.out.println(noti.unread);
+		if(noti.unread){
+			user.ReadNotifications++;
+			noti.unread=false;
+		noti.save();
+			user.save();
+		}
+	}
 		boolean emailing = user.enableEmails;
 
-		render( emailing );
+		
+		render(page,pageOfNotifications, emailing,last,first );
 
 	}
 
@@ -302,7 +333,7 @@ public class Application extends SmartController
 			perPage = 10;
 		}
 		NotificationSearchResult result = new NotificationSearchResult();		
-		List<Notification> allNotifications = Notification.find("byReceiver", Security.getConnected()).fetch();
+		List<Notification> allNotifications = Notification.find("byReceiver", Security.getConnected().id).fetch();
 		List<Notification> pageOfNotifications = allNotifications.subList(page * perPage, page * perPage + perPage <= allNotifications.size() ? page * perPage + perPage : allNotifications.size());		
 		for (Notification notification : allNotifications) {
 			if (notification.unread) {
