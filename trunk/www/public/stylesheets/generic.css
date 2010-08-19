@@ -3178,7 +3178,7 @@ div.jcalendar-links a {
 .dock .draggable:hover {
 	background: #eee !important
 }
-
+#mainTable table td h1{text-align:center;margin-top:10px;color:#fff;text-shadow:0px 0px 10px #fff;margin-bottom:5px}
 .dock .draggable .ui-widget-header:hover {
 	color: #111 !important;
 	font-weight: bold;

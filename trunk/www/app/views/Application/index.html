@@ -3,3 +3,32 @@
 <script type="text/javascript" charset="utf-8">
 var itemsPerPage = ${settings.defaultEntriesPerBox};
 </script>
+#{set 'onLoad'}
+$('#noti').load('@{Application.showNotifications()}');
+$('#events').load('@{Application.showEvents()}');
+$('#noti').load('@{Invites.showInvitations}');
+#{/set}
+<table style="width:98% !important;margin:0px 1%!important">
+<tr><td><h1>My Notifications</h1></td><td><h1>My Events</h1></td><td><h1>My Invitations</h1></td></tr>
+<tr>
+<td width="30%" height="100%">
+
+<div class="allCornersRounded" id="noti"style="margin:1%;padding:4%;background:rgba(0,0,0,0.5);height:90%">
+<div style="position:relative;top:50%;text-align:center">
+<img src="/public/images/loading.gif" alt="Loading"/></div>
+</div>
+</td>
+<td width="30%" height="100%">
+<div class="allCornersRounded" id="events"style="margin:1% ;padding:4%;background:rgba(0,0,0,0.5);height:90%">
+<div style="position:relative;top:50%;text-align:center">
+<img src="/public/images/loading.gif" alt="Loading"/></div>
+</div></td>
+<td width="30%" height="100%">
+
+<div class="allCornersRounded" id="in"style="margin:1% ;padding:4%;background:rgba(0,0,0,0.5);height:90%">
+<div style="position:relative;top:50%;text-align:center">
+<img src="/public/images/loading.gif" alt="Loading"/></div>
+</div>
+</td>
+</tr>
+</table>
