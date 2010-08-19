@@ -1427,9 +1427,19 @@ public class Tasks extends SmartCRUD
 		assignee.save();
 		if(task1.taskSprint!=null)
 		{
-		Update.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + oldassi.id + "," + newassi + "," + task1.taskStatus.id + "," + compId + "," + task1.id + ")" );
-		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId+ "," + userId + ")" );
-		Update.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
+			if(compId!=0)
+		
+			{	Update.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + oldassi.id + "," + newassi + "," + task1.taskStatus.id + "," + compId + "," + task1.id + ")" );
+			
+			Update.update( Security.getConnected(), "note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId+ "," + userId + ")" );
+			Update.update( task1.project.users, Security.getConnected(), "note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
+			}
+			else
+				
+			{	
+				Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId+ "," + userId + ")" );
+				Update.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
+		}
 		}
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task1.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task1.id;
 		ArrayList<User> nusers= new ArrayList<User>();
