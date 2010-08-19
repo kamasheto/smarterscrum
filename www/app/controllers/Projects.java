@@ -763,7 +763,7 @@ public class Projects extends SmartCRUD
 			}
 			String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + currentRequest.project.id + "&isOverlay=false&url=#";
 			Notifications.notifyUser( currentRequest.user, "accepted", url, "your Request to be deleted from project", currentRequest.project.name, (byte) 1, null );
-			Log.addLog( "Deletion request accepted", currentRequest.project, currentRequest.user );
+			Log.addLog( "Deleted from project", currentRequest.project, currentRequest.user );
 			currentRequest.delete();
 			renderJSON( true );
 			// Log.addUserLog( "Request deletion from project", project );
