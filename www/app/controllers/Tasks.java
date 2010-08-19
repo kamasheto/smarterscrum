@@ -815,6 +815,24 @@ public class Tasks extends SmartCRUD
 		{	
 			tmp.DeleteTask();
 			tmp.save();
+			ArrayList<User> users = new ArrayList<User>();
+			if(tmp.assignee!=null)
+				users.add(tmp.assignee);
+			if(tmp.reviewer!=null)
+				users.add(tmp.reviewer);
+			if(tmp.reporter!=null)
+				users.add(tmp.reporter);
+			for(Task t : tmp.subTasks)
+			{
+				if(t.assignee!=null && !users.contains(t.assignee))
+					users.add(t.assignee);
+				if(t.reviewer!=null && !users.contains(t.reviewer))
+					users.add(t.reviewer);
+				if(t.reporter!=null && !users.contains(t.reporter))
+					users.add(t.reporter);
+			}
+			String url = Router.getFullUrl("Application.externalOpen")+"?id="+tmp.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+tmp.id;
+			Notifications.notifyUsers( users, "deleted", url, "task", "task "+tmp.number, (byte)-1, tmp.project);
 			Update.update( tmp.project, "reload('tasks-"+tmp.project.id+"', 'task-" + tmp.id + "')" );
 			deleteSubTasks(id);
 			renderText("Task deleted successfully.");

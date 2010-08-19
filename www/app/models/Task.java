@@ -379,12 +379,6 @@ public class Task extends SmartModel
 			task.save();
 		}
 		Log.addUserLog( "Deleted task", this, this.project );
-		ArrayList<User> users = new ArrayList<User>();
-		users.add(this.assignee);
-		users.add(this.reviewer);
-		users.add(this.reporter);
-		String url = Router.getFullUrl("Application.externalOpen")+"?id="+this.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+this.project.id;
-		//Notifications.notifyUsers( users, "deleted", url, "task", "task "+this.number, (byte)-1, this.project);
 		this.deleted = true;
 		this.save();
 	}
