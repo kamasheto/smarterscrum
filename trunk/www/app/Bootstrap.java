@@ -11,12 +11,10 @@ import models.Permission;
 import models.ProductRole;
 import models.Project;
 import models.Role;
+import models.Setting;
 import models.Sprint;
 import models.Task;
 import models.User;
-import models.UserNotificationProfile;
-import models.Setting;
-
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import edu.emory.mathcs.backport.java.util.Arrays;
@@ -34,7 +32,7 @@ public class Bootstrap extends Job
 		if( User.count() == 0 )
 		{
 			new Setting().save();
-			
+
 			// add help topics as well
 			HelpTopic.Object[] topics = { // remember the trailing comment, even
 											// if empty!
@@ -49,7 +47,7 @@ public class Bootstrap extends Job
 				new HelpTopic( obj.summary, obj.filename ).save();
 			}
 
-			String[] perms = { "manageLogs", "manageReviewerRequests", "addNote", "manageRoles", "createRole", "editRole", "deleteRole", "editProject", "editBacklog", "editProjectNotificationprofile", "editUserNotificationProfile", "addComponent", "editComponent", "deleteComponent", "addSprint", "editSprint", "editSprintBacklog", "addMeeting", "editMeeting", "deleteMeeting", "changeEstimations", "changeTaskType", "changeTaskStatus", "changeTaskDescreption", "changeReviewer", "changeAssignee", "changeAssigneeInSprint", "invite", "manageRequests", "editColumn", "getComponentMembers", "chooseAssignee", "chooseReporter", "chooseReviewer", "addProductRole", "editProductRole", "deleteProductRole", "request", "setDependentStories", "editColumnsPositions", "assignStoryToSprint", "respond", "accept", "renameColumns", "addReviewLog", "AddTask", "modifyTask", "changeStatus", "addTaskStatus", "editTaskStatus", "addTaskType", "editTaskType", "viewReviewLog", "startGame", "viewChat", "associateTaskToMeeting", "reportImpediment", "editTask", "setMeetingAttendance", "deleteProject", "ShowColumn", "HideColumn", "AssociateArtifacts", "AssociateSprinttoMeeting", "joinMeeting", "revokeUserRole" };
+			String[] perms = { "manageLogs", "manageReviewerRequests", "addNote", "manageRoles", "createRole", "editRole", "deleteRole", "editProject", "editBacklog", "editProjectNotificationprofile", "editUserNotificationProfile", "addComponent", "editComponent", "deleteComponent", "addSprint", "editSprint", "editSprintBacklog", "addMeeting", "editMeeting", "deleteMeeting", "changeEstimations", "changeTaskType", "changeTaskStatus", "changeTaskDescreption", "changeReviewer", "changeAssignee", "changeAssigneeInSprint", "invite", "manageRequests", "editColumn", "getComponentMembers", "chooseAssignee", "chooseReporter", "chooseReviewer", "addProductRole", "editProductRole", "deleteProductRole", "request", "setDependentStories", "editColumnsPositions", "assignStoryToSprint", "respond", "accept", "renameColumns", "addReviewLog", "AddTask", "modifyTask", "changeStatus", "addTaskStatus", "editTaskStatus", "addTaskType", "editTaskType", "viewReviewLog", "startGame", "viewChat", "associateTaskToMeeting", "reportImpediment", "editTask", "setMeetingAttendance", "deleteProject", "ShowColumn", "HideColumn", "AssociateArtifacts", "AssociateSprinttoMeeting", "joinMeeting", "revokeUserRole", "deleteTask" };
 			for( String perm : perms )
 			{
 				new Permission( perm, perm ).save();
