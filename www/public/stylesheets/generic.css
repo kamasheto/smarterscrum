@@ -782,7 +782,7 @@ html {
 	left: 0px;
 	top: 35px;
 	width: 200px;
-	z-index: 100;
+	z-index: 9996;
 	padding: 8px;
 	border-radius: 8px;
 	border-top-right-radius: 0;
