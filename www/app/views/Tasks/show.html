@@ -232,11 +232,7 @@
 	#{/form}
 	</div>
 	#{if deletable}
-	<form action="@{delete(object.id)}?x-http-method-override=DELETE" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" onSubmit="return confirm('${message2}');">	
-				<p class="crudDelete">
-					<input type="submit" value="&{'crud.delete', type.modelName}" />
-				</p>
-	</form>
+	
 	#{/if}
 	
 	#{if !deletable}
