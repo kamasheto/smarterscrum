@@ -285,8 +285,10 @@ public class Tasks extends SmartCRUD
 		object.save();
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+tmp.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+tmp.id;
 		ArrayList<User> users= new ArrayList<User>();
-		users.add(tmp.assignee);
-		users.add(tmp.reviewer);
+		if(tmp.assignee!=null)
+			users.add(tmp.assignee);
+		if(tmp.reviewer!=null)
+			users.add(tmp.reviewer);
 		Notifications.notifyUsers(users, "added", url, "task", "task "+tmp.number, (byte)0, tmp.project);
 		Log.addUserLog( "Created new task", tmp, tmp.project );
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
@@ -760,15 +762,22 @@ public class Tasks extends SmartCRUD
 			Update.update( tmp.project, "reload('tasks','task-" + tmp.id + "')" );
 			String url = Router.getFullUrl("Application.externalOpen")+"?id="+tmp.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+tmp.id;
 			ArrayList<User> nusers= new ArrayList<User>();
-			nusers.add(tmp.assignee);
-			nusers.add(tmp.reviewer);
-			nusers.add(tmp.reporter);
+			if(tmp.assignee!=null)
+				nusers.add(tmp.assignee);
+			if(tmp.reviewer!=null)
+				nusers.add(tmp.reviewer);
+			if(tmp.reporter!=null)
+				nusers.add(tmp.reporter);
 			User oldAssign = User.findById(oldAssignee);
 			User oldrev = User.findById(oldAssignee);
-			if(!oldAssign.equals(tmp.assignee))
-				nusers.add(oldAssign);
-			if(!oldrev.equals(tmp.reviewer))
-				nusers.add(oldrev);
+			if (oldAssign!=null) {
+				if (!oldAssign.equals(tmp.assignee))
+					nusers.add(oldAssign);
+			}
+			if (oldrev!=null) {
+				if (!oldrev.equals(tmp.reviewer))
+					nusers.add(oldrev);
+			}
 			Notifications.notifyUsers(nusers, "edited", url, "task", "task "+tmp.number, (byte)0, tmp.project);
 			Log.addUserLog( "Edit task", tmp, tmp.project );
 			Application.overlayKiller( "", "" );
@@ -800,9 +809,12 @@ public class Tasks extends SmartCRUD
 			// tmp.project, new Date( System.currentTimeMillis() ) );
 			Log.addUserLog( "Deleted task", tmp, tmp.project );
 			ArrayList<User> users = new ArrayList<User>();
-			users.add(tmp.assignee);
-			users.add(tmp.reviewer);
-			users.add(tmp.reporter);
+			if(tmp.assignee!=null)
+				users.add(tmp.assignee);
+			if(tmp.reviewer!=null)
+				users.add(tmp.reviewer);
+			if(tmp.reporter!=null)
+				users.add(tmp.reporter);
 			String url = Router.getFullUrl("Application.externalOpen")+"?id="+tmp.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+tmp.project.id;
 			Notifications.notifyUsers( users, "deleted", url, "task", "task "+tmp.number, (byte)-1, tmp.project);
 			object.save();
@@ -872,12 +884,18 @@ public class Tasks extends SmartCRUD
 		taskFrom.save();
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+taskFrom.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+taskFrom.id;
 		ArrayList<User> nusers= new ArrayList<User>();
-		nusers.add(taskFrom.assignee);
-		nusers.add(taskFrom.reviewer);
-		nusers.add(taskFrom.reporter);
-		nusers.add(taskTo.assignee);
-		nusers.add(taskTo.reviewer);
-		nusers.add(taskTo.reporter);
+		if(taskFrom.assignee!=null)
+			nusers.add(taskFrom.assignee);
+		if(taskFrom.reviewer!=null)
+			nusers.add(taskFrom.reviewer);
+		if(taskFrom.reporter!=null)
+			nusers.add(taskFrom.reporter);
+		if(taskTo.assignee!=null)
+			nusers.add(taskTo.assignee);
+		if(taskTo.reviewer!=null)
+			nusers.add(taskTo.reviewer);
+		if(taskTo.reporter!=null)
+			nusers.add(taskTo.reporter);
 		Notifications.notifyUsers(nusers, "added", url, "task "+taskTo.number+"to the dependent tasks on", "task "+taskFrom.number, (byte)0, taskFrom.project);
 	}
 
@@ -918,9 +936,12 @@ public class Tasks extends SmartCRUD
 		temp.save();
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+temp.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+temp.id;
 		ArrayList<User> nusers= new ArrayList<User>();
-		nusers.add(temp.assignee);
-		nusers.add(temp.reviewer);
-		nusers.add(temp.reporter);		
+		if(temp.assignee!=null)
+			nusers.add(temp.assignee);
+		if(temp.reviewer!=null)
+			nusers.add(temp.reviewer);
+		if(temp.reporter!=null)
+			nusers.add(temp.reporter);		
 		Notifications.notifyUsers(nusers, "changed", url, "the effort points for the", "task "+temp.number, (byte)0, temp.project);
 		Log.addLog( "Effort entered for task", Security.getConnected(), temp, temp.project );
 		renderText( "Effort changed successfully" );
@@ -1092,9 +1113,12 @@ public class Tasks extends SmartCRUD
 		Update.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task1.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task1.id;
 		ArrayList<User> nusers= new ArrayList<User>();
-		nusers.add(task1.assignee);
-		nusers.add(task1.reviewer);
-		nusers.add(task1.reporter);		
+		if(task1.assignee!=null)
+			nusers.add(task1.assignee);
+		if(task1.reviewer!=null)
+			nusers.add(task1.reviewer);
+		if(task1.reporter!=null)
+			nusers.add(task1.reporter);		
 		Notifications.notifyUsers(nusers, "changed", url, "the description of the", "task "+task1.number, (byte)0, task1.project);
 		renderText( "The description was changed successfully" );
 		return true;
@@ -1257,9 +1281,12 @@ public class Tasks extends SmartCRUD
 		Update.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task1.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task1.id;
 		ArrayList<User> nusers= new ArrayList<User>();
-		nusers.add(task1.assignee);
-		nusers.add(task1.reviewer);
-		nusers.add(task1.reporter);		
+		if(task1.assignee!=null)
+			nusers.add(task1.assignee);
+		if(task1.reviewer!=null)
+			nusers.add(task1.reviewer);
+		if(task1.reporter!=null)
+			nusers.add(task1.reporter);		
 		Notifications.notifyUsers(nusers, "changed", url, "the status of the", "task "+task1.number, (byte)0, task1.project);		
 		return true;
 	}
@@ -1327,9 +1354,12 @@ public class Tasks extends SmartCRUD
 		Log.addUserLog( "Edit task estimation", task, task.project );
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task.id;
 		ArrayList<User> nusers= new ArrayList<User>();
-		nusers.add(task.assignee);
-		nusers.add(task.reviewer);
-		nusers.add(task.reporter);		
+		if(task.assignee!=null)
+			nusers.add(task.assignee);
+		if(task.reviewer!=null)
+			nusers.add(task.reviewer);
+		if(task.reporter!=null)
+			nusers.add(task.reporter);		
 		Notifications.notifyUsers(nusers, "changed", url, "the estimation points of the", "task "+task.number, (byte)0, task.project);
 		renderText( "The task's total points was updated successfully" );
 		return true;
@@ -1398,10 +1428,14 @@ public class Tasks extends SmartCRUD
 		Update.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task1.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task1.id;
 		ArrayList<User> nusers= new ArrayList<User>();
-		nusers.add(task1.assignee);
-		nusers.add(task1.reviewer);
-		nusers.add(task1.reporter);
-		nusers.add(oldassi);
+		if(task1.assignee!=null)
+			nusers.add(task1.assignee);
+		if(task1.reviewer!=null)
+			nusers.add(task1.reviewer);
+		if(task1.reporter!=null)
+			nusers.add(task1.reporter);
+		if(oldassi!=null)
+			nusers.add(oldassi);
 		Notifications.notifyUsers(nusers, "changed", url, "the assignee of the", "task "+task1.number, (byte)0, task1.project);		
 		if( userId == Security.getConnected().id )
 		{
@@ -1470,10 +1504,14 @@ public class Tasks extends SmartCRUD
 		reviewer.save();
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task1.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task1.id;
 		ArrayList<User> nusers= new ArrayList<User>();
-		nusers.add(task1.assignee);
-		nusers.add(task1.reviewer);
-		nusers.add(task1.reporter);
-		nusers.add(oldReviewer);
+		if(task1.assignee!=null)
+			nusers.add(task1.assignee);
+		if(task1.reviewer!=null)
+			nusers.add(task1.reviewer);
+		if(task1.reporter!=null)
+			nusers.add(task1.reporter);
+		if(oldReviewer!=null)
+			nusers.add(oldReviewer);
 		Notifications.notifyUsers(nusers, "changed", url, "the reviewer of the", "task "+task1.number, (byte)0, task1.project);
 		if( userId == Security.getConnected().id )
 		{
@@ -1538,9 +1576,12 @@ public class Tasks extends SmartCRUD
 		Update.update( task1.project, "sprintLoad(" + task1.id + ",'" + id + "_type');" );;
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task1.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task1.id;
 		ArrayList<User> nusers= new ArrayList<User>();
-		nusers.add(task1.assignee);
-		nusers.add(task1.reviewer);
-		nusers.add(task1.reporter);
+		if(task1.assignee!=null)
+			nusers.add(task1.assignee);
+		if(task1.reviewer!=null)
+			nusers.add(task1.reviewer);
+		if(task1.reporter!=null)
+			nusers.add(task1.reporter);
 		Notifications.notifyUsers(nusers, "changed", url, "the type of the", "task "+task1.number, (byte)0, task1.project);		
 		if( userId == Security.getConnected().id )
 		{
@@ -1802,9 +1843,12 @@ public class Tasks extends SmartCRUD
 		task.save();
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task.project.id+"&isOverlay=false&url=/components/viewthecomponent?componentId="+component.id;
 		ArrayList<User> nusers= new ArrayList<User>();		
-		nusers.add(task.assignee);
-		nusers.add(task.reviewer);
-		nusers.add(task.reporter);
+		if(task.assignee!=null)
+			nusers.add(task.assignee);
+		if(task.reviewer!=null)
+			nusers.add(task.reviewer);
+		if(task.reporter!=null)
+			nusers.add(task.reporter);
 		for(User u : component.componentUsers)
 			{
 				if(!nusers.contains(u))
@@ -1839,9 +1883,12 @@ public class Tasks extends SmartCRUD
 		task.save();
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task.id;
 		ArrayList<User> nusers= new ArrayList<User>();
-		nusers.add(task.assignee);
-		nusers.add(task.reviewer);
-		nusers.add(task.reporter);
+		if(task.assignee!=null)
+			nusers.add(task.assignee);
+		if(task.reviewer!=null)
+			nusers.add(task.reviewer);
+		if(task.reporter!=null)
+			nusers.add(task.reporter);
 		Notifications.notifyUsers(nusers, "assigned", url, user.name+" to the", "task "+task.number, (byte)0, task.project);
 		Log.addUserLog( "Assigned task assignee", task, user, task.project );
 		Update.update( task.project, "reload('task-" + taskId + "');" );
@@ -1872,9 +1919,12 @@ public class Tasks extends SmartCRUD
 		task.save();
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task.id;
 		ArrayList<User> nusers= new ArrayList<User>();
-		nusers.add(task.assignee);
-		nusers.add(task.reviewer);
-		nusers.add(task.reporter);
+		if(task.assignee!=null)
+			nusers.add(task.assignee);
+		if(task.reviewer!=null)
+			nusers.add(task.reviewer);
+		if(task.reporter!=null)
+			nusers.add(task.reporter);
 		Notifications.notifyUsers(nusers, "assigned", url, user.name+" to review the", "task "+task.number, (byte)0, task.project);
 		Log.addUserLog( "Assigned task reviewer", task, user, task.project );
 		Update.update( task.project, "reload('task-" + taskId + "');" );
@@ -1941,9 +1991,12 @@ public class Tasks extends SmartCRUD
 		task.save();
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task.id;
 		ArrayList<User> nusers= new ArrayList<User>();
-		nusers.add(task.assignee);
-		nusers.add(task.reviewer);
-		nusers.add(task.reporter);
+		if(task.assignee!=null)
+			nusers.add(task.assignee);
+		if(task.reviewer!=null)
+			nusers.add(task.reviewer);
+		if(task.reporter!=null)
+			nusers.add(task.reporter);
 		Notifications.notifyUsers(nusers, "changed", url, "the deadline of the", "task "+task.number, (byte)0, task.project);
 		Update.update( Security.getConnected(), "reload('task-" + task.id + "','tasks" + task.project.id + "')" );
 		renderJSON( true );
@@ -1966,9 +2019,12 @@ public class Tasks extends SmartCRUD
 		task.save();
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task.id;
 		ArrayList<User> nusers= new ArrayList<User>();
-		nusers.add(task.assignee);
-		nusers.add(task.reviewer);
-		nusers.add(task.reporter);
+		if(task.assignee!=null)
+			nusers.add(task.assignee);
+		if(task.reviewer!=null)
+			nusers.add(task.reviewer);
+		if(task.reporter!=null)
+			nusers.add(task.reporter);
 		Notifications.notifyUsers(nusers, "removed", url, "the deadline of the", "task "+task.number, (byte)-1, task.project);
 		Update.update( Security.getConnected(), "reload('task-" + task.project.id + "')" );
 		renderJSON( true );
