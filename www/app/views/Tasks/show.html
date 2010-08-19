@@ -176,9 +176,9 @@
 			<select id="object_taskSprint" name="object.taskSprint@id">
 			<option value="">(None)</option>
 			#{list items:object.project.sprints ,as :'sprint'}
-			#{ifnot sprint.ended}
+			#{if !sprint.ended && !sprint.running()}
 			<option value="${sprint.id}"#{if object.taskSprint == sprint} selected#{/if}>sprint ${sprint.sprintNumber}</option>
-			#{/ifnot}
+			#{/if}
 			#{/list}		
 			</select>
 			#{/else}
@@ -187,9 +187,9 @@
 			<select id="object_taskSprint" name="object.taskSprint@id">
 			<option value="">(None)</option>
 			#{list items:object.project.sprints ,as :'sprint'}
-			#{ifnot sprint.ended}
+			#{if !sprint.ended && !sprint.running()}
 			<option value="${sprint.id}"#{if object.taskSprint == sprint} selected#{/if}>sprint ${sprint.sprintNumber}</option>
-			#{/ifnot}
+			#{/if}
 			#{/list}		
 			</select>
 			#{/else}
