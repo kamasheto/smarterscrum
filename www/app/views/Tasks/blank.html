@@ -129,16 +129,16 @@
 	
 	#{if p!=null && project.users.size()>0}
 	<div class="crudField" name="view-more" style="display:none">
-	<label for="object_reviewer">Reviewer</label>
-	<select id="object_reviewer" name="object.reviewer@id">
+	<label class="rev" for="object_reviewer">Reviewer</label>
+	<select class="rev" id="object_reviewer" name="object.reviewer@id">
 	<option value="">None</option>
 	</select>
 	#{/if}
 	
 	#{elseif component!=null && component.componentUsers.size()>0}
 	<div class="crudField" name="view-more" style="display:none">
-	<label for="object_reviewer">Reviewer</label>
-	<select id="object_reviewer" name="object.reviewer@id">
+	<label class="rev" for="object_reviewer">Reviewer</label>
+	<select class="rev" id="object_reviewer" name="object.reviewer@id">
 	<option value="">None</option>
 	#{list items:component.componentUsers ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
@@ -147,9 +147,9 @@
 	#{/elseif}
 	
 	#{elseif task!=null && task.component.componentUsers.size()>0}
-	<div class="crudField" name="view-more" style="display:none">
-	<label for="object_reviewer">Reviewer</label>
-	<select id="object_reviewer" name="object.reviewer@id">
+	<div class="crudField rev" name="view-more" style="display:none">
+	<label class="rev" for="object_reviewer">Reviewer</label>
+	<select class="rev" id="object_reviewer" name="object.reviewer@id">
 	<option value="">None</option>
 	#{list items:task.component.componentUsers ,as :'user'}
 	<option value="${user.id}">${user.name}</option>
@@ -191,7 +191,7 @@
 	</div>
 	#{/if}
 	
-	#{if sprints!=null}
+	#{if sprints.size()>0}
 	<div class="crudField" name="view-more" style="display:none">	
 	<label for="object_taskSprint">Sprint</label>
 	<select id="object_taskSprint" name="object.taskSprint@id">
@@ -231,6 +231,7 @@
 	$(function()
 	{
 		getType();
+		
 	})
 	var data='${productRoles}'.split("-");
 	$("#example").autocomplete(data);
@@ -290,6 +291,10 @@ function getType()
 			str += '<option value='+item.id+'>'+item.name+'</option>';
 		});
 		$('#object_reviewer').html( str );
+		if(data.length==0)
+		$('.rev').css('display','none');
+		else
+		$('.rev').css('display','inline-block');
 	}); 
 }
 </script>
