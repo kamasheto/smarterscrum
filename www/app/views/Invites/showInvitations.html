@@ -1,8 +1,7 @@
 #{extends 'sidebar.html' /}
-<br/>
-<font size=3><img src="/public/images/famfam/arrow_grey_right.png"/>Project Invitations:</font><br/><br/>
+<span style="color:white;text-shadow:0px 0px 10px #fff;font-size:12px;"><img src="/public/images/famfam/arrow_grey_right.png"/>Project Invitations:</span><br/><br/>
 #{if invitations.isEmpty()}
-#{note 'error'} There are no new project invitations#{/note}
+#{note} There are no new project invitations#{/note}
 #{/if}
 #{else}
 #{list items:invitations, as:'inv'}
@@ -14,9 +13,9 @@
 #{/list}
 #{/else}
 <br/><br/>
-<font size=3><img src="/public/images/famfam/arrow_grey_right.png"/>Meeting Invitations:</font><br/><br/>
+<span style="color:white;text-shadow:0px 0px 10px #fff;font-size:12px;"><img src="/public/images/famfam/arrow_grey_right.png"/>Meeting Invitations:</span><br/><br/>
 #{if meetings.isEmpty()}
-#{note 'error'} There are no new meeting invitations#{/note}
+#{note} There are no new meeting invitations#{/note}
 #{/if}
 #{else}
 #{list items:meetings, as:'meet'}
