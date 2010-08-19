@@ -64,9 +64,9 @@
 <b> Meeting Type </b>:  ${meeting.type} <br>
 #{/ifnot}
 <br>
-#{if !meeting.description==null}
+#{ifnot meeting.description==null}
 <b> Description </b>:  ${meeting.description.nl2br()}<br>
-#{/if}
+#{/ifnot}
 <div class="reload-meetingAttendees-${meeting.id}" name="@{Meetings.invitedMembers(meeting.id)}">Attendees</div>
 <div class="reload-meetingNotes-${meeting.id}" name="@{Meetings.notes(meeting.id)}">Notes</div>
 <div class="reload-meetingTasks-${meeting.id}" name="/tasks/magicShow?meetingId=${meeting.id} ">Tasks</div>
