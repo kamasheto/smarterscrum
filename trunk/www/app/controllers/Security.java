@@ -1,11 +1,10 @@
 package controllers;
 
-import notifiers.Notifications;
+import models.Log;
 import models.Project;
 import models.User;
-import models.Log;
+import notifiers.Notifications;
 import play.data.validation.Required;
-import play.libs.Mail;
 import play.mvc.Router;
 
 /**
@@ -23,8 +22,8 @@ public class Security extends Secure.Security
 	 */
 	public static User getConnected()
 	{
-		String usr = (isConnected() ? connected() : "").toLowerCase();
-		return User.find( "select u from User u where u.email=? or u.name=?", usr, usr ).first();
+		String usr = (isConnected() ? connected() : "");
+		return User.find( "select u from User u where u.email=? or u.name=?", usr.toLowerCase(), usr ).first();
 	}
 
 	/**
@@ -38,7 +37,7 @@ public class Security extends Secure.Security
 	 */
 	public static boolean authentify( String email, String password )
 	{
-		User user = User.find( "select u from User u where (u.email=? or u.name=?) and u.pwdHash = ?", email.toLowerCase(), email.toLowerCase(), Application.hash( password ) ).first();
+		User user = User.find( "select u from User u where (u.email=? or u.name=?) and u.pwdHash = ?", email.toLowerCase(), email, Application.hash( password ) ).first();
 		/* By Tj.Wallas_ in Sprint2 */
 		if( user != null && !user.isActivated )
 		{
@@ -120,23 +119,26 @@ public class Security extends Secure.Security
 			Security.forgotPassword();
 		}
 		User u;
-		username = username.toLowerCase();
-		u = User.find( "select u from User u where u.email=? or u.name=?", username, username ).first();
+		u = User.find( "select u from User u where u.email=? or u.name=?", username.toLowerCase(), username ).first();
 		if( u == null || u.deleted == true )
 		{
 			flash.error( "This username/Email does not exist" );
-			// Logs.addLog( "A guest tried to recover a password of the username " + username + " but the username was not found" );
-			Log.addLog("Guest submitted a recovery password for " + username + " but was not found");
+			// Logs.addLog(
+			// "A guest tried to recover a password of the username " + username
+			// + " but the username was not found" );
+			Log.addLog( "Guest submitted a recovery password for " + username + " but was not found" );
 			Security.forgotPassword();
 		}
 		else
 		{
 			u.recoveryHash = Application.randomHash( 10 );
-			u.save();			
-			String url = Router.getFullUrl("Security.passwordRecovery")+"?h=" + u.recoveryHash;			
-			Notifications.lostPass(u, url);
-			// Logs.addLog( "A guest tried to recover a password of the username " + username );
-			Log.addLog("Guest tried to recover password for username: " + username);
+			u.save();
+			String url = Router.getFullUrl( "Security.passwordRecovery" ) + "?h=" + u.recoveryHash;
+			Notifications.lostPass( u, url );
+			// Logs.addLog(
+			// "A guest tried to recover a password of the username " + username
+			// );
+			Log.addLog( "Guest tried to recover password for username: " + username );
 			flash.success( "An email was sent to your email address." );
 			try
 			{
@@ -197,8 +199,9 @@ public class Security extends Secure.Security
 			u.recoveryHash = "";
 			u.save();
 			flash.success( "Password changed successfully" );
-			// Logs.addLog( u.name + " forgot his/her password and recovered it successfully" );
-			Log.addLog(u.name + " recovered his password successfully");
+			// Logs.addLog( u.name +
+			// " forgot his/her password and recovered it successfully" );
+			Log.addLog( u.name + " recovered his password successfully" );
 			try
 			{
 				Secure.login();
