@@ -19,5 +19,8 @@ ${component.getFullName()}
 #{if component.hasRunningGames()}
 <a onClick="overlayOpen('/games/chooseGame?cId=${component.id}');"><img src="@{'/public/images/famfam/joystick.png'}" title="join a running game"/></a>
 #{/if}
+#{else}
+<img class="dim" src="@{'/public/images/famfam/joystick.png'}" title="join a running game"/>
+#{/else}
 </div>
 #{/list}
