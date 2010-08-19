@@ -6,19 +6,22 @@
 
 var CURRENT_PROJECT = 0;
 
+function reload_board(sid,compId)
+{
+	$('#theLoadedContent').contents().find('#mainBoard').load('/boards/loadboard1?sprintID='+sid+' #mainBoard');
+}
 function reload_note_open(sid, taskId, compId, userId) {
 	$('#theLoadedContent').contents().find('#task-'+taskId+'_T_0').load('/boards/loadboard1?sprintID='+sid+' #task-'+taskId+'_T_0', 
 	function()
 	{
 		$('#theLoadedContent').contents().find('#'+taskId+'_button').click();
-		$('#sideMeet').find('#'+userId+'_user').first().click();
+		$('#theLoadedContent').contents().find('#sideMeet').find('#'+userId+'_user').click();
 	});
 	if(compId!=0)
 	$('#theLoadedContent').contents().find('#task-'+taskId+'_T_'+compId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #task-'+taskId+'_T_'+compId,
 	function()
 	{
 		$('#theLoadedContent').contents().find('#'+taskId+'_button').click();
-		$('#sideMeet').find('#'+userId+'_user').first().click();
 	});
 }
 function reload_note_close(sid, taskId, compId)
@@ -470,6 +473,11 @@ $(function() {
 	$('.draggableChild .ui-widget-header').live(
 			'click',
 			function() {
+				//alert($(this).attr('class'));
+				if ($(this).hasClass('bar') || $(this).hasClass('overlay') ||$(this).parent().hasClass('overlay')) {
+			//	alert('l');
+					return;
+				}
 				if($(this).next().html()=='')
 					load($(this).parent().attr('name'),$(this).parent().attr('id'), 3);
 
