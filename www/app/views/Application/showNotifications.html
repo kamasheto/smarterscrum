@@ -1,12 +1,12 @@
 #{extends 'sidebar.html' /}
+#{if emailing}<img src="/public/images/famfam/cross.png" /> <a id = "modify_emailing" onclick="modify_emailing(0);">Stop receiving Emails?</a>#{/if}
+#{else}<img src="/public/images/famfam/accept.png" /> <a id = "modify_emailing" onclick="modify_emailing(1);">Enable receiving Emails?</a>#{/else}
 
 <ul id="notifications"></ul>
 
 <a href="#"  style="display:inline-block" class="Notificationp" onclick="previousNotificationPage();"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
 <a href="#"  style="display:inline-block" class="Notificationn" onclick="nextNotificationPage();"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
 
-<div  style=" position: absolute; bottom: 0;"><b><font size="2">#{if emailing}<img src="/public/images/famfam/stop.png" /> <a id = "modify_emailing" onclick="modify_emailing(0);">Stop receiving Emails?</a>#{/if}
-#{else}<img src="/public/images/famfam/forward.png" /> <a id = "modify_emailing" onclick="modify_emailing(1);">Enable receiving Emails?</a>#{/else}</font></b></div>
 
 <script type="text/javascript">
 
