@@ -1,13 +1,34 @@
 #{extends 'sidebar.html' /}
+<div id="all">
 #{if emailing}<div id = "modify_emailing"><img src="/public/images/famfam/cross.png" /> <a onclick="modify_emailing(0);">Stop receiving Emails?</a></div>#{/if}
 #{else}<div id = "modify_emailing"><img src="/public/images/famfam/accept.png" /> <a onclick="modify_emailing(1);">Enable receiving Emails?</a></div>#{/else}
-
+#{if pageOfNotifications.size()==0}
 <div id="notifications">#{note}Sorry you currently have no notifications#{/note}</div>
+#{/if}#{else}
+#{list items:pageOfNotifications, as:'noti'}
+<div><p><font color="white"><a href = "#">${noti.actionPerformer.name}</a> has ${noti.actionType} ${noti.resourceType}: <a href = "${noti.resourceURL}">${noti.resourceName}</a> 
+#{ifnot noti.project == null}
+in project <a href="/application/externalOpen?id=${noti.project.id}$isOverlay=false&url=#">${noti.project.name}</a>
+#{/ifnot}</p></font></div>
+#{/list}
+#{if !first}
+<a onclick="$('#all').load('@{Application.showNotifications(page-1)}');" href"#" >Previous</a>
+#{/if}
+#{else}
+<font color="grey">Previous</font>
+#{/else}
+#{if !last}
+<a onclick="$('#all').load('@{Application.showNotifications(page+1)}');" href"#" >Next</a>
+#{/if}
+#{else}	
+<font color="grey">Next</font>
+#{/else}
+#{/else}
 <div class="p" style="display:none">
 <a href="#"  style="display:inline-block" class="Notificationp" onclick="previousNotificationPage();"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
 <a href="#"  style="display:inline-block" class="Notificationn" onclick="nextNotificationPage();"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
 </div>
-
+</div>
 <script type="text/javascript">
 function modify_emailing(i)
 {
@@ -24,7 +45,7 @@ function modify_emailing(i)
 				$('#modify_emailing').html('<img src="/public/images/famfam/cross.png" /> <a onclick="modify_emailing(0);">Stop receiving Emails?</a>');
 			});
 }
-	search_notifications(0);
+	//search_notifications(0);
 	function search_notifications(page) {
 		$('#loading_img').show()
 		$.post('/application/listNotifications', {page: page}, function(response){
