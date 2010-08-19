@@ -184,7 +184,7 @@
 	<select id="object_dependentStories" name="object.dependentTasks@id" multiple="yes">
 	#{list items:project.projectTasks ,as :'task2'}
 	#{if task2.deleted==false}
-	<option value="${task2.description}">${task2.description}</option>
+	<option value="${task2.id}">${task2.description}</option>
 	#{/if}
 	#{/list}
 	</select>
