@@ -807,40 +807,24 @@ public class Tasks extends SmartCRUD
 	 * @return void
 	 */
 	public static void delete( long id )
-	{
-		ObjectType type = ObjectType.get( getControllerClass() );
-		notFoundIfNull( type );
-		JPASupport object = type.findById( id );
-		Task tmp = (Task) object;
+	{	
+		Task tmp = Task.findById(id);
 		Security.check( Security.getConnected().in( tmp.project ).can( "modifyTask" ) );
 		try
-		{
-			tmp.deleted = true;			
-			for(int i=0;i<tmp.subTasks.size();i++)
-			{
-				tmp.subTasks.get(i).deleted = true;
-				tmp.subTasks.get(i).save();
-			}
-			// Logs.addLog( Security.getConnected(), "delete", "Task", tmp.id,
-			// tmp.project, new Date( System.currentTimeMillis() ) );
-			Log.addUserLog( "Deleted task", tmp, tmp.project );
-			ArrayList<User> users = new ArrayList<User>();
-			if(tmp.assignee!=null)
-				users.add(tmp.assignee);
-			if(tmp.reviewer!=null)
-				users.add(tmp.reviewer);
-			if(tmp.reporter!=null)
-				users.add(tmp.reporter);
-			String url = Router.getFullUrl("Application.externalOpen")+"?id="+tmp.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+tmp.project.id;
-			Notifications.notifyUsers( users, "deleted", url, "task", "task "+tmp.number, (byte)-1, tmp.project);
-			object.save();
-			flash.success( Messages.get( "crud.deleted", type.modelName, object.getEntityId() ) );
-			Update.update( tmp.project, "reload('tasks')" );
-			Application.overlayKiller( "", "" );
+
+		{	
+			tmp.DeleteTask();
+			tmp.save();
+			Update.update( tmp.project, "reload('tasks-"+tmp.project.id+"', 'task-" + tmp.id + "')" );
+			deleteSubTasks(id);
+			renderText("Task deleted successfully.");
+			
+			
+
 		}
 		catch( Exception e )
 		{
-			flash.error( Messages.get( "crud.delete.error", type.modelName, object.getEntityId() ) );
+			flash.error( Messages.get( "crud.delete.error", "Task", tmp.getEntityId() ) );
 		}
 
 	}
@@ -1772,28 +1756,28 @@ public class Tasks extends SmartCRUD
 					List<Task> tasks = new ArrayList<Task>();
 					for( Task task1 : project.projectTasks )
 					{
-						if( task1.assignee != null && task1.assignee.equals( user ) && task1.checkUnderImpl() && task1.taskStatus != null && !task1.taskStatus.closed )
+						if( !task1.deleted && task1.assignee != null && task1.assignee.equals( user ) && task1.checkUnderImpl() && task1.taskStatus != null && !task1.taskStatus.closed )
 						{
 							tasks.add( task1 );
 						}
 					}
 					for( Task task1 : project.projectTasks )
 					{
-						if( task1.reviewer != null && task1.reviewer.equals( user ) && task1.checkUnderImpl() && task1.taskStatus != null && task1.taskStatus.pending )
+						if( !task1.deleted && task1.reviewer != null && task1.reviewer.equals( user ) && task1.checkUnderImpl() && task1.taskStatus != null && task1.taskStatus.pending )
 						{
 							tasks.add( task1 );
 						}
 					}
 					for( Task task1 : project.projectTasks )
 					{
-						if( task1.assignee != null && task1.assignee.equals( user ) && task1.taskStatus != null && !task1.taskStatus.closed && !tasks.contains( task1 ) )
+						if( !task1.deleted && task1.assignee != null && task1.assignee.equals( user ) && task1.taskStatus != null && !task1.taskStatus.closed && !tasks.contains( task1 ) )
 						{
 							tasks.add( task1 );
 						}
 					}
 					for( Task task1 : project.projectTasks )
 					{
-						if( task1.reviewer != null && task1.reviewer.equals( user ) && task1.taskStatus != null && task1.taskStatus.pending && !tasks.contains( task1 ) )
+						if( !task1.deleted && task1.reviewer != null && task1.reviewer.equals( user ) && task1.taskStatus != null && task1.taskStatus.pending && !tasks.contains( task1 ) )
 						{
 							tasks.add( task1 );
 						}
@@ -2098,6 +2082,14 @@ public class Tasks extends SmartCRUD
 		renderJSON(users);
 	}
 	
-
+	public static void deleteSubTasks(long id){
+		Task task = Task.findById(id);
+		for(Task sub : task.subTasks){
+			sub.DeleteTask();
+			Update.update( sub.project, "reload('tasks-"+sub.project.id+"', 'task-" + sub.id + "')" );
+		}
+		renderText("Task deleted successfully.");
+	}
+	
 	
 }
