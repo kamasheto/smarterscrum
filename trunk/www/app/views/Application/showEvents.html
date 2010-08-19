@@ -1,9 +1,8 @@
 #{extends 'sidebar.html' /}
-<div id="demo" class="nav"> 
-    <h2>demo</h2> 
-    <form> 
+<div id="demo" class="nav">  
+    <form style="width:255px; margin:0px auto"> 
     <fieldset class="jcalendar"> 
-       <legend id="title"></legend> 
+       <legend style="color:white" id="title"></legend> 
        <div class="jcalendar-wrapper"> 
        <div class="jcalendar-selects"> 
          <select name="day" id="day" class="jcalendar-select-day" style ="display:none;"> 
@@ -65,17 +64,17 @@
     </fieldset> 
     </form> 
   </div> 
-  <br/>
-  <br/>
-  <br/>
+
    <div id="selected_date" style = "display:none;">
-  		<img src='/public/images/famfam/date-icon.png'/> Selected Day Events
+  		
+<span style="color:white;text-shadow:0px 0px 10px #fff;font-size:12px;"><img src='/public/images/famfam/date-icon.png'/>Selected Day Events</span>
   		<ul id="selected_events"></ul>
   </div>
-  <div id = "todayEvents">
+  <div id = "todayEvents" style="color:#fff !important">
   
-  	<img src='/public/images/famfam/date-icon.png'/> Today's Events
-  	<ul>
+  
+<span style="color:white;text-shadow:0px 0px 10px #fff;font-size:12px;"><img src='/public/images/famfam/date-icon.png'/> Today's Events</span>
+  
   	#{ if sprints.size()!=0 || sprints2.size()!=0 ||  meetings.size()!=0}
   	#{list items:sprints, as:'sprint'}
   	<div><img src='/public/images/famfam/date.png'/><a onClick="showProjectWorkspace(${sprint.project.id});loadBox('/sprints/showsprint?id=${sprint.id}','workspace-${sprint.project.id}','');">The Start of Sprint${sprint.sprintNumber} in Project ${sprint.project.name}</a></div>				
@@ -93,10 +92,10 @@
 	#{/if}
 	#{else}
 	<div>
-	<img src='/public/images/famfam/exclamation.png'/> There are no events today.
+	#{note}There are no events today.#{/note}
 	</div>
 	#{/else}
-	</ul>
+	
   </div>
 <script type="text/javascript" charset="utf-8">
 	loadEvents()

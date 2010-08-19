@@ -6,7 +6,7 @@ var itemsPerPage = ${settings.defaultEntriesPerBox};
 #{set 'onLoad'}
 $('#noti').load('@{Application.showNotifications()}');
 $('#events').load('@{Application.showEvents()}');
-$('#noti').load('@{Invites.showInvitations}');
+$('#in').load('@{Invites.showInvitations}');
 #{/set}
 <table style="width:98% !important;margin:0px 1%!important">
 <tr><td><h1>My Notifications</h1></td><td><h1>My Events</h1></td><td><h1>My Invitations</h1></td></tr>

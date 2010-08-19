@@ -2,15 +2,13 @@
 #{if emailing}<img src="/public/images/famfam/cross.png" /> <a id = "modify_emailing" onclick="modify_emailing(0);">Stop receiving Emails?</a>#{/if}
 #{else}<img src="/public/images/famfam/accept.png" /> <a id = "modify_emailing" onclick="modify_emailing(1);">Enable receiving Emails?</a>#{/else}
 
-<ul id="notifications"></ul>
-
+<div id="notifications">#{note}Sorry you currently have no notifications#{/note}</div>
+<div class="p" style="display:none">
 <a href="#"  style="display:inline-block" class="Notificationp" onclick="previousNotificationPage();"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-w"></span></a>
 <a href="#"  style="display:inline-block" class="Notificationn" onclick="nextNotificationPage();"><span style="display:inline-block"class="ui-icon ui-icon-circle-arrow-e"></span></a>
-
+</div>
 
 <script type="text/javascript">
-
-
 function modify_emailing(i)
 {
 	var currentText = document.getElementById("modify_emailing").text;
