@@ -107,9 +107,15 @@ public class Tasks extends SmartCRUD
 		for( int i = 0; i < project.sprints.size(); i++ )
 		{
 			Sprint sprint = project.sprints.get( i );
+			boolean flag = false;
+			Date now = Calendar.getInstance().getTime();
+			if( sprint.startDate.before( now ) && sprint.endDate.after( now ) )
+			{
+				flag = true;
+			}
 			java.util.Date End = sprint.endDate;
 			Calendar cal = new GregorianCalendar();
-			if( End != null && End.after( cal.getTime() ) )
+			if( End != null && End.after( cal.getTime() ) && !flag)
 			{
 				sprints.add( sprint );
 			}
@@ -347,8 +353,8 @@ public class Tasks extends SmartCRUD
 			else
 				productRoles = productRoles + "As a " + tmp.project.productRoles.get( i ).name + ",-";
 		}
-		List <User> revs = null;
-		List<Reviewer> reviewers = null;
+		List <User> revs = new ArrayList<User>();
+		List<Reviewer> reviewers = new ArrayList<Reviewer>();
 		if(tmp.project.taskTypes.size()>0)
 		{
 			if(tmp.taskType!=null)
@@ -400,10 +406,15 @@ public class Tasks extends SmartCRUD
 				insprint = true;
 			}
 		}
-
+		List <Sprint> sprints = null;
+		for(Sprint sprint:tmp.project.sprints )
+		{
+			if(!(sprint.startDate.before( now ) && sprint.endDate.after( now )) && !sprint.ended)
+				sprints.add(sprint);
+		}
 		try
 		{
-			render( type, object, users, revs, statuses, types, dependencies, message2, deletable, comments, productRoles, insprint );
+			render( type, object, users, revs, statuses, types, dependencies, message2, deletable, comments, productRoles, insprint, sprints );
 		}
 		catch( TemplateNotFoundException e )
 		{
@@ -739,19 +750,19 @@ public class Tasks extends SmartCRUD
 			long compId = 0;
 			if( tmp.component != null )
 				compId = tmp.component.id;
-			if(!(tmp.description.equals( oldDescription )) || (tmp.assignee != null && oldAssignee != 0 && tmp.assignee.id!=oldAssignee) || (tmp.reviewer != null && oldReviewer == 0 && tmp.reviewer.id!=oldReviewer) || (tmp.taskType != null && oldTaskType != 0 && tmp.taskType.id!=oldTaskType) )
+			if(tmp.taskSprint!=null && (!(tmp.description.equals( oldDescription )) || (tmp.assignee != null && oldAssignee != 0 && tmp.assignee.id!=oldAssignee) || (tmp.reviewer != null && oldReviewer == 0 && tmp.reviewer.id!=oldReviewer) || (tmp.taskType != null && oldTaskType != 0 && tmp.taskType.id!=oldTaskType)) )
 			{
-				Update.update( Security.getConnected(), "reload_note_open(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ")" );
+				Update.update( Security.getConnected(), "reload_note_open(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ",0)" );
 				Update.update( tmp.project.users, Security.getConnected(), "reload_note_close(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ");sprintLoad(" + tmp.id + ",'" + tmp.id + "_des')" );	
 			}
 			
-			if(tmp.component!=null && (tmp.assignee != null && oldAssignee != 0 && tmp.assignee.id!=oldAssignee))
+			if(tmp.taskSprint!=null && (tmp.component!=null && (tmp.assignee != null && oldAssignee != 0 && tmp.assignee.id!=oldAssignee)))
 			{
 				Update.update( tmp.project, "drag_note_assignee(" + tmp.taskSprint.id + "," + oldAssignee + "," + tmp.assignee.id + "," + tmp.taskStatus.id + "," + compId + "," + tmp.id + ")" );
-				Update.update( Security.getConnected(), "reload_note_open(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ")" );
+				Update.update( Security.getConnected(), "reload_note_open(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ",0)" );
 				Update.update( tmp.project.users, Security.getConnected(), "reload_note_close(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ")" );
 			}
-			if(tmp.taskStatus != null && oldTaskStatus != 0)
+			if(tmp.taskSprint!=null && tmp.taskStatus != null && oldTaskStatus != 0 && tmp.taskStatus.id!=oldTaskStatus)
 			{
 				Update.update( tmp.project, "drag_note_status(" + tmp.taskSprint.id + "," + tmp.assignee.id + "," + oldTaskStatus + "," + tmp.taskStatus.id + "," + compId + "," + tmp.id + ")" );
 			}
@@ -771,12 +782,12 @@ public class Tasks extends SmartCRUD
 			User oldAssign = User.findById(oldAssignee);
 			User oldrev = User.findById(oldAssignee);
 			if (oldAssign!=null) {
-				if (!oldAssign.equals(tmp.assignee))
-					nusers.add(oldAssign);
+			if(!oldAssign.equals(tmp.assignee))
+				nusers.add(oldAssign);
 			}
 			if (oldrev!=null) {
-				if (!oldrev.equals(tmp.reviewer))
-					nusers.add(oldrev);
+			if(!oldrev.equals(tmp.reviewer))
+				nusers.add(oldrev);
 			}
 			Notifications.notifyUsers(nusers, "edited", url, "task", "task "+tmp.number, (byte)0, tmp.project);
 			Log.addUserLog( "Edit task", tmp, tmp.project );
@@ -840,7 +851,7 @@ public class Tasks extends SmartCRUD
 	 */
 	public static void reviewers( long id, long id2, long compId, long projId )
 	{
-		List<User> users = null;
+		List<User> users = new ArrayList<User>();
 		Component component = Component.findById( compId );
 		Project project = Project.findById( projId );
 		User Assignee = User.findById( id2 );
@@ -1090,8 +1101,11 @@ public class Tasks extends SmartCRUD
 		long compId = 0;
 		if( task1.component != null )
 			compId = task1.component.id;
-		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
+		if(task1.taskSprint!=null)
+		{
+		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId+ "," + userId + ")" );
 		Update.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ");sprintLoad(" + task1.id + ",'" + task1.id + "_des')" );
+		}
 		List<User> m = new ArrayList();
 		m.add( task1.assignee );
 		m.add( task1.reporter );
@@ -1422,10 +1436,12 @@ public class Tasks extends SmartCRUD
 			compId = task1.component.id;
 		assignee.tasks.add( task1 );
 		assignee.save();
-
+		if(task1.taskSprint!=null)
+		{
 		Update.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + oldassi.id + "," + newassi + "," + task1.taskStatus.id + "," + compId + "," + task1.id + ")" );
-		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
+		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId+ "," + userId + ")" );
 		Update.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
+		}
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task1.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task1.id;
 		ArrayList<User> nusers= new ArrayList<User>();
 		if(task1.assignee!=null)
@@ -1498,8 +1514,11 @@ public class Tasks extends SmartCRUD
 		long compId = 0;
 		if( task1.component != null )
 			compId = task1.component.id;
-		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
+		if(task1.taskSprint!=null)
+		{
+		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + userId + ")" );
 		Update.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
+		}
 		reviewer.tasks.add( task1 );
 		reviewer.save();
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task1.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task1.id;
@@ -1571,9 +1590,12 @@ public class Tasks extends SmartCRUD
 		long compId = 0;
 		if( task1.component != null )
 			compId = task1.component.id;
-		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
+		if(task1.taskSprint!=null)
+		{
+		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + userId + ")" );
 		Update.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 		Update.update( task1.project, "sprintLoad(" + task1.id + ",'" + id + "_type');" );;
+		}
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task1.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task1.id;
 		ArrayList<User> nusers= new ArrayList<User>();
 		if(task1.assignee!=null)
@@ -1943,7 +1965,7 @@ public class Tasks extends SmartCRUD
 	public static void componentUsers( long cid )
 	{
 		Component c = Component.findById( cid );
-		List<User> users = null;
+		List<User> users = new ArrayList<User>();
 		if( c.number == 0 )
 		{
 			users = c.project.users;
