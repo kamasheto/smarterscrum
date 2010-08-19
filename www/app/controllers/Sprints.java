@@ -5,16 +5,15 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import notifiers.Notifications;
-
 import models.Component;
+import models.Log;
 import models.Meeting;
 import models.Project;
 import models.Sprint;
 import models.Task;
 import models.Update;
 import models.User;
-import models.Log;
+import notifiers.Notifications;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
@@ -250,7 +249,7 @@ public class Sprints extends SmartCRUD
 				renderArgs.put( "error", "Sprint Start Date is after Sprint End Date" );
 				render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
 			}
-			else if( today.contains( object.startDate.toString() ) || today.contains( object.endDate.toString() ) )
+			else if( today.contains( object.startDate.toString() ) || today.contains( endDate.toString() ) )
 			{
 				renderArgs.put( "error", "Cant Create Sprint with Past Date" );
 				render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
@@ -286,8 +285,8 @@ public class Sprints extends SmartCRUD
 		}
 
 		Log.addUserLog( "Created sprint", object, proj );
-		String resourceURL = Router.getFullUrl("Application.externalOpen")+"?id="+proj.id+"&isOverlay=false&url=/sprints/showsprint?id="+object.id;
-		Notifications.notifyProjectUsers(proj, "setSprint", resourceURL, "Sprint", object.sprintNumber, (byte)0);
+		String resourceURL = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + proj.id + "&isOverlay=false&url=/sprints/showsprint?id=" + object.id;
+		Notifications.notifyProjectUsers( proj, "setSprint", resourceURL, "Sprint", object.sprintNumber, (byte) 0 );
 		redirect( request.controller + ".show", object.getEntityId() );
 	}
 
@@ -365,7 +364,8 @@ public class Sprints extends SmartCRUD
 		{
 			object.startDate = sprint.startDate;
 			if( object.ended )
-			{    object.ended=false;
+			{
+				object.ended = false;
 				object.endDate = new Date();
 
 				object.Last = object.startDate;
@@ -394,7 +394,8 @@ public class Sprints extends SmartCRUD
 		else
 		{
 			if( object.ended )
-			{    object.ended=false;
+			{
+				object.ended = false;
 				object.endDate = new Date();
 				object.Last = object.startDate;
 			}
