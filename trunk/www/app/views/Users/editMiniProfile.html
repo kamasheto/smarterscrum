@@ -6,14 +6,15 @@
   <input type="hidden"name="userProfileId" value="${userProfile.id}">
   <div>
    #{if userProfile.avatar !=""} 
-     <img height="50" width="50"src="${userProfile.avatar}"/> 
+     <img height="100" width="100"src="${userProfile.avatar}"/> 
    #{/if}
    #{else} 
-     <img height="50" width="50" src="@{'public/images/no-profile.png'}"/> 
+     <img height="100" width="100" src="@{'public/images/no-profile.png'}"/> 
    #{/else}
   </div>
    <div>
-   <input type="file" name="file" />
+   <input type="file" name="file">       
+   
    <p><b>Name: </b><input type = "text" name="name" value="${userProfile.name}"></p>
    <p><b>Email: </b><input type = "text" name="email" value="${userProfile.email}"></p>
    <input type="submit" value="Save" />

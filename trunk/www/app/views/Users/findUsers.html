@@ -6,7 +6,7 @@
  #{if user!=null}
   #{if (user.id == connected.id)||(connected.isAdmin)}
     <a href="javascript:overlayOpen('/users/editMiniProfile?userProfileId=${user.id}')">
-    <img  height="50" width="50"title="Edit Personal info" src="@{'/public/images/famfam/pencil.png'}">
+    <img title="Edit Personal info" src="@{'/public/images/famfam/pencil.png'}">
     </a>
   #{/if}
 #{/if}
@@ -35,10 +35,10 @@
 #{if user!=null}
 		<div class="left">
 		   #{if user.avatar !=""}
-	         <img  height="50" width="50"src="${user.avatar}"/>
+	         <img  height="100" width="100"src="${user.avatar}"/>
 	       #{/if}
 	       #{else}
-	         <img  height="50" width="50"src="@{'public/images/no-profile.png'}"/>
+	         <img  height="100" width="100"src="@{'public/images/no-profile.png'}"/>
 	       #{/else}
 		</div>
 		<div class="left" style="padding:15px 10px">
