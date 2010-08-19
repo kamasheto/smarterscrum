@@ -57,7 +57,7 @@ table{border-collapse:collapse;}
 	width: 98%;
 	z-index: 99;
 }
-
+.draggableChild .ui-resizable-handle .ui-resizable-se .ui-icon ui-icon-gripsmall-diagonal-se{display:none;}
 .nav {
 	font-size: 12px;
 	text-align: center;
