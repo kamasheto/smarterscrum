@@ -1,5 +1,6 @@
 #{extends 'magicBox.html' /}
 #{set title:'System Settings' /}
-<div class="bar">Site Name <div class="bar_more_info editable" contenteditable update_url="/systemsettings/save?key=sitename">${settings.siteName}</div></div>
-<div class="bar">Twitter Hash <div class="bar_more_info editable" contenteditable update_url="/systemsettings/save?key=twitterhash">${settings.twitterHash}</div></div>
-<div class="bar">Entries/Box <div class="bar_more_info editable" contenteditable update_url="/systemsettings/save?key=entriesperbox">${settings.defaultEntriesPerBox}</div></div>
+<div class="bar">Site Name <div class="bar_more_info editable" update_url="/systemsettings/save?key=sitename">${settings.siteName}</div></div>
+<div class="bar">Twitter Hash <div class="bar_more_info editable"  update_url="/systemsettings/save?key=twitterhash">${settings.twitterHash}</div></div>
+<div class="bar">Entries/Box <div class="bar_more_info editable"  update_url="/systemsettings/save?key=entriesperbox">${settings.defaultEntriesPerBox}</div></div>
+<div class="bar">System mail <div class="bar_more_info editable" update_url="/systemsettings/save?key=systemmail">${settings.systemMail}</div></div>

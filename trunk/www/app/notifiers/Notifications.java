@@ -6,6 +6,7 @@ import models.Notification;
 import models.Project;
 import models.User;
 import models.UserNotificationProfile;
+import models.Setting;
 import controllers.Security;
 
 public class Notifications extends Mailer{
@@ -20,10 +21,12 @@ public class Notifications extends Mailer{
 	 */
 	public static void activate(String userEmail, String userName, String url, boolean changeEmail)
 	{
+		Setting settings = Setting.findById(1L);
 		addRecipient(userEmail);
 		setFrom("se.smartsoft.2@gmail.com");
 		setSubject("SmarterScrum Activation");
-		send(userName, url, changeEmail);
+		String helpLink = "mailto:" + settings.systemMail;
+		send(userName, url, changeEmail, helpLink);
 	}
 	
 	/**

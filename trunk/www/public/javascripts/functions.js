@@ -1063,6 +1063,7 @@ $(function() {
 			// alert(this)
 			if ($(this).data('init')) return
 			$(this).data('init', true)
+			$(this).attr('contenteditable', true)
 			$(this).blur(function() {
 				$.post($(this).attr('update_url'), {new_value: $(this).text()})
 			})
