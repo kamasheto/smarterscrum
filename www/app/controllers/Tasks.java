@@ -826,9 +826,9 @@ public class Tasks extends SmartCRUD
 				}
 				tmp.parent.estimationPoints = sum;
 				tmp.parent.save();
-				Update.update( tmp.project, "reload('tasks-"+tmp.project.id+"', 'task-" + tmp.id + "', 'task-" + tmp.parent.id + "')" );
+				Update.update( tmp.project, "reload('tasks-"+tmp.project.id+"', 'task-" + tmp.id + "', 'task-" + tmp.parent.id + "', 'tasks')" );
 			}
-			Update.update( tmp.project, "reload('tasks-"+tmp.project.id+"', 'task-" + tmp.id + "')" );
+			Update.update( tmp.project, "reload('tasks-"+tmp.project.id+"', 'task-" + tmp.id + "', 'tasks')" );
 			deleteSubTasks(id);
 			renderText("Task deleted successfully.");
 			
