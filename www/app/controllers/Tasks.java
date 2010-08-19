@@ -816,6 +816,11 @@ public class Tasks extends SmartCRUD
 		try
 		{
 			tmp.deleted = true;			
+			for(int i=0;i<tmp.subTasks.size();i++)
+			{
+				tmp.subTasks.get(i).deleted = true;
+				tmp.subTasks.get(i).save();
+			}
 			// Logs.addLog( Security.getConnected(), "delete", "Task", tmp.id,
 			// tmp.project, new Date( System.currentTimeMillis() ) );
 			Log.addUserLog( "Deleted task", tmp, tmp.project );
