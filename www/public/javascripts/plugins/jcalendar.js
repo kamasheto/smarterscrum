@@ -169,6 +169,7 @@ jQuery.jcalendar = function() {
   			}
 
   			arr = events.split('|');
+			arr3 = new Array()
   			$.each(arr, function(id, item){
   				arr2 = item.split('.');
   				if(arr2.length >=2){
@@ -183,7 +184,7 @@ jQuery.jcalendar = function() {
   				}
   				}
   				});
-  			thisDate = d.getMonth()+1 == arr3[1] && d.getFullYear() == arr3[2];
+  			thisDate = arr3.length > 2 && d.getMonth()+1 == arr3[1] && d.getFullYear() == arr3[2];
   			if (thisMonth && curDay+1 == todayDate) {
   				if(thisDate && curDay+1 == arr3[0]){
   					atts['class'] = 'Event';
