@@ -7,6 +7,8 @@
  * Dual licensed under the MIT (MIT-LICENSE.txt)
  * and GPL (GPL-LICENSE.txt) licenses.
  */
+
+var events = ''
 jQuery.jcalendar = function() {
 	// var events = allEvents;
 	var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -169,7 +171,7 @@ jQuery.jcalendar = function() {
   			}
 
   			arr = events.split('|');
-			arr3 = new Array()
+			// arr3 = new Array()
   			$.each(arr, function(id, item){
   				arr2 = item.split('.');
   				if(arr2.length >=2){
@@ -184,7 +186,7 @@ jQuery.jcalendar = function() {
   				}
   				}
   				});
-  			thisDate = arr3.length > 2 && d.getMonth()+1 == arr3[1] && d.getFullYear() == arr3[2];
+  			thisDate = typeof arr3 != "undefined" && d.getMonth()+1 == arr3[1] && d.getFullYear() == arr3[2];
   			if (thisMonth && curDay+1 == todayDate) {
   				if(thisDate && curDay+1 == arr3[0]){
   					atts['class'] = 'Event';
@@ -286,7 +288,14 @@ jQuery.fn.jcalendar = function(a) {
     var day = $(this).find('select.jcalendar-select-day');
     var month = $(this).find('select.jcalendar-select-month');
     var year = $(this).find('select.jcalendar-select-year');
+	// if ($('#sideEvent div.jcalendar').length) {
+	// 	// $('#sideEvent div.jcalendar').each(function() {
+	// 		// console.log(this)
+	// 	// })
+	// 	return
+	// }
     $('div.jcalendar-selects').after('<div class="jcalendar"></div>');
+	// console.log(this)
 		jQuery.jcalendar.setDateWindow(this, a, year);
 		jQuery.jcalendar.show(this, day, month, year);
 
@@ -295,7 +304,7 @@ jQuery.fn.jcalendar = function(a) {
 		  if (this.value > 0) {
 		    d = new Date(year.val(), month.val()-1, this.value);
   	    jQuery.jcalendar.changeMonth(d, a, day, month, year);
-  	  changeTitle();
+  	  	changeTitle();
   	  }
 		});
 
@@ -320,11 +329,10 @@ jQuery.fn.jcalendar = function(a) {
 	});
 	return this;
 };
-var events = ''
 function loadEvents(){
 	var sprints;
 	var meetings;
-	
+	events = ''
 	$.post('/Application/sprints', function(sprints){
 		$.post('/Application/meetings', function(meetings) {
 	        $.each(sprints, function(id, item){
