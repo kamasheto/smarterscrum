@@ -1,5 +1,13 @@
+#{set 'board'}true#{/set}
 #{extends 'overlay.html' /}
 
+#{ifnot tasks}
+<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
+	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+	<strong>NOTE: </strong>There isn't enough data to display the task board</div>
+#{/ifnot}
+
+#{else}
 <style type="text/css">
 	.drag{position: relative;}
 	.shadowed {
@@ -301,7 +309,7 @@ REDIPS.drag.init();
 #{/list}
 </table>
 </div>
-
+#{/else}
 <script type="text/javascript">
 var selectedUser = 0;
 var col_from = -1;

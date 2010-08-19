@@ -141,7 +141,13 @@ public class Boards extends SmartCRUD
 			Project p = project;
 			Sprint s = sprint;
 			Board b = board;
-			render( data, columnsOfBoard, hidencolumnsOfBoard, u, uAdmin, b, s, p, columns, ud, ua, ur, ut, us );
+			boolean tasks = false;
+			for(int i=0;i<data.size();i++)
+			{
+				if(data.get(i)!=null)
+					tasks = true;
+			}
+			render( data, columnsOfBoard, hidencolumnsOfBoard, u, uAdmin, b, s, p, columns, ud, ua, ur, ut, us,tasks );
 		}
 		else
 		{
@@ -194,7 +200,13 @@ public class Boards extends SmartCRUD
 			Project p = project;
 			Sprint s = sprint;
 			Board b = board;
-			render( data, columnsOfBoard, hidencolumnsOfBoard, u, uAdmin, b, s, comp, p, columns, ud, ua, ur, ut, us );
+			boolean tasks = false;
+			for(int i=0;i<data.size();i++)
+			{
+				if(data.get(i)!=null)
+					tasks = true;
+			}
+			render( data, columnsOfBoard, hidencolumnsOfBoard, u, uAdmin, b, s, comp, p, columns, ud, ua, ur, ut, us,tasks );
 		}
 	}
 
