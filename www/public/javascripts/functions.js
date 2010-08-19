@@ -263,7 +263,18 @@ function deleteStory(sId,box,d){
 		});
 	}
 }
-
+function fixZ (that)
+{
+	$('.draggable').each(function(){
+		if($(this)!=that)
+		{
+			$(this).css('z-index','9993');
+			$(this).addClass('dim');
+		}
+		else
+			that.removeClass('dim');
+	});
+}
 DRAGGING_ELEMENT = null
 $(function() {
 
@@ -326,55 +337,26 @@ $(function() {
 	
 	$('.draggable').live('click',function(){
 		var that = $(this);
-		$('.draggable').each(function(){
-			if($(this)!=that)
-			{
-				$(this).css('position','absolute');
-				$(this).css('z-index','9993');
-				$(this).addClass('dim');
-			}	
-		});
+		fixZ(that)
 		$(this).removeClass('dim');
-		$(this).css('position','absolute');
 		$(this).css('z-index','9994');
 		
 	});
 	$('.draggable>.actual').live('click',function(){
 		var that = $(this).closest('.draggable');
-		$('.draggable').each(function(){
-			if($(this)!=that)
-			{
-				$(this).css('position','absolute');
-				$(this).css('z-index','9993');
-				$(this).addClass('dim');
-			}	
-		});
-		$(this).removeClass('dim');
-		$(this).closest('.draggable').css('position','absolute');
+		fixZ(that)
+		$(this).closest('.draggable').removeClass('dim');
 		$(this).closest('.draggable').css('z-index','9994');
 	});
 	$('.draggable>.mainH').live('click',function(){
 		var that = $(this).closest('.draggable');
-		$('.draggable').each(function(){
-			if($(this)!=that)
-			{
-				$(this).css('position','absolute');
-				$(this).css('z-index','9993');
-				$(this).addClass('dim');
-			}	
-		});
-		$(this).removeClass('dim');
-		$(this).closest('.draggable').css('position','absolute');
+		fixZ(that)
+		$(this).closest('.draggable').removeClass('dim');
 		$(this).closest('.draggable').css('z-index','9994');
 	});
-	$('.draggable').live('mouseenter', function() {
-		$(this).removeClass('dim');	});
 
-	$('.draggable').live('mouseleave', function() {
-		if($(this).css('z-index')<=9993)
-		$(this).addClass('dim');	});
 	$('.draggable').live('mouseover', function() {
-	
+		$(this).removeClass('dim');
 		if (!DRAGGING_ELEMENT) {
 			$(this).children().children('.dragger').show()					
 		}
@@ -392,11 +374,6 @@ $(function() {
 			minWidth:300,
 			minHeight:70,
 			containment: '#'+con,
-			grid: [1, 60],
-			stop:function(event, ui) {
-			// $(this).css('height','');
-			// for pagination purpose
-			},
 			resize: function(event, ui) {
 				var test = ($(this).find(".normalLinkn span")).first();
 				smart_pagination(test, 1, true);
@@ -412,6 +389,10 @@ $(function() {
 		if ($(this).attr('id') != DRAGGING_ELEMENT) {
 			$(this).children().children('.dragger').hide()
 		}
+		if($(this).css('z-index')=='9993')
+			$(this).addClass('dim');
+	}).live('mousedown', function() {
+			$(this).removeClass('dim');
 	});
 		
 	$(".draggableChild").live('mouseout', function() {
@@ -421,12 +402,14 @@ $(function() {
 	}).live(
 			'mouseover',
 			function() {
+			
+					
 				if (!DRAGGING_ELEMENT) {
 					$(this).children().children('.dragger').show()					
 				}
-				if ($(this).data('init')) return
+				if ($(this).data('init')==true) return
 				$(this).data('init', true)
-				$(this).css('z-index','9995');
+				
 				var con = $(this).closest('.workspaceDraggables').attr('id');
 				$(this).draggable(
 						{
@@ -452,13 +435,17 @@ $(function() {
 									$(this).closest('.workspaceDraggables')
 											.append($(this));
 								}
-								$(this).draggable( {start : function(event, ui) {},stop : function(event, ui) {}});
+							//	$(this).draggable( {start : function(event, ui) {},stop : function(event, ui) {}});
 								$(this).children().show();
 								$(this).removeClass('draggableChild');
 								$(this).addClass('draggable');
 								load($(this).attr('name'), $(this).attr('id'),1);
+								fixZ($(this));
+								$(this).removeClass('dim');
+								$(this).css('z-index','9994');
 							},
 							start : function(event, ui) {
+								$(this).css('z-index','9995');
 								var id = $(this).attr('id');
 								$("#" + id + " .selectedBars").removeClass('selectedBars')
 								$("#" + id + " .selectedBars2").removeClass('selectedBars2');
@@ -521,31 +508,31 @@ $(function() {
 		load($(parent).attr('name'), $(parent).attr('id'), 1);
 	});
 	$('.revertFrom').live('click', function() {
-		$(this).closest('.draggable').css('position','static');
-		$(this).closest('.draggable').css('z-index','1');
-		//alert($(this).closest('.draggable').attr('class'))
 		$(this).parent().parent().data('init', false);
-		
 		var url = $(this).parent().parent().attr('name');
-		$(this).parent().next().hide();
+		$(this).parent().next().hide();		
 		removeFromDiv(url);
-		// CURRENT_OFFSET -= 315
 		var theId = $(this).parent().parent().attr('id');
 		var theSecondId = theId + "_2";
+		
 		if ($('#' + theSecondId).attr('id') == null)
 			$('#' + theId).remove();
-		else {
+		else 
+		{
 			var elHtml = $('#' + theSecondId).html();
 			$('#' + theId).removeAttr('style');
 			$('#' + theId).removeClass('draggable');
-			$('#' + theId).addClass('draggableChild');
-			
+			$('#' + theId).addClass('draggableChild');			
 			$('#' + theSecondId).replaceWith($('#' + theId));
 			$('#' + theId).find('.mainH').first().html(elHtml);
-			$('#' + theId).css('position','static');
-			$('#' + theId).css('z-index','1');
+			$('#' + theId).removeAttr('style');
+			fixZ($('#' + theId).closest('.draggable'));
+			$('#' + theId).removeAttr('style');
+			$('#' + theId).removeClass('dim');
+			$('#' + theId).removeAttr('style');
 		}
-	
+		smart_pagination(theId,1);
+		hideFilterLinks(theId);
 		});
 	});
 
@@ -568,16 +555,6 @@ function load(url, el, n, hideLoading) {
 		$.ajax({
 			url: url,
 			success: function(data) {
-			if(n==1)
-			{var that = $('#'+ el);
-				$('.draggable').each(function(){
-					if($(this)!=that)
-					{
-						$(this).css('position','absolute');
-						$(this).css('z-index','9993');
-						$(this).addClass('dim');
-					}});
-			}
 				$('body').append('<div id="dummy_data" class="hidden"></div>')
 				$('#dummy_data').html(data)
 				data = $('#dummy_data').html()
@@ -801,7 +778,7 @@ function showProjectWorkspace(project_id) {
 		success: function(data) {
 			$('#project-tabs').append('<a class="aDIV topCornersRounded selectedADiv project-button " id="project-button-'+project_id+'" href="#" onclick="show('+project_id+')" style="width: 120px !important" title="">'+$(data).find('.project_name_in_header').html()+' <span class="right ui-icon2 ui-icon-circle-close" onclick="close_workspace('+project_id+')"> </span></a>');
 			$('.workspace-' + project_id).html(data)
-			$('.workspace-' + project_id).append('<div class="dock"></div>');
+		//	$('.workspace-' + project_id).append(');
 			$('#top_header_projects_pane').slideUp()
 		}
 	})
