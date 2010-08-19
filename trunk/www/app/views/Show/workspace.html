@@ -5,6 +5,7 @@
 		})
 	</script>
 #{/if}
+<table><tr><td style="height:10px">
 <div class="topper nav">
 #{if proj}
 	<!-- DO NOT REMOVE THIS! If you want to, hide the class.. this element is used to create the top button! -->
@@ -36,7 +37,7 @@
 #{/else}
 
 </div>
-
+</td></tr><tr><td style="vertical-align:top ;height:100%">
 <div class="workspaceDraggables" id="workspace-${proj?.id ?: -1}">
 #{if proj}
 	#{if connected}
@@ -83,3 +84,4 @@
 	#{/if}			
 #{/if}
 </div>
+</td></tr><tr><td height="20px"><div class="dock"></div></td></tr></table>

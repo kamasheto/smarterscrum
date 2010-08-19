@@ -66,11 +66,7 @@
                
        		$(function(){
 				doOnLoad();
-				$('#overlayContent').height($('body').height());
-				$('#normal').height($('body').height()-$('#topper').height()-$('.project-tabs').height()-110);
-   	
-				$('#workspaces').height($('body').height()-$('#topper').height()-$('.project-tabs').height()-155);
-   			    #{if connected}
+				#{if connected}
 				setTimeout('ping();', 1000);
    			    #{/if}
        		});
@@ -119,6 +115,8 @@
 	</div>
 </div>
 </div>#{if connected}
+<table id="mainTable"style="height:100%">
+<tr><td style="height:10px">
 <div class="topBar" id="project-tabs">
 	<!--a class="aDIV topCornersRounded" href="#" onclick="normalShow('/ #elContent')" style="color: #E5A1A5; float:left;" title="Go home">Home</a-->
 #{if connected?.isAdmin}
@@ -158,7 +156,9 @@
 								<a href="/sessions/logout" title="Logout from the system">Logout</a>
 							</div>
 							<br style="clear:both"/>
-						</div>
+						</div></td></tr>
+
+<tr><td style="height: 100%; vertical-align: top;">
 <div id="workspaces" style="display:none">
 						
 #{if true}
@@ -217,12 +217,14 @@
 #{/if}
 <div id="normal">
 #{doLayout/}
-</div>
+</div></td>
+</tr><tr><td style="height:10px">
 #{if connected}
 	<!-- DO NOT REMOVE THIS! Hide it (using CSS), but do not remove it! -->
-	<div id="onlineUsers">Online users: <span id="online_users_list"></span></div>
+	<div id="onlineUsers" style="display:none">Online users: <span id="online_users_list"></span></div>#{/if}
 	<div id="footer" style="background-color:#0b8c8f;padding:10px 1%;margin:2px 1%;;width:96%" class="allCornersRounded" ><center><font color="white">Powered by <a style="color:#FFFFFF" href="http://code.google.com/p/ss-scrum-tool/" target="_blank">SmarterScrum</a> v0.1beta. We welcome and appreciate your <a style="color:#FFFFFF" href="#" onclick="overlayOpen('/feedbacks');">feedback</a>.</font></center></div>
-#{/if}
+</td></tr>
+</table>
 			#{ifErrors}
 			<script type="text/javascript">
 				$(document).ready(function(){

@@ -48,7 +48,7 @@ button,a button,input[type=submit],input[type=ok],input[type=send],input[type=bu
 .nav a {
 	padding: 5px;
 }
-
+table{border-collapse:collapse;}
 .topper {
 	background: none repeat scroll 0 0 #111111;
 	color: #EEEEEE;
@@ -62,6 +62,11 @@ button,a button,input[type=submit],input[type=ok],input[type=send],input[type=bu
 	border-bottom: 2px solid #222222 !important;
 	font-size: 12px;
 	text-align: center;
+}
+
+#mainTable,#mainTable td,#mainTable tr,#mainTable tr td {
+	padding: 0px !important;
+	margin: 0px !important
 }
 
 body,html {
@@ -850,10 +855,6 @@ html {
 }
 
 /**generic**/
-.logoHolder,.topBar {
-	background: url('/public/stylesheets/images/bg2.png') repeat-x scroll
-		left top;
-}
 
 #TheLogo {
 	background: url('/public/images/smartsoft.png') no-repeat top left;
@@ -902,9 +903,9 @@ a {
 	_border-right-color: pink;
 	_border-left-color: pink;
 	margin-top: -2px;
-	_filter: chroma(color =                                                      
+	_filter: chroma(color =                                                       
 		                                                          
-		                                                           pink);
+		                                                            pink);
 }
 
 .notchBottom2 {
@@ -922,9 +923,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                      
+	_filter: chroma(color =                                                       
 		                                                          
-		                                                           pink);
+		                                                            pink);
 }
 
 .notchTop {
@@ -939,9 +940,9 @@ a {
 	margin-left: 30px;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                      
+	_filter: chroma(color =                                                       
 		                                                          
-		                                                           pink);
+		                                                            pink);
 }
 
 .notchRight {
@@ -958,9 +959,9 @@ a {
 	display: inline-block;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                      
+	_filter: chroma(color =                                                       
 		                                                          
-		                                                           pink);
+		                                                            pink);
 }
 
 .notchLeft {
@@ -975,9 +976,9 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                      
+	_filter: chroma(color =                                                       
 		                                                          
-		                                                           pink);
+		                                                            pink);
 }
 
 .chatboxtextarea:focus {
@@ -1021,7 +1022,10 @@ ul.project_links a:hover {
 a,a img,span.revertFrom,span.min {
 	cursor: pointer;
 }
-
+#workspaces, .workspace {
+height:100% !important;
+}
+#mainTable table{height:100%}
 #workspace-help,#acp-workspace-help {
 	background: url(/public/images/famfam/error.png) no-repeat center left;
 	position: absolute;
@@ -1198,9 +1202,9 @@ img.left {
 	left: 0;
 	position: absolute;
 	opacity: 0;
-	filter: Alpha(Opacity =
+	filter: Alpha(Opacity = 
 		                                                         
-		  0);
+		   0);
 }
 
 /* Interaction Cues
@@ -1354,17 +1358,17 @@ img.left {
 
 .ui-priority-secondary,.ui-widget-content .ui-priority-secondary {
 	opacity: .7;
-	filter: Alpha(Opacity =
+	filter: Alpha(Opacity = 
 		                                                         
-		  70);
+		   70);
 	font-weight: normal;
 }
 
 .ui-state-disabled,.ui-widget-content .ui-state-disabled {
 	opacity: .35;
-	filter: Alpha(Opacity =
+	filter: Alpha(Opacity = 
 		                                                         
-		  35);
+		   35);
 	background-image: none;
 }
 
@@ -2185,9 +2189,9 @@ img.left {
 	background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
 		repeat-x;
 	opacity: .30;
-	filter: Alpha(Opacity =
+	filter: Alpha(Opacity = 
 		                                                         
-		  30);
+		   30);
 }
 
 .ui-widget-shadow {
@@ -2196,9 +2200,9 @@ img.left {
 	background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
 		repeat-x;
 	opacity: .30;
-	filter: Alpha(Opacity =
+	filter: Alpha(Opacity = 
 		                                                         
-		  30);
+		   30);
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	border-radius: 8px;
@@ -2992,7 +2996,7 @@ a.jbar-cross:hover {
 }
 
 .selectedBars2 {
-		background: #0B8C8F !important;
+	background: #0B8C8F !important;
 	background: -moz-linear-gradient(center bottom, #0B8E91 10%, #0B8C8F 90%)
 		!important;
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #0B8E91),
@@ -3193,6 +3197,7 @@ div.jcalendar-links a {
 	background: rgba(0, 0, 0, 0.5);
 	padding: 5px 1%;
 	height: 20px;
+	width:98%;
 	overflow: auto;
 }
 

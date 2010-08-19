@@ -43,7 +43,7 @@
 			#{/if}
 			
 		#{list items:tasks ,as :'Task'}
-			<div class = "${Task.taskStatus?.closed ? 'redBg' : Task.taskStatus?.pending ? 'yellowBg' : Task.taskStatus?.isNew ? 'greenBg' : ''} reload-task-${Task.id}" name="/tasks/magicShow?taskId=${Task.id}"> 
+			<div class = "elTask #{if Task.parent}do_not_paginate#{/if} ${Task.taskStatus?.closed ? 'redBg' : Task.taskStatus?.pending ? 'yellowBg' : Task.taskStatus?.isNew ? 'greenBg' : ''} reload-task-${Task.id}" name="/tasks/magicShow?taskId=${Task.id}"> 
 		#{drag 'task-'+Task.id /}#{drop 'task-'+Task.id /}
 		#{summary}
 		#{if Task.parent!=null} ${Task.parent.number}.#{/if}${Task.number}: ${Task.getSummary()}
