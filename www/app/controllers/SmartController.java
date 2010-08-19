@@ -53,10 +53,11 @@ public class SmartController extends Controller
 			Security.getConnected().haveInvites = true;
 			Security.getConnected().save();
 		}if(Security.getConnected()!=null){
-		List<Notification> notifications = Notification
-				.find(
-						"receiver =" + Security.getConnected().id
-								+ " order by id desc").fetch();}
+//		List<Notification> notifications = Notification
+//				.find(
+//						"receiver =" + Security.getConnected().id
+//								+ " order by id desc").fetch();
+			}
 		if (!((DateFormat.getDateInstance().format(Sprint.Last)).equals((DateFormat.getDateInstance().format(new Date()))))) {
 			Sprint.Last = new Date();
 			List<Sprint> sprints = Sprint.findAll();
