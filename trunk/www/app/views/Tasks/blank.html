@@ -228,6 +228,10 @@
 
 
 <script type="text/javascript">
+	$(function()
+	{
+		getType();
+	})
 	var data='${productRoles}'.split("-");
 	$("#example").autocomplete(data);
 	

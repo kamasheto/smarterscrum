@@ -246,6 +246,11 @@
 
 <script type="text/javascript">
 
+	$(function()
+	{
+		getType();
+	})
+	
 	var data='${productRoles}'.split("-");
 	$("#object_description").autocomplete(data);
 	
