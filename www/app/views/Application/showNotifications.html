@@ -1,6 +1,6 @@
 #{extends 'sidebar.html' /}
-#{if emailing}<img src="/public/images/famfam/cross.png" /> <a id = "modify_emailing" onclick="modify_emailing(0);">Stop receiving Emails?</a>#{/if}
-#{else}<img src="/public/images/famfam/accept.png" /> <a id = "modify_emailing" onclick="modify_emailing(1);">Enable receiving Emails?</a>#{/else}
+#{if emailing}<div id = "modify_emailing"><img src="/public/images/famfam/cross.png" /> <a onclick="modify_emailing(0);">Stop receiving Emails?</a></div>#{/if}
+#{else}<div id = "modify_emailing"><img src="/public/images/famfam/accept.png" /> <a onclick="modify_emailing(1);">Enable receiving Emails?</a></div>#{/else}
 
 <div id="notifications">#{note}Sorry you currently have no notifications#{/note}</div>
 <div class="p" style="display:none">
@@ -18,7 +18,10 @@ function modify_emailing(i)
 		var res = confirm('Are you sure you want to enable receiving emails?');
 	if(res==true)
 		$.post("@{Application.modifyEmailing}", {enable:i}, function(){
-				$('#sideNoti').load('/Application/showNotifications');
+			if(i==0)				
+				$('#modify_emailing').html('<img src="/public/images/famfam/accept.png" /> <a onclick="modify_emailing(1);">Enable receiving Emails?</a>');
+			else
+				$('#modify_emailing').html('<img src="/public/images/famfam/cross.png" /> <a onclick="modify_emailing(0);">Stop receiving Emails?</a>');
 			});
 }
 	search_notifications(0);
