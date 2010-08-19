@@ -219,8 +219,8 @@
 	#{/elseif}
 		
 		<p class="crudButtons">
-			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" onclick="product_role();"/>
-			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" onclick="product_role();" />
+			<input type="submit" name="_save" value="&{'crud.save', type.modelName}" />
+			<input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
 		</p>
 	</div>	
 	#{/form}
@@ -240,14 +240,6 @@
 	{
 		$('.d').css('display','inline-block');
 	}
-	
-	function product_role(id)
-	{
-		$.post('/Storys/addProductRole' ,			
-			{projectID:id,						
-			description:$("#example").val()});
-	} 
-
 
 function toggleOptions(){
 	current_text = $("[name='view-more-link']").text();

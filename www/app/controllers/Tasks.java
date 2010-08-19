@@ -308,7 +308,7 @@ public class Tasks extends SmartCRUD
 			}
 			else
 			{
-				Update.update( tmp.project, "reload('tasks','task-" + "')" );
+				Update.update( tmp.project, "reload('tasks','task-" + tmp.id+ "')" );
 				Application.overlayKiller( "", "" );
 			}
 
