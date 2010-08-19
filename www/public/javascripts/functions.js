@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿ $.extend($.gritter.options, { 
+﻿﻿﻿﻿﻿﻿﻿ $.extend($.gritter.options, { 
 	fade_in_speed: 50, // how fast notifications fade in (string or int)
 	fade_out_speed: 300, // how fast the notices fade out
 	time: 5000 // hang on the screen for...
@@ -6,19 +6,19 @@
 
 var CURRENT_PROJECT = 0;
 
-function reload_note_open(sid, taskId, compId) {
+function reload_note_open(sid, taskId, compId, userId) {
 	$('#theLoadedContent').contents().find('#task-'+taskId+'_T_0').load('/boards/loadboard1?sprintID='+sid+' #task-'+taskId+'_T_0', 
 	function()
 	{
 		$('#theLoadedContent').contents().find('#'+taskId+'_button').click();
-		
+		$('#sideMeet').find('#'+userId+'_user').first().click();
 	});
 	if(compId!=0)
 	$('#theLoadedContent').contents().find('#task-'+taskId+'_T_'+compId).load('/boards/loadboard1?sprintID='+sid+'&componentID='+compId+' #task-'+taskId+'_T_'+compId,
 	function()
 	{
 		$('#theLoadedContent').contents().find('#'+taskId+'_button').click();
-		
+		$('#sideMeet').find('#'+userId+'_user').first().click();
 	});
 }
 function reload_note_close(sid, taskId, compId)
