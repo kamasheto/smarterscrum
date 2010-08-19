@@ -59,16 +59,16 @@ REDIPS.drag.init();
 <div class="sideHolder">
 	<div class="notch"style="top: 190px;">
 	
-#{if comp==null}
-		<a href="#" title="View meetings?"onclick="make('sideMeet',this);$('#sideMeet').load('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}')">
-		<img src="/public/images/meetings.png" alt="[Meeting]"/>
-		</a>
-		#{/if}
-#{else}
-<a href="#" title="View meetings?"onclick="make('sideMeet',this);$('#sideMeet').load('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}&cid=${comp.id}')">
-		<img src="/public/images/meetings.png" alt="[Meeting]"/>
-		</a>
-		#{/else}
+	#{if comp==null}
+	<a href="#" title="View meetings?"onclick="make('sideMeet',this);$('#sideMeet').load('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}')">
+	<img src="/public/images/meetings.png" alt="[Meeting]"/>
+	</a>
+	#{/if}
+	#{else}
+	<a href="#" title="View meetings?"onclick="make('sideMeet',this);$('#sideMeet').load('/Boards/loadMeetings?pid=${p.id}&sid=${s.id}&cid=${comp.id}')">
+	<img src="/public/images/meetings.png" alt="[Meeting]"/>
+	</a>
+	#{/else}
 
 	</div>
 	<div id="sideMeet" class="siderC">
@@ -91,14 +91,7 @@ REDIPS.drag.init();
 
 <a href="#;" onclick="$('#changeCol').slideToggle()" title="view hidden columns" type="button" ><img src="@{'/public/images/famfam/application_view_columns.png'}"/>View hidden columns</a> |
 
-<select id="changeCol" onchange="showCol(changeCol.value)" style="display:none">
-<option id="d" value="d">Columns</option>
-#{list items:columnsOfBoard, as:'c'}
-<option value= "${count}" onclick="showCol(${count})">${c.name}</option>
-#{set count=count+1}
-#{/set}
-#{/list}	
-</select>
+
 <!-- view hidden Col by Hadeer -->
 #{if connected.in(p).can('ShowColumn')}
 #{if hidencolumnsOfBoard.isEmpty()}
@@ -109,21 +102,6 @@ REDIPS.drag.init();
 #{/else}
 #{/if}
 
-#{if comp==null}
-<select id="b1" onchange="javascript: showHiddenCol(b1.value, ${s.id},0);" style="display:none" class="hidecol">
-<option value="">Columns</option>
-#{list items:hidencolumnsOfBoard, as:'c'}
-<option onclick="showHiddenCol(${c.id}, ${s.id},0)" value= "${c.id}">${c.name}</option>
-#{/list}
-#{/if}
-#{else}
-<select id="b1" onchange="javascript: showHiddenCol(b1.value, ${s.id},${comp.id});" style="display:none" class="hidecol">
-<option value="">Columns</option>
-#{list items:hidencolumnsOfBoard, as:'c'}
-<option onclick="showHiddenCol(${c.id}, ${s.id},${comp.id})" value= "${c.id}">${c.name}</option>
-#{/list}
-#{/else}
-</select><!-- hide Col by Hadeer -->
 #{if connected.in(p).can('HideColumn')}
 #{if columnsOfBoard.isEmpty()}
  <a class="dim" title="all columns deleted" type="button"><img src="@{'/public/images/famfam/delete.png'}"/></a> Hide columns |
@@ -132,27 +110,50 @@ REDIPS.drag.init();
  <a href="#;" onclick="$('#b2').slideToggle()" title="delete column?" type="button" ><img src="@{'/public/images/famfam/delete.png'}"/>Hide columns</a> |
 #{/else}
 #{/if}
+
+
+
+<select id="changeCol" onchange="showCol(changeCol.value)" style="display:none;margin-left:50%"  >
+<option id="d" value="d">Columns</option>
+#{list items:columnsOfBoard, as:'c'}
+<option value= "${count}" onclick="showCol(${count})">${c.name}</option>
+#{set count=count+1}
+#{/set}
+#{/list}	
+</select>
+
+
 #{if comp==null}
-<select id="b2"  style="display:none" onchange="hideCol(b2.value, ${s.id},0)" class="showcol">
+<select id="b1" onchange="javascript: showHiddenCol(b1.value, ${s.id},0);" style="display:none;margin-left:50%" class="hidecol">
+<option value="">Columns</option>
+#{list items:hidencolumnsOfBoard, as:'c'}
+<option onclick="showHiddenCol(${c.id}, ${s.id},0)" value= "${c.id}">${c.name}</option>
+#{/list}
+#{/if}
+#{else}
+<select id="b1" onchange="javascript: showHiddenCol(b1.value, ${s.id},${comp.id});" style="display:none;margin-left:50%" class="hidecol">
+<option value="">Columns</option>
+#{list items:hidencolumnsOfBoard, as:'c'}
+<option onclick="showHiddenCol(${c.id}, ${s.id},${comp.id})" value= "${c.id}">${c.name}</option>
+#{/list}
+#{/else}
+</select><!-- hide Col by Hadeer -->
+
+#{if comp==null}
+<select id="b2"  style="display:none;margin-left:50%" onchange="hideCol(b2.value, ${s.id},0)" class="showcol">
 <option id="x" value="">Columns</option>
 #{list items:columnsOfBoard, as:'c'}
 <option onclick="hideCol(${c.id}, ${s.id},0)" value="${c.id}">${c.name}</option>
 #{/list}
 #{/if}
 #{else}
-<select id="b2" onchange="hideCol(b2.value, ${s.id},${comp.id})" style="display:none" class="showcol">
+<select id="b2" onchange="hideCol(b2.value, ${s.id},${comp.id})" style="display:none;margin-left:50%" class="showcol">
 <option id="x" value="">Columns</option>
 #{list items:columnsOfBoard, as:'c'}
 <option onclick="hideCol(${c.id}, ${s.id},${comp.id})" value="${c.id}">${c.name}</option>
 #{/list}
 #{/else}
 </select>
-
-
-
-
-
-
 
 
 </div>
