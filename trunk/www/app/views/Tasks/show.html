@@ -319,6 +319,11 @@ function getType()
 			str += '<option value='+item.id+'>'+item.name+'</option>';
 		});
 		$('#object_reviewer').html( str );
+		if(data.length==0)
+		$('.rev').css('display','none');
+		else
+		$('.rev').css('display','inline-block');
+
 	}); 
 }
 	</script>
