@@ -732,6 +732,13 @@ function show(id) {
 	}
 	if (!id) {
 		$('#workspaces').hide()
+		$('#normal').load('/ #normal',function(){
+	$(this).replaceWith($(this).html());$('#sideEvent').html('')
+	$('#noti').load('/Application/showNotifications');
+		$('#events').load('/Application/showEvents');
+		$('#in').load('/Invites/showInvitations}');
+		;
+		});
 		$('#normal').show()
 		$('.project-button').removeClass('selectedADiv')
 	} else if ($('.workspace-'+id).length) {
