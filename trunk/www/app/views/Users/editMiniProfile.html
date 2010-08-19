@@ -6,10 +6,10 @@
   <input type="hidden"name="userProfileId" value="${userProfile.id}">
   <div>
    #{if userProfile.avatar !=""} 
-     <img src="${userProfile.avatar}"/> 
+     <img height="50" width="50"src="${userProfile.avatar}"/> 
    #{/if}
    #{else} 
-     <img src="@{'public/images/no-profile.png'}"/> 
+     <img height="50" width="50" src="@{'public/images/no-profile.png'}"/> 
    #{/else}
   </div>
    <div>

@@ -60,7 +60,7 @@ button,a button,input[type=submit],input[type=ok],input[type=send],input[type=bu
 }
 
 body,html {
-	background: #333 url('img/workspace.png') repeat top left;
+
 	font-family: Verdana;
 	font-size: 10px;
 	margin: 0px;
@@ -476,7 +476,7 @@ ul.project_links a {
 }
 
 .chatContainerHeader {
-	background-color: #b7568d;
+	background-color: #0B8C8F;
 	padding: 7px;
 	color: #ffffff;
 }
@@ -530,7 +530,7 @@ h1,h2,h3,h4,h5,h6,h7 {
 }
 
 a:hover {
-	color: #b7568d;
+	color: #0B8C8F;
 }
 
 .draggableChild .ui-widget-content {
@@ -549,16 +549,16 @@ a:hover {
 }
 
 a {
-	color: #9E3572;
+	color: #0B8E91;
 	text-decoration: underline;
 }
 
 .ss {
-	color: #b7568d;
+	color: #0B8C8F;
 }
 
 .sideBarHeading {
-	color: #b7568d;
+	color: #0B8C8F;
 }
 
 .sideBarElements a:hover {
@@ -567,7 +567,7 @@ a {
 
 /**triangle notch**/
 .notchBottom {
-	border-top: 15px solid #b7568d;
+	border-top: 15px solid #0B8C8F;
 	border-right: 15px solid transparent;
 	border-left: 15px solid transparent;
 	border-bottom: 0px;
@@ -585,7 +585,7 @@ a {
 }
 
 .notchBottom2 {
-	border-top: 13px solid #b7568d;
+	border-top: 13px solid #0B8C8F;
 	border-right: 13px solid transparent;
 	border-left: 13px solid transparent;
 	border-bottom: 0px;
@@ -605,7 +605,7 @@ a {
 }
 
 .notchTop {
-	border-bottom: 15px solid #b7568d;
+	border-bottom: 15px solid #0B8C8F;
 	border-right: 15px solid transparent;
 	border-left: 15px solid transparent;
 	border-top: 0px;
@@ -622,7 +622,7 @@ a {
 }
 
 .notchRight {
-	border-left: 15px solid #b7568d;
+	border-left: 15px solid #0B8C8F;
 	border-top: 15px solid transparent;
 	border-bottom: 15px solid transparent;
 	border-right: 0;
@@ -641,7 +641,7 @@ a {
 }
 
 .notchLeft {
-	border-right: 15px solid #b7568d;
+	border-right: 15px solid #0B8C8F;
 	border-top: 15px solid transparent;
 	border-bottom: 15px solid transparent;
 	border-left: 0;
@@ -658,37 +658,37 @@ a {
 }
 
 .chatboxtextarea:focus {
-	border: 2px solid #b7568d !important;
+	border: 2px solid #0B8C8F !important;
 	margin: 0;
 }
 
 .chatContainerHeader {
-	border-right: 1px solid #b7568d;
-	border-left: 1px solid #b7568d;
+	border-right: 1px solid #0B8C8F;
+	border-left: 1px solid #0B8C8F;
 }
 
 #boards a:hover {
-	box-shadow: 0px 0px 0px #9E3572;
-	-moz-box-shadow: 0px 0px 0px #9E3572;
-	-webkit-box-shadow: 0px 0px 0px #9E3572;
+	box-shadow: 0px 0px 0px #0B8E91;
+	-moz-box-shadow: 0px 0px 0px #0B8E91;
+	-webkit-box-shadow: 0px 0px 0px #0B8E91;
 }
 
 ul.project_links a:hover {
-	box-shadow: 0px 0px 15px #9E3572;
-	-moz-box-shadow: 0px 0px 15px #9E3572;
-	-webkit-box-shadow: 0px 0px 15px #9E3572;
+	box-shadow: 0px 0px 15px #0B8E91;
+	-moz-box-shadow: 0px 0px 15px #0B8E91;
+	-webkit-box-shadow: 0px 0px 15px #0B8E91;
 }
 
 .proj {
-	background-color: #b7568d;
+	background-color: #0B8C8F;
 }
 
 .proj2 {
-	background-color: #9E3572;
+	background-color: #0B8E91;
 }
 
 .projDes {
-	background-color: #b7568d;
+	background-color: #0B8C8F;
 }
 
 .ui-widget-header {
