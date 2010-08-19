@@ -21,8 +21,28 @@ public class SystemSettings extends SmartController {
 	/**
 	 * Saves the key with the new value
 	 */
-	public static void save(String key, String value) {
-		System.out.println(key + " -> " + value);
+	public static void save(String key, String new_value) {
+		Security.check(Security.getConnected().isAdmin);
+		
+		Setting settings = Setting.findById(1L);
+		String javascript = "";
+		if (key.equalsIgnoreCase("sitename")) {
+			settings.siteName = new_value;
+			javascript = "update_title('"+new_value+"')";
+		} else if (key.equalsIgnoreCase("twitterhash")) {
+			settings.twitterHash = new_value;
+			javascript = "update_twitter_hash('"+new_value+"')";
+		} else if (key.equalsIgnoreCase("entriesperbox")) {
+			try {
+				settings.defaultEntriesPerBox = Integer.parseInt(new_value);
+				javascript = "itemsPerPage = " + new_value + ";";
+			} catch (NumberFormatException n) {
+				// n.printStackTrace();
+			}
+		}
+		settings.save();
+		if (javascript.length() > 0) 
+			Update.update(User.<User> findAll(), javascript);
 	}
 }
 

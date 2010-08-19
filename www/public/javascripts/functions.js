@@ -1057,3 +1057,18 @@ function declineProjectRequest(id){
 		},'json')
 	}
 }
+$(function() {
+	$('.editable')
+		.live('mouseover', function() {
+			// alert(this)
+			if ($(this).data('init')) return
+			$(this).data('init', true)
+			$(this).blur(function() {
+				$.post($(this).attr('update_url'), {new_value: $(this).html()})
+			})
+		})
+})
+
+function update_title(new_title) {
+	$('head title').html(new_title)
+}
