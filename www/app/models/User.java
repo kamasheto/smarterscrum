@@ -133,12 +133,12 @@ public class User extends SmartModel
 
 	// @OneToMany (mappedBy = "author")
 	// public List<Comment> allComments;
-	@OneToMany
+	@ManyToMany
 	public List<ChatRoom> openChats;
 	public long ReadNotifications;
 	public boolean haveInvites;
 	public long InviteNumber;
-	
+
 	/**
 	 * Class constructor just initializing the lists a user should have.
 	 */
@@ -265,11 +265,11 @@ public class User extends SmartModel
 			{
 				roles.add( R );
 			}
-	
+
 		}
-	
+
 		return roles;
-	
+
 	}
 
 	/**
@@ -468,9 +468,10 @@ public class User extends SmartModel
 			{
 				projects.add( role.project );
 				// create me a usernotificationprofile?
-				UserNotificationProfile profile = UserNotificationProfile.find("byProjectAndUser", role.project, this).first();
-				if (profile == null) {
-					new UserNotificationProfile(this, role.project).save();
+				UserNotificationProfile profile = UserNotificationProfile.find( "byProjectAndUser", role.project, this ).first();
+				if( profile == null )
+				{
+					new UserNotificationProfile( this, role.project ).save();
 				}
 				if( !role.baseRole )
 				{
@@ -514,8 +515,9 @@ public class User extends SmartModel
 		role.save();
 		save();
 	}
-	
-	public static List<User> getAdmins() {
-		return User.find("byIsAdmin", true).<User> fetch();
+
+	public static List<User> getAdmins()
+	{
+		return User.find( "byIsAdmin", true ).<User> fetch();
 	}
 }
