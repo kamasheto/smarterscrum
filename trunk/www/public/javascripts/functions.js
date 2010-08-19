@@ -758,6 +758,7 @@ function close_workspace(project_id) {
 
 
 function showProjectWorkspace(project_id) {
+	$('#normal').html('');
 	if ($('.workspace-'+project_id).length) {
 		$('#top_header_projects_pane').slideUp()
 		show(project_id)

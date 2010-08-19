@@ -44,8 +44,14 @@
 			
 		#{list items:tasks ,as :'Task'}
 		
-			<div class = "elTask #{if Task.parent}do_not_paginate#{/if} ${Task.taskStatus?.closed ? 'redBg' : Task.taskStatus?.pending ? 'yellowBg' : Task.taskStatus?.isNew ? 'greenBg' : ''} reload-task-${Task.id}" name="/tasks/magicShow?taskId=${Task.id}"> 
+				<div class = " #{if Task.subTasks}isParentTask#{/if}${Task.taskStatus?.closed ? 'redBg' : Task.taskStatus?.pending ? 'yellowBg' : Task.taskStatus?.isNew ? 'greenBg' : ''} reload-task-${Task.id}" name="/tasks/magicShow?taskId=${Task.id}"> 
+		#{if Task.parent}
+		<script type="text/javascript">
 		
+	if($('[name="/tasks/magicShow?taskId=${Task.id}"]').parent().parent().parent().hasClass('draggableChild'))
+			{$('[name="/tasks/magicShow?taskId=${Task.id}"]').addClass('do_not_paginate');
+		}
+		</script>
 		#{drag 'task-'+Task.id /}#{drop 'task-'+Task.id /}
 		#{summary}
 		#{if Task.parent!=null} ${Task.parent.number}.#{/if}${Task.number}: ${Task.getSummary()}
