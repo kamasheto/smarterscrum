@@ -372,19 +372,12 @@ $(function() {
 		if (!DRAGGING_ELEMENT) {
 			$(this).children().children('.dragger').show()					
 		}
-		if ($(this).data('init')) return
-		$(this).data('init', 1);
-		var con = $(this).closest('.workspaceDraggables').attr('id');
-		$(this).css('z-index','9995');
-		$(this).draggable( {
-			handle : '.ui-widget-header',
-			cancel : 'img',
-			stack  : '.draggable',
-			containment: '#workspaces'
-		});
 		$(this).resizable({
+			disable:false;
 			minWidth:300,
 			minHeight:70,
+			delay : 0,
+			distance: 0,
 			containment: '#workspaces',start:function(){$(this).css('zIndex','9994')},
 			resize: function(event, ui) {
 				var test = ($(this).find(".normalLinkn span")).first();
@@ -397,6 +390,16 @@ $(function() {
 					$(this).next().next().show();
 			});
 		}});
+		if ($(this).data('init')) return
+		$(this).data('init', 1);
+		var con = $(this).closest('.workspaceDraggables').attr('id');
+		$(this).css('z-index','9995');
+		$(this).draggable( {
+			handle : '.ui-widget-header',
+			cancel : 'img',
+			stack  : '.draggable',
+			containment: '#workspaces'
+		});
 	}).live('mouseout', function() {
 		if ($(this).attr('id') != DRAGGING_ELEMENT) {
 			$(this).children().children('.dragger').hide()
@@ -416,11 +419,7 @@ $(function() {
 		if ($(this).attr('id') != DRAGGING_ELEMENT) {
 			$(this).children().children('.dragger').hide()
 		}
-	}).live(
-			'mouseover',
-			function() {
-			
-					
+	}).live('mouseover',function() {
 				if (!DRAGGING_ELEMENT) {
 					$(this).children().children('.dragger').show()					
 				}
@@ -453,6 +452,7 @@ $(function() {
 								$(this).children().show();
 								$(this).removeClass('draggableChild');
 								$(this).addClass('draggable');
+								$(this).find('.actual:first').html('');
 								load($(this).attr('name'), $(this).attr('id'),1);
 								fixZ($(this));
 								$(this).removeClass('dim');
@@ -541,16 +541,13 @@ $(function() {
 			$('#' + theId).find('.mainH').first().html(elHtml);
 			$('#' + theId).removeAttr('style');
 			fixZ($('#' + theId).closest('.draggable'));
+			load($('#' + theId).attr('name'),theId,5,0);
 			$('#' + theId).closest('.draggable').removeClass('dim');
 			$('#' + theId).closest('.draggable').css('zIndex','9994');
 			$('#' + theId).removeAttr('style');
 			$('#' + theId).removeClass('dim');
 			$('#' + theId).removeAttr('style');
 		}
-		var test = $('#'+theId).closest('.draggable').find(".normalLinkn span").first();
-		smart_pagination(test, 1, true);
-		smart_pagination($('#' + theId).closest('.draggable').attr('id'),1);
-		hideFilterLinks($('#' + theId).closest('.draggable').attr('id'));
 		});
 	});
 
@@ -569,28 +566,27 @@ function removeFromDiv(url)
 randomId = 100	
 function load(url, el, n, hideLoading) {
 	if (!hideLoading) $('#' + el + '_content').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>');
-	// if ($.inArray(url,myDivs) == -1) {
+	//alert(url+' '+el+' '+n+' ');
 		$.ajax({
 			url: url,
 			success: function(data) {
-				$('body').append('<div id="dummy_data" class="hidden"></div>')
+				$('body').append('<div id="dummy_data" class="hidden '+$('#'+el).attr('class')+'"></div>')
 				$('#dummy_data').html(data)
-				data = $('#dummy_data').html()
+				data = $('#dummy_data').html() 
+				$('#'+el+'_content').html($(data).find('.actual:first').html());
 				$('#dummy_data').remove()
-				if (n != 3) {
+				if (n != 3 && n!=5) {
 					$('#'+el+'_header').html($(data).find('.mainH:first').html());
 					if(n!=4)
 					myDivs.push(url);
-				} 
-				$('#'+el+'_content').html($(data).find('.actual:first').html());
+				}
 				if (n == 1 || n==4) {
-					
 					$('#'+ el).append('<div class="filter" id="'+el+'_filter"></div>');
 					$('#'+ el + '_filter').html($(data).find('.filter:first').html());
 					$('#'+ el + '_filter').find('input:first').attr('name', 'filter_textBox_'+el);
 				}
 				magic(el);
-				
+				if(n!=5)
 				$('#' + el + '_content').slideDown(400);
 			}
 		})
@@ -626,7 +622,7 @@ function loadBox(url, el, classes)
 
 function magic(id) {
 	doOnLoad();
-	smart_pagination(id,1);
+	smart_pagination(id,1,false);
 	hideFilterLinks(id);
 	$("#" + id + "_content div[name]").each(function(){
 		$(this).find('.taskSummary').each(function(){
