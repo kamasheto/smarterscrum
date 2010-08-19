@@ -37,24 +37,26 @@ public class SmartController extends Controller
 		{
 			Secure.logout();
 		}		List<Invite> invitations = Invite.find("byUser",
+	
 				Security.getConnected()).fetch();
-		Security.getConnected().haveInvites = false;
+		if(Security.getConnected()!=null){
+	Security.getConnected().haveInvites = false;}
 
 		List<MeetingAttendance> meetings = MeetingAttendance.find(
 				"byUserAndDeletedAndStatus", Security.getConnected(), false,
 				"waiting").fetch();
+		if(Security.getConnected()!=null){
 		Security.getConnected().InviteNumber = meetings.size()
 				+ invitations.size();
-		Security.getConnected().save();
+		Security.getConnected().save();}
 		if (invitations.size() != 0 || meetings.size() != 0) {
 			Security.getConnected().haveInvites = true;
 			Security.getConnected().save();
-		}
-
+		}if(Security.getConnected()!=null){
 		List<Notification> notifications = Notification
 				.find(
 						"receiver =" + Security.getConnected().id
-								+ " order by id desc").fetch();
+								+ " order by id desc").fetch();}
 		if (!((DateFormat.getDateInstance().format(Sprint.Last)).equals((DateFormat.getDateInstance().format(new Date()))))) {
 			Sprint.Last = new Date();
 			List<Sprint> sprints = Sprint.findAll();
