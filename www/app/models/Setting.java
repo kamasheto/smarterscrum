@@ -25,5 +25,10 @@ public class Setting extends SmartModel {
 	 * Default number of items per box
 	 */
 	public int defaultEntriesPerBox = 5;
+	
+	/**
+	 * Help email for system
+	 */
+	public String systemMail = "help@smarterscrum.com";
 }
 

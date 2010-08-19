@@ -39,6 +39,8 @@ public class SystemSettings extends SmartController {
 			} catch (NumberFormatException n) {
 				// n.printStackTrace();
 			}
+		} else if (key.equalsIgnoreCase("systemmail")) {
+			settings.systemMail = new_value;
 		}
 		settings.save();
 		if (javascript.length() > 0) 
