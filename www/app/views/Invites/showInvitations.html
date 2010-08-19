@@ -34,7 +34,7 @@
 					{what:true, hash:hash, id:id},
 					function()
 					{
-						$('#pinv_'+id).text('* Invitation confirmed');
+						$('#pinv_'+id).html('<img src="/public/images/famfam/tick.png" /> Invitation confirmed');
 					}					
 					);
 		else
@@ -42,7 +42,7 @@
 					{what:false, hash:hash, id:id},
 					function()
 					{
-						$('#pinv_'+id).text('* Invitation declined');
+						$('#pinv_'+id).html('<img src="/public/images/famfam/cross.png" /> Invitation declined');
 					}					
 					);		
 	}	
