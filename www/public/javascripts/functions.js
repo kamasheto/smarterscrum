@@ -271,8 +271,6 @@ function fixZ (that)
 			$(this).css('z-index','9993');
 			$(this).addClass('dim');
 		}
-		else
-			that.removeClass('dim');
 	});
 }
 DRAGGING_ELEMENT = null
@@ -368,12 +366,12 @@ $(function() {
 			handle : '.ui-widget-header',
 			cancel : 'img',
 			stack  : '.draggable',
-			containment: '#'+con
+			containment: '#workspaces'
 		});
 		$(this).resizable({
 			minWidth:300,
 			minHeight:70,
-			containment: '#'+con,
+			containment: '#workspaces',start:function(){$(this).css('zIndex','9994')},
 			resize: function(event, ui) {
 				var test = ($(this).find(".normalLinkn span")).first();
 				smart_pagination(test, 1, true);
@@ -393,7 +391,12 @@ $(function() {
 			$(this).addClass('dim');
 	}).live('mousedown', function() {
 			$(this).removeClass('dim');
-	});
+	}).live('mouseenter', function() {
+			$(this).removeClass('dim');
+	}).live('mouseleave', function() {
+		if($(this).css('z-index')=='9993')
+			$(this).addClass('dim');
+	});;
 		
 	$(".draggableChild").live('mouseout', function() {
 		if ($(this).attr('id') != DRAGGING_ELEMENT) {
@@ -409,11 +412,9 @@ $(function() {
 				}
 				if ($(this).data('init')==true) return
 				$(this).data('init', true)
-				
-				var con = $(this).closest('.workspaceDraggables').attr('id');
 				$(this).draggable(
 						{
-							containment: '#'+con,
+							containment: '#workspace',
 							handle : '.ui-widget-header',
 							cancel : 'img',
 							stack  : '.draggable',
@@ -432,10 +433,9 @@ $(function() {
 										top : pos2.top + pos.top,
 										left : pos2.left + pos.left
 									});
-									$(this).closest('.workspaceDraggables')
-											.append($(this));
+									$(this).closest('.workspaceDraggables').append($(this));
 								}
-							//	$(this).draggable( {start : function(event, ui) {},stop : function(event, ui) {}});
+								$(this).draggable( {start : function(event, ui) {},stop : function(event, ui) {}});
 								$(this).children().show();
 								$(this).removeClass('draggableChild');
 								$(this).addClass('draggable');
@@ -527,12 +527,16 @@ $(function() {
 			$('#' + theId).find('.mainH').first().html(elHtml);
 			$('#' + theId).removeAttr('style');
 			fixZ($('#' + theId).closest('.draggable'));
+			$('#' + theId).closest('.draggable').removeClass('dim');
+			$('#' + theId).closest('.draggable').css('zIndex','9994');
 			$('#' + theId).removeAttr('style');
 			$('#' + theId).removeClass('dim');
 			$('#' + theId).removeAttr('style');
 		}
-		smart_pagination(theId,1);
-		hideFilterLinks(theId);
+		var test = $('#'+theId).closest('.draggable').find(".normalLinkn span").first();
+		smart_pagination(test, 1, true);
+		smart_pagination($('#' + theId).closest('.draggable').attr('id'),1);
+		hideFilterLinks($('#' + theId).closest('.draggable').attr('id'));
 		});
 	});
 
@@ -592,17 +596,11 @@ function loadBox(url, el, classes)
 				$('#dummy_data').remove()
 				myDivs.push(url)
 				element = $(data).filter('div:first')
-						var that = element;
-			$('.draggable').each(function(){
-				if($(this)!=that)
-				{
-					$(this).css('position','absolute');
-					$(this).css('z-index','9993');
-					$(this).addClass('dim');
-				}});
+				var that = element;
+				fixZ(that);
 				element.attr('name', url)
 				element.addClass(classes)
-				element.css('z-index','4');
+				element.css('z-index','9995');
 				element.find('.bar:first').remove()
 				element.find('.actual:first').show()
 				$('#'+el).append(element)
@@ -711,7 +709,7 @@ function search_projects() {
 			results += '<div id="project-search-result-'+this.id+'"><a onclick="showProjectWorkspace('+this.id+')">'+this.name+'</a></div>'
 		})
 		if (!$(projects).length) {
-			results += '<div><a href="#" title="No results">--</a></div>'
+			results += '<div><a href="#" title="No results">---</a></div>'
 		}
 		$('#search_results_h3').show()
 		$('#projects_search_results').html(results)
@@ -763,7 +761,6 @@ function close_workspace(project_id) {
 
 function showProjectWorkspace(project_id) {
 	if ($('.workspace-'+project_id).length) {
-		// workspace already loaded, just show it instead
 		$('#top_header_projects_pane').slideUp()
 		show(project_id)
 		return
@@ -778,7 +775,6 @@ function showProjectWorkspace(project_id) {
 		success: function(data) {
 			$('#project-tabs').append('<a class="aDIV topCornersRounded selectedADiv project-button " id="project-button-'+project_id+'" href="#" onclick="show('+project_id+')" style="width: 120px !important" title="">'+$(data).find('.project_name_in_header').html()+' <span class="right ui-icon2 ui-icon-circle-close" onclick="close_workspace('+project_id+')"> </span></a>');
 			$('.workspace-' + project_id).html(data)
-		//	$('.workspace-' + project_id).append(');
 			$('#top_header_projects_pane').slideUp()
 		}
 	})
