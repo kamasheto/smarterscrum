@@ -66,6 +66,7 @@
                
        		$(function(){
 				doOnLoad();
+				#{get 'onLoad' /}
 				#{if connected}
 				setTimeout('ping();', 1000);
    			    #{/if}
@@ -101,7 +102,7 @@
 		}
         </script>
 </head>
-<body onload="#{get 'onLoad' /}">
+<body>
 <div id="getOverlay">
 <div style="display:table"class="transparentOverlay">
 <div id="overlayLoading" style="text-align:center;vertical-align:middle;display:table-cell">
