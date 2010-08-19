@@ -74,7 +74,7 @@
   
   
 <span style="color:white;text-shadow:0px 0px 10px #fff;font-size:12px;"><img src='/public/images/famfam/date-icon.png'/> Today's Events</span>
-  
+  <ul>
   	#{ if sprints.size()!=0 || sprints2.size()!=0 ||  meetings.size()!=0}
   	#{list items:sprints, as:'sprint'}
   	<div><img src='/public/images/famfam/date.png'/><a onClick="showProjectWorkspace(${sprint.project.id});loadBox('/sprints/showsprint?id=${sprint.id}','workspace-${sprint.project.id}','');">The Start of Sprint${sprint.sprintNumber} in Project ${sprint.project.name}</a></div>				
@@ -95,7 +95,7 @@
 	#{note}There are no events today.#{/note}
 	</div>
 	#{/else}
-	
+	</ul>
   </div>
 <script type="text/javascript" charset="utf-8">
 	loadEvents()

@@ -515,8 +515,9 @@ public class Tasks extends SmartCRUD
 		{
 			double sum = 0;
 			for( int i = 0; i < tmp.parent.subTasks.size(); i++ )
-			{
-				sum = tmp.parent.subTasks.get( i ).estimationPoints + sum;
+			{	if(!tmp.parent.subTasks.get(i).deleted){
+					sum = tmp.parent.subTasks.get( i ).estimationPoints + sum;
+				}
 			}
 			tmp.parent.estimationPoints = sum;
 			tmp.parent.save();
@@ -770,7 +771,7 @@ public class Tasks extends SmartCRUD
 		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
-			Update.update( tmp.project, "reload('tasks','task-" + tmp.id + "')" );
+			Update.update( tmp.project, "reload('tasks','task-" + tmp.id + "','task-" + tmp.parent.id + "')" );
 			String url = Router.getFullUrl("Application.externalOpen")+"?id="+tmp.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+tmp.id;
 			ArrayList<User> nusers= new ArrayList<User>();
 			if(tmp.assignee!=null)
@@ -815,6 +816,18 @@ public class Tasks extends SmartCRUD
 		{	
 			tmp.DeleteTask();
 			tmp.save();
+			if( tmp.parent != null )
+			{
+				double sum = 0;
+				for( int i = 0; i < tmp.parent.subTasks.size(); i++ )
+				{	if(!tmp.parent.subTasks.get(i).deleted){
+						sum = tmp.parent.subTasks.get( i ).estimationPoints + sum;
+					}
+				}
+				tmp.parent.estimationPoints = sum;
+				tmp.parent.save();
+				Update.update( tmp.project, "reload('tasks-"+tmp.project.id+"', 'task-" + tmp.id + "', 'task-" + tmp.parent.id + "')" );
+			}
 			Update.update( tmp.project, "reload('tasks-"+tmp.project.id+"', 'task-" + tmp.id + "')" );
 			deleteSubTasks(id);
 			renderText("Task deleted successfully.");
@@ -1752,7 +1765,11 @@ public class Tasks extends SmartCRUD
 					title = "Task " + task.parent.number + "." + task.number;
 				else
 					title = "Task " + task.number;
-				List<Task> tasks = task.subTasks;
+				List<Task> tasks = new ArrayList<Task>();
+				for (Task task2 : task.subTasks){
+					if(!task2.deleted)
+						tasks.add(task2);
+				}
 				int counter = tasks.size();
 				render( counter, task, title, tasks, projectId );
 			}
