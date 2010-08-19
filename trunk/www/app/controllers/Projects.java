@@ -762,7 +762,7 @@ public class Projects extends SmartCRUD
 				}
 			}
 			String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + currentRequest.project.id + "&isOverlay=false&url=#";
-			Notifications.notifyUser( currentRequest.user, "accepted", url, "your Request to be deleted from project", currentRequest.project.name, (byte) 1, null );
+			Notifications.notifyProjectUsers( project, "deletedFromProject", url, "himself", u.name, (byte) -1 );
 			Log.addLog( "Deleted from project", currentRequest.project, currentRequest.user );
 			currentRequest.delete();
 			renderJSON( true );
@@ -770,8 +770,6 @@ public class Projects extends SmartCRUD
 			// Logs.addLog("User: " + Security.getConnected().name +
 			// " has deleted him/herself from project: " + project.name);
 			// String url = Router.getFullUrl( "Show.user" ) + "?id=" + u.id;
-			// Notifications.notifyProjectUsers( project, "deletedFromProject",
-			// url, "himself", u.name, (byte) -1 );
 
 		}
 
