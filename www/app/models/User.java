@@ -410,7 +410,7 @@ public class User extends SmartModel
 
 		for( int i = 0; i < tasks.size(); i++ )
 		{
-			if( tasks.get( i ).assignee != null && tasks.get( i ).assignee.equals( this ) )
+			if( tasks.get( i ).assignee != null && tasks.get( i ).assignee.equals( this ) && (tasks.get(i).subTasks==null || tasks.get(i).parent!=null))
 				userTasks.add( tasks.get( i ) );
 		}
 		return userTasks;

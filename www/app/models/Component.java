@@ -159,7 +159,7 @@ public class Component extends SmartModel
 		{
 			if( componentTasks.get( i ).taskSprint != null )
 			{
-				if( componentTasks.get( i ).taskSprint.id == s.id )
+				if( componentTasks.get( i ).taskSprint.id == s.id && (componentTasks.get(i).subTasks==null || componentTasks.get(i).parent!=null) )
 				{
 					t.add( componentTasks.get( i ) );
 				}
