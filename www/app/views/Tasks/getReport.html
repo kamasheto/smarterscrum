@@ -1,4 +1,8 @@
 #{extends 'overlay.html' /} #{set title:'Task Report' /}
+#{if empty}
+#{note}There is not enough information to display#{/note}
+#{/if}
+#{else}
 #{set 'moreStyles'}
 <style type="text/css">
 label {
@@ -425,4 +429,4 @@ function send(){
 #{/else}
 </div>
 </div>
-</div>
+</div>#{/else}
