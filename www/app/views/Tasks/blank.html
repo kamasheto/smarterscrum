@@ -52,46 +52,52 @@
 	</div>
 
 	#{if project.taskStatuses.size()>0}
-	<div class="crudField" name="view-more" style="display:none">
-	<label for="object_taskStatus">Status</label>
-	<select id="object_taskStatus" name="object.taskStatus@id">
-	#{list items:project.taskStatuses ,as :'taskStatuses'}
-	<option value="${taskStatuses.id}">${taskStatuses.name}</option>
-	#{/list}
-	</select>
-	</div>
+		<div class="crudField" name="view-more" style="display:none">
+			<label for="object_taskStatus">Status</label>
+			<select id="object_taskStatus" name="object.taskStatus@id">
+			#{list items:project.taskStatuses ,as :'taskStatus'}
+				#{ifnot taskStatus.deleted}
+				<option value="${taskStatus.id}">${taskStatus.name}</option>
+				#{/ifnot}
+			#{/list}
+			</select>
+		</div>
 	#{/if}
 	
-	#{if project.components.size()>1}
-	#{if p!=null || (task!=null && task.component==null)}
-	<div class="crudField" name="view-more" style="display:none">
-	<label for="object_component">Component</label>
-	<select id="object_component" name="object.component@id" onchange="getUsers()">
-	#{list items:project.components ,as :'component'}
-	#{if component.number == 0}
-	<option value="${component.id}">None</option>
+	#{if project.hasComponents()>1}
+		#{if p!=null || (task!=null && task.component==null)}
+			<div class="crudField" name="view-more" style="display:none">
+			<label for="object_component">Component</label>
+			<select id="object_component" name="object.component@id" onchange="getUsers()">
+			#{list items:project.components ,as :'component'}
+				#{ifnot component.deleted}	
+					#{if component.number == 0}
+						<option value="${component.id}">None</option>
+					#{/if}
+					#{else}
+						<option value="${component.id}">${component.name}</option>
+					#{/else}
+				#{/ifnot}	
+			#{/list}
+			</select>
+			</div>
+		#{/if}
 	#{/if}
-	#{else}
-	<option value="${component.id}">${component.name}</option>
-	#{/else}
-	#{/list}
-	</select>
-	</div>
-	#{/if}
-	#{/if}
-	#{else}
-	<input type="hidden" id="object_component" name="object.component@id" value="${project.components[0].id}" >
-	#{/else}
+	#{elseif project.components.size()==1}
+		<input type="hidden" id="object_component" name="object.component@id" value="${project.components[0].id}" >
+	#{/elseif}
 	
-	#{if project.taskTypes.size()>0}
-	<div class="crudField" name="view-more" style="display:none">
-	<label for="object_taskType">Type</label>
-	<select id="object_taskType" name="object.taskType@id" onchange="getType();">
-	#{list items:project.taskTypes ,as :'taskType'}
-	<option value="${taskType.id}">${taskType.name}</option>
-	#{/list}
-	</select>
-	</div>
+	#{if project.hasTypes()>0}
+		<div class="crudField" name="view-more" style="display:none">
+		<label for="object_taskType">Type</label>
+		<select id="object_taskType" name="object.taskType@id" onchange="getType();">
+		#{list items:project.taskTypes ,as :'taskType'}
+			#{ifnot taskType.deleted}
+				<option value="${taskType.id}">${taskType.name}</option>
+			#{/ifnot}
+		#{/list}
+		</select>
+		</div>
 	#{/if}
 	
 	#{if p!=null && project.users.size()>0}

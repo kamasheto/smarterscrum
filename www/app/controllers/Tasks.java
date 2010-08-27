@@ -115,7 +115,7 @@ public class Tasks extends SmartCRUD
 			}
 			java.util.Date End = sprint.endDate;
 			Calendar cal = new GregorianCalendar();
-			if( End != null && End.after( cal.getTime() ) && !flag)
+			if( End != null && End.after( cal.getTime() ) && !flag && !sprint.deleted)
 			{
 				sprints.add( sprint );
 			}

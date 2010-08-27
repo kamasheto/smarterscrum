@@ -207,6 +207,11 @@ public class Component extends SmartModel
 		{
 			this.deleted = true;
 			this.save();
+			for(Task task: this.componentTasks)
+			{
+				task.deleted = true;
+				task.save();
+			}
 			return true;
 		}
 		return false;
