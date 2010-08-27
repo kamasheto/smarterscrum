@@ -36,7 +36,7 @@ import play.mvc.With;
  */
 @With( Secure.class )
 public class Application extends SmartController
-{
+{	
 	/**
 	 * Generates the hash value of the given String
 	 * 
@@ -289,6 +289,7 @@ public class Application extends SmartController
 	 */
 	public static void showNotifications(int page)
 	{
+		System.out.println("Hello World!");
 		User user = Security.getConnected();
 		boolean first=false;
 		boolean last=false;
@@ -312,7 +313,7 @@ public class Application extends SmartController
 	else{pageOfNotifications = Notification.find("byReceiver", user).from((page-1)*10).fetch(10);				
 }
 	for(Notification noti:pageOfNotifications){
-		System.out.println(noti.unread);
+		// System.out.println(noti.unread);
 		if(noti.unread){
 			user.ReadNotifications++;
 			noti.unread=false;
