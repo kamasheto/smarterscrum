@@ -790,5 +790,24 @@ public class Project extends SmartModel
 		int s = logs.size() / 10;
 		return s > 10 ? 10 : s < 0 ? 0 : s;
 	}
-
+	public int hasComponents()
+	{
+		int count = 0;
+		for(Component component:this.components)
+		{
+			if(!component.deleted)
+				count++;
+		}
+		return count;
+	}
+	public int hasTypes()
+	{
+		int count = 0;
+		for(TaskType type:this.taskTypes)
+		{
+			if(!type.deleted)
+				count++;
+		}
+		return count;
+	}
 }

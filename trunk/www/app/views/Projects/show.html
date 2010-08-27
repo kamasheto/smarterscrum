@@ -124,6 +124,23 @@ $.bar({message:"Meeting Type was not Removed."});
 hideLoader('removeMB','loaderMB');
 }
 
+function ManageTaskTypes(optionName)
+{
+	if (optionName == "") 
+	{
+		$('#addTaskTypeButton').attr("disabled", false);
+		$('#editTaskTypeButton').attr("disabled", true);
+		$('#removeTaskTypeButton').attr("disabled", true);
+		$('#taskText').val('');
+	}
+	else
+	{
+		$('#addTaskTypeButton').attr("disabled", true);
+		$('#editTaskTypeButton').attr("disabled", false);
+		$('#removeTaskTypeButton').attr("disabled", false);
+		$('#taskText').val(optionName);
+	}	
+}
 function ManageTaskStatuses(optionName, isPending, isClosed)
 {
 	if(optionName=="")
