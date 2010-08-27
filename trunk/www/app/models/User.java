@@ -508,6 +508,32 @@ public class User extends SmartModel
 		{
 			projects.remove( role.project );
 			role.project.users.remove( this );
+			for(Component component : role.project.components)
+			{
+				if(component.componentUsers.contains(this))
+				{
+					component.componentUsers.remove(this);
+					component.save();
+					this.components.remove(component);
+					this.save();
+					Update.update(role.project, "reload('components')");
+				}
+			}
+			for(Task task : role.project.projectTasks)
+			{
+				if(task.assignee == this)
+				{
+					task.assignee = null;
+					task.save();
+					Update.update(role.project, "reload('tasks')");
+				}
+				if(task.reviewer == this)
+				{
+					task.reviewer = null;
+					task.save();
+					Update.update(role.project, "reload('tasks')");
+				}
+			}
 		}
 		roles.remove( role );
 		role.users.remove( this );
