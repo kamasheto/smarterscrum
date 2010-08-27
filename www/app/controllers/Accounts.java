@@ -148,10 +148,7 @@ public class Accounts extends SmartController
 		{
 			currentUser.isActivated = true;
 			currentUser.save();
-			if(firstTime)
-				Notifications.welcome(currentUser, true);
-			else
-				Notifications.welcome(currentUser, false);
+			Notifications.welcome(currentUser, firstTime);
 			flash.success( "Thank you , your Account has been Activated! . Login Below" );
 		}
 		else

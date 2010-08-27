@@ -406,7 +406,7 @@ public class Tasks extends SmartCRUD
 				insprint = true;
 			}
 		}
-		List <Sprint> sprints = null;
+		List <Sprint> sprints = new ArrayList<Sprint>();
 		for(Sprint sprint:tmp.project.sprints )
 		{
 			if(!(sprint.startDate.before( now ) && sprint.endDate.after( now )) && !sprint.ended)
@@ -771,7 +771,7 @@ public class Tasks extends SmartCRUD
 		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
-			Update.update( tmp.project, "reload('tasks','task-" + tmp.id + "','task-" + tmp.parent.id + "')" );
+			Update.update( tmp.project, "reload('tasks','task-" + tmp.id + "'"+(tmp.parent != null ? ",'task-" + tmp.parent.id + "'" : "")+")" );
 			String url = Router.getFullUrl("Application.externalOpen")+"?id="+tmp.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+tmp.id;
 			ArrayList<User> nusers= new ArrayList<User>();
 			if(tmp.assignee!=null)
@@ -1752,6 +1752,7 @@ public class Tasks extends SmartCRUD
 
 			}
 			boolean isComponent = true;
+			projectId = component.project.id;
 			render( counter, tasks, title, mine, projectId, isComponent );
 		}
 		else
@@ -1771,6 +1772,7 @@ public class Tasks extends SmartCRUD
 						tasks.add(task2);
 				}
 				int counter = tasks.size();
+				projectId = task.project.id;
 				render( counter, task, title, tasks, projectId );
 			}
 			else
@@ -1839,6 +1841,7 @@ public class Tasks extends SmartCRUD
 
 							title = "Meeting " + meeting.name + " Tasks";
 							int counter = tasks.size();
+							projectId = meeting.project.id;
 							render( counter, title, tasks, projectId );
 						}
 					}
