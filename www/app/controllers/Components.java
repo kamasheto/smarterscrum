@@ -160,7 +160,7 @@ public class Components extends SmartCRUD {
 		// flash.success(Messages.get("crud.deleted", type.modelName,
 		// object.getEntityId()));
 		// redirect("/projects/" + component.project.id + "/components");
-		Update.update(component.project, "reload('components');reload('tasks')");
+		Update.update(component.project, "reload('components','tasks')");
 		renderText("Component deleted successfully.");
 	}
 
