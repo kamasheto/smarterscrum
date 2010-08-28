@@ -32,13 +32,11 @@
 
 	<div class="objectForm">
 	#{form action:@save(object.id), enctype:'multipart/form-data'}
-	#{crud.form fields:['parent','description', 'taskType', 'taskStatus', 'component'  , 'estimationPoints', 'reporter', 'dependentTasks','taskSprint', 'assignee', 'reviewer', 'comment', 'subTasks']}		
+	#{crud.form fields:['parent','description','reporter','successScenario','failureScenario','component','taskStatus','taskType','assignee','reviewer','taskSprint','estimationPoints','priority','subTasks','dependentTasks','comment']}		
 			#{crud.custom 'parent'}
 			#{if object.parent!=null}
 			<label for="task_parent">Parent</label> 
-			<p>
-			<span id="task_Story2"><font color="green">${object.parent.description}</font></span> 
-			</p>
+			<span id="task_Story2"><font color="green">${object.parent.getSummary()}</font></span> 
 			#{/if}
 			#{/crud.custom }
 			
@@ -49,157 +47,144 @@
 			<div style="display:none" class="d">Ex: As a/an product role, description</div>
 			<span class="error"></span>
 			#{/crud.custom}
-		
+			
+			#{crud.custom 'successScenario' }
+			<label for="object_successScenario">Success Scenario</label>
+			<textarea id="object_successScenario"  name="object.successScenario">${object.successScenario}</textarea>
+    		<span class="error"></span>
+			#{/crud.custom}
+			
+			#{crud.custom 'failureScenario' }
+			<label for="object_failureScenario">Failure Scenario</label>
+			<textarea id="object_failureScenario"  name="object.failureScenario">${object.failureScenario}</textarea>
+    		<span class="error"></span>
+			#{/crud.custom}
 					
 			#{crud.custom 'taskStatus'}
-			<p>
 			<label for="task_taskStatus">Status</label>
 			<select id="object_taskStatus" name="object.taskStatus@id">
-								#{list items:statuses ,as :'Status'}
-									<option value="${Status.id}"#{if object.taskStatus == Status} selected#{/if}>${Status.name}</option>
-								#{/list}		
+			#{if object.taskStatus==null}
+				<option value="">(None)</option>
+			#{/if}
+			#{list items:statuses ,as :'Status'}
+				#{ifnot Status.deleted}<option value="${Status.id}"#{if object.taskStatus == Status} selected#{/if}>${Status.name}</option>#{/ifnot}
+			#{/list}		
 			</select>
-			</p>
 			#{/crud.custom }
 				
-		
-			
 			#{crud.custom 'taskType'}
-			<p>
-			<label for="task_type">Type</label> 
-			<select id="object_taskType" name="object.taskType@id" onchange="getType();">
-								#{list items:types ,as :'Type'}
-									<option value="${Type.id}"#{if object.taskType == Type} selected#{/if}>${Type.name}</option>
-								#{/list}		
-			</select>
-			</p>
+			#{if object.project.hasTypes()>0}
+				<label for="task_type">Type</label> 
+				<select id="object_taskType" name="object.taskType@id" onchange="getType();">
+				#{if object.taskType==null}<option value="">(None)</option>#{/if}
+				#{list items:object.project.taskTypes ,as :'Type'}
+					#{if !Type.deleted}<option value="${Type.id}"#{if object.taskType == Type} selected#{/if}>${Type.name}</option>#{/if}									
+				#{/list}		
+				</select>
+			#{/if}#{else}#{/else}
 			#{/crud.custom }
 			
 			#{crud.custom 'component'}
-			#{if object.project.components.size()==1 || insprint}
-			#{/if}
-			
+			#{if object.project.hasComponents()==1}#{/if}
+			#{elseif (insprint || object.parent!=null) && object.component!=null && object.component.number!=0}
+				<label for="task_type">Component</label>
+				<span ><font color="green">${object.component.name}</font></span>
+			#{/elseif}
 			#{else}
-			<p>
-			<label for="task_type">Component</label>
-			<select id="object_component" name="object.component@id" onchange="getUsers()">
-								#{list items:object.project.components ,as :'component'}
-								#{if component.name=='default component'}
-									<option value="${component.id}"#{if object.component == component} selected#{/if}>None</option>
-								#{/if}
-								#{else}	
-									<option value="${component.id}"#{if object.component == component} selected#{/if}>${component.name}</option>
-								#{/else}
-								#{/list}		
+				<label for="task_type">Component</label>
+				<select id="object_component" name="object.component@id" onchange="getUsers();getType();">
+				#{list items:object.project.components ,as :'component'}
+					#{if component.number==0}<option value="${component.id}"#{if object.component == component} selected#{/if}>None</option>#{/if}
+					#{elseif !component.deleted}<option value="${component.id}"#{if object.component == component} selected#{/if}>${component.name}</option>#{/elseif}
+			#{/list}		
 			</select>
-			</p>
 			#{/else}
 			#{/crud.custom }
 			
 			#{crud.custom 'estimationPoints'}
-			#{ifnot object.subTasks}
-			<p> 
 			<label for="object_estimationPoints">Estimation Points</label> 
 			<input id="object_estimationPoints" type="text" name="object.estimationPoints" 
 			size="5"  value = "${object.estimationPoints}"/> 
 			<span class="crudHelp" ><font color="Red">*</font>Numeric.</span> 
- 			</p>
- 			#{/ifnot} 
+ 			#{/crud.custom }
+			
+			#{crud.custom 'priority'}
+			#{if object.project.hasPriorities()}
+			<label for="object_priority">Priority</label> 
+			<select id="object_priority" name="object.priority">
+			<option value="">None</option>
+			#{list items:object.project.priorities ,as :'priority'}
+				#{ifnot priority.deleted}<option value="${priority.priority}"#{if object.priority == priority} selected#{/if}>${priority.priority}</option>#{/ifnot}
+			#{/list}
+			</select>
+			#{/if}#{else}#{/else}
 			#{/crud.custom }
 			
 			
 			#{crud.custom 'reporter'}
-			<p>
 			<label for="task_reporter">Reporter</label> 
 			<span id="task_reporter2" ><font color="green">${object.reporter.name}</font></span> 
-			</p>
 			#{/crud.custom }
 			
 			#{crud.custom 'assignee'}
-			<p>
-			<label for="object_assignee">Assignee</label>
-			<select id="object_assignee" name="object.assignee@id"  onchange="getType();">
-					<option value="">(None)</option>
-					#{list items:users ,as :'User'}
-					<option value="${User.id}"#{if object.assignee == User} selected#{/if}>${User.name}</option>
-					#{/list}		
-	</select>
-			</p>
+			#{if object.component!=null && object.component.number==0 && object.project.hasUsers()>0}
+				<label for="object_assignee">Assignee</label>
+				<span style="display:none" id="assig_msg"><font color="red">There are no users in the selected component</font></span>
+				<select class="assign" id="object_assignee" name="object.assignee@id"  onchange="getType();">
+				<option value="">(None)</option>
+				#{list items:object.project.users ,as :'User'}
+					#{ifnot User.deleted}<option value="${User.id}"#{if object.assignee == User} selected#{/if}>${User.name}</option>#{/ifnot}
+				#{/list}		
+				</select>
+			#{/if}
+			#{elseif object.component!=null && object.component.number!=0 && (object.parent==null || (object.parent!=null && object.parent.component!=null && object.component.hasUsers()>0))}
+				<label for="object_assignee">Assignee</label>
+				<span style="display:none" id="assig_msg"><font color="red">There are no users in the selected component</font></span>
+				<select class="assign" id="object_assignee" name="object.assignee@id"  onchange="getType();">
+				<option value="">(None)</option>
+				#{list items:object.component.componentUsers ,as :'User'}
+					#{ifnot User.deleted}<option value="${User.id}"#{if object.assignee == User} selected#{/if}>${User.name}</option>#{/ifnot}
+				#{/list}		
+				</select>
+			#{/elseif}#{else}#{/else}
 			#{/crud.custom}
 	
 			#{crud.custom 'reviewer'}
+			#{if (object.component!=null && object.component.number==0 && object.project.hasUsers()>0) || (object.component!=null && object.component.number!=0 && ((object.parent==null || (object.parent!=null && object.parent.component!=null && object.component.hasUsers()>0))))}
 			<label for="object_reviewer">Reviewer</label>
-			<select id="object_reviewer" name="object.reviewer@id" >
-				<option value="">(None)</option>
-				#{list items:revs ,as :'User'}
-				#{if object.assignee!=null}
-				#{if object.assignee.id!=User.id}
-				<option value="${User.id}"#{if object.reviewer == User} selected#{/if}>${User.name}</option>
-				#{/if}
-				#{/if}
-				#{else}
-				<option value="${User.id}"#{if object.reviewer == User} selected#{/if}>${User.name}</option>
-				#{/else}
-				#{/list}		
+			<span id="rev_msg" ><font color="red">There are no reviewers available for the selected task type</font></span>
+			<select class="rev" id="object_reviewer" name="object.reviewer@id" >
 			</select>
+			#{/if}#{else}#{/else}
 			#{/crud.custom}
 			
-			#{if dependencies.size()>1}
 			#{crud.custom 'dependentTasks'}
-			<p>
-			<label for="object_dependentTasks"> Dependent Tasks</label> 
-			<input type="hidden" name="object.dependentTasks@id" value="" /> 
-			<select id="object_dependentTasks" name="object.dependentTasks@id" multiple="yes"> 
-			#{list items:dependencies ,as :'Task'}
-			#{if object!=Task}
-			<option value="${Task.id}" #{if object.dependentTasks.contains(Task)}selected#{/if}>${Task.description}</option>
-			#{/if}
-			#{/list} 
-			</select> 
-			</p>
+			#{if object.project.hasTasks()>1}
+				<label for="object_dependentTasks"> Dependent Tasks</label> 
+				<input type="hidden" name="object.dependentTasks@id" value="" /> 
+				<select id="object_dependentTasks" name="object.dependentTasks@id" multiple="yes"> 
+				#{list items:object.project.projectTasks ,as :'Task'}
+					#{if !Task.deleted && object!=Task}<option value="${Task.id}" #{if object.dependentTasks.contains(Task)}selected#{/if}>${Task.getSummary()}</option>#{/if}
+				#{/list} 
+				#{if object.dependentTasks.size()>0}<option value="">None</option>#{/if}
+				</select>
+			#{/if}#{else}#{/else}
 			#{/crud.custom }
-			#{/if}
-			#{else}
-			#{crud.custom 'dependentTasks'}
-			#{/crud.custom }
-			#{/else}
 			
-			#{if object.project.sprints.size()>0}
 			#{crud.custom 'taskSprint'}
-			<p>
-			<label for="object_taskSprint">Sprint</label>
-			#{if object.taskSprint!=null}
-			#{if object.taskSprint.ended || insprint} 
-			<span id="task_taskSprint" ><font color="green">sprint ${object.taskSprint.sprintNumber}</font></span>
-			#{/if}
-			#{else}
-			<select id="object_taskSprint" name="object.taskSprint@id">
-			<option value="">(None)</option>
-			#{list items:object.project.sprints ,as :'sprint'}
-			#{if !sprint.ended && !sprint.running()}
-			<option value="${sprint.id}"#{if object.taskSprint == sprint} selected#{/if}>sprint ${sprint.sprintNumber}</option>
-			#{/if}
-			#{/list}		
-			</select>
-			#{/else}
-			#{/if}
-			#{else} 
-			<select id="object_taskSprint" name="object.taskSprint@id">
-			<option value="">(None)</option>
-			#{list items:object.project.sprints ,as :'sprint'}
-			#{if !sprint.ended && !sprint.running()}
-			<option value="${sprint.id}"#{if object.taskSprint == sprint} selected#{/if}>sprint ${sprint.sprintNumber}</option>
-			#{/if}
-			#{/list}		
-			</select>
-			#{/else}
-			</p>
+			#{if sprints.size()>0}
+				<label for="object_taskSprint">Sprint</label>
+				#{if (object.taskSprint!=null && object.taskSprint.ended) || insprint}<span id="task_taskSprint" ><font color="green">sprint ${object.taskSprint.sprintNumber}</font></span>#{/if}
+				#{else}
+					<select id="object_taskSprint" name="object.taskSprint@id">
+					<option value="">(None)</option>
+					#{list items:sprints ,as :'sprint'}
+						<option value="${sprint.id}"#{if object.taskSprint == sprint} selected#{/if}>sprint ${sprint.sprintNumber}</option>
+					#{/list}
+					</select>
+				#{/else}
+			#{/if}#{else}#{/else}
 			#{/crud.custom }
-			#{/if}
-			#{else}
-			#{crud.custom 'taskSprint'}
-			#{/crud.custom }
-			#{/else}
 			
 			#{crud.custom 'comment'}
 				<label for="object_comment">Comments and Actions</label><br/>
@@ -242,7 +227,11 @@
 
 <script type="text/javascript">
 
-	
+	$(function()
+	{
+		getUsers();
+		getType();
+	})
 	var data='${productRoles}'.split("-");
 	$("#object_description").autocomplete(data);
 	
@@ -291,6 +280,15 @@ function getUsers()
 			str += '<option value='+item.id+'>'+item.name+'</option>';
 		});
 		$('#object_assignee').html( str );
+		if (data.length == 0) {
+			$('.assign').css('display', 'none');
+			$('#assig_msg').css('display', 'inline-block');
+		}
+		else 
+		{
+			$('#assig_msg').css('display', 'none');
+			$('.assign').css('display', 'inline-block');
+		}
 	}); 
 	$.post('@{typeReviewer}', {typeId : typeId, componentId:compId}, function(data){
 		str = '<option value="">(None)</option>';
@@ -311,11 +309,15 @@ function getType()
 			str += '<option value='+item.id+'>'+item.name+'</option>';
 		});
 		$('#object_reviewer').html( str );
-		if(data.length==0)
-		$('.rev').css('display','none');
-		else
-		$('.rev').css('display','inline-block');
-
+		if (data.length == 0) {
+			$('.rev').css('display', 'none');
+			$('#rev_msg').css('display', 'inline-block');
+		}
+		else 
+		{
+			$('.rev').css('display', 'inline-block');
+			$('#rev_msg').css('display', 'none');
+		}
 	}); 
 }
 	</script>

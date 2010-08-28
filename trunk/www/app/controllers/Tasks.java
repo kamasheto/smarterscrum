@@ -86,7 +86,7 @@ public class Tasks extends SmartCRUD
 				// taskId
 				{
 					task = Task.findById( taskId );
-					if( task.deleted )
+					if(task!=null && task.deleted )
 						notFound();
 					if( task.component != null )
 					{
@@ -107,15 +107,9 @@ public class Tasks extends SmartCRUD
 		for( int i = 0; i < project.sprints.size(); i++ )
 		{
 			Sprint sprint = project.sprints.get( i );
-			boolean flag = false;
-			Date now = Calendar.getInstance().getTime();
-			if( sprint.startDate.before( now ) && sprint.endDate.after( now ) )
-			{
-				flag = true;
-			}
 			java.util.Date End = sprint.endDate;
 			Calendar cal = new GregorianCalendar();
-			if( End != null && End.after( cal.getTime() ) && !flag && !sprint.deleted)
+			if( End != null && End.after( cal.getTime() ) && !sprint.deleted)
 			{
 				sprints.add( sprint );
 			}
@@ -197,7 +191,6 @@ public class Tasks extends SmartCRUD
 				sprints.add( sprint );
 			}
 		}
-		String newdesc = tmp.description;
 		String productRoles = "";
 		for( int i = 0; i < project.productRoles.size(); i++ )
 		{
@@ -206,7 +199,6 @@ public class Tasks extends SmartCRUD
 			else
 				productRoles = productRoles + "As a " + project.productRoles.get( i ).name + ",-";
 		}
-
 		if( validation.hasErrors() )
 		{
 			renderArgs.put( "error", Messages.get( "crud.hasErrors" ) );
@@ -220,64 +212,7 @@ public class Tasks extends SmartCRUD
 			}
 		}
 		tmp.init();
-		// System.out.println(tmp.parent.id + "toffa7");
-
-		String[] desc = newdesc.split( "," );
-		if( desc.length == 1 )
-		{
-			tmp.description = desc[0];
-		}
-		else
-		{
-			String[] desc2 = desc[0].split( " " );
-			if( desc2.length >= 3 )
-			{
-				if( desc2[0].equalsIgnoreCase( "as" ) && (desc2[1].equalsIgnoreCase( "a" ) || desc2[1].equalsIgnoreCase( "an" )) )
-				{
-					boolean flag = false;
-					String productrole = "";
-					for( int k = 2; k < desc2.length; k++ )
-					{
-						if( k == desc2.length - 1 )
-							productrole = productrole + desc2[k];
-						else
-							productrole = productrole + desc2[k] + " ";
-
-					}
-					for( int j = 0; j < tmp.project.productRoles.size(); j++ )
-					{
-						if( tmp.project.productRoles.get( j ).name.equalsIgnoreCase( productrole ) )
-							flag = true;
-					}
-					if( !flag )
-					{
-						ProductRole pr = new ProductRole( tmp.project.id, productrole, "" );
-						pr.save();						
-						Notifications.notifyProjectUsers(pr.project, "addProductRole", "", "product role", pr.name, (byte) 0);
-						tmp.productRole = pr;
-					}
-					else
-					{
-						for( int j = 0; j < tmp.project.productRoles.size(); j++ )
-						{
-							if( tmp.project.productRoles.get( j ).name.equalsIgnoreCase( productrole ) )
-							{
-								tmp.productRole = tmp.project.productRoles.get( j );
-							}
-						}
-					}
-					for( int i = 1; i < desc.length; i++ )
-					{
-						tmp.description = desc[i] + " ";
-					}
-				}
-			}
-			else
-			{
-				tmp.description = tmp.description;
-				tmp.productRole = null;
-			}
-		}
+		tmp.getProductRole(tmp.description);
 		tmp.reporter = Security.getConnected();
 		Double t = tmp.estimationPoints;
 		if(t.isNaN())
@@ -335,16 +270,13 @@ public class Tasks extends SmartCRUD
 		JPASupport object = type.findById( id );
 		Task tmp = (Task) object;
 		Security.check( Security.getConnected().in( tmp.project ).can( "modifyTask" ) );
-		List<User> users = null;
 		List<TaskStatus> statuses = tmp.project.taskStatuses;
 		List<TaskType> types = tmp.project.taskTypes;
-		List<Task> dependencies = new ArrayList<Task>();
 		List<Comment> comments = Comment.find( "byTask", tmp ).fetch();
 		if( comments == null )
 			comments = new ArrayList<Comment>();
 		String message2 = "Are you Sure you want to delete the task ?!";
 		boolean deletable = tmp.isDeletable();
-		dependencies = Task.find( "byProjectAndDeleted", tmp.project, false ).fetch();
 		String productRoles = "";
 		for( int i = 0; i < tmp.project.productRoles.size(); i++ )
 		{
@@ -352,50 +284,6 @@ public class Tasks extends SmartCRUD
 				productRoles = productRoles + "As an " + tmp.project.productRoles.get( i ).name + ",-";
 			else
 				productRoles = productRoles + "As a " + tmp.project.productRoles.get( i ).name + ",-";
-		}
-		List <User> revs = new ArrayList<User>();
-		List<Reviewer> reviewers = new ArrayList<Reviewer>();
-		if(tmp.project.taskTypes.size()>0)
-		{
-			if(tmp.taskType!=null)
-			{
-				reviewers = Reviewer.find("byProjectAndAcceptedAndtaskType", tmp.project, true, tmp.taskType).fetch();
-			}
-		}
-		if( tmp.component != null )
-		{
-			if( tmp.component.number == 0 )
-			{
-				users = tmp.project.users;
-				if(reviewers!=null)
-				{	
-					for(Reviewer rev : reviewers)
-						revs.add(rev.user);
-				}	
-			}
-			else
-			{
-				users = tmp.component.componentUsers;
-				if(reviewers!=null)
-				{	
-				
-				for(Reviewer rev : reviewers)
-				{
-					if(rev.user.components.contains(tmp.component))
-					revs.add(rev.user);
-				}
-				}
-			}
-		}
-		else
-			users = tmp.project.users;
-		if(reviewers!=null)
-		{	
-			
-		for(Reviewer rev : reviewers)
-			{
-				revs.add(rev.user);
-			}
 		}
 		boolean insprint = false;
 		Date now = Calendar.getInstance().getTime();
@@ -409,12 +297,13 @@ public class Tasks extends SmartCRUD
 		List <Sprint> sprints = new ArrayList<Sprint>();
 		for(Sprint sprint:tmp.project.sprints )
 		{
-			if(!(sprint.startDate.before( now ) && sprint.endDate.after( now )) && !sprint.ended)
+			if(!sprint.ended && !sprint.deleted)
 				sprints.add(sprint);
 		}
+		System.out.println(insprint);
 		try
 		{
-			render( type, object, users, revs, statuses, types, dependencies, message2, deletable, comments, productRoles, insprint, sprints );
+			render( type, object, statuses, types, message2, deletable, comments, productRoles, insprint, sprints );
 		}
 		catch( TemplateNotFoundException e )
 		{
@@ -582,66 +471,7 @@ public class Tasks extends SmartCRUD
 		object.save();
 		/*********** Changes as Comment by Galal Aly **************/
 		tmp.productRole = null;
-		String newdesc = tmp.description;
-		String[] desc = newdesc.split( "," );
-		if( desc.length == 1 )
-		{
-			tmp.description = desc[0];
-		}
-		else
-		{
-			String[] desc2 = desc[0].split( " " );
-			if( desc2.length >= 3 )
-			{
-				if( desc2[0].equalsIgnoreCase( "as" ) && (desc2[1].equalsIgnoreCase( "a" ) || desc2[1].equalsIgnoreCase( "an" )) )
-				{
-					boolean flag = false;
-					String productrole = "";
-					for( int k = 2; k < desc2.length; k++ )
-					{
-						if( k == desc2.length - 1 )
-							productrole = productrole + desc2[k];
-						else
-							productrole = productrole + desc2[k] + " ";
-
-					}
-					for( int j = 0; j < tmp.project.productRoles.size(); j++ )
-					{
-						if( tmp.project.productRoles.get( j ).name.equalsIgnoreCase( productrole ) )
-							flag = true;
-					}
-					if( !flag )
-					{
-						ProductRole pr = new ProductRole( tmp.project.id, productrole, "" );
-						pr.save();
-						Notifications.notifyProjectUsers(pr.project, "addProductRole", "", "product role", pr.name, (byte) 0);
-						tmp.productRole = pr;
-					}
-					else
-					{
-						for( int j = 0; j < tmp.project.productRoles.size(); j++ )
-						{
-							if( tmp.project.productRoles.get( j ).name.equalsIgnoreCase( productrole ) )
-							{
-								tmp.productRole = tmp.project.productRoles.get( j );
-							}
-						}
-					}
-					for( int i = 1; i < desc.length; i++ )
-					{
-						if( i == desc.length - 1 )
-							tmp.description = desc[i];
-						else
-							tmp.description = desc[i] + " ";
-					}
-				}
-			}
-			else
-			{
-				tmp.description = tmp.description;
-
-			}
-		}
+		tmp.getProductRole(tmp.description);
 		// start resetting the deadline
 		if( tmp.assignee == null || oldAssignee != tmp.assignee.id )
 		{
@@ -2095,7 +1925,9 @@ public class Tasks extends SmartCRUD
 	public static void typeReviewer(long typeId, long componentId, long assigneeId){
 		TaskType type = TaskType.findById(typeId);
 		Component component = Component.findById(componentId);
-		List<Reviewer> reviewers = Reviewer.find("byProjectAndAcceptedAndtaskType", type.project, true, type).fetch();
+		List<Reviewer> reviewers = new ArrayList();
+		if(typeId!=0)
+		reviewers = Reviewer.find("byProjectAndAcceptedAndtaskType", type.project, true, type).fetch();
 		List<User.Object> users = new ArrayList<User.Object>();
 		for(Reviewer rev : reviewers){
 			if(component!=null)

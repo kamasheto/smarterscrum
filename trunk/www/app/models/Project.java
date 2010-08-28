@@ -790,6 +790,10 @@ public class Project extends SmartModel
 		int s = logs.size() / 10;
 		return s > 10 ? 10 : s < 0 ? 0 : s;
 	}
+	
+	/***
+	 * Returns number of undeleted components in a project
+	 */
 	public int hasComponents()
 	{
 		int count = 0;
@@ -800,12 +804,58 @@ public class Project extends SmartModel
 		}
 		return count;
 	}
+	
+	/***
+	 * Returns number of undeleted task types in a project
+	 */
 	public int hasTypes()
 	{
 		int count = 0;
 		for(TaskType type:this.taskTypes)
 		{
 			if(!type.deleted)
+				count++;
+		}
+		return count;
+	}
+	
+	/***
+	 * Returns number of undeleted users in a project
+	 */
+	public int hasUsers()
+	{
+		int count = 0;
+		for(User user:this.users)
+		{
+			if(!user.deleted)
+				count++;
+		}
+		return count;
+	}
+	
+	/***
+	 * Returns number of undeleted task priorities in a project
+	 */
+	public int hasPriorities()
+	{
+		int count = 0;
+		for(Priority priority : this.priorities)
+		{
+			if(!priority.deleted)
+				count++;
+		}
+		return count;
+	}
+
+	/***
+	 * Returns number of undeleted tasks in a project
+	 */
+	public int hasTasks()
+	{
+		int count = 0;
+		for(Task task : this.projectTasks)
+		{
+			if(!task.deleted)
 				count++;
 		}
 		return count;

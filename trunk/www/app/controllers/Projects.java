@@ -18,6 +18,7 @@ import models.Request;
 import models.Role;
 import models.Snapshot;
 import models.Sprint;
+import models.Task;
 import models.TaskStatus;
 import models.TaskType;
 import models.Update;
@@ -386,6 +387,15 @@ public class Projects extends SmartCRUD
 				taskStatus.columns.get( i ).deleted = true;
 				taskStatus.columns.get( i ).save();
 			}
+			for(Task task : taskStatus.project.projectTasks)
+			{
+				if(task.taskStatus == taskStatus )
+				{
+					task.taskStatus = null;
+					task.save();
+					Update.update(task.project, "reload('task-"+task.id+"')");
+				}
+			}
 			Log.addUserLog( "Delete task status", taskStatus, taskStatus.project );
 			// Logs.addLog(Security.getConnected(), "Delete", "TaskStatus",
 			// taskStatus.id, taskStatus.project, new
@@ -550,6 +560,15 @@ public class Projects extends SmartCRUD
 		taskType.deleted = true;
 
 		taskType.save();
+		for(Task task : taskType.project.projectTasks)
+		{
+			if(task.taskType == taskType )
+			{
+				task.taskType = null;
+				task.save();
+				Update.update(task.project, "reload('task-"+task.id+"')");
+			}
+		}
 		Log.addUserLog( "Removed task type", taskType, taskType.project );
 		// Logs.addLog(Security.getConnected(), "Remove",
 		// "Project Default Task Type", taskType.id, taskType.project, new

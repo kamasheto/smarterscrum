@@ -499,4 +499,71 @@ public class Task extends SmartModel
 			u = this.component.componentUsers;
 		return u;
 	}
+	
+	/***
+	 * Extracts the product role from the task description & saves it as 
+	 * a new product role if its new, saves the task description & product role
+	 * 
+	 * @param newdesc: 
+	 * 				task description
+	 */
+	public void getProductRole(String newdesc)
+	{
+		String[] desc = newdesc.split( "," );
+		if( desc.length == 1 )
+		{
+			this.description = desc[0];
+		}
+		else
+		{
+			String[] desc2 = desc[0].split( " " );
+			if( desc2.length >= 3 )
+			{
+				if( desc2[0].equalsIgnoreCase( "as" ) && (desc2[1].equalsIgnoreCase( "a" ) || desc2[1].equalsIgnoreCase( "an" )) )
+				{
+					boolean flag = false;
+					String productrole = "";
+					for( int k = 2; k < desc2.length; k++ )
+					{
+						if( k == desc2.length - 1 )
+							productrole = productrole + desc2[k];
+						else
+							productrole = productrole + desc2[k] + " ";
+
+					}
+					for( int j = 0; j < this.project.productRoles.size(); j++ )
+					{
+						if( this.project.productRoles.get( j ).name.equalsIgnoreCase( productrole ) )
+							flag = true;
+					}
+					if( !flag )
+					{
+						ProductRole pr = new ProductRole( this.project.id, productrole, "" );
+						pr.save();						
+						Notifications.notifyProjectUsers(pr.project, "addProductRole", "", "product role", pr.name, (byte) 0);
+						this.productRole = pr;
+					}
+					else
+					{
+						for( int j = 0; j < this.project.productRoles.size(); j++ )
+						{
+							if( this.project.productRoles.get( j ).name.equalsIgnoreCase( productrole ) )
+							{
+								this.productRole = this.project.productRoles.get( j );
+							}
+						}
+					}
+					for( int i = 1; i < desc.length; i++ )
+					{
+						this.description = desc[i] + " ";
+					}
+				}
+			}
+			else
+			{
+				this.description = newdesc;
+				this.productRole = null;
+			}
+		}
+	}
 }
