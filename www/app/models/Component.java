@@ -355,5 +355,14 @@ public class Component extends SmartModel
 		}
 		return false;
 	}
-
+	public int hasUsers()
+	{
+		int count = 0;
+		for(User user:this.componentUsers)
+		{
+			if(!user.deleted)
+				count++;
+		}
+		return count;
+	}
 }

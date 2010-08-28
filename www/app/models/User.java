@@ -525,13 +525,13 @@ public class User extends SmartModel
 				{
 					task.assignee = null;
 					task.save();
-					Update.update(role.project, "reload('tasks')");
+					Update.update(role.project, "reload('task-"+task.id+"')");
 				}
 				if(task.reviewer == this)
 				{
 					task.reviewer = null;
 					task.save();
-					Update.update(role.project, "reload('tasks')");
+					Update.update(role.project, "reload('task-"+task.id+"')");
 				}
 			}
 		}

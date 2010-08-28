@@ -2,9 +2,10 @@
 #{set 'title'}Request to be reviewer#{/set}
 
 #{list taskTypes, as:'tasktype'}
+#{ifnot tasktype.deleted}
 <div class="bar">${tasktype.name} #{if taken.contains(tasktype)}<a title="stop reviewing tasks of this type?" href="#" onclick="revoke_reviewer(${connected.id}, ${tasktype.id});"><img src="/public/images/famfam/remove-user.png" /></a>#{/if}
 #{elseif pending.contains(tasktype)}<a title="request pending! cancel request ?" href="#" onclick="cancel_reviewer_request(${tasktype.id});"><img src="/public/images/famfam/user_minus.png" /></a>#{/elseif}
 #{else}<a title="request to review tasks of this type?" href="#" onclick="request_reviewer(${tasktype.id});"><img src="/public/images/famfam/add-user.png" /></a>#{/else}
-
 </div>
+#{/ifnot}
 #{/list}
