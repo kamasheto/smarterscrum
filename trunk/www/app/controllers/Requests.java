@@ -63,7 +63,7 @@ public class Requests extends SmartCRUD
 		notFoundIfNull(x);
 		Project y = x.project;
 		x.user.addRole( x.role );
-		String url = Router.getFullUrl("Application.externalOpen")+"?id="+x.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+x.user.id+"|boxId=2&projectId="+x.project.id+"|currentProjectId="+x.project.id;		
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+x.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+x.user.id+"%26boxId=2&projectId="+x.project.id+"%26currentProjectId="+x.project.id;		
 		Notifications.notifyUser( x.user, "accepted", url, "your Role Request", x.role.name, (byte) 1 , x.project);
 		// User myUser = Security.getConnected();
 		// Logs.addLog( myUser, "RequestAccept", "Request", x.id, y, new Date() );
@@ -183,7 +183,7 @@ public class Requests extends SmartCRUD
 				i += 6;
 				b = b.substring( i );
 				
-				String url = Router.getFullUrl("Application.externalOpen")+"?id="+x.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+x.user.id+"|boxId=2&projectId="+x.project.id+"|currentProjectId="+x.project.id;
+				String url = Router.getFullUrl("Application.externalOpen")+"?id="+x.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+x.user.id+"%26boxId=2&projectId="+x.project.id+"%26currentProjectId="+x.project.id;
 				Notifications.notifyUser( x.user, "accepted", url, "your Request to be deleted from project", x.project.name, (byte) -1 , null);				
 			}
 		}
@@ -291,7 +291,7 @@ public class Requests extends SmartCRUD
 		{
 			rev.accepted=true;
 			rev.save();
-			String url = Router.getFullUrl("Application.externalOpen")+"?id="+rev.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+rev.user.id+"|boxId=2&projectId="+rev.project.id+"|currentProjectId="+rev.project.id;
+			String url = Router.getFullUrl("Application.externalOpen")+"?id="+rev.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+rev.user.id+"%26boxId=2&projectId="+rev.project.id+"%26currentProjectId="+rev.project.id;
 			Notifications.notifyProjectUsers(tt.project, "addReviewer", url, "to the reviewers for the task type", tt.name, (byte)0);
 			Update.update(rev.user, "reload('reviewers')");
 			Update.update(rev.project, "reload('project-"+rev.project.id+"-in-user-"+rev.user.id+"')");
@@ -319,7 +319,7 @@ public class Requests extends SmartCRUD
 	public static void reviewRequestRespond(long revId, int response)
 	{
 		Reviewer rev = Reviewer.findById(revId);
-		String url = Router.getFullUrl("Application.externalOpen")+"?id="+rev.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+rev.user.id+"|boxId=2&projectId="+rev.project.id+"|currentProjectId="+rev.project.id;
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+rev.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+rev.user.id+"%26boxId=2&projectId="+rev.project.id+"%26currentProjectId="+rev.project.id;
 		if(response == 1)
 			{
 				rev.accepted=true;
@@ -342,7 +342,7 @@ public class Requests extends SmartCRUD
 		TaskType tt = TaskType.findById(taskTypeId);
 		Reviewer rev = Reviewer.find("byUserAndTaskType", user, tt).first();
 		rev.delete();
-		String url = Router.getFullUrl("Application.externalOpen")+"?id="+rev.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+rev.user.id+"|boxId=2&projectId="+rev.project.id+"|currentProjectId="+rev.project.id;
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+rev.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+rev.user.id+"%26boxId=2&projectId="+rev.project.id+"%26currentProjectId="+rev.project.id;
 		Notifications.notifyProjectUsers(tt.project, "deleteReviewer", url, "from the reviewers for the task type", tt.name, (byte)-1);
 		Update.update(rev.user, "reload('reviewers')");
 		Update.update(rev.project, "reload('project-"+rev.project.id+"-in-user-"+rev.user.id+"')");		

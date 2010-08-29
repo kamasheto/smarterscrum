@@ -506,7 +506,7 @@ public class Boards extends SmartCRUD
 		}
 		else
 		{
-			url = Router.getFullUrl("Application.externalOpen")+"?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"|componentID="+compid;
+			url = Router.getFullUrl("Application.externalOpen")+"?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"%26componentID="+compid;
 			Component component = Component.findById(compid); 
 			Notifications.notifyUsers(component.componentUsers, "addColumn", url, "column", c.name, (byte)0, c.board.project);			
 		}
@@ -558,7 +558,7 @@ public class Boards extends SmartCRUD
 		}
 		else
 		{
-			url = Router.getFullUrl("Application.externalOpen")+"?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"&componentID="+compid;
+			url = Router.getFullUrl("Application.externalOpen")+"?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"%26componentID="+compid;
 			Component component = Component.findById(compid); 
 			Notifications.notifyUsers(component.componentUsers, "deleteColumn", url, "column", c.name, (byte)-1, c.board.project);			
 		}		
