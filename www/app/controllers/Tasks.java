@@ -1776,18 +1776,43 @@ public class Tasks extends SmartCRUD
 	 *            The user id.
 	 * @return void
 	 */
-	public static void assignTaskReviewer( long taskId, long reviewerId )
+	public static void assignTaskReviewer( long reviewerId , long taskId )
 	{
 		Task task = Task.findById( taskId );
 		User user = User.findById( reviewerId );
 		User connected = Security.getConnected();
 		if( task.assignee == user )
 			renderText( "The assignee can't be the reviewer" );
-		if( !user.components.contains( task.component ) )
+		if( !(user.components.contains( task.component )) )
 			renderText( "The task & the reviewer can't be in different components" );
-		Security.check( connected.in( task.project ).can( "modifyTask" ) && user.projects.contains( task.project ) && task.assignee != user && (task.component == null || user.components.contains( task.component )) );
-		task.reviewer = user;
-		task.save();
+		Security.check( connected.in( task.project ).can( "modifyTask" ) && user.projects.contains( task.project ) && task.assignee != user && (task.component == null || user.components.contains( task.component )) && (task.taskType!=null) );
+		Component component = new Component();
+		if(task.component!=null && task.component.number!=0)
+		component = task.component;
+		List<Reviewer> reviewers = new ArrayList();
+		reviewers = Reviewer.find("byProjectAndAcceptedAndtaskType", task.taskType.project, true, task.taskType).fetch();
+		List<User> users = new ArrayList<User>();
+		for(Reviewer rev : reviewers){
+			if(component!=null)
+			{
+				if(rev.user.components.contains(component))
+					users.add(rev.user);
+			}
+			else
+			{
+				System.out.println(rev.user);
+				users.add(rev.user);
+			}
+		}
+		if(users.contains(user))
+		{
+			task.reviewer = user;
+			task.save();
+		}
+		else
+		{
+			renderText(user.name+" is not a reviewer for task type "+task.taskType.name);
+		}
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task.id;
 		ArrayList<User> nusers= new ArrayList<User>();
 		if(task.assignee!=null)

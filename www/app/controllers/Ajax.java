@@ -6,6 +6,7 @@ import java.util.List;
 
 import models.Invite;
 import models.Project;
+import models.Task;
 import models.User;
 
 import play.mvc.With;
@@ -139,7 +140,7 @@ public class Ajax extends SmartController
 		}
 		else if  (from.equals("user") && to.equals( "task" ) )
 		{
-			Tasks.assignTaskReviewer(id2, id);
+			Tasks.assignTaskReviewer(id, id2);
 		}
 		else if  (from.equals("task") && to.equals( "sprint" ) )
 		{

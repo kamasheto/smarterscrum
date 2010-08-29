@@ -65,7 +65,7 @@ public class ProjectTasks extends SmartController {
 		{
 			user.removeRole(role);
 			msg="You have revoked a role successfuly|reload('roles', 'project-'+projectId+'-in-user-'+userId, 'projects-in-user-'+userId);";			
-			String url = Router.getFullUrl("Application.externalOpen")+"?id="+role.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+user.id+"|boxId=2|projectId="+role.project.id+"|currentProjectId="+role.project.id;			
+			String url = Router.getFullUrl("Application.externalOpen")+"?id="+role.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+user.id+"%26boxId=2%26projectId="+role.project.id+"%26currentProjectId="+role.project.id;			
 			Notifications.notifyUser(user, "revoked", url, "your role", role.name, (byte)-1, role.project);
 			renderText(msg);
 		}
