@@ -4,9 +4,9 @@
  		$(function(){
  			showProjectWorkspace(${id});
  			if(!${isOverlay})
- 				loadBox('${url}','workspace-${id}','');	
+ 				loadBox('${url.raw()}','workspace-${id}','');	
  			else
-     			overlayOpen('${url}');
+     			overlayOpen('${url.raw()}');
  		});
 </script>
 #{/set}

@@ -36,7 +36,7 @@ import play.mvc.With;
  */
 @With( Secure.class )
 public class Application extends SmartController
-{	
+{
 	/**
 	 * Generates the hash value of the given String
 	 * 
@@ -278,73 +278,82 @@ public class Application extends SmartController
 	 */
 	public static void externalOpen( long id, String url, boolean isOverlay )
 	{
-
-		url.replace( '|', '&' );
-
 		render( id, url, isOverlay );
 	}
 
 	/**
 	 * Renders all the notifications for the currently connected user
 	 */
-	public static void showNotifications(int page)
+	public static void showNotifications( int page )
 	{
-		System.out.println("Hello World!");
+		System.out.println( "Hello World!" );
 		User user = Security.getConnected();
-		boolean first=false;
-		boolean last=false;
-		List<Notification> allNotifications = Notification.find("byReceiver", user).fetch();
+		boolean first = false;
+		boolean last = false;
+		List<Notification> allNotifications = Notification.find( "byReceiver", user ).fetch();
 		int totalPages = (int) allNotifications.size() / 10;
-		if(allNotifications.size() % 10!=0){
+		if( allNotifications.size() % 10 != 0 )
+		{
 			totalPages++;
 		}
-		if(page==totalPages){
-			last=true;
-		}else{
-			if(page==1){
-				first=true;
+		if( page == totalPages )
+		{
+			last = true;
+		}
+		else
+		{
+			if( page == 1 )
+			{
+				first = true;
 			}
 		}
-	
+
 		List<Notification> pageOfNotifications;
-	if(first){
-		 pageOfNotifications = Notification.find("byReceiver", user).from(1).fetch(10);				
-	}
-	else{pageOfNotifications = Notification.find("byReceiver", user).from((page-1)*10).fetch(10);				
-}
-	for(Notification noti:pageOfNotifications){
-		// System.out.println(noti.unread);
-		if(noti.unread){
-			user.ReadNotifications++;
-			noti.unread=false;
-		noti.save();
-			user.save();
+		if( first )
+		{
+			pageOfNotifications = Notification.find( "byReceiver", user ).from( 1 ).fetch( 10 );
 		}
-	}
+		else
+		{
+			pageOfNotifications = Notification.find( "byReceiver", user ).from( (page - 1) * 10 ).fetch( 10 );
+		}
+		for( Notification noti : pageOfNotifications )
+		{
+			// System.out.println(noti.unread);
+			if( noti.unread )
+			{
+				user.ReadNotifications++;
+				noti.unread = false;
+				noti.save();
+				user.save();
+			}
+		}
 		boolean emailing = user.enableEmails;
 
-		
-		render(page,pageOfNotifications, emailing,last,first );
+		render( page, pageOfNotifications, emailing, last, first );
 
 	}
 
 	public static void listNotifications( int page, int perPage )
 	{
-		if (perPage == 0) {
+		if( perPage == 0 )
+		{
 			perPage = 10;
 		}
-		NotificationSearchResult result = new NotificationSearchResult();		
-		List<Notification> allNotifications = Notification.find("byReceiver", Security.getConnected().id).fetch();
-		List<Notification> pageOfNotifications = allNotifications.subList(page * perPage, page * perPage + perPage <= allNotifications.size() ? page * perPage + perPage : allNotifications.size());		
-		for (Notification notification : allNotifications) {
-			if (notification.unread) {
+		NotificationSearchResult result = new NotificationSearchResult();
+		List<Notification> allNotifications = Notification.find( "byReceiver", Security.getConnected().id ).fetch();
+		List<Notification> pageOfNotifications = allNotifications.subList( page * perPage, page * perPage + perPage <= allNotifications.size() ? page * perPage + perPage : allNotifications.size() );
+		for( Notification notification : allNotifications )
+		{
+			if( notification.unread )
+			{
 				result.newNotifications++;
 			}
 		}
 		result.notifications = pageOfNotifications;
 		result.currentPage = page + 1;
 		result.totalPages = (int) allNotifications.size() / perPage;
-		renderJSON(result);
+		renderJSON( result );
 	}
 
 	/**
