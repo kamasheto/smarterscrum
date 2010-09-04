@@ -23,7 +23,7 @@ public class Notifications extends Mailer{
 	{
 		Setting settings = Setting.findById(1L);
 		addRecipient(userEmail);
-		setFrom("se.smartsoft.2@gmail.com");
+		// setFrom("se.smartsoft.2@gmail.com");
 		setSubject("SmarterScrum Activation");
 		String helpLink = "mailto:" + settings.systemMail;
 		send(userName, url, changeEmail, helpLink);
@@ -53,7 +53,7 @@ public class Notifications extends Mailer{
 		
 		if (user.enableEmails) {
 			addRecipient(user.email);
-			setFrom("se.smartsoft.2@gmail.com");
+			// setFrom("se.smartsoft.2@gmail.com");
 			if (meeting)
 				setSubject("Meeting Invitation");
 			else
@@ -70,7 +70,7 @@ public class Notifications extends Mailer{
 	 */
 	public static void lostPass(User user, String url)
 	{
-		setFrom("se.smartsoft.2@gmail.com");
+		// setFrom("se.smartsoft.2@gmail.com");
 		setSubject("Password Recovery");
 		addRecipient(user.email);
 		send(user, url);
@@ -83,7 +83,7 @@ public class Notifications extends Mailer{
 	 */
 	public static void welcome(User user, boolean welcome)
 	{
-		setFrom("se.smartsoft.2@gmail.com");
+		// setFrom("se.smartsoft.2@gmail.com");
 		setSubject("Welcome To SmarterScrum");
 		addRecipient(user.email);
 		send(user, welcome);
@@ -96,7 +96,7 @@ public class Notifications extends Mailer{
 	 */
 	public static void byeBye(User user, boolean request)
 	{
-		setFrom("se.smartsoft.2@gmail.com");
+		// setFrom("se.smartsoft.2@gmail.com");
 		setSubject("Account Deleted");
 		addRecipient(user.email);
 		send(user, request);
@@ -167,7 +167,7 @@ public class Notifications extends Mailer{
 				}
 			}
 			if (unps.size() > 0) {				
-				setFrom("se.smartsoft.2@gmail.com");
+				// setFrom("se.smartsoft.2@gmail.com");
 				setSubject("SmarterScrum Notification System");
 				String projectURL = Router.getFullUrl("Application.externalOpen")+"?id="+project.id+"&isOverlay=false&url=#";
 				send(user, project , actionType2, resourceURL, resourceType, resourceName, importance, projectURL);	
@@ -204,7 +204,7 @@ public class Notifications extends Mailer{
 					addRecipient(receivers.get(i).email);
 			}
 		}		
-		setFrom("se.smartsoft.2@gmail.com");
+		// setFrom("se.smartsoft.2@gmail.com");
 		setSubject("SmarterScrum Notification System");
 		send(user, actionType, resourceURL, resourceType, resourceName, importance, project, projectURL);
 	}
@@ -234,7 +234,7 @@ public class Notifications extends Mailer{
 				}				
 			if(receiver.enableEmails)
 			{
-				setFrom("se.smartsoft.2@gmail.com");
+				// setFrom("se.smartsoft.2@gmail.com");
 				setSubject("SmarterScrum Notification System");
 				addRecipient(receiver.email);
 				send(notif, projectURL);
@@ -258,7 +258,7 @@ public class Notifications extends Mailer{
 		case 1: importance="Medium";
 		case 2: importance="High";
 		}
-		setFrom("se.smartsoft.2@gmail.com");
+		// setFrom("se.smartsoft.2@gmail.com");
 		addRecipient("se.smartsoft.2@gmail.com");
 		setSubject(Router.getFullUrl("Feedbacks.sendFeedback")+" , "+subject);
 		send(sender, message, importance);
