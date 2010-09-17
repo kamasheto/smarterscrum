@@ -405,12 +405,12 @@ public class User extends SmartModel
 	public List<Task> returnUserTasks( Sprint s, long componentID )
 	{
 		Component c = Component.findById( componentID );
-		List<Task> tasks = c.componentSprintTasks( s );
+		List<Task> tasks = c.returnComponentSprintTasks( s );
 		List<Task> userTasks = new ArrayList<Task>();
 
 		for( int i = 0; i < tasks.size(); i++ )
 		{
-			if( tasks.get( i ).assignee != null && tasks.get( i ).assignee.equals( this ) && (tasks.get(i).subTasks==null || tasks.get(i).parent!=null))
+			if( tasks.get( i ).assignee != null && tasks.get( i ).assignee.equals( this ) && (tasks.get(i).subTasks.size()==0 || tasks.get(i).parent!=null))
 				userTasks.add( tasks.get( i ) );
 		}
 		return userTasks;
