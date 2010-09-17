@@ -1786,7 +1786,7 @@ public class Tasks extends SmartCRUD
 		if( !(user.components.contains( task.component )) )
 			renderText( "The task & the reviewer can't be in different components" );
 		Security.check( connected.in( task.project ).can( "modifyTask" ) && user.projects.contains( task.project ) && task.assignee != user && (task.component == null || user.components.contains( task.component )) && (task.taskType!=null) );
-		Component component = new Component();
+		Component component = null;
 		if(task.component!=null && task.component.number!=0)
 		component = task.component;
 		List<Reviewer> reviewers = new ArrayList();
@@ -1942,7 +1942,7 @@ public class Tasks extends SmartCRUD
 	}
 	/**
 	 * A method that renders the reviewer of a certain type in a certain component. 
-	 * and if that reviewer doesnt exist then it returns the component users.
+	 * and if that reviewer doesn't exist then it returns the component users.
 	 * 
 	 * @param typeId  the Id of the required type to be reviewed.
 	 * @param componentId the Id of the component in which the task belong.
