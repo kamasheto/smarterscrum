@@ -8,7 +8,7 @@
 	#{list items:sprints, as:'sprint'}
 		#{if (sprint.id==runningSprint) }
 			<div class="greenBg" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber}#{drop 'sprint-' + sprint.id /}
-			#{if sprint.project.components.size()>1}
+			#{if sprint.project.hasComponents()>1}
 				<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id)}')" title="View project board?">
 				<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
 			#{/if}
@@ -24,7 +24,7 @@
 		#{else}
 			#{if (sprint.ended) }
 				<div class="redBg" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber}
-				#{if sprint.project.components.size()>1}
+				#{if sprint.project.hasComponents()>1}
 					<a href="#" onclick="overlayOpen('@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)}')" title="View sprint board snapshot?">
 					<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>	
 				#{/if}

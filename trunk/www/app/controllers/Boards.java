@@ -101,7 +101,7 @@ public class Boards extends SmartCRUD
 				{
 
 					data.set( i, new ComponentRow( components.get( i ).id, components.get( i ).name ) );
-					List<Task> tasks = components.get( i ).componentSprintTasks( sprint );
+					List<Task> tasks = components.get( i ).returnComponentTasks( sprint );
 
 					for( int j = 0; j < columnsOfBoard.size(); j++ )
 					{
@@ -154,7 +154,11 @@ public class Boards extends SmartCRUD
 			Component comp = Component.findById( componentID );
 			if( comp.deleted )
 				notFound();
-			List<User> users = comp.getUsers();
+			List<User> users = null;
+			if(comp.number!=0)
+			users = comp.getUsers();
+			else
+			users = comp.project.getUsers();
 			for( int i = 0; i < users.size(); i++ )
 			{
 				data.add( null );
@@ -583,7 +587,7 @@ public class Boards extends SmartCRUD
 		List<Board> boards = new ArrayList<Board>();
 		for( int i = 0; i < p.components.size(); i++ )
 		{
-			if( p.components.get( i ).componentBoard != null )
+			if( p.components.get( i ).componentBoard != null && !p.components.get(i).deleted )
 				boards.add( p.components.get( i ).componentBoard );
 		}
 		List<Component> components = p.components;
