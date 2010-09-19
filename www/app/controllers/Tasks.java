@@ -156,12 +156,10 @@ public class Tasks extends SmartCRUD
 		Component component = null;
 		Task task = null;
 		Project p = null;
-		System.out.println( tmp.parent );
 		if( tmp.project != null && tmp.parent == null )
 		{
 			p = tmp.project;
 			project = tmp.project;
-			System.out.println( "here" );
 			Security.check( Security.getConnected().in( tmp.project ).can( "AddTask" ) );
 
 		}
@@ -300,10 +298,30 @@ public class Tasks extends SmartCRUD
 			if(!sprint.ended && !sprint.deleted)
 				sprints.add(sprint);
 		}
-		System.out.println(insprint);
+		TaskType taskType = tmp.taskType;
+		Component component = tmp.component;
+		List<Reviewer> reviewers = new ArrayList();
+		List <TaskType> projectTypes = TaskType.find("byProjectAndDeleted", tmp.project, false).fetch();
+		if(taskType!=null)
+			reviewers = Reviewer.find("byProjectAndAcceptedAndtaskType", tmp.project, true, taskType).fetch();
+		else if(projectTypes.size()>0)
+			reviewers = Reviewer.find("byProjectAndAcceptedAndtaskType", tmp.project, true, projectTypes.get(0)).fetch();	
+		List<User> users = new ArrayList<User>();
+		for(Reviewer rev : reviewers){
+			if(component!=null && component.number!=0)
+			{
+				if(rev.user.components.contains(component) && ((tmp.assignee==null)||(tmp.assignee!=null && rev.user.id!= tmp.assignee.id)) )
+					users.add(rev.user);
+			}
+			else
+			{
+				if((tmp.assignee==null)||(tmp.assignee!=null && rev.user.id!= tmp.assignee.id))
+				users.add(rev.user);
+			}
+		}
 		try
 		{
-			render( type, object, statuses, types, message2, deletable, comments, productRoles, insprint, sprints );
+			render( type, object, statuses, types, message2, deletable, comments, productRoles, insprint, sprints, users );
 		}
 		catch( TemplateNotFoundException e )
 		{
@@ -373,7 +391,6 @@ public class Tasks extends SmartCRUD
 				boolean flag = true;
 				loop : for( int i = 0; i < tmp.parent.subTasks.size(); i++ )
 				{
-					System.out.println( tmp.parent.subTasks.get( i ).taskStatus.name + " " + tmp.taskStatus );
 					if( tmp.parent.subTasks.get( i ).taskStatus != tmp.taskStatus )
 					{
 						flag = false;
@@ -1568,7 +1585,6 @@ public class Tasks extends SmartCRUD
 			title = "C" + component.number + ": Tasks";
 			List<Task> tasks = new ArrayList<Task>();
 			tasks = Task.find( "byComponentAndDeleted", component, false ).fetch();
-			System.out.println( tasks );
 			int counter = tasks.size();
 			for( int i = 0; i < tasks.size(); i++ )
 			{
@@ -1747,11 +1763,12 @@ public class Tasks extends SmartCRUD
 		User connected = Security.getConnected();
 		if( task.reviewer == user )
 			renderText( "The reviewer can't be the assignee" );
-		if( !user.components.contains( task.component ) )
+		if( task.component.number!=0 && !user.components.contains( task.component ) )
 			renderText( "The task & the assignee can't be in different components" );
-		Security.check( connected.in( task.project ).can( "modifyTask" ) && user.projects.contains( task.project ) && task.reviewer != user && (task.component == null || user.components.contains( task.component )) );
+		Security.check( connected.in( task.project ).can( "modifyTask" ) && user.projects.contains( task.project ) && task.reviewer != user && (task.component == null || task.component.number==0 || user.components.contains( task.component )) );
 		task.assignee = user;
 		task.save();
+		
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task.id;
 		ArrayList<User> nusers= new ArrayList<User>();
 		if(task.assignee!=null)
@@ -1783,9 +1800,9 @@ public class Tasks extends SmartCRUD
 		User connected = Security.getConnected();
 		if( task.assignee == user )
 			renderText( "The assignee can't be the reviewer" );
-		if( !(user.components.contains( task.component )) )
+		if(task.component.number!=0 &&  !(user.components.contains( task.component )) )
 			renderText( "The task & the reviewer can't be in different components" );
-		Security.check( connected.in( task.project ).can( "modifyTask" ) && user.projects.contains( task.project ) && task.assignee != user && (task.component == null || user.components.contains( task.component )) && (task.taskType!=null) );
+		Security.check( connected.in( task.project ).can( "modifyTask" ) && user.projects.contains( task.project ) && task.assignee != user && (task.component == null || task.component.number == 0 || user.components.contains( task.component )) && (task.taskType!=null) );
 		Component component = null;
 		if(task.component!=null && task.component.number!=0)
 		component = task.component;
@@ -1800,7 +1817,6 @@ public class Tasks extends SmartCRUD
 			}
 			else
 			{
-				System.out.println(rev.user);
 				users.add(rev.user);
 			}
 		}
@@ -1955,7 +1971,7 @@ public class Tasks extends SmartCRUD
 		reviewers = Reviewer.find("byProjectAndAcceptedAndtaskType", type.project, true, type).fetch();
 		List<User.Object> users = new ArrayList<User.Object>();
 		for(Reviewer rev : reviewers){
-			if(component!=null)
+			if(component!=null && component.number!=0)
 			{
 				if(rev.user.components.contains(component) && rev.user.id!= assigneeId)
 					users.add(new User.Object(rev.user));

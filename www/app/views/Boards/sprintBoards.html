@@ -4,7 +4,7 @@ Sprint ${s.sprintNumber} Boards
 #{/set}
 
 #{if s.ended==false }
-	#{if p.components.size()>1}
+	#{if p.hasComponents()>1}
 		<div class="overlay do_not_paginate" name="/boards/loadboard1?sprintID=${sprintID}">
 		${p.name}'s Task Board
 		<a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
@@ -27,7 +27,7 @@ Sprint ${s.sprintNumber} Boards
 #{/if}
 
 #{else}
-	#{if p.components.size()>1}
+	#{if p.hasComponents()>1}
 		<div class="overlay do_not_paginate" name="/Snapshots/loadsnapShot?id=${s.finalsnapshot.id}">
 		${p.name}'s Final Snapshot
 		<a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>

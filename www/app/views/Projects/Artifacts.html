@@ -5,7 +5,7 @@
 Boards
 #{list items:project.sprints, as:'sprint'}
 	#{if !sprint.ended}
-	#{if sprint.project.components.size()>1}
+	#{if sprint.project.hasComponents()>1}
 				<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id)}')" title="View current sprint board?">
 				<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
 			#{/if}

@@ -150,14 +150,28 @@
 			#{/crud.custom}
 	
 			#{crud.custom 'reviewer'}
-			#{if (object.component!=null && object.component.number==0 && object.project.hasUsers()>0) || (object.component!=null && object.component.number!=0 && ((object.parent==null || (object.parent!=null && object.parent.component!=null && object.component.hasUsers()>0))))}
-			<label for="object_reviewer">Reviewer</label>
-			<span id="rev_msg" ><font color="red">There are no reviewers available for the selected task type</font></span>
-			<select class="rev" id="object_reviewer" name="object.reviewer@id" >
-			</select>
-			#{/if}#{else}#{/else}
+			#{if object.component!=null && object.component.number==0 && object.project.hasUsers()>0}
+				<label for="object_reviewer">Reviewer</label>
+				<span style="display:none" id="rev_msg"><font color="red">There are no reviewers available for the selected type</font></span>
+				<select class="rev" id="object_reviewer" name="object.reviewer@id">
+				<option value="">(None)</option>
+				#{list items:users ,as :'User'}
+					#{ifnot User.deleted}<option value="${User.id}"#{if object.reviewer == User} selected#{/if}>${User.name}</option>#{/ifnot}
+				#{/list}		
+				</select>
+			#{/if}
+			#{elseif object.component!=null && object.component.number!=0 && (object.parent==null || (object.parent!=null && object.parent.component!=null && object.component.hasUsers()>0))}
+				<label for="object_reviewer">Reviewer</label>
+				<span style="display:none" id="rev_msg"><font color="red">There are no reviewers available for the selected type</font></span>
+				<select class="rev" id="object_reviewer" name="object.reviewer@id">
+				<option value="">(None)</option>
+				#{list items:users ,as :'User'}
+					#{ifnot User.deleted}<option value="${User.id}"#{if object.reviewer == User} selected#{/if}>${User.name}</option>#{/ifnot}
+				#{/list}		
+				</select>
+			#{/elseif}#{else}#{/else}
 			#{/crud.custom}
-			
+	
 			#{crud.custom 'dependentTasks'}
 			#{if object.project.hasTasks()>1}
 				<label for="object_dependentTasks"> Dependent Tasks</label> 
@@ -227,11 +241,11 @@
 
 <script type="text/javascript">
 
-	$(function()
+	if(${users.size()}==0)
 	{
-		getUsers();
-		getType();
-	})
+		$('#rev_msg').css('display', 'inline-block');
+		$('.rev').css('display','none');
+	}
 	var data='${productRoles}'.split("-");
 	$("#object_description").autocomplete(data);
 	
