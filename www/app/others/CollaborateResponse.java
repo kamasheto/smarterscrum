@@ -9,5 +9,5 @@ public class CollaborateResponse {
 	
 	public List<User.Object> online_users;
 	
-	public List<Update> updates;
+	public List<CollaborateUpdate> updates;
 }

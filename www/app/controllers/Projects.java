@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import models.Artifact;
-import models.Column;
+import models.BoardColumn;
 import models.Component;
 import models.Log;
 import models.Meeting;
@@ -21,7 +21,7 @@ import models.Sprint;
 import models.Task;
 import models.TaskStatus;
 import models.TaskType;
-import models.Update;
+import models.CollaborateUpdate;
 import models.User;
 import models.UserNotificationProfile;
 import notifiers.Notifications;
@@ -119,7 +119,7 @@ public class Projects extends SmartCRUD
 			{
 				// add it to the top bar immediately
 				projectObject.approvalStatus = true;
-				Update.update( user, "addProjectToSearchBar('" + projectObject.name + "', " + projectObject.id + ")" );
+				CollaborateUpdate.update( user, "addProjectToSearchBar('" + projectObject.name + "', " + projectObject.id + ")" );
 				pro.init( projectObject.isScrum );
 				// Role proAdmin =
 				// Role.find("name= 'Project Owner' and project =" +
@@ -131,7 +131,7 @@ public class Projects extends SmartCRUD
 			{
 				for( User admin : User.getAdmins() )
 				{
-					Update.update( admin, "reload('pending-project-requests')" );
+					CollaborateUpdate.update( admin, "reload('pending-project-requests')" );
 				}
 			}
 			Log.addUserLog( "Created project", projectObject );
@@ -393,7 +393,7 @@ public class Projects extends SmartCRUD
 				{
 					task.taskStatus = null;
 					task.save();
-					Update.update(task.project, "reload('task-"+task.id+"')");
+					CollaborateUpdate.update(task.project, "reload('task-"+task.id+"')");
 				}
 			}
 			Log.addUserLog( "Delete task status", taskStatus, taskStatus.project );
@@ -566,7 +566,7 @@ public class Projects extends SmartCRUD
 			{
 				task.taskType = null;
 				task.save();
-				Update.update(task.project, "reload('task-"+task.id+"')");
+				CollaborateUpdate.update(task.project, "reload('task-"+task.id+"')");
 			}
 		}
 		Log.addUserLog( "Removed task type", taskType, taskType.project );
@@ -954,10 +954,10 @@ public class Projects extends SmartCRUD
 		Role proAdmin = Role.find( "name= ? and project = ?", "Project Owner", p ).first();
 
 		user.addRole( proAdmin );
-		Update.update( user, "addProjectToSearchBar('" + p.name + "', " + p.id + ")" );
+		CollaborateUpdate.update( user, "addProjectToSearchBar('" + p.name + "', " + p.id + ")" );
 		for( User admin : User.getAdmins() )
 		{
-			Update.update( admin, "reload('pending-project-requests')" );
+			CollaborateUpdate.update( admin, "reload('pending-project-requests')" );
 		}
 		Notifications.notifyUser( user, "approved", url, "Project", p.name, (byte) 1, null );
 		renderJSON( true );
@@ -985,7 +985,7 @@ public class Projects extends SmartCRUD
 		p.delete();
 		for( User admin : User.getAdmins() )
 		{
-			Update.update( admin, "reload('pending-project-requests')" );
+			CollaborateUpdate.update( admin, "reload('pending-project-requests')" );
 		}
 		renderJSON( true );
 	}
@@ -1146,7 +1146,7 @@ public class Projects extends SmartCRUD
 		project.deleted = true;
 
 		project.board.deleted = true;
-		for( Column c : project.board.columns )
+		for( BoardColumn c : project.board.columns )
 		{
 			c.deleted = true;
 			c.save();
@@ -1222,7 +1222,7 @@ public class Projects extends SmartCRUD
 				temp.componentBoard.deleted = true;
 				temp.componentBoard.save();
 
-				for( Column c : temp.componentBoard.columns )
+				for( BoardColumn c : temp.componentBoard.columns )
 				{
 					c.deleted = true;
 					c.save();

@@ -12,7 +12,7 @@ import models.MeetingAttendance;
 import models.Project;
 import models.Sprint;
 import models.Task;
-import models.Update;
+import models.CollaborateUpdate;
 import models.User;
 import notifiers.Notifications;
 import play.db.jpa.JPASupport;
@@ -241,7 +241,7 @@ public class Meetings extends SmartCRUD
 		{
 			// redirect( request.controller + ".list" );
 			// Meetings.viewMeetings( currentProject.id );
-			Update.update( temp.project, "reload('meetings-" + temp.project.id + "')" );
+			CollaborateUpdate.update( temp.project, "reload('meetings-" + temp.project.id + "')" );
 			Application.overlayKiller( "", "" );
 
 		}
@@ -378,7 +378,7 @@ public class Meetings extends SmartCRUD
 		{
 			// redirect( request.controller + ".list" );
 			// Meetings.viewMeetings( currentProject.id );
-			Update.update( temp.project, "reload('meeting-" + temp.id + "','meetings-" + temp.project.id + "');" );
+			CollaborateUpdate.update( temp.project, "reload('meeting-" + temp.id + "','meetings-" + temp.project.id + "');" );
 			Application.overlayKiller( "", "" );
 
 		}
@@ -405,7 +405,7 @@ public class Meetings extends SmartCRUD
 		meeting.save();
 		temp.save();
 		Log.addUserLog( "Added task to meeting", temp, meeting, meeting.project );
-		Update.update( meeting.project, "reload('meetingTasks-" + id + "')" );
+		CollaborateUpdate.update( meeting.project, "reload('meetingTasks-" + id + "')" );
 		renderText( "Task assigned to meeting successfully" );
 	}
 
@@ -501,7 +501,7 @@ public class Meetings extends SmartCRUD
 
 		meeting.save();
 		Log.addUserLog( "Deleted meeting", meeting, meeting.project );
-		Update.update( meeting.project, "reload('meetings-" + meeting.project.id + "', 'meeting-" + meeting.id + "')" );
+		CollaborateUpdate.update( meeting.project, "reload('meetings-" + meeting.project.id + "', 'meeting-" + meeting.id + "')" );
 	}
 
 	/**
@@ -531,16 +531,16 @@ public class Meetings extends SmartCRUD
 				if( !invitedUser.equals( Security.getConnected() ) )
 				{
 					Log.addUserLog( "invited user to meeting", attendance.user, attendance.meeting, attendance.meeting.project );
-					Update.update( attendance.meeting.project, "reload('meetingAttendees-" + currentMeeting.id + "')" );
+					CollaborateUpdate.update( attendance.meeting.project, "reload('meetingAttendees-" + currentMeeting.id + "')" );
 					renderText( "User invited to meeting successfully." );
 				}
 				else
 				{
 					Log.addUserLog( "invited him/herself to meeting", attendance.meeting, attendance.meeting.project );
-					Update.update( attendance.meeting.project, "reload('meetingAttendees-" + currentMeeting.id + "', 'meetings-" + currentMeeting.project.id + "', 'meeting-" + currentMeeting.id + "')" );
+					CollaborateUpdate.update( attendance.meeting.project, "reload('meetingAttendees-" + currentMeeting.id + "', 'meetings-" + currentMeeting.project.id + "', 'meeting-" + currentMeeting.id + "')" );
 					renderText( "you are invited to the meeting successfully." );
 				}
-				Update.update( invitedUser, "reload('meeting-" + currentMeeting.id + "');" );
+				CollaborateUpdate.update( invitedUser, "reload('meeting-" + currentMeeting.id + "');" );
 			}
 			else
 			{
@@ -589,7 +589,7 @@ public class Meetings extends SmartCRUD
 			meeting.save();
 		}
 		Log.addUserLog( "Invited all users in project to meeting", meeting, meeting.project );
-		Update.update( meeting.project, "reload('meeting-" + meetingID + "' , 'meetings-" + meeting.project.id + "' , 'meetingAttendees-" + meeting.id + "')" );
+		CollaborateUpdate.update( meeting.project, "reload('meeting-" + meetingID + "' , 'meetings-" + meeting.project.id + "' , 'meetingAttendees-" + meeting.id + "')" );
 		renderText( "Users invited successfully" );
 	}
 
@@ -631,7 +631,7 @@ public class Meetings extends SmartCRUD
 								String declineURL = Router.getFullUrl( "MeetingAttendances.decline" ) + "?meetingHash=" + meetingHash;
 								String meetingURL = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + meeting.project.id + "&isOverlay=false&url=/meetings/viewMeeting?id=" + meeting.id;
 								Notifications.invite( user, meetingURL, meeting.name, confirmURL, declineURL, meeting.project, true );
-								Update.update( user, "reload('meeting-" + meeting.id + "');" );
+								CollaborateUpdate.update( user, "reload('meeting-" + meeting.id + "');" );
 							}
 						}
 					}
@@ -639,7 +639,7 @@ public class Meetings extends SmartCRUD
 				meeting.components.add( component );
 				meeting.save();
 				Log.addUserLog( "Invited component to meeting", component, meeting, meeting.project );
-				Update.update( meeting.project, "reload('meetingAttendees-" + meeting.id + "')" );
+				CollaborateUpdate.update( meeting.project, "reload('meetingAttendees-" + meeting.id + "')" );
 				renderText( "All Component Users are invited successfully" );
 			}
 		}
@@ -669,7 +669,7 @@ public class Meetings extends SmartCRUD
 		meeting.artifacts.add( n );
 		meeting.save();
 		Log.addUserLog( "Added a note to a meeting", n, meeting, meeting.project );
-		Update.update( meeting.project, "reload('meetingNotes-" + meeting.id + "')" );
+		CollaborateUpdate.update( meeting.project, "reload('meetingNotes-" + meeting.id + "')" );
 		renderJSON( true );
 
 	}
@@ -721,7 +721,7 @@ public class Meetings extends SmartCRUD
 		n.description = note;
 		n.save();
 		Log.addUserLog( "edited a note in a meeting", n, meeting, meeting.project );
-		Update.update( meeting.project, "reload('meetingNotes-" + meeting.id + "','meetingNote-" + n.id + "')" );
+		CollaborateUpdate.update( meeting.project, "reload('meetingNotes-" + meeting.id + "','meetingNote-" + n.id + "')" );
 		renderJSON( true );
 
 	}
@@ -742,7 +742,7 @@ public class Meetings extends SmartCRUD
 		n.deleted = true;
 		n.save();
 		Log.addUserLog( "deleted a note in a meeting", n, meeting, meeting.project );
-		Update.update( meeting.project, "reload('meetingNotes-" + meeting.id + "','meetingNote-" + n.id + "')" );
+		CollaborateUpdate.update( meeting.project, "reload('meetingNotes-" + meeting.id + "','meetingNote-" + n.id + "')" );
 		renderJSON( true );
 	}
 
@@ -813,7 +813,7 @@ public class Meetings extends SmartCRUD
 				if( ma == null )
 				{
 					MeetingAttendance attendance = new MeetingAttendance( Security.getConnected(), m );
-					Update.update( m.project, "reload('meetingAttendees-" + m.id + "')" );
+					CollaborateUpdate.update( m.project, "reload('meetingAttendees-" + m.id + "')" );
 					// Update.update( Security.getConnected(),
 					// "reload('meetingAttendees-" + m.id + "','meeting-" +
 					// m.project.id + "')" );
@@ -940,6 +940,6 @@ public class Meetings extends SmartCRUD
 		{
 
 		}
-		Update.update( meeting.project, "reload('meeting-" + meeting.id + "','meetings-" + meeting.project.id + "')" );
+		CollaborateUpdate.update( meeting.project, "reload('meeting-" + meeting.id + "','meetings-" + meeting.project.id + "')" );
 	}
 }

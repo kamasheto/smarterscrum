@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import models.Board;
-import models.Column;
+import models.BoardColumn;
 import models.Component;
 import models.Component.ComponentRowh;
 import models.Invite;
@@ -72,8 +72,8 @@ public class SmartController extends Controller
 				List<Component> components = p.getComponents();
 
 				ArrayList<ComponentRowh> data = new ArrayList<ComponentRowh>();
-				List<Column> columns = b.columns;
-				List<Column> CS = new ArrayList<Column>();
+				List<BoardColumn> columns = b.columns;
+				List<BoardColumn> CS = new ArrayList<BoardColumn>();
 				ArrayList<String> Columnsofsnapshot = new ArrayList<String>();
 				for( int i = 0; i < columns.size(); i++ )
 				{
@@ -115,7 +115,7 @@ public class SmartController extends Controller
 
 						for( Task task : tasks )
 						{
-							Column pcol = new Column();
+							BoardColumn pcol = new BoardColumn();
 							for( int k = 0; k < task.taskStatus.columns.size(); k++ )
 							{
 								pcol = task.taskStatus.columns.get( k );
@@ -151,9 +151,9 @@ public class SmartController extends Controller
 
 					List<User> users = Cs.get( index ).getUsers();
 					ArrayList<ComponentRowh> data1 = new ArrayList<ComponentRowh>();
-					List<Column> columns1 = b.columns;
+					List<BoardColumn> columns1 = b.columns;
 					ArrayList<String> Columnsofsnapshot1 = new ArrayList<String>();
-					List<Column> CS1 = new ArrayList<Column>();
+					List<BoardColumn> CS1 = new ArrayList<BoardColumn>();
 					for( int i = 0; i < columns1.size(); i++ )
 					{
 						if( columns1.get( i ).onBoard == true )
@@ -190,7 +190,7 @@ public class SmartController extends Controller
 
 						for( Task task : tasks1 )
 						{
-							Column pcol = new Column();
+							BoardColumn pcol = new BoardColumn();
 							for( int k = 0; k < task.taskStatus.columns.size(); k++ )
 							{
 								pcol = task.taskStatus.columns.get( k );

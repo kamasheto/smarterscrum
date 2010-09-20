@@ -5,7 +5,7 @@ import java.util.Date;
 import models.Log;
 import models.Meeting;
 import models.MeetingAttendance;
-import models.Update;
+import models.CollaborateUpdate;
 import notifiers.Notifications;
 import play.mvc.Router;
 import play.mvc.With;
@@ -44,7 +44,7 @@ public class MeetingAttendances extends SmartController
 				attendance.save();
 				flash.success( "You accepted the invitation" );
 				Log.addUserLog( "Confirmed meeting invitation", attendance.meeting, attendance.meeting.project );
-				Update.update( attendance.meeting.project.users, Security.getConnected(), "reload('meeting-" + attendance.meeting.id + "')" );
+				CollaborateUpdate.update( attendance.meeting.project.users, Security.getConnected(), "reload('meeting-" + attendance.meeting.id + "')" );
 			}
 			else
 			{
@@ -122,7 +122,7 @@ public class MeetingAttendances extends SmartController
 		ma.status = "confirmed";
 		ma.reason = "";
 		ma.save();
-		Update.update( ma.meeting.project, "reload('meetingAttendees-" + ma.meeting.id + "')" );
+		CollaborateUpdate.update( ma.meeting.project, "reload('meetingAttendees-" + ma.meeting.id + "')" );
 		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + ma.meeting.project.id + "&isOverlay=false&url=/meetings/viewAttendeeStatus?id=" + ma.meeting.project.id;
 		Notifications.notifyUser( ma.user, "Confirm", url, "Meeting Attendence", ma.meeting.name, (byte) 1, ma.meeting.project );
 		Log.addLog( "Changed meeting attendance to attended", Security.getConnected(), ma.user, ma.meeting, ma.meeting.project );
@@ -146,7 +146,7 @@ public class MeetingAttendances extends SmartController
 		ma.status = "declined";
 		ma.reason = reason;
 		ma.save();
-		Update.update( ma.meeting.project, "reload('meetingAttendees-" + ma.meeting.id + "')" );
+		CollaborateUpdate.update( ma.meeting.project, "reload('meetingAttendees-" + ma.meeting.id + "')" );
 		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + ma.meeting.project.id + "&isOverlay=false&url=/meetings/viewAttendeeStatus?id=" + ma.id;
 		Notifications.notifyUser( ma.user, "declin", url, "Meeting Attendence", ma.meeting.name, (byte) -1, ma.meeting.project );
 		Log.addLog( "Changed meeting attendance to did not attend", Security.getConnected(), ma.user, ma.meeting, ma.meeting.project );
@@ -168,7 +168,7 @@ public class MeetingAttendances extends SmartController
 			ma.reason = "";
 			ma.save();
 			Log.addUserLog( "Confirmed meeting invitation", ma.meeting, ma.meeting.project );
-			Update.update( m.project.users, Security.getConnected(), "reload('meeting-" + m.id + "')" );
+			CollaborateUpdate.update( m.project.users, Security.getConnected(), "reload('meeting-" + m.id + "')" );
 			renderJSON( true );
 		}
 		renderJSON( false );
@@ -190,7 +190,7 @@ public class MeetingAttendances extends SmartController
 			ma.reason = reason;
 			ma.save();
 			Log.addUserLog( "Declined meeting invitation", ma.meeting, ma.meeting.project );
-			Update.update( m.project.users, Security.getConnected(), "reload('meeting-" + m.id + "')" );
+			CollaborateUpdate.update( m.project.users, Security.getConnected(), "reload('meeting-" + m.id + "')" );
 			renderJSON( true );
 		}
 		renderJSON( false );

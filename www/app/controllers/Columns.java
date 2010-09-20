@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import models.Board;
-import models.Column;
+import models.BoardColumn;
 import models.Component;
 import models.Log;
 import models.Project;
@@ -44,8 +44,8 @@ public class Columns extends SmartController
 			userId = Security.getConnected().id;
 		Calendar cal = new GregorianCalendar();
 		User u = User.findById( userId );		
-		Column c1 = Column.find( "bySequenceAndBoardAndDeleted", pos1 - 1, b, false ).first();
-		Column c2 = Column.find( "bySequenceAndBoardAndDeleted", pos2 - 1, b, false ).first();
+		BoardColumn c1 = BoardColumn.find( "bySequenceAndBoardAndDeleted", pos1 - 1, b, false ).first();
+		BoardColumn c2 = BoardColumn.find( "bySequenceAndBoardAndDeleted", pos2 - 1, b, false ).first();
 		// Logs.addLog( u, "edit", "Column Position", c1.id, p, cal.getTime() );
 		Log.addLog("Edit column ("+c1.name+") position", u, c1, b, p);
 		int x = c2.sequence;
@@ -53,7 +53,7 @@ public class Columns extends SmartController
 		{
 			for( int i = c1.sequence + 1; i <= c2.sequence; i++ )
 			{
-				Column temp = Column.find( "bySequenceAndBoard", i, b ).first();
+				BoardColumn temp = BoardColumn.find( "bySequenceAndBoard", i, b ).first();
 				temp.sequence--;
 				temp.save();
 			}
@@ -65,7 +65,7 @@ public class Columns extends SmartController
 		{
 			for( int i = c1.sequence - 1; i >= c2.sequence; i-- )
 			{
-				Column temp = Column.find( "bySequenceAndBoard", i, b ).first();
+				BoardColumn temp = BoardColumn.find( "bySequenceAndBoard", i, b ).first();
 				temp.sequence++;
 				temp.save();
 			}
@@ -106,8 +106,8 @@ public class Columns extends SmartController
 			Component c = Component.findById( cid );
 			b = c.componentBoard;
 		}
-		Column c1 = Column.find( "bySequenceAndBoardAndDeleted", pos1, b, false ).first();
-		Column c2 = Column.find( "bySequenceAndBoardAndDeleted", pos2, b, false ).first();
+		BoardColumn c1 = BoardColumn.find( "bySequenceAndBoardAndDeleted", pos1, b, false ).first();
+		BoardColumn c2 = BoardColumn.find( "bySequenceAndBoardAndDeleted", pos2, b, false ).first();
 		c1.sequence = pos2;
 		c2.sequence = pos1;
 		c1.save();
@@ -128,7 +128,7 @@ public class Columns extends SmartController
 	 */
 	public static boolean editColumnName( long id, String name, long userId )
 	{
-		Column c = Column.find( "byId", id ).first();
+		BoardColumn c = BoardColumn.find( "byId", id ).first();
 		Project p = c.board.project;
 		Security.check( p, "renameColumns" );		
 		c.name = name;

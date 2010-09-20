@@ -20,7 +20,7 @@ public class Board extends SmartModel {
 	 * a board has many columns whereas a column belongs to one board
 	 */
 	@OneToMany (mappedBy = "board")
-	public List<Column> columns;
+	public List<BoardColumn> columns;
 
 	/***
 	 * a project has one board & a board can only belong to one project
@@ -69,7 +69,7 @@ public class Board extends SmartModel {
 	 * */
 	public Board () {
 		snapshot = new ArrayList<Snapshot>();
-		columns = new ArrayList<Column>();
+		columns = new ArrayList<BoardColumn>();
 	}
 
 }

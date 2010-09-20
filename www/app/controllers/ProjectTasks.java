@@ -6,7 +6,7 @@ import java.util.List;
 import models.Project;
 import models.Request;
 import models.Role;
-import models.Update;
+import models.CollaborateUpdate;
 import models.User;
 import models.Log;
 
@@ -31,8 +31,8 @@ public class ProjectTasks extends SmartController {
 		User user = Security.getConnected();
 		Role role = Role.findById(id);
 		notFoundIfNull(role);
-		Update.update(user, "reload('roles')");
-		Update.update(role.project, "reload('project-requests')");
+		CollaborateUpdate.update(user, "reload('roles')");
+		CollaborateUpdate.update(role.project, "reload('project-requests')");
 		Log.addUserLog("Requested role", role, role.project);
 		if (user.in(role.project).can("manageRequests")) {
 			user.addRole(role);

@@ -183,7 +183,7 @@ Show/Hide:
 			<a title="view the task reports?" href="@{Tasks.getReport(task.id)}">${task.getTaskNumber()}</a>
 		</td>
 		
-		#{ifnot connected.in(project).can('editBacklog') || connected.isAdmin || (task.assignee.id != null & connected.id==task.assignee.id) || connected.id==task.reviewer.id}
+		#{ifnot connected.in(project).can('editBacklog') || connected.isAdmin || (connected==task.assignee) || connected==task.reviewer}
           #{ifnot task.description}
           <td id="${task.id}_des"class="shDes">No Description stated</td>
           #{/ifnot}
@@ -247,7 +247,7 @@ Show/Hide:
 		#{/else} 
 		
 		<td id="${task.id}_type" class="editTYPE shType">
-			#{if connected.in(project).can('changeTaskType')|| connected.id==task.assignee.id}
+			#{if connected.in(project).can('changeTaskType')|| connected==task.assignee}
 					#{ifnot task.taskType}
 	    <span onclick="$(this).next().show();$(this).hide()">not set</span>
 	    #{/ifnot}
@@ -287,7 +287,7 @@ Show/Hide:
 </td>
 
 		<td id="${task.id}_status" class="editStatus shStatus">
-		#{if connected.in(project).can('changeTaskStatus') ||connected.id==task.reviewer.id || connected.id==task.assignee.id}
+		#{if connected.in(project).can('changeTaskStatus') ||connected==task.reviewer || connected==task.assignee}
 		#{ifnot task.taskStatus}
 	    <span onclick="$(this).next().show();$(this).hide()">not set</span>
 	    #{/ifnot}
@@ -328,7 +328,7 @@ Show/Hide:
 		
 		
 		<td id="${task.id}_assignee" class="editASSI shAssignee">
-			#{if connected.in(project).can('changeTaskAssignee') || connected.id==task.assignee.id}
+			#{if connected.in(project).can('changeTaskAssignee') || connected==task.assignee}
 		#{ifnot task.assignee}
 	    <span onclick="$(this).next().show();$(this).hide()">not set</span>
 	    #{/ifnot}
@@ -342,7 +342,7 @@ Show/Hide:
        		#{/ifnot}
        		#{list items:task.getAssigneeOrReviewer(true), as:'type'}
        		#{if task.assignee}
-       			#{if type.id==task.assignee.id}
+       			#{if type==task.taskType}
        				<option selected="selected" value="${type.id}">${type.getDisplayName().raw()}</option>
        			#{/if}
        			#{else}
@@ -367,7 +367,7 @@ Show/Hide:
 
 		</td>
 		<td id="${task.id}_reviewer" class="editREV shReviewer">
-					#{if connected.in(project).can('changeTaskReviewer') || connected.id==task.assignee.id}
+					#{if connected.in(project).can('changeTaskReviewer') || connected==task.assignee}
 		#{ifnot task.reviewer}
 	    <span onclick="$(this).next().show();$(this).hide()">not set</span>
 	    #{/ifnot}
@@ -381,7 +381,7 @@ Show/Hide:
        		#{/ifnot}
        		#{list items:task.getAssigneeOrReviewer(false), as:'type'}
        		#{if task.reviewer}
-       			#{if type.id==task.reviewer.id}
+       			#{if type==task.taskType}
        				<option selected="selected" value="${type.id}">${type.getDisplayName().raw()}</option>
        			#{/if}
        			#{else}

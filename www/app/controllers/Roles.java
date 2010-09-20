@@ -6,7 +6,7 @@ import models.Permission;
 import models.Project;
 import models.Role;
 import models.User;
-import models.Update;
+import models.CollaborateUpdate;
 import models.Log;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
@@ -55,7 +55,7 @@ public class Roles extends SmartCRUD
 			}
 		}
 		Log.addUserLog("Set new base role", role, role.project);
-		Update.update(role.project, "reload('roles')");
+		CollaborateUpdate.update(role.project, "reload('roles')");
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class Roles extends SmartCRUD
 		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
-			Update.update(role.project, "reload('roles')");
+			CollaborateUpdate.update(role.project, "reload('roles')");
 			Application.overlayKiller( "", "" );
 		}
 		redirect( "/admin/roles/" + role.id );
@@ -243,7 +243,7 @@ public class Roles extends SmartCRUD
 		flash.success( Messages.get( "crud.created", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
-			Update.update(role.project, "reload('roles')");
+			CollaborateUpdate.update(role.project, "reload('roles')");
 			Application.overlayKiller( "", "" );
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
@@ -290,7 +290,7 @@ public class Roles extends SmartCRUD
 				e.printStackTrace();
 			}
 		}
-		Update.update(role.project, "reload('roles', 'role-"+id+"')");
+		CollaborateUpdate.update(role.project, "reload('roles', 'role-"+id+"')");
 	}
 
 	public static void list()
