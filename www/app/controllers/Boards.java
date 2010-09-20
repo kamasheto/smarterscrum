@@ -485,6 +485,7 @@ public class Boards extends SmartCRUD
 	public static void showHiddenColumn( long cid, long uid, long sid, long compid )
 	{
 		Column c = Column.findById( cid );
+		Sprint sprint = Sprint.findById(sid);
 		if( c.deleted )
 			notFound();
 		int count = 0;
@@ -496,21 +497,19 @@ public class Boards extends SmartCRUD
 		c.sequence = count;
 		c.onBoard = true;
 		c.save();
-		Calendar cal = new GregorianCalendar();
 		User u = User.findById( uid );
 		if( u.deleted )
 			notFound();
-//		Logs.addLog( u, "shown", "Column", cid, c.board.project, cal.getTime() );
-		Log.addLog("Shown column: " + c.name, u, c.board, c, c.board.project);
+		Log.addLog("Shown column: " + c.name, u, c.board, c, sprint.project);
 		String url = "";
 		if(compid==0)
 		{
-			url = Router.getFullUrl("Application.externalOpen")+"?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid;
+			url = Router.getFullUrl("Application.externalOpen")+"?id="+sprint.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid;
 			Notifications.notifyProjectUsers(c.board.project, "addColumn", url, "column", c.name, (byte)0);
 		}
 		else
 		{
-			url = Router.getFullUrl("Application.externalOpen")+"?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"%26componentID="+compid;
+			url = Router.getFullUrl("Application.externalOpen")+"?id="+sprint.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"%26componentID="+compid;
 			Component component = Component.findById(compid); 
 			Notifications.notifyUsers(component.componentUsers, "addColumn", url, "column", c.name, (byte)0, c.board.project);			
 		}
@@ -535,6 +534,7 @@ public class Boards extends SmartCRUD
 	public static void hideColumn( long cid, long uid, long sid, long compid )
 	{
 		Column c = Column.findById( cid );
+		Sprint sprint = Sprint.findById(sid);
 		if( c.deleted )
 			notFound();
 		c.onBoard = false;
@@ -550,7 +550,6 @@ public class Boards extends SmartCRUD
 				count++;
 			}
 		}
-		Calendar cal = new GregorianCalendar();
 		User u = User.findById( uid );
 		if( u.deleted )
 			notFound();
@@ -562,12 +561,11 @@ public class Boards extends SmartCRUD
 		}
 		else
 		{
-			url = Router.getFullUrl("Application.externalOpen")+"?id="+c.board.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"%26componentID="+compid;
+			url = Router.getFullUrl("Application.externalOpen")+"?id="+sprint.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"%26componentID="+compid;
 			Component component = Component.findById(compid); 
 			Notifications.notifyUsers(component.componentUsers, "deleteColumn", url, "column", c.name, (byte)-1, c.board.project);			
 		}		
-//		Logs.addLog( u, "hided", "Column", c.id, c.board.project, cal.getTime() );
-		Log.addLog("Hided column: " + c.name, c, c.board, c.board.project);
+		Log.addLog("Hided column: " + c.name, c, c.board, sprint.project);
 		
 	}
 
