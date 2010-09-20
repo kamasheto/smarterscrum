@@ -10,7 +10,7 @@ import models.Request;
 import models.Reviewer;
 import models.Role;
 import models.TaskType;
-import models.Update;
+import models.CollaborateUpdate;
 import models.User;
 import models.UserNotificationProfile;
 import models.Log;
@@ -69,8 +69,8 @@ public class Requests extends SmartCRUD
 		// Logs.addLog( myUser, "RequestAccept", "Request", x.id, y, new Date() );
 		Log.addUserLog("Role request accepted", x.user, x.role, x.role.project);
 		
-		Update.update(x.user, "reload('roles')");
-		Update.update(Security.getConnected(), "reload('project-requests')");
+		CollaborateUpdate.update(x.user, "reload('roles')");
+		CollaborateUpdate.update(Security.getConnected(), "reload('project-requests')");
 		x.delete();
 	}
 
@@ -130,7 +130,7 @@ public class Requests extends SmartCRUD
 		// Logs.addLog( Security.getConnected(), "DeletionRequestAccept", "Request", currentRequest.id, currentRequest.project, new Date() );
 		
 		
-		Update.update(Security.getConnected(), "reload('project-requests')");
+		CollaborateUpdate.update(Security.getConnected(), "reload('project-requests')");
 		// Update.update(Security.getConnected(), ""); // run javascript at client to close workspace?
 		currentRequest.delete();
 	}
@@ -192,7 +192,7 @@ public class Requests extends SmartCRUD
 		// Logs.addLog( myUser, "RequestDeny", "Request", x.id, y, dd );
 		Log.addUserLog("Request "+(x.isDeletion ? "for deletion" : "role")+" denied", y);
 
-		Update.update(myUser, "reload('project-requests')");
+		CollaborateUpdate.update(myUser, "reload('project-requests')");
 		
 		x.delete();
 	}
@@ -262,7 +262,7 @@ public class Requests extends SmartCRUD
 		User user = Security.getConnected();
 		Request request = Request.find( "byRoleAndUser", role, user ).first();
 		request.delete();
-		Update.update(role.project, "reload('roles')");
+		CollaborateUpdate.update(role.project, "reload('roles')");
 		renderText( "Request removed!" );
 	}
 	
@@ -293,14 +293,14 @@ public class Requests extends SmartCRUD
 			rev.save();
 			String url = Router.getFullUrl("Application.externalOpen")+"?id="+rev.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+rev.user.id+"%26boxId=2&projectId="+rev.project.id+"%26currentProjectId="+rev.project.id;
 			Notifications.notifyProjectUsers(tt.project, "addReviewer", url, "to the reviewers for the task type", tt.name, (byte)0);
-			Update.update(rev.user, "reload('reviewers')");
-			Update.update(rev.project, "reload('project-"+rev.project.id+"-in-user-"+rev.user.id+"')");
+			CollaborateUpdate.update(rev.user, "reload('reviewers')");
+			CollaborateUpdate.update(rev.project, "reload('project-"+rev.project.id+"-in-user-"+rev.user.id+"')");
 			renderText("You are now "+tt.name+" reviewer in"+tt.project.name+"!");
 		}
 		else
 			{
-				Update.update(rev.user, "reload('reviewers')");
-				Update.update(tt.project, "reload('project-requests')");
+				CollaborateUpdate.update(rev.user, "reload('reviewers')");
+				CollaborateUpdate.update(tt.project, "reload('project-requests')");
 				renderText("Your request to be "+tt.name+" reviewer has been sent successfully!");
 			}
 	}
@@ -311,8 +311,8 @@ public class Requests extends SmartCRUD
 		User user = Security.getConnected();
 		Reviewer rev = Reviewer.find("byUserAndProjectAndTaskTypeAndAccepted", user, tt.project, tt, false).first();
 		rev.delete();
-		Update.update(rev.user, "reload('reviewers')");
-		Update.update(tt.project, "reload('project-requests')");
+		CollaborateUpdate.update(rev.user, "reload('reviewers')");
+		CollaborateUpdate.update(tt.project, "reload('project-requests')");
 		renderText("Request has been cancelled successfully");
 	}
 	
@@ -324,7 +324,7 @@ public class Requests extends SmartCRUD
 			{
 				rev.accepted=true;
 				rev.save();
-				Update.update(rev.project, "reload('project-"+rev.project.id+"-in-user-"+rev.user.id+"')");				
+				CollaborateUpdate.update(rev.project, "reload('project-"+rev.project.id+"-in-user-"+rev.user.id+"')");				
 				Notifications.notifyProjectUsers(rev.project, "addReviewer", url, "to the reviewers for the task type", rev.taskType.name, (byte)0);
 			}
 		else
@@ -332,8 +332,8 @@ public class Requests extends SmartCRUD
 				Notifications.notifyUser(rev.user, "declined", url, "your request to be reviewer for task type", rev.taskType.name, (byte)-1, rev.project);
 				rev.delete();
 			}
-		Update.update(rev.project, "reload('project-requests')");
-		Update.update(rev.user, "reload('reviewers')");
+		CollaborateUpdate.update(rev.project, "reload('project-requests')");
+		CollaborateUpdate.update(rev.user, "reload('reviewers')");
 	}
 	
 	public static void revokeReviewer(long uId, long taskTypeId)
@@ -344,8 +344,8 @@ public class Requests extends SmartCRUD
 		rev.delete();
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+rev.project.id+"&isOverlay=false&url=/users/listUserProjects?userId="+rev.user.id+"%26boxId=2&projectId="+rev.project.id+"%26currentProjectId="+rev.project.id;
 		Notifications.notifyProjectUsers(tt.project, "deleteReviewer", url, "from the reviewers for the task type", tt.name, (byte)-1);
-		Update.update(rev.user, "reload('reviewers')");
-		Update.update(rev.project, "reload('project-"+rev.project.id+"-in-user-"+rev.user.id+"')");		
+		CollaborateUpdate.update(rev.user, "reload('reviewers')");
+		CollaborateUpdate.update(rev.project, "reload('project-"+rev.project.id+"-in-user-"+rev.user.id+"')");		
 		renderText("The review role has been revoked successfully!");
 	}
 	

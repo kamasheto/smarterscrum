@@ -6,7 +6,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import models.Board;
-import models.Column;
+import models.BoardColumn;
 import models.Component;
 import models.Log;
 import models.Meeting;
@@ -41,7 +41,7 @@ public class Snapshots extends SmartController {
 		Sprint s = Sprint.findById(sprintID);
 		Project p = s.project;
 		Board b;
-		List<Column> columns;
+		List<BoardColumn> columns;
 		User user = Security.getConnected();
 		if (componentID == 0)
 			b = p.board;
@@ -49,7 +49,7 @@ public class Snapshots extends SmartController {
 			Component c = Component.findById(componentID);
 			b = c.componentBoard;
 		}
-		List<Column> CS = new ArrayList<Column>();
+		List<BoardColumn> CS = new ArrayList<BoardColumn>();
 		columns = b.columns;
 		ArrayList<ComponentRowh> data = new ArrayList<ComponentRowh>();
 		ArrayList<String> Columnsofsnapshot = new ArrayList<String>();
@@ -86,7 +86,7 @@ public class Snapshots extends SmartController {
 						data.get(i).set(j, new ArrayList<String>());
 					}
 					for (Task task : tasks) {
-						Column pcol = new Column();
+						BoardColumn pcol = new BoardColumn();
 						for (int k = 0; k < task.taskStatus.columns.size(); k++) {
 							pcol = task.taskStatus.columns.get(k);
 							if (pcol.board.id == b.id)
@@ -138,7 +138,7 @@ public class Snapshots extends SmartController {
 					data.get(i).set(j, new ArrayList<String>());
 				}
 				for (Task task : tasks) {
-					Column pcol = new Column();
+					BoardColumn pcol = new BoardColumn();
 					for (int k = 0; k < task.taskStatus.columns.size(); k++) {
 						pcol = task.taskStatus.columns.get(k);
 						if (pcol.board.id == b.id)

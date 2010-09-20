@@ -4,7 +4,7 @@ import java.util.List;
 
 import models.Comment;
 import models.Task;
-import models.Update;
+import models.CollaborateUpdate;
 import play.mvc.With;
 
 @With( Secure.class )
@@ -28,7 +28,7 @@ public class Comments extends SmartController
 		{
 			Task task = comment.task;
 			comment.deleteComment();
-			Update.update( task.project , "refresh('comments_"+task.id+"')" );
+			CollaborateUpdate.update( task.project , "refresh('comments_"+task.id+"')" );
 			renderText( "Comment deleted successfully." );
 		}
 	}
@@ -59,7 +59,7 @@ public class Comments extends SmartController
 		c.save();
 		task.comments.add( c );
 		task.save();
-		Update.update( task.project , "refresh('comments_"+task.id+"')" );
+		CollaborateUpdate.update( task.project , "refresh('comments_"+task.id+"')" );
 		renderText("The comment was added successfully");
 	}
 }

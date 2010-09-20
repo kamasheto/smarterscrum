@@ -9,7 +9,7 @@ import java.util.List;
 import notifiers.Notifications;
 
 import models.Board;
-import models.Column;
+import models.BoardColumn;
 import models.Comment;
 import models.Component;
 import models.Log;
@@ -21,7 +21,7 @@ import models.Sprint;
 import models.Task;
 import models.TaskStatus;
 import models.TaskType;
-import models.Update;
+import models.CollaborateUpdate;
 import models.User;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
@@ -236,12 +236,12 @@ public class Tasks extends SmartCRUD
 
 			if( tmp.parent != null )
 			{
-				Update.update( tmp.project, "reload('tasks','task-" + tmp.parent.id + "')" );
+				CollaborateUpdate.update( tmp.project, "reload('tasks','task-" + tmp.parent.id + "')" );
 				Application.overlayKiller( "", "" );
 			}
 			else
 			{
-				Update.update( tmp.project, "reload('tasks','task-" + tmp.id+ "')" );
+				CollaborateUpdate.update( tmp.project, "reload('tasks','task-" + tmp.id+ "')" );
 				Application.overlayKiller( "", "" );
 			}
 
@@ -600,25 +600,25 @@ public class Tasks extends SmartCRUD
 				compId = tmp.component.id;
 			if(tmp.taskSprint!=null && (!(tmp.description.equals( oldDescription )) || (tmp.assignee != null && oldAssignee != 0 && tmp.assignee.id!=oldAssignee) || (tmp.reviewer != null && oldReviewer != 0 && tmp.reviewer.id!=oldReviewer) || (tmp.taskType != null && oldTaskType != 0 && tmp.taskType.id!=oldTaskType)) )
 			{
-				Update.update( Security.getConnected(), "reload_note_open(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ",0)" );
-				Update.update( tmp.project.users, Security.getConnected(), "reload_note_close(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ");sprintLoad(" + tmp.id + ",'" + tmp.id + "_des')" );	
+				CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ",0)" );
+				CollaborateUpdate.update( tmp.project.users, Security.getConnected(), "reload_note_close(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ");sprintLoad(" + tmp.id + ",'" + tmp.id + "_des')" );	
 			}
 			
 			if(tmp.taskSprint!=null && (tmp.component!=null && (tmp.assignee != null && oldAssignee != 0 && tmp.assignee.id!=oldAssignee)))
 			{
-				Update.update( tmp.project, "drag_note_assignee(" + tmp.taskSprint.id + "," + oldAssignee + "," + tmp.assignee.id + "," + tmp.taskStatus.id + "," + compId + "," + tmp.id + ")" );
-				Update.update( Security.getConnected(), "reload_note_open(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ",0)" );
-				Update.update( tmp.project.users, Security.getConnected(), "reload_note_close(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ")" );
+				CollaborateUpdate.update( tmp.project, "drag_note_assignee(" + tmp.taskSprint.id + "," + oldAssignee + "," + tmp.assignee.id + "," + tmp.taskStatus.id + "," + compId + "," + tmp.id + ")" );
+				CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ",0)" );
+				CollaborateUpdate.update( tmp.project.users, Security.getConnected(), "reload_note_close(" + tmp.taskSprint.id + "," + tmp.id + "," + compId + ")" );
 			}
 			if(tmp.taskSprint!=null && tmp.taskStatus != null && oldTaskStatus != 0 && tmp.taskStatus.id!=oldTaskStatus)
 			{
-				Update.update( tmp.project, "drag_note_status(" + tmp.taskSprint.id + "," + tmp.assignee.id + "," + oldTaskStatus + "," + tmp.taskStatus.id + "," + compId + "," + tmp.id + ")" );
+				CollaborateUpdate.update( tmp.project, "drag_note_status(" + tmp.taskSprint.id + "," + tmp.assignee.id + "," + oldTaskStatus + "," + tmp.taskStatus.id + "," + compId + "," + tmp.id + ")" );
 			}
 			
 		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
-			Update.update( tmp.project, "reload('tasks','task-" + tmp.id + "'"+(tmp.parent != null ? ",'task-" + tmp.parent.id + "'" : "")+")" );
+			CollaborateUpdate.update( tmp.project, "reload('tasks','task-" + tmp.id + "'"+(tmp.parent != null ? ",'task-" + tmp.parent.id + "'" : "")+")" );
 			String url = Router.getFullUrl("Application.externalOpen")+"?id="+tmp.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+tmp.id;
 			ArrayList<User> nusers= new ArrayList<User>();
 			if(tmp.assignee!=null)
@@ -673,9 +673,9 @@ public class Tasks extends SmartCRUD
 				}
 				tmp.parent.estimationPoints = sum;
 				tmp.parent.save();
-				Update.update( tmp.project, "reload('tasks-"+tmp.project.id+"', 'task-" + tmp.id + "', 'task-" + tmp.parent.id + "', 'tasks')" );
+				CollaborateUpdate.update( tmp.project, "reload('tasks-"+tmp.project.id+"', 'task-" + tmp.id + "', 'task-" + tmp.parent.id + "', 'tasks')" );
 			}
-			Update.update( tmp.project, "reload('tasks-"+tmp.project.id+"', 'task-" + tmp.id + "', 'tasks')" );
+			CollaborateUpdate.update( tmp.project, "reload('tasks-"+tmp.project.id+"', 'task-" + tmp.id + "', 'tasks')" );
 			deleteSubTasks(id);
 			renderText("Task deleted successfully.");
 			
@@ -792,7 +792,7 @@ public class Tasks extends SmartCRUD
 		}
 
 		temp.setEffortOfDay( effort, day );
-		Update.update( temp.project, "sprintLoad(" + id + ",'" + id + "_day_" + day + "');" );
+		CollaborateUpdate.update( temp.project, "sprintLoad(" + id + ",'" + id + "_day_" + day + "');" );
 		temp.save();
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+temp.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+temp.id;
 		ArrayList<User> nusers= new ArrayList<User>();
@@ -952,8 +952,8 @@ public class Tasks extends SmartCRUD
 			compId = task1.component.id;
 		if(task1.taskSprint!=null)
 		{
-		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId+ "," + userId + ")" );
-		Update.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ");sprintLoad(" + task1.id + ",'" + task1.id + "_des')" );
+		CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId+ "," + userId + ")" );
+		CollaborateUpdate.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ");sprintLoad(" + task1.id + ",'" + task1.id + "_des')" );
 		}
 		List<User> m = new ArrayList();
 		m.add( task1.assignee );
@@ -973,7 +973,7 @@ public class Tasks extends SmartCRUD
 			// + task1.project.name + " from the account of " +
 			// Security.getConnected().name );
 		}
-		Update.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
+		CollaborateUpdate.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task1.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task1.id;
 		ArrayList<User> nusers= new ArrayList<User>();
 		if(task1.assignee!=null)
@@ -1031,11 +1031,11 @@ public class Tasks extends SmartCRUD
 		// boolean flag = true;
 
 		// getting the actual status
-		Column col;
+		BoardColumn col;
 		if( cid == 0 )
-			col = Column.find( "bySequenceAndBoard", columnSequence, b ).first();
+			col = BoardColumn.find( "bySequenceAndBoard", columnSequence, b ).first();
 		else
-			col = Column.find( "bySequenceAndBoard", columnSequence, component.componentBoard ).first();
+			col = BoardColumn.find( "bySequenceAndBoard", columnSequence, component.componentBoard ).first();
 		status = col.taskStatus;
 
 		// get the actual task_id in an int
@@ -1126,7 +1126,7 @@ public class Tasks extends SmartCRUD
 		long compId = 0;
 		if( task1.component != null )
 			compId = task1.component.id;
-		Update.update( task1.project, "drag_note_status(" + task1.taskSprint.id + "," + task1.assignee.id + "," + oldstatus + "," + newstatus + "," + compId + "," + task1.id + ")" );
+		CollaborateUpdate.update( task1.project, "drag_note_status(" + task1.taskSprint.id + "," + task1.assignee.id + "," + oldstatus + "," + newstatus + "," + compId + "," + task1.id + ")" );
 		if( userId == Security.getConnected().id )
 		{
 			Log.addUserLog( "Edited task status", task1, task1.project );
@@ -1141,7 +1141,7 @@ public class Tasks extends SmartCRUD
 			// + task1.project.name + " from the account of " +
 			// Security.getConnected().name );
 		}
-		Update.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
+		CollaborateUpdate.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task1.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task1.id;
 		ArrayList<User> nusers= new ArrayList<User>();
 		if(task1.assignee!=null)
@@ -1177,8 +1177,8 @@ public class Tasks extends SmartCRUD
 		task.taskStatus = stat;
 		stat.Tasks.add( task );
 		stat.save();
-		Update.update( task.project, "reload('task-" + id + "');" );
-		Update.update( task.project, "sprintLoad(" + id + ",'" + id + "_status');" );
+		CollaborateUpdate.update( task.project, "reload('task-" + id + "');" );
+		CollaborateUpdate.update( task.project, "sprintLoad(" + id + ",'" + id + "_status');" );
 		task.save();
 		renderText( "Status updates successfully" );
 		Log.addUserLog( "Edited task status", task, task.project );
@@ -1212,8 +1212,8 @@ public class Tasks extends SmartCRUD
 		task.estimationPoints = estimation;
 		task.save();
 
-		Update.update( task.project, "reload('task-" + id + "');" );
-		Update.update( task.project, "sprintLoad(" + id + ",'" + id + "_points');" );
+		CollaborateUpdate.update( task.project, "reload('task-" + id + "');" );
+		CollaborateUpdate.update( task.project, "sprintLoad(" + id + ",'" + id + "_points');" );
 		Log.addUserLog( "Edit task estimation", task, task.project );
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task.id;
 		ArrayList<User> nusers= new ArrayList<User>();
@@ -1289,16 +1289,16 @@ public class Tasks extends SmartCRUD
 		{
 			if(compId!=0)
 		
-			{	Update.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + oldassi.id + "," + newassi + "," + task1.taskStatus.id + "," + compId + "," + task1.id + ")" );
+			{	CollaborateUpdate.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + oldassi.id + "," + newassi + "," + task1.taskStatus.id + "," + compId + "," + task1.id + ")" );
 			
-			Update.update( Security.getConnected(), "note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId+ "," + userId + ")" );
-			Update.update( task1.project.users, Security.getConnected(), "note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
+			CollaborateUpdate.update( Security.getConnected(), "note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId+ "," + userId + ")" );
+			CollaborateUpdate.update( task1.project.users, Security.getConnected(), "note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 			}
 			else
 				
 			{	
-				Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId+ "," + userId + ")" );
-				Update.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
+				CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId+ "," + userId + ")" );
+				CollaborateUpdate.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 		}
 		}
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task1.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task1.id;
@@ -1326,7 +1326,7 @@ public class Tasks extends SmartCRUD
 			// + task1.project.name + " from the account of " +
 			// Security.getConnected().name );
 		}
-		Update.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
+		CollaborateUpdate.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
 		return true;
 	}
 
@@ -1375,8 +1375,8 @@ public class Tasks extends SmartCRUD
 			compId = task1.component.id;
 		if(task1.taskSprint!=null)
 		{
-		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + userId + ")" );
-		Update.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
+		CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + userId + ")" );
+		CollaborateUpdate.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 		}
 		reviewer.tasks.add( task1 );
 		reviewer.save();
@@ -1405,7 +1405,7 @@ public class Tasks extends SmartCRUD
 			// + task1.project.name + " from the account of " +
 			// Security.getConnected().name );
 		}
-		Update.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
+		CollaborateUpdate.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
 		return true;
 	}
 
@@ -1451,9 +1451,9 @@ public class Tasks extends SmartCRUD
 			compId = task1.component.id;
 		if(task1.taskSprint!=null)
 		{
-		Update.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + userId + ")" );
-		Update.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
-		Update.update( task1.project, "sprintLoad(" + task1.id + ",'" + id + "_type');" );;
+		CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + userId + ")" );
+		CollaborateUpdate.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
+		CollaborateUpdate.update( task1.project, "sprintLoad(" + task1.id + ",'" + id + "_type');" );;
 		}
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+task1.project.id+"&isOverlay=false&url=/tasks/magicShow?taskId="+task1.id;
 		ArrayList<User> nusers= new ArrayList<User>();
@@ -1476,7 +1476,7 @@ public class Tasks extends SmartCRUD
 			// + task1.project.name + " from the account of " +
 			// Security.getConnected().name );
 		}
-		Update.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
+		CollaborateUpdate.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
 		return true;
 	}
 
@@ -1743,7 +1743,7 @@ public class Tasks extends SmartCRUD
 			}
 		Notifications.notifyUsers(nusers, "associated", url, "task "+task.number+" to the component", component.getFullName(), (byte)0, task.project);
 		Log.addUserLog( "Assigned task to component", task, component, component.project );
-		Update.update( task.project, "reload('component-" + componentId + "', 'task-" + taskId + "')" );
+		CollaborateUpdate.update( task.project, "reload('component-" + componentId + "', 'task-" + taskId + "')" );
 		renderText( "Associated successfully" );
 	}
 
@@ -1779,8 +1779,8 @@ public class Tasks extends SmartCRUD
 			nusers.add(task.reporter);
 		Notifications.notifyUsers(nusers, "assigned", url, user.name+" to the", "task "+task.number, (byte)0, task.project);
 		Log.addUserLog( "Assigned task assignee", task, user, task.project );
-		Update.update( task.project, "reload('task-" + taskId + "');" );
-		Update.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_reviewer');sprintLoad(" + taskId + ",'" + taskId + "_assignee');" );
+		CollaborateUpdate.update( task.project, "reload('task-" + taskId + "');" );
+		CollaborateUpdate.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_reviewer');sprintLoad(" + taskId + ",'" + taskId + "_assignee');" );
 		renderText( "Assignee added successfully" );
 	}
 
@@ -1839,8 +1839,8 @@ public class Tasks extends SmartCRUD
 			nusers.add(task.reporter);
 		Notifications.notifyUsers(nusers, "assigned", url, user.name+" to review the", "task "+task.number, (byte)0, task.project);
 		Log.addUserLog( "Assigned task reviewer", task, user, task.project );
-		Update.update( task.project, "reload('task-" + taskId + "');" );
-		Update.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_reviewer');sprintLoad(" + taskId + ",'" + taskId + "_assignee');" );
+		CollaborateUpdate.update( task.project, "reload('task-" + taskId + "');" );
+		CollaborateUpdate.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_reviewer');sprintLoad(" + taskId + ",'" + taskId + "_assignee');" );
 		renderText( "Reviewer assigned successfully" );
 	}
 
@@ -1910,7 +1910,7 @@ public class Tasks extends SmartCRUD
 		if(task.reporter!=null)
 			nusers.add(task.reporter);
 		Notifications.notifyUsers(nusers, "changed", url, "the deadline of the", "task "+task.number, (byte)0, task.project);
-		Update.update( Security.getConnected(), "reload('task-" + task.id + "','tasks" + task.project.id + "')" );
+		CollaborateUpdate.update( Security.getConnected(), "reload('task-" + task.id + "','tasks" + task.project.id + "')" );
 		renderJSON( true );
 
 	}
@@ -1938,7 +1938,7 @@ public class Tasks extends SmartCRUD
 		if(task.reporter!=null)
 			nusers.add(task.reporter);
 		Notifications.notifyUsers(nusers, "removed", url, "the deadline of the", "task "+task.number, (byte)-1, task.project);
-		Update.update( Security.getConnected(), "reload('task-" + task.project.id + "')" );
+		CollaborateUpdate.update( Security.getConnected(), "reload('task-" + task.project.id + "')" );
 		renderJSON( true );
 	}
 
@@ -1954,7 +1954,7 @@ public class Tasks extends SmartCRUD
 		{
 
 		}
-		Update.update( Security.getConnected(), "reload('task-" + task.id + "','tasks-" + task.project.id + "')" );
+		CollaborateUpdate.update( Security.getConnected(), "reload('task-" + task.id + "','tasks-" + task.project.id + "')" );
 	}
 	/**
 	 * A method that renders the reviewer of a certain type in a certain component. 
@@ -1989,7 +1989,7 @@ public class Tasks extends SmartCRUD
 		Task task = Task.findById(id);
 		for(Task sub : task.subTasks){
 			sub.DeleteTask();
-			Update.update( sub.project, "reload('tasks-"+sub.project.id+"', 'task-" + sub.id + "')" );
+			CollaborateUpdate.update( sub.project, "reload('tasks-"+sub.project.id+"', 'task-" + sub.id + "')" );
 		}
 		renderText("Task deleted successfully.");
 	}

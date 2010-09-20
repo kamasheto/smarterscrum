@@ -48,7 +48,7 @@ public class TaskStatus extends SmartModel {
 	 */
 
 	@OneToMany (mappedBy = "taskStatus", cascade = CascadeType.ALL)
-	public List <Column> columns;
+	public List <BoardColumn> columns;
 	/**
 	 * If this status stands for a pending status
 	 */
@@ -62,11 +62,11 @@ public class TaskStatus extends SmartModel {
 	 * Initialize a column for every status in every board in the project.
 	 */
 	public void init() {
-		Column column = new Column(name, project.board, this).save();
+		BoardColumn column = new BoardColumn(name, project.board, this).save();
 			for(int i=0;i<project.components.size();i++)
 		{
 			Board b = project.components.get(i).componentBoard;
-			Column c = new Column(name,b,this);
+			BoardColumn c = new BoardColumn(name,b,this);
 			c.save();
 		}
 			columns.add(column);
@@ -82,7 +82,7 @@ public class TaskStatus extends SmartModel {
 		this.pending = false;
 		this.closed = false;
 		Tasks = new ArrayList<Task>();
-		columns = new ArrayList<Column>();
+		columns = new ArrayList<BoardColumn>();
 	}
 
 }

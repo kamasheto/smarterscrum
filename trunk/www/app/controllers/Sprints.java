@@ -11,7 +11,7 @@ import models.Meeting;
 import models.Project;
 import models.Sprint;
 import models.Task;
-import models.Update;
+import models.CollaborateUpdate;
 import models.User;
 import notifiers.Notifications;
 import play.db.jpa.JPASupport;
@@ -584,6 +584,6 @@ public class Sprints extends SmartCRUD
 		{
 
 		}
-		Update.update( sprint.project, "reload('sprint-" + sprint.id + "','sprints-" + sprint.project.id + "')" );
+		CollaborateUpdate.update( sprint.project, "reload('sprint-" + sprint.id + "','sprints-" + sprint.project.id + "')" );
 	}
 }

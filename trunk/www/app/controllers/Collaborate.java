@@ -39,11 +39,11 @@ public class Collaborate extends SmartController {
 		 * Get workspace changes
 		 */
 		// first delete previous updates
-		Update.delete("user = ? and timestamp < ?", user, lastUpdate);
+		CollaborateUpdate.delete("user = ? and timestamp < ?", user, lastUpdate);
 		
 		// fetch new updates
-		List<Update> updates = Update.find("(user = ? or user is null) and timestamp >= ?", user, lastUpdate).fetch();
-		for (Update update : updates) {
+		List<CollaborateUpdate> updates = CollaborateUpdate.find("(user = ? or user is null) and timestamp >= ?", user, lastUpdate).fetch();
+		for (CollaborateUpdate update : updates) {
 			// remove the users on the fly
 			// System.out.println(update);
 			update.user = null;

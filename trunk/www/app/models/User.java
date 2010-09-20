@@ -516,7 +516,7 @@ public class User extends SmartModel
 					component.save();
 					this.components.remove(component);
 					this.save();
-					Update.update(role.project, "reload('components')");
+					CollaborateUpdate.update(role.project, "reload('components')");
 				}
 			}
 			for(Task task : role.project.projectTasks)
@@ -525,13 +525,13 @@ public class User extends SmartModel
 				{
 					task.assignee = null;
 					task.save();
-					Update.update(role.project, "reload('task-"+task.id+"')");
+					CollaborateUpdate.update(role.project, "reload('task-"+task.id+"')");
 				}
 				if(task.reviewer == this)
 				{
 					task.reviewer = null;
 					task.save();
-					Update.update(role.project, "reload('task-"+task.id+"')");
+					CollaborateUpdate.update(role.project, "reload('task-"+task.id+"')");
 				}
 			}
 		}

@@ -44,7 +44,7 @@ public class SystemSettings extends SmartController {
 		}
 		settings.save();
 		if (javascript.length() > 0) 
-			Update.update(User.<User> findAll(), javascript);
+			CollaborateUpdate.update(User.<User> findAll(), javascript);
 	}
 }
 

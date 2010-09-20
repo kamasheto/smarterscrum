@@ -18,7 +18,7 @@ import models.Component;
 import models.Project;
 import models.Reviewer;
 import models.Task;
-import models.Update;
+import models.CollaborateUpdate;
 import models.User;
 import models.UserNotificationProfile;
 import models.Log;
@@ -581,9 +581,9 @@ public class Users extends SmartCRUD {
 				{
 					for (Project project : userProfile.projects)
 					{
-						Update.update(project, "reload('users')");
+						CollaborateUpdate.update(project, "reload('users')");
 					}
-					Update.update(userProfile, "$('#username-in-topbar').html('"+name+"')");
+					CollaborateUpdate.update(userProfile, "$('#username-in-topbar').html('"+name+"')");
 					Application.overlayKiller("", "");
 					if (userProfile.id == connectedUser.id)
 					{
@@ -597,7 +597,7 @@ public class Users extends SmartCRUD {
 				{
 					for (Project project : userProfile.projects)
 					{
-						Update.update(project, "reload('user-"+userProfileId+"')");
+						CollaborateUpdate.update(project, "reload('user-"+userProfileId+"')");
 					}
 					Application.overlayKiller("", "");
 				}

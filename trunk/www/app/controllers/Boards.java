@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import models.Board;
-import models.Column;
+import models.BoardColumn;
 import models.Component;
 import models.Log;
 import models.Meeting;
@@ -45,7 +45,7 @@ public class Boards extends SmartCRUD
 		Project project = sprint.project;
 		Board board = project.board;
 		ArrayList<ComponentRow> data = new ArrayList<ComponentRow>(); // tasks
-		List<Column> columns = new ArrayList<Column>(); // columns
+		List<BoardColumn> columns = new ArrayList<BoardColumn>(); // columns
 		if( componentID == 0 )
 			columns = board.columns; // columns of project board
 		else
@@ -58,12 +58,12 @@ public class Boards extends SmartCRUD
 			// board
 		}
 
-		List<Column> columnsOfBoard = new ArrayList<Column>(); // columns that
+		List<BoardColumn> columnsOfBoard = new ArrayList<BoardColumn>(); // columns that
 		// should appear
 		// on the board
 		// with boolean
 		// onBoard=true
-		List<Column> hidencolumnsOfBoard = new ArrayList<Column>(); // columns
+		List<BoardColumn> hidencolumnsOfBoard = new ArrayList<BoardColumn>(); // columns
 		// that
 		// shouldn't
 		// appear on
@@ -112,7 +112,7 @@ public class Boards extends SmartCRUD
 					{
 						if(task.assignee!=null && task.reviewer!=null && task.taskType!=null && !task.deleted)
 						{
-						Column pcol = new Column();
+						BoardColumn pcol = new BoardColumn();
 						for( int k = 0; k < task.taskStatus.columns.size(); k++ )
 						{
 							pcol = task.taskStatus.columns.get( k );
@@ -175,7 +175,7 @@ public class Boards extends SmartCRUD
 				{
 					if(task.assignee!=null && task.reviewer!=null && task.taskType!=null && !task.deleted)
 					{
-					Column pcmp = new Column();
+					BoardColumn pcmp = new BoardColumn();
 					for( int k = 0; k < task.taskStatus.columns.size(); k++ )
 					{
 						pcmp = task.taskStatus.columns.get( k );
@@ -283,10 +283,10 @@ public class Boards extends SmartCRUD
 	 * @return An ordered list of columns
 	 */
 
-	public static List<Column> orderColumns( List<Column> cols )
+	public static List<BoardColumn> orderColumns( List<BoardColumn> cols )
 	{
 		int smallest;
-		Column temp;
+		BoardColumn temp;
 		for( int i = 0; i < cols.size(); i++ )
 		{
 			smallest = i;
@@ -484,7 +484,7 @@ public class Boards extends SmartCRUD
 
 	public static void showHiddenColumn( long cid, long uid, long sid, long compid )
 	{
-		Column c = Column.findById( cid );
+		BoardColumn c = BoardColumn.findById( cid );
 		Sprint sprint = Sprint.findById(sid);
 		if( c.deleted )
 			notFound();
@@ -533,7 +533,7 @@ public class Boards extends SmartCRUD
 	 */
 	public static void hideColumn( long cid, long uid, long sid, long compid )
 	{
-		Column c = Column.findById( cid );
+		BoardColumn c = BoardColumn.findById( cid );
 		Sprint sprint = Sprint.findById(sid);
 		if( c.deleted )
 			notFound();
