@@ -38,7 +38,7 @@ function sprintLoad(el,el2)
 
 		$('#theLoadedContent').contents().find(".editPOINTS").each(function()
 				{
-					if($(this).html()!='')
+			if($(this).html()!='No points')
 						$(this).html(parseInt($(this).html()));
 				});
 	});
