@@ -70,7 +70,7 @@ $(function()
 
 	$(".editPOINTS").each(function()
 	{
-		if($(this).html()!='')
+		if($(this).html()!='No points')
 			$(this).html(parseInt($(this).html()));
 	});
 
@@ -418,7 +418,7 @@ Show/Hide:
 		<!--@author Hadeer Younis C4 S8-->
 		#{list items:daysHeader, as:'day'}
 		<td style="text-align: center"id="${task.id}_day_${day}" class="enterEffort shEfforts">
-		#{if task.getEffortPerDay(day-1)==-1.0}$nbsp;
+		#{if task.getEffortPerDay(day-1)==-1.0}&nbsp;
 		#{/if} #{else} ${task.getEffortPerDay(day-1)} #{/else}</td>
 		#{/list}
 		#{/ifnot}
