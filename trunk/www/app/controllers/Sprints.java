@@ -41,8 +41,7 @@ public class Sprints extends SmartCRUD
 	{
 		Project project = (Project) (Project.findById( projectId ));
 		List<Sprint> sprints = project.sprints;
-		long runningSprint = project.runningSprint();
-		render( sprints, project, runningSprint );
+		render( sprints, project );
 	}
 
 	/**

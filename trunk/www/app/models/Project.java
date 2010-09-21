@@ -380,7 +380,7 @@ public class Project extends SmartModel
 	{
 		for( Sprint sprint : sprints )
 		{
-			if( (start.after( sprint.startDate ) && start.before( sprint.endDate )) || (end.after( sprint.startDate ) && end.before( sprint.endDate )) )
+			if( (start.after( sprint.startDate ) && end.before( sprint.endDate )) || (start.before( sprint.startDate ) && end.after( sprint.endDate )) || (start.before( sprint.startDate ) && end.after( sprint.startDate )) || (start.before( sprint.endDate ) && end.after( sprint.endDate )) )
 				return true;
 		}
 		return false;
