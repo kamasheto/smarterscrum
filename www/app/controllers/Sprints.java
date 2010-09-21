@@ -223,7 +223,7 @@ public class Sprints extends SmartCRUD
 			int startday = Integer.parseInt( startdate[2] );
 			startDate = new GregorianCalendar( startyear, startmonth - 1, startday ).getTime();
 			String today = new Date().toString();
-			if( params.get( "object.endDate" ).length() < 2 )
+			if( object.endDate==null)
 			{
 				int defaultDays = proj.sprintDuration;
 				System.out.println( defaultDays );
