@@ -22,13 +22,16 @@
         <script type="text/javascript">
         var flag = false;
        		$(function(){
+           		$.ajax();
        			doOnLoad();
        		});
        		function start()
        		{
        			if(!flag)
        			{	window.parent.$('#theLoadedContent').height($('#theWidth').height()+50);
-       				setTimeout("start()",1)}
+       			fixFloat();
+       				setTimeout("start()",1)
+       			}
        		}
 
 	       		function show()
@@ -52,9 +55,23 @@
 				     #{/else}
 		       		window.parent.$('#theLoadedContent').show();
 		       		window.parent.$('#theLoadedContent').height($('#theWidth').height()+50);
+		       		fixFloat();
 		       		window.parent.$('#overlayLoading').hide();
 		       		start();
 		       	}
+				function fixFloat()
+				{
+					if(window.parent.$('#theLoadedContent').height()<window.parent.$('body').height())
+       				{
+       		      		window.parent.$('#overlayContent').css('display','table');
+       		      		window.parent.$('#overlayContent').css('position','fixed');
+           			}
+       				else
+       				{
+       					window.parent.$('#overlayContent').css('display','block');
+       		      		window.parent.$('#overlayContent').css('position','absolute');
+           			}
+				}
 	       		function hide()
 	       		{
 		       		window.parent.$('#overlayLoading').show();
