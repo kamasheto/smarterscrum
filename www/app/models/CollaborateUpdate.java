@@ -28,6 +28,17 @@ public class CollaborateUpdate extends SmartModel {
 	public User user;
 	
 	/**
+	 * Adds an update for all users in the system
+	 * @param javascript javascript code to run at clients
+	 */
+	public static void update(String javascript) {
+		CollaborateUpdate update = new CollaborateUpdate();
+		update.javascript = javascript;
+		update.timestamp = new Date().getTime();
+		update.save();
+	}
+	
+	/**
 	 * Adds an update for this user
 	 * @param user User involved
 	 * @param javascript javascript code to execute at client side

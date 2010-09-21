@@ -3245,3 +3245,8 @@ div.jcalendar-links a {
 	color: #eee;
 	margin: 5px 0 -5px 0 !important;
 }
+
+.systemAdmin {
+	color: darkred;
+	font-weight:bold;
+}
