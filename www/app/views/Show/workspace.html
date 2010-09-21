@@ -62,7 +62,7 @@
 											<div id ="threader_${proj.id}"></div>
 										</div>
 								<div id="newMessage" style="display:table-row;"class="chatboxinput">	
-								<textarea id="message_${proj.name}" name="message_${proj.name}" class="chatboxtextarea"></textarea></div>	
+								<textarea id="message_${proj.name}" name="message_${proj.name}" onclick="$(this).focus()"class="chatboxtextarea"></textarea></div>	
 										<script type="text/javascript">
 										#{if connected.openChats.contains(proj.chatroom)}
 										$(function()
@@ -76,7 +76,8 @@
 											{		var message = $('#message_${proj.name}').val();
 											$('#message_${proj.name}').val('');
 											$.post('@{ChatSystem.addMessage()}', {message: message , id:${proj.chatroom.id}}); 
-											$('#message_${proj.name}').focus(); }
+											$('#message_${proj.name}').focus(); 
+											}
 										});
 										</script>
 									</div>
