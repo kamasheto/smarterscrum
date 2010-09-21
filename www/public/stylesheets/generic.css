@@ -3183,7 +3183,7 @@ div.jcalendar-links a {
 
 /* end amorotto css */ /*start dock*/
 .dock .draggable .ui-widget-content,.dock .filter,.dock span,.dock img {
-	display: none;
+	display: none !important;
 }
 
 .dock .draggable {
@@ -3191,6 +3191,7 @@ div.jcalendar-links a {
 	text-align: center;
 	display: inline-block;
 	width: auto !important;
+	height: auto !important;
 	position: static !important;
 	padding: 3px !important;
 	-moz-border-radius: 0px;
