@@ -3189,6 +3189,7 @@ div.jcalendar-links a {
 	position: static !important;
 	padding: 3px !important;
 	-moz-border-radius: 0px;
+	opacity:1 !important;
 	margin: 0px 2px !important;
 	cursor: pointer;
 }
