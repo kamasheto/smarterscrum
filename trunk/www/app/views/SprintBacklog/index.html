@@ -342,7 +342,7 @@ Show/Hide:
        		#{/ifnot}
        		#{list items:task.getAssigneeOrReviewer(true), as:'type'}
        		#{if task.assignee}
-       			#{if type==task.taskType}
+       			#{if type==task.assignee}
        				<option selected="selected" value="${type.id}">${type.getDisplayName().raw()}</option>
        			#{/if}
        			#{else}
@@ -377,11 +377,11 @@ Show/Hide:
 		<form style="display:none">
 			<select id="t_${task.id}_r"onblur="magicFix(this)" onchange="magicFix(this);changeR(${task.id},parseInt($('#t_${task.id}_r option:selected').val()));">
        		#{ifnot task.reviewer}
-       			<option value="${type.id}">---</option>
+       			<option>---</option>
        		#{/ifnot}
        		#{list items:task.getAssigneeOrReviewer(false), as:'type'}
        		#{if task.reviewer}
-       			#{if type==task.taskType}
+       			#{if type==task.reviewer}
        				<option selected="selected" value="${type.id}">${type.getDisplayName().raw()}</option>
        			#{/if}
        			#{else}
