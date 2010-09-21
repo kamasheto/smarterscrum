@@ -68,7 +68,7 @@
 				doOnLoad();
 				#{get 'onLoad' /}
 				#{if connected}
-				setTimeout('ping();', 1000);
+				setTimeout('ping();', 2000);
    			    #{/if}
        		});
 
@@ -78,6 +78,7 @@
     	   $marginLefty.animate({
         	   marginRight: parseInt($marginLefty.css('marginRight'),10) == 0 ?$marginLefty.outerWidth() :0
            });
+			// enty? o.O
            var $ana = $(me).parent();
            $ana.animate({
         	   right: parseInt($ana.css('right'),10) == 0 ? -21 : 0

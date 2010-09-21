@@ -15,22 +15,19 @@ var ping = function() {
 		
 		str = '';
 		$(resp.online_users).each(function() {
-			if (this.isAdmin) {
-				this.name = '<span class="isAdmin">' + this.name + '</span>';
-			}
-			//str += '<a href="/show/user?id='+this.id+'" class="online-user" user_id="'+this.id+'">' + this.name + '</a> • ';
-			str += this.name + ' • ';
+			isAdmin = this.isAdmin ? 'systemAdmin' : '';
+			str += '<span class="online-user '+isAdmin+'" user_id="'+this.id+'">' + this.name + '</span>, ';
 		});
 		
-		$('#online_users_list').html(str.substring(0,str.length-3));
+		$('#online_users_list').html(str.substring(0,str.length-2));
 		
 		
 		$(resp.updates).each(function() {
 			eval(this.javascript)
 		})
 		
-		// ping again in a while, please
-		setTimeout('ping()', 1000)
+		// ping again
+		ping()
 	})
 }
 
