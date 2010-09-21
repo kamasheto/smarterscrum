@@ -3,7 +3,7 @@
 <ul style="list-style:none;">
 	<li>Project owner: ${project.user.name}</li>
 	<li>Description: ${project.description.nl2br()}</li>
-	<li>Leave a message:<TextArea id="message_${project.id}" class="" type="text" name="object.description" cols="53" rows="5" value="" /></TextArea></li>
+	<li>Leave a message:<TextArea id="message_${project.id}" class="" type="text" name="object.description" cols="45" rows="5" value="" /></TextArea></li>
 	<li>
 	    <input id="approve_${project.id}" type="button" name="add" value="Approve" onclick="approveProjectRequest(${project.id})"/>
 	    <input id="decline_${project.id}" type="button" name="add" value="Decline" onclick="declineProjectRequest(${project.id})"/>
