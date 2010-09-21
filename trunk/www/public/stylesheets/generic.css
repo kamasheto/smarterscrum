@@ -319,7 +319,6 @@ margin:1%;
 
 	border: 1px solid #eeeeee;
 
-	overflow: hidden;
 }
 
 .thread {
@@ -1001,7 +1000,7 @@ a {
 
 .chatboxtextarea:focus {
 	border: 2px solid #0B8C8F !important;
-	margin: 0;
+	width:95%;
 }
 
 .chatContainerHeader {
