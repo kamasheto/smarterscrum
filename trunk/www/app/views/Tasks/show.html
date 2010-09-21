@@ -62,7 +62,7 @@
 					
 			#{crud.custom 'taskStatus'}
 			<label for="task_taskStatus">Status</label>
-			<select style="min-width:110px" id="object_taskStatus" name="object.taskStatus@id">
+			<select style="min-width:130px" id="object_taskStatus" name="object.taskStatus@id">
 			#{if object.taskStatus==null}
 				<option value="">(None)</option>
 			#{/if}
@@ -75,7 +75,7 @@
 			#{crud.custom 'taskType'}
 			#{if object.project.hasTypes()>0}
 				<label for="task_type">Type</label> 
-				<select style="min-width:110px" id="object_taskType" name="object.taskType@id" onchange="getType();">
+				<select style="min-width:130px" id="object_taskType" name="object.taskType@id" onchange="getType();">
 				#{if object.taskType==null}<option value="">(None)</option>#{/if}
 				#{list items:object.project.taskTypes ,as :'Type'}
 					#{if !Type.deleted}<option value="${Type.id}"#{if object.taskType == Type} selected#{/if}>${Type.name}</option>#{/if}									
@@ -92,7 +92,7 @@
 			#{/elseif}
 			#{else}
 				<label for="task_type">Component</label>
-				<select style="min-width:110px" id="object_component" name="object.component@id" onchange="getUsers();getType();">
+				<select style="min-width:130px" id="object_component" name="object.component@id" onchange="getUsers();getType();">
 				#{list items:object.project.components ,as :'component'}
 					#{if component.number==0}<option value="${component.id}"#{if object.component == component} selected#{/if}>None</option>#{/if}
 					#{elseif !component.deleted}<option value="${component.id}"#{if object.component == component} selected#{/if}>${component.name}</option>#{/elseif}
@@ -111,7 +111,7 @@
 			#{crud.custom 'priority'}
 			#{if object.project.hasPriorities()}
 			<label for="object_priority">Priority</label> 
-			<select style="min-width:110px" id="object_priority" name="object.priority">
+			<select style="min-width:130px" id="object_priority" name="object.priority">
 			<option value="">None</option>
 			#{list items:object.project.priorities ,as :'priority'}
 				#{ifnot priority.deleted}<option value="${priority.priority}"#{if object.priority == priority} selected#{/if}>${priority.priority}</option>#{/ifnot}
@@ -130,7 +130,7 @@
 			#{if object.component!=null && object.component.number==0 && object.project.hasUsers()>0}
 				<label for="object_assignee">Assignee</label>
 				<span style="display:none" id="assig_msg"><font color="red">There are no users in the selected component</font></span>
-				<select style="min-width:110px" class="assign" id="object_assignee" name="object.assignee@id"  onchange="getType();">
+				<select style="min-width:130px" class="assign" id="object_assignee" name="object.assignee@id"  onchange="getType();">
 				<option value="">(None)</option>
 				#{list items:object.project.users ,as :'User'}
 					#{ifnot User.deleted}<option value="${User.id}"#{if object.assignee == User} selected#{/if}>${User.name}</option>#{/ifnot}
@@ -140,7 +140,7 @@
 			#{elseif object.component!=null && object.component.number!=0 && (object.parent==null || (object.parent!=null && object.parent.component!=null && object.component.hasUsers()>0))}
 				<label for="object_assignee">Assignee</label>
 				<span style="display:none" id="assig_msg"><font color="red">There are no users in the selected component</font></span>
-				<select style="min-width:110px" class="assign" id="object_assignee" name="object.assignee@id"  onchange="getType();">
+				<select style="min-width:130px" class="assign" id="object_assignee" name="object.assignee@id"  onchange="getType();">
 				<option value="">(None)</option>
 				#{list items:object.component.componentUsers ,as :'User'}
 					#{ifnot User.deleted}<option value="${User.id}"#{if object.assignee == User} selected#{/if}>${User.name}</option>#{/ifnot}
@@ -153,7 +153,7 @@
 			#{if object.component!=null && object.component.number==0 && object.project.hasUsers()>0}
 				<label for="object_reviewer">Reviewer</label>
 				<span style="display:none" id="rev_msg"><font color="red">There are no reviewers available for the selected type</font></span>
-				<select style="min-width:110px" class="rev" id="object_reviewer" name="object.reviewer@id">
+				<select style="min-width:130px" class="rev" id="object_reviewer" name="object.reviewer@id">
 				<option value="">(None)</option>
 				#{list items:users ,as :'User'}
 					#{ifnot User.deleted}<option value="${User.id}"#{if object.reviewer == User} selected#{/if}>${User.name}</option>#{/ifnot}
@@ -163,7 +163,7 @@
 			#{elseif object.component!=null && object.component.number!=0 && (object.parent==null || (object.parent!=null && object.parent.component!=null && object.component.hasUsers()>0))}
 				<label for="object_reviewer">Reviewer</label>
 				<span style="display:none" id="rev_msg"><font color="red">There are no reviewers available for the selected type</font></span>
-				<select style="min-width:110px" class="rev" id="object_reviewer" name="object.reviewer@id">
+				<select style="min-width:130px" class="rev" id="object_reviewer" name="object.reviewer@id">
 				<option value="">(None)</option>
 				#{list items:users ,as :'User'}
 					#{ifnot User.deleted}<option value="${User.id}"#{if object.reviewer == User} selected#{/if}>${User.name}</option>#{/ifnot}
@@ -190,7 +190,7 @@
 				<label for="object_taskSprint">Sprint</label>
 				#{if (object.taskSprint!=null && object.taskSprint.ended) || insprint}<span id="task_taskSprint" ><font color="green">sprint ${object.taskSprint.sprintNumber}</font></span>#{/if}
 				#{else}
-					<select style="min-width:110px" id="object_taskSprint" name="object.taskSprint@id">
+					<select style="min-width:130px" id="object_taskSprint" name="object.taskSprint@id">
 					<option value="">(None)</option>
 					#{list items:sprints ,as :'sprint'}
 						<option value="${sprint.id}"#{if object.taskSprint == sprint} selected#{/if}>sprint ${sprint.sprintNumber}</option>
