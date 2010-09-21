@@ -7,7 +7,8 @@ import java.util.*;
 
 import models.*;
 
-public class Dummy extends SmartController {
+@CRUD.For(User.class)
+public class Dummy extends SmartCRUD {
 	/**
 	 * Dummy action that promotes the give user to admin
 	 */
