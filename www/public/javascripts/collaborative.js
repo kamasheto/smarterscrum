@@ -18,7 +18,8 @@ var ping = function() {
 			if (this.isAdmin) {
 				this.name = '<span class="isAdmin">' + this.name + '</span>';
 			}
-			str += '<a href="/show/user?id='+this.id+'" class="online-user" user_id="'+this.id+'">' + this.name + '</a> • ';
+			//str += '<a href="/show/user?id='+this.id+'" class="online-user" user_id="'+this.id+'">' + this.name + '</a> • ';
+			str += this.name + ' • ';
 		});
 		
 		$('#online_users_list').html(str.substring(0,str.length-3));
