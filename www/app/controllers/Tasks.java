@@ -107,9 +107,9 @@ public class Tasks extends SmartCRUD
 		for( int i = 0; i < project.sprints.size(); i++ )
 		{
 			Sprint sprint = project.sprints.get( i );
-			java.util.Date End = sprint.endDate;
+			java.util.Date Start = sprint.startDate;
 			Calendar cal = new GregorianCalendar();
-			if( End != null && End.after( cal.getTime() ) && !sprint.deleted)
+			if( Start.after( cal.getTime() ) && !sprint.deleted)
 			{
 				sprints.add( sprint );
 			}
@@ -182,9 +182,9 @@ public class Tasks extends SmartCRUD
 		for( int i = 0; i < project.sprints.size(); i++ )
 		{
 			Sprint sprint = project.sprints.get( i );
-			java.util.Date End = sprint.endDate;
+			java.util.Date Start = sprint.startDate;
 			Calendar cal = new GregorianCalendar();
-			if( End != null && End.after( cal.getTime() ) )
+			if( Start.after( cal.getTime() ) && !sprint.deleted)
 			{
 				sprints.add( sprint );
 			}
@@ -295,8 +295,12 @@ public class Tasks extends SmartCRUD
 		List <Sprint> sprints = new ArrayList<Sprint>();
 		for(Sprint sprint:tmp.project.sprints )
 		{
-			if(!sprint.ended && !sprint.deleted)
-				sprints.add(sprint);
+			java.util.Date Start = sprint.startDate;
+			Calendar cal = new GregorianCalendar();
+			if( Start.after( cal.getTime() ) && !sprint.deleted)
+			{
+				sprints.add( sprint );
+			}
 		}
 		TaskType taskType = tmp.taskType;
 		Component component = tmp.component;
