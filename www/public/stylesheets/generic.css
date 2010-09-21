@@ -302,7 +302,9 @@ button {
 }
 
 .chatboxinput {
-	padding: 5px;
+	padding:0 1%;
+width:98%;
+height:55px;
 	background-color: #ffffff;
 	border-left: 1px solid #cccccc;
 	border-right: 1px solid #cccccc;
@@ -310,20 +312,23 @@ button {
 }
 
 .chatboxtextarea {
-	width: 206px;
-	height: 44px;
-	padding: 3px 0pt 3px 3px;
+	padding:1%;
+width:96%;
+margin:1%;
+	height:96%; 
+
 	border: 1px solid #eeeeee;
-	margin: 1px;
+
 	overflow: hidden;
 }
 
 .thread {
 	color: #333333;
-	height: 200px;
-	width: 209px;
+	padding:1% 1%;
+width:98%;
+height:98%;
 	overflow-y: auto;
-	padding: 7px;
+
 	border-left: 1px solid #cccccc;
 	border-right: 1px solid #cccccc;
 	border-bottom: 1px solid #eeeeee;

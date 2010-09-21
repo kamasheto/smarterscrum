@@ -358,9 +358,24 @@ $(function() {
 
 	$('.draggable').live('mouseover', function() {
 		$(this).removeClass('dim');
+		var h = $(this).height();
 		if (!DRAGGING_ELEMENT) {
 			$(this).children().children('.dragger').show()					
 		}
+		if($(this).hasClass('chat'))
+		{
+			$(this).resizable({
+				disable:false,
+				minWidth:300,
+				minHeight:300,
+				delay : 0,
+				distance: 0,
+				containment: '#workspaces',start:function(){$(this).css('zIndex','9994')},
+			});
+			
+		}
+		else
+		{
 		$(this).resizable({
 			disable:false,
 			minWidth:300,
@@ -371,6 +386,7 @@ $(function() {
 			resize: function(event, ui) {
 				var test = ($(this).find(".normalLinkn span")).first();
 				smart_pagination(test, 1, true);
+				$(this).height(h);
 				
 			$(this).find('.taskSummary').each(function(){
 				if($(this).width()>$(this).next().width())
@@ -378,7 +394,7 @@ $(function() {
 				else
 					$(this).next().next().show();
 			});
-		}});
+		}});}
 		if ($(this).data('init')) return
 		$(this).data('init', 1);
 		var con = $(this).closest('.workspaceDraggables').attr('id');
