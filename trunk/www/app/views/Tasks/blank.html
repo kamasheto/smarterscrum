@@ -175,7 +175,7 @@
 	<div class="crudField" name="view-more" style="display:none">	
 	<label for="object_dependentTasks">Dependent Tasks</label><br/>
 	<input type="hidden" name="object.dependentTasks@id" value="" />
-	<select style="min-width:110px"  id="object_dependentStories" name="object.dependentTasks@id" style="width:100%;min-height:70px;margin:10px 0" multiple="yes">
+	<select id="object_dependentStories" name="object.dependentTasks@id" style="width:100%;min-height:70px;margin:10px 0" multiple="yes">
 	#{list items:project.projectTasks ,as :'task2'}
 		#{ifnot task2.deleted}<option value="${task2.id}">${task2.description}</option>#{/ifnot}
 	#{/list}
