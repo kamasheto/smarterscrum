@@ -1780,7 +1780,8 @@ public class Tasks extends SmartCRUD
 		Notifications.notifyUsers(nusers, "assigned", url, user.name+" to the", "task "+task.number, (byte)0, task.project);
 		Log.addUserLog( "Assigned task assignee", task, user, task.project );
 		CollaborateUpdate.update( task.project, "reload('task-" + taskId + "');" );
-		CollaborateUpdate.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_reviewer');sprintLoad(" + taskId + ",'" + taskId + "_assignee');" );
+		CollaborateUpdate.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_reviewer');");
+		CollaborateUpdate.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_assignee');");
 		renderText( "Assignee added successfully" );
 	}
 
@@ -1840,7 +1841,8 @@ public class Tasks extends SmartCRUD
 		Notifications.notifyUsers(nusers, "assigned", url, user.name+" to review the", "task "+task.number, (byte)0, task.project);
 		Log.addUserLog( "Assigned task reviewer", task, user, task.project );
 		CollaborateUpdate.update( task.project, "reload('task-" + taskId + "');" );
-		CollaborateUpdate.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_reviewer');sprintLoad(" + taskId + ",'" + taskId + "_assignee');" );
+		CollaborateUpdate.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_reviewer');");
+		CollaborateUpdate.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_assignee');");
 		renderText( "Reviewer assigned successfully" );
 	}
 
