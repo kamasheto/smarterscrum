@@ -43,3 +43,16 @@ function sprintLoad(el,el2)
 				});
 	});
 }
+
+function hide()
+{
+	window.parent.$('#overlayLoading').show();
+	window.parent.$('#theLoadedContent').hide();
+	window.parent.$('#getOverlay').hide();
+}
+
+$(document).keyup(function(e) {
+	if (e.keyCode == 27) { 
+		hide()
+	}   // esc
+})
