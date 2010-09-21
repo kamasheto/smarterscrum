@@ -186,18 +186,20 @@
 			#{/crud.custom }
 			
 			#{crud.custom 'taskSprint'}
-			#{if sprints.size()>0}
+			#{if (object.taskSprint!=null && object.taskSprint.ended()) || insprint}<label for="object_taskSprint">Sprint</label>
+				<span id="task_taskSprint" ><font color="green">sprint ${object.taskSprint.sprintNumber}</font></span>#{/if}
+			#{elseif sprints.size()>0}
 				<label for="object_taskSprint">Sprint</label>
-				#{if (object.taskSprint!=null && object.taskSprint.ended) || insprint}<span id="task_taskSprint" ><font color="green">sprint ${object.taskSprint.sprintNumber}</font></span>#{/if}
-				#{else}
 					<select style="min-width:130px" id="object_taskSprint" name="object.taskSprint@id">
 					<option value="">(None)</option>
 					#{list items:sprints ,as :'sprint'}
 						<option value="${sprint.id}"#{if object.taskSprint == sprint} selected#{/if}>sprint ${sprint.sprintNumber}</option>
 					#{/list}
 					</select>
-				#{/else}
-			#{/if}#{else}#{/else}
+				
+			#{/elseif}#{else}<label for="object_taskSprint">Sprint</label>
+			<span><font color="red">There are currently no upcoming sprints</font></span>
+			#{/else}
 			#{/crud.custom }
 			
 			#{crud.custom 'comment'}

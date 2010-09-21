@@ -426,4 +426,13 @@ public class Sprint extends SmartModel
 		}
 		return false;
 	}
+	public boolean ended()
+	{
+		Date now = Calendar.getInstance().getTime();
+		if( endDate.before( now ) )
+		{
+			return true;
+		}
+		return false;
+	}
 }
