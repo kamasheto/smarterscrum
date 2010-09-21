@@ -368,9 +368,11 @@ $(function() {
 				disable:false,
 				minWidth:300,
 				minHeight:300,
+				maxHeight:$(this).height(),
 				delay : 0,
 				distance: 0,
-				containment: '#workspaces',start:function(){$(this).css('zIndex','9994')},
+				containment: '#workspaces',start:function(){
+				$(this).css('zIndex','9994')},
 			});
 			
 		}
@@ -386,7 +388,7 @@ $(function() {
 			resize: function(event, ui) {
 				var test = ($(this).find(".normalLinkn span")).first();
 				smart_pagination(test, 1, true);
-				$(this).height(h);
+
 				
 			$(this).find('.taskSummary').each(function(){
 				if($(this).width()>$(this).next().width())
