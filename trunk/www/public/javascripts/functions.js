@@ -285,7 +285,7 @@ $(function() {
 		$(this).data('init', true)
 		$(this).draggable({
 			helper: 'clone',
-			zIndex: 9999999999999999999999,
+			zIndex: '9999999',
 			start: function(event, ui) {
 				DRAGGING_ELEMENT = $(this).closest('.draggableChild').attr('id')
 				if (!DRAGGING_ELEMENT) {
