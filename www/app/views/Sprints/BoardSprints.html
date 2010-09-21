@@ -6,7 +6,7 @@
 #{/if}
 #{else}
 	#{list items:sprints, as:'sprint'}
-		#{if (sprint.id==runningSprint) }
+		#{if (sprint.running()) }
 			<div class="greenBg" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber}#{drop 'sprint-' + sprint.id /}
 			#{if sprint.project.hasComponents()>1}
 				<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id)}')" title="View project board?">
