@@ -493,6 +493,8 @@ public class Task extends SmartModel
 		}
 		else
 		{
+			if(taskType!=null)
+				u = Reviewer.find("byProjectAndAcceptedAndtaskType", project, true, taskType).fetch();
 			u.remove( this.assignee );
 		}
 		if( u.size() == 0 )
