@@ -41,18 +41,18 @@
 <div class="workspaceDraggables" id="workspace-${proj?.id ?: -1}">
 #{if proj}
 	#{if connected}
-		<div class="draggable"id="chatContainer_${proj.id}"style="position:absolute;right:0px;top:95px;width:225px;#{ifnot connected.openChats.contains(proj.chatroom)}display:none;#{/ifnot}">
-		<div class="chatContainerHeader">${proj.name} Chat 
+		<div class="draggable chat"id="chatContainer_${proj.id}"style="height:300px;position:absolute;right:50px;top:95px;#{ifnot connected.openChats.contains(proj.chatroom)}display:none;#{/ifnot}">
+		<div class="ui-widget-header">${proj.name} Chat 
+	
+		<span  title="minimize?"class="ui-icon ui-icon-circle-minus min"></span>	
+	
+	
 	
 			<a class="right"href="#" title="signout?" onclick="signOut(${proj.chatroom.id});$('#chatContainer_${proj.id}').slideToggle(400);" style="text-decoration:none; color:#fff"><span class="ui-icon ui-icon-circle-close"></span></a>
-		<a id="${proj.name}_min"class="right"href="#" title="minimize?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);$('#${proj.name}_max').slideToggle(400);$('#${proj.name}_min').slideToggle(400);" style="text-decoration:none; color:#fff"><span class="ui-icon ui-icon-circle-triangle-n"></span></a> 
 	
-		<a id="${proj.name}_max"class="right"href="#" title="maximize?" onclick="$('#chatHolder_${proj.name}').slideToggle(400);$('#${proj.name}_max').slideToggle(400);$('#${proj.name}_min').slideToggle(400);" style="display:none;text-decoration:none; color:#fff"><span class="ui-icon ui-icon-circle-triangle-s"></span></a> 
-	
-			
 				</div>
-									<div id="chatHolder_${proj.name}">
-										<div id="thread_${proj.id}" class="thread">
+									<div class="ui-widget-content" style="height:92%;display:table;"id="chatHolder_${proj.name}">
+										<div style="display:table-row"id="thread_${proj.id}" class="thread">
 											<script type="text/html" id="message_tmpl">
 												<div class="<%= message.author == 'notice' ? 'notice allCornersRounded' : message.author == '${connected.name}' ? 'you' : 'them' %>">		
 													<strong class="title" style="<%= message.author == 'notice' ? 'display:none !important' : '' %>"><%= message.author%></strong> 
@@ -61,7 +61,7 @@
 											</script>
 											<div id ="threader_${proj.id}"></div>
 										</div>
-								<div id="newMessage" class="chatboxinput">	
+								<div id="newMessage" style="display:table-row;"class="chatboxinput">	
 								<textarea id="message_${proj.name}" name="message_${proj.name}" class="chatboxtextarea"></textarea></div>	
 										<script type="text/javascript">
 										#{if connected.openChats.contains(proj.chatroom)}
