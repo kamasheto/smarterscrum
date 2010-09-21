@@ -26,7 +26,7 @@
 	#{crud.form fields:['description']}	
 	#{crud.custom 'description' }
 	<label for="object_description">Description	</label><span class="crudHelp" style="color:red">*</span><br/>
-	<textarea id="example"  name="object.description" ROWS="4" COLS="60" onclick="f();"></textarea>
+	<textarea id="example"  name="object.description" style="width:100%;min-height:70px;" onclick="f();"></textarea>
 	<div style="display:none" class="d">Ex: As a/an product role, description</div>
 	<span class="error"></span><br/>
 	<a href="#" onclick = "ViewOptions()" name="view-more-link">View more options</a>
@@ -40,19 +40,19 @@
 	
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_successScenario">Success Scenario</label><br/>
-	<textarea id="object.successScenario"  name="object.successScenario"></textarea>
+	<textarea id="object.successScenario"style="width:100%;min-height:70px;"  name="object.successScenario"></textarea>
 	</div>
 
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_failureScenario">Failure Scenario</label><br/>
-	<textarea id="object.failureScenario" name="object.failureScenario"></textarea>
+	<textarea id="object.failureScenario" style="width:100%;min-height:70px;" name="object.failureScenario"></textarea>
 	</div>
 
 	#{if project.hasComponents()>1}
 		#{if p!=null || (task!=null && task.component==null)}
 			<div class="crudField" name="view-more" style="display:none">
 			<label for="object_component">Component</label>
-			<select id="object_component" name="object.component@id" onchange="getUsers();getType();">
+			<select style="min-width:110px" id="object_component" name="object.component@id" onchange="getUsers();getType();">
 			#{list items:project.components ,as :'component'}
 				#{ifnot component.deleted}
 					#{if component.number == 0}<option value="${component.id}">None</option>#{/if}
@@ -73,7 +73,7 @@
 	#{if project.taskStatuses.size()>0}
 		<div class="crudField" name="view-more" style="display:none">
 			<label for="object_taskStatus">Status</label>
-			<select id="object_taskStatus" name="object.taskStatus@id">
+			<select style="min-width:110px" id="object_taskStatus" name="object.taskStatus@id">
 			#{list items:project.taskStatuses ,as :'taskStatus'}
 				#{ifnot taskStatus.deleted}<option value="${taskStatus.id}">${taskStatus.name}</option>#{/ifnot}
 			#{/list}
@@ -84,7 +84,7 @@
 	#{if project.hasTypes()>0}
 		<div class="crudField" name="view-more" style="display:none">
 		<label for="object_taskType">Type</label>
-		<select id="object_taskType" name="object.taskType@id" onchange="getType();">
+		<select style="min-width:110px" id="object_taskType" name="object.taskType@id" onchange="getType();">
 		#{list items:project.taskTypes ,as :'taskType'}
 			#{ifnot taskType.deleted}<option value="${taskType.id}">${taskType.name}</option>#{/ifnot}
 		#{/list}
@@ -96,7 +96,7 @@
 		<div class="crudField" name="view-more" style="display:none">
 		<label for="object_assignee">Assignee</label>
 		<span style="display:none" id="assig_msg"><font color="red">There are no users in the selected component</font></span>
-		<select class="assign" id="object_assignee" name="object.assignee@id" onchange = "getType();">
+		<select style="min-width:110px" class="assign" id="object_assignee" name="object.assignee@id" onchange = "getType();">
 		<option value="">None</option>
 		#{list items:project.users ,as :'user'}
 			#{ifnot user.deleted}<option value="${user.id}">${user.name}</option>#{/ifnot}
@@ -107,7 +107,7 @@
 		<div class="crudField" name="view-more" style="display:none">
 		<label for="object_assignee">Assignee</label>
 		<span style="display:none" id="assig_msg"><font color="red">There are no users in the selected component</font></span>
-		<select class="assign" id="object_assignee" name="object.assignee@id" onChange = "getType();">
+		<select style="min-width:110px" class="assign" id="object_assignee" name="object.assignee@id" onChange = "getType();">
 		<option value="">None</option>
 		#{list items:component.componentUsers ,as :'user'}
 			#{ifnot user.deleted}<option value="${user.id}">${user.name}</option>#{/ifnot}	
@@ -118,7 +118,7 @@
 		<div class="crudField" name="view-more" style="display:none">
 		<label for="object_assignee">Assignee</label>
 		<span style="display:none" id="assig_msg"><font color="red">There are no users in the selected component</font></span>
-		<select class="assign" id="object_assignee" name="object.assignee@id" onChange = "getType();">
+		<select style="min-width:110px" class="assign" id="object_assignee" name="object.assignee@id" onChange = "getType();">
 		<option value="">None</option>
 		#{list items:task.component.componentUsers ,as :'user'}
 			#{ifnot user.deleted}<option value="${user.id}">${user.name}</option>#{/ifnot}
@@ -131,7 +131,7 @@
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_reviewer">Reviewer</label>
 	<span id="rev_msg" ><font color="red">There are no reviewers available for the selected task type</font></span>
-	<select class="rev" id="object_reviewer" name="object.reviewer@id">
+	<select style="min-width:110px" class="rev" id="object_reviewer" name="object.reviewer@id">
 	</select>
 	</div>
 	#{/if}
@@ -139,7 +139,7 @@
 	#{if sprints.size()>0}
 	<div class="crudField" name="view-more" style="display:none">	
 	<label for="object_taskSprint">Sprint</label>
-	<select id="object_taskSprint" name="object.taskSprint@id">
+	<select style="min-width:110px" id="object_taskSprint" name="object.taskSprint@id">
 	<option value="">None</option>
 	#{list items:sprints ,as :'sprint'}
 	<option value="${sprint.id}">Sprint ${sprint.sprintNumber}</option>
@@ -162,7 +162,7 @@
 	#{if project.hasPriorities()>0}
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_priority">Priority</label>
-	<select id="object_priority" name="object.priority">
+	<select style="min-width:110px" id="object_priority" name="object.priority">
 	<option value="">None</option>
 	#{list items:project.priorities ,as :'priority'}
 		#{ifnot priority.deleted}<option value="${priority.priority}">${priority.priority}</option>#{/ifnot}
@@ -175,7 +175,7 @@
 	<div class="crudField" name="view-more" style="display:none">	
 	<label for="object_dependentTasks">Dependent Tasks</label><br/>
 	<input type="hidden" name="object.dependentTasks@id" value="" />
-	<select id="object_dependentStories" name="object.dependentTasks@id" multiple="yes">
+	<select style="min-width:110px"  id="object_dependentStories" name="object.dependentTasks@id" style="width:100%;min-height:70px;margin:10px 0" multiple="yes">
 	#{list items:project.projectTasks ,as :'task2'}
 		#{ifnot task2.deleted}<option value="${task2.id}">${task2.description}</option>#{/ifnot}
 	#{/list}
