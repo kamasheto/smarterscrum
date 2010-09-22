@@ -202,11 +202,10 @@ public class Users extends SmartCRUD {
 	public static void saveNotificationProfile(long id) throws Exception {
 		ObjectType type = ObjectType.get(UserNotificationProfiles.class);
 		notFoundIfNull(type);
-		Project project = Project.findById(id);
 		// NA3AM!! TYPE.FINDBYID EZAY YA3NI!
-		// JPASupport object = type.findById(id);
-		JPASupport object = UserNotificationProfile.find("user = ? and project = ?", Security.getConnected(), project).first();
-		// Security.check(((UserNotificationProfile) object).user == Security.getConnected());
+		JPASupport object = UserNotificationProfile.findById(id);
+		UserNotificationProfile tmp = (UserNotificationProfile) object;
+		System.out.println(tmp.setSprint);
 		Security.check(object != null);
 		validation.valid(object.edit("object", params));
 		if (validation.hasErrors()) {
@@ -218,11 +217,8 @@ public class Users extends SmartCRUD {
 			}
 		}
 		object.save();
-		flash.success("You Notificaton Profile modifications have been saved");
-		if (params.get("_save") != null) {
-			redirect("/users/managenotificationprofile?id=" + id);
-		}
-		redirect(request.controller + ".show", object.getEntityId());
+		flash.success("Your Notificaton Profile modifications have been saved");
+		Application.overlayKiller( "", "" );
 	}
 	
 	/**

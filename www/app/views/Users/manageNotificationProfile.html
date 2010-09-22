@@ -16,74 +16,90 @@
 		#{crud.custom 'setSprint'}
 			<label for="object_setSprint">&{'setSprint'}</label> 
 			<input id="object_setSprint" class="" type="checkbox" name="object.setSprint" value="true" ${object.setSprint ? 'checked' : ''} size="50" 	${currentNotificationProfile.project.notificationProfile.setSprint ? '' : 'disabled'}/> 
+			<input type="hidden" name="object.setSprint" value="false" />
 		#{/crud.custom}
 		#{crud.custom 'addRole'}
 			<label for="object_addRole">&{'addRole'}</label> 
 			<input id="object_addRole" class="" type="checkbox" name="object.addRole" value="true" ${object.addRole ? 'checked' : ''} size="50" 	${currentNotificationProfile.project.notificationProfile.addRole ? '' : 'disabled'}/> 
+			<input type="hidden" name="object.addRole" value="false" />
 		#{/crud.custom}
 		
 		#{crud.custom 'onCreateComponent'}
 			<label for="object_onCreateComponent">&{'onCreateComponent'}</label> 
 			<input id="object_onCreateComponent" class="" type="checkbox" name="object.onCreateComponent" value="true" ${object.onCreateComponent ? 'checked' : ''} size="50" 	${currentNotificationProfile.project.notificationProfile.onCreateComponent ? '' : 'disabled'}/> 
+			<input type="hidden" name="object.onCreateComponent" value="false" />
 		#{/crud.custom}
 		
 		#{crud.custom 'onEditComponent'}
 			<label for="object_onEditComponent">&{'onEditComponent'}</label> 
 			<input id="object_onEditComponent" class="" type="checkbox" name="object.onEditComponent" value="true" ${object.onEditComponent ? 'checked' : ''} size="50" 	${currentNotificationProfile.project.notificationProfile.onEditComponent ? '' : 'disabled'}/> 
+			<input type="hidden" name="object.onEditComponent" value="false" />
 		#{/crud.custom}
 		#{crud.custom 'onDeleteComponent'}
 			<label for="object_onDeleteComponent">&{'onDeleteComponent'}</label> 
 			<input id="object_onDeleteComponent" class="" type="checkbox" name="object.onDeleteComponent" value="true" ${object.onDeleteComponent ? 'checked' : ''} size="50" 	${currentNotificationProfile.project.notificationProfile.onDeleteComponent ? '' : 'disabled'}/> 
+			<input type="hidden" name="object.onDeleteComponent" value="false" />
 		#{/crud.custom}
 		#{crud.custom 'addColumn'}
 			<label for="object_addColumn">&{'addColumn'}</label> 
 			<input id="object_addColumn" class="" type="checkbox" name="object.addColumn" value="true" ${object.addColumn ? 'checked' : ''} size="50" 	${currentNotificationProfile.project.notificationProfile.addColumn ? '' : 'disabled'}/> 
+			<input type="hidden" name="object.addColumn" value="false" />
 		#{/crud.custom}
 		
 		#{crud.custom 'deleteColumn'}
 			<label for="object_deleteColumn">&{'deleteColumn'}</label> 
 			<input id="object_deleteColumn" class="" type="checkbox" name="object.deleteColumn" value="true" ${object.deleteColumn ? 'checked' : ''} size="50" 	${currentNotificationProfile.project.notificationProfile.deleteColumn ? '' : 'disabled'}/> 
+			<input type="hidden" name="object.deleteColumn" value="false" />
 		#{/crud.custom}
 		
 		#{crud.custom 'addTaskStatus'}
 			<label for="object_addTaskStatus">&{'addTaskStatus'}</label> 
 			<input id="object_addTaskStatus" class="" type="checkbox" name="object.addTaskStatus" value="true" ${object.addTaskStatus ? 'checked' : ''} size="50" 	${currentNotificationProfile.project.notificationProfile.addTaskStatus ? '' : 'disabled'}/> 
+			<input type="hidden" name="object.addTaskStatus" value="false" />
 		#{/crud.custom}
 		#{crud.custom 'editTaskStatus'}
 			<label for="object_editTaskStatus">&{'editTaskStatus'}</label> 
 			<input id="object_editTaskStatus" class="" type="checkbox" name="object.editTaskStatus" value="true" ${object.editTaskStatus ? 'checked' : ''} size="50" 	${currentNotificationProfile.project.notificationProfile.editTaskStatus ? '' : 'disabled'}/> 
+			<input type="hidden" name="object.editTaskStatus" value="false" />
 		#{/crud.custom}
 		#{crud.custom 'deleteTaskStatus'}
 			<label for="object_deleteTaskStatus">&{'deleteTaskStatus'}</label> 
 			<input id="object_deleteTaskStatus" class="" type="checkbox" name="object.deleteTaskStatus" value="true" ${object.deleteTaskStatus ? 'checked' : ''} size="50" 	${currentNotificationProfile.project.notificationProfile.deleteTaskStatus ? '' : 'disabled'}/> 
+			<input type="hidden" name="object.deleteTaskStatus" value="false" />
 		#{/crud.custom}
 		
 		#{crud.custom 'deleteProject'}
 			<label for="object_deleteProject">&{'deleteProject'}</label> 
 			<input id="object_deleteProject" class="" type="checkbox" name="object.deleteProject" value="true" ${object.deleteProject ? 'checked' : ''} size="50" 	${currentNotificationProfile.project.notificationProfile.deleteProject ? '' : 'disabled'}/> 
+			<input type="hidden" name="object.deleteProject" value="false" />
 		#{/crud.custom}
 		
 		#{crud.custom 'deletedFromProject'}
 			<label for="object_deletedFromProject">&{'deletedFromProject'}</label> 
 			<input id="object_deletedFromProject" class="" type="checkbox" name="object.deletedFromProject" value="true" ${object.deletedFromProject ? 'checked' : ''} size="50" 	${currentNotificationProfile.project.notificationProfile.deletedFromProject ? '' : 'disabled'}/> 
+			<input type="hidden" name="object.deletedFromProject" value="false" />
 		#{/crud.custom}
 		#{crud.custom 'editTaskType'}
 			<label for="object_editTaskType">&{'editTaskType'}</label> 
 			<input id="object_editTaskType" class="" type="checkbox" name="object.editTaskType" value="true" ${object.editTaskType ? 'checked' : ''} size="50" 	${currentNotificationProfile.project.notificationProfile.editTaskType ? '' : 'disabled'}/> 
+			<input type="hidden" name="object.editTaskType" value="false" />
 		#{/crud.custom}
 		#{crud.custom 'addReviewer'}
 			<label for="object_addReviewer">&{'addReviewer'}</label> 
 			<input id="object_addReviewer" class="" type="checkbox" name="object.addReviewer" value="true" ${object.addReviewer ? 'checked' : ''} size="50" 	${currentNotificationProfile.project.notificationProfile.addReviewer ? '' : 'disabled'}/> 
+			<input type="hidden" name="object.addReviewer" value="false" />
 		#{/crud.custom}
 		
 		#{crud.custom 'deleteReviewer'}
 			<label for="object_deleteReviewer">&{'deleteReviewer'}</label> 
 			<input id="object_deleteReviewer" class="" type="checkbox" name="object.deleteReviewer" value="true" ${object.deleteReviewer ? 'checked' : ''} size="50" 	${currentNotificationProfile.project.notificationProfile.deleteReviewer ? '' : 'disabled'}/> 
+			<input type="hidden" name="object.deleteReviewer" value="false" />
 		#{/crud.custom}
 		
 		#{crud.custom 'addProductRole'}
 			<label for="object_addProductRole">&{'addProductRole'}</label> 
 			<input id="object_addProductRole" class="" type="checkbox" name="object.addProductRole" value="true" ${object.addProductRole ? 'checked' : ''} size="50" 	${currentNotificationProfile.project.notificationProfile.addProductRole ? '' : 'disabled'}/> 
+			<input type="hidden" name="object.addProductRole" value="false" />
 		#{/crud.custom}
 	#{/crud.form}
 		<p class="crudButtons">
