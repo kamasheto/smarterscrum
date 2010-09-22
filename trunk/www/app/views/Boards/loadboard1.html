@@ -212,22 +212,31 @@ REDIPS.drag.init();
 	#{/set}
 	#{list items:component, as:'col'}
 	<td width="50px" class="col_${count}" id="${columnsOfBoard[count].taskStatus.id}_${component.id}_${compID}">  <!--filling cells in each row with tasks -->
-		#{set count=count+1}
-		#{/set}
+		#{set count=count+1}#{/set}
 		#{list items:col, as:'task'}
+		
+		#{if task.assignee != null}#{set assignee = task.assignee.id}#{/set}#{set assigneeName = task.assignee.name}#{/set}#{/if}
+		#{else}#{set assignee = 0}#{/set}#{set assigneeName = 'None'}#{/set}#{/else}
+		
+		#{if task.reviewer != null}#{set reviewer = task.reviewer.id}#{/set}#{set reviewerName = task.reviewer.name}#{/set}#{/if}
+		#{else}#{set reviewer = 0}#{/set}#{set reviewerName = 'None'}#{/set}#{/else}
+		
+		#{if task.taskType != null}#{set taskType = task.taskType.name}#{/set}#{/if}
+		#{else}#{set taskType = 'None'}#{/set}#{/else}
 		
 		<!-- small sticky note -->
 		#{if connected.in(p).can('changeTaskStatus') || connected.equals(task.assignee) || connected.equals(task.reviewer)}
-		<div style="float:left" id="task-${task.id}_T_${compID}" class="drag status_${task.assignee.id} status_${task.reviewer.id}">
+		<div style="float:left" id="task-${task.id}_T_${compID}" class="drag status_${assignee} status_${reviewer}">
 		#{/if}
 		#{else}
-		<div style="float:left" id="task-${task.id}_T_${compID}" class="nostatus status_${task.assignee.id} status_${task.reviewer.id}">
+		<div style="float:left" id="task-${task.id}_T_${compID}" class="nostatus status_${assignee} status_${reviewer}">
 		#{/else}
 		<a id="task-${task.id}_hidden" style="display:none; font-size:large;cursor: pointer !important;text-decoration:none" onclick="showtask(this.id);"><img title="hide?" src="@{'/public/images/famfam/bullet_toggle_plus.png'}"></img></a>
 		<div id="task-${task.id}_TT">
 		<p>		
-		<div class="${task.taskStatus.columns[0].name}"></div>  
-		<div class="small_${task.id} shadowed" style="-moz-border-radius:10px; border-radius:10px; background-color:${task.taskType.hexColor}; border:0px; "  id="${task.id}_small">
+		<div class="${task.taskStatus.columns[0].name}"></div> 
+		#{if task.taskType!=null}<div class="small_${task.id} shadowed" style="-moz-border-radius:10px; border-radius:10px; background-color:${task.taskType.hexColor}; border:0px; "  id="${task.id}_small">#{/if}
+		#{else}<div class="small_${task.id} shadowed" style="-moz-border-radius:10px; border-radius:10px; background-color:white; border:0px; "  id="${task.id}_small">#{/else}
 		<a id="task-${task.id}" onclick="ctask(this.id);" style="cursor:pointer !important;border=0px; float:right;"><img title="hide?" src="@{'/public/images/famfam/bullet_toggle_minus.png'}"></img></a> 
 		<div id="desc_${task.id}">${task.description}</div>
 		<a onclick="SmallSticky(this.id)" title="Edit task info?"  style="cursor: pointer !important" id="${task.id}_button">more info..</a>
@@ -239,28 +248,31 @@ REDIPS.drag.init();
 		<div class="large_${task.id}" id="${task.id}Large" style="display:none;border:hidden">
 		<div id="tas-${task.id}_" >
 		<p style="float:left"> 
+		#{if task.taskType!=null}
 		<div class="shadowed" style="-moz-border-radius:15px; background-color:${task.taskType.hexColor};border-radius:15px; border:0px" id="tas-${task.id}_T">
+		#{/if}#{else}<div class="shadowed" style="-moz-border-radius:15px; background-color:white; border:0px" id="tas-${task.id}_T">
+		#{/else}
 		<div  style="border=0px" align="center"></div>
 		
 		#{if connected.in(p).can('changeTaskDescreption') || connected.equals(task.assignee)} <!-- if has permission (desc) or assignee -->
 		
-		<div style="width:3cm" id="${task.id}_des" border=0px class="editDES editdesc_${task.assignee.id} tiptipize" title="Edit description?">${task.description}</div>	
-		<div style="display:none" class="noedit noedit_${task.assignee.id}"id="${task.id}_desc" border=0px >${task.description}</div>	
+		<div style="width:3cm" id="${task.id}_des" border=0px class="editDES editdesc_${assignee} tiptipize" title="Edit description?">${task.description}</div>	
+		<div style="display:none" class="noedit noedit_${assignee}"id="${task.id}_desc" border=0px >${task.description}</div>	
 		#{/if}
 		#{else} <!-- if doesn't have have permission (desc) nor assignee -->
-		<div class="noedit noedit_${task.assignee.id}"id="${task.id}_des" border=0px >${task.description}</div>
-		<div style="display:none;width:3cm" id="${task.id}_desc" border=0px class="editDES editdesc_${task.assignee.id} tiptipize" title="Edit description?">${task.description}</div>		
+		<div class="noedit noedit_${assignee}"id="${task.id}_des" border=0px >${task.description}</div>
+		<div style="display:none;width:3cm" id="${task.id}_desc" border=0px class="editDES editdesc_${assignee} tiptipize" title="Edit description?">${task.description}</div>		
 		#{/else}
 		
 		#{if comp==null}
 		#{if connected.in(p).can('changeAssignee')} <!-- if has permission (edit assignee) -->
 		<div><a title="Change Assignee?" value="dddd" class="hidesassi" id="usr_${task.id}" href="javascript:popUp('/Tasks/chooseTaskAssi?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
-		Assignee:${task.assignee}</a></div>
+		Assignee:${assigneeName}</a></div>
 		<div id="usrs_${task.id}" class="showdesc" style="display:none">Assignee:${task.assignee}</div>	
 		#{/if}
 		#{else} <!-- if doesn't have permission (edit assignee) -->
 		<div><a title="Change Assignee?" style="display:none" class="hidesassi" id="usr_${task.id}" HREF="javascript:popUp('/Tasks/chooseTaskAssi?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
-		Assignee:${task.assignee}</a></div>
+		Assignee:${assigneeName}</a></div>
 		<div id="usrs_${task.id}" class="showdesc">Assignee:${task.assignee}</div>
 		#{/else}
 		#{/if}
@@ -268,35 +280,35 @@ REDIPS.drag.init();
 		#{if connected.in(p).can('changeReviewer')} <!-- if has permission (edit reviewer) -->
 		#{if comp==null}
 		<div><a id="rev_${task.id}" title="Change Reviewer?" class="hidesrev"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
-		Reviewer:${task.reviewer}</a></div>
+		Reviewer:${reviewerName}</a></div>
 		#{/if}
 		#{else}
 		<div><a id="rev_${task.id}" title="Change Reviewer?" class="hidesrev"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${comp.id}&userId='+selectedUser)">
-		Reviewer:${task.reviewer}</a></div>
+		Reviewer:${reviewerName}</a></div>
 		#{/else}
 		<div id="revs_${task.id}" class="showrev" style="display:none">Reviewer:${task.reviewer}</div>
 		#{/if}
 		#{else} <!-- if doesn't have permission (edit reviewer) -->
 		#{if comp==null}
 		<div><a id="rev_${task.id}" title="Change Reviewer?" style="display:none" id="rev_${task.id}" class="hidesrev"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${component.id}&userId='+selectedUser)">
-		Reviewer:${task.reviewer}</a></div>
+		Reviewer:${reviewerName}</a></div>
 		#{/if}
 		#{else}
 		<div><a id="rev_${task.id}" title="Change Reviewer?" style="display:none" id="rev_${task.id}" class="hidesrev"  HREF="javascript:popUp('/Tasks/chooseRev?taskId=${task.id}&compId=${comp.id}&userId='+selectedUser)">
-		Reviewer:${task.reviewer}</a></div>
+		Reviewer:${reviewerName}</a></div>
 		#{/else}
 		<div id="revs_${task.id}" class="showrev">Reviewer:${task.reviewer}</div>
 		#{/else}
 		
 		#{if connected.in(p).can('changeTaskType') || connected.equals(task.assignee)} <!-- if has permission (type) or assignee -->
-		<div><a id="type_${task.id}" title="Edit type?" class="hidestype shows_${task.assignee.id}" HREF="javascript:popUp('/Tasks/chooseType?taskId=${task.id}&userId='+selectedUser)">
-		Type:${task.taskType.name}</a></div>
-		<div id="types_${task.id}" style="display:none" class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${task.taskType.name}</div>
+		<div><a id="type_${task.id}" title="Edit type?" class="hidestype shows_${assignee}" HREF="javascript:popUp('/Tasks/chooseType?taskId=${task.id}&userId='+selectedUser)">
+		Type:${taskType}</a></div>
+		<div id="types_${task.id}" style="display:none" class="shwtype shwtype_${assignee}" id="${task.id}_type">Type:${taskType}</div>
 		#{/if}
 		#{else} <!-- if doesn't have have permission (type) nor assignee -->
-		<div><a title="Edit type?" style="display:none" id="type_${task.id}" class="hidestype shows_${task.assignee.id}" HREF="javascript:popUp('/Tasks/chooseType?taskId=${task.id}&userId='+selectedUser)">
-		Type:${task.taskType.name}</a></div>
-		<div id="types_${task.id}" class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${task.taskType.name}</div>
+		<div><a title="Edit type?" style="display:none" id="type_${task.id}" class="hidestype shows_${assignee}" HREF="javascript:popUp('/Tasks/chooseType?taskId=${task.id}&userId='+selectedUser)">
+		Type:${taskType}</a></div>
+		<div id="types_${task.id}" class="shwtype shwtype_${task.assignee.id}" id="${task.id}_type">Type:${taskType}</div>
 		#{/else}
 		<a href="#" id="${task.id}-done" title="Done Editing?" onclick="done(this.id)">Done</a>
 		</div>
