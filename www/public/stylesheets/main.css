@@ -1,6 +1,3 @@
-.Sprints .crudField.crud_relation {
-	display: none;
-}
 
 .shadowed {
 	margin: 2px;
@@ -2622,3 +2619,17 @@ a.jbar-cross:hover {
 ._14 {
 	font-size: 14px;
 }
+#ui-timepicker-div
+{
+left:223px!important;
+top:237px!important;
+background:url("images/ui-bg_flat_75_ffffff_40x100.png") repeat-x scroll 50% 50% #FFFFFF !important;
+border:1px solid #AAAAAA !important;
+color:#222222 !important;
+height:206px !important;
+}
+#ui-timepicker-div table,#ui-datepicker-div table{border:0 !important}
+.Sprints .crudField.crud_relation {
+	display: none;
+}
+.ui-datepicker-header{height:19px !important}
