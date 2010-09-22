@@ -236,12 +236,12 @@ public class Tasks extends SmartCRUD
 
 			if( tmp.parent != null )
 			{
-				CollaborateUpdate.update( tmp.project, "reload('tasks','task-" + tmp.parent.id + "')" );
+				CollaborateUpdate.update( tmp.project, "reload('tasks-" + tmp.project.id + "','task-" + tmp.parent.id + "')" );
 				Application.overlayKiller( "", "" );
 			}
 			else
 			{
-				CollaborateUpdate.update( tmp.project, "reload('tasks','task-" + tmp.id + "')" );
+				CollaborateUpdate.update( tmp.project, "reload('tasks-" + tmp.project.id + "','task-" + tmp.id + "')" );
 				Application.overlayKiller( "", "" );
 			}
 
