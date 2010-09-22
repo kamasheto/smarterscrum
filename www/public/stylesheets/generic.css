@@ -3187,6 +3187,7 @@ div.jcalendar-links a {
 
 .dock .draggable {
 	min-width: 70px;
+	max-width:100px;
 	text-align: center;
 	display: inline-block;
 	width: auto !important;
