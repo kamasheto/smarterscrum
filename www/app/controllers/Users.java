@@ -535,35 +535,12 @@ public class Users extends SmartCRUD {
 			String oldname = userProfile.name;
 			userProfile.name = name;
 			userProfile.email = email;
+			userProfile.save();
 			boolean hasErrors = false;
 			String message = "";
-			if (!userProfile.email.equals(oldEmail)) 
-			{
-				userProfile.activationHash = Application.randomHash(32);
-				userProfile.isActivated = false;
-				String emailSubject = "Your SmartSoft new Email activation requires your attention";
-				String emailBody = "Dear "
-						+ userProfile.name
-						+ ", The Email Address associated with your account has been requested to be changed. Please click the following link to activate your account: "
-						+ "http://localhost:9000/accounts/doActivation?hash="
-						+ userProfile.activationHash;
-				Mail.send("se.smartsoft@gmail.com", userProfile.email, emailSubject, emailBody);
-				message = "You have successfully edited user personal information, A confirmation email has been sent to the new Email.";
-				
-				if (userProfile.id == connectedUser.id)
-				{
-					if (Security.connected().equals(oldEmail))
-					{
-						session.put("username", email);
-					}
-				}
-			} 
-			else 
-			{
-				message = "You have successfully edited user personal information.";
-			}
 			try 
 			{
+				message = "You have successfully edited user personal information.";
 				if(file!=null)
 				{
 					FileInputStream avatar = new FileInputStream(file);
@@ -571,8 +548,26 @@ public class Users extends SmartCRUD {
 					IOUtils.copy(avatar, new FileOutputStream(Play.getFile(url)));
 					userProfile.avatar = url;
 				}
-				userProfile.save();
-				flash.success(message);
+				if (!userProfile.email.equals(oldEmail)) 
+				{
+					userProfile.activationHash = Application.randomHash(32);
+					userProfile.isActivated = false;
+					String emailSubject = "Your SmartSoft new Email activation requires your attention";
+					String emailBody = "Dear "
+							+ userProfile.name
+							+ ", The Email Address associated with your account has been requested to be changed. Please click the following link to activate your account: "
+							+ "http://localhost:9000/accounts/doActivation?hash="
+							+ userProfile.activationHash;
+					Mail.send("se.smartsoft@gmail.com", userProfile.email, emailSubject, emailBody);
+					message = message + " A confirmation email has been sent to the new Email.";
+					if (userProfile.id == connectedUser.id)
+					{
+						if (Security.connected().equals(oldEmail))
+						{
+							session.put("username", email);
+						}
+					}
+				}
 				if (!oldname.equals(name))
 				{
 					for (Project project : userProfile.projects)
@@ -580,7 +575,6 @@ public class Users extends SmartCRUD {
 						CollaborateUpdate.update(project, "reload('users')");
 					}
 					CollaborateUpdate.update(userProfile, "$('#username-in-topbar').html('"+name+"')");
-					Application.overlayKiller("", "");
 					if (userProfile.id == connectedUser.id)
 					{
 						if (Security.connected().equals(oldname))
@@ -588,6 +582,7 @@ public class Users extends SmartCRUD {
 							session.put("username", name);
 						}
 					}
+					flash.success(message);
 				}
 				else
 				{
@@ -595,9 +590,8 @@ public class Users extends SmartCRUD {
 					{
 						CollaborateUpdate.update(project, "reload('user-"+userProfileId+"')");
 					}
-					Application.overlayKiller("", "");
 				}
-				
+				Application.overlayKiller("", "");
 			} 
 			catch (PersistenceException e) 
 			{
@@ -623,5 +617,4 @@ public class Users extends SmartCRUD {
 			flash.error("You are not allowed to edit these personal information.");
 		}	
 	}
-	
 }
