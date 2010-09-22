@@ -315,7 +315,10 @@ public class Application extends SmartController
 		}
 		else
 		{
-			pageOfNotifications = Notification.find( "byReceiver", user ).from( (page - 1) * 10 ).fetch( 10 );
+			int temp = (page - 1) * 10;
+			if(temp<0)
+				temp = 0;
+			pageOfNotifications = Notification.find( "byReceiver", user ).from( temp ).fetch( 10 );
 		}
 		for( Notification noti : pageOfNotifications )
 		{
