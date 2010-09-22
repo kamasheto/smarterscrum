@@ -877,11 +877,7 @@ public class Projects extends SmartCRUD
 		}
 		object.save();
 		flash.success( "The Project Notificaton Profile modifications have been saved" );
-		if( params.get( "_save" ) != null )
-		{
-			redirect( "/projects/managenotificationprofile?projectId=" + id );
-		}
-		redirect( request.controller + ".show", object.getEntityId() );
+		Application.overlayKiller( "", "" );
 	}
 
 	/**
