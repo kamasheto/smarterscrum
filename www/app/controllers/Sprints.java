@@ -567,6 +567,15 @@ public class Sprints extends SmartCRUD
 		sprint.tasks.add( task );
 		task.taskSprint = sprint;
 		task.save();
+		if(task.subTasks.size()>0)
+		{
+			for(int i =0; i<task.subTasks.size();i++)
+			{
+				task.subTasks.get( i ).taskSprint=sprint;
+				sprint.tasks.add(task.subTasks.get( i ));
+				task.subTasks.get( i ).save();
+			}
+		}
 		sprint.save();
 		renderText( "The task was assigned to the requested sprint|reload('task-" + taskId + "','sprint-" + sprintId + ")" );
 	}
