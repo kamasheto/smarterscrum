@@ -159,11 +159,12 @@ public class Show extends SmartController
 		}
 		for( Task task1 : proj.projectTasks )
 		{
-			if( task1.reviewer != null && task1.reviewer.equals( user ) && task1.taskStatus != null && task1.taskStatus.pending && !tasks.contains( task1 ) )
+			if( task1.reviewer != null && task1.reviewer.equals( user ) && task1.taskStatus != null && task1.taskStatus.pending && !tasks.contains( task1 ) && (!task1.deleted) )
 			{
 				tasks.add( task1 );
 			}
 		}
+		
 		int tasknumber = tasks.size();
 		render( tasknumber, proj, chatters );
 	}
