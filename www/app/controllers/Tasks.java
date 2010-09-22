@@ -267,7 +267,7 @@ public class Tasks extends SmartCRUD
 		notFoundIfNull( type );
 		JPASupport object = type.findById( id );
 		Task tmp = (Task) object;
-		Security.check( Security.getConnected().in( tmp.project ).can( "modifyTask" ) );
+		Security.check( Security.getConnected().in( tmp.project ).can( "modifyTask" ) || Security.getConnected() == tmp.assignee || Security.getConnected() == tmp.reviewer);
 		List<TaskStatus> statuses = tmp.project.taskStatuses;
 		List<TaskType> types = tmp.project.taskTypes;
 		List<Comment> comments = Comment.find( "byTask", tmp ).fetch();
@@ -350,7 +350,7 @@ public class Tasks extends SmartCRUD
 		JPASupport object = type.findById( id );
 		String changes = "";
 		Task tmp = (Task) object;
-		Security.check( Security.getConnected().in( tmp.project ).can( "modifyTask" ) );
+		Security.check( Security.getConnected().in( tmp.project ).can( "modifyTask" ) || Security.getConnected() == tmp.assignee || Security.getConnected() == tmp.reviewer );
 		List<User> users = tmp.component.componentUsers;
 		List<TaskStatus> statuses = tmp.project.taskStatuses;
 		List<TaskType> types = tmp.project.taskTypes;
