@@ -1555,6 +1555,11 @@ public class Tasks extends SmartCRUD
 		Task task = Task.findById( taskId );
 		Component c = Component.findById( compId );
 		users = c.componentUsers;
+		for(User u : users)
+		{
+			if(u.deleted)
+				users.remove( u );
+		}
 		users.remove( task.reviewer );
 		render( task, users, user1 );
 	}
@@ -1577,11 +1582,26 @@ public class Tasks extends SmartCRUD
 		{
 			userId = Security.getConnected().id;
 		}
-		User user1 = User.findById( userId );
-		List<User> users = new ArrayList<User>();
 		Task task = Task.findById( taskId );
-		Component c = Component.findById( compId );
-		users = c.componentUsers;
+		Component component = Component.findById( compId );
+		List<Reviewer> reviewers = new ArrayList();
+		if(task.taskType!=null)
+		reviewers = Reviewer.find("byProjectAndAcceptedAndtaskType", task.project, true, task.taskType).fetch();
+	
+		List<User> users = new ArrayList<User>();
+		for(Reviewer rev : reviewers){
+		if(component!=null && component.number!=0)
+		{
+			if(rev.user.components.contains(component) && ((task.assignee==null)||(task.assignee!=null && rev.user.id!= task.assignee.id)) )
+				users.add(rev.user);
+		}
+		else
+		{
+			if((task.assignee==null)||(task.assignee!=null && rev.user.id!= task.assignee.id))
+			users.add(rev.user);
+		}
+		}
+		User user1 = User.findById( userId );
 		users.remove( task.assignee );
 		render( task, users, user1 );
 	}
@@ -1603,7 +1623,7 @@ public class Tasks extends SmartCRUD
 			userId = Security.getConnected().id;
 		}
 		Task task = Task.findById( taskId );
-		List<TaskType> types = task.taskSprint.project.taskTypes;
+		List<TaskType> types = TaskType.find("byProjectAndDeleted", task.project, false).fetch();
 		render( task, types, userId );
 	}
 
