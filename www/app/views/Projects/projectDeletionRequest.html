@@ -7,7 +7,9 @@
 <br>
 <b>All the roles you have in this project will be revoked. However, your work will still be visible by all the project members</b>
 <br>
+#{if connected.in(project).can('manageRequests')}
 #{note} Since you have the permission of managing the Project Requests, therefore your deletion request will be approved directly and you will be deleted from the project#{/note}
+#{/if}
 
 <br><br>
 
