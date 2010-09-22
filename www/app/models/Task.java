@@ -542,7 +542,7 @@ public class Task extends SmartModel
 					{
 						ProductRole pr = new ProductRole( this.project.id, productrole, "" );
 						pr.save();						
-						Notifications.notifyProjectUsers(pr.project, "addProductRole", "", "product role", pr.name, (byte) 0);
+						//Notifications.notifyProjectUsers(pr.project, "addProductRole", "", "product role", pr.name, (byte) 0);
 						this.productRole = pr;
 					}
 					else
