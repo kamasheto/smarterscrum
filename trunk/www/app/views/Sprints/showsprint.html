@@ -51,15 +51,28 @@ function isBefore(date){
 <br />
 		
 
-
+#{if sprint.project.components.size()>1}
 <div name="@{Sprints.backlogs(sprint.id)}">Backlogs
 			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
-<img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>	</div>
+<img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a></div>
+
+
 <div name="@{Sprints.charts(sprint.id)}">Charts
 <a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?">
 <img src="@{'public/images/famfam/chart.png'}" alt="[chart]"/></a>
 
 			</div>
+			#{/if}
+#{else}
+<div class="overlay"name="@{SprintBacklog.index(0,sprint.id)}">Backlog
+			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
+<img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a></div>
+
+
+<div class="overlay"name="@{SprintBacklog.showGraph(sprint.id,0)}">Chart
+<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?">
+<img src="@{'public/images/famfam/chart.png'}" alt="[chart]"/></a></div>
+#{/else}
 <div name="@{Boards.sprintBoards(sprint.id)}">Boards
 #{if sprint.ended}
 	#{if sprint.project.components.size()>1}
@@ -86,3 +99,4 @@ function isBefore(date){
 	#{/else}
 #{/else}
 </div>
+
