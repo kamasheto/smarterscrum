@@ -497,8 +497,6 @@ public class Task extends SmartModel
 				u = Reviewer.find("byProjectAndAcceptedAndtaskType", project, true, taskType).fetch();
 			u.remove( this.assignee );
 		}
-		if( u.size() == 0 )
-			u = this.component.componentUsers;
 		return u;
 	}
 	

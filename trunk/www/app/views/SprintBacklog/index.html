@@ -34,10 +34,7 @@ function magicFix(el)
 
 function changeT (id,id2)
 {
-	$.post('@{Tasks.editTaskType()}',{id:id,typeId:id2,userId:${connected.id}},function(ret) 
-	{
-		parent_message_bar(ret);
-	});
+	$.post('@{Tasks.editTaskType()}',{id:id,typeId:id2,userId:${connected.id}});
 }
 function changeS (id,id2)
 {
@@ -220,7 +217,7 @@ Show/Hide:
           #{/else}
         
          #{ifnot task.estimationPoints}
-          <td id="${task.id}_points"class="shPoints">&nbsp;</td>
+          <td id="${task.id}_points"class="shPoints">0</td>
           #{/ifnot}
           #{else}
           <td id="${task.id}_points"class="shPoints">${task.estimationPoints}</td>
@@ -405,7 +402,7 @@ Show/Hide:
 	    #{/else}
 		</td>
  
-		#{ifnot task.subTasks}
+		
 		#{ifnot task.estimationPoints}
 		<td id="${task.id}_points" class="editPOINTS shPoints">0
 		</td>
@@ -414,7 +411,7 @@ Show/Hide:
 		<td id="${task.id}_points" title="edit the estimationpoints?"
 			class="editPOINTS shPoints" style="text-align: center">${task.estimationPoints}</td>
 		#{/else}
-
+#{ifnot task.subTasks}
 		<!--@author Hadeer Younis C4 S8-->
 		#{list items:daysHeader, as:'day'}
 		<td style="text-align: center"id="${task.id}_day_${day}" class="enterEffort shEfforts">
