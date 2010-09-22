@@ -362,18 +362,8 @@ public class Tasks extends SmartCRUD
 		String oldDescription = tmp.description;// done
 		long oldComponent = 0;
 		if( tmp.component != null )
-		{
 			oldComponent = tmp.component.id;
-
-			for( int i = 0; i < tmp.subTasks.size(); i++ )
-			{
-				tmp.subTasks.get( i ).component = tmp.component;
-				tmp.subTasks.get( i ).component.componentTasks.add( tmp.subTasks.get( i ) );
-				tmp.subTasks.get( i ).save();
-				tmp.subTasks.get( i ).component.save();
-
-			}
-		}
+					
 		long oldTaskType;
 		if( tmp.taskType != null )
 			oldTaskType = tmp.taskType.id;
@@ -381,34 +371,7 @@ public class Tasks extends SmartCRUD
 			oldTaskType = 0;
 		long oldTaskStatus;
 		if( tmp.taskStatus != null )
-		{
 			oldTaskStatus = tmp.taskStatus.id;// done
-			for( int i = 0; i < tmp.subTasks.size(); i++ )
-			{
-				tmp.subTasks.get( i ).taskStatus = tmp.taskStatus;
-				tmp.subTasks.get( i ).taskStatus.Tasks.add( tmp.subTasks.get( i ) );
-				tmp.subTasks.get( i ).taskStatus.save();
-				tmp.subTasks.get( i ).save();
-			}
-
-			if( tmp.parent != null )
-			{
-				boolean flag = true;
-				loop : for( int i = 0; i < tmp.parent.subTasks.size(); i++ )
-				{
-					if( tmp.parent.subTasks.get( i ).taskStatus != tmp.taskStatus )
-					{
-						flag = false;
-						break loop;
-					}
-				}
-				if( flag )
-				{
-					tmp.parent.taskStatus = tmp.taskStatus;
-					tmp.parent.save();
-				}
-			}
-		}
 		else
 			oldTaskStatus = 0;
 
@@ -437,40 +400,12 @@ public class Tasks extends SmartCRUD
 		}
 		long oldAssignee;
 		if( tmp.assignee != null )
-		{
 			oldAssignee = tmp.assignee.id;// done
-			for( int i = 0; i < tmp.subTasks.size(); i++ )
-			{
-				tmp.subTasks.get( i ).assignee = tmp.assignee;
-				tmp.subTasks.get( i ).assignee.tasks.add( tmp );
-				tmp.subTasks.get( i ).assignee.save();
-				tmp.subTasks.get( i ).save();
-			}
-		}
 		else
 			oldAssignee = 0;
 		long oldReviewer;
-		if( tmp.taskSprint != null )
-		{
-			for( int i = 0; i < tmp.subTasks.size(); i++ )
-			{
-				tmp.subTasks.get( i ).taskSprint = tmp.taskSprint;
-				tmp.subTasks.get( i ).taskSprint.tasks.add( tmp.subTasks.get( i ) );
-				tmp.subTasks.get( i ).save();
-				tmp.subTasks.get( i ).taskSprint.save();
-			}
-		}
 		if( tmp.reviewer != null )
-		{
 			oldReviewer = tmp.reviewer.id;// done
-			for( int i = 0; i < tmp.subTasks.size(); i++ )
-			{
-				tmp.subTasks.get( i ).reviewer = tmp.reviewer;
-				tmp.subTasks.get( i ).reviewer.tasks.add( tmp );
-				tmp.subTasks.get( i ).reviewer.save();
-				tmp.subTasks.get( i ).save();
-			}
-		}
 		else
 			oldReviewer = 0;
 		ArrayList<Task> oldDependencies = new ArrayList<Task>();
@@ -622,6 +557,16 @@ public class Tasks extends SmartCRUD
 			CollaborateUpdate.update( tmp.project, "drag_note_status(" + tmp.taskSprint.id + "," + tmp.assignee.id + "," + oldTaskStatus + "," + tmp.taskStatus.id + "," + compId + "," + tmp.id + ")" );
 		}
 
+		for( Task subTask : tmp.subTasks )
+		{
+			subTask.component = tmp.component;
+			subTask.assignee = tmp.assignee;
+			subTask.reviewer = tmp.reviewer;
+			subTask.taskStatus = tmp.taskStatus;
+			subTask.taskSprint = tmp.taskSprint;
+			subTask.save();
+		}
+		
 		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
