@@ -3,10 +3,11 @@
 #{set 'title'}${project.name}'s Charts #{/set}
 <div class="overlay" name="@{ProductBacklogs.showGraph(project.id,0)}">Project overall Chart</div>
 #{if (sprints.size()==0)}
-	There are No Sprints.
+#{note}There are No Sprints.#{/note}
 #{/if}
 #{else}
 	#{list items:sprints, as:'sprint'}
+#{if sprint.project.components.size()>1}
 		#{if (sprint.id==runningSprint) }
 			<div class="greenBg" name="@{Sprints.charts(sprint.id)}">Sprint ${sprint.sprintNumber}#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 			#{if connected.in(sprint.project).can("editSprint")}
@@ -38,5 +39,39 @@
 
 
 
+#{/if}
+#{else}
+		#{if (sprint.id==runningSprint) }
+			<div class="greenBg overlay" name="@{SprintBacklog.showGraph(sprint.id,0)}">Sprint ${sprint.sprintNumber}#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+			#{if connected.in(sprint.project).can("editSprint")}
+<a href="#" onclick="overlayOpen('@{Sprints.projectshow(sprint.id)}')"><img src="/public/images/famfam/pencil.png" /></a>
+
+#{/if}
+			</div>
+		#{/if}
+		#{else}
+		#{if (sprint.ended) }
+			<div class="redBg overlay" name="@{SprintBacklog.showGraph(sprint.id,0)}">Sprint ${sprint.sprintNumber} <a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+			#{if connected.in(sprint.project).can("editSprint")}
+
+<img class="dim"src="/public/images/famfam/pencil.png" />
+
+#{/if}
+			</div>
+		#{/if}
+		#{else}
+		<div class="yellowBg overlay" name="@{SprintBacklog.showGraph(sprint.id,0)}">Sprint ${sprint.sprintNumber}#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')"title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+			#{if connected.in(sprint.project).can("editSprint")}
+
+<a href="#" onclick="overlayOpen('@{Sprints.projectshow(sprint.id)}')"><img src="/public/images/famfam/pencil.png" /></a>
+
+#{/if}
+			</div>#{/else}
+		#{/else}
+
+
+
+
+#{/else}
 #{/list}
 #{/else}
