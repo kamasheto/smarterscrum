@@ -3172,12 +3172,10 @@ div.jcalendar-links a {
 
 /* amorotto css */
 .meeting_countdown {
-	opacity: 0.2;
-	font-size: 18px !important;
-	letter-spacing: -2px;
-	float: none !important;
-	font-family: Arial !important;
-	text-transform: lowercase;
+float:none !important;
+font-size:12px !important;
+opacity:0.2;
+text-transform:lowercase;
 }
 
 /* end amorotto css */ /*start dock*/
