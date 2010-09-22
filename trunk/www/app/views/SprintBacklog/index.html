@@ -70,7 +70,7 @@ $(function()
 
 	$(".editPOINTS").each(function()
 	{
-		if($(this).html()!='No points')
+		if($(this).html()!='')
 			$(this).html(parseInt($(this).html()));
 	});
 
@@ -407,7 +407,7 @@ Show/Hide:
  
 		#{ifnot task.subTasks}
 		#{ifnot task.estimationPoints}
-		<td id="${task.id}_points" class="editPOINTS shPoints">No points 
+		<td id="${task.id}_points" class="editPOINTS shPoints">0
 		</td>
 		#{/ifnot}
 		 #{else}
