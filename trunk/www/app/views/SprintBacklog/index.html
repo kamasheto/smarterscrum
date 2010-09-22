@@ -30,6 +30,7 @@ function magicFix(el)
 	$(el).closest('td').children().first().html($('#'+anId+' option:selected').text());
 	$(el).closest('td').children().first().show();
 }
+#{if sprint.running()}
 #{if connected.in(project).can('editBacklog') || connected.isAdmin}
 
 function changeT (id,id2)
@@ -134,6 +135,22 @@ $(function()
 
 });
 #{/if}
+#{else}
+$(function() 
+		{
+			$(".enterEffort").each(function()
+			{
+				if($(this).html()!='')
+					$(this).html(parseInt($(this).html()));
+			});
+
+			$(".editPOINTS").each(function()
+			{
+				if($(this).html()!='')
+					$(this).html(parseInt($(this).html()));
+			});});
+#{/else}
+#{/if}
 </script>
 
 #{/set}
@@ -180,7 +197,7 @@ Show/Hide:
 			<a title="view the task reports?" href="@{Tasks.getReport(task.id)}">${task.getTaskNumber()}</a>
 		</td>
 		
-		#{ifnot connected.in(project).can('editBacklog') || connected.isAdmin || (connected==task.assignee) || connected==task.reviewer}
+		#{ifnot connected.in(project).can('editBacklog') || connected.isAdmin || (connected==task.assignee) || connected==task.reviewer || sprint.running()}
           #{ifnot task.description}
           <td id="${task.id}_des"class="shDes">No Description stated</td>
           #{/ifnot}
@@ -246,11 +263,12 @@ Show/Hide:
 		<td id="${task.id}_type" class="editTYPE shType">
 			#{if connected.in(project).can('changeTaskType')|| connected==task.assignee}
 					#{ifnot task.taskType}
-	    <span onclick="$(this).next().show();$(this).hide()">not set</span>
+	    <span  #{if sprint.running()}onclick="$(this).next().show();$(this).hide()"#{/if}>---</span>
 	    #{/ifnot}
 	    #{else}
-	    <span onclick="$(this).next().show();$(this).hide()">${task.taskType.name}</span>
+	    <span  #{if sprint.running()}onclick="$(this).next().show();$(this).hide()"#{/if}>${task.taskType.name}</span>
 	    #{/else}
+	     #{if sprint.running()}
 		<form style="display:none">
 			
 			<select id="t_${task.id}_t"onblur="magicFix(this)" onchange="magicFix(this);changeT(${task.id},parseInt($('#t_${task.id}_t option:selected').val()));">
@@ -271,11 +289,11 @@ Show/Hide:
        		#{/else}
        		#{/list}
 			</select>
-		</form> 
+		</form> #{/if}
 	    #{/if}
 	    #{else}
 	    #{ifnot task.taskType}
-	    not set
+	    ---
 	    #{/ifnot}
 	    #{else}
 	    ${task.taskType.name}
@@ -286,11 +304,11 @@ Show/Hide:
 		<td id="${task.id}_status" class="editStatus shStatus">
 		#{if connected.in(project).can('changeTaskStatus') ||connected==task.reviewer || connected==task.assignee}
 		#{ifnot task.taskStatus}
-	    <span onclick="$(this).next().show();$(this).hide()">not set</span>
+	    <span  #{if sprint.running()}onclick="$(this).next().show();$(this).hide()"#{/if}>---</span>
 	    #{/ifnot}
 	    #{else}
-	    <span onclick="$(this).next().show();$(this).hide()">${task.taskStatus.name}</span>
-	    #{/else}
+	    <span  #{if sprint.running()}onclick="$(this).next().show();$(this).hide()"#{/if}>${task.taskStatus.name}</span>
+	    #{/else} #{if sprint.running()}
 		<form style="display:none">
 			<select id="t_${task.id}_s"onblur="magicFix(this)" onchange="magicFix(this);changeS(${task.id},parseInt($('#t_${task.id}_s option:selected').val()));">
        		#{ifnot task.taskStatus.name}
@@ -310,11 +328,11 @@ Show/Hide:
        		#{/else}
        		#{/list}
 			</select>
-		</form> 
+		</form> #{/if}
 	    #{/if}
 	    #{else}
 	    #{ifnot task.taskType}
-	    not set
+	    ---
 	    #{/ifnot}
 	    #{else}
 	    ${task.taskType.name}
@@ -327,11 +345,11 @@ Show/Hide:
 		<td id="${task.id}_assignee" class="editASSI shAssignee">
 			#{if connected.in(project).can('changeTaskAssignee') || connected==task.assignee}
 		#{ifnot task.assignee}
-	    <span onclick="$(this).next().show();$(this).hide()">not set</span>
+	    <span  #{if sprint.running()}onclick="$(this).next().show();$(this).hide()"#{/if}>---</span>
 	    #{/ifnot}
 	    #{else}
-	    <span onclick="$(this).next().show();$(this).hide()">${task.assignee.getDisplayName().raw()}</span>
-	    #{/else}
+	    <span  #{if sprint.running()} onclick="$(this).next().show();$(this).hide()"#{/if}>${task.assignee.getDisplayName().raw()}</span>
+	    #{/else} #{if sprint.running()}
 		<form style="display:none">
 			<select id="t_${task.id}_a"onblur="magicFix(this)" onchange="magicFix(this);changeA(${task.id},parseInt($('#t_${task.id}_a option:selected').val()));">
        		#{ifnot task.assignee}
@@ -351,11 +369,11 @@ Show/Hide:
        		#{/else}
        		#{/list}
 			</select>
-		</form> 
+		</form> #{/if}
 	    #{/if}
 	    #{else}
 	    #{ifnot task.assignee}
-	    not set
+	    ---
 	    #{/ifnot}
 	    #{else}
 	    ${task.assignee.getDisplayName().raw()}
@@ -366,11 +384,11 @@ Show/Hide:
 		<td id="${task.id}_reviewer" class="editREV shReviewer">
 					#{if connected.in(project).can('changeTaskReviewer') || connected==task.assignee}
 		#{ifnot task.reviewer}
-	    <span onclick="$(this).next().show();$(this).hide()">not set</span>
+	    <span  #{if sprint.running()}onclick="$(this).next().show();$(this).hide()"#{/if}>---</span>
 	    #{/ifnot}
 	    #{else}
-	    <span onclick="$(this).next().show();$(this).hide();$(this).hide()">${task.reviewer.getDisplayName().raw()}</span>
-	    #{/else}
+	    <span  #{if sprint.running()}onclick="$(this).next().show();$(this).hide();$(this).hide()"#{/if}>${task.reviewer.getDisplayName().raw()}</span>
+	    #{/else} #{if sprint.running()}
 		<form style="display:none">
 			<select id="t_${task.id}_r"onblur="magicFix(this)" onchange="magicFix(this);changeR(${task.id},parseInt($('#t_${task.id}_r option:selected').val()));">
        		#{ifnot task.reviewer}
@@ -390,11 +408,11 @@ Show/Hide:
        		#{/else}
        		#{/list}
 			</select>
-		</form> 
+		</form> #{/if}
 	    #{/if}
 	    #{else}
 	    #{ifnot task.reviewer}
-	    not set
+	    ---
 	    #{/ifnot}
 	    #{else}
 	    ${task.reviewer.getDisplayName().raw()}
