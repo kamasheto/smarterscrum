@@ -1437,6 +1437,9 @@ public class Tasks extends SmartCRUD
 			CollaborateUpdate.update( task1.project, n );
 
 		}
+		TaskType oldType = task1.taskType;
+		if(task1.taskType != type)
+			task1.reviewer = null;
 		task1.taskType = type;
 		task1.save();
 
@@ -1455,6 +1458,8 @@ public class Tasks extends SmartCRUD
 			for( int i = 0; i < task1.subTasks.size(); i++ )
 			{
 				task1.subTasks.get( i ).taskType = type;
+				if(oldType != task1.taskType)
+					task1.subTasks.get( i ).reviewer = null;
 				task1.subTasks.get( i ).save();
 			}
 		}

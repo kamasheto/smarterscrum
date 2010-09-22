@@ -110,7 +110,7 @@ public class Boards extends SmartCRUD
 					}
 					for( Task task : tasks )
 					{
-						if(task.assignee!=null && task.reviewer!=null && task.taskType!=null && !task.deleted)
+						if( !task.deleted)
 						{
 						BoardColumn pcol = new BoardColumn();
 						for( int k = 0; k < task.taskStatus.columns.size(); k++ )
@@ -173,7 +173,7 @@ public class Boards extends SmartCRUD
 
 				for( Task task : tasks )
 				{
-					if(task.assignee!=null && task.reviewer!=null && task.taskType!=null && !task.deleted)
+					if( !task.deleted)
 					{
 					BoardColumn pcmp = new BoardColumn();
 					for( int k = 0; k < task.taskStatus.columns.size(); k++ )
