@@ -2633,3 +2633,7 @@ height:206px !important;
 	display: none;
 }
 .ui-datepicker-header{height:19px !important}
+
+.log_time {
+	color: #ddd;
+}
