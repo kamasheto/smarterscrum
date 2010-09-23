@@ -221,12 +221,20 @@ public class Sprints extends SmartCRUD
 			int startmonth = Integer.parseInt( startdate[1] );
 			int startday = Integer.parseInt( startdate[2] );
 			startDate = new GregorianCalendar( startyear, startmonth - 1, startday ).getTime();
-			String today = new Date().toString();
-			if( object.endDate==null)
+			GregorianCalendar test = new GregorianCalendar();
+			test.set( test.HOUR_OF_DAY, 00 );
+			test.set( test.MINUTE, 00 );
+			test.set( test.SECOND, 00 );
+			Date today = test.getTime();
+			if( object.endDate == null )
 			{
 				int defaultDays = proj.sprintDuration;
-				System.out.println( defaultDays );
-				endDate = new GregorianCalendar().getTime();
+				GregorianCalendar ed = new GregorianCalendar();
+				ed.set( ed.HOUR_OF_DAY, 23 );
+				ed.set( ed.MINUTE, 59 );
+				ed.set( ed.SECOND, 59 );
+				Date nn = ed.getTime();
+				endDate = nn;
 				endDate.setTime( startDate.getTime() + (86400000 * defaultDays) );
 			}
 			else
@@ -248,7 +256,7 @@ public class Sprints extends SmartCRUD
 				renderArgs.put( "error", "Sprint Start Date is after Sprint End Date" );
 				render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
 			}
-			else if( today.contains( object.startDate.toString() ) || today.contains( endDate.toString() ) )
+			else if( (object.startDate.before( today ) || object.endDate.before( today )) && !object.startDate.toString().equals( today.toString() ) )
 			{
 				renderArgs.put( "error", "Cant Create Sprint with Past Date" );
 				render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
@@ -341,7 +349,11 @@ public class Sprints extends SmartCRUD
 		Security.check( Security.getConnected().in( sprint.project ).can( "editSprint" ) );
 		if( sprint.deleted )
 			notFound();
-		String today = new Date().toString();
+		GregorianCalendar ted = new GregorianCalendar();
+		ted.set( ted.HOUR_OF_DAY, 00 );
+		ted.set( ted.MINUTE, 00 );
+		ted.set( ted.SECOND, 00 );
+		Date today = ted.getTime();
 		Project proj = Project.findById( projId );
 		ObjectType type = ObjectType.get( getControllerClass() );
 		notFoundIfNull( type );
@@ -365,8 +377,11 @@ public class Sprints extends SmartCRUD
 			if( object.ended )
 			{
 				object.ended = false;
-				object.endDate = new Date();
-
+				GregorianCalendar n = new GregorianCalendar();
+				n.set( n.HOUR_OF_DAY, 23 );
+				n.set( n.MINUTE, 59 );
+				n.set( n.SECOND, 59 );
+				object.endDate = n.getTime();
 				object.Last = object.startDate;
 			}
 			else
@@ -382,7 +397,7 @@ public class Sprints extends SmartCRUD
 					render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
 
 				}
-				if( today.contains( object.startDate.toString() ) )
+				else if( (object.startDate.before( today ) || object.endDate.before( today )) && !object.startDate.toString().equals( today.toString() ) )
 				{
 					renderArgs.put( "error", "Cant Create Sprint with Past Date" );
 
@@ -395,7 +410,11 @@ public class Sprints extends SmartCRUD
 			if( object.ended )
 			{
 				object.ended = false;
-				object.endDate = new Date();
+				GregorianCalendar n = new GregorianCalendar();
+				n.set( n.HOUR_OF_DAY, 23 );
+				n.set( n.MINUTE, 59 );
+				n.set( n.SECOND, 59 );
+				object.endDate = n.getTime();
 				object.Last = object.startDate;
 			}
 			else
@@ -415,8 +434,7 @@ public class Sprints extends SmartCRUD
 					render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
 
 				}
-				if( today.contains( object.startDate.toString() ) || today.contains( object.endDate.toString() ) )
-
+				else if( (object.startDate.before( today ) || object.endDate.before( today )) && !object.startDate.toString().equals( today.toString() ) )
 				{
 					renderArgs.put( "error", "Cant Create Sprint with Past Date" );
 
@@ -444,11 +462,6 @@ public class Sprints extends SmartCRUD
 			Application.overlayKiller( "reload('sprints', 'sprint-" + object.id + "')", "" );
 		}
 		redirect( request.controller + ".show", object.getEntityId() );
-		// }
-		// else
-		// {
-		// forbidden();
-		// }
 	}
 
 	/**
@@ -567,12 +580,12 @@ public class Sprints extends SmartCRUD
 		sprint.tasks.add( task );
 		task.taskSprint = sprint;
 		task.save();
-		if(task.subTasks.size()>0)
+		if( task.subTasks.size() > 0 )
 		{
-			for(int i =0; i<task.subTasks.size();i++)
+			for( int i = 0; i < task.subTasks.size(); i++ )
 			{
-				task.subTasks.get( i ).taskSprint=sprint;
-				sprint.tasks.add(task.subTasks.get( i ));
+				task.subTasks.get( i ).taskSprint = sprint;
+				sprint.tasks.add( task.subTasks.get( i ) );
 				task.subTasks.get( i ).save();
 			}
 		}
