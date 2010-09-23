@@ -7,7 +7,7 @@
 #{/if}
 #{else}
 	#{list items:sprints, as:'sprint'}
-#{if sprint.project.hasComponent()}
+#{if sprint.project.hasComponents()}
 		#{if (sprint.id==runningSprint) }
 			<div class="greenBg" name="@{Sprints.charts(sprint.id)}">Sprint ${sprint.sprintNumber}#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 			#{if connected.in(sprint.project).can("editSprint")}

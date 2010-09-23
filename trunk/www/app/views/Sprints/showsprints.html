@@ -26,7 +26,7 @@ function isBefore(date){
 		<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
 <img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>	
 		#{if sprint.ended}
-			#{if sprint.project.hasComponent()}
+			#{if sprint.project.hasComponents()}
 				<a href="#" onclick="overlayOpen('@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)}')" title="View sprint board snapshot?">
 				<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
 			#{/if}
