@@ -435,4 +435,26 @@ public class Sprint extends SmartModel
 		}
 		return false;
 	}
+
+	/**
+	 * @author minazaki i just modified the insprint to my need it checks if the
+	 *         start date of a sprint overlaps with any sprints OR the end date
+	 *         overlaps with any sprints
+	 * @param start
+	 *            the start date of the sprint
+	 * @param endate
+	 *            the end date of the sprint
+	 * @return boolean
+	 */
+	public boolean overlapSprint( Date start, Date end )
+	{
+		List <Sprint> sprints = this.project.sprints;
+		sprints.remove(this);
+		for( Sprint sprint : sprints )
+		{
+			if( start.equals( sprint.startDate ) ||end.equals( sprint.endDate ) ||start.equals( sprint.endDate ) ||end.equals( sprint.startDate ) || (start.after( sprint.startDate ) && end.before( sprint.endDate )) || (start.before( sprint.startDate ) && end.after( sprint.endDate )) || (start.before( sprint.startDate ) && end.after( sprint.startDate )) || (start.before( sprint.endDate ) && end.after( sprint.endDate )) )
+				return true;
+		}
+		return false;
+	}
 }

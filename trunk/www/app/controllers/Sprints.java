@@ -261,7 +261,7 @@ public class Sprints extends SmartCRUD
 				renderArgs.put( "error", "Cant Create Sprint with Past Date" );
 				render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
 			}
-			else if( proj.inSprint( startDate, endDate ) )
+			else if( object.overlapSprint( startDate, endDate ) )
 			{
 				renderArgs.put( "error", "Sprint Start Date and End Date are overlapping with other Sprint" );
 				render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
@@ -440,7 +440,7 @@ public class Sprints extends SmartCRUD
 
 					render( request.controller.replace( ".", "/" ) + "/projectshow.html", type, object, projId );
 				}
-				if( (proj.inSprint( object.startDate, object.endDate )) )
+				if( (object.overlapSprint( object.startDate, object.endDate )) )
 				{
 					renderArgs.put( "error", "Sprint is Overlapping with other Sprint time" );
 
