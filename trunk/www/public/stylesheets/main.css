@@ -2637,3 +2637,6 @@ height:206px !important;
 .log_time {
 	color: #ddd;
 }
+#object_permissions {
+	width: 500px;
+}

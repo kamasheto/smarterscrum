@@ -25,12 +25,9 @@ import edu.emory.mathcs.backport.java.util.Arrays;
  * @author mahmoudsakr
  */
 @OnApplicationStart
-public class Bootstrap extends Job
-{
-	public void doJob()
-	{
-		if( User.count() == 0 )
-		{
+public class Bootstrap extends Job {
+	public void doJob() {
+		if (User.count() == 0) {
 			new Setting().save();
 
 			// add help topics as well
@@ -42,27 +39,24 @@ public class Bootstrap extends Job
 
 			};
 
-			for( HelpTopic.Object obj : topics )
-			{
+			for (HelpTopic.Object obj : topics) {
 				new HelpTopic( obj.summary, obj.filename ).save();
 			}
 
 			String[] perms = { "manageLogs", "manageReviewerRequests", "addNote", "manageRoles", "createRole", "editRole", "deleteRole", "editProject", "editBacklog", "editProjectNotificationprofile", "editUserNotificationProfile", "addComponent", "editComponent", "deleteComponent", "addSprint", "editSprint", "editSprintBacklog", "addMeeting", "editMeeting", "deleteMeeting", "changeEstimations", "changeTaskType", "changeTaskStatus", "changeTaskDescreption", "changeReviewer", "changeAssignee", "changeAssigneeInSprint", "invite", "manageRequests", "editColumn", "getComponentMembers", "chooseAssignee", "chooseReporter", "chooseReviewer", "addProductRole", "editProductRole", "deleteProductRole", "request", "setDependentStories", "editColumnsPositions", "assignStoryToSprint", "respond", "accept", "renameColumns", "addReviewLog", "AddTask", "modifyTask", "changeStatus", "addTaskStatus", "editTaskStatus", "addTaskType", "editTaskType", "viewReviewLog", "startGame", "viewChat", "associateTaskToMeeting", "reportImpediment", "editTask", "setMeetingAttendance", "deleteProject", "ShowColumn", "HideColumn", "AssociateArtifacts", "AssociateSprinttoMeeting", "joinMeeting", "revokeUserRole", "deleteTask" };
-			for( String perm : perms )
-			{
-				new Permission( perm, perm ).save();
+			for (String perm : perms) {
+				new Permission(perm).save();
 			}
 			
-			Role r = new Role( "Project Owner" ).save();
-			for( Permission p : Permission.<Permission> findAll() )
-			{
+			Role r = new Role("Project Owner").save();
+			for (Permission p : Permission.<Permission> findAll()) {
 				r.permissions.add( p );
 			}
 			r.save();
-			new Role( "Project Admin" ).save();
-			new Role( "Scrum Master" ).save();
-			new Role( "Developer" ).save();
-			r = new Role( "Project Member" ).save();
+			new Role("Project Admin").save();
+			new Role("Scrum Master").save();
+			new Role("Developer").save();
+			r = new Role("Project Member").save();
 			r.baseRole = true;
 			r.save();
 		}

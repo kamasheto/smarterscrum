@@ -1,4 +1,3 @@
-
 #{if log}
 	<ul>
 		#{list items:logInfo, as:'info'}
@@ -12,7 +11,7 @@
 #{else}
 	#{extends 'overlay.html' /}
 	Filter: <input type="text" id="search_query" onkeyup="search_logs(1)"> <img id="loading_img" class="hidden" src="/public/images/loading.gif">
-	<ul id="logs"></ul>
+	<div id="logs_wrapper"></div>
 	
 	<style type="text/css" media="screen">
 
@@ -24,16 +23,20 @@
 	<script type="text/javascript" charset="utf-8">
 		$(function() {
 			search_logs(1);
+			
+
 		})
 		function search_logs(page) {
 			$('#loading_img').show()
 			$.post('/logs/list', {projectId: ${projectId}, filter: $('#search_query').val(), page: page}, function(logs){
-				body = $('#logs')
-				body.empty()
-				$('#loading_img').hide()
+				$('#logs_wrapper').empty()
+				$('#logs_wrapper').append('<div id="logs_accordion">')
+				body = $('#logs_accordion')
+				
 				$(logs.logs).each(function() {
-					body.append('<li id="log_'+this.id+'" class="log_item"><a onclick="show_log_content('+this.id+')">'+this.message+'</a> <span class=" log_time formatTime">'+this.timestamp+'</span><div></div></li>')
+					body.append('<h6 class="remove_me"><a onclick="show_log_content('+this.id+')">'+this.message+' <span class=" log_time formatTime _14">'+this.timestamp+'</span></a></h6><div class="remove_me" id="log_'+this.id+'"></div>')
 				})
+				
 				$('#logs_pages').remove()
 				body.after('<div id="logs_pages" class="page_numbers _14">')
 				div = $('#logs_pages')
@@ -44,13 +47,18 @@
 				if (logs.currentPage != logs.totalPages && logs.totalPages) {
 					div.append('<a onclick="search_logs('+(page+1)+')">Next</a>')
 				}
+				
 				doOnLoad()
+				$('#logs_accordion').accordion({clearStyle: true, collapsible: true, active: false})
+				$('#loading_img').hide()
 			})
 		}
 		function show_log_content(id) {
-			$.post('/logs/view', {logId: id, projectId: ${projectId}}, function(data) {
-				$('#log_' + id + ' div').html(data)
-			})
+			if ($('#log_' + id).is(':empty')) {
+				$.post('/logs/view', {logId: id, projectId: ${projectId}}, function(data) {
+					$('#log_' + id).html(data)
+				})
+			}
 		}
 	</script>
 #{/else}
