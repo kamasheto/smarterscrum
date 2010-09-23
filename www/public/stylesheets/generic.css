@@ -17,6 +17,7 @@ label {
 	height: 16px;
 	overflow: hidden;
 	width: 90%;
+	z-index:0;
 	white-space: nowrap
 }
 
