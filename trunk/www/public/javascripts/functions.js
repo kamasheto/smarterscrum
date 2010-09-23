@@ -388,14 +388,15 @@ $(function() {
 			resize: function(event, ui) {
 				var test = ($(this).find(".normalLinkn span")).first();
 				smart_pagination(test, 1, true);
-
-				
+$(this).css('height','');
+		//		alert('');
 			$(this).find('.taskSummary').each(function(){
 				if($(this).width()>$(this).next().width())
 					$(this).next().next().hide();
 				else
 					$(this).next().next().show();
 			});
+			
 		}});}
 		if ($(this).data('init')) return
 		$(this).data('init', 1);
