@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import models.Artifact;
+import models.CollaborateUpdate;
 import models.Component;
 import models.Log;
 import models.Meeting;
@@ -12,9 +13,12 @@ import models.MeetingAttendance;
 import models.Project;
 import models.Sprint;
 import models.Task;
-import models.CollaborateUpdate;
 import models.User;
 import notifiers.Notifications;
+
+import org.apache.commons.lang.StringUtils;
+
+import play.data.validation.Required;
 import play.db.jpa.JPASupport;
 import play.exceptions.TemplateNotFoundException;
 import play.i18n.Messages;
@@ -659,9 +663,13 @@ public class Meetings extends SmartCRUD
 	 * @author menna_ghoneim
 	 */
 
-	public static void addNote( long id, String note )
+	public static void addNote( long id, @Required String note )
 	{
 
+		if( validation.hasErrors() || StringUtils.isBlank( note ) )
+		{
+			renderJSON( false );
+		}
 		Meeting meeting = Meeting.findById( id );
 		Security.check( Security.getConnected().in( meeting.project ).can( "editMeeting" ) || Security.getConnected().meetingStatus( meeting.id ).equals( "confirmed" ) );
 		Artifact n = new Artifact( "Notes", note );
