@@ -64,9 +64,9 @@
 <b> Meeting Type </b>:  ${meeting.type} <br>
 #{/ifnot}
 <br>
-#{ifnot meeting.description==null}
+#{ifnot meeting.description==null || meeting.description.equals("") || meeting.description.equals(" ")}
 <b> Description </b>:  ${meeting.description.nl2br()}<br>
 #{/ifnot}
 <div class="reload-meetingAttendees-${meeting.id}" name="@{Meetings.invitedMembers(meeting.id)}">Attendees</div>
-<div class="reload-meetingNotes-${meeting.id}" name="@{Meetings.notes(meeting.id)}">Notes</div>
+<div class="reload-meetingNotes-${meeting.id}" name="@{Meetings.notes(meeting.id)}">Notes#{if ( (connected.meetingStatus( meeting.id ).equals( "confirmed" )) || connected.in( meeting.project ).can( "editMeeting" ) )}<a href="#" onclick="overlayOpen('/Meetings/newNote?id=${meeting.id}')"><img title= "add"src="@{'public/images/famfam/add.png'}" alt="[+]"/></a> #{/if}</div>
 <div class="reload-meetingTasks-${meeting.id}" name="/tasks/magicShow?meetingId=${meeting.id} ">Tasks</div>
