@@ -13,18 +13,9 @@
 	Filter: <input type="text" id="search_query" onkeyup="search_logs(1)"> <img id="loading_img" class="hidden" src="/public/images/loading.gif">
 	<div id="logs_wrapper"></div>
 	
-	<style type="text/css" media="screen">
-
-		#logs {
-			font-size:20px;
-			list-style:none;
-		}
-	</style>
 	<script type="text/javascript" charset="utf-8">
 		$(function() {
 			search_logs(1);
-			
-
 		})
 		function search_logs(page) {
 			$('#loading_img').show()
