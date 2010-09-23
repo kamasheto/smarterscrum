@@ -12,14 +12,19 @@
         <script src="@{'/public/javascripts/date.js'}" type="text/javascript" charset="utf-8"></script>
        	<script src="@{'/public/javascripts/more.js'}" type="text/javascript"charset="utf-8"></script>
 		<script type="text/javascript" src="/public/javascripts/jquery.gritter.min.js"></script>
-        #{get 'moreScripts' /}
+
 </head>
-<body onload=" signIn(${room.id}) " onUnload=" signOut(${room.id})" style="height:520px"> 
-								<div class="chatContainerHeader" style="text-align:center; width:100% !important;height:20px">
+<body onload=" signIn(${room.id}) " onUnload=" signOut(${room.id})"> 
+<table style="border:0;>
+<tr style="border:0;height:20px">
+<td class="chatContainerHeader" style="text-align:center; width:100% !important;height:20px">
 									Estimation game Chat 
-				</div>
-								<div id="chatHolder" style="width:100% !important;height:500px">
-									<div id="thread" class="thread" style="width:100% !important;height:415px">
+				
+</td>
+</tr>
+<tr style="height:100%">
+<td id="chatHolder" style="width:100% !important;height:100%;padding:0px">
+									<div id="thread" class="thread" style="width:100% !important;padding:0px!important;height:430px;">
 										<script type="text/html" id="message_tmpl">
 											<div class="<%= message.author == 'notice' ? 'notice allCornersRounded' : message.author == '${controllers.Security.getConnected().name}' ? 'you' : 'them' %>">		
 												<strong class="title" style="<%= message.author == 'notice' ? 'display:none !important' : '' %>"><%= message.author%></strong> 
@@ -28,11 +33,15 @@
 										</script>
 										<div id ="threader"></div>
 									</div>
-									<div id="newMessage" class="chatboxinput">	
-										<textarea id="message" name="message" class="chatboxtextarea" style="width:100%"></textarea>
-									</div>	
-			
-</div>
+</td></tr>
+<tr style="height:55px">
+<td id="newMessage" class="chatboxinput" >	
+										<textarea id="message" name="message" class="chatboxtextarea" style="width:99%"></textarea></td>
+</tr>
+</table>
+					
+									
+
 
 
 <script type="text/javascript">
