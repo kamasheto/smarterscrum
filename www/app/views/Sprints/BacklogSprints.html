@@ -6,7 +6,7 @@
 #{/if}
 #{else}
 	#{list items:sprints, as:'sprint'}
-#{if sprint.project.components.size()>1}
+#{if sprint.project.hasComponent()}
 		#{if (sprint.id==runningSprint) }
 			<div class="greenBg" name="@{Sprints.backlogs(sprint.id)}">Sprint ${sprint.sprintNumber} 
 			#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
