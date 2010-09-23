@@ -5,7 +5,7 @@
  <form action="/users/miniprofileaction" method="POST" enctype="multipart/form-data">
   <input type="hidden"name="userProfileId" value="${userProfile.id}">
   <div>
-   #{if userProfile.avatar !=""} 
+   #{if userProfile.avatar} 
      <img height="100" width="100"src="${userProfile.avatar}"/> 
    #{/if}
    #{else} 

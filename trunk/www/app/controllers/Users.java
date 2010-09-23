@@ -483,7 +483,7 @@ public class Users extends SmartCRUD {
 	public static void editMiniProfile ( long userProfileId)
 	{
 		User userProfile = User.findById(userProfileId);
-		User connectedUser = User.findById(Security.getConnected().id);
+		User connectedUser = Security.getConnected();
 		if (connectedUser.deleted)
 			notFound();
 		if (userProfile.deleted)
@@ -513,84 +513,68 @@ public class Users extends SmartCRUD {
 	 */
 	public static void miniProfileAction ( @Required(message = "You must enter a name") String name,
 			@Required(message = "You must enter an email") @Email(message = "You must enter a valid email") String email,
-			long userProfileId, File file) throws IOException
-	{
+			long userProfileId, File file) throws IOException {
 		User userProfile = User.findById(userProfileId);
 		User connectedUser = Security.getConnected();
 		if (connectedUser.deleted)
 			notFound();
 		if (userProfile.deleted)
 			notFound();
-		if ((userProfile.id == connectedUser.id)||(connectedUser.isAdmin))
-		{
-			if (Validation.hasErrors()) 
-			{
-				for(Error error : Validation.errors()) 
-				{ 
+		if (userProfile == connectedUser || connectedUser.isAdmin) {
+			if (Validation.hasErrors()) {
+				for (Error error : Validation.errors()) { 
 					flash.error(error.message());
 		        }
 				editMiniProfile(userProfileId);
 			}
 			String oldEmail = userProfile.email;
-			String oldname = userProfile.name;
+			String oldName = userProfile.name;
 			userProfile.name = name;
 			userProfile.email = email;
 			userProfile.save();
 			boolean hasErrors = false;
 			String message = "";
-			try 
-			{
+			try {
 				message = "You have successfully edited user personal information.";
-				if(file!=null)
-				{
+				if (file!=null) {
 					FileInputStream avatar = new FileInputStream(file);
 					String url = "/public/Avatars/" + userProfileId + "_" + file.getName();
 					IOUtils.copy(avatar, new FileOutputStream(Play.getFile(url)));
 					userProfile.avatar = url;
+					userProfile.save();
 				}
-				if (!userProfile.email.equals(oldEmail)) 
-				{
+				if (!userProfile.email.equals(oldEmail)) {
 					userProfile.activationHash = Application.randomHash(32);
 					userProfile.isActivated = false;
-					String emailSubject = "Your SmartSoft new Email activation requires your attention";
-					String emailBody = "Dear "
-							+ userProfile.name
-							+ ", The Email Address associated with your account has been requested to be changed. Please click the following link to activate your account: "
-							+ "http://localhost:9000/accounts/doActivation?hash="
-							+ userProfile.activationHash;
-					Mail.send("se.smartsoft@gmail.com", userProfile.email, emailSubject, emailBody);
-					message = message + " A confirmation email has been sent to the new Email.";
-					if (userProfile.id == connectedUser.id)
-					{
-						if (Security.connected().equals(oldEmail))
-						{
-							session.put("username", email);
-						}
+					userProfile.save();
+					// String emailSubject = "Your SmartSoft new Email activation requires your attention";
+					// String emailBody = "Dear "
+					// 		+ userProfile.name
+					// 		+ ", The Email Address associated with your account has been requested to be changed. Please click the following link to activate your account: "
+					// 		+ "http://localhost:9000/accounts/doActivation?hash="
+					// 		+ userProfile.activationHash;
+					// Mail.send("se.smartsoft@gmail.com", userProfile.email, emailSubject, emailBody);
+					// message = message + " A confirmation email has been sent to the new Email.";
+					Notifications.activate(userProfile.email, userProfile.name, Router.getFullUrl("Accounts.doActivation")+"?hash=" + userProfile.activationHash, true);
+					if (userProfile == connectedUser) {
+						flash.success("An activation email has been sent to your new email address. Please verify your email address and login.");
+						Sessions.logout();
 					}
 				}
-				if (!oldname.equals(name))
-				{
-					for (Project project : userProfile.projects)
-					{
-						CollaborateUpdate.update(project, "reload('users')");
+				
+				if (!oldName.equals(name) && userProfile == connectedUser) {
+					if (session.get("username").equals(oldName)) {
+						session.put("username", name);
 					}
+					
 					CollaborateUpdate.update(userProfile, "$('#username-in-topbar').html('"+name+"')");
-					if (userProfile.id == connectedUser.id)
-					{
-						if (Security.connected().equals(oldname))
-						{
-							session.put("username", name);
-						}
-					}
-					flash.success(message);
 				}
-				else
-				{
-					for (Project project : userProfile.projects)
-					{
-						CollaborateUpdate.update(project, "reload('user-"+userProfileId+"')");
-					}
+
+				for (Project project : userProfile.projects) {
+					CollaborateUpdate.update(project, "reload('users', 'user-"+userProfileId+"')");
 				}
+				
+				flash.success(message);
 				Application.overlayKiller("", "");
 			} 
 			catch (PersistenceException e) 
@@ -608,13 +592,12 @@ public class Users extends SmartCRUD {
 				}
 				flash.error(message);
 				editMiniProfile (userProfileId);
-				
 			}
 		}
 		else
-		{
-			Application.overlayKiller("","");
+		{	
 			flash.error("You are not allowed to edit these personal information.");
+			Application.overlayKiller("","");
 		}	
 	}
 }
