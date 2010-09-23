@@ -21,7 +21,7 @@
 				body.empty()
 				$('#loading_img').hide()
 				$(logs.logs).each(function() {
-					body.append('<li id="log_'+this.id+'" class="log_item"><a onclick="show_log_content('+this.id+')">'+this.message+'</a><div></div></li>')
+					body.append('<li id="log_'+this.id+'" class="log_item"><a onclick="show_log_content('+this.id+')">'+this.message+'</a> <span class="log_time">at <span class="formatTime">'+this.timestamp+'</span></span><div></div></li>')
 				})
 				$('#logs_pages').remove()
 				body.after('<div id="logs_pages" class="page_numbers _14">')
@@ -33,6 +33,7 @@
 				if (logs.currentPage != logs.totalPages && logs.totalPages) {
 					div.append('<a onclick="search_logs('+(page+1)+')">Next</a>')
 				}
+				doOnLoad()
 			})
 		}
 		function show_log_content(id) {
