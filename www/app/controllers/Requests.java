@@ -125,7 +125,7 @@ public class Requests extends SmartCRUD
 			}
 		}
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+currentRequest.project.id+"&isOverlay=false&url=#";
-		Notifications.notifyUser( currentRequest.user, "accepted", url, "your Request to be deleted from project", currentRequest.project.name, (byte) 1 , null);		
+		Notifications.notifyUser( currentRequest.user, "accepted", url, "your request to be deleted from project", currentRequest.project.name, (byte) 1 , null);		
 		Log.addLog("Deletion request accepted", currentRequest.project, currentRequest.user);
 		// Logs.addLog( Security.getConnected(), "DeletionRequestAccept", "Request", currentRequest.id, currentRequest.project, new Date() );
 		
@@ -295,13 +295,13 @@ public class Requests extends SmartCRUD
 			Notifications.notifyProjectUsers(tt.project, "addReviewer", url, "to the reviewers for the task type", tt.name, (byte)0);
 			CollaborateUpdate.update(rev.user, "reload('reviewers')");
 			CollaborateUpdate.update(rev.project, "reload('project-"+rev.project.id+"-in-user-"+rev.user.id+"')");
-			renderText("You are now "+tt.name+" reviewer in"+tt.project.name+"!");
+			renderText("You are now a '"+tt.name+"' reviewer in "+tt.project.name+"!");
 		}
 		else
 			{
 				CollaborateUpdate.update(rev.user, "reload('reviewers')");
 				CollaborateUpdate.update(tt.project, "reload('project-requests')");
-				renderText("Your request to be "+tt.name+" reviewer has been sent successfully!");
+				renderText("Your request to be a '"+tt.name+"' reviewer has been sent successfully!");
 			}
 	}
 	

@@ -398,20 +398,6 @@ public class Tasks extends SmartCRUD
 			}
 			tmp.estimationPoints = sum;
 		}
-		if( tmp.parent != null )
-		{
-			double sum = 0;
-			for( int i = 0; i < tmp.parent.subTasks.size(); i++ )
-			{
-				if( !tmp.parent.subTasks.get( i ).deleted )
-				{
-					sum = tmp.parent.subTasks.get( i ).estimationPoints + sum;
-					System.out.println(sum+"        hola");
-				}
-			}
-			tmp.parent.estimationPoints = sum+tmp.estimationPoints;
-			tmp.parent.save();
-		}
 		long oldAssignee;
 		if( tmp.assignee != null )
 			oldAssignee = tmp.assignee.id;// done
@@ -442,6 +428,20 @@ public class Tasks extends SmartCRUD
 			}
 		}
 		object.save();
+		if( tmp.parent != null )
+		{
+			double sum = 0;
+			for( int i = 0; i < tmp.parent.subTasks.size(); i++ )
+			{
+				if( !tmp.parent.subTasks.get( i ).deleted )
+				{
+					sum = tmp.parent.subTasks.get( i ).estimationPoints + sum;
+					System.out.println(sum+"        hola");
+				}
+			}
+			tmp.parent.estimationPoints = sum;
+			tmp.parent.save();
+		}
 		/*********** Changes as Comment by Galal Aly **************/
 		tmp.productRole = null;
 		tmp.getProductRole( tmp.description );

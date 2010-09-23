@@ -49,6 +49,8 @@ button,a button,input[type=submit],input[type=ok],input[type=send],input[type=bu
 
 .ui-widget-header img,.bar img {
 	float: right;
+	z-index:9;
+	position:relative;
 }
 
 .nav a {
