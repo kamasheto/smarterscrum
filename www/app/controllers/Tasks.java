@@ -217,6 +217,19 @@ public class Tasks extends SmartCRUD
 		{
 			tmp.estimationPoints = 0.0;
 		}
+		if( tmp.parent != null )
+		{
+			double sum = 0;
+			for( int i = 0; i < tmp.parent.subTasks.size(); i++ )
+			{
+				if( !tmp.parent.subTasks.get( i ).deleted )
+				{
+					sum = tmp.parent.subTasks.get( i ).estimationPoints + sum;
+				}
+			}
+			tmp.parent.estimationPoints = sum+tmp.estimationPoints;
+			tmp.parent.save();
+		}
 		for( int i = 0; i < tmp.estimationPointsPerDay.size(); i++ )
 		{
 			tmp.estimationPointsPerDay.set( i, tmp.estimationPoints );
@@ -393,9 +406,10 @@ public class Tasks extends SmartCRUD
 				if( !tmp.parent.subTasks.get( i ).deleted )
 				{
 					sum = tmp.parent.subTasks.get( i ).estimationPoints + sum;
+					System.out.println(sum+"        hola");
 				}
 			}
-			tmp.parent.estimationPoints = sum;
+			tmp.parent.estimationPoints = sum+tmp.estimationPoints;
 			tmp.parent.save();
 		}
 		long oldAssignee;
