@@ -12,22 +12,27 @@
 		#{else}	
 			#{if task!=null}
 			${task.getSummary()}
-			<br>
-			<br>
-			<b style="width:100px;display:inline-block;text-align:right">Assignee</b>
-			#{if task.assignee!=null}${task.assignee.name}#{/if}#{else}No assigned user.#{/else}
-			<br>
-			<b style="width:100px;display:inline-block;text-align:right">Reviewer</b>
+			<br><br>
+			<div class="taskinfo">
+			<b style="width:100px;display:inline-block;">Assignee</b>
+			#{if task.assignee!=null}${task.assignee.name}#{/if}#{else}No assigned user.#{/else}</div>
+			<div class="taskinfo">
+			<b style="width:100px;display:inline-block;">Reviewer</b>
 			#{if task.reviewer!=null}${task.reviewer.name}#{/if}#{else}No assigned user.#{/else}
-			<br>
-			<b style="width:100px;display:inline-block;text-align:right">Estimation Points</b>
+			</div>
+			<div class="taskinfo">
+			<b style="width:100px;display:inline-block;">Estimation Points</b>
 			${task.estimationPoints}
-			<br>
-			<b style="width:100px;display:inline-block;text-align:right">Task Status</b>
+			</div>
+			<div class="taskinfo">
+			<b style="width:100px;display:inline-block;">Task Status</b>
 			#{if task.taskStatus!=null}${task.taskStatus.name}#{/if}#{else}None.#{/else}
-			<br><b style="width:100px;display:inline-block;text-align:right">Task Type</b>
+			</div>
+			<div class="taskinfo"><b style="width:100px;display:inline-block;">Task Type</b>
 			#{if task.taskType!=null}${task.taskType.name}#{/if}#{else}None.#{/else}
-			<br /><b style="width:100px;display:inline-block;text-align:right">Sprint</b> #{if task.taskSprint!=null}${task.taskSprint.sprintNumber}#{/if}#{else}None.#{/else}
+			</div>
+			<div class="taskinfo"><b style="width:100px;display:inline-block;">Sprint</b> #{if task.taskSprint!=null}${task.taskSprint.sprintNumber}#{/if}#{else}None.#{/else}
+			</div>
 			#{/if}
 			
 		#{list items:tasks ,as :'Task'}
@@ -44,7 +49,19 @@
 		#{drag 'task-'+Task.id /}#{drop 'task-'+Task.id /}
 		#{summary}
 		#{if Task.parent!=null} ${Task.parent.number}.#{/if}${Task.number}: ${Task.getSummary()}
+					<!-- countdown -->#{if connected.equals(Task.assignee)}
+			#{if Task.deadline!=0}
+			<span id="tsk_${Task.id}" class="meeting_countdown"></span>
+				<script type="text/javascript">
+				$(function() {
+					showDate(${Task.id},'tsk_'+${Task.id},${Task.deadline},"task ${Task.getTaskNumber()}","task");
+				})
+			</script>	
+			#{/if}	#{/if}	
+<!-- end countdown -->
+
 		#{/summary}
+		
 		#{if connected.in(projectId).can('deleteTask')}
 		<a onclick="javascript:deleteTheTask(${Task.id},this);">
 		<img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>
@@ -69,16 +86,7 @@
 			<a href="#"onclick="overlayOpen('/Tasks/setDeadline?id=${Task.id}')" ><img title="Set deadline for this task"src="/public/images/famfam/clock_stop.png"/></a>
 			<img title="Assignee" src="@{'/public/images/famfam/assignee.png'}"/>
 			
-			<!-- countdown -->
-			#{if Task.deadline!=0}
-			<span id="tsk_${Task.id}" class="meeting_countdown"></span>
-				<script type="text/javascript">
-				$(function() {
-					showDate(${Task.id},'tsk_'+${Task.id},${Task.deadline},"task ${Task.getTaskNumber()}","task");
-				})
-			</script>	
-			#{/if}		
-<!-- end countdown -->
+
 			
 			#{/if}
 			

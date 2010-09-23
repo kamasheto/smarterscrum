@@ -1,14 +1,19 @@
 .do_not_paginate .filter {
 	display: none
 }
+.selectedBars .taskinfo{margin-bottom:-1px;border:1px dotted #333;padding:0 2.5px;color:#333;line-height:17px}
+.selectedBars .taskinfo b{margin-right:10px;padding-right:5px;height:100%;display:inline-block;border-right:1px dotted #333;}
 
+.selectedBars2 .taskinfo{margin-bottom:-1px;border:1px dotted #ddd;padding:0 2.5px;color:#ddd;line-height:17px}
+.selectedBars2 .taskinfo b{margin-right:10px;padding-right:5px;height:100%;display:inline-block;border-right:1px dotted #ddd;}
 label {
 	min-width: 100px !important;
 	display: inline-block;
 }
 
 .taskSummary {
-	display: inline-block;
+	display: inline;
+	position:absolute;
 	height: 16px;
 	overflow: hidden;
 	width: 90%;
