@@ -43,3 +43,14 @@ editTaskType = Someone edits a task type.
 addReviewer = A new reviewer is assigned to the project.
 deleteReviewer = A reviewer role is revoked.
 addProductRole = A new product role is added.
+
+# permissions
+perm_AddTask=Can add new task
+perm_AssociateArtifacts=Can associate artifacts
+perm_AssociateSprinttoMeeting=Can associate sprint to meeting
+perm_HideColumn=Can hide column from board
+perm_ShowColumn=Can show column on board
+perm_addComponent=Can add new component
+perm_addMeeting=Can add new meeting
+perm_addNote=Can add new note (to meeting)
+perm_addProductRole=Can add new product role
