@@ -282,22 +282,15 @@ public class User extends SmartModel
 	 */
 	public Role in( Project project, boolean systemAdminOverride )
 	{
-		// System.out.println("--- START with " + Security.getConnected());
-		// System.out.println(project);
 		List<Role> rs = this.roles;
 		List<Role> temp = new LinkedList<Role>();
 		for( Role r : rs )
 		{
-			// System.out.println(r.project);
-			// System.out.println(project);
-			// System.out.println(r.project == project);
-			// System.out.println(r.project.equals(project));
 			if( r.project == project )
 			{
 				temp.add( r );
 			}
 		}
-		// System.out.println("--- END");
 
 		Role result = new Role( null );
 		result.systemAdmin = systemAdminOverride && isAdmin;

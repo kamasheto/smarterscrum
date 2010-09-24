@@ -13,8 +13,7 @@ import play.mvc.Router;
  * @author mahmoudsakr
  */
 public class Security extends Secure.Security
-{
-
+{	
 	/**
 	 * gets the connected user in the session.
 	 * 
@@ -22,8 +21,8 @@ public class Security extends Secure.Security
 	 */
 	public static User getConnected()
 	{
-		String usr = (isConnected() ? connected() : "");
-		return User.find( "select u from User u where u.email=? or u.name=?", usr.toLowerCase(), usr ).first();
+		String id = session.get("user_id");
+		return User.findById(Long.parseLong(id == null ? "0" : id));	
 	}
 
 	/**
@@ -35,38 +34,38 @@ public class Security extends Secure.Security
 	 *            user password
 	 * @return true if such a user exist, false otherwise
 	 */
-	public static boolean authentify( String email, String password )
+	public static boolean authenticate( String email, String password )
 	{
 		User user = User.find( "select u from User u where (u.email=? or u.name=?) and u.pwdHash = ?", email.toLowerCase(), email, Application.hash( password ) ).first();
 		/* By Tj.Wallas_ in Sprint2 */
 		if( user != null && !user.isActivated )
 		{
 			flash.error( "Your account is not activated, please follow the instructions in the Email we sent you to activate your account" );
-			try
-			{
-				Secure.login();
-			}
-			catch( Throwable e )
-			{
-				e.printStackTrace();
-			}
+			return false;
 		}
 		else if( user != null && user.deleted )
 		{
-			flash.error( "Your account has been deleted. Please contact a website administrator for further information." );
-			try
-			{
-				Secure.login();
-			}
-			catch( Throwable e )
-			{
-				e.printStackTrace();
-			}
+			flash.error( "Your account has been deleted. Please contact a website administrator for further information." );			
+			return false;
 		}
 
 		return user != null;
 	}
 
+	/**
+	 * Places the user id in the session. From now on, we will identify the user with his id!
+	 */
+	public static void onAuthenticated() {
+		String usr = (isConnected() ? connected() : "");
+		User user =  User.find( "select u from User u where u.email=? or u.name=?", usr.toLowerCase(), usr ).first();
+		session.put("user_id", user.id);
+		String url = flash.get("url");
+        if(url == null) {
+            url = "/";
+        }
+        redirect(url);
+	}
+	
 	/**
 	 * checks whether the boolean variable gives the user access to view the
 	 * page or not

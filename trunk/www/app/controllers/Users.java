@@ -205,7 +205,6 @@ public class Users extends SmartCRUD {
 		// NA3AM!! TYPE.FINDBYID EZAY YA3NI!
 		JPASupport object = UserNotificationProfile.findById(id);
 		UserNotificationProfile tmp = (UserNotificationProfile) object;
-		System.out.println(tmp.setSprint);
 		Security.check(object != null);
 		validation.valid(object.edit("object", params));
 		if (validation.hasErrors()) {
@@ -513,7 +512,7 @@ public class Users extends SmartCRUD {
 	 */
 	public static void miniProfileAction ( @Required(message = "You must enter a name") String name,
 			@Required(message = "You must enter an email") @Email(message = "You must enter a valid email") String email,
-			long userProfileId, File file) throws IOException {
+			long userProfileId, File file) throws IOException, Throwable {
 		User userProfile = User.findById(userProfileId);
 		User connectedUser = Security.getConnected();
 		if (connectedUser.deleted)
@@ -536,7 +535,7 @@ public class Users extends SmartCRUD {
 			String message = "";
 			try {
 				message = "You have successfully edited user personal information.";
-				if (file!=null) {
+				if (file != null) {
 					FileInputStream avatar = new FileInputStream(file);
 					String url = "/public/Avatars/" + userProfileId + "_" + file.getName();
 					IOUtils.copy(avatar, new FileOutputStream(Play.getFile(url)));
@@ -556,17 +555,9 @@ public class Users extends SmartCRUD {
 					// Mail.send("se.smartsoft@gmail.com", userProfile.email, emailSubject, emailBody);
 					// message = message + " A confirmation email has been sent to the new Email.";
 					Notifications.activate(userProfile.email, userProfile.name, Router.getFullUrl("Accounts.doActivation")+"?hash=" + userProfile.activationHash, true);
-					if (userProfile == connectedUser) {
-						flash.success("An activation email has been sent to your new email address. Please verify your email address and login.");
-						Sessions.logout();
-					}
 				}
 				
-				if (!oldName.equals(name) && userProfile == connectedUser) {
-					if (session.get("username").equals(oldName)) {
-						session.put("username", name);
-					}
-					
+				if (!oldName.equals(name)) {
 					CollaborateUpdate.update(userProfile, "$('#username-in-topbar').html('"+name+"')");
 				}
 
@@ -593,9 +584,7 @@ public class Users extends SmartCRUD {
 				flash.error(message);
 				editMiniProfile (userProfileId);
 			}
-		}
-		else
-		{	
+		} 	else {	
 			flash.error("You are not allowed to edit these personal information.");
 			Application.overlayKiller("","");
 		}	

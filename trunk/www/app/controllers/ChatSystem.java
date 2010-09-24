@@ -100,8 +100,6 @@ public class ChatSystem extends SmartController
 		// );
 		if( !currentUser.openChats.contains( room ) )
 		{
-			// System.out.println( "Adding " + room.id + " to " + currentUser.id
-			// );
 			currentUser.openChats.add( room );
 			// currentUser.refresh();
 			currentUser.save();
@@ -142,7 +140,6 @@ public class ChatSystem extends SmartController
 		}
 		if( empty )
 		{
-			System.out.println( "afr" );
 			List<Message> toBeDeleted = Message.find( "byRoom", room ).fetch();
 			for( Message m : toBeDeleted )
 			{
