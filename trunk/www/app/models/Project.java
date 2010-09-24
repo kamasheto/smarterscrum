@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -55,6 +56,7 @@ public class Project extends SmartModel
 	/**
 	 * Project creator
 	 */
+	@ManyToOne
 	public User user;
 
 	/* One To Many Relations */
