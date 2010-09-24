@@ -286,7 +286,6 @@ public class Application extends SmartController
 	 */
 	public static void showNotifications( int page )
 	{
-		System.out.println( "Hello World!" );
 		User user = Security.getConnected();
 		boolean first = false;
 		boolean last = false;
@@ -322,7 +321,6 @@ public class Application extends SmartController
 		}
 		for( Notification noti : pageOfNotifications )
 		{
-			// System.out.println(noti.unread);
 			if( noti.unread )
 			{
 				user.ReadNotifications++;

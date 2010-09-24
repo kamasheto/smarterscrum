@@ -73,7 +73,6 @@ public class Meetings extends SmartCRUD
 
 	public static void extend( long meetingid )
 	{
-		System.out.println( "test" );
 		Meeting M = Meeting.findById( meetingid );
 		boolean mem = false;
 		for( MeetingAttendance att : M.users )

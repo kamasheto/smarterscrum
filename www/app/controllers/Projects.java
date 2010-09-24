@@ -375,7 +375,6 @@ public class Projects extends SmartCRUD
 	{
 		TaskStatus taskStatus = TaskStatus.findById( statusID );
 		Security.check( Security.getConnected().in( taskStatus.project ).can( "editProject" ) );
-		System.out.println( taskStatus.isNew );
 		if( taskStatus.isNew )
 			renderJSON( false );
 		else

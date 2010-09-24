@@ -279,7 +279,6 @@ public class Sprint extends SmartModel
 		}
 		int numberOfDays = getDuration();
 		double[] estimationPointsPerDay = new double[numberOfDays];
-		System.out.println( cid + " " + taskss.size() + " " + tasks.size() );
 		if( taskss.size() == 0 )
 			return "[[]]";
 		for( int i = 0; i < estimationPointsPerDay.length; i++ )
@@ -367,7 +366,6 @@ public class Sprint extends SmartModel
 			}
 		}
 		int numberOfDays = getDuration();
-		System.out.println( numberOfDays );
 		double[] estimationPointsPerDay = new double[numberOfDays];
 		int yMax = 0;
 		if( taskss.size() == 0 )

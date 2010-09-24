@@ -45,7 +45,6 @@ public class Collaborate extends SmartController {
 		List<CollaborateUpdate> updates = CollaborateUpdate.find("(user = ? or user is null) and timestamp >= ?", user, lastUpdate).fetch();
 		for (CollaborateUpdate update : updates) {
 			// remove the users on the fly
-			// System.out.println(update);
 			update.user = null;
 		}
 		response.updates = updates;
@@ -92,7 +91,6 @@ public class Collaborate extends SmartController {
 		if (response.news.isEmpty() && response.updates.isEmpty() && !newUsers) {
 			suspend("1s");
 		}
-		// System.out.println(response.updates);
 		
 		/**
 		 * Finally render our response, with all details attached

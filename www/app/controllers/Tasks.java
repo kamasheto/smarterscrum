@@ -436,7 +436,6 @@ public class Tasks extends SmartCRUD
 				if( !tmp.parent.subTasks.get( i ).deleted )
 				{
 					sum = tmp.parent.subTasks.get( i ).estimationPoints + sum;
-					System.out.println(sum+"        hola");
 				}
 			}
 			tmp.parent.estimationPoints = sum;
@@ -807,7 +806,6 @@ public class Tasks extends SmartCRUD
 		Security.check( theTask.project.users.contains( Security.getConnected() ) );
 		if( theTask.deleted )
 			notFound();
-		System.out.println( temp );
 		boolean empty = temp.isEmpty();
 		String lastModified = null;
 		int numberOfModifications = 0;
