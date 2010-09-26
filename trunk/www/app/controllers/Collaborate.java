@@ -91,6 +91,8 @@ public class Collaborate extends SmartController {
 		if (response.news.isEmpty() && response.updates.isEmpty() && !newUsers) {
 			suspend("1s");
 		}
+				
+		response.last_update = new Date().getTime();
 		
 		/**
 		 * Finally render our response, with all details attached
