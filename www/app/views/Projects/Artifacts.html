@@ -4,22 +4,22 @@
 <div name="@{Sprints.BoardSprints(project.id)}">
 Boards
 #{list items:project.sprints, as:'sprint'}
-	#{if !sprint.ended()}
-	#{if sprint.project.hasComponents()>1}
-				<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id)}')" title="sprint ${sprint.sprintNumber} board?">
-				<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
-			#{/if}
-			#{else}
-				<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id,sprint.project.components[0].id)}')" title="sprint ${sprint.sprintNumber} board?">
-				<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
-			#{/else}
+	#{if !sprint.ended() && !sprint.ended}
+		#{if sprint.project.hasComponents()>1}
+			<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id)}')" title="sprint ${sprint.sprintNumber} board?">
+			<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
+		#{/if}
+		#{else}
+			<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id,sprint.project.components[0].id)}')" title="sprint ${sprint.sprintNumber} board?">
+			<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
+		#{/else}
 	#{/if}
 #{/list}	
 </div>
 <div name="@{Sprints.BacklogSprints(project.id)}">
 Backlogs
 #{list items:project.sprints, as:'sprint'}
-	#{if !sprint.ended()}
+	#{if !sprint.ended() && !sprint.ended}
 	<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="sprint ${sprint.sprintNumber} backlog?">
 	<img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>
 	#{/if}

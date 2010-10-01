@@ -113,6 +113,8 @@ public class Boards extends SmartCRUD
 						if( !task.deleted)
 						{
 						BoardColumn pcol = new BoardColumn();
+						if(task.taskStatus != null)
+						{
 						for( int k = 0; k < task.taskStatus.columns.size(); k++ )
 						{
 							pcol = task.taskStatus.columns.get( k );
@@ -120,6 +122,7 @@ public class Boards extends SmartCRUD
 							{
 								break;
 							}
+						}
 						}
 						if( pcol.onBoard && !pcol.deleted )
 						{
@@ -145,7 +148,15 @@ public class Boards extends SmartCRUD
 			for(int i=0;i<data.size();i++)
 			{
 				if(data.get(i)!=null)
-					tasks = true;
+				{
+				for(int j=0;j<data.get(i).size();j++)
+				{
+					if((data.get(i)).get(j)!=null && (data.get(i)).get(j).size()>0)
+					{
+						tasks = true;
+					}
+				}
+				}
 			}
 			render( data, columnsOfBoard, hidencolumnsOfBoard, u, uAdmin, b, s, p, columns, ud, ua, ur, ut, us,tasks );
 		}
@@ -176,6 +187,8 @@ public class Boards extends SmartCRUD
 					if( !task.deleted)
 					{
 					BoardColumn pcmp = new BoardColumn();
+					if(task.taskStatus != null)
+					{
 					for( int k = 0; k < task.taskStatus.columns.size(); k++ )
 					{
 						pcmp = task.taskStatus.columns.get( k );
@@ -183,6 +196,7 @@ public class Boards extends SmartCRUD
 						{
 							break;
 						}
+					}
 					}
 					if( pcmp.onBoard && !pcmp.deleted )
 					{
@@ -208,7 +222,15 @@ public class Boards extends SmartCRUD
 			for(int i=0;i<data.size();i++)
 			{
 				if(data.get(i)!=null)
-					tasks = true;
+				{
+				for(int j=0;j<data.get(i).size();j++)
+				{
+					if((data.get(i)).get(j)!=null && (data.get(i)).get(j).size()>0)
+					{
+						tasks = true;
+					}
+				}
+				}
 			}
 			render( data, columnsOfBoard, hidencolumnsOfBoard, u, uAdmin, b, s, comp, p, columns, ud, ua, ur, ut, us,tasks );
 		}

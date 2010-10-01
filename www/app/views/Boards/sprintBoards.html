@@ -3,14 +3,14 @@
 Sprint ${s.sprintNumber} Boards
 #{/set}
 
-#{if s.ended==false }
+#{if !s.ended && !s.ended() }
 	#{if p.hasComponents()>1}
 		<div class="overlay do_not_paginate" name="/boards/loadboard1?sprintID=${sprintID}">
 		${p.name}'s Task Board
 		<a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
 		</div>
 		#{list boards, as:'board'}
-			#{if board.component.number != 0}
+			#{if board.component.number != 0 && ! board.component.deleted}
 				<div class="overlay do_not_paginate" name="/boards/loadboard1?sprintID=${sprintID}&componentID=${board.component.id}">
 				${board.component.name}'s Board
 				<a onClick="loadBox('/Snapshots/index?sid=${sprintID}&cid=${board.component.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
@@ -27,13 +27,18 @@ Sprint ${s.sprintNumber} Boards
 #{/if}
 
 #{else}
+	#{list p.components[0].snapshots, as:'snapshot'}
+		#{if snapshot.sprint.id==s.id}
+			<div class="overlay do_not_paginate" name="/Snapshots/loadsnapShot?id=${snapshot.id}">
+		#{/if}
+	#{/list}
+	${p.name}'s Final Snapshot
+	<a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+	</div>
+		
 	#{if p.hasComponents()>1}
-		<div class="overlay do_not_paginate" name="/Snapshots/loadsnapShot?id=${s.finalsnapshot.id}">
-		${p.name}'s Final Snapshot
-		<a  onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
-		</div>
 		#{list components, as:'component'}
-			#{if component.number!=0 }
+			#{if component.number!=0 && !component.deleted}
 				#{list component.snapshots, as:'snapshot'}
 					#{if s.id==snapshot.sprint.id }
 						<div class="overlay do_not_paginate" name="/Snapshots/loadsnapShot?id=${snapshot.id}">
@@ -45,14 +50,4 @@ Sprint ${s.sprintNumber} Boards
 			#{/if}
 		#{/list}
 	#{/if}
-	#{else}
-		#{list p.components[0].snapshots, as:'snapshot'}
-			#{if s.id==snapshot.sprint.id }
-				<div class="overlay do_not_paginate" name="/Snapshots/loadsnapShot?id=${snapshot.id}">
-				${p.name}'s Final Snapshot
-				<a onClick="loadBox('/Snapshots/index?sid=${sprintID}&pid=${p.id}','workspace-${p.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
-				</div>
-			#{/if}
-		#{/list}
-	#{/else}
 #{/else}

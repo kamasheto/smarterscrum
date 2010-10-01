@@ -906,7 +906,7 @@ public class Tasks extends SmartCRUD
 		Project currentProject = task1.project;
 		boolean permession = user1.in( currentProject ).can( "changeTaskDescreption" );
 
-		if( task1.reviewer.id != userId && task1.assignee.id != userId )
+		if( task1.reviewer!=null && task1.reviewer.id != userId && task1.assignee!=null && task1.assignee.id != userId )
 		{
 			if( !permession )
 				return false;
@@ -921,23 +921,13 @@ public class Tasks extends SmartCRUD
 			CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + userId + ")" );
 			CollaborateUpdate.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ");sprintLoad(" + task1.id + ",'" + task1.id + "_des')" );
 		}
-		List<User> m = new ArrayList();
-		m.add( task1.assignee );
-		m.add( task1.reporter );
-		m.add( task1.reviewer );
 		if( userId == Security.getConnected().id )
 		{
-			// Logs.addLog( user1, "Edit", "Task Description", id,
-			// task1.project, new Date( System.currentTimeMillis() ) );
 			Log.addUserLog( "Edited task description", task1, task1.project );
 		}
 		else
 		{
 			Log.addUserLog( user1.name + " has edited task description", task1, user1, task1.project );
-			// Logs.addLog( user1 +
-			// " has performed action (Edit) using resource (Task Description) in project "
-			// + task1.project.name + " from the account of " +
-			// Security.getConnected().name );
 		}
 		CollaborateUpdate.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
 		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task1.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + task1.id;
@@ -1080,19 +1070,24 @@ public class Tasks extends SmartCRUD
 		Project currentProject = task1.project;
 		boolean permession = user1.in( currentProject ).can( "changeTaskStatus" );
 
-		if( task1.reviewer.id != userId && task1.assignee.id != userId )
+		if( task1.reviewer!=null && task1.reviewer.id != userId && task1.assignee!=null && task1.assignee.id != userId )
 		{
 			if( !permession )
 				return false;
 		}
-		long oldstatus = task1.taskStatus.id;
+		long oldstatus = 0;
+		if(task1.taskStatus != null)
+			oldstatus = task1.taskStatus.id;
 		task1.taskStatus = newStatus;
 		task1.save();
 		long newstatus = task1.taskStatus.id;
 		long compId = 0;
 		if( task1.component != null )
 			compId = task1.component.id;
-		CollaborateUpdate.update( task1.project, "drag_note_status(" + task1.taskSprint.id + "," + task1.assignee.id + "," + oldstatus + "," + newstatus + "," + compId + "," + task1.id + ")" );
+		if(task1.assignee != null)
+			CollaborateUpdate.update( task1.project, "drag_note_status(" + task1.taskSprint.id + "," + task1.assignee.id + "," + oldstatus + "," + newstatus + "," + compId + "," + task1.id + ")" );
+		else
+			CollaborateUpdate.update( task1.project, "drag_note_status(" + task1.taskSprint.id + "," + 0 + "," + oldstatus + "," + newstatus + "," + compId + "," + task1.id + ")" );
 		if( userId == Security.getConnected().id )
 		{
 			Log.addUserLog( "Edited task status", task1, task1.project );
@@ -1252,7 +1247,7 @@ public class Tasks extends SmartCRUD
 		User assignee = User.findById( assigneeId );
 		if( assignee == null )
 			return false;
-		if( task1.reviewer.getId() == assigneeId )
+		if( task1.reviewer!=null && task1.reviewer.getId() == assigneeId )
 			return false;
 
 		Project currentProject = task1.project;
@@ -1265,7 +1260,7 @@ public class Tasks extends SmartCRUD
 		User oldassi = task1.assignee;
 
 		task1.assignee = assignee;
-		if( !oldAssignee.equals( assignee ) )
+		if(oldAssignee!=null && !oldAssignee.equals( assignee ) )
 		{
 			task1.deadline = 0;
 		}
@@ -1283,9 +1278,11 @@ public class Tasks extends SmartCRUD
 			if( compId != 0 )
 
 			{
-				CollaborateUpdate.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + oldassi.id + "," + newassi + "," + task1.taskStatus.id + "," + compId + "," + task1.id + ")" );
-
-				CollaborateUpdate.update( Security.getConnected(), "note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + userId + ")" );
+				if(oldassi!=null)
+					CollaborateUpdate.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + oldassi.id + "," + newassi + "," + task1.taskStatus.id + "," + compId + "," + task1.id + ")" );
+				else
+					CollaborateUpdate.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + 0 + "," + newassi + "," + task1.taskStatus.id + "," + compId + "," + task1.id + ")" );	
+				CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + userId + ")" );
 				CollaborateUpdate.update( task1.project.users, Security.getConnected(), "note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 			}
 			else
