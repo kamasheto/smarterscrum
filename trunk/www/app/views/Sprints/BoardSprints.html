@@ -22,20 +22,14 @@
 			</div>
 		#{/if}
 		#{else}
-			#{if (sprint.ended) }
+			#{if (sprint.ended || sprint.ended()) }
 				<div class="redBg" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber}
-				#{if sprint.project.hasComponents()>1}
-					<a href="#" onclick="overlayOpen('@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)}')" title="View sprint board snapshot?">
-					<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>	
-				#{/if}
-				#{else}
 					#{list sprint.project.components[0].snapshots, as:'snapshot'}
 						#{if snapshot.sprint.id==sprint.id}
 							<a href="#" onclick="overlayOpen('@{Snapshots.loadsnapShot(snapshot.id)}')" title="View sprint board snapshot?">
 							<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
 						#{/if}
-					#{/list}
-				#{/else}
+					#{/list}	
 				#{if connected.in(sprint.project).can("editSprint")}
 					<img class="dim"src="/public/images/famfam/pencil.png" />
 				#{/if}

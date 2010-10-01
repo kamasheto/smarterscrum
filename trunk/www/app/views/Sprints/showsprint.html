@@ -51,52 +51,54 @@ function isBefore(date){
 <br />
 		
 
-#{if sprint.project.components.size()>1}
-<div name="@{Sprints.backlogs(sprint.id)}">Backlogs
-			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
-<img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a></div>
-
-
-<div name="@{Sprints.charts(sprint.id)}">Charts
-<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?">
-<img src="@{'public/images/famfam/chart.png'}" alt="[chart]"/></a>
-
-			</div>
-			#{/if}
-#{else}
-<div class="overlay"name="@{SprintBacklog.index(0,sprint.id)}">Backlog
-			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
-<img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a></div>
-
-
-<div class="overlay"name="@{SprintBacklog.showGraph(sprint.id,0)}">Chart
-<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?">
-<img src="@{'public/images/famfam/chart.png'}" alt="[chart]"/></a></div>
-#{/else}
-<div name="@{Boards.sprintBoards(sprint.id)}">Boards
-#{if sprint.ended}
-	#{if sprint.project.components.size()>1}
-		<a href="#" onclick="overlayOpen('@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)}')" title="View sprint board snapshot?">
-		<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
-	#{/if}
-	#{else}
+#{if sprint.project.hasComponents()>1}
+	<div name="@{Sprints.backlogs(sprint.id)}">Backlogs
+	<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
+	<img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a></div>
+	
+	<div name="@{Sprints.charts(sprint.id)}">Charts
+	<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?">
+	<img src="@{'public/images/famfam/chart.png'}" alt="[chart]"/></a></div>
+	
+	<div name="@{Boards.sprintBoards(sprint.id)}">Boards
+	#{if sprint.ended || sprint.ended()}
 		#{list sprint.project.components[0].snapshots, as:'snapshot'}
 			#{if snapshot.sprint.id==sprint.id}
 				<a href="#" onclick="overlayOpen('@{Snapshots.loadsnapShot(snapshot.id)}')" title="View sprint board snapshot?">
 				<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
 			#{/if}
 		#{/list}
-	#{/else}
-#{/if}
-#{else}
-	#{if sprint.project.components.size()>1}
-		<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id)}')" title="View project board?">
-		<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
 	#{/if}
 	#{else}
+		<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id)}')" title="View project board?">
+		<img src="@{'public/images/famfam/application_view_tile.png'}" alt="[board]"/></a>
+	#{/else}
+	</div>
+#{/if}
+#{else}
+<div class="overlay"name="@{SprintBacklog.index(0,sprint.id)}">Backlog
+			<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
+<img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a></div>
+
+<div class="overlay"name="@{SprintBacklog.showGraph(sprint.id,0)}">Chart
+<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?">
+<img src="@{'public/images/famfam/chart.png'}" alt="[chart]"/></a></div>
+
+	#{if sprint.ended || sprint.ended()}
+		#{list sprint.project.components[0].snapshots, as:'snapshot'}
+			#{if snapshot.sprint.id==sprint.id}
+		<div class="overlay" name="@{Snapshots.loadsnapShot(snapshot.id)}">Boards
+		
+				<a href="#" onclick="overlayOpen('@{Snapshots.loadsnapShot(snapshot.id)}')" title="View sprint board snapshot?">
+				<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
+			#{/if}
+		#{/list}	
+	#{/if}
+	#{else}
+		<div class="overlay" name="@{Boards.loadboard1(sprint.id,sprint.project.components[0].id)}">Boards
 		<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id,sprint.project.components[0].id)}')" title="View project board?">
 		<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
 	#{/else}
-#{/else}
 </div>
+#{/else}
 
