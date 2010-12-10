@@ -272,7 +272,7 @@ function fixZ (that)
 		if($(this)!=that)
 		{
 			$(this).css('z-index','9993');
-			$(this).addClass('dim');
+			//$(this).addClass('dim');
 		}
 	});
 }
@@ -339,25 +339,25 @@ $(function() {
 	$('.draggable').live('click',function(){
 		var that = $(this);
 		fixZ(that)
-		$(this).removeClass('dim');
+		//$(this).removeClass('dim');
 		$(this).css('z-index','9994');
 		
 	});
 	$('.draggable>.actual').live('click',function(){
 		var that = $(this).closest('.draggable');
 		fixZ(that)
-		$(this).closest('.draggable').removeClass('dim');
+		//$(this).closest('.draggable').removeClass('dim');
 		$(this).closest('.draggable').css('z-index','9994');
 	});
 	$('.draggable>.mainH').live('click',function(){
 		var that = $(this).closest('.draggable');
 		fixZ(that)
-		$(this).closest('.draggable').removeClass('dim');
+		//$(this).closest('.draggable').removeClass('dim');
 		$(this).closest('.draggable').css('z-index','9994');
 	});
 
 	$('.draggable').live('mouseover', function() {
-		$(this).removeClass('dim');
+		//$(this).removeClass('dim');
 		var h = $(this).height();
 		if (!DRAGGING_ELEMENT) {
 			$(this).children().children('.dragger').show()					
@@ -412,15 +412,15 @@ $(this).css('height','');
 		if ($(this).attr('id') != DRAGGING_ELEMENT) {
 			$(this).children().children('.dragger').hide()
 		}
-		if($(this).css('z-index')=='9993')
-			$(this).addClass('dim');
+		// if($(this).css('z-index')=='9993')
+		// 	$(this).addClass('dim');
 	}).live('mousedown', function() {
-			$(this).removeClass('dim');
+			// $(this).removeClass('dim');
 	}).live('mouseenter', function() {
-			$(this).removeClass('dim');
+			// $(this).removeClass('dim');
 	}).live('mouseleave', function() {
-		if($(this).css('z-index')=='9993')
-			$(this).addClass('dim');
+		// if($(this).css('z-index')=='9993')
+		// 	$(this).addClass('dim');
 	});;
 		
 	$(".draggableChild").live('mouseout', function() {
@@ -465,7 +465,7 @@ $(this).css('height','');
 								$(this).find('.actual:first').html('');
 								load($(this).attr('name'), $(this).attr('id'),1);
 								fixZ($(this));
-								$(this).removeClass('dim');
+								// $(this).removeClass('dim');
 								$(this).css('z-index','9994');
 							},
 							start : function(event, ui) {
@@ -557,10 +557,10 @@ $(this).css('height','');
 			$('#' + theId).removeAttr('style');
 			fixZ($('#' + theId).closest('.draggable'));
 			load($('#' + theId).attr('name'),theId,5,0);
-			$('#' + theId).closest('.draggable').removeClass('dim');
+			// $('#' + theId).closest('.draggable').removeClass('dim');
 			$('#' + theId).closest('.draggable').css('zIndex','9994');
 			$('#' + theId).removeAttr('style');
-			$('#' + theId).removeClass('dim');
+			// $('#' + theId).removeClass('dim');
 			$('#' + theId).removeAttr('style');
 		}
 		});
@@ -607,6 +607,14 @@ function load(url, el, n, hideLoading) {
 		})
 }
 
+function randomInt(max, min) {
+	if (!min) {
+		min = 0;
+	}
+	random = Math.floor(Math.random() * (max-min)) + min;
+	return random
+}
+
 // CURRENT_OFFSET = 10
 function loadBox(url, el, classes) 
 {
@@ -624,6 +632,8 @@ function loadBox(url, el, classes)
 				var that = element;
 				fixZ(that);
 				element.attr('name', url)
+				element.css('left', randomInt($('#'+el).width() - 450) + 'px')
+				element.css('top', randomInt($('#'+el).height(), 50) + 'px')
 				element.addClass(classes)
 				element.css('z-index','9995');
 				element.find('.bar:first').remove()
