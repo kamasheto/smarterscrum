@@ -1064,7 +1064,8 @@ a,a img,span.revertFrom,span.min {
 	font-size: 10px;
 	left: 25%;
 	width: 50%;
-	color: #eee;
+	color: #fff;
+	opacity: 0.3;
 }
 
 .dim {
