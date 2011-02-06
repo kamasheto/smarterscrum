@@ -119,10 +119,10 @@ public class Ajax extends SmartController
 
 		if (from.equals("user") && to.equals("component")) {
 			// inviting user id to component id2
-			Users.chooseUsers(id2, id);
+			Users.choose_users(id2, id);
 		} else if (from.equals("task") && to.equals("component")) {
 			// associating task to component
-			Tasks.associateToComponent(id, id2);
+			Tasks.associate_to_component(id, id2);
 		} else if (from.equals("task") && to.equals("meeting")) {
 			// associate task to meeting
 			Meetings.addTask(id2, id);
@@ -134,11 +134,11 @@ public class Ajax extends SmartController
 			Meetings.inviteComponent(id2, id);
 		}else if( from.equals("task") && to.equals( "user" ) )
 		{
-			Tasks.assignTaskAssignee(id,id2);
+			Tasks.assign_task_assignee(id,id2);
 		}
 		else if  (from.equals("user") && to.equals( "task" ) )
 		{
-			Tasks.assignTaskReviewer(id, id2);
+			Tasks.assign_task_reviewer(id, id2);
 		}
 		else if  (from.equals("task") && to.equals( "sprint" ) )
 		{
@@ -146,7 +146,7 @@ public class Ajax extends SmartController
 		}
 		else if  (from.equals("task") && to.equals( "task" ) )
 		{
-			Tasks.setDependency(id, id2);
+			Tasks.set_dependency(id, id2);
 		} else if (from.equals("projectusers") && to.equals("meeting")) {
 			Meetings.inviteAllMembers(id2);
 		} else {

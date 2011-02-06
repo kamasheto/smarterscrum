@@ -42,71 +42,18 @@ import play.mvc.With;
  */
 @With (Secure.class)
 public class Users extends SmartCRUD {
-	/*
-	 * public static boolean[] userExists(User user) { boolean [] toBeReturned =
-	 * new boolean [] {false,false}; for(User currentUser :
-	 * User.<User>findAll()) { if(currentUser.name == user.name) toBeReturned[0]
-	 * = true; if(currentUser.email == user.email) toBeReturned[1] = true; }
-	 * return toBeReturned; }
-	 */// Commented out by Wallas
-
 	/**
-	 * Takes the component id as an input and renders to the html page a list of users in the project
-	 * & the component id it to redirect back to the component when the actions are done.
-	 * 
-	 * @author Moataz_Mekki
-	 * @param id
-	 *         The component id.
-	 * @return void
-	 */
-	public static void assignUsers(long id) {
-		Component comp = Component.findById(id);
-		Project pro = comp.project;
-		Security.check(pro, "editComponent");
-		List<User> users = getFreeUsers(pro);
-		render(users, comp, pro);
-	}
-
-	/**
-	 * Takes a project and returns a list of the developers in that project who are not assigned in any component yet
-	 * 
-	 * @author Moataz_Mekki
-	 * @param p
-	 *         The project that we need to get the developers in it.
-	 * @return List<User> 
-	 *             list of the developers that are not assigned in any component yet.
-	 */
-	public static List<User> getFreeUsers(Project project) {
-		List<User> users = project.users;
-		List<Component> projectComponents = project.components;
-		ArrayList<User> res = new ArrayList<User>();
-		for (int i = 0; i < users.size(); i++) {
-			User tmp = users.get(i);
-			for (int j = 0; j < projectComponents.size(); j++) {
-				Component com = projectComponents.get(j);
-				if (com.componentUsers.contains(tmp))
-					break;
-				else if (j == projectComponents.size() - 1)
-					res.add(tmp);
-			}
-
-		}
-		return res;
-	}
-
-	/**
-	 * Adds the relation between the user & the component 
-	 * to make sure that this user is assigned to that component
+	 * Assigns a user to a component
 	 * 
 	 * @author Moataz_Mekki
 	 * @param id
 	 *            component id.
-	 * @param UId
+	 * @param user_id
 	 *            user id.
 	 * @return void
 	 */
-	public static void chooseUsers(long id, long UId) {
-		User myUser = User.findById(UId);
+	public static void choose_users(long id, long user_id) {
+		User myUser = User.findById(user_id);
 		Component myComponent = Component.findById(id);
 		Security.check(myComponent.project, "assignUserToComponent");
 		if (myUser.components.contains(myComponent)) {
@@ -120,10 +67,10 @@ public class Users extends SmartCRUD {
 						}
 						}
 		myComponent.componentUsers.add(myUser);
-		// Logs.addLog(user, "assignUser", "User", UId, myComponent.project,
+		// Logs.addLog(user, "assignUser", "User", user_id, myComponent.project,
 		 // d);
 		Log.addUserLog("Assign user to component", myComponent, myComponent.project, myUser);
-		String url = Router.getFullUrl("Application.externalOpen")+"?id="+myComponent.project.id+"&isOverlay=false&url=/components/viewthecomponent?componentId="+myComponent.id;
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+myComponent.project.id+"&isOverlay=false&url=/components/viewthecomponent?component_id="+myComponent.id;
 		for(User u :myComponent.componentUsers)
 		{
 			if(!u.equals(myUser))
@@ -165,7 +112,7 @@ public class Users extends SmartCRUD {
 	 * @see {@link views/Users/manageNotificationProfile.html}
 	 * @return void
 	 */
-	public static void manageNotificationProfile(long id) throws ClassNotFoundException {
+	public static void manage_notification_profile(long id) throws ClassNotFoundException {
 		Project currentProject = Project.findById(id);
 		User currentUser = Security.getConnected();
 		// Security.check(currentUser.in(currentProject).can("editUserNotificationProfile"));
@@ -199,12 +146,11 @@ public class Users extends SmartCRUD {
 	 * @see {@link views/Users/manageNotificationProfile.html}
 	 * @return void
 	 */
-	public static void saveNotificationProfile(long id) throws Exception {
+	public static void save_notification_profile(long id) throws Exception {
 		ObjectType type = ObjectType.get(UserNotificationProfiles.class);
 		notFoundIfNull(type);
 		// NA3AM!! TYPE.FINDBYID EZAY YA3NI!
 		JPASupport object = UserNotificationProfile.findById(id);
-		UserNotificationProfile tmp = (UserNotificationProfile) object;
 		Security.check(object != null);
 		validation.valid(object.edit("object", params));
 		if (validation.hasErrors()) {
@@ -254,13 +200,6 @@ public class Users extends SmartCRUD {
 		notFoundIfNull(type);
 		JPASupport object = type.findById(id);
 		object = object.edit("object", params);
-		// Look if we need to deserialize
-		for (ObjectType.ObjectField field : type.getFields()) {
-			if (field.type.equals("serializedText") && params.get("object." + field.name) != null) {
-				Field f = object.getClass().getDeclaredField(field.name);
-				//f.set(object, CRUD.collectionDeserializer(params.get("object." + field.name), (Class) ((ParameterizedType) f.getGenericType()).getActualTypeArguments()[0]));
-			}
-		}
 
 		validation.valid(object);
 		if (validation.hasErrors()) {
@@ -345,20 +284,20 @@ public class Users extends SmartCRUD {
 	 *            
 	 * @return void
 	 */
-	public static void list(int page, String search, String searchFields, String orderBy, String order) {
+	public static void list(int page, String search, String search_fields, String order_by, String order) {
 		Security.check(Security.getConnected().isAdmin);
 		ObjectType type = ObjectType.get(getControllerClass());
 		notFoundIfNull(type);
 		if (page < 1) {
 			page = 1;
 		}
-		List<JPASupport> objects = type.findPage(page, search, searchFields, orderBy, order, (String) request.args.get("where"));
-		Long count = type.count(search, searchFields, (String) request.args.get("where"));
+		List<JPASupport> objects = type.findPage(page, search, search_fields, order_by, order, (String) request.args.get("where"));
+		Long count = type.count(search, search_fields, (String) request.args.get("where"));
 		Long totalCount = type.count(null, null, (String) request.args.get("where"));
 		try {
-			render(type, objects, count, totalCount, page, orderBy, order);
+			render(type, objects, count, totalCount, page, order_by, order);
 		} catch (TemplateNotFoundException e) {
-			render("CRUD/list.html", type, objects, count, totalCount, page, orderBy, order);
+			render("CRUD/list.html", type, objects, count, totalCount, page, order_by, order);
 		}
 	}
 	
@@ -378,7 +317,7 @@ public class Users extends SmartCRUD {
 	 * 
 	 * @param projectId
 	 *                the current project id.
-	 * @param componentId
+	 * @param component_id
 	 *                  the component id.
 	 * @param all
 	 *          an int value that indicates whether the list of the users is per project or per component.
@@ -387,19 +326,19 @@ public class Users extends SmartCRUD {
 	 * @author Monayri, Heba Elsherif
 	 * @return void
 	 */
-	public static void findUsers(long projectId, long componentId, int all, long userId)
+	public static void find_users(long project_id, long component_id, int all, long user_id)
 	{
 		String title;
-		if(userId!=0)
+		if(user_id!=0)
 		{
-			Project currentProject = Project.findById(projectId);
-			User user = User.findById(userId);
+			Project currentProject = Project.findById(project_id);
+			User user = User.findById(user_id);
 			title= user.name;
 			render(user, title, currentProject);
 		}
 		else
 		{
-			Project currentProject = Project.findById(projectId);
+			Project currentProject = Project.findById(project_id);
 			List<User> users = new ArrayList<User>();
 			if(all == 1)
 			{
@@ -409,9 +348,9 @@ public class Users extends SmartCRUD {
 			}
 			else
 			{
-				if(componentId !=0)
+				if(component_id !=0)
 				{
-					Component component = Component.findById(componentId);
+					Component component = Component.findById(component_id);
 					currentProject = component.project;
 					for(User user: component.componentUsers){
 						if(!user.deleted){
@@ -452,7 +391,7 @@ public class Users extends SmartCRUD {
 	 * @author Heba Elsherif
 	 * @return void
 	 */
-	public static void listUserProjects(long userId, int boxId, long projectId, long currentProjectId)
+	public static void list_user_projects(long userId, int boxId, long projectId, long currentProjectId)
 	{
 		String title = "";
 		User user = User.findById(userId);
@@ -479,7 +418,7 @@ public class Users extends SmartCRUD {
 	 *                    the use id that his mini profile is being edited.
 	 * @return void
 	 */
-	public static void editMiniProfile ( long userProfileId)
+	public static void edit_mini_profile ( long userProfileId)
 	{
 		User userProfile = User.findById(userProfileId);
 		User connectedUser = Security.getConnected();
@@ -510,7 +449,7 @@ public class Users extends SmartCRUD {
 	 *                    the use id that his profile is being edited.
 	 * @return void
 	 */
-	public static void miniProfileAction ( @Required(message = "You must enter a name") String name,
+	public static void mini_profile_action ( @Required(message = "You must enter a name") String name,
 			@Required(message = "You must enter an email") @Email(message = "You must enter a valid email") String email,
 			long userProfileId, File file) throws IOException, Throwable {
 		User userProfile = User.findById(userProfileId);
@@ -524,14 +463,13 @@ public class Users extends SmartCRUD {
 				for (Error error : Validation.errors()) { 
 					flash.error(error.message());
 		        }
-				editMiniProfile(userProfileId);
+				edit_mini_profile(userProfileId);
 			}
 			String oldEmail = userProfile.email;
 			String oldName = userProfile.name;
 			userProfile.name = name;
 			userProfile.email = email;
 			userProfile.save();
-			boolean hasErrors = false;
 			String message = "";
 			try {
 				message = "You have successfully edited user personal information.";
@@ -546,14 +484,6 @@ public class Users extends SmartCRUD {
 					userProfile.activationHash = Application.randomHash(32);
 					userProfile.isActivated = false;
 					userProfile.save();
-					// String emailSubject = "Your SmartSoft new Email activation requires your attention";
-					// String emailBody = "Dear "
-					// 		+ userProfile.name
-					// 		+ ", The Email Address associated with your account has been requested to be changed. Please click the following link to activate your account: "
-					// 		+ "http://localhost:9000/accounts/doActivation?hash="
-					// 		+ userProfile.activationHash;
-					// Mail.send("se.smartsoft@gmail.com", userProfile.email, emailSubject, emailBody);
-					// message = message + " A confirmation email has been sent to the new Email.";
 					Notifications.activate(userProfile.email, userProfile.name, Router.getFullUrl("Accounts.doActivation")+"?hash=" + userProfile.activationHash, true);
 				}
 				
@@ -582,7 +512,7 @@ public class Users extends SmartCRUD {
 					message = message +"The email is already used. Please enter another email.";
 				}
 				flash.error(message);
-				editMiniProfile (userProfileId);
+				edit_mini_profile (userProfileId);
 			}
 		} 	else {	
 			flash.error("You are not allowed to edit these personal information.");

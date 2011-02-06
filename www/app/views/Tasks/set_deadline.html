@@ -76,7 +76,7 @@ $(function()
 function changeTaskDeadline(id)
 	{
 		var long_value= $('#deadline').val();
-		$.post('/Tasks/changeTaskDeadline',{id:id, newDeadline:long_value},
+		$.post('/Tasks/change_task_deadline',{id:id, new_deadline:long_value},
 				function(flag)
 				{
 					if(flag)
@@ -95,7 +95,7 @@ function changeTaskDeadline(id)
 
 	function removeTaskDeadline(id)
 	{
-		$.post('/Tasks/removeTaskDeadline',{id:id},
+		$.post('/Tasks/remove_task_deadline',{id:id},
 				function(flag)
 				{
 					if(flag)
@@ -126,4 +126,3 @@ function changeTaskDeadline(id)
 	#{/if}
 	</div>
 	
-	<br><br><br><br><br><br><br><br>

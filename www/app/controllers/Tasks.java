@@ -52,7 +52,7 @@ public class Tasks extends SmartCRUD
 	 *            The project id that the task is added to.
 	 * @return void
 	 */
-	public static void blank( long componentId, long taskId, long projectId )
+	public static void blank( long component_id, long task_id, long project_id )
 	{
 		ObjectType type = ObjectType.get( getControllerClass() );
 		notFoundIfNull( type );
@@ -61,20 +61,20 @@ public class Tasks extends SmartCRUD
 		Component component = null;
 		Task task = null;
 		Project p = null;
-		if( projectId != 0 ) // adding task to project (put drop down list of
+		if( project_id != 0 ) // adding task to project (put drop down list of
 		// components)
 		{
-			p = Project.findById( projectId );
-			project = p;
+			p = Project.findById( project_id );
+			project = Project.findById( project_id );
 			if( project.deleted )
 				notFound();
 			Security.check( user.in( project ).can( "AddTask" ) );
 		}
 		else
 		{
-			if( componentId != 0 ) // adding task to component
+			if( component_id != 0 ) // adding task to component
 			{
-				component = Component.findById( componentId );
+				component = Component.findById( component_id );
 				project = component.project;
 				if( component.deleted )
 					notFound();
@@ -82,10 +82,10 @@ public class Tasks extends SmartCRUD
 			}
 			else
 			{
-				if( taskId != 0 ) // adding subtask to parent task with id
+				if( task_id != 0 ) // adding subtask to parent task with id
 				// taskId
 				{
-					task = Task.findById( taskId );
+					task = Task.findById( task_id );
 					if( task != null && task.deleted )
 						notFound();
 					if( task.component != null )
@@ -126,7 +126,7 @@ public class Tasks extends SmartCRUD
 
 		try
 		{
-			render( project, p, component, task, type, sprints, productRoles, projectId, componentId, taskId );
+			render( project, p, component, task, type, sprints, productRoles, project_id, component_id, task_id );
 
 		}
 		catch( TemplateNotFoundException e )
@@ -227,7 +227,7 @@ public class Tasks extends SmartCRUD
 					sum = tmp.parent.subTasks.get( i ).estimationPoints + sum;
 				}
 			}
-			tmp.parent.estimationPoints = sum+tmp.estimationPoints;
+			tmp.parent.estimationPoints = sum + tmp.estimationPoints;
 			tmp.parent.save();
 		}
 		for( int i = 0; i < tmp.estimationPointsPerDay.size(); i++ )
@@ -235,7 +235,7 @@ public class Tasks extends SmartCRUD
 			tmp.estimationPointsPerDay.set( i, tmp.estimationPoints );
 		}
 		object.save();
-		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + tmp.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + tmp.id;
+		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + tmp.project.id + "&isOverlay=false&url=/tasks/view_task?task_id=" + tmp.id;
 		ArrayList<User> users = new ArrayList<User>();
 		if( tmp.assignee != null )
 			users.add( tmp.assignee );
@@ -376,7 +376,7 @@ public class Tasks extends SmartCRUD
 		long oldComponent = 0;
 		if( tmp.component != null )
 			oldComponent = tmp.component.id;
-					
+
 		long oldTaskType;
 		if( tmp.taskType != null )
 			oldTaskType = tmp.taskType.id;
@@ -579,12 +579,12 @@ public class Tasks extends SmartCRUD
 			subTask.taskSprint = tmp.taskSprint;
 			subTask.save();
 		}
-		
+
 		flash.success( Messages.get( "crud.saved", type.modelName, object.getEntityId() ) );
 		if( params.get( "_save" ) != null )
 		{
 			CollaborateUpdate.update( tmp.project, "reload('tasks','task-" + tmp.id + "'" + (tmp.parent != null ? ",'task-" + tmp.parent.id + "'" : "") + ")" );
-			String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + tmp.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + tmp.id;
+			String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + tmp.project.id + "&isOverlay=false&url=/tasks/view_task?task_id=" + tmp.id;
 			ArrayList<User> nusers = new ArrayList<User>();
 			if( tmp.assignee != null )
 				nusers.add( tmp.assignee );
@@ -645,7 +645,7 @@ public class Tasks extends SmartCRUD
 				CollaborateUpdate.update( tmp.project, "reload('tasks-" + tmp.project.id + "', 'task-" + tmp.id + "', 'task-" + tmp.parent.id + "', 'tasks')" );
 			}
 			CollaborateUpdate.update( tmp.project, "reload('tasks-" + tmp.project.id + "', 'task-" + tmp.id + "', 'tasks')" );
-			deleteSubTasks( id );
+			delete_sub_tasks( id );
 			renderText( "Task deleted successfully." );
 
 		}
@@ -702,14 +702,14 @@ public class Tasks extends SmartCRUD
 	 *            the task id.
 	 * @return void
 	 */
-	public static void setDependency( long id, long id2 )
+	public static void set_dependency( long id, long id2 )
 	{
 		Task taskFrom = Task.findById( id );
 		Task taskTo = Task.findById( id2 );
 		Security.check( Security.getConnected().in( taskFrom.project ).can( "modifyTask" ) );
 		taskFrom.dependentTasks.add( taskTo );
 		taskFrom.save();
-		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + taskFrom.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + taskFrom.id;
+		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + taskFrom.project.id + "&isOverlay=false&url=/tasks/view_task?task_id=" + taskFrom.id;
 		ArrayList<User> nusers = new ArrayList<User>();
 		if( taskFrom.assignee != null )
 			nusers.add( taskFrom.assignee );
@@ -740,7 +740,7 @@ public class Tasks extends SmartCRUD
 	 *            The number of the day to which the effort belongs.
 	 * @return void
 	 */
-	public static void enterEffort( long id, double effort, int day )
+	public static void enter_effort( long id, double effort, int day )
 	{
 		Task temp = Task.findById( id );
 		Security.check( Security.getConnected().in( temp.project ).can( "modifyTask" ) || temp.assignee == Security.getConnected() );
@@ -761,7 +761,7 @@ public class Tasks extends SmartCRUD
 		temp.setEffortOfDay( effort, day );
 		CollaborateUpdate.update( temp.project, "sprintLoad(" + id + ",'" + id + "_day_" + day + "');" );
 		temp.save();
-		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + temp.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + temp.id;
+		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + temp.project.id + "&isOverlay=false&url=/tasks/view_task?task_id=" + temp.id;
 		ArrayList<User> nusers = new ArrayList<User>();
 		if( temp.assignee != null )
 			nusers.add( temp.assignee );
@@ -799,32 +799,32 @@ public class Tasks extends SmartCRUD
 	 *            , The id of the task whose report will be generated.
 	 * @return void
 	 */
-	public static void getReport( long id )
+	public static void report( long id )
 	{
-		Task theTask = Task.findById( id );
-		List<Log> temp = theTask.logs;
-		Security.check( theTask.project.users.contains( Security.getConnected() ) );
-		if( theTask.deleted )
+		Task task = Task.findById( id );
+		List<Log> temp = task.logs;
+		Security.check( task.project.users.contains( Security.getConnected() ) );
+		if( task.deleted )
 			notFound();
 		boolean empty = temp.isEmpty();
-		String lastModified = null;
-		int numberOfModifications = 0;
+		String last_modified = null;
+		int number_of_modifications = 0;
 		String efforts = "[";
 		boolean flag = false;
-		double n = theTask.getEffortPerDay( 0 );
+		double n = task.getEffortPerDay( 0 );
 		String changes = "[";
-		if( theTask.taskSprint != null )
+		if( task.taskSprint != null )
 		{
-			for( int j = 0; j < theTask.taskSprint.getDuration(); j++ )
+			for( int j = 0; j < task.taskSprint.getDuration(); j++ )
 			{
 				if( !flag )
-					n = theTask.getEffortPerDay( j );
+					n = task.getEffortPerDay( j );
 				if( n == -1 )
 				{
 					flag = true;
-					n = theTask.getEffortPerDay( j - 1 );
+					n = task.getEffortPerDay( j - 1 );
 				}
-				if( j == theTask.taskSprint.getDuration() - 1 )
+				if( j == task.taskSprint.getDuration() - 1 )
 					efforts = efforts + "[" + j + "," + n + "]]";
 				else
 					efforts = efforts + "[" + j + "," + n + "],";
@@ -863,21 +863,21 @@ public class Tasks extends SmartCRUD
 
 		if( !empty )
 		{
-			lastModified = new Date( temp.get( temp.size() - 1 ).timestamp ).toString().substring( 0, 10 ) + " @ " + new Date( temp.get( temp.size() - 1 ).timestamp ).toString().substring( 11 );
-			numberOfModifications = temp.size();
+			last_modified = new Date( temp.get( temp.size() - 1 ).timestamp ).toString().substring( 0, 10 ) + " @ " + new Date( temp.get( temp.size() - 1 ).timestamp ).toString().substring( 11 );
+			number_of_modifications = temp.size();
 		}
 		GregorianCalendar maxdate = new GregorianCalendar();
 		maxdate.setTimeInMillis( temp.get( temp.size() - 1 ).timestamp );
 		if( !temp.isEmpty() || temp.size() == 1 )
 			maxdate.setTimeInMillis( temp.get( temp.size() - 1 ).timestamp + (3 * 86400000) );
-		String maxDate = getStrDate( maxdate );
+		String maximum_date = getStrDate( maxdate );
 		GregorianCalendar mindate = new GregorianCalendar();
 		mindate.setTimeInMillis( temp.get( 0 ).timestamp );
 		if( !temp.isEmpty() || temp.size() == 1 )
 			mindate.setTimeInMillis( temp.get( 0 ).timestamp - (3 * 86400000) );
-		String minDate = getStrDate( mindate );
-		Project myProject = theTask.project;
-		render( myProject, minDate, temp, lastModified, empty, efforts, changes, numberOfModifications, theTask, maxDate );
+		String minimum_date = getStrDate( mindate );
+		Project project = task.project;
+		render( project, minimum_date, temp, empty, efforts, changes, task, maximum_date );
 	}
 
 	/**
@@ -892,36 +892,36 @@ public class Tasks extends SmartCRUD
 	 *            , The new description.
 	 * @return boolean
 	 */
-	public static boolean editTaskDesc2( long id, long userId, String desc )
+	public static boolean edit_task_description( long id, long user_id, String description )
 	{
 		Task task1 = Task.findById( id );
 		Security.check( Security.getConnected().in( task1.project ).can( "modifyTask" ) || task1.assignee == Security.getConnected() );
 		if( task1 == null )
 			return false;
-		if( userId == 0 )
+		if( user_id == 0 )
 		{
-			userId = Security.getConnected().id;
+			user_id = Security.getConnected().id;
 		}
-		User user1 = User.findById( userId );
+		User user1 = User.findById( user_id );
 		Project currentProject = task1.project;
 		boolean permession = user1.in( currentProject ).can( "changeTaskDescreption" );
 
-		if( task1.reviewer!=null && task1.reviewer.id != userId && task1.assignee!=null && task1.assignee.id != userId )
+		if( task1.reviewer != null && task1.reviewer.id != user_id && task1.assignee != null && task1.assignee.id != user_id )
 		{
 			if( !permession )
 				return false;
 		}
-		task1.description = desc;
+		task1.description = description;
 		task1.save();
 		long compId = 0;
 		if( task1.component != null )
 			compId = task1.component.id;
 		if( task1.taskSprint != null )
 		{
-			CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + userId + ")" );
+			CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + user_id + ")" );
 			CollaborateUpdate.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ");sprintLoad(" + task1.id + ",'" + task1.id + "_des')" );
 		}
-		if( userId == Security.getConnected().id )
+		if( user_id == Security.getConnected().id )
 		{
 			Log.addUserLog( "Edited task description", task1, task1.project );
 		}
@@ -930,7 +930,7 @@ public class Tasks extends SmartCRUD
 			Log.addUserLog( user1.name + " has edited task description", task1, user1, task1.project );
 		}
 		CollaborateUpdate.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
-		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task1.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + task1.id;
+		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task1.project.id + "&isOverlay=false&url=/tasks/view_task?task_id=" + task1.id;
 		ArrayList<User> nusers = new ArrayList<User>();
 		if( task1.assignee != null )
 			nusers.add( task1.assignee );
@@ -941,105 +941,6 @@ public class Tasks extends SmartCRUD
 		Notifications.notifyUsers( nusers, "changed", url, "the description of the", "task " + task1.number, (byte) 0, task1.project );
 		renderText( "The description was changed successfully" );
 		return true;
-	}
-
-	/**
-	 * FilterS for task id and new status and user_id.
-	 * 
-	 * @author josephhajj
-	 * @param id
-	 *            The Sprint id.
-	 * @param columnSequence
-	 *            The position of the column indicating this task status on the
-	 *            board.
-	 * @param taskString
-	 *            The task status sticky note id = "task-" + task.id
-	 * @param user_id
-	 *            Tthe user id.
-	 * @return void
-	 */
-	public static void changeTaskStatusHelper( long id, int columnSequence, String taskString, long user_id, long cid )
-	{
-		if( user_id == 0 )
-		{
-			user_id = Security.getConnected().id;
-		}
-
-		// setting the variable needed for the method
-		// defining the appropriate sprint
-		Sprint s = Sprint.findById( id );
-		// defining the project of the sprint
-		Project p = s.project;
-		// defining the board of the project
-		Board b = p.board;
-		Component component = null;
-		if( cid != 0 )
-			component = Component.findById( cid );
-		// defining the status
-		TaskStatus status = new TaskStatus();
-		// defining the cols of the board only
-		// List<Column> cols = b.columns;
-		// defining the final task id and its helper string
-		String task_id_helper[];
-		String task_id_helper2[];
-		long task_id;
-		// defining a flag for the second loop
-		// boolean flag = true;
-
-		// getting the actual status
-		BoardColumn col;
-		if( cid == 0 )
-			col = BoardColumn.find( "bySequenceAndBoard", columnSequence, b ).first();
-		else
-			col = BoardColumn.find( "bySequenceAndBoard", columnSequence, component.componentBoard ).first();
-		status = col.taskStatus;
-
-		// get the actual task_id in an int
-		task_id_helper = taskString.split( "_" );
-		task_id_helper2 = task_id_helper[0].split( "-" );
-		task_id = Integer.parseInt( task_id_helper2[1] );
-		editTaskStatus( task_id, user_id, status );
-	}
-
-	/**
-	 * Filters for taskid and user_id and the new assignee.
-	 * 
-	 * @author josephhajj
-	 * @param id
-	 *            The component id.
-	 * @param taskString
-	 *            The task status sticky note id = "task-" + task.id
-	 * @param user_id
-	 *            The user id.
-	 * @param row
-	 *            The row id.
-	 * @return void
-	 */
-	public static void changeTaskAssigneeHelper( long id, String taskString, long user_id, int row )
-	{
-		// if user is not selected take the one in the session
-		if( user_id == 0 )
-		{
-			user_id = Security.getConnected().id;
-		}
-
-		// getting the whole list of users
-		// User user = User.findById(user_id);
-		Component component = Component.findById( id );
-		List<User> users = component.componentUsers;
-
-		String task_id_helper[];
-		String task_id_helper2[];
-		long task_id;
-
-		// filtering the task id
-		task_id_helper = taskString.split( "_" );
-		task_id_helper2 = task_id_helper[0].split( "-" );
-		task_id = Integer.parseInt( task_id_helper2[1] );
-
-		// calling the method
-		editTaskAssignee2( task_id, user_id, users.get( row ).id );
-
 	}
 
 	/**
@@ -1054,7 +955,7 @@ public class Tasks extends SmartCRUD
 	 *            The id of the user who will change the task status.
 	 * @return boolean
 	 */
-	public static boolean editTaskStatus( long id, long userId, TaskStatus newStatus )
+	public static boolean edit_task_status2( long id, long userId, TaskStatus newStatus )
 	{
 		Task task1 = Task.findById( id );
 		if( task1 == null )
@@ -1070,13 +971,13 @@ public class Tasks extends SmartCRUD
 		Project currentProject = task1.project;
 		boolean permession = user1.in( currentProject ).can( "changeTaskStatus" );
 
-		if( task1.reviewer!=null && task1.reviewer.id != userId && task1.assignee!=null && task1.assignee.id != userId )
+		if( task1.reviewer != null && task1.reviewer.id != userId && task1.assignee != null && task1.assignee.id != userId )
 		{
 			if( !permession )
 				return false;
 		}
 		long oldstatus = 0;
-		if(task1.taskStatus != null)
+		if( task1.taskStatus != null )
 			oldstatus = task1.taskStatus.id;
 		task1.taskStatus = newStatus;
 		task1.save();
@@ -1084,7 +985,7 @@ public class Tasks extends SmartCRUD
 		long compId = 0;
 		if( task1.component != null )
 			compId = task1.component.id;
-		if(task1.assignee != null)
+		if( task1.assignee != null )
 			CollaborateUpdate.update( task1.project, "drag_note_status(" + task1.taskSprint.id + "," + task1.assignee.id + "," + oldstatus + "," + newstatus + "," + compId + "," + task1.id + ")" );
 		else
 			CollaborateUpdate.update( task1.project, "drag_note_status(" + task1.taskSprint.id + "," + 0 + "," + oldstatus + "," + newstatus + "," + compId + "," + task1.id + ")" );
@@ -1098,7 +999,7 @@ public class Tasks extends SmartCRUD
 			Log.addUserLog( user1.name + " edited task status", user1, task1, task1.project );
 		}
 		CollaborateUpdate.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
-		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task1.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + task1.id;
+		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task1.project.id + "&isOverlay=false&url=/tasks/view_task?task_id=" + task1.id;
 		ArrayList<User> nusers = new ArrayList<User>();
 		if( task1.assignee != null )
 			nusers.add( task1.assignee );
@@ -1119,10 +1020,10 @@ public class Tasks extends SmartCRUD
 	 * @param statusId
 	 *            , the id of the new status
 	 */
-	public static void changeTaskStatus( long id, long statusId )
+	public static void edit_task_status( long id, long status_id )
 	{
 		Task task = Task.findById( id );
-		TaskStatus stat = TaskStatus.findById( statusId );
+		TaskStatus stat = TaskStatus.findById( status_id );
 		if( task == null )
 			notFound();
 		if( stat == null )
@@ -1173,7 +1074,7 @@ public class Tasks extends SmartCRUD
 	 *            The value of the new estimation.
 	 * @return boolean
 	 */
-	public static boolean editTaskEstimation( long id, double estimation )
+	public static boolean edit_task_points( long id, double estimation )
 	{
 		Task task = Task.findById( id );
 		Security.check( Security.getConnected().in( task.project ).can( "modifyTask" ) || task.assignee == Security.getConnected() );
@@ -1204,7 +1105,7 @@ public class Tasks extends SmartCRUD
 			CollaborateUpdate.update( task.project, "sprintLoad(" + task.parent.id + ",'" + task.parent.id + "_points');" );
 		}
 		Log.addUserLog( "Edit task estimation", task, task.project );
-		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + task.id;
+		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task.project.id + "&isOverlay=false&url=/tasks/view_task?task_id=" + task.id;
 		ArrayList<User> nusers = new ArrayList<User>();
 		if( task.assignee != null )
 			nusers.add( task.assignee );
@@ -1229,25 +1130,25 @@ public class Tasks extends SmartCRUD
 	 *            The id of the user who will be the assignee of the task.
 	 * @return boolean
 	 */
-	public static boolean editTaskAssignee2( long id, long userId, long assigneeId )
+	public static boolean edit_task_assignee( long id, long user_id, long assignee_id )
 	{
 		Task task1 = Task.findById( id );
 		if( task1 == null )
 			return false;
-		if( userId == 0 )
+		if( user_id == 0 )
 		{
-			userId = Security.getConnected().id;
+			user_id = Security.getConnected().id;
 		}
-		User user1 = User.findById( userId );
+		User user1 = User.findById( user_id );
 		if( user1 == null )
 			return false;
 		Security.check( user1.in( task1.project ).can( "modifyTask" ) || task1.assignee == user1 );
 
 		User oldAssignee = task1.assignee;
-		User assignee = User.findById( assigneeId );
+		User assignee = User.findById( assignee_id );
 		if( assignee == null )
 			return false;
-		if( task1.reviewer!=null && task1.reviewer.getId() == assigneeId )
+		if( task1.reviewer != null && task1.reviewer.getId() == assignee_id )
 			return false;
 
 		Project currentProject = task1.project;
@@ -1260,7 +1161,7 @@ public class Tasks extends SmartCRUD
 		User oldassi = task1.assignee;
 
 		task1.assignee = assignee;
-		if(oldAssignee!=null && !oldAssignee.equals( assignee ) )
+		if( oldAssignee != null && !oldAssignee.equals( assignee ) )
 		{
 			task1.deadline = 0;
 		}
@@ -1278,21 +1179,21 @@ public class Tasks extends SmartCRUD
 			if( compId != 0 )
 
 			{
-				if(oldassi!=null)
+				if( oldassi != null )
 					CollaborateUpdate.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + oldassi.id + "," + newassi + "," + task1.taskStatus.id + "," + compId + "," + task1.id + ")" );
 				else
-					CollaborateUpdate.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + 0 + "," + newassi + "," + task1.taskStatus.id + "," + compId + "," + task1.id + ")" );	
-				CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + userId + ")" );
+					CollaborateUpdate.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + 0 + "," + newassi + "," + task1.taskStatus.id + "," + compId + "," + task1.id + ")" );
+				CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + user_id + ")" );
 				CollaborateUpdate.update( task1.project.users, Security.getConnected(), "note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 			}
 			else
 
 			{
-				CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + userId + ")" );
+				CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + user_id + ")" );
 				CollaborateUpdate.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 			}
 		}
-		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task1.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + task1.id;
+		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task1.project.id + "&isOverlay=false&url=/tasks/view_task?task_id=" + task1.id;
 		ArrayList<User> nusers = new ArrayList<User>();
 		if( task1.assignee != null )
 			nusers.add( task1.assignee );
@@ -1303,7 +1204,7 @@ public class Tasks extends SmartCRUD
 		if( oldassi != null )
 			nusers.add( oldassi );
 		Notifications.notifyUsers( nusers, "changed", url, "the assignee of the", "task " + task1.number, (byte) 0, task1.project );
-		if( userId == Security.getConnected().id )
+		if( user_id == Security.getConnected().id )
 		{
 			Log.addUserLog( "Edited task assignee", task1, task1.project );
 			// Logs.addLog( user1, "Edit", "Task Assignee", id, task1.project,
@@ -1333,23 +1234,23 @@ public class Tasks extends SmartCRUD
 	 *            The id of the user who will be the reviewer of the task.
 	 * @return boolean
 	 */
-	public static boolean editTaskReviewer2( long id, long userId, long reviewerId )
+	public static boolean edit_task_reviewer( long id, long user_id, long reviewer_id )
 	{
 		Task task1 = Task.findById( id );
-		if( userId == 0 )
+		if( user_id == 0 )
 		{
-			userId = Security.getConnected().id;
+			user_id = Security.getConnected().id;
 		}
-		User user1 = User.findById( userId );
+		User user1 = User.findById( user_id );
 		if( user1 == null )
 			return false;
 		Security.check( user1.in( task1.project ).can( "modifyTask" ) || task1.assignee == user1 );
 		if( task1 == null )
 			return false;
-		User reviewer = User.findById( reviewerId );
+		User reviewer = User.findById( reviewer_id );
 		if( reviewer == null )
 			return false;
-		if( task1.assignee.getId() == reviewerId )
+		if( task1.assignee.getId() == reviewer_id )
 			return false;
 
 		Project currentProject = task1.project;
@@ -1365,12 +1266,12 @@ public class Tasks extends SmartCRUD
 			compId = task1.component.id;
 		if( task1.taskSprint != null )
 		{
-			CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + userId + ")" );
+			CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + user_id + ")" );
 			CollaborateUpdate.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 		}
 		reviewer.tasks.add( task1 );
 		reviewer.save();
-		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task1.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + task1.id;
+		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task1.project.id + "&isOverlay=false&url=/tasks/view_task?task_id=" + task1.id;
 		ArrayList<User> nusers = new ArrayList<User>();
 		if( task1.assignee != null )
 			nusers.add( task1.assignee );
@@ -1381,7 +1282,7 @@ public class Tasks extends SmartCRUD
 		if( oldReviewer != null )
 			nusers.add( oldReviewer );
 		Notifications.notifyUsers( nusers, "changed", url, "the reviewer of the", "task " + task1.number, (byte) 0, task1.project );
-		if( userId == Security.getConnected().id )
+		if( user_id == Security.getConnected().id )
 		{
 			Log.addUserLog( "Edit task reviewer", task1, task1.project );
 			// Logs.addLog( user1, "Edit", "Task Reviewer", id, task1.project,
@@ -1411,14 +1312,14 @@ public class Tasks extends SmartCRUD
 	 *            The id of the user who will change the task Type.
 	 * @return boolean
 	 */
-	public static boolean editTaskType( long id, long typeId, long userId )
+	public static boolean edit_task_type( long id, long type_id, long user_id )
 	{
 		Task task1 = Task.findById( id );
-		if( userId == 0 )
+		if( user_id == 0 )
 		{
-			userId = Security.getConnected().id;
+			user_id = Security.getConnected().id;
 		}
-		User user1 = User.findById( userId );
+		User user1 = User.findById( user_id );
 		if( user1 == null )
 			return false;
 
@@ -1433,7 +1334,7 @@ public class Tasks extends SmartCRUD
 			if( !permession )
 				return false;
 		}
-		TaskType type = TaskType.findById( typeId );
+		TaskType type = TaskType.findById( type_id );
 		if( task1.subTasks.size() > 0 )
 		{
 			String n = "";
@@ -1447,7 +1348,7 @@ public class Tasks extends SmartCRUD
 
 		}
 		TaskType oldType = task1.taskType;
-		if(task1.taskType != type)
+		if( task1.taskType != type )
 			task1.reviewer = null;
 		task1.taskType = type;
 		task1.save();
@@ -1459,7 +1360,7 @@ public class Tasks extends SmartCRUD
 			compId = task1.component.id;
 		if( task1.taskSprint != null )
 		{
-			CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + userId + ")" );
+			CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + user_id + ")" );
 			CollaborateUpdate.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
 		}
 		if( task1.subTasks.size() > 0 )
@@ -1467,12 +1368,12 @@ public class Tasks extends SmartCRUD
 			for( int i = 0; i < task1.subTasks.size(); i++ )
 			{
 				task1.subTasks.get( i ).taskType = type;
-				if(oldType != task1.taskType)
+				if( oldType != task1.taskType )
 					task1.subTasks.get( i ).reviewer = null;
 				task1.subTasks.get( i ).save();
 			}
 		}
-		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task1.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + task1.id;
+		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task1.project.id + "&isOverlay=false&url=/tasks/view_task?task_id=" + task1.id;
 		ArrayList<User> nusers = new ArrayList<User>();
 		if( task1.assignee != null )
 			nusers.add( task1.assignee );
@@ -1487,10 +1388,6 @@ public class Tasks extends SmartCRUD
 		return true;
 	}
 
-	public static void chooseTaskPerson()
-	{
-		render();
-	}
 
 	/**
 	 * Renders a list of the users on the component to select an assignee from
@@ -1503,20 +1400,20 @@ public class Tasks extends SmartCRUD
 	 *            Component of the users.
 	 */
 
-	public static void chooseTaskAssi( long taskId, long compId, long userId )
+	public static void choose_assignee( long task_id, long component_id, long user_id )
 	{
-		if( userId == 0 )
+		if( user_id == 0 )
 		{
-			userId = Security.getConnected().id;
+			user_id = Security.getConnected().id;
 		}
-		User user1 = User.findById( userId );
+		User user1 = User.findById( user_id );
 		List<User> users = new ArrayList<User>();
-		Task task = Task.findById( taskId );
-		Component c = Component.findById( compId );
+		Task task = Task.findById( task_id );
+		Component c = Component.findById( component_id );
 		users = c.componentUsers;
-		for(User u : users)
+		for( User u : users )
 		{
-			if(u.deleted)
+			if( u.deleted )
 				users.remove( u );
 		}
 		users.remove( task.reviewer );
@@ -1527,40 +1424,40 @@ public class Tasks extends SmartCRUD
 	 * Renders a list of the users on the component except the assignee to
 	 * select an assignee from them.
 	 * 
-	 * @author Dina Helal
-	 * @param taskId
-	 *            The task to be edited.
-	 * @param compId
-	 *            Component of the users.
-	 * @return void
+	 * @param task_id
+	 *            Task id
+	 * @param component_id
+	 *            Component id
+	 * @param user_id
+	 *            User id
 	 */
-
-	public static void chooseRev( long taskId, long compId, long userId )
+	public static void choose_reviewer( long task_id, long component_id, long user_id )
 	{
-		if( userId == 0 )
+		if( user_id == 0 )
 		{
-			userId = Security.getConnected().id;
+			user_id = Security.getConnected().id;
 		}
-		Task task = Task.findById( taskId );
-		Component component = Component.findById( compId );
+		Task task = Task.findById( task_id );
+		Component component = Component.findById( component_id );
 		List<Reviewer> reviewers = new ArrayList();
-		if(task.taskType!=null)
-		reviewers = Reviewer.find("byProjectAndAcceptedAndtaskType", task.project, true, task.taskType).fetch();
-	
+		if( task.taskType != null )
+			reviewers = Reviewer.find( "byProjectAndAcceptedAndtaskType", task.project, true, task.taskType ).fetch();
+
 		List<User> users = new ArrayList<User>();
-		for(Reviewer rev : reviewers){
-		if(component!=null && component.number!=0)
+		for( Reviewer rev : reviewers )
 		{
-			if(rev.user.components.contains(component) && ((task.assignee==null)||(task.assignee!=null && rev.user.id!= task.assignee.id)) )
-				users.add(rev.user);
+			if( component != null && component.number != 0 )
+			{
+				if( rev.user.components.contains( component ) && ((task.assignee == null) || (task.assignee != null && rev.user.id != task.assignee.id)) )
+					users.add( rev.user );
+			}
+			else
+			{
+				if( (task.assignee == null) || (task.assignee != null && rev.user.id != task.assignee.id) )
+					users.add( rev.user );
+			}
 		}
-		else
-		{
-			if((task.assignee==null)||(task.assignee!=null && rev.user.id!= task.assignee.id))
-			users.add(rev.user);
-		}
-		}
-		User user1 = User.findById( userId );
+		User user1 = User.findById( user_id );
 		users.remove( task.assignee );
 		render( task, users, user1 );
 	}
@@ -1575,40 +1472,40 @@ public class Tasks extends SmartCRUD
 	 *            The user id who is editing the task.
 	 * @return void
 	 */
-	public static void chooseType( long taskId, long userId )
+	public static void choose_type( long task_id, long user_id )
 	{
-		if( userId == 0 )
+		if( user_id == 0 )
 		{
-			userId = Security.getConnected().id;
+			user_id = Security.getConnected().id;
 		}
-		Task task = Task.findById( taskId );
-		List<TaskType> types = TaskType.find("byProjectAndDeleted", task.project, false).fetch();
-		render( task, types, userId );
+		Task task = Task.findById( task_id );
+		List<TaskType> types = TaskType.find( "byProjectAndDeleted", task.project, false ).fetch();
+		render( task, types, user_id );
 	}
 
 	/**
 	 * Takes renders to the view task(s) and the title and the project id and an
 	 * indicator to list the tasks
 	 * 
-	 * @param projectId
+	 * @param project_id
 	 *            The task'(s) project id.
-	 * @param componentId
+	 * @param component_id
 	 *            The task'(s) component id.
 	 * @param mine
 	 *            An indicator whether the list of my tasks or all project
 	 *            tasks.
-	 * @param meetingId
+	 * @param meeting_id
 	 *            The meeting id.
-	 * @param taskId
+	 * @param task_id
 	 *            The task id.
 	 * @return void
 	 */
-	public static void magicShow( long projectId, long componentId, int mine, long meetingId, long taskId )
+	public static void view_task( long project_id, long component_id, int mine, long meeting_id, long task_id )
 	{
 		String title;
-		if( componentId != 0 )
+		if( component_id != 0 )
 		{
-			Component component = Component.findById( componentId );
+			Component component = Component.findById( component_id );
 			title = "C" + component.number + ": Tasks";
 			List<Task> tasks = new ArrayList<Task>();
 			tasks = Task.find( "byComponentAndDeleted", component, false ).fetch();
@@ -1625,14 +1522,14 @@ public class Tasks extends SmartCRUD
 
 			}
 			boolean isComponent = true;
-			projectId = component.project.id;
-			render( counter, tasks, title, mine, projectId, isComponent );
+			project_id = component.project.id;
+			render( counter, tasks, title, mine, project_id, isComponent );
 		}
 		else
 		{
-			if( taskId != 0 )
+			if( task_id != 0 )
 			{
-				Task task = Task.findById( taskId );
+				Task task = Task.findById( task_id );
 				if( task.deleted )
 					notFound();
 				if( task.parent != null )
@@ -1646,8 +1543,8 @@ public class Tasks extends SmartCRUD
 						tasks.add( task2 );
 				}
 				int counter = tasks.size();
-				projectId = task.project.id;
-				render( counter, task, title, tasks, projectId );
+				project_id = task.project.id;
+				render( counter, task, title, tasks, project_id );
 			}
 			else
 			{
@@ -1655,7 +1552,7 @@ public class Tasks extends SmartCRUD
 				{
 					title = "My Tasks";
 					User user = Security.getConnected();
-					Project project = Project.findById( projectId );
+					Project project = Project.findById( project_id );
 					List<Task> tasks = new ArrayList<Task>();
 					for( Task task1 : project.projectTasks )
 					{
@@ -1686,24 +1583,24 @@ public class Tasks extends SmartCRUD
 						}
 					}
 					int counter = tasks.size();
-					render( counter, tasks, title, mine, projectId );
+					render( counter, tasks, title, mine, project_id );
 				}
 				else
 				{
-					if( projectId != 0 )
+					if( project_id != 0 )
 					{
 						title = "Project Tasks";
-						Project project = Project.findById( projectId );
+						Project project = Project.findById( project_id );
 						List<Task> tasks = Task.find( "byProjectAndDeletedAndParentIsNull", project, false ).fetch();
 						boolean isProject = true;
 						int counter = tasks.size();
-						render( counter, tasks, title, mine, projectId, isProject );
+						render( counter, tasks, title, mine, project_id, isProject );
 					}
 					else
 					{
-						if( meetingId != 0 )
+						if( meeting_id != 0 )
 						{
-							Meeting meeting = Meeting.findById( meetingId );
+							Meeting meeting = Meeting.findById( meeting_id );
 							List<Task> tasks = new ArrayList<Task>();
 							for( Task task2 : meeting.tasks )
 							{
@@ -1715,8 +1612,8 @@ public class Tasks extends SmartCRUD
 
 							title = "Meeting " + meeting.name + " Tasks";
 							int counter = tasks.size();
-							projectId = meeting.project.id;
-							render( counter, title, tasks, projectId );
+							project_id = meeting.project.id;
+							render( counter, title, tasks, project_id );
 						}
 					}
 				}
@@ -1734,10 +1631,10 @@ public class Tasks extends SmartCRUD
 	 *            The component id.
 	 * @return void
 	 */
-	public static void associateToComponent( long taskId, long componentId )
+	public static void associate_to_component( long task_id, long component_id )
 	{
-		Task task = Task.findById( taskId );
-		Component component = Component.findById( componentId );
+		Task task = Task.findById( task_id );
+		Component component = Component.findById( component_id );
 		User connected = Security.getConnected();
 		boolean flag = false;
 		Date now = Calendar.getInstance().getTime();
@@ -1771,7 +1668,7 @@ public class Tasks extends SmartCRUD
 		}
 		Notifications.notifyUsers( nusers, "associated", url, "task " + task.number + " to the component", component.getFullName(), (byte) 0, task.project );
 		Log.addUserLog( "Assigned task to component", task, component, component.project );
-		CollaborateUpdate.update( task.project, "reload('component-" + componentId + "', 'task-" + taskId + "')" );
+		CollaborateUpdate.update( task.project, "reload('component-" + component_id + "', 'task-" + task_id + "')" );
 		renderText( "Associated successfully" );
 	}
 
@@ -1784,10 +1681,10 @@ public class Tasks extends SmartCRUD
 	 *            The user id.
 	 * @return void
 	 */
-	public static void assignTaskAssignee( long taskId, long assigneeId )
+	public static void assign_task_assignee( long task_id, long assignee_id )
 	{
-		Task task = Task.findById( taskId );
-		User user = User.findById( assigneeId );
+		Task task = Task.findById( task_id );
+		User user = User.findById( assignee_id );
 		User connected = Security.getConnected();
 		if( task.reviewer == user )
 			renderText( "The reviewer can't be the assignee" );
@@ -1797,7 +1694,7 @@ public class Tasks extends SmartCRUD
 		task.assignee = user;
 		task.save();
 
-		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + task.id;
+		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task.project.id + "&isOverlay=false&url=/tasks/view_task?taskId=" + task.id;
 		ArrayList<User> nusers = new ArrayList<User>();
 		if( task.assignee != null )
 			nusers.add( task.assignee );
@@ -1807,7 +1704,7 @@ public class Tasks extends SmartCRUD
 			nusers.add( task.reporter );
 		Notifications.notifyUsers( nusers, "assigned", url, user.name + " to the", "task " + task.number, (byte) 0, task.project );
 		Log.addUserLog( "Assigned task assignee", task, user, task.project );
-		CollaborateUpdate.update( task.project, "reload('task-" + taskId + "');" );
+		CollaborateUpdate.update( task.project, "reload('task-" + task_id + "');" );
 		if( task.subTasks.size() > 0 )
 		{
 			for( int i = 0; i < task.subTasks.size(); i++ )
@@ -1818,24 +1715,24 @@ public class Tasks extends SmartCRUD
 				CollaborateUpdate.update( task.project, "sprintLoad(" + task.subTasks.get( i ).id + ",'" + task.subTasks.get( i ).id + "_assignee');" );
 			}
 		}
-		CollaborateUpdate.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_reviewer');" );
-		CollaborateUpdate.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_assignee');" );
+		CollaborateUpdate.update( task.project, "sprintLoad(" + task_id + ",'" + task_id + "_reviewer');" );
+		CollaborateUpdate.update( task.project, "sprintLoad(" + task_id + ",'" + task_id + "_assignee');" );
 		renderText( "Assignee added successfully" );
 	}
 
 	/**
 	 * Assigns a given user as a reviewer for a given task.
 	 * 
-	 * @param taskId
+	 * @param task_id
 	 *            The task id.
-	 * @param reviewerId
+	 * @param reviewer_id
 	 *            The user id.
 	 * @return void
 	 */
-	public static void assignTaskReviewer( long reviewerId, long taskId )
+	public static void assign_task_reviewer( long reviewer_id, long task_id )
 	{
-		Task task = Task.findById( taskId );
-		User user = User.findById( reviewerId );
+		Task task = Task.findById( task_id );
+		User user = User.findById( reviewer_id );
 		User connected = Security.getConnected();
 		if( task.assignee == user )
 			renderText( "The assignee can't be the reviewer" );
@@ -1869,7 +1766,7 @@ public class Tasks extends SmartCRUD
 		{
 			renderText( user.name + " is not a reviewer for task type " + task.taskType.name );
 		}
-		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + task.id;
+		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task.project.id + "&isOverlay=false&url=/tasks/view_task?task_id=" + task.id;
 		ArrayList<User> nusers = new ArrayList<User>();
 		if( task.assignee != null )
 			nusers.add( task.assignee );
@@ -1879,7 +1776,7 @@ public class Tasks extends SmartCRUD
 			nusers.add( task.reporter );
 		Notifications.notifyUsers( nusers, "assigned", url, user.name + " to review the", "task " + task.number, (byte) 0, task.project );
 		Log.addUserLog( "Assigned task reviewer", task, user, task.project );
-		CollaborateUpdate.update( task.project, "reload('task-" + taskId + "');" );
+		CollaborateUpdate.update( task.project, "reload('task-" + task_id + "');" );
 		if( task.subTasks.size() > 0 )
 		{
 			for( int i = 0; i < task.subTasks.size(); i++ )
@@ -1890,8 +1787,8 @@ public class Tasks extends SmartCRUD
 				CollaborateUpdate.update( task.project, "sprintLoad(" + task.subTasks.get( i ).id + ",'" + task.subTasks.get( i ).id + "_assignee');" );
 			}
 		}
-		CollaborateUpdate.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_reviewer');" );
-		CollaborateUpdate.update( task.project, "sprintLoad(" + taskId + ",'" + taskId + "_assignee');" );
+		CollaborateUpdate.update( task.project, "sprintLoad(" + task_id + ",'" + task_id + "_reviewer');" );
+		CollaborateUpdate.update( task.project, "sprintLoad(" + task_id + ",'" + task_id + "_assignee');" );
 		renderText( "Reviewer assigned successfully" );
 	}
 
@@ -1899,13 +1796,13 @@ public class Tasks extends SmartCRUD
 	 * Renders a list of users on a component. In case the user is not in a
 	 * component it renders all the users on the project.
 	 * 
-	 * @param cid
+	 * @param id
 	 *            The component id.
 	 * @return void
 	 */
-	public static void componentUsers( long cid )
+	public static void component_users( long id )
 	{
-		Component c = Component.findById( cid );
+		Component c = Component.findById( id );
 		List<User> users = new ArrayList<User>();
 		if( c.number == 0 )
 		{
@@ -1928,7 +1825,7 @@ public class Tasks extends SmartCRUD
 	 * 
 	 * @param id
 	 */
-	public static void setDeadline( long id )
+	public static void set_deadline( long id )
 	{
 		Task task = Task.findById( id );
 		if( !task.assignee.equals( Security.getConnected() ) )
@@ -1939,20 +1836,20 @@ public class Tasks extends SmartCRUD
 			render( task );
 	}
 
-	public static void changeTaskDeadline( long id, long newDeadline )
+	public static void change_task_deadline( long id, long new_deadline )
 	{
 		Task task = Task.findById( id );
 		if( !task.assignee.equals( Security.getConnected() ) )
 		{
 			forbidden();
 		}
-		if( newDeadline < new Date().getTime() )
+		if( new_deadline < new Date().getTime() )
 		{
 			renderJSON( false );
 		}
-		task.deadline = newDeadline;
+		task.deadline = new_deadline;
 		task.save();
-		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + task.id;
+		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task.project.id + "&isOverlay=false&url=/tasks/view_task?task_id=" + task.id;
 		ArrayList<User> nusers = new ArrayList<User>();
 		if( task.assignee != null )
 			nusers.add( task.assignee );
@@ -1970,8 +1867,9 @@ public class Tasks extends SmartCRUD
 	 * remove the task deadline
 	 * 
 	 * @param id
+	 *            task id
 	 */
-	public static void removeTaskDeadline( long id )
+	public static void remove_task_deadline( long id )
 	{
 		Task task = Task.findById( id );
 		if( !task.assignee.equals( Security.getConnected() ) )
@@ -1980,7 +1878,7 @@ public class Tasks extends SmartCRUD
 		}
 		task.deadline = 0;
 		task.save();
-		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + task.id;
+		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task.project.id + "&isOverlay=false&url=/tasks/view_task?task_id=" + task.id;
 		ArrayList<User> nusers = new ArrayList<User>();
 		if( task.assignee != null )
 			nusers.add( task.assignee );
@@ -1998,12 +1896,11 @@ public class Tasks extends SmartCRUD
 	 * 
 	 * @param id
 	 */
-	public static void reloadTask( long id )
+	public static void reload_task( long id )
 	{
 		Task task = Task.findById( id );
 		while( task.deadline >= new Date().getTime() )
 		{
-
 		}
 		CollaborateUpdate.update( Security.getConnected(), "reload('task-" + task.id + "','tasks-" + task.project.id + "')" );
 	}
@@ -2018,31 +1915,31 @@ public class Tasks extends SmartCRUD
 	 * @param componentId
 	 *            the Id of the component in which the task belong.
 	 */
-	public static void typeReviewer( long typeId, long componentId, long assigneeId )
+	public static void type_reviewer( long type_id, long component_id, long assignee_id )
 	{
-		TaskType type = TaskType.findById( typeId );
-		Component component = Component.findById( componentId );
+		TaskType type = TaskType.findById( type_id );
+		Component component = Component.findById( component_id );
 		List<Reviewer> reviewers = new ArrayList();
-		if( typeId != 0 )
+		if( type_id != 0 )
 			reviewers = Reviewer.find( "byProjectAndAcceptedAndtaskType", type.project, true, type ).fetch();
 		List<User.Object> users = new ArrayList<User.Object>();
 		for( Reviewer rev : reviewers )
 		{
 			if( component != null && component.number != 0 )
 			{
-				if( rev.user.components.contains( component ) && rev.user.id != assigneeId )
+				if( rev.user.components.contains( component ) && rev.user.id != assignee_id )
 					users.add( new User.Object( rev.user ) );
 			}
 			else
 			{
-				if( rev.user.id != assigneeId )
+				if( rev.user.id != assignee_id )
 					users.add( new User.Object( rev.user ) );
 			}
 		}
 		renderJSON( users );
 	}
 
-	public static void deleteSubTasks( long id )
+	public static void delete_sub_tasks( long id )
 	{
 		Task task = Task.findById( id );
 		for( Task sub : task.subTasks )

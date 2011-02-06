@@ -97,7 +97,7 @@ function hideOrShow(c)
 <tbody>
 		#{list items:tasks, as:'task'}
 		<tr>
-			<td class="id"><a title="view the task reports?" href="@{Tasks.getReport(task.id)}">${task.id}</a></td>
+			<td class="id"><a title="view the task reports?" href="@{Tasks.report(task.id)}">${task.id}</a></td>
 			<td id="${task.id}"class="des">${task.description}</td>
 			<td class="rep"><a title="view user?" href="/show/user?id=${task.reporter.id}">${task.reporter.getDisplayName().raw()}</a></td>
 		 	<td class="stat">

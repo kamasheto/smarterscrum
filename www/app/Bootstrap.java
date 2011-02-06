@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Date;
 
+import controllers.Application;
+
 import models.Artifact;
 import models.Component;
 import models.HelpTopic;
@@ -59,6 +61,13 @@ public class Bootstrap extends Job {
 			r = new Role("Project Member").save();
 			r.baseRole = true;
 			r.save();
+			User admin = new User();
+			admin.email = "iistcrimi@gmail.com";
+			admin.isActivated = true;
+			admin.isAdmin = true;
+			admin.name="elle";
+			admin.pwdHash = Application.hash( "hadeeryounis" );
+			admin.save();
 		}
 	}
 }

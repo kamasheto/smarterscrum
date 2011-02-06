@@ -12,92 +12,88 @@ import models.TaskType;
 import models.User;
 import play.mvc.With;
 
-/**
- * This is the controller method that renders to views.SprintBacklog It is for
- * viewing the sprint either in a backlog or chart.
- * 
- * @author Menna Ghoneim
- */
-
 @With( Secure.class )
 public class SprintBacklog extends SmartController
 {
 
 	/**
-	 * Renders to the sprint backlog view with the list of list of tasks in a
-	 * certain sprint are for a certain component, in which each list of list of
-	 * tasks encloses tasks in only one story for viewing purposes in the sprint
-	 * backlog : 1,4,5,6.
+	 * Renders either a component specific or whole company sprint backlog view.
 	 * 
-	 * @param componentID
-	 *            The given compenent id.
-	 * @param id
+	 * @param component_id
+	 *            The given component id.
+	 * @param sprint_id
 	 *            The given sprint id.
-	 *@param projectId
-	 *            The id of a given project.
 	 *@return void
 	 */
 
-	public static void index( long componentID, long id )
+	public static void index( long component_id, long sprint_id )
 	{
 
 		User user = Security.getConnected();
-		Sprint sprint = Sprint.findById( id );
+		Sprint sprint = Sprint.findById( sprint_id );
 		Security.check( user.projects.contains( sprint.project ) );
 		String cs = "";
 		Component component = null;
-		if( componentID != 0 )
+		if( component_id != 0 )
 		{
-			component = Component.findById( componentID );
+			component = Component.findById( component_id );
 			if( component.deleted )
 				notFound();
 			cs = component.name;
 		}
-		ArrayList daysHeader = new ArrayList( sprint.getDuration() );
+		ArrayList day_headers = new ArrayList( sprint.getDuration() );
 		Project project = Project.findById( sprint.project.id );
 		if( project.deleted )
 			notFound();
 		for( int i = 0; i < sprint.getDuration(); i++ )
 		{
-			daysHeader.add( (i + 1) );
+			day_headers.add( (i + 1) );
 		}
 		List<Task> tasks = new ArrayList();
-		if( componentID != 0 && id != 0 )
+		if( component_id != 0 && sprint_id != 0 )
 		{
 			tasks = component.returnComponentSprintTasks( sprint );
 
 		}
-		else if( componentID == 0 && id != 0 )
+		else if( component_id == 0 && sprint_id != 0 )
 		{
 			tasks = sprint.tasks;
 		}
-		String sNum = sprint.sprintNumber;
+		String sprint_number = sprint.sprintNumber;
 		List<TaskType> types = sprint.project.taskTypes;
 		List<TaskStatus> statuses = sprint.project.taskStatuses;
-		render( tasks, id, daysHeader, sNum, componentID, project, cs, types, statuses,sprint );
-
+		render( tasks, sprint_id, day_headers, sprint_number, component_id, project, cs, types, statuses,sprint );
 	}
 
 	/**
 	 * Renders the burn down chart for a certain sprint and or certain
 	 * component.
 	 * 
-	 * @author eabdelrahman
 	 * @author Hadeer Younis
-	 * @param id
+	 * @param sprint_id
 	 *            The sprint id.
-	 * @param cid
+	 * @param component_id
 	 *            The component id.
 	 * @return String containing the data of the sprint to draw the burn down
 	 *         chart.
 	 */
-	public static void showGraph( long id, long componentID )
+	public static void show_graph( long sprint_id, long component_id )
 	{
-		Sprint temp = Sprint.findById( id );
-		Security.check( Security.getConnected().projects.contains( temp.project ) );
-		String Data = temp.fetchData( componentID );
-		if( Data.contains( "NONE" ) )
-			Data = null;
-		render( Data, temp, componentID );
+		Sprint sprint = Sprint.findById( sprint_id );
+		Security.check( Security.getConnected().projects.contains( sprint.project ) );
+		String data = sprint.fetchData( component_id );
+		String name;
+		if(component_id !=0 )
+		{
+			Component component = Component.findById( component_id );
+			name = component.getFullName();
+		}
+		else
+			name = sprint.project.name;
+		
+		if( data.contains( "NONE" ) )
+			data = null;
+		String sprint_number = sprint.sprintNumber;
+		render( data, sprint_number, name );
 	}
 }

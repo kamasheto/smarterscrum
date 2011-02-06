@@ -386,7 +386,7 @@ public class Task extends SmartModel
 			users.add(this.reviewer);
 		if(this.reporter!=null)
 			users.add(this.reporter);
-		String url = Router.getFullUrl("Application.externalOpen")+"?id="+this.project.id+"&isOverlay=false&url=/tasks/magicShow?projectId="+this.project.id;
+		String url = Router.getFullUrl("Application.externalOpen")+"?id="+this.project.id+"&isOverlay=false&url=/tasks/view_task?project_id="+this.project.id;
 		Notifications.notifyUsers( users, "deleted", url, "task", "task "+this.number, (byte)-1, this.project);
 		this.deleted = true;
 		this.save();

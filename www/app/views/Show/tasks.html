@@ -15,7 +15,7 @@
 <p>Click on a Task's description to view its page</p>
 <ul>
 #{list items:tasks, as:'Task'}
-<li><a href="/tasks/getreport?id=${Task.id}">${Task.description} : ${Task.taskStory.description}</a></li>
+<li><a href="@{Tasks.report(Task.id)}">${Task.description} : ${Task.taskStory.description}</a></li>
 #{/list}
 
 

@@ -1,7 +1,7 @@
 #{if proj}
 	<script type="text/javascript" charset="utf-8">
 		$(function() {
-			#{if connected.projects.contains(proj)}loadBox('/tasks/magicShow?mine=1&projectId=${proj.id}', 'workspace-${proj.id}');#{/if}
+			#{if connected.projects.contains(proj)}loadBox('/tasks/view_task?mine=1&project_id=${proj.id}', 'workspace-${proj.id}');#{/if}
 		})
 	</script>
 #{/if}
@@ -11,10 +11,10 @@
 	<!-- DO NOT REMOVE THIS! If you want to, hide the class.. this element is used to create the top button! -->
 	<span class="project_name_in_header">${proj?.name}</span>
 	#{if connected.projects.contains(proj)}
-	<a href="#" onclick="loadBox('/tasks/magicShow?mine=1&projectId=${proj.id}','workspace-${proj.id}', 'reload-tasks-${proj.id}')">Tasks <small>(${tasknumber})</small></a>
+	<a href="#" onclick="loadBox('/tasks/view_task?mine=1&project_id=${proj.id}','workspace-${proj.id}', 'reload-tasks-${proj.id}')">Tasks <small>(${tasknumber})</small></a>
 	#{/if}
 	#{elseif connected.isAdmin && proj}
-	<a href="#" onclick="loadBox('/tasks/magicShow?projectId=${proj.id}','workspace-${proj.id}', 'reload-tasks-${proj.id}')">Tasks <small>(${tasknumber})</small></a>
+	<a href="#" onclick="loadBox('/tasks/view_task?project_id=${proj.id}','workspace-${proj.id}', 'reload-tasks-${proj.id}')">Tasks <small>(${tasknumber})</small></a>
 	#{/elseif}
 	#{if proj && proj.sprints.size()!=0}
 	<a href="#" onclick="loadBox('/Projects/Artifacts?projectId=${proj.id}','workspace-${proj.id}','do_not_paginate')">Artifacts</a>

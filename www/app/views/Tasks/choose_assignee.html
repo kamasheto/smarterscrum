@@ -1,11 +1,11 @@
 #{set title:'Choose User' /}
  <script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
-<script src="@{'/public/javascripts/functions.js'}" type="text/javascript" charset="utf-8"></script>
+ <script src="@{'/public/javascripts/functions.js'}" type="text/javascript" charset="utf-8"></script>
  
 <div id="${taskId}">
 <h2>Users</h2>
 #{list items:users, as:'user'}
-<a href="#" onclick="set_person(${user.id},${task.id},'${user.name}',${user1.id}, ${task.taskSprint.id})"> ${user.name} </a>
+<a href="#" onclick="set_person(${user.id},${task.id},'${user.name}',${user1.id},${task.taskSprint.id})"> ${user.name} </a>
 <br/>
 #{/list}
 </div>
@@ -13,13 +13,12 @@
 <script type="text/javascript">
 function set_person(id,taskId,name, user1Id, sid)
 {
-	$.post('@{editTaskReviewer2()}',
-			{id:taskId, userId:user1Id, reviewerId:id},
+	$.post('@{edit_task_tssignee()}',
+			{id:taskId, user_id:user1Id, assignee_id:id},
 			function()
 			{
 				window.close();
 			});
-			
-	return true;
+	return false;
 }
 </script>

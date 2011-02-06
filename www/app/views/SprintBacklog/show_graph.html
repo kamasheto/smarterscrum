@@ -1,15 +1,15 @@
 #{extends 'overlay.html' /}
 #{ifnot Data}
 	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
-	<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
-	<strong>NOTE: </strong>There isn't enough data to draw up a chart.
-</div>
+		<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+		<strong>NOTE: </strong>There isn't enough data to draw up a chart.
+	</div>
 #{/ifnot}
 #{else}
 #{set 'moreStyles'}
 	<link rel="stylesheet" type="text/css" href="@{'/public/stylesheets/jquery.jqplot.css'}"/>
 #{/set}
-#{set 'onLoad'}javascript:GenerateGraph(${Data},'chart1');#{/set}
+#{set 'onLoad'}javascript:GenerateGraph(${data},'chart1');#{/set}
 #{set 'moreScripts'}
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/jquery.jqplot.js'}"></script>
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.logAxisRenderer.js'}"></script>
@@ -21,18 +21,14 @@
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.barRenderer.js'}"></script>
 	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/generateFunction.js'}"></script>
  	<script language="javascript" type="text/javascript" src="@{'/public/javascripts/plugins/jqplot.cursor.js'}"></script>
- #{/set}#{if componentID==0}
-    <h1>Sprint ${temp.sprintNumber}: ${pName}'s progress</h1>
-    #{/if}
-    #{else}
-    <h1>Sprint ${temp.sprintNumber}: ${myComponent.name}'s progress</h1>
-    #{/else}
+ #{/set}
+
+    <h1>Sprint ${sprint_number}: ${name}</h1>
+
 	<div id="NOTE"style="padding: 10px 10px 10px 10px" class="ui-state-highlight ui-corner-all"> 
 		<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
 		<strong>NOTE: </strong>If your graph has too much data then not all points will be shown, to view more day specific statistics then you will have to zoom in. To zoom in on a graph, simply click and drag and let go. To zoom out just double click the graph!
-		<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a></div>
-    
-		<div class="jqplot" id="chart1" style="height:300px; width:100%"></div>
-
-
-	#{/else}
+		<br/><a href="#" onclick="$('#NOTE').css('display','none');">hide me?</a>
+	</div>
+	<div class="jqplot" id="chart1" style="height:300px; width:100%"></div>
+#{/else}

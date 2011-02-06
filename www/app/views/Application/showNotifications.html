@@ -1,7 +1,7 @@
 #{extends 'sidebar.html' /}
 <div id="all">
-#{if emailing}<div id = "modify_emailing"><img src="/public/images/famfam/cross.png" /> <a onclick="modify_emailing(0);">Stop receiving Emails?</a></div>#{/if}
-#{else}<div id = "modify_emailing"><img src="/public/images/famfam/accept.png" /> <a onclick="modify_emailing(1);">Enable receiving Emails?</a></div>#{/else}
+#{if emailing}<div class="frontTitle" id = "modify_emailing"><img src="/public/images/famfam/cross.png" /> <a onclick="modify_emailing(0);">Stop receiving Emails?</a></div>#{/if}
+#{else}<div class="frontTitle" id = "modify_emailing"><img src="/public/images/famfam/accept.png" /> <a onclick="modify_emailing(1);">Enable receiving Emails?</a></div>#{/else}
 #{if pageOfNotifications.size()==0}
 <div id="notifications">#{note}Sorry you currently have no notifications#{/note}</div>
 #{/if}#{else}

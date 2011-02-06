@@ -35,25 +35,25 @@ function magicFix(el)
 
 function changeT (id,id2)
 {
-	$.post('@{Tasks.editTaskType()}',{id:id,typeId:id2,userId:${connected.id}});
+	$.post('@{Tasks.edit_task_type()}',{id:id,type_id:id2,user_id:${connected.id}});
 }
 function changeS (id,id2)
 {
-	$.post('@{Tasks.changeTaskStatus()}',{id:id,statusId:id2},function(ret) 
+	$.post('@{Tasks.edit_task_status()}',{id:id,status_id:id2},function(ret) 
 	{
 		parent_message_bar(ret);
 	});
 }
 function changeA (id,id2)
 {
-	$.post('@{Tasks.assignTaskAssignee()}',{taskId:id,assigneeId:id2},function(ret) 
+	$.post('@{Tasks.assign_task_assignee()}',{task_id:id,assignee_id:id2},function(ret) 
 	{
 		parent_message_bar(ret);
 	});
 }
 function changeR (id,id2)
 {
-	$.post('@{Tasks.assignTaskReviewer()}',{taskId:id,reviewerId:id2},function(ret) 
+	$.post('@{Tasks.assign_task_reviewer()}',{task_id:id,reviewer_id:id2},function(ret) 
 	{
 		parent_message_bar(ret);
 	});
@@ -81,7 +81,7 @@ $(function()
         var dayId 		= parseInt(splitted[2])-1;
     	var points 		= parseInt(value);
 		var flag = true;
-    	$.post('@{Tasks.enterEffort()}',{id:taskId,effort:points,day:dayId},function(ret) 
+    	$.post('@{Tasks.enter_effort()}',{id:taskId,effort:points,day:dayId},function(ret) 
         {
 			parent_message_bar(ret);
 			if(ret.indexOf("cannot")!=-1)
@@ -99,7 +99,7 @@ $(function()
     	    {
     	    	var taskId 	= parseInt($('#lolid').closest("tr").attr("id").split("_")[1]);
     	       
-    	        $.post('@{Tasks.editTaskDesc2()}',{id:taskId, userId:${connected.id},desc:value});
+    	        $.post('@{Tasks.edit_task_description()}',{id:taskId, user_id:${connected.id},description:value});
 
         	    return(value);
     	        
@@ -118,7 +118,7 @@ $(function()
     	        var taskId 		= parseInt(splitted[0])
     	    	var points 		= parseInt(value);
     	        var flage       = true;
-    	    		$.post('@{Tasks.editTaskEstimation()}',{id:taskId,estimation:points}, function(ret) 
+    	    		$.post('@{Tasks.edit_task_points()}',{id:taskId,estimation:points}, function(ret) 
     	    	    {
     	    			parent_message_bar(ret);
     	    			if(ret.indexOf("cannot")!=-1)
@@ -156,7 +156,7 @@ $(function()
 #{/set}
 <div id="sprint">
 
-<h1 style="float:left">#{if componentID==0}Sprint ${sNum}: ${project.name}'s Backlog#{/if}#{else}Sprint ${sNum}: ${cs}'s Backlog#{/else}</h1>
+<h1 style="float:left">#{if component_id==0}Sprint ${sprint_number}: ${project.name}'s Backlog#{/if}#{else}Sprint ${sprint_number}: ${cs}'s Backlog#{/else}</h1>
 <div style="position:fixed;right:10px;text-align:right;z-index:2147483647;">
 <div class="allCornersRounded" style="background:#333;padding:15px;border-width:10px 10px 0;color:#eee">	
 Show/Hide:
@@ -185,16 +185,16 @@ Show/Hide:
 		<td class="shAssignee">Assignee</td>
 		<td class="shReviewer">Reviewer</td>
 		<td class="shPoints">Total Points</td>
-		#{list items:daysHeader, as:'day'}
+		#{list items:day_headers, as:'day'}
 		<td class="shEfforts">Day ${day}</td>
 		#{/list}
 	</tr>
 	</thead>
 	#{list items:tasks, as:'task'}
-	<tr name="@{sprintBacklog.index(componentID,id)}"id="task_${task.id}">
+	<tr name="@{sprintBacklog.index(component_id,id)}"id="task_${task.id}">
 	
 		<td>
-			<a title="view the task reports?" href="@{Tasks.getReport(task.id)}">${task.getTaskNumber()}</a>
+			<a title="view the task reports?" href="@{Tasks.report(task.id)}">${task.getTaskNumber()}</a>
 		</td>
 		
 		#{ifnot connected.in(project).can('editBacklog') || connected.isAdmin || (connected==task.assignee) || connected==task.reviewer || sprint.running()}
@@ -241,7 +241,7 @@ Show/Hide:
           #{/else}
         
         <!--@author Hadeer Younis C4 S8-->
-        #{list items:daysHeader, as:'day'}
+        #{list items:day_headers, as:'day'}
 		<td class="shEfforts"style="text-align: center" id="${task.id}_day_${day}" >
 		#{if task.getEffortPerDay(day-1)==-1.0}&nbsp;
 		#{/if} #{else} ${task.getEffortPerDay(day-1)} #{/else}</td>
@@ -431,7 +431,7 @@ Show/Hide:
 		#{/else}
 #{ifnot task.subTasks}
 		<!--@author Hadeer Younis C4 S8-->
-		#{list items:daysHeader, as:'day'}
+		#{list items:day_headers, as:'day'}
 		<td style="text-align: center"id="${task.id}_day_${day}" class="enterEffort shEfforts">
 		#{if task.getEffortPerDay(day-1)==-1.0}&nbsp;
 		#{/if} #{else} ${task.getEffortPerDay(day-1)} #{/else}</td>
