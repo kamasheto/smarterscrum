@@ -101,7 +101,6 @@ function delete_meeting(id)
 		$.post('/Meetings/deleteMeeting', {id:id},function(){$.bar({ message:'Meeting deleted successfully.' })});
 	}	
 }
-
 function join_meeting(id)
 {
 	if(confirm("Join meeting?"))
@@ -126,7 +125,6 @@ function join_meeting(id)
 			}
 	})
 }
-
 function confirm_me(id)
 {
 	if(confirm("Change your status to attending?"))
@@ -164,13 +162,11 @@ function confirm_me(id)
 
 	})
 }
-
 function requestRole(roleIdd){
 	$.post('/projecttasks/requestRole', {id:roleIdd}, function(msg){
 		$.bar({message:msg});
 	});
 }
-
 function revokeRole(roleId, baseRole, userId, projectId)
 {
 	var confirmation;
@@ -203,7 +199,6 @@ function revokeRole(roleId, baseRole, userId, projectId)
 			    });
 	};
 }
-
 function deleteRequest(roleIdd){
 	if(confirm("Are you sure you want to cancel your request?")){
 		$.post('/requests/removeRequestRoleInProject', {roleId:roleIdd}, function(msg){
@@ -211,8 +206,6 @@ function deleteRequest(roleIdd){
 		});
 	}
 }
-
-
 function decline_me(id)
 {
 	var reno=prompt("Please enter the reason :","");
@@ -253,8 +246,6 @@ function decline_me(id)
 	}
 	);
 }
-
-
 function deleteStory(sId,box,d){
 	message = "Are you sure you want to delete this story?";
 	if(d)
@@ -276,11 +267,54 @@ function fixZ (that)
 		}
 	});
 }
+function adjustHeight(el)
+{
+	if($("#"+el).position() == null)
+	{
+		var children = $("#"+el).closest(".workspaceDraggables").find("div.draggable");
+		var max = 0;
+		for(var i = 0; i< children.length; i++)
+		{
+			var height = ($(children[i]).height()+$(children[i]).position().top);
+			if(height > max)
+				max = height;
+		}
+		
+		$('#mainTable').css('height','100%');
+		if(max > $('#mainTable').height())
+			$('#mainTable').height(max+100);
+		else
+			$('#mainTable').css('height','100%');
+		
+	}
+	else if(($('#mainTable').height()-100)<= ($("#"+el).height()+$("#"+el).position().top))
+	{	
+		$('#mainTable').height($("#"+el).height()+$("#"+el).position().top+100);
+	}
+	else
+	{
+		var children = $("#"+el).closest(".workspaceDraggables").find("div.draggable");
+		var max = ($("#"+el).height()+$("#"+el).position().top);
+		for(var i = 0; i< children.length; i++)
+		{
+			var height = ($(children[i]).height()+$(children[i]).position().top);
+			if(height > max)
+				max = height;
+		}
+		
+		$('#mainTable').css('height','100%');
+		if(max > $('#mainTable').height())
+			$('#mainTable').height(max+100);
+		else
+			$('#mainTable').css('height','100%');
+	}
+}
+
 DRAGGING_ELEMENT = null
 $(function() {
-
 	$(this).parent().find('.dropper').hide();
-	$('.dragger').live('mouseover', function(){
+	$('.dragger').live('mouseover', function()
+	{
 		if ($(this).data('init')) return
 		$(this).data('init', true)
 		$(this).draggable({
@@ -378,35 +412,40 @@ $(function() {
 		}
 		else
 		{
-		$(this).resizable({
-			disable:false,
-			minWidth:300,
-			minHeight:70,
-			delay : 0,
-			distance: 0,
-			containment: '#workspaces',start:function(){$(this).css('zIndex','9994')},
-			resize: function(event, ui) {
-				var test = ($(this).find(".normalLinkn span")).first();
-				smart_pagination(test, 1, true);
-$(this).css('height','');
-		//		alert('');
-			$(this).find('.taskSummary').each(function(){
-				if($(this).width()>$(this).next().width())
-					$(this).next().next().hide();
-				else
-					$(this).next().next().show();
+			$(this).resizable({
+				disable:false,
+				minWidth:300,
+				minHeight:70,
+				delay : 0,
+				distance: 0,
+				containment: '#workspaces',start:function(){$(this).css('zIndex','9994')},
+				resize: function(event, ui) 
+				{
+					var test = ($(this).find(".normalLinkn span")).first();
+					smart_pagination(test, 1, true);
+					$(this).css('height','');
+			//		alert('');
+				$(this).find('.taskSummary').each(function()
+				{
+					if($(this).width()>$(this).next().width())
+						$(this).next().next().hide();
+					else
+						$(this).next().next().show();
+				});
+				
+				}
 			});
-			
-		}});}
+		}
+		
 		if ($(this).data('init')) return
 		$(this).data('init', 1);
 		var con = $(this).closest('.workspaceDraggables').attr('id');
 		$(this).css('z-index','9995');
-		$(this).draggable( {
+		$(this).draggable({
 			handle : '.ui-widget-header',
-			cancel : 'img',
+			cancel : 'a',
 			stack  : '.draggable',
-			containment: '#workspaces'
+			containment: '#workspaces',
 		});
 	}).live('mouseout', function() {
 		if ($(this).attr('id') != DRAGGING_ELEMENT) {
@@ -446,18 +485,18 @@ $(this).css('height','');
 								if (is) {
 									var el = $(this);
 									var pos = el.position();
-									var pos2 = el.closest('.draggable')
-											.position();
+									var pos2 = el.closest('.draggable').position();
 									el.css( {
 										position : "absolute",
 										marginLeft : 0,
 										marginTop : 0,
 										zIndex  : 9999999999999999999999,
-										top : pos2.top + pos.top,
-										left : pos2.left + pos.left
+										top :  pos.top+pos2.top,
+										left :  pos.left+pos2.left
 									});
 									$(this).closest('.workspaceDraggables').append($(this));
 								}
+								adjustHeight($(this).attr('id'));
 								$(this).draggable( {start : function(event, ui) {},stop : function(event, ui) {}});
 								$(this).children().show();
 								$(this).removeClass('draggableChild');
@@ -488,6 +527,15 @@ $(this).css('height','');
 						});
 
 			});
+	$('#getOverlay').keypress(function(event){
+		if (event.keyCode == '27')
+		{	
+			$(this).hide();
+		}
+	});
+	$('#getOverlay').live('click',function(){
+		$(this).hide();
+	});
 
 	$('.draggableChild .ui-widget-header').live(
 			'click',
@@ -511,9 +559,10 @@ $(this).css('height','');
 					$(this).next().toggleClass('selectedBars2');
 					
 				}
-				$(this).next().slideToggle(400);
-
-			});
+				$(this).next().slideToggle(400,function(){
+					adjustHeight($(this).closest('.draggable').attr('id'));
+				});
+		});
 
 	$('.min').live(
 			'click',
@@ -530,11 +579,14 @@ $(this).css('height','');
 					$(el).closest('.workspace').find('.dock').first().append($(el))
 					el.addClass('min');
 				}
+
+				adjustHeight($(this).closest('.draggable').attr('id'));
 			});
 	$('.refresh').live('click',function(){
 		var parent = $(this).parent().parent();
 		$(parent).find('.actual:first').html('<div class="bar center"><img src="/public/images/loadingMagic.gif"></div>')
 		load($(parent).attr('name'), $(parent).attr('id'), 1);
+		adjustHeight($(this).closest('.draggable').attr('id'));
 	});
 	$('.revertFrom').live('click', function() {
 		$(this).parent().parent().data('init', false);
@@ -563,6 +615,7 @@ $(this).css('height','');
 			// $('#' + theId).removeClass('dim');
 			$('#' + theId).removeAttr('style');
 		}
+
 		});
 	});
 
@@ -576,6 +629,8 @@ function removeFromDiv(url)
 	myDivs = $.grep(myDivs, function(value) {		
 	    return value != url2;
 	});	
+
+	adjustHeight($(this).closest('.draggable').attr('id'));
 }
 
 randomId = 100	
@@ -632,9 +687,10 @@ function loadBox(url, el, classes)
 				var that = element;
 				fixZ(that);
 				element.attr('name', url)
-				element.css('left', randomInt($('#'+el).width() - 450) + 'px')
-				element.css('top', randomInt($('#'+el).height(), 50) + 'px')
-				element.addClass(classes)
+				element.css('left', randomInt($('#'+el).width() - 450) + 'px');
+				element.css('top', randomInt(200, 50) + 'px');
+				element.addClass(classes);
+				adjustHeight(element.attr('id'));
 				element.css('z-index','9995');
 				element.find('.bar:first').remove()
 				element.find('.actual:first').show()

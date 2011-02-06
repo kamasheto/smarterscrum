@@ -478,7 +478,7 @@ ul.project_links a {
 }
 
 .chatContainerHeader {
-	background-color: #0B8C8F;
+	background-color: #407DA3;
 	padding: 7px;
 	color: #ffffff;
 }
@@ -532,7 +532,7 @@ h1,h2,h3,h4,h5,h6,h7 {
 }
 
 a:hover {
-	color: #0B8C8F;
+	color: #407DA3;
 }
 
 .draggableChild .ui-widget-content {
@@ -551,16 +551,16 @@ a:hover {
 }
 
 a {
-	color: #0B8E91;
+	color: #366A8A;
 	text-decoration: underline;
 }
 
 .ss {
-	color: #0B8C8F;
+	color: #407DA3;
 }
 
 .sideBarHeading {
-	color: #0B8C8F;
+	color: #407DA3;
 }
 
 .sideBarElements a:hover {
@@ -569,7 +569,7 @@ a {
 
 /**triangle notch**/
 .notchBottom {
-	border-top: 15px solid #0B8C8F;
+	border-top: 15px solid #407DA3;
 	border-right: 15px solid transparent;
 	border-left: 15px solid transparent;
 	border-bottom: 0px;
@@ -587,7 +587,7 @@ a {
 }
 
 .notchBottom2 {
-	border-top: 13px solid #0B8C8F;
+	border-top: 13px solid #407DA3;
 	border-right: 13px solid transparent;
 	border-left: 13px solid transparent;
 	border-bottom: 0px;
@@ -607,7 +607,7 @@ a {
 }
 
 .notchTop {
-	border-bottom: 15px solid #0B8C8F;
+	border-bottom: 15px solid #407DA3;
 	border-right: 15px solid transparent;
 	border-left: 15px solid transparent;
 	border-top: 0px;
@@ -624,7 +624,7 @@ a {
 }
 
 .notchRight {
-	border-left: 15px solid #0B8C8F;
+	border-left: 15px solid #407DA3;
 	border-top: 15px solid transparent;
 	border-bottom: 15px solid transparent;
 	border-right: 0;
@@ -643,7 +643,7 @@ a {
 }
 
 .notchLeft {
-	border-right: 15px solid #0B8C8F;
+	border-right: 15px solid #407DA3;
 	border-top: 15px solid transparent;
 	border-bottom: 15px solid transparent;
 	border-left: 0;
@@ -660,37 +660,37 @@ a {
 }
 
 .chatboxtextarea:focus {
-	border: 2px solid #0B8C8F !important;
+	border: 2px solid #407DA3 !important;
 	margin: 0;
 }
 
 .chatContainerHeader {
-	border-right: 1px solid #0B8C8F;
-	border-left: 1px solid #0B8C8F;
+	border-right: 1px solid #407DA3;
+	border-left: 1px solid #407DA3;
 }
 
 #boards a:hover {
-	box-shadow: 0px 0px 0px #0B8E91;
-	-moz-box-shadow: 0px 0px 0px #0B8E91;
-	-webkit-box-shadow: 0px 0px 0px #0B8E91;
+	box-shadow: 0px 0px 0px #366A8A;
+	-moz-box-shadow: 0px 0px 0px #366A8A;
+	-webkit-box-shadow: 0px 0px 0px #366A8A;
 }
 
 ul.project_links a:hover {
-	box-shadow: 0px 0px 15px #0B8E91;
-	-moz-box-shadow: 0px 0px 15px #0B8E91;
-	-webkit-box-shadow: 0px 0px 15px #0B8E91;
+	box-shadow: 0px 0px 15px #366A8A;
+	-moz-box-shadow: 0px 0px 15px #366A8A;
+	-webkit-box-shadow: 0px 0px 15px #366A8A;
 }
 
 .proj {
-	background-color: #0B8C8F;
+	background-color: #407DA3;
 }
 
 .proj2 {
-	background-color: #0B8E91;
+	background-color: #366A8A;
 }
 
 .projDes {
-	background-color: #0B8C8F;
+	background-color: #407DA3;
 }
 
 .ui-widget-header {

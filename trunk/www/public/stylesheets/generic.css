@@ -1,11 +1,39 @@
 .do_not_paginate .filter {
 	display: none
 }
-.selectedBars .taskinfo{margin-bottom:-1px;border:1px dotted #333;padding:0 2.5px;color:#333;line-height:17px}
-.selectedBars .taskinfo b{margin-right:10px;padding-right:5px;height:100%;display:inline-block;border-right:1px dotted #333;}
 
-.selectedBars2 .taskinfo{margin-bottom:-1px;border:1px dotted #ddd;padding:0 2.5px;color:#ddd;line-height:17px}
-.selectedBars2 .taskinfo b{margin-right:10px;padding-right:5px;height:100%;display:inline-block;border-right:1px dotted #ddd;}
+.selectedBars .taskinfo {
+	margin-bottom: -1px;
+	border: 1px dotted #333;
+	padding: 0 2.5px;
+	color: #333;
+	line-height: 17px
+}
+
+.selectedBars .taskinfo b {
+	margin-right: 10px;
+	padding-right: 5px;
+	height: 100%;
+	display: inline-block;
+	border-right: 1px dotted #333;
+}
+
+.selectedBars2 .taskinfo {
+	margin-bottom: -1px;
+	border: 1px dotted #ddd;
+	padding: 0 2.5px;
+	color: #ddd;
+	line-height: 17px
+}
+
+.selectedBars2 .taskinfo b {
+	margin-right: 10px;
+	padding-right: 5px;
+	height: 100%;
+	display: inline-block;
+	border-right: 1px dotted #ddd;
+}
+
 label {
 	min-width: 100px !important;
 	display: inline-block;
@@ -13,11 +41,11 @@ label {
 
 .taskSummary {
 	display: inline;
-	position:absolute;
+	position: absolute;
 	height: 16px;
 	overflow: hidden;
 	width: 90%;
-	z-index:0;
+	z-index: 0;
 	white-space: nowrap
 }
 
@@ -49,8 +77,8 @@ button,a button,input[type=submit],input[type=ok],input[type=send],input[type=bu
 
 .ui-widget-header img,.bar img {
 	float: right;
-	z-index:9;
-	position:relative;
+	z-index: 9;
+	position: relative;
 }
 
 .nav a {
@@ -205,7 +233,7 @@ img {
 
 /**nav**/
 .aDIV {
-	background-color: #0B8C8F;
+	background-color: #407DA3;
 	border-bottom: 2px solid #222222;
 	color: #111 !important;
 	display: inline-block;
@@ -310,9 +338,9 @@ button {
 }
 
 .chatboxinput {
-	padding:0 1%;
-width:98%;
-height:55px;
+	padding: 0 1%;
+	width: 98%;
+	height: 55px;
 	background-color: #ffffff;
 	border-left: 1px solid #cccccc;
 	border-right: 1px solid #cccccc;
@@ -320,22 +348,19 @@ height:55px;
 }
 
 .chatboxtextarea {
-	padding:1%;
-width:96%;
-margin:1%;
-	height:96%; 
-
+	padding: 1%;
+	width: 96%;
+	margin: 1%;
+	height: 96%;
 	border: 1px solid #eeeeee;
-
 }
 
 .thread {
 	color: #333333;
-	padding:1% 1%;
-width:98%;
-height:98%;
+	padding: 1% 1%;
+	width: 98%;
+	height: 98%;
 	overflow-y: auto;
-
 	border-left: 1px solid #cccccc;
 	border-right: 1px solid #cccccc;
 	border-bottom: 1px solid #eeeeee;
@@ -475,7 +500,7 @@ ul.project_links a {
 }
 
 .chatContainerHeader {
-	background-color: #0B8C8F;
+	background-color: #407DA3;
 	padding: 7px;
 	color: #ffffff;
 }
@@ -561,7 +586,7 @@ table {
 	width: 450px;
 	position: absolute !important;
 }
-
+#mainTable{height:100%}
 .draggableChild {
 	position: relative;
 	display: block;
@@ -603,7 +628,7 @@ table {
 	background: -moz-linear-gradient(center bottom, #ccc 10%, #eee 70%);
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #eee),
 		color-stop(0.7, #ccc) );
-	color: #0B8C8F;
+	color: #407DA3;
 	font-family: verdana;
 	font-style: normal;
 	font-weight: normal;
@@ -664,11 +689,11 @@ table {
 }
 
 .selectedBar2 {
-	background: #0B8C8F !important;
-	background: -moz-linear-gradient(center bottom, #0B8E91 10%, #0B8C8F 90%)
+	background: #407DA3 !important;
+	background: -moz-linear-gradient(center bottom, #366A8A 10%, #407DA3 90%)
 		!important;
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #0B8E91),
-		color-stop(0.9, #0B8C8F) ) !important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #366A8A),
+		color-stop(0.9, #407DA3) ) !important;
 }
 
 #top_header_projects_pane {
@@ -677,11 +702,11 @@ table {
 }
 
 .draggable {
-	background: #0B8C8F !important;
-	background: -moz-linear-gradient(center bottom, #0B8E91 10%, #0B8C8F 90%)
+	background: #407DA3 !important;
+	background: -moz-linear-gradient(center bottom, #366A8A 10%, #407DA3 90%)
 		!important;
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #0B8E91),
-		color-stop(0.9, #0B8C8F) ) !important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #366A8A),
+		color-stop(0.9, #407DA3) ) !important;
 	padding: 5px;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -725,13 +750,13 @@ img {
 }
 
 #login {
--moz-box-shadow:-10px 0 10px #C8C8C8;
-background:none repeat scroll 0 0 #FFFFFF;
-font-weight:normal;
-margin-top:-2px;
-overflow:auto;
-padding:10px 0;
-width:100%;
+	-moz-box-shadow: -10px 0 10px #C8C8C8;
+	background: none repeat scroll 0 0 #FFFFFF;
+	font-weight: normal;
+	margin-top: -2px;
+	overflow: auto;
+	padding: 10px 0;
+	width: 100%;
 }
 
 #signin-field {
@@ -813,8 +838,8 @@ html {
 
 #projects_my_current_projects,#projects_search_results,#add-new-project-link,#acp_link
 	{
-	text-align: center;
-	font-size: 18px;
+	font-size: 14px;
+	padding-left: 20px;
 }
 
 #add-new-project-link {
@@ -825,7 +850,6 @@ html {
 
 #top_header_projects_pane a {
 	text-decoration: none;
-	color: #FFC4F1;
 }
 
 .draggableChild .ui-widget-header,.clone,.bar,.overlay .ui-widget-header
@@ -886,7 +910,7 @@ html {
 }
 
 a:hover {
-	color: #0B8C8F;
+	color: #407DA3;
 }
 
 .draggableChild .ui-widget-content {
@@ -898,16 +922,16 @@ a:hover {
 }
 
 a {
-	color: #0B8E91;
+	color: #51A6DB;
 	text-decoration: underline;
 }
 
 .ss {
-	color: #0B8C8F;
+	color: #407DA3;
 }
 
 .sideBarHeading {
-	color: #0B8C8F;
+	color: #407DA3;
 }
 
 .sideBarElements a:hover {
@@ -916,7 +940,7 @@ a {
 
 /**triangle notch**/
 .notchBottom {
-	border-top: 15px solid #0B8C8F;
+	border-top: 15px solid #407DA3;
 	border-right: 15px solid transparent;
 	border-left: 15px solid transparent;
 	border-bottom: 0px;
@@ -928,13 +952,14 @@ a {
 	_border-right-color: pink;
 	_border-left-color: pink;
 	margin-top: -2px;
-	_filter: chroma(color =                                                         
+	_filter: chroma(color =
 		                                                          
-		                                                              pink);
+		                                                          
+		                                                                pink);
 }
 
 .notchBottom2 {
-	border-top: 13px solid #0B8C8F;
+	border-top: 13px solid #407DA3;
 	border-right: 13px solid transparent;
 	border-left: 13px solid transparent;
 	border-bottom: 0px;
@@ -948,13 +973,14 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                         
+	_filter: chroma(color =
 		                                                          
-		                                                              pink);
+		                                                          
+		                                                                pink);
 }
 
 .notchTop {
-	border-bottom: 15px solid #0B8C8F;
+	border-bottom: 15px solid #407DA3;
 	border-right: 15px solid transparent;
 	border-left: 15px solid transparent;
 	border-top: 0px;
@@ -965,13 +991,14 @@ a {
 	margin-left: 30px;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                         
+	_filter: chroma(color =
 		                                                          
-		                                                              pink);
+		                                                          
+		                                                                pink);
 }
 
 .notchRight {
-	border-left: 15px solid #0B8C8F;
+	border-left: 15px solid #407DA3;
 	border-top: 15px solid transparent;
 	border-bottom: 15px solid transparent;
 	border-right: 0;
@@ -984,13 +1011,14 @@ a {
 	display: inline-block;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                         
+	_filter: chroma(color =
 		                                                          
-		                                                              pink);
+		                                                          
+		                                                                pink);
 }
 
 .notchLeft {
-	border-right: 15px solid #0B8C8F;
+	border-right: 15px solid #407DA3;
 	border-top: 15px solid transparent;
 	border-bottom: 15px solid transparent;
 	border-left: 0;
@@ -1001,43 +1029,44 @@ a {
 	line-height: 0;
 	_border-right-color: pink;
 	_border-left-color: pink;
-	_filter: chroma(color =                                                         
+	_filter: chroma(color =
 		                                                          
-		                                                              pink);
+		                                                          
+		                                                                pink);
 }
 
 .chatboxtextarea:focus {
-	border: 2px solid #0B8C8F !important;
-	width:95%;
+	border: 2px solid #407DA3 !important;
+	width: 95%;
 }
 
 .chatContainerHeader {
-	border-right: 1px solid #0B8C8F;
-	border-left: 1px solid #0B8C8F;
+	border-right: 1px solid #407DA3;
+	border-left: 1px solid #407DA3;
 }
 
 #boards a:hover {
-	box-shadow: 0px 0px 0px #0B8E91;
-	-moz-box-shadow: 0px 0px 0px #0B8E91;
-	-webkit-box-shadow: 0px 0px 0px #0B8E91;
+	box-shadow: 0px 0px 0px #366A8A;
+	-moz-box-shadow: 0px 0px 0px #366A8A;
+	-webkit-box-shadow: 0px 0px 0px #366A8A;
 }
 
 ul.project_links a:hover {
-	box-shadow: 0px 0px 15px #0B8E91;
-	-moz-box-shadow: 0px 0px 15px #0B8E91;
-	-webkit-box-shadow: 0px 0px 15px #0B8E91;
+	box-shadow: 0px 0px 15px #366A8A;
+	-moz-box-shadow: 0px 0px 15px #366A8A;
+	-webkit-box-shadow: 0px 0px 15px #366A8A;
 }
 
 .proj {
-	background-color: #0B8C8F;
+	background-color: #407DA3;
 }
 
 .proj2 {
-	background-color: #0B8E91;
+	background-color: #366A8A;
 }
 
 .projDes {
-	background-color: #0B8C8F;
+	background-color: #407DA3;
 }
 
 .ui-widget-header {
@@ -1233,9 +1262,9 @@ img.left {
 	left: 0;
 	position: absolute;
 	opacity: 0;
-	filter: Alpha(Opacity =   
+	filter: Alpha(Opacity =     
 		                                                         
-		     0);
+		       0);
 }
 
 /* Interaction Cues
@@ -1389,17 +1418,17 @@ img.left {
 
 .ui-priority-secondary,.ui-widget-content .ui-priority-secondary {
 	opacity: .7;
-	filter: Alpha(Opacity =   
+	filter: Alpha(Opacity =     
 		                                                         
-		     70);
+		       70);
 	font-weight: normal;
 }
 
 .ui-state-disabled,.ui-widget-content .ui-state-disabled {
 	opacity: .35;
-	filter: Alpha(Opacity =   
+	filter: Alpha(Opacity =     
 		                                                         
-		     35);
+		       35);
 	background-image: none;
 }
 
@@ -2220,9 +2249,9 @@ img.left {
 	background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
 		repeat-x;
 	opacity: .30;
-	filter: Alpha(Opacity =   
+	filter: Alpha(Opacity =     
 		                                                         
-		     30);
+		       30);
 }
 
 .ui-widget-shadow {
@@ -2231,9 +2260,9 @@ img.left {
 	background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50%
 		repeat-x;
 	opacity: .30;
-	filter: Alpha(Opacity =   
+	filter: Alpha(Opacity =     
 		                                                         
-		     30);
+		       30);
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	border-radius: 8px;
@@ -3018,6 +3047,10 @@ a.jbar-cross:hover {
 	box-shadow: 0px 0px 10px #000;
 	-moz-box-shadow: 0px 0px 10px #000;
 	-webkit-box-shadow: 0px 0px 10px #000;
+	-moz-border-radius:10px;
+	border-radius:10px;
+	-webkit-border-radius:10px;
+	background:#fff;
 }
 
 #overlayClose {
@@ -3027,11 +3060,11 @@ a.jbar-cross:hover {
 }
 
 .selectedBars2 {
-	background: #0B8C8F !important;
-	background: -moz-linear-gradient(center bottom, #0B8E91 10%, #0B8C8F 90%)
+	background: #407DA3 !important;
+	background: -moz-linear-gradient(center bottom, #366A8A 10%, #407DA3 90%)
 		!important;
-	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #0B8E91),
-		color-stop(0.9, #0B8C8F) ) !important;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0.1, #366A8A),
+		color-stop(0.9, #407DA3) ) !important;
 	padding: 5px;
 	-webkit-border-radius: 0px 0px 5px 5px;
 	border-radius: 0px 0px 5px 5px;
@@ -3045,7 +3078,7 @@ a.jbar-cross:hover {
 	position: relative;
 	top: 0;
 	width: 100%;
-	height:100%;
+	height: 100%;
 	overflow: hidden;
 	z-index: 987654;
 }
@@ -3075,7 +3108,6 @@ a.jbar-cross:hover {
 	min-height: 100%;
 	display: none;
 	z-index: 9999;
-
 }
 
 #onlineUsers {
@@ -3090,7 +3122,9 @@ a.jbar-cross:hover {
 
 fieldset.jcalendar {
 	border: 1px solid #A1A5A9;
-	font: .9em Arial, Helvetica, sans-serif;
+	font: 0.9em Arial, Helvetica, sans-serif;
+	margin-bottom: 10px;
+	padding-bottom: 0;
 }
 
 div.jcalendar-wrapper {
@@ -3141,15 +3175,14 @@ div.jcalendar table td a {
 }
 
 div.jcalendar table td.today a {
-	background: #fff;
-	border-color: #aaa;
-	color: #0b8c8f;
-	font-weight: 900;
+	background: none repeat scroll 0 0 #407DA3;
+	color: #FFFFFF;
+	font-weight: 900
 }
 
 div.jcalendar table td a:hover,div.jcalendar table td a:focus,div.jcalendar table td a:active
 	{
-	background: #0b8c8f;
+	background: #407DA3;
 	color: #fff;
 }
 
@@ -3167,7 +3200,7 @@ div.jcalendar table td.Event a {
 	font-weight: 900;
 	background-image: url(/public/images/famfam/event.png);
 	padding-top: 10px;
-	color: #0b8c8f;
+	color: #407DA3;
 }
 
 div.jcalendar-links {
@@ -3181,10 +3214,10 @@ div.jcalendar-links a {
 
 /* amorotto css */
 .meeting_countdown {
-float:none !important;
-font-size:12px !important;
-opacity:0.2;
-text-transform:lowercase;
+	float: none !important;
+	font-size: 12px !important;
+	opacity: 0.2;
+	text-transform: lowercase;
 }
 
 /* end amorotto css */ /*start dock*/
@@ -3194,7 +3227,7 @@ text-transform:lowercase;
 
 .dock .draggable {
 	min-width: 70px;
-	max-width:100px;
+	max-width: 100px;
 	text-align: center;
 	display: inline-block;
 	width: auto !important;
@@ -3202,7 +3235,7 @@ text-transform:lowercase;
 	position: static !important;
 	padding: 3px !important;
 	-moz-border-radius: 0px;
-	opacity:1 !important;
+	opacity: 1 !important;
 	margin: 0px 2px !important;
 	cursor: pointer;
 }
@@ -3215,8 +3248,27 @@ text-transform:lowercase;
 	text-align: center;
 	margin-top: 10px;
 	color: #fff;
-	text-shadow: 0px 0px 10px #fff;
+	text-shadow: 0px 0px 10px #000;
 	margin-bottom: 5px
+}
+
+.frontTitle {
+	background: none repeat scroll 0 0 rgba(200, 200, 200, 0.2);
+	color: white;
+	display: block;
+	font-size: 12px;
+	padding: 5px 2%;
+	text-shadow: 0 0 10px #000000;
+	width: 96%;
+	margin-bottom: 10px;
+}
+
+.frontInv {
+	margin-bottom: 40px;
+}
+
+.jcalendar-selects {
+	display: none;
 }
 
 .dock .draggable .ui-widget-header:hover {
@@ -3249,12 +3301,12 @@ text-transform:lowercase;
 }
 
 .selectedBar2 {
-	background: #0B8E91 !important;
+	background: #366A8A !important;
 	color: #eee;
 	margin: 5px 0 -5px 0 !important;
 }
 
 .systemAdmin {
 	color: darkred;
-	font-weight:bold;
+	font-weight: bold;
 }

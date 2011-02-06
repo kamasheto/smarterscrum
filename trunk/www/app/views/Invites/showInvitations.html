@@ -1,9 +1,11 @@
 #{extends 'sidebar.html' /}
-<span style="color:white;text-shadow:0px 0px 10px #fff;font-size:12px;"><img src="/public/images/famfam/arrow_grey_right.png"/>Project Invitations:</span><br/><br/>
+<div class="frontTitle">Project Invitations:</div>
+<div class="frontInv">
 #{if invitations.isEmpty()}
 #{note} There are no new project invitations#{/note}
 #{/if}
 #{else}
+
 #{list items:invitations, as:'inv'}
 	<div id = "pinv_${inv.id}">
 		<img src="/public/images/famfam/user_go.png"/>You have been invited to be ${inv.role} in project <a href = "@{Application.externalOpen(inv.role.project.id, '#', false)}">${inv.role.project.name}</a> by <a href="/show/user?id=${inv.invitedBy.id}">${inv.invitedBy.name}</a>
@@ -12,8 +14,9 @@
 	</div>
 #{/list}
 #{/else}
-<br/><br/>
-<span style="color:white;text-shadow:0px 0px 10px #fff;font-size:12px;"><img src="/public/images/famfam/arrow_grey_right.png"/>Meeting Invitations:</span><br/><br/>
+</div>
+<div class="frontTitle">Meeting Invitations:</div>
+<div class="frontInv">
 #{if meetings.isEmpty()}
 #{note} There are no new meeting invitations#{/note}
 #{/if}
@@ -26,6 +29,7 @@
 	</div>
 #{/list}
 #{/else}
+</div>
 <script type = text/javascript>
 	function inv_respond(id, hash, res)
 	{

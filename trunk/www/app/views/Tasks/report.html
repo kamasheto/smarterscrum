@@ -99,8 +99,8 @@ function graphed(data)
 	            renderer:$.jqplot.DateAxisRenderer,
 				labelOptions:{fontFamily:'Helvetica',fontSize: '13pt'},
 				label:'Day',
-				max:'${maxDate}',
-				min:'${minDate}',
+				max:'${maximum_date}',
+				min:'${minimum_date}',
 				tickInterval:xx,
 					showTicks: true,
 	        }
@@ -200,7 +200,7 @@ function graph(data)
 #{/set}
 #{set 'onLoad'}
 ;
-#{if theTask.estimationPointsPerDay}
+#{if task.estimationPointsPerDay}
 graph(${efforts});
 #{/if}
 
@@ -209,14 +209,14 @@ graphed(${changes});
 #{/if}
 $('#accordion').accordion({autoHeight: false});
 #{/set}
-	<h1>Task ${theTask.getTaskNumber()} : ${theTask.description} </h1>
+	<h1>Task ${task.getTaskNumber()} : ${task.description} </h1>
 	<div id="accordion">
     <h6><a href="#">Task Information</a></h6>
 
     <div id="info">
     <div class="crudField i">
-		#{if theTask.description}
-			<span class="big">${theTask.description}</span>
+		#{if task.description}
+			<span class="big">${task.description}</span>
 		#{/if}
 		#{else}
 			<div style="padding: 10px;margin:10px"class="ui-state-error ui-corner-all">
@@ -225,121 +225,121 @@ $('#accordion').accordion({autoHeight: false});
 		#{/else}
 	</div>
 	<div class="crudField">
-	    #{if theTask.project}
-	    <label>Project</label>${theTask.project.name}
+	    #{if task.project}
+	    <label>Project</label>${task.project.name}
 	    #{/if}
 	    #{else}
 	     <div class="red"><label>Project</label>This task doesn't belong to a project!</div>
 	    #{/else}
 	</div>
-	#{if theTask.component}
-	#{if theTask.component.name.equalsIgnoreCase("Default Component")}
+	#{if task.component}
+	#{if task.component.name.equalsIgnoreCase("Default Component")}
 	#{/if}
 	#{else}
 	<div class="crudField">
-	<label>Component</label>${theTask.component.getFullName()}
+	<label>Component</label>${task.component.getFullName()}
 	</div>
 	#{/else}
 	#{/if}
 	<div class="crudField">
-	    #{if theTask.reporter}
-	    <label>Reporter</label>${theTask.reporter.getDisplayName(myProject).raw()}
+	    #{if task.reporter}
+	    <label>Reporter</label>${task.reporter.getDisplayName(project).raw()}
 	    #{/if}
 	    #{else}
 	     <div class="red"><label>Reporter</label>No one reported this task!</div>
 	    #{/else}
 	</div>
 	<div class="crudField">
-	    #{if theTask.assignee}
-	    <label>Assignee</label>${theTask.assignee.getDisplayName(myProject).raw()}
+	    #{if task.assignee}
+	    <label>Assignee</label>${task.assignee.getDisplayName(project).raw()}
 	    #{/if}
 	    #{else}
 	     <div class="red"><label>Assignee</label>No one is assigned to this task!</div>
 	    #{/else}
 	</div>
     <div class="crudField">
-	    #{if theTask.reviewer}
-	    <label>Reviewer</label>${theTask.reviewer.getDisplayName(myProject).raw()}
+	    #{if task.reviewer}
+	    <label>Reviewer</label>${task.reviewer.getDisplayName(project).raw()}
 	    #{/if}
 	    #{else}
 	     <div class="red"><label>Reviewer</label>No one is reviewing this task!</div>
 	    #{/else}
 	</div>
   	<div class="crudField">
-	    #{if theTask.taskSprint}
-	    <label>Sprint</label>${theTask.taskSprint.sprintNumber}
+	    #{if task.taskSprint}
+	    <label>Sprint</label>${task.taskSprint.sprintNumber}
 	    #{/if}
 	    #{else}
 	     <div class="red"><label>Sprint</label>This task isn't assigned to a sprint!</div>
 	    #{/else}
 	</div>
 	<div class="crudField">
-	    #{if theTask.taskType}
-	    <label>Type</label>${theTask.taskType.name}
+	    #{if task.taskType}
+	    <label>Type</label>${task.taskType.name}
 	    #{/if}
 	    #{else}
 	     <div class="red"><label>Type</label>This task doesn't have a type!</div>
 	    #{/else}
 	</div>
 	<div class="crudField">
-	    #{if theTask.taskStatus}
-	    <label>Status</label>${theTask.taskStatus.name}
+	    #{if task.taskStatus}
+	    <label>Status</label>${task.taskStatus.name}
 	    #{/if}
 	    #{else}
 	     <div class="red"><label>Status</label>This task doesn't have a type!</div>
 	    #{/else}
 	</div>
-	#{if theTask.estimationPoints}
+	#{if task.estimationPoints}
 	<div class="crudField">   
-	    <label>Estimation Points</label>${theTask.estimationPoints}
+	    <label>Estimation Points</label>${task.estimationPoints}
 	</div>
 	#{/if}
- 	#{if theTask.parent}
+ 	#{if task.parent}
 	<div class="crudField">   
-	    <label>Belongs to</label>${theTask.parent.getTaskNumber()}
+	    <label>Belongs to</label>${task.parent.getTaskNumber()}
 	</div>
 	#{/if}
-	#{if theTask.subTasks}
+	#{if task.subTasks}
 	<div class="crudField"> 
 	<label>SubTasks</label>
-	#{list items:theTask.subTasks, as:'dt'}
-	#{if dt.id==theTask.subTasks.get(theTask.subTasks.size()-1).id}
-	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.getTaskNumber()}</a>
+	#{list items:task.subTasks, as:'dt'}
+	#{if dt.id==task.subTasks.get(task.subTasks.size()-1).id}
+	<a href="@{Tasks.report(dt.id)}" title="goto task ${dt.id}">${dt.getTaskNumber()}</a>
 	#{/if}
 	#{else}
-	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.getTaskNumber()}</a>, 
+	<a href="@{Tasks.report(dt.id)}" title="goto task ${dt.id}">${dt.getTaskNumber()}</a>, 
 	#{/else}
 	#{/list}
 	</div>
 	#{/if}
-	#{if theTask.dependentTasks}
+	#{if task.dependentTasks}
 	<div class="crudField"> 
 	<label>Dependant tasks</label>
-	#{list items:theTask.dependentTasks, as:'dt'}
-	#{if dt.id==theTask.dependentTasks.get(theTask.dependentTasks.size()-1).id}
-	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.getTaskNumber()}</a>
+	#{list items:task.dependentTasks, as:'dt'}
+	#{if dt.id==task.dependentTasks.get(task.dependentTasks.size()-1).id}
+	<a href="@{Tasks.report(dt.id)}" title="goto task ${dt.id}">${dt.getTaskNumber()}</a>
 	#{/if}
 	#{else}
-	<a href="@{Tasks.getReport(dt.id)}" title="goto task ${dt.id}">${dt.getTaskNumber()}</a>, 
+	<a href="@{Tasks.report(dt.id)}" title="goto task ${dt.id}">${dt.getTaskNumber()}</a>, 
 	#{/else}
 	#{/list}
 	</div>
 	#{/if}
-	<div id="comments_${theTask.id}"style="margin-top:10px">
+	<div id="comments_${task.id}"style="margin-top:10px">
 	<h1>Comments</h1>
 
-#{if theTask.comments}
-#{list items:theTask.comments, as:'t'}
+#{if task.comments}
+#{list items:task.comments, as:'t'}
 #{ifnot t.deleted}
 <div class="comment" id="L_${t.id}"style="display:none;text-align:center"><img src="/public/images/tinyLoading.gif" alt="Loading"/></div>
 <div class="comment" id="c_${t.id}">
 <div class="crudField">
-<label>Author</label>${t.author.getDisplayName(theTask.project).raw()}
+<label>Author</label>${t.author.getDisplayName(task.project).raw()}
 </div>
 <div class="crudField">
 <label>Time</label>${new Date(t.timeOfComment)}
 </div>
-${t.comment.raw()}#{if connected.in(theTask.project).can("modifyTask") || connected.id == t.author.id}
+${t.comment.raw()}#{if connected.in(task.project).can("modifyTask") || connected.id == t.author.id}
 <div class="red" style="text-align:right"><a href="#" class="red"onclick="confirm_delete('${t.id}')">delete?</a></div>
 </div>
 #{/if}
@@ -352,7 +352,7 @@ ${t.comment.raw()}#{if connected.in(theTask.project).can("modifyTask") || connec
 		<strong>There are no comments associated with this task. </strong>
 </div>
 #{/else}</div>
-#{if connected.projects.contains(theTask.project)}
+#{if connected.projects.contains(task.project)}
 <div id=""class="comment">
 <div class="crudField">
 <h1>Add a comment?</h1>
@@ -382,7 +382,7 @@ function send(){
 	$('#theComment').hide();
 	$('#loader').show();
 	$('#theComment').val('');
-	$.post("@{Comments.addComment()}",{taskId:${theTask.id},comment:$("#theComment").val()},function(){
+	$.post("@{Comments.addComment()}",{taskId:${task.id},comment:$("#theComment").val()},function(){
 		$('#theComment').show();
 		$('#loader').hide();
 		});
@@ -437,7 +437,7 @@ function send(){
 <h6><a href="#">Task Progression Stats</a></h6>
 <div>
 
-#{if theTask.estimationPointsPerDay}
+#{if task.estimationPointsPerDay}
 	<div style="margin-top:20px;padding: 10px;margin:10px" class="ui-state-highlight ui-corner-all"> 
 		<span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
 		<strong>NOTE: </strong>click and drag the cursor to zoom into the graph, click it to reset the graph.

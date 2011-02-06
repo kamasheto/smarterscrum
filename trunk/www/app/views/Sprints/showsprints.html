@@ -4,7 +4,7 @@
 #{if connected.in(project).can('addSprint') }
 <a onClick="overlayOpen('/Sprints/projectblank?projectId=${project.id}')"href="#" ><img src="@{'public/images/famfam/add.png'}" alt=[+]/></a>
 #{/if}
-<a href="#" onclick="overlayOpen('@{ProductBacklogs.showGraph(project.id,0)}')" title="View progress of whole company for all sprints?">
+<a href="#" onclick="overlayOpen('@{ProductBacklogs.show_graph(project.id,0)}')" title="View progress of whole company for all sprints?">
 <img src="@{'public/images/famfam/chart.png'}" alt="[chart]"/></a>		
 #{/set}
 <script type="text/javascript">
@@ -22,7 +22,7 @@ function isBefore(date){
 </script>
 
 	#{list items:sprints, as:'sprint'}
-		<div class="${sprint.id == runningSprint ? 'greenBg' : ( sprint.ended ||sprint.endDate.before(new Date()) )? 'redBg' : 'yellowBg'} reload-sprint-${sprint.id}" name="/sprints/showsprint?id=${sprint.id}&projectId=${sprint.project.id}">Sprint ${sprint.sprintNumber}#{if !sprint.ended}#{drop 'sprint-' + sprint.id /}#{/if}<a href="#" onclick="overlayOpen('@{SprintBacklog.showGraph(sprint.id,0)}')" title="view the burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+		<div class="${sprint.id == runningSprint ? 'greenBg' : ( sprint.ended ||sprint.endDate.before(new Date()) )? 'redBg' : 'yellowBg'} reload-sprint-${sprint.id}" name="/sprints/showsprint?id=${sprint.id}&projectId=${sprint.project.id}">Sprint ${sprint.sprintNumber}#{if !sprint.ended}#{drop 'sprint-' + sprint.id /}#{/if}<a href="#" onclick="overlayOpen('@{SprintBacklog.show_graph(sprint.id,0)}')" title="view the burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 		<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="View backlog for all components?">
 		<img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>	
 		#{if sprint.ended || sprint.ended()}

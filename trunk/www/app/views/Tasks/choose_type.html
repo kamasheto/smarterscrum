@@ -11,8 +11,8 @@
 <script type="text/javascript">
 function set_type(tyId,tskId,usrId,name,sid)
 {
-	$.post('@{editTaskType()}',
-			{id:tskId, typeId:tyId, userId:usrId},
+	$.post('@{edit_task_type()}',
+			{id:tskId, type_id:tyId, user_id:usrId},
 			function()
 			{
 				window.close();	

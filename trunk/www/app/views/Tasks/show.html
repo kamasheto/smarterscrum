@@ -290,7 +290,7 @@ function getUsers()
 {
 	var compId = $('#object_component').val();
 	var typeId = $('#object_taskType').val();
-	$.post('@{componentUsers}', {cid : compId}, function(data){
+	$.post('@{component_users}', {id : compId}, function(data){
 		str = '<option value="">(None)</option>';
 		$.each(data, function(id, item){
 			str += '<option value='+item.id+'>'+item.name+'</option>';
@@ -306,7 +306,7 @@ function getUsers()
 			$('.assign').css('display', 'inline-block');
 		}
 	}); 
-	$.post('@{typeReviewer}', {typeId : typeId, componentId:compId}, function(data){
+	$.post('@{type_reviewer}', {type_id : typeId, component_id:compId}, function(data){
 		str = '<option value="">(None)</option>';
 		$.each(data, function(id, item){
 			str += '<option value='+item.id+'>'+item.name+'</option>';
@@ -319,7 +319,7 @@ function getType()
 	var compId = $('#object_component').val();
 	var typeId = $('#object_taskType').val();
 	var assigneeId = $('#object_assignee').val();
-	$.post('@{typeReviewer}', {typeId : typeId, componentId:compId, assigneeId:assigneeId}, function(data){
+	$.post('@{type_reviewer}', {type_id : typeId, component_id:compId, assigneeId:assigneeId}, function(data){
 		str = '<option value="">(None)</option>';
 		$.each(data, function(id, item){
 			str += '<option value='+item.id+'>'+item.name+'</option>';
