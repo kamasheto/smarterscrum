@@ -293,7 +293,7 @@ public class Sprints extends SmartCRUD
 
 		Log.addUserLog( "Created sprint", object, proj );
 		String resourceURL = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + proj.id + "&isOverlay=false&url=/sprints/showsprint?id=" + object.id;
-		Notifications.notifyProjectUsers( proj, "setSprint", resourceURL, "Sprint", object.sprintNumber, (byte) 0 );
+		Notifications.notifyProjectUsers( proj, "setSprint", resourceURL, "Sprint", object.number, (byte) 0 );
 		redirect( request.controller + ".show", object.getEntityId() );
 	}
 

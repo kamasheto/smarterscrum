@@ -22,7 +22,7 @@ please select the Sprint you want:
 <select id="SprintID">
       #{list items:sprints, as:'sprint'}
       #{if sprint.deleted==false}
-     <option value="${sprint.id}">Sprint ${sprint.sprintNumber} , Starting time :${sprint.startDate}</option>
+     <option value="${sprint.id}">Sprint ${sprint.number} , Starting time :${sprint.startDate}</option>
      #{/if}
      #{/list}
      </select>

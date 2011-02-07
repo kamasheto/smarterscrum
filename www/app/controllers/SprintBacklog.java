@@ -59,7 +59,7 @@ public class SprintBacklog extends SmartController
 		{
 			tasks = sprint.tasks;
 		}
-		String sprint_number = sprint.sprintNumber;
+		String sprint_number = sprint.number;
 		List<TaskType> types = sprint.project.taskTypes;
 		List<TaskStatus> statuses = sprint.project.taskStatuses;
 		render( tasks, sprint_id, day_headers, sprint_number, component_id, project, cs, types, statuses,sprint );
@@ -93,7 +93,7 @@ public class SprintBacklog extends SmartController
 		
 		if( data.contains( "NONE" ) )
 			data = null;
-		String sprint_number = sprint.sprintNumber;
+		String sprint_number = sprint.number;
 		render( data, sprint_number, name );
 	}
 }

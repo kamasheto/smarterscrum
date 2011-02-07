@@ -23,7 +23,7 @@ public class c4s1 extends UnitTest
 	{
 		new Task( "This is a Test Task C4S1", false, 27.0).save();
 		Task testTask = Task.find( "byDescription", "This is a Test Task C4S1" ).first();
-		Sprint mySprint = Sprint.find("bySprintNumber","1").first();
+		Sprint mySprint = Sprint.find("byNumber","1").first();
 		testTask.sprint =  mySprint;
 		assertNotNull( mySprint );
 		testTask.estimationPointsPerDay = new ArrayList<Double>(mySprint.getDuration());

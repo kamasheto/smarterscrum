@@ -187,13 +187,13 @@
 			
 			#{crud.custom 'taskSprint'}
 			#{if (object.sprint!=null && object.sprint.ended()) || insprint}<label for="object_taskSprint">Sprint</label>
-				<span id="task_taskSprint" ><font color="green">sprint ${object.sprint.sprintNumber}</font></span>#{/if}
+				<span id="task_taskSprint" ><font color="green">sprint ${object.sprint.number}</font></span>#{/if}
 			#{elseif sprints.size()>0}
 				<label for="object_taskSprint">Sprint</label>
 					<select style="min-width:130px" id="object_taskSprint" name="object.sprint@id">
 					<option value="">(None)</option>
 					#{list items:sprints ,as :'sprint'}
-						<option value="${sprint.id}"#{if object.sprint == sprint} selected#{/if}>sprint ${sprint.sprintNumber}</option>
+						<option value="${sprint.id}"#{if object.sprint == sprint} selected#{/if}>sprint ${sprint.number}</option>
 					#{/list}
 					</select>
 				
