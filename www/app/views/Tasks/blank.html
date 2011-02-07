@@ -73,7 +73,7 @@
 	#{if project.taskStatuses.size()>0}
 		<div class="crudField" name="view-more" style="display:none">
 			<label for="object_taskStatus">Status</label>
-			<select style="min-width:130px" id="object_taskStatus" name="object.taskStatus@id">
+			<select style="min-width:130px" id="object_taskStatus" name="object.status@id">
 			#{list items:project.taskStatuses ,as :'taskStatus'}
 				#{ifnot taskStatus.deleted}<option value="${taskStatus.id}">${taskStatus.name}</option>#{/ifnot}
 			#{/list}
@@ -84,7 +84,7 @@
 	#{if project.hasTypes()>0}
 		<div class="crudField" name="view-more" style="display:none">
 		<label for="object_taskType">Type</label>
-		<select style="min-width:130px" id="object_taskType" name="object.taskType@id" onchange="getType();">
+		<select style="min-width:130px" id="object_taskType" name="object.type@id" onchange="getType();">
 		#{list items:project.taskTypes ,as :'taskType'}
 			#{ifnot taskType.deleted}<option value="${taskType.id}">${taskType.name}</option>#{/ifnot}
 		#{/list}
@@ -139,7 +139,7 @@
 	#{if sprints.size()>0}
 	<div class="crudField" name="view-more" style="display:none">	
 	<label for="object_taskSprint">Sprint</label>
-	<select style="min-width:130px" id="object_taskSprint" name="object.taskSprint@id">
+	<select style="min-width:130px" id="object_taskSprint" name="object.sprint@id">
 	<option value="">None</option>
 	#{list items:sprints ,as :'sprint'}
 	<option value="${sprint.id}">Sprint ${sprint.sprintNumber}</option>

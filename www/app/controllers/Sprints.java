@@ -578,13 +578,13 @@ public class Sprints extends SmartCRUD
 		else if( sprint.project.isScrum && sprint.startDate.getTime() <= new Date().getTime() )
 			renderText( "Sorry you can't add a task to a running sprint" );
 		sprint.tasks.add( task );
-		task.taskSprint = sprint;
+		task.sprint = sprint;
 		task.save();
 		if( task.subTasks.size() > 0 )
 		{
 			for( int i = 0; i < task.subTasks.size(); i++ )
 			{
-				task.subTasks.get( i ).taskSprint = sprint;
+				task.subTasks.get( i ).sprint = sprint;
 				sprint.tasks.add( task.subTasks.get( i ) );
 				task.subTasks.get( i ).save();
 			}

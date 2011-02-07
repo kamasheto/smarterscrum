@@ -87,8 +87,8 @@ public class Snapshots extends SmartController {
 					}
 					for (Task task : tasks) {
 						BoardColumn pcol = new BoardColumn();
-						for (int k = 0; k < task.taskStatus.columns.size(); k++) {
-							pcol = task.taskStatus.columns.get(k);
+						for (int k = 0; k < task.status.columns.size(); k++) {
+							pcol = task.status.columns.get(k);
 							if (pcol.board.id == b.id)
 								break;
 						}
@@ -139,8 +139,8 @@ public class Snapshots extends SmartController {
 				}
 				for (Task task : tasks) {
 					BoardColumn pcol = new BoardColumn();
-					for (int k = 0; k < task.taskStatus.columns.size(); k++) {
-						pcol = task.taskStatus.columns.get(k);
+					for (int k = 0; k < task.status.columns.size(); k++) {
+						pcol = task.status.columns.get(k);
 						if (pcol.board.id == b.id)
 							break;
 					}

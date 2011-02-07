@@ -205,18 +205,18 @@ Show/Hide:
 		<td id="${task.id}_des"class="shDes">${task.description}</td>
           #{/else}
           
-          #{ifnot task.taskType}
+          #{ifnot task.type}
           <td id="${task.id}_type"class="shType">No Type stated</td>
           #{/ifnot}
           #{else}
-          <td id="${task.id}_type"class="shType">${task.taskType.name}</td>
+          <td id="${task.id}_type"class="shType">${task.type.name}</td>
           #{/else}
           
-           #{ifnot task.taskStatus}
+           #{ifnot task.status}
           <td id="${task.id}_status"class="shStatus">No Status stated</td>
           #{/ifnot}
           #{else}
-          <td id="${task.id}_status"class="shStatus">${task.taskStatus.name}</td>
+          <td id="${task.id}_status"class="shStatus">${task.status.name}</td>
           #{/else}
         
           #{ifnot task.assignee}
@@ -262,22 +262,22 @@ Show/Hide:
 		
 		<td id="${task.id}_type" class="editTYPE shType">
 			#{if connected.in(project).can('changeTaskType')|| connected==task.assignee}
-					#{ifnot task.taskType}
+					#{ifnot task.type}
 	    <span  #{if sprint.running()}onclick="$(this).next().show();$(this).hide()"#{/if}>---</span>
 	    #{/ifnot}
 	    #{else}
-	    <span  #{if sprint.running()}onclick="$(this).next().show();$(this).hide()"#{/if}>${task.taskType.name}</span>
+	    <span  #{if sprint.running()}onclick="$(this).next().show();$(this).hide()"#{/if}>${task.type.name}</span>
 	    #{/else}
 	     #{if sprint.running()}
 		<form style="display:none">
 			
 			<select id="t_${task.id}_t"onblur="magicFix(this)" onchange="magicFix(this);changeT(${task.id},parseInt($('#t_${task.id}_t option:selected').val()));">
-       		#{ifnot task.taskType.name}
+       		#{ifnot task.type.name}
        			<option value="${type.id}">---</option>
        		#{/ifnot}
        		#{list items:types, as:'type'}
-       		#{if task.taskType}
-       			#{if type.name==task.taskType.name}
+       		#{if task.type}
+       			#{if type.name==task.type.name}
        				<option selected="selected" value="${type.id}">${type.name}</option>
        			#{/if}
        			#{else}
@@ -292,31 +292,31 @@ Show/Hide:
 		</form> #{/if}
 	    #{/if}
 	    #{else}
-	    #{ifnot task.taskType}
+	    #{ifnot task.type}
 	    ---
 	    #{/ifnot}
 	    #{else}
-	    ${task.taskType.name}
+	    ${task.type.name}
 	    #{/else}
 	    #{/else}
 </td>
 
 		<td id="${task.id}_status" class="editStatus shStatus">
 		#{if connected.in(project).can('changeTaskStatus') ||connected==task.reviewer || connected==task.assignee}
-		#{ifnot task.taskStatus}
+		#{ifnot task.status}
 	    <span  #{if sprint.running()}onclick="$(this).next().show();$(this).hide()"#{/if}>---</span>
 	    #{/ifnot}
 	    #{else}
-	    <span  #{if sprint.running()}onclick="$(this).next().show();$(this).hide()"#{/if}>${task.taskStatus.name}</span>
+	    <span  #{if sprint.running()}onclick="$(this).next().show();$(this).hide()"#{/if}>${task.status.name}</span>
 	    #{/else} #{if sprint.running()}
 		<form style="display:none">
 			<select id="t_${task.id}_s"onblur="magicFix(this)" onchange="magicFix(this);changeS(${task.id},parseInt($('#t_${task.id}_s option:selected').val()));">
-       		#{ifnot task.taskStatus.name}
+       		#{ifnot task.status.name}
        			<option value="${type.id}">---</option>
        		#{/ifnot}
        		#{list items:statuses, as:'type'}
-       		#{if task.taskStatus}
-       			#{if type.name==task.taskStatus.name}
+       		#{if task.status}
+       			#{if type.name==task.status.name}
        				<option selected="selected" value="${type.id}">${type.name}</option>
        			#{/if}
        			#{else}
@@ -331,11 +331,11 @@ Show/Hide:
 		</form> #{/if}
 	    #{/if}
 	    #{else}
-	    #{ifnot task.taskType}
+	    #{ifnot task.type}
 	    ---
 	    #{/ifnot}
 	    #{else}
-	    ${task.taskType.name}
+	    ${task.type.name}
 	    #{/else}
 	    #{/else}
 		</td>

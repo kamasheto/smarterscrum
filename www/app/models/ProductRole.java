@@ -101,11 +101,11 @@ public class ProductRole extends SmartModel {
 	public boolean inSprint() {
 		Date now = Calendar.getInstance().getTime();
 		for (Task task : Tasks) {
-			if (task.taskSprint.startDate.before(now) && task.taskSprint.endDate.after(now)) {
+			if (task.sprint.startDate.before(now) && task.sprint.endDate.after(now)) {
 				return true;
 			}
 			for (Task task2 : task.subTasks) {
-				if (task2.taskSprint.startDate.before(now) && task.taskSprint.endDate.after(now)) {
+				if (task2.sprint.startDate.before(now) && task.sprint.endDate.after(now)) {
 					return true;
 				}
 			}

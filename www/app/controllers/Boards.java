@@ -113,11 +113,11 @@ public class Boards extends SmartCRUD
 						if( !task.deleted)
 						{
 						BoardColumn pcol = new BoardColumn();
-						if(task.taskStatus != null)
+						if(task.status != null)
 						{
-						for( int k = 0; k < task.taskStatus.columns.size(); k++ )
+						for( int k = 0; k < task.status.columns.size(); k++ )
 						{
-							pcol = task.taskStatus.columns.get( k );
+							pcol = task.status.columns.get( k );
 							if( pcol.board.id == board.id )
 							{
 								break;
@@ -187,11 +187,11 @@ public class Boards extends SmartCRUD
 					if( !task.deleted)
 					{
 					BoardColumn pcmp = new BoardColumn();
-					if(task.taskStatus != null)
+					if(task.status != null)
 					{
-					for( int k = 0; k < task.taskStatus.columns.size(); k++ )
+					for( int k = 0; k < task.status.columns.size(); k++ )
 					{
-						pcmp = task.taskStatus.columns.get( k );
+						pcmp = task.status.columns.get( k );
 						if( pcmp.board.id == comp.componentBoard.id )
 						{
 							break;

@@ -327,7 +327,7 @@ public class Sprint extends SmartModel
 		for( int i = 0; i < STasks.size(); i++ )
 		{
 			Task Current = STasks.get( i );
-			if( Current.taskType != null && Current.taskType.name == "Impediment" )
+			if( Current.type != null && Current.type.name == "Impediment" )
 			{
 				Impediment.add( j, Current );
 				j++;
