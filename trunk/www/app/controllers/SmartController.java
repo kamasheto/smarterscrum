@@ -116,9 +116,9 @@ public class SmartController extends Controller
 						for( Task task : tasks )
 						{
 							BoardColumn pcol = new BoardColumn();
-							for( int k = 0; k < task.taskStatus.columns.size(); k++ )
+							for( int k = 0; k < task.status.columns.size(); k++ )
 							{
-								pcol = task.taskStatus.columns.get( k );
+								pcol = task.status.columns.get( k );
 								if( pcol.board.id == b.id )
 								{
 									break;
@@ -191,9 +191,9 @@ public class SmartController extends Controller
 						for( Task task : tasks1 )
 						{
 							BoardColumn pcol = new BoardColumn();
-							for( int k = 0; k < task.taskStatus.columns.size(); k++ )
+							for( int k = 0; k < task.status.columns.size(); k++ )
 							{
-								pcol = task.taskStatus.columns.get( k );
+								pcol = task.status.columns.get( k );
 								if( pcol.board.id == b.id )
 								{
 									break;

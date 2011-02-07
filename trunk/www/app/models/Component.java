@@ -136,7 +136,7 @@ public class Component extends SmartModel
 		{
 
 			Task task = tasks.get( i - j );
-			if( task.taskSprint != s || task.deleted )
+			if( task.sprint != s || task.deleted )
 			{
 				tasks.remove( task );
 				j++;
@@ -157,9 +157,9 @@ public class Component extends SmartModel
 		List<Task> t = new ArrayList<Task>();
 		for( int i = 0; i < componentTasks.size(); i++ )
 		{
-			if( componentTasks.get( i ).taskSprint != null )
+			if( componentTasks.get( i ).sprint != null )
 			{
-				if( componentTasks.get( i ).taskSprint.id == s.id && (componentTasks.get(i).subTasks==null || componentTasks.get(i).parent!=null) )
+				if( componentTasks.get( i ).sprint.id == s.id && (componentTasks.get(i).subTasks==null || componentTasks.get(i).parent!=null) )
 				{
 					t.add( componentTasks.get( i ) );
 				}
@@ -183,9 +183,9 @@ public class Component extends SmartModel
 		List<Task> t = new ArrayList<Task>();
 		for( int i = 0; i < componentTasks.size(); i++ )
 		{
-			if( componentTasks.get( i ).taskSprint != null )
+			if( componentTasks.get( i ).sprint != null )
 			{
-				if( componentTasks.get( i ).taskSprint.id == s.id )
+				if( componentTasks.get( i ).sprint.id == s.id )
 				{
 					t.add( componentTasks.get( i ) );
 				}

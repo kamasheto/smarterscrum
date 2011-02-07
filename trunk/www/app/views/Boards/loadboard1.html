@@ -211,7 +211,7 @@ REDIPS.drag.init();
 	#{set count=0}
 	#{/set}
 	#{list items:component, as:'col'}
-	<td width="50px" class="col_${count}" id="${columnsOfBoard[count].taskStatus.id}_${component.id}_${compID}">  <!--filling cells in each row with tasks -->
+	<td width="50px" class="col_${count}" id="${columnsOfBoard[count].status.id}_${component.id}_${compID}">  <!--filling cells in each row with tasks -->
 		#{set count=count+1}#{/set}
 		#{list items:col, as:'task'}
 		
@@ -234,7 +234,7 @@ REDIPS.drag.init();
 		<a id="task-${task.id}_hidden" style="display:none; font-size:large;cursor: pointer !important;text-decoration:none" onclick="showtask(this.id);"><img title="hide?" src="@{'/public/images/famfam/bullet_toggle_plus.png'}"></img></a>
 		<div id="task-${task.id}_TT">
 		<p>		
-		<div class="${task.taskStatus.columns[0].name}"></div> 
+		<div class="${task.status.columns[0].name}"></div> 
 		#{if task.taskType!=null}<div class="small_${task.id} shadowed" style="-moz-border-radius:10px; border-radius:10px; background-color:${task.taskType.hexColor}; border:0px; "  id="${task.id}_small">#{/if}
 		#{else}<div class="small_${task.id} shadowed" style="-moz-border-radius:10px; border-radius:10px; background-color:white; border:0px; "  id="${task.id}_small">#{/else}
 		<a id="task-${task.id}" onclick="ctask(this.id);" style="cursor:pointer !important;border=0px; float:right;"><img title="hide?" src="@{'/public/images/famfam/bullet_toggle_minus.png'}"></img></a> 

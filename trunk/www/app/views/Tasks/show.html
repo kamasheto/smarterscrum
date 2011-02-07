@@ -62,12 +62,12 @@
 					
 			#{crud.custom 'taskStatus'}
 			<label for="task_taskStatus">Status</label>
-			<select style="min-width:130px" id="object_taskStatus" name="object.taskStatus@id">
-			#{if object.taskStatus==null}
+			<select style="min-width:130px" id="object_taskStatus" name="object.status@id">
+			#{if object.status==null}
 				<option value="">(None)</option>
 			#{/if}
 			#{list items:statuses ,as :'Status'}
-				#{ifnot Status.deleted}<option value="${Status.id}"#{if object.taskStatus == Status} selected#{/if}>${Status.name}</option>#{/ifnot}
+				#{ifnot Status.deleted}<option value="${Status.id}"#{if object.status == Status} selected#{/if}>${Status.name}</option>#{/ifnot}
 			#{/list}		
 			</select>
 			#{/crud.custom }
@@ -75,10 +75,10 @@
 			#{crud.custom 'taskType'}
 			#{if object.project.hasTypes()>0}
 				<label for="task_type">Type</label> 
-				<select style="min-width:130px" id="object_taskType" name="object.taskType@id" onchange="getType();">
-				#{if object.taskType==null}<option value="">(None)</option>#{/if}
+				<select style="min-width:130px" id="object_taskType" name="object.type@id" onchange="getType();">
+				#{if object.type==null}<option value="">(None)</option>#{/if}
 				#{list items:object.project.taskTypes ,as :'Type'}
-					#{if !Type.deleted}<option value="${Type.id}"#{if object.taskType == Type} selected#{/if}>${Type.name}</option>#{/if}									
+					#{if !Type.deleted}<option value="${Type.id}"#{if object.type == Type} selected#{/if}>${Type.name}</option>#{/if}									
 				#{/list}		
 				</select>
 			#{/if}#{else}#{/else}
@@ -186,14 +186,14 @@
 			#{/crud.custom }
 			
 			#{crud.custom 'taskSprint'}
-			#{if (object.taskSprint!=null && object.taskSprint.ended()) || insprint}<label for="object_taskSprint">Sprint</label>
-				<span id="task_taskSprint" ><font color="green">sprint ${object.taskSprint.sprintNumber}</font></span>#{/if}
+			#{if (object.sprint!=null && object.sprint.ended()) || insprint}<label for="object_taskSprint">Sprint</label>
+				<span id="task_taskSprint" ><font color="green">sprint ${object.sprint.sprintNumber}</font></span>#{/if}
 			#{elseif sprints.size()>0}
 				<label for="object_taskSprint">Sprint</label>
-					<select style="min-width:130px" id="object_taskSprint" name="object.taskSprint@id">
+					<select style="min-width:130px" id="object_taskSprint" name="object.sprint@id">
 					<option value="">(None)</option>
 					#{list items:sprints ,as :'sprint'}
-						<option value="${sprint.id}"#{if object.taskSprint == sprint} selected#{/if}>sprint ${sprint.sprintNumber}</option>
+						<option value="${sprint.id}"#{if object.sprint == sprint} selected#{/if}>sprint ${sprint.sprintNumber}</option>
 					#{/list}
 					</select>
 				

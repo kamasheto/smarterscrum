@@ -25,18 +25,18 @@
 			</div>
 			<div class="taskinfo">
 			<b style="width:100px;display:inline-block;">Task Status</b>
-			#{if task.taskStatus!=null}${task.taskStatus.name}#{/if}#{else}None.#{/else}
+			#{if task.status!=null}${task.status.name}#{/if}#{else}None.#{/else}
 			</div>
 			<div class="taskinfo"><b style="width:100px;display:inline-block;">Task Type</b>
-			#{if task.taskType!=null}${task.taskType.name}#{/if}#{else}None.#{/else}
+			#{if task.type!=null}${task.type.name}#{/if}#{else}None.#{/else}
 			</div>
-			<div class="taskinfo"><b style="width:100px;display:inline-block;">Sprint</b> #{if task.taskSprint!=null}${task.taskSprint.sprintNumber}#{/if}#{else}None.#{/else}
+			<div class="taskinfo"><b style="width:100px;display:inline-block;">Sprint</b> #{if task.sprint!=null}${task.sprint.sprintNumber}#{/if}#{else}None.#{/else}
 			</div>
 			#{/if}
 			
 		#{list items:tasks ,as :'Task'}
 		
-				<div class = " #{if Task.subTasks}is_parent_task#{/if}${Task.taskStatus?.closed ? 'redBg' : Task.taskStatus?.pending ? 'yellowBg' : Task.taskStatus?.isNew ? 'greenBg' : ''} reload-task-${Task.id}" name="/tasks/view_task?task_id=${Task.id}"> 
+				<div class = " #{if Task.subTasks}is_parent_task#{/if}${Task.status?.closed ? 'redBg' : Task.status?.pending ? 'yellowBg' : Task.status?.isNew ? 'greenBg' : ''} reload-task-${Task.id}" name="/tasks/view_task?task_id=${Task.id}"> 
 		#{if Task.parent}
 		<script type="text/javascript">
 		
@@ -78,8 +78,8 @@
 		
 		
 		</div>
-		#{if Task.taskType!=null}
-			<div class="right" title="Type: ${Task.taskType.name}" style="text-align:center; background:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; display:inline-block; font-family:Verdana; font-weight:Bold;" >T</div>
+		#{if Task.type!=null}
+			<div class="right" title="Type: ${Task.type.name}" style="text-align:center; background:${Task.type.hexColor}; width: 15px; height: 15px; border-color:white; display:inline-block; font-family:Verdana; font-weight:Bold;" >T</div>
 			#{/if}
 			#{if connected.equals(Task.assignee)}
 			<a href="#"onclick="overlayOpen('/Tasks/set_deadline?id=${Task.id}')" ><img title="Set deadline for this task"src="/public/images/famfam/clock_stop.png"/></a>

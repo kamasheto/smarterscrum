@@ -388,9 +388,9 @@ public class Projects extends SmartCRUD
 			}
 			for(Task task : taskStatus.project.projectTasks)
 			{
-				if(task.taskStatus == taskStatus )
+				if(task.status == taskStatus )
 				{
-					task.taskStatus = null;
+					task.status = null;
 					task.save();
 					CollaborateUpdate.update(task.project, "reload('task-"+task.id+"')");
 				}
@@ -561,9 +561,9 @@ public class Projects extends SmartCRUD
 		taskType.save();
 		for(Task task : taskType.project.projectTasks)
 		{
-			if(task.taskType == taskType )
+			if(task.type == taskType )
 			{
-				task.taskType = null;
+				task.type = null;
 				task.save();
 				CollaborateUpdate.update(task.project, "reload('task-"+task.id+"')");
 			}

@@ -78,17 +78,17 @@ public class Task extends SmartModel
 	 * The task status
 	 */
 	@ManyToOne
-	public TaskStatus taskStatus;
+	public TaskStatus status;
 	/**
 	 * The task type
 	 */
 	@ManyToOne
-	public TaskType taskType;
+	public TaskType type;
 	/**
 	 * The sprint that have this task associated to it.
 	 */
 	@ManyToOne
-	public Sprint taskSprint;
+	public Sprint sprint;
 
 	/**
 	 * The task number relative to this project.
@@ -315,20 +315,20 @@ public class Task extends SmartModel
 		this.description = des;
 		this.deleted = false;
 
-		this.taskType = new TaskType();
-		this.taskType.name = "Impediment";
-		this.taskType.save();
-		this.taskType.project = project;
+		this.type = new TaskType();
+		this.type.name = "Impediment";
+		this.type.save();
+		this.type.project = project;
 
 		this.dependentTasks = new ArrayList<Task>();
-		this.taskStatus = new TaskStatus();
+		this.status = new TaskStatus();
 
 		this.estimationPointsPerDay = new ArrayList<Double>( 1 );
-		this.taskStatus = new TaskStatus().save();
+		this.status = new TaskStatus().save();
 
-		this.taskStatus.name = "New";
-		this.taskStatus.save();
-		this.taskStatus.project = project;
+		this.status.name = "New";
+		this.status.save();
+		this.status.project = project;
 
 		this.estimationPoints = 0.0;
 
@@ -343,7 +343,7 @@ public class Task extends SmartModel
 	 */
 	public boolean checkUnderImpl()
 	{
-		Sprint taskSprint = this.taskSprint;
+		Sprint taskSprint = this.sprint;
 		if( taskSprint != null )
 		{
 			Date Start = taskSprint.startDate;
@@ -493,8 +493,8 @@ public class Task extends SmartModel
 		}
 		else
 		{
-			if(taskType!=null)
-				u = Reviewer.find("byProjectAndAcceptedAndtaskType", project, true, taskType).fetch();
+			if(type!=null)
+				u = Reviewer.find("byProjectAndAcceptedAndtaskType", project, true, type).fetch();
 			u.remove( this.assignee );
 		}
 		return u;

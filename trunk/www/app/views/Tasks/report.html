@@ -266,24 +266,24 @@ $('#accordion').accordion({autoHeight: false});
 	    #{/else}
 	</div>
   	<div class="crudField">
-	    #{if task.taskSprint}
-	    <label>Sprint</label>${task.taskSprint.sprintNumber}
+	    #{if task.sprint}
+	    <label>Sprint</label>${task.sprint.sprintNumber}
 	    #{/if}
 	    #{else}
 	     <div class="red"><label>Sprint</label>This task isn't assigned to a sprint!</div>
 	    #{/else}
 	</div>
 	<div class="crudField">
-	    #{if task.taskType}
-	    <label>Type</label>${task.taskType.name}
+	    #{if task.type}
+	    <label>Type</label>${task.type.name}
 	    #{/if}
 	    #{else}
 	     <div class="red"><label>Type</label>This task doesn't have a type!</div>
 	    #{/else}
 	</div>
 	<div class="crudField">
-	    #{if task.taskStatus}
-	    <label>Status</label>${task.taskStatus.name}
+	    #{if task.status}
+	    <label>Status</label>${task.status.name}
 	    #{/if}
 	    #{else}
 	     <div class="red"><label>Status</label>This task doesn't have a type!</div>
