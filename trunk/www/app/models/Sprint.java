@@ -23,7 +23,7 @@ public class Sprint extends SmartModel
 	 * The sprint number in this project.
 	 */
 
-	public String sprintNumber;
+	public String number;
 	/**
 	 * The sprint's start date.
 	 */
@@ -60,14 +60,10 @@ public class Sprint extends SmartModel
 	@OneToMany( mappedBy = "taskSprint", cascade = CascadeType.ALL )
 	public List<Task> tasks;
 
-	// @OneToMany (mappedBy = "daySprint", cascade = CascadeType.ALL)
-	// public List<Day> days;
-
 	public static class Object
 	{
-
 		long id;
-		String sprintNumber;
+		String number;
 		int startDay;
 		int startMonth;
 		long startYear;
@@ -80,7 +76,7 @@ public class Sprint extends SmartModel
 		public Object( long id, String sprintNumber, Date startDate, Date endDate, String project, long projectId )
 		{
 			this.id = id;
-			this.sprintNumber = sprintNumber;
+			this.number = sprintNumber;
 			this.startDay = startDate.getDate();
 			this.startMonth = startDate.getMonth() + 1;
 			this.startYear = startDate.getYear() + 1900;
@@ -114,7 +110,7 @@ public class Sprint extends SmartModel
 		int defaultDays = p.sprintDuration;
 		endDate.setTime( startDate.getTime() + (86400000 * defaultDays) );
 		project = p;
-		this.sprintNumber = p.sprints.size() + 1 + "";
+		this.number = p.sprints.size() + 1 + "";
 		p.sprints.add( this );
 		deleted = false;
 	}
@@ -145,7 +141,7 @@ public class Sprint extends SmartModel
 		endDate = new GregorianCalendar( endyear, endmonth - 1, endday ).getTime();
 		project = p;
 
-		this.sprintNumber = p.sprints.size() + 1 + "";
+		this.number = p.sprints.size() + 1 + "";
 		p.sprints.add( this );
 		deleted = false;
 	}
@@ -167,8 +163,8 @@ public class Sprint extends SmartModel
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.project = p;
-		// this.sprintNumber = p.getSprintCounter();
-		this.sprintNumber = p.sprints.size() + 1 + "";
+		// this.number = p.getSprintCounter();
+		this.number = p.sprints.size() + 1 + "";
 		p.sprints.add( this );
 		deleted = false;
 	}
@@ -385,7 +381,7 @@ public class Sprint extends SmartModel
 		int xMax = numberOfDays;
 		String xLabel = "'Days'";
 		String yLabel = "'Points'";
-		String title = "'Sprint " + sprintNumber + ": BurnDown Chart'";
+		String title = "'Sprint " + number + ": BurnDown Chart'";
 		String m = "[";
 		String xTicks = "[";
 		String yTicks = "[]";

@@ -209,7 +209,7 @@ public class SmartController extends Controller
 
 					Snapshot snap1 = new Snapshot();
 					snap1.user = user;
-					snap1.type = "sprint " + s.sprintNumber + " " + Cs.get( index ).name;
+					snap1.type = "sprint " + s.number + " " + Cs.get( index ).name;
 					snap1.board = b1;
 					snap1.component = Cs.get( index );
 					snap1.sprint = s;

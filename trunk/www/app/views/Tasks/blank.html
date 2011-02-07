@@ -142,7 +142,7 @@
 	<select style="min-width:130px" id="object_taskSprint" name="object.sprint@id">
 	<option value="">None</option>
 	#{list items:sprints ,as :'sprint'}
-	<option value="${sprint.id}">Sprint ${sprint.sprintNumber}</option>
+	<option value="${sprint.id}">Sprint ${sprint.number}</option>
 	#{/list}
 	</select>
 	#{/if}

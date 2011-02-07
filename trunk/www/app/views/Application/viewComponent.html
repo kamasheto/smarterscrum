@@ -14,7 +14,7 @@
 	<a  href="javascript:;" onclick="$('#boards').slideToggle()">Task Board</a>
 	<div id="boards" style="display:none; margin-left:10px">
 	#{list items:component.project.sprints, as:'sprint'}
-	<a href="/boards/loadComponentBoard?sprintID=${sprint.id}&componentID=${component.id}" style="float:left;width:200px;">Sprint ${sprint.sprintNumber}</a><br/>
+	<a href="/boards/loadComponentBoard?sprintID=${sprint.id}&componentID=${component.id}" style="float:left;width:200px;">Sprint ${sprint.number}</a><br/>
 	#{/list}
 	</div>
 	#{secure.check 'canStartGame' }

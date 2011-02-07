@@ -7,7 +7,7 @@
 #{else}
 	#{list items:sprints, as:'sprint'}
 		#{if (sprint.running()) }
-			<div class="greenBg" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber}#{drop 'sprint-' + sprint.id /}
+			<div class="greenBg" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.number}#{drop 'sprint-' + sprint.id /}
 			#{if sprint.project.hasComponents()>1}
 				<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id)}')" title="View project board?">
 				<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
@@ -23,7 +23,7 @@
 		#{/if}
 		#{else}
 			#{if (sprint.ended || sprint.ended()) }
-				<div class="redBg" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber}
+				<div class="redBg" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.number}
 					#{list sprint.project.components[0].snapshots, as:'snapshot'}
 						#{if snapshot.sprint.id==sprint.id}
 							<a href="#" onclick="overlayOpen('@{Snapshots.loadsnapShot(snapshot.id)}')" title="View sprint board snapshot?">
@@ -36,7 +36,7 @@
 				</div>
 			#{/if}
 		#{else}
-			<div class="yellowBg" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber}#{drop 'sprint-' + sprint.id /}
+			<div class="yellowBg" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.number}#{drop 'sprint-' + sprint.id /}
 			#{if connected.in(sprint.project).can("editSprint")}
 				<a href="#" onclick="overlayOpen('@{Sprints.projectshow(sprint.id)}')"><img src="/public/images/famfam/pencil.png" /></a>
 			#{/if}

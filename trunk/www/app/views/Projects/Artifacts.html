@@ -6,11 +6,11 @@ Boards
 #{list items:project.sprints, as:'sprint'}
 	#{if !sprint.ended() && !sprint.ended}
 		#{if sprint.project.hasComponents()>1}
-			<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id)}')" title="sprint ${sprint.sprintNumber} board?">
+			<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id)}')" title="sprint ${sprint.number} board?">
 			<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
 		#{/if}
 		#{else}
-			<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id,sprint.project.components[0].id)}')" title="sprint ${sprint.sprintNumber} board?">
+			<a href="#" onclick="overlayOpen('@{Boards.loadboard1(sprint.id,sprint.project.components[0].id)}')" title="sprint ${sprint.number} board?">
 			<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
 		#{/else}
 	#{/if}
@@ -20,7 +20,7 @@ Boards
 Backlogs
 #{list items:project.sprints, as:'sprint'}
 	#{if !sprint.ended() && !sprint.ended}
-	<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="sprint ${sprint.sprintNumber} backlog?">
+	<a href="#" onclick="overlayOpen('@{SprintBacklog.index(0,sprint.id)}')" title="sprint ${sprint.number} backlog?">
 	<img src="@{'public/images/famfam/table.png'}" alt="[chart]"/></a>
 	#{/if}
 #{/list}	

@@ -432,7 +432,7 @@ public class Application extends SmartController
 			{
 				if( !sprint.deleted )
 				{
-					sprints.add( new Sprint.Object( sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id ) );
+					sprints.add( new Sprint.Object( sprint.id, sprint.number, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id ) );
 				}
 			}
 		}
@@ -479,11 +479,11 @@ public class Application extends SmartController
 				{
 					if( !sprint.deleted && sprint.startDate.getDate() == day && sprint.startDate.getMonth() + 1 == month && sprint.startDate.getYear() + 1900 == year )
 					{
-						events.sprints.add( new Sprint.Object( sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id ) );
+						events.sprints.add( new Sprint.Object( sprint.id, sprint.number, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id ) );
 					}
 					if( !sprint.deleted && sprint.endDate.getDate() == day && sprint.endDate.getMonth() + 1 == month && sprint.endDate.getYear() + 1900 == year )
 					{
-						events.sprints.add( new Sprint.Object( sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id ) );
+						events.sprints.add( new Sprint.Object( sprint.id, sprint.number, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id ) );
 					}
 				}
 			}

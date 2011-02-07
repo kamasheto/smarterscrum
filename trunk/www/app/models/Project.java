@@ -326,14 +326,14 @@ public class Project extends SmartModel
 				if( i == 2 )
 				{
 					FULL = FULL + sprints.get( i ).getCoordinatesOfData( cid );
-					names = names + "{label:'Sprint: " + sprints.get( i ).sprintNumber + "'}";
+					names = names + "{label:'Sprint: " + sprints.get( i ).number + "'}";
 				}
 				else
 				{
 					FULL = FULL + sprints.get( i ).getCoordinatesOfData( cid ) + ",";
-					names = names + "{label:'Sprint: " + Long.parseLong( sprints.get( i ).sprintNumber ) + "'},";
+					names = names + "{label:'Sprint: " + Long.parseLong( sprints.get( i ).number ) + "'},";
 				}
-				data = data + ("GenerateGraph(" + sprints.get( i ).fetchData( cid ) + ",'c_" + sprints.get( i ).sprintNumber + "');" + '\n');
+				data = data + ("GenerateGraph(" + sprints.get( i ).fetchData( cid ) + ",'c_" + sprints.get( i ).number + "');" + '\n');
 
 			}
 		}
