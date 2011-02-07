@@ -26,12 +26,12 @@ public class Accounts extends SmartController
 	 *            , email of that new user.
 	 * @param password
 	 *            , password of that new user.
-	 * @param confirmPass
+	 * @param confirm_password
 	 *            , password confirmation of that new user.
 	 * @exception PersistenceException
 	 *                , fired on database constraints violations.
 	 */
-	public static void addUser( @Required String name, @Required @Email String email, @Required String password, @Required String confirmPass )
+	public static void add_user( @Required String name, @Required @Email String email, @Required String password, @Required String confirm_password )
 	{
 		if( validation.hasErrors() )
 		{
@@ -39,7 +39,7 @@ public class Accounts extends SmartController
 			validation.keep();
 			register();
 		}
-		else if( !password.equals( confirmPass ) )
+		else if( !password.equals( confirm_password ) )
 		{
 			flash.error( "Your passwords do not match" );
 			validation.keep();
@@ -49,8 +49,8 @@ public class Accounts extends SmartController
 		{
 			try
 			{
-				User existingUser = User.find( "name like '" + name + "' or " + "email like '" + email + "'" ).first();
-				if( existingUser != null )
+				User existing_user = User.find( "name like '" + name + "' or " + "email like '" + email + "'" ).first();
+				if( existing_user != null )
 				{
 					flash.error( "Oops, that user already exists!" + "\t" + "Please choose another user name and/or email." );
 					register();
@@ -80,7 +80,7 @@ public class Accounts extends SmartController
 	/**
 	 * Renders the deletion request view
 	 */
-	public static void requestDeletion()
+	public static void render_deletion_request()
 	{
 		if( !Security.isConnected() )
 		{
@@ -109,21 +109,21 @@ public class Accounts extends SmartController
 		{
 			params.flash();
 			validation.keep();
-			requestDeletion();
+			render_deletion_request();
 		}
 		else
 		{
-			User userFound = Security.getConnected();
-			String pwdHash = Application.hash( pwd );
-			if( !userFound.pwdHash.equals( pwdHash ) )
+			User user_found = Security.getConnected();
+			String pwd_hash = Application.hash( pwd );
+			if( !user_found.pwdHash.equals( pwd_hash ) )
 			{
 				flash.error( "You have entered a wrong password!" );
-				requestDeletion();
+				render_deletion_request();
 			}
 			else
 			{
-				userFound.pendingDeletion = true;
-				userFound.save();
+				user_found.pendingDeletion = true;
+				user_found.save();
 				flash.success( "your deletion request has been successfully sent!" );
 				redirect( "/" );
 			}

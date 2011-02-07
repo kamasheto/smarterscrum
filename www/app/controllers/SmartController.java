@@ -77,7 +77,7 @@ public class SmartController extends Controller
 				ArrayList<String> Columnsofsnapshot = new ArrayList<String>();
 				for( int i = 0; i < columns.size(); i++ )
 				{
-					if( columns.get( i ).onBoard == true )
+					if( columns.get( i ).on_board == true )
 					{
 						CS.add( null );
 						CS.set( i, columns.get( i ) );
@@ -85,7 +85,7 @@ public class SmartController extends Controller
 				}
 				for( int i = 0; i < columns.size(); i++ )
 				{
-					if( columns.get( i ).onBoard == true )
+					if( columns.get( i ).on_board == true )
 					{
 						CS.set( columns.get( i ).sequence, columns.get( i ) );
 					}
@@ -125,7 +125,7 @@ public class SmartController extends Controller
 								}
 							}
 
-							if( pcol.onBoard && !pcol.deleted && task.assignee!=null)
+							if( pcol.on_board && !pcol.deleted && task.assignee!=null)
 							{
 								data.get( i ).get( CS.indexOf( pcol ) ).add( "T" + task.id + "-" + task.description + "-" + task.assignee.name );
 							}
@@ -156,7 +156,7 @@ public class SmartController extends Controller
 					List<BoardColumn> CS1 = new ArrayList<BoardColumn>();
 					for( int i = 0; i < columns1.size(); i++ )
 					{
-						if( columns1.get( i ).onBoard == true )
+						if( columns1.get( i ).on_board == true )
 						{
 							CS1.add( null );
 							CS1.set( i, columns1.get( i ) );
@@ -164,7 +164,7 @@ public class SmartController extends Controller
 					}
 					for( int i = 0; i < columns1.size(); i++ )
 					{
-						if( columns1.get( i ).onBoard == true )
+						if( columns1.get( i ).on_board == true )
 						{
 							CS1.set( columns1.get( i ).sequence, columns1.get( i ) );
 						}
@@ -199,7 +199,7 @@ public class SmartController extends Controller
 									break;
 								}
 							}
-							if( pcol.onBoard == true && !pcol.deleted )
+							if( pcol.on_board == true && !pcol.deleted )
 							{
 								data1.get( i ).get( CS.indexOf( pcol ) ).add( "T" + task.id + "-" + task.description + "-" + task.assignee.name );
 							}
