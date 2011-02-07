@@ -36,7 +36,7 @@ public class Artifact extends SmartModel {
 	 * one meeting can have many artifacts & an artifact can belong to many meetings
 	 */
 	@ManyToMany (mappedBy = "artifacts")
-	public List<Meeting> meetingsArtifacts;
+	public List<Meeting> meetings_artifacts;
 
 	/***
 	 * flag to determine whether this artifact is deleted or not
@@ -47,7 +47,7 @@ public class Artifact extends SmartModel {
 	 * Artifact constructor
 	 */
 	public Artifact () {
-		meetingsArtifacts = new ArrayList<Meeting>();
+		meetings_artifacts = new ArrayList<Meeting>();
 	}
 
 	/**
@@ -61,10 +61,10 @@ public class Artifact extends SmartModel {
 	 *            the status of the artifact either deleted or not
 	 */
 
-	public Artifact (String type, String des) {
+	public Artifact (String type, String description) {
 		this();
 		this.type = type;
-		this.description = des;
+		this.description = description;
 		deleted = false;
 
 	}
@@ -91,21 +91,21 @@ public class Artifact extends SmartModel {
 	 * @author Hossam Amer
 	 */
 	public List<Artifact> getArtifacts(long projectID) {
-		List<Artifact> artifactsOfCertainProject = new ArrayList<Artifact>();
-		Project projectTmp = Project.findById(projectID);
-		List<Meeting> allMeetings = this.meetingsArtifacts;
+		List<Artifact> project_artifacts = new ArrayList<Artifact>();
+		Project project = Project.findById(projectID);
+		List<Meeting> meetings = this.meetings_artifacts;
 
-		for (Meeting tmp : allMeetings) {
-			if (tmp.project == projectTmp) {
-				List<Artifact> artifactsOfTmp = tmp.artifacts;
+		for (Meeting meeting : meetings) {
+			if (meeting.project == project) {
+				List<Artifact> meeting_artifacts = meeting.artifacts;
 
-				for (Artifact a : artifactsOfTmp) {
-					artifactsOfCertainProject.add(a);
+				for (Artifact artifact : meeting_artifacts) {
+					project_artifacts.add(artifact);
 				}
 			}
 		}
 
-		return artifactsOfCertainProject;
+		return project_artifacts;
 	}
 
 	/**

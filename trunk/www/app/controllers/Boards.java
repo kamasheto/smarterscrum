@@ -73,7 +73,7 @@ public class Boards extends SmartCRUD
 		// onBoard=false
 		for( int i = 0; i < columns.size(); i++ )
 		{
-			if( columns.get( i ).onBoard && !columns.get( i ).deleted )
+			if( columns.get( i ).on_board && !columns.get( i ).deleted )
 			{
 				columnsOfBoard.add( columns.get( i ) );
 			}
@@ -81,7 +81,7 @@ public class Boards extends SmartCRUD
 		columnsOfBoard = orderColumns( columnsOfBoard );
 		for( int i = 0; i < columns.size(); i++ )
 		{
-			if( !columns.get( i ).onBoard && !columns.get( i ).deleted )
+			if( !columns.get( i ).on_board && !columns.get( i ).deleted )
 			{
 				hidencolumnsOfBoard.add( columns.get( i ) );
 			}
@@ -124,7 +124,7 @@ public class Boards extends SmartCRUD
 							}
 						}
 						}
-						if( pcol.onBoard && !pcol.deleted )
+						if( pcol.on_board && !pcol.deleted )
 						{
 							data.get( i ).get( columnsOfBoard.indexOf( pcol ) ).add( task );
 						}
@@ -198,7 +198,7 @@ public class Boards extends SmartCRUD
 						}
 					}
 					}
-					if( pcmp.onBoard && !pcmp.deleted )
+					if( pcmp.on_board && !pcmp.deleted )
 					{
 						data.get( i ).get( columnsOfBoard.indexOf( pcmp ) ).add( task );
 					}
@@ -513,11 +513,11 @@ public class Boards extends SmartCRUD
 		int count = 0;
 		for( int i = 0; i < c.board.columns.size(); i++ )
 		{
-			if( c.board.columns.get( i ).onBoard == true )
+			if( c.board.columns.get( i ).on_board == true )
 				count++;
 		}
 		c.sequence = count;
-		c.onBoard = true;
+		c.on_board = true;
 		c.save();
 		User u = User.findById( uid );
 		if( u.deleted )
@@ -559,13 +559,13 @@ public class Boards extends SmartCRUD
 		Sprint sprint = Sprint.findById(sid);
 		if( c.deleted )
 			notFound();
-		c.onBoard = false;
+		c.on_board = false;
 		c.sequence = -1;
 		c.save();
 		int count = 0;
 		for( int i = 0; i < c.board.columns.size(); i++ )
 		{
-			if( c.board.columns.get( i ).onBoard == true )
+			if( c.board.columns.get( i ).on_board == true )
 			{
 				c.board.columns.get( i ).sequence = count;
 				c.board.columns.get( i ).save();

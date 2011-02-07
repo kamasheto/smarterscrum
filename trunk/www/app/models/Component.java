@@ -287,7 +287,7 @@ public class Component extends SmartModel
 		componentBoard = new Board( this ).save();
 		for( int i = 0; i < project.board.columns.size(); i++ )
 		{
-			BoardColumn c = new BoardColumn( project.board.columns.get( i ).name, componentBoard, project.board.columns.get( i ).taskStatus );
+			BoardColumn c = new BoardColumn( project.board.columns.get( i ).name, componentBoard, project.board.columns.get( i ).task_status );
 			c.save();
 		}
 		this.number = this.project.components.size() - 1;

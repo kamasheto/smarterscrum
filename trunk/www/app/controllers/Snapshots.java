@@ -54,13 +54,13 @@ public class Snapshots extends SmartController {
 		ArrayList<ComponentRowh> data = new ArrayList<ComponentRowh>();
 		ArrayList<String> Columnsofsnapshot = new ArrayList<String>();
 		for (int i = 0; i < columns.size(); i++) {
-			if (columns.get(i).onBoard == true) {
+			if (columns.get(i).on_board == true) {
 				CS.add(null);
 				CS.set(i, columns.get(i));
 			}
 		}
 		for (int i = 0; i < columns.size(); i++) {
-			if (columns.get(i).onBoard == true) {
+			if (columns.get(i).on_board == true) {
 				CS.set(columns.get(i).sequence, columns.get(i));
 			}
 		}
@@ -92,7 +92,7 @@ public class Snapshots extends SmartController {
 							if (pcol.board.id == b.id)
 								break;
 						}
-						if (pcol.onBoard == true && !pcol.deleted)
+						if (pcol.on_board == true && !pcol.deleted)
 							data.get(i).get(pcol.sequence).add(
 									"(" + "T" + task.id + "-"
 											+ task.description + "-"
