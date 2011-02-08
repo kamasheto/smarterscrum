@@ -65,7 +65,7 @@ public class TaskStatus extends SmartModel {
 		BoardColumn column = new BoardColumn(name, project.board, this).save();
 			for(int i=0;i<project.components.size();i++)
 		{
-			Board b = project.components.get(i).componentBoard;
+			Board b = project.components.get(i).board;
 			BoardColumn c = new BoardColumn(name,b,this);
 			c.save();
 		}

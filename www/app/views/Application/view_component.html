@@ -45,8 +45,8 @@
 <h3>Component's Users :</h3>
 
 <ul >
-#{if component.componentUsers.size()>0 }
-#{list items:component.componentUsers, as:'user'}
+#{if component.users.size()>0 }
+#{list items:component.users, as:'user'}
 	#{if !user.deleted }
 	<li>
 		<a href="@{Show.user(user.id)}">${user.name}</a>

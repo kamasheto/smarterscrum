@@ -365,7 +365,7 @@ public class Tasks extends SmartCRUD
 		String changes = "";
 		Task tmp = (Task) object;
 		Security.check( Security.getConnected().in( tmp.project ).can( "modifyTask" ) || Security.getConnected() == tmp.assignee || Security.getConnected() == tmp.reviewer );
-		List<User> users = tmp.component.componentUsers;
+		List<User> users = tmp.component.users;
 		List<TaskStatus> statuses = tmp.project.taskStatuses;
 		List<TaskType> types = tmp.project.taskTypes;
 		List<Task> dependencies = Task.find( "byProjectAndDeleted", tmp.project, false ).fetch();
@@ -676,7 +676,7 @@ public class Tasks extends SmartCRUD
 			if( component.number == 0 )
 				users = component.project.users;
 			else
-				users = component.componentUsers;
+				users = component.users;
 		}
 		else
 		{
@@ -1410,7 +1410,7 @@ public class Tasks extends SmartCRUD
 		List<User> users = new ArrayList<User>();
 		Task task = Task.findById( task_id );
 		Component c = Component.findById( component_id );
-		users = c.componentUsers;
+		users = c.users;
 		for( User u : users )
 		{
 			if( u.deleted )
@@ -1648,7 +1648,7 @@ public class Tasks extends SmartCRUD
 		Security.check( connected.in( task.project ).can( "modifyTask" ) && task.project == component.project && task.component.project == component.project && task.parent == null && !flag );
 
 		// first remove task from the component
-		task.component.componentTasks.remove( task );
+		task.component.tasks.remove( task );
 		task.component.save();
 
 		task.component = component;
@@ -1661,12 +1661,12 @@ public class Tasks extends SmartCRUD
 			nusers.add( task.reviewer );
 		if( task.reporter != null )
 			nusers.add( task.reporter );
-		for( User u : component.componentUsers )
+		for( User u : component.users )
 		{
 			if( !nusers.contains( u ) )
 				nusers.add( u );
 		}
-		Notifications.notifyUsers( nusers, "associated", url, "task " + task.number + " to the component", component.getFullName(), (byte) 0, task.project );
+		Notifications.notifyUsers( nusers, "associated", url, "task " + task.number + " to the component", component.get_full_name(), (byte) 0, task.project );
 		Log.addUserLog( "Assigned task to component", task, component, component.project );
 		CollaborateUpdate.update( task.project, "reload('component-" + component_id + "', 'task-" + task_id + "')" );
 		renderText( "Associated successfully" );
@@ -1810,7 +1810,7 @@ public class Tasks extends SmartCRUD
 		}
 		else
 		{
-			users = c.componentUsers;
+			users = c.users;
 		}
 		List<User.Object> u = new ArrayList<User.Object>();
 		for( User user : users )

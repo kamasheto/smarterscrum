@@ -47,7 +47,7 @@ public class Snapshots extends SmartController {
 			b = p.board;
 		else {
 			Component c = Component.findById(componentID);
-			b = c.componentBoard;
+			b = c.board;
 		}
 		List<BoardColumn> CS = new ArrayList<BoardColumn>();
 		columns = b.columns;
@@ -79,8 +79,7 @@ public class Snapshots extends SmartController {
 					data.add(null);
 					data.set(i, new ComponentRowh(components.get(i).id,
 							components.get(i).name));
-					List<Task> tasks = components.get(i)
-							.returnComponentTasks(s);
+					List<Task> tasks = components.get(i).comp_sprint_not_parent_tasks(s);
 					for (int j = 0; j < CS.size(); j++) {
 						data.get(i).add(null);
 						data.get(i).set(j, new ArrayList<String>());
@@ -127,7 +126,7 @@ public class Snapshots extends SmartController {
 			} else {
 				type = c.name;
 			}
-			List<User> users = c.getUsers();
+			List<User> users = c.get_users();
 			for (int i = 0; i < users.size(); i++) {
 				data.add(null);
 				data.set(i, new ComponentRowh(users.get(i).id,
@@ -215,10 +214,10 @@ public class Snapshots extends SmartController {
 			Component c = Component.findById(cid);
 				if(c.number!=0){
 			snapshots = Snapshot.find("byBoardAndSprintAndType",
-					c.componentBoard, s, c.name).fetch();}
+					c.board, s, c.name).fetch();}
 				else{
 					snapshots = Snapshot.find("byBoardAndSprintAndType",
-							c.componentBoard, s, c.project.name).fetch();
+							c.board, s, c.project.name).fetch();
 					}
 			
 			render(snapshots, c, pid, cid);
@@ -255,10 +254,10 @@ public class Snapshots extends SmartController {
 			Component c = Component.findById(cid);
 			if(c.number!=0){
 				snapshots = Snapshot.find("byBoardAndSprintAndType",
-						c.componentBoard, s, c.name).fetch();}
+						c.board, s, c.name).fetch();}
 					else{
 						snapshots = Snapshot.find("byBoardAndSprintAndType",
-								c.componentBoard, s, c.project.name).fetch();
+								c.board, s, c.project.name).fetch();
 						}
 			render(snapshots, c, pid, cid);
 		}

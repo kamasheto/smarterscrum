@@ -615,13 +615,13 @@ public class Meetings extends SmartCRUD
 		{
 			if( !component.deleted )
 			{
-				if( component.meetingStatus( meetingID ).equals( "allInvited" ) || component.meetingStatus( meetingID ).equals( "confirmed" ) || component.meetingStatus( meetingID ).equals( "declined" ) || component.meetingStatus( meetingID ).equals( "waiting" ) )
+				if( component.meeting_status( meetingID ).equals( "allInvited" ) || component.meeting_status( meetingID ).equals( "confirmed" ) || component.meeting_status( meetingID ).equals( "declined" ) || component.meeting_status( meetingID ).equals( "waiting" ) )
 				{
 					renderText( "All the component users are already invited" );
 				}
 				else
 				{
-					for( User user : component.componentUsers )
+					for( User user : component.users )
 					{
 						if( !user.deleted )
 						{

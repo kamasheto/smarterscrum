@@ -279,25 +279,25 @@ function remove(input){
 		#{if !component.deleted}
 			<li>
 				<a href="/components/${component.id}">${component.name}</a> &nbsp;&nbsp;
-				#{if component.meetingStatus(meeting.id).equals("notInvited")}
+				#{if component.meeting_status(meeting.id).equals("notInvited")}
 				#{if meeting.endTime>(new Date().getTime()) }
 				<span id="${component.id}_invite_c">	<a  href="#" name="test_component_${component.id}"onClick ="invite_component(${meeting.id},${component.id})"style=" font-style: italic; font-size :85%; ">invite</a></span>
 				<span id="${component.id}_invited_c" style="display: none; font-style: italic; font-size :85%;color : blue; "> invited</span>
 				#{/if}
 				#{/if}
-				#{if component.meetingStatus(meeting.id).equals("waiting")}
+				#{if component.meeting_status(meeting.id).equals("waiting")}
 				#{if meeting.endTime>(new Date().getTime()) }
 				<span id="${component.id}_onLoadInvited_c" style=" font-style: italic; font-size :85%;color : blue; "> invited</span>
 				#{/if}
 				
 				#{/if}
-				#{if component.meetingStatus(meeting.id).equals("allInivited")}
+				#{if component.meeting_status(meeting.id).equals("allInivited")}
 				<span id="${component.id}_onLoadInvited_c" style=" font-style: italic; font-size :85%; "> some did not reply</span>
 				#{/if}
-				#{if component.meetingStatus(meeting.id).equals("confirmed")}
+				#{if component.meeting_status(meeting.id).equals("confirmed")}
 				<span id="${component.id}_confirmed_c" style=" font-style: italic; font-size :85%;color:green; "> confirmed</span>
 				#{/if}
-				#{if component.meetingStatus(meeting.id).equals("declined")}
+				#{if component.meeting_status(meeting.id).equals("declined")}
 				<span id="${component.id}_declined_c" style=" font-style: italic; font-size :85%;color:red; "> declined</span>
 				#{/if}
 			</li> 

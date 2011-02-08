@@ -137,12 +137,12 @@
 				#{/list}		
 				</select>
 			#{/if}
-			#{elseif object.component!=null && object.component.number!=0 && (object.parent==null || (object.parent!=null && object.parent.component!=null && object.component.hasUsers()>0))}
+			#{elseif object.component!=null && object.component.number!=0 && (object.parent==null || (object.parent!=null && object.parent.component!=null && object.component.has_users()>0))}
 				<label for="object_assignee">Assignee</label>
 				<span style="display:none" id="assig_msg"><font color="red">There are no users in the selected component</font></span>
 				<select style="min-width:130px" class="assign" id="object_assignee" name="object.assignee@id"  onchange="getType();">
 				<option value="">(None)</option>
-				#{list items:object.component.componentUsers ,as :'User'}
+				#{list items:object.component.users ,as :'User'}
 					#{ifnot User.deleted}<option value="${User.id}"#{if object.assignee == User} selected#{/if}>${User.name}</option>#{/ifnot}
 				#{/list}		
 				</select>
@@ -160,7 +160,7 @@
 				#{/list}		
 				</select>
 			#{/if}
-			#{elseif object.component!=null && object.component.number!=0 && (object.parent==null || (object.parent!=null && object.parent.component!=null && object.component.hasUsers()>0))}
+			#{elseif object.component!=null && object.component.number!=0 && (object.parent==null || (object.parent!=null && object.parent.component!=null && object.component.has_users()>0))}
 				<label for="object_reviewer">Reviewer</label>
 				<span style="display:none" id="rev_msg"><font color="red">There are no reviewers available for the selected type</font></span>
 				<select style="min-width:130px" class="rev" id="object_reviewer" name="object.reviewer@id">
@@ -212,7 +212,7 @@
 					#{ifnot comment.deleted}
 						<tr>
 							<td><b>${comment.author} (<i><span class="formatTime">${comment.timeOfComment}</span></i>)</b></td>
-							<td>${comment.comment.raw()} - <a href="#" onclick="deleteComment(${comment.id}, ${object.id});"><img src="@{'public/images/famfam/delete.png'}"></a></td>
+							<td>${comment.comment.raw()} - <a href="#" onclick="delete_comment(${comment.id}, ${object.id});"><img src="@{'public/images/famfam/delete.png'}"></a></td>
 						</tr>
 					#{/ifnot}
 				#{/list}
@@ -278,7 +278,7 @@
 
 	function deleteComment(cId,tIdd){
 	if(confirm("Are you sure you want to delete this comment? This action can not be undone.")){
-		$.post('/comments/deleteComment', {id:cId}, function(msg){
+		$.post('/comments/delete_comment', {id:cId}, function(msg){
 			$.bar({message:msg});
 		});
 		$.post('/comments/listCommentsOfTask', {tId:tIdd}, function(data){
