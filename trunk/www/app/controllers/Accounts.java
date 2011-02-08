@@ -102,7 +102,7 @@ public class Accounts extends SmartController
 	 *            , confirmation password
 	 */
 
-	public static void deletionRequest( @Required String pwd )
+	public static void deletion_request( @Required String pwd )
 	{
 		Security.check( Security.isConnected() );
 		if( validation.hasErrors() )
@@ -141,14 +141,14 @@ public class Accounts extends SmartController
 	 *             thrown here as well.
 	 * @since Sprint2.
 	 */
-	public static void doActivation( String hash, boolean firstTime ) throws Throwable
+	public static void do_activation( String hash, boolean first_time ) throws Throwable
 	{
-		User currentUser = User.find( "activationHash", hash ).first();
-		if( currentUser != null && !currentUser.isActivated )
+		User current_user = User.find( "activationHash", hash ).first();
+		if( current_user != null && !current_user.isActivated )
 		{
-			currentUser.isActivated = true;
-			currentUser.save();
-			Notifications.welcome(currentUser, firstTime);
+			current_user.isActivated = true;
+			current_user.save();
+			Notifications.welcome(current_user, first_time);
 			flash.success( "Thank you , your Account has been Activated! . Login Below" );
 		}
 		else
@@ -161,7 +161,7 @@ public class Accounts extends SmartController
 	 * 
 	 * @since Sprint3
 	 */
-	public static void undoRequest()
+	public static void undo_request()
 	{
 		Security.check( Security.isConnected() );
 		User user = Security.getConnected();

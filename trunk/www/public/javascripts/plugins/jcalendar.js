@@ -135,7 +135,7 @@ jQuery.jcalendar = function() {
       			_selectedDate.addClass('selected');
             day.val(new Date(_selectedDate.attr('rel')).getDate());
             str='';
-            $.post('/Application/dayEvents',{day : day.val(), month : month.val(), year : year.val()}, function(data){
+            $.post('/Application/events_in_date',{day : day.val(), month : month.val(), year : year.val()}, function(data){
             	$.each(data.meetings, function(id, item){
     				str +=' <div><img src="/public/images/famfam/meeting.png"/>&nbsp;<a onClick="showProjectWorkspace('+item.projectId+');loadBox(\'/meetings/viewMeeting?id='+item.id+'\',\'workspace-'+item.projectId+'\',\'\');">'+item.project+' Meeting : '+item.name+'</a></div>';
     			});

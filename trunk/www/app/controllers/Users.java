@@ -163,7 +163,7 @@ public class Users extends SmartCRUD {
 		}
 		object.save();
 		flash.success("Your Notificaton Profile modifications have been saved");
-		Application.overlayKiller( "", "" );
+		Application.overlay_killer( "", "" );
 	}
 	
 	/**
@@ -481,7 +481,7 @@ public class Users extends SmartCRUD {
 					userProfile.save();
 				}
 				if (!userProfile.email.equals(oldEmail)) {
-					userProfile.activationHash = Application.randomHash(32);
+					userProfile.activationHash = Application.random_hash(32);
 					userProfile.isActivated = false;
 					userProfile.save();
 					Notifications.activate(userProfile.email, userProfile.name, Router.getFullUrl("Accounts.doActivation")+"?hash=" + userProfile.activationHash, true);
@@ -496,7 +496,7 @@ public class Users extends SmartCRUD {
 				}
 				
 				flash.success(message);
-				Application.overlayKiller("", "");
+				Application.overlay_killer("", "");
 			} 
 			catch (PersistenceException e) 
 			{
@@ -516,7 +516,7 @@ public class Users extends SmartCRUD {
 			}
 		} 	else {	
 			flash.error("You are not allowed to edit these personal information.");
-			Application.overlayKiller("","");
+			Application.overlay_killer("","");
 		}	
 	}
 }

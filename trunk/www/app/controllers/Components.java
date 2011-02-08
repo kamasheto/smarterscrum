@@ -82,7 +82,7 @@ public class Components extends SmartCRUD {
 		Notifications.notifyProjectUsers(temp.project, "onCreateComponent", url, "Component", temp.getFullName(), (byte) 0);
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			Application.overlayKiller("reload('components')", "");
+			Application.overlay_killer("reload('components')", "");
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			redirect("/admin/projects/" + currentProject.id + "/components/new");
@@ -122,7 +122,7 @@ public class Components extends SmartCRUD {
 		// Logs.addLog(Security.getConnected(), "Edit", "Component", temp.id, temp.project, new Date(System.currentTimeMillis()));
 		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			Application.overlayKiller("reload('component-" + id + "')", "");
+			Application.overlay_killer("reload('component-" + id + "')", "");
 		}
 		redirect(request.controller + ".show", object.getEntityId());
 	}

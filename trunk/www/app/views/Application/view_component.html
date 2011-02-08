@@ -60,12 +60,12 @@
 
 
 <br/><br/>
-#{if connected.in(component.project).can('deleteComponent')}
-#{if !inSprint}
+#{if connected.in(component.project).can('delete_component')}
+#{if !in_sprint}
 <a href="#" onclick=" delete_component(${component.id});"  >Delete this Component</a>
 #{/if}
 
-#{if inSprint}
+#{if in_sprint}
 Unfortunatily , you can not delete this component during a sprint.
 #{/if}
 #{/if}
@@ -79,7 +79,7 @@ function delete_component(cid)
 {
 	var confirmation= confirm("Delete Component ?")
 	if (confirmation) {
-		$.post('@{deleteComponent()}', {
+		$.post('@{delete_component()}', {
 			id: cid
 		}, function(){
 			window.location = "/projects/${component.project.id}/components"

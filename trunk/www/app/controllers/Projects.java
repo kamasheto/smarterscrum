@@ -142,12 +142,12 @@ public class Projects extends SmartCRUD
 			{
 
 				flash.success( projectObject.name + " has been successfully created." );
-				Application.overlayKiller( "", "" );
+				Application.overlay_killer( "", "" );
 			}
 			else
 			{
 				flash.success( "Your Project Request Has Been Sent.You Will Be Notified Upon Approval" );
-				Application.overlayKiller( "", "" );
+				Application.overlay_killer( "", "" );
 			}
 		}
 	}
@@ -876,7 +876,7 @@ public class Projects extends SmartCRUD
 		}
 		object.save();
 		flash.success( "The Project Notificaton Profile modifications have been saved" );
-		Application.overlayKiller( "", "" );
+		Application.overlay_killer( "", "" );
 	}
 
 	/**

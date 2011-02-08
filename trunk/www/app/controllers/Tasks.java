@@ -250,12 +250,12 @@ public class Tasks extends SmartCRUD
 			if( tmp.parent != null )
 			{
 				CollaborateUpdate.update( tmp.project, "reload('tasks-" + tmp.project.id + "','task-" + tmp.parent.id + "')" );
-				Application.overlayKiller( "", "" );
+				Application.overlay_killer( "", "" );
 			}
 			else
 			{
 				CollaborateUpdate.update( tmp.project, "reload('tasks-" + tmp.project.id + "','task-" + tmp.id + "')" );
-				Application.overlayKiller( "", "" );
+				Application.overlay_killer( "", "" );
 			}
 
 		}
@@ -606,7 +606,7 @@ public class Tasks extends SmartCRUD
 			}
 			Notifications.notifyUsers( nusers, "edited", url, "task", "task " + tmp.number, (byte) 0, tmp.project );
 			Log.addUserLog( "Edit task", tmp, tmp.project );
-			Application.overlayKiller( "", "" );
+			Application.overlay_killer( "", "" );
 			// Logs.addLog( tmp.project, "edit", "Task", tmp.id );
 		}
 	}

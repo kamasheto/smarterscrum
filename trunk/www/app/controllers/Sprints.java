@@ -282,7 +282,7 @@ public class Sprints extends SmartCRUD
 			// Logs.addLog( Security.getConnected(), "Create", "Sprint",
 			// object.id, proj, Calendar.getInstance().getTime() );
 			// redirect( "/show/project?id=" + projectId );
-			Application.overlayKiller( "reload('sprints')", "window.parent.$.bar({message:'Sprint created successfully'})" );
+			Application.overlay_killer( "reload('sprints')", "window.parent.$.bar({message:'Sprint created successfully'})" );
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
 		{
@@ -459,7 +459,7 @@ public class Sprints extends SmartCRUD
 			// object.id, proj, Calendar.getInstance().getTime() );
 			Log.addUserLog( "Edited sprint", object, proj );
 			// redirect( "/show/project?id=" + projId );
-			Application.overlayKiller( "reload('sprints', 'sprint-" + object.id + "')", "" );
+			Application.overlay_killer( "reload('sprints', 'sprint-" + object.id + "')", "" );
 		}
 		redirect( request.controller + ".show", object.getEntityId() );
 	}

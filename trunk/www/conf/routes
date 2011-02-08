@@ -2,7 +2,7 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 # This module route should stay the FIRST route
-GET		/admin/?			Application.adminIndexPage
+GET		/admin/?			Application.admin_index_page
 *      	/admin              module:crud
 # Add BELOW
 

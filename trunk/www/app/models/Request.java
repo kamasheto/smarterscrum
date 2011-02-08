@@ -64,7 +64,7 @@ public class Request extends SmartModel
 	{
 		this.user = user;
 		this.role = role;
-		this.hash = Application.randomHash( 8 );
+		this.hash = Application.random_hash( 8 );
 		this.project = role.project;
 		// this.pending = pending;
 	}
@@ -89,7 +89,7 @@ public class Request extends SmartModel
 		this.user = user;
 		this.project = project;
 		this.isDeletion = true;
-		this.hash = Application.randomHash( 8 );
+		this.hash = Application.random_hash( 8 );
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class Request extends SmartModel
 		this.user = user;
 		this.component = component;
 		this.isDeletion = true;
-		this.hash = Application.randomHash( 8 );
+		this.hash = Application.random_hash( 8 );
 	}
 
 }
