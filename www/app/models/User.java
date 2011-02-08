@@ -157,7 +157,7 @@ public class User extends SmartModel
 		notifications = new ArrayList<Notification>();
 		requests = new ArrayList<Request>();
 		this.enableEmails = true;
-		this.activationHash = Application.randomHash( 32 );
+		this.activationHash = Application.random_hash( 32 );
 	}
 
 	/**

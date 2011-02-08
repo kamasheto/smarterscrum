@@ -1,13 +1,13 @@
 #{extends 'main.html' /}
-#{set title:projectName+' components' /}
+#{set title:project_name+' components' /}
 
 #{set 'crumbs'}
 <li><a href="/show/projects">Projects</a></li>
-<li><a href="/show/project?id=${id}">${projectName}</a></li>
+<li><a href="/show/project?id=${id}">${project_name}</a></li>
 <li><a href ="/projects/${id}/components"> Components</a></li>
 #{/set}
 
-<h2> ${projectName}'s Components </h2>
+<h2> ${project_name}'s Components </h2>
 
 <ul id="components" >
 #{list items:components, as:'component'}
@@ -19,8 +19,8 @@
 #{/list}
 </ul>
 
-#{if connected.in(currentProject).can('addComponent')}
-#{if !inSprint}
+#{if connected.in(current_project).can('addComponent')}
+#{if !in_sprint}
 <a onClick="overlayOpen('/admin/projects/${id}/components/new');"href="#"> add a new component </a>
 #{/if}
 #{/if}

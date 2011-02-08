@@ -50,7 +50,7 @@ public class Invite extends SmartModel {
 	public Invite (User user, Role role) {
 		this.user = user;
 		this.role = role;
-		hash = Application.randomHash();
+		hash = Application.random_hash();
 		this.invitedBy = Security.getConnected();
 	}
 }

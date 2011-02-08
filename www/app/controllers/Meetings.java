@@ -245,7 +245,7 @@ public class Meetings extends SmartCRUD
 			// redirect( request.controller + ".list" );
 			// Meetings.viewMeetings( currentProject.id );
 			CollaborateUpdate.update( temp.project, "reload('meetings-" + temp.project.id + "')" );
-			Application.overlayKiller( "", "" );
+			Application.overlay_killer( "", "" );
 
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
@@ -382,7 +382,7 @@ public class Meetings extends SmartCRUD
 			// redirect( request.controller + ".list" );
 			// Meetings.viewMeetings( currentProject.id );
 			CollaborateUpdate.update( temp.project, "reload('meeting-" + temp.id + "','meetings-" + temp.project.id + "');" );
-			Application.overlayKiller( "", "" );
+			Application.overlay_killer( "", "" );
 
 		}
 	}

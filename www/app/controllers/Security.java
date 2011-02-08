@@ -130,7 +130,7 @@ public class Security extends Secure.Security
 		}
 		else
 		{
-			u.recoveryHash = Application.randomHash( 10 );
+			u.recoveryHash = Application.random_hash( 10 );
 			u.save();
 			String url = Router.getFullUrl( "Security.passwordRecovery" ) + "?h=" + u.recoveryHash;
 			Notifications.lostPass( u, url );
