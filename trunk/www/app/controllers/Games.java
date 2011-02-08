@@ -96,7 +96,7 @@ public class Games extends SmartController
 	public static void playGame( long gameId )
 	{
 		Game game = Game.findById( gameId );
-		Security.check( game.component.componentUsers.contains( Security.getConnected() ) );
+		Security.check( game.component.users.contains( Security.getConnected() ) );
 		List<GameSession> sessions = GameSession.find( "game = ?1 and lastClick >= ?2", game, new Date().getTime() - 60000 ).fetch();
 		ArrayList<User> players = new ArrayList<User>();
 		GameSession mod = null;
@@ -151,7 +151,7 @@ public class Games extends SmartController
 	public static void estimate( long roundId, double estimate )
 	{
 		Round round = Round.findById( roundId );
-		Security.check( round.game.component.componentUsers.contains( Security.getConnected() ) );
+		Security.check( round.game.component.users.contains( Security.getConnected() ) );
 		if( Trick.find( "byRoundAndUser", round, Security.getConnected() ).first() != null )
 		{
 			renderText( "You've already played a trick in this round." );
@@ -177,7 +177,7 @@ public class Games extends SmartController
 	{	
 		Game game = Game.findById( gameId );
 		User user = Security.getConnected();
-		Security.check( game.component.componentUsers.contains( user ) );
+		Security.check( game.component.users.contains( user ) );
 		if(game.gameOver){
 			renderText("end,"+game.id);
 		}
@@ -234,7 +234,7 @@ public class Games extends SmartController
 	public static void nextRound( long gameId, double estimate, boolean playAgain )
 	{
 		Game game = Game.findById( gameId );
-		Security.check( game.component.componentUsers.contains( Security.getConnected() ) );
+		Security.check( game.component.users.contains( Security.getConnected() ) );
 
 		if( !playAgain )
 		{
@@ -279,7 +279,7 @@ public class Games extends SmartController
 	{
 		Game game = Game.findById( gameId );
 		Component component = game.component;
-		Security.check( component.componentUsers.contains( Security.getConnected() ) );
+		Security.check( component.users.contains( Security.getConnected() ) );
 		List<Task> stories = game.tasks;
 		List<Round> allRounds = Round.find( "game = ?1  order by id ", game ).fetch();
 
@@ -302,7 +302,7 @@ public class Games extends SmartController
 	public static void chooseGame( long cId )
 	{
 		Component component = Component.findById( cId );
-		Security.check( component.componentUsers.contains( Security.getConnected() ) );
+		Security.check( component.users.contains( Security.getConnected() ) );
 		List<Game> games = Game.find( "byComponent", component ).fetch();
 		List<Game> finalGames = new ArrayList<Game>();
 		List<User> moderators = new ArrayList<User>();

@@ -63,15 +63,15 @@ public class Users extends SmartCRUD {
 		for(Component component : myComponent.project.components){
 						if(component.number==0 && myUser.components.contains(component)){
 							myUser.components.remove(component);
-						component.componentUsers.remove(myUser);
+						component.users.remove(myUser);
 						}
 						}
-		myComponent.componentUsers.add(myUser);
+		myComponent.users.add(myUser);
 		// Logs.addLog(user, "assignUser", "User", user_id, myComponent.project,
 		 // d);
 		Log.addUserLog("Assign user to component", myComponent, myComponent.project, myUser);
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+myComponent.project.id+"&isOverlay=false&url=/components/viewthecomponent?component_id="+myComponent.id;
-		for(User u :myComponent.componentUsers)
+		for(User u :myComponent.users)
 		{
 			if(!u.equals(myUser))
 				Notifications.notifyUser(u, "assigned", url, myUser.name+" to the component", myComponent.name, (byte) 0, myComponent.project);
@@ -352,7 +352,7 @@ public class Users extends SmartCRUD {
 				{
 					Component component = Component.findById(component_id);
 					currentProject = component.project;
-					for(User user: component.componentUsers){
+					for(User user: component.users){
 						if(!user.deleted){
 							users.add(user);
 						}

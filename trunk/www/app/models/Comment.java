@@ -48,23 +48,22 @@ public class Comment extends SmartModel{
 	 * 
 	 * @param user 
 	 * 			author of the comment
-	 * @param taskId 
+	 * @param task_id 
 	 * 			task that the comment was add to
 	 * @param comment 
 	 * 			comment added by the user on a certain task
 	 */
-	public Comment(User user, long taskId, String comment){
+	public Comment(User user, long task_id, String comment){
 		this.comment = comment;
-		task = Task.findById(taskId);
+		task = Task.findById(task_id);
 		author = user;
-		//this.type = type;
 		timeOfComment = new Date().getTime();
 	}
 	
 	/***
 	 * Invoked on a comment to delete it by setting its deleted flag to true
 	 */
-	public  void deleteComment(){
+	public  void delete_comment(){
 		this.deleted = true;
 		this.save();
 	}

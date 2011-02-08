@@ -237,7 +237,7 @@ $('#accordion').accordion({autoHeight: false});
 	#{/if}
 	#{else}
 	<div class="crudField">
-	<label>Component</label>${task.component.getFullName()}
+	<label>Component</label>${task.component.get_full_name()}
 	</div>
 	#{/else}
 	#{/if}
@@ -372,7 +372,7 @@ var r=confirm("Are you sure you would like to delete this comment?");
   	{
 	  	$('#c_'+el).hide();
 	  	$('#L_'+el).show();
-		$.post('@{Comments.deleteComment()}',{id:el})
+		$.post('@{Comments.delete_comment()}',{id:el})
 	}
 }
 

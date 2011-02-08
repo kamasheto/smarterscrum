@@ -274,7 +274,7 @@ public class Project extends SmartModel
 		for( int i = 0; i < Components.size(); i++ )
 		{
 			Component X = Components.get( i );
-			List<Task> componentsTasks = X.componentTasks;
+			List<Task> componentsTasks = X.tasks;
 			projectTasks.addAll( componentsTasks );
 		}
 		return ProjectTasks;

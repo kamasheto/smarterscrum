@@ -407,7 +407,7 @@ public class Task extends SmartModel
 
 		for( Component component : components )
 		{
-			for( Task task : component.componentTasks )
+			for( Task task : component.tasks )
 			{
 				if( task.dependentTasks.contains( this ) )
 				{
@@ -486,7 +486,7 @@ public class Task extends SmartModel
 	public List<User> getAssigneeOrReviewer( boolean ar )
 	{
 
-		List<User> u = this.component.componentUsers;
+		List<User> u = this.component.users;
 		if( ar )
 		{
 			u.remove( this.reviewer );

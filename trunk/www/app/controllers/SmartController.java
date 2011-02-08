@@ -105,7 +105,7 @@ public class SmartController extends Controller
 					{
 						data.add( null );
 						data.set( i, new ComponentRowh( components.get( i ).id, components.get( i ).name ) );
-						List<Task> tasks = components.get( i ).returnComponentTasks( s );
+						List<Task> tasks = components.get( i ).comp_sprint_not_parent_tasks( s );
 
 						for( int j = 0; j < CS.size(); j++ )
 						{
@@ -147,9 +147,9 @@ public class SmartController extends Controller
 				for( int index = 0; index < Cs.size(); index++ )
 				{
 
-					Board b1 = Cs.get( index ).componentBoard;
+					Board b1 = Cs.get( index ).board;
 
-					List<User> users = Cs.get( index ).getUsers();
+					List<User> users = Cs.get( index ).get_users();
 					ArrayList<ComponentRowh> data1 = new ArrayList<ComponentRowh>();
 					List<BoardColumn> columns1 = b.columns;
 					ArrayList<String> Columnsofsnapshot1 = new ArrayList<String>();

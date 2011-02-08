@@ -53,8 +53,8 @@ public class Boards extends SmartCRUD
 			Component comp = Component.findById( componentID );
 			if( comp.deleted )
 				notFound();
-			if( comp.componentBoard != null )
-				columns = comp.componentBoard.columns; // columns of component
+			if( comp.board != null )
+				columns = comp.board.columns; // columns of component
 			// board
 		}
 
@@ -101,7 +101,7 @@ public class Boards extends SmartCRUD
 				{
 
 					data.set( i, new ComponentRow( components.get( i ).id, components.get( i ).name ) );
-					List<Task> tasks = components.get( i ).returnComponentTasks( sprint );
+					List<Task> tasks = components.get( i ).comp_sprint_not_parent_tasks( sprint );
 
 					for( int j = 0; j < columnsOfBoard.size(); j++ )
 					{
@@ -167,7 +167,7 @@ public class Boards extends SmartCRUD
 				notFound();
 			List<User> users = null;
 			if(comp.number!=0)
-			users = comp.getUsers();
+			users = comp.get_users();
 			else
 			users = comp.project.getUsers();
 			for( int i = 0; i < users.size(); i++ )
@@ -192,7 +192,7 @@ public class Boards extends SmartCRUD
 					for( int k = 0; k < task.status.columns.size(); k++ )
 					{
 						pcmp = task.status.columns.get( k );
-						if( pcmp.board.id == comp.componentBoard.id )
+						if( pcmp.board.id == comp.board.id )
 						{
 							break;
 						}
@@ -369,7 +369,7 @@ public class Boards extends SmartCRUD
 			Component c = Component.findById( cid );
 			if( c.deleted )
 				notFound();
-			for( Meeting m : c.componentMeetings )
+			for( Meeting m : c.meetings )
 			{
 				long now = new Date().getTime();
 				if( m.startTime <= now && m.endTime > now )
@@ -451,7 +451,7 @@ public class Boards extends SmartCRUD
 			Component c = Component.findById( cid );
 			if( c.deleted )
 				notFound();
-			for( Meeting m : c.componentMeetings )
+			for( Meeting m : c.meetings )
 			{
 				flag = false;
 				long now = new Date().getTime();
@@ -533,7 +533,7 @@ public class Boards extends SmartCRUD
 		{
 			url = Router.getFullUrl("Application.externalOpen")+"?id="+sprint.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"%26componentID="+compid;
 			Component component = Component.findById(compid); 
-			Notifications.notifyUsers(component.componentUsers, "addColumn", url, "column", c.name, (byte)0, c.board.project);			
+			Notifications.notifyUsers(component.users, "addColumn", url, "column", c.name, (byte)0, c.board.project);			
 		}
 		
 		// "Coulumn", c.name, (byte)0);
@@ -585,7 +585,7 @@ public class Boards extends SmartCRUD
 		{
 			url = Router.getFullUrl("Application.externalOpen")+"?id="+sprint.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"%26componentID="+compid;
 			Component component = Component.findById(compid); 
-			Notifications.notifyUsers(component.componentUsers, "deleteColumn", url, "column", c.name, (byte)-1, c.board.project);			
+			Notifications.notifyUsers(component.users, "deleteColumn", url, "column", c.name, (byte)-1, c.board.project);			
 		}		
 		Log.addLog("Hided column: " + c.name, c, c.board, sprint.project);
 		
@@ -607,8 +607,8 @@ public class Boards extends SmartCRUD
 		List<Board> boards = new ArrayList<Board>();
 		for( int i = 0; i < p.components.size(); i++ )
 		{
-			if( p.components.get( i ).componentBoard != null && !p.components.get(i).deleted )
-				boards.add( p.components.get( i ).componentBoard );
+			if( p.components.get( i ).board != null && !p.components.get(i).deleted )
+				boards.add( p.components.get( i ).board );
 		}
 		List<Component> components = p.components;
 

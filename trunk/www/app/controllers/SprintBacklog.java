@@ -52,7 +52,7 @@ public class SprintBacklog extends SmartController
 		List<Task> tasks = new ArrayList();
 		if( component_id != 0 && sprint_id != 0 )
 		{
-			tasks = component.returnComponentSprintTasks( sprint );
+			tasks = component.component_sprint_tasks( sprint );
 
 		}
 		else if( component_id == 0 && sprint_id != 0 )
@@ -86,7 +86,7 @@ public class SprintBacklog extends SmartController
 		if(component_id !=0 )
 		{
 			Component component = Component.findById( component_id );
-			name = component.getFullName();
+			name = component.get_full_name();
 		}
 		else
 			name = sprint.project.name;

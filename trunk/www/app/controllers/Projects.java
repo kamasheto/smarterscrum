@@ -1212,17 +1212,17 @@ public class Projects extends SmartCRUD
 
 		for( Component temp : project.components )
 		{
-			if( temp.componentBoard != null )
+			if( temp.board != null )
 			{
-				temp.componentBoard.deleted = true;
-				temp.componentBoard.save();
+				temp.board.deleted = true;
+				temp.board.save();
 
-				for( BoardColumn c : temp.componentBoard.columns )
+				for( BoardColumn c : temp.board.columns )
 				{
 					c.deleted = true;
 					c.save();
 				}
-				for( Snapshot s : temp.componentBoard.snapshot )
+				for( Snapshot s : temp.board.snapshot )
 				{
 					s.deleted = true;
 					s.save();
