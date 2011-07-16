@@ -12,7 +12,7 @@
 		$('#delete').hide();
 	}
 	function undo_req(){
-		window.location.replace('@{undo_request()}');
+		window.location.replace('@{undoRequest()}');
 	}
 </script>
 
@@ -52,7 +52,7 @@
 	<!--The Registration form element-->
 	<div id="login">
 		
-	<form name = "delete" id = "delete" action = "@{deletion_request()}" method="post" style="display:none">
+	<form name = "delete" id = "delete" action = "@{deletionRequest()}" method="post" style="display:none">
 		
 		<p align = "center"><b><u>Please Confirm By Entering your password:</u></b></p>
 		<p class="form-field">
