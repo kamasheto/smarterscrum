@@ -22,25 +22,25 @@ public class Ajax extends SmartController
 	 *            ,search query
 	 * @param invite
 	 *            if true, selects projects this user canSendInvite to
-	 * @param not_mine
+	 * @param notMine
 	 *            , if true, means that the project to invite to isn't mine
 	 */
-	public static void projects( String query, boolean invite, boolean not_mine )
+	public static void projects( String query, boolean invite, boolean notMine )
 	{
 		if( invite )
 		{
 			User me = Security.getConnected();
-			List<Project> my_projects = new LinkedList<Project>();
+			List<Project> myProjects = new LinkedList<Project>();
 			if( me.isAdmin )
-				my_projects = Project.find( "byNameLikeAndDeletedAndApprovalStatus", "%" + query + "%", false, true ).fetch();
+				myProjects = Project.find( "byNameLikeAndDeletedAndApprovalStatus", "%" + query + "%", false, true ).fetch();
 			else
 				for( Project project : me.projects )
 				{
 					if( project.name.contains( query ) && me.in( project ).can( "invite" ) )
-						my_projects.add( project );
+						myProjects.add( project );
 				}
 			List<Project.Object> result = new LinkedList<Project.Object>();
-			for( Project p : my_projects )
+			for( Project p : myProjects )
 			{
 				result.add( new Project.Object( p.id, p.name ) );
 			}
@@ -51,7 +51,7 @@ public class Ajax extends SmartController
 			List<Project.Object> result = new LinkedList<Project.Object>();
 			for( Project u : Project.find( "byNameLikeAndDeletedAndApprovalStatus", "%" + query + "%", false, true ).<Project> fetch() )
 			{
-				if( Security.isConnected() && Security.getConnected().projects.contains( u ) && not_mine )
+				if( Security.isConnected() && Security.getConnected().projects.contains( u ) && notMine )
 				{
 					continue;
 				}
@@ -68,10 +68,10 @@ public class Ajax extends SmartController
 	 * @param query
 	 *            , search query to search for
 	 */
-	public static void users( long project_id, String query )
+	public static void users( long projectId, String query )
 	{		
 		List<User.Object> result = new LinkedList<User.Object>();
-		if (project_id == 0) {
+		if (projectId == 0) {
 			if (!query.isEmpty()) {
 				for (User u : User.find("byNameLikeAndDeleted",
 						"%" + query + "%", false).<User> fetch()) {
@@ -81,16 +81,16 @@ public class Ajax extends SmartController
 		}
 		else
 		{
-			Project project = Project.findById(project_id);
+			Project pro = Project.findById(projectId);
 			User user = Security.getConnected();
-			List<Invite> invites = Invite.find("role.project = ?", project).fetch();
-			ArrayList<User> invited_users = new ArrayList<User>();
-			for (Invite invite : invites) {
-				invited_users.add(invite.user);
+			List<Invite> invs = Invite.find("role.project = ?", pro).fetch();
+			ArrayList<User> invitedUsers = new ArrayList<User>();
+			for (Invite inv : invs) {
+				invitedUsers.add(inv.user);
 			}
 			for (User u : User.find("byNameLikeAndDeletedAndIsActivated",
 					"%" + query + "%", false, true).<User> fetch()) {
-				if(user != u && !u.projects.contains(project) && !invited_users.contains(u))
+				if(user != u && !u.projects.contains(pro) && !invitedUsers.contains(u))
 					result.add(new User.Object(u.id, u.name));
 			}
 		}
@@ -105,50 +105,52 @@ public class Ajax extends SmartController
 	 * 
 	 * @author mahmoudsakr
 	 */
-	public static void dynamic_drop(String from, String to) {
+	public static void dynamicDrop(String from, String to) {
 		Security.check(Security.isConnected());
-		String[] from_arr = from.split("-"); // meeting-1
-		String[] to_arr = to.split("-"); // user-3
+		String[] arr = from.split("-"); // meeting-1
+		String[] arr2 = to.split("-"); // user-3
 
-		from = from_arr[0].toLowerCase();
-		to = to_arr[0].toLowerCase();
+		from = arr[0].toLowerCase();
+		to = arr2[0].toLowerCase();
 		
-		long from_id = Long.parseLong(from_arr[1]), to_id = Long.parseLong(to_arr[1]);
+		// id = from's id
+		// id2 = to's id
+		long id = Long.parseLong(arr[1]), id2 = Long.parseLong(arr2[1]);
 
 		if (from.equals("user") && to.equals("component")) {
 			// inviting user id to component id2
-			Users.choose_users(to_id, from_id);
+			Users.choose_users(id2, id);
 		} else if (from.equals("task") && to.equals("component")) {
 			// associating task to component
-			Tasks.associate_to_component(from_id, to_id);
+			Tasks.associate_to_component(id, id2);
 		} else if (from.equals("task") && to.equals("meeting")) {
 			// associate task to meeting
-			Meetings.addTask(to_id, from_id);
+			Meetings.addTask(id2, id);
 		} else if (from.equals("user") && to.equals("meeting")) {
 			// inviting user to a meeting (Amr Hany)
-			Meetings.inviteUser(to_id, from_id);
+			Meetings.inviteUser(id2, id);
 		} else if (from.equals("component") && to.equals("meeting")) {
 			// inviting component to a meeting (Amr Hany)
-			Meetings.inviteComponent(to_id, from_id);
+			Meetings.inviteComponent(id2, id);
 		}else if( from.equals("task") && to.equals( "user" ) )
 		{
-			Tasks.assign_task_assignee(from_id,to_id);
+			Tasks.assign_task_assignee(id,id2);
 		}
 		else if  (from.equals("user") && to.equals( "task" ) )
 		{
-			Tasks.assign_task_reviewer(from_id, to_id);
+			Tasks.assign_task_reviewer(id, id2);
 		}
 		else if  (from.equals("task") && to.equals( "sprint" ) )
 		{
-			Sprints.addTask(from_id, to_id);
+			Sprints.addTask(id, id2);
 		}
 		else if  (from.equals("task") && to.equals( "task" ) )
 		{
-			Tasks.set_dependency(from_id, to_id);
+			Tasks.set_dependency(id, id2);
 		} else if (from.equals("projectusers") && to.equals("meeting")) {
-			Meetings.inviteAllMembers(to_id);
+			Meetings.inviteAllMembers(id2);
 		} else {
-			renderText("Something went wrong. Please try again. " + from + from_id + ", " + to + to_id);
+			renderText("Something went wrong. Please try again. " + from + id + ", " + to + id2);
 		}
 	}
 }
