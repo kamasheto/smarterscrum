@@ -45,7 +45,7 @@ public class Application extends SmartController
 	 */
 	public static String hash( String str )
 	{
-		String result = "";
+		String res = "";
 		try
 		{
 			MessageDigest algorithm = MessageDigest.getInstance( "MD5" );
@@ -58,18 +58,18 @@ public class Application extends SmartController
 				tmp = (Integer.toHexString( 0xFF & md5[i] ));
 				if( tmp.length() == 1 )
 				{
-					result += "0" + tmp;
+					res += "0" + tmp;
 				}
 				else
 				{
-					result += tmp;
+					res += tmp;
 				}
 			}
 		}
 		catch( NoSuchAlgorithmException ex )
 		{
 		}
-		return result;
+		return res;
 	}
 
 	/**
@@ -85,9 +85,9 @@ public class Application extends SmartController
 	 * 
 	 * @return hash String
 	 */
-	public static String random_hash()
+	public static String randomHash()
 	{
-		return random_hash( 32 );
+		return randomHash( 32 );
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class Application extends SmartController
 	 *            , The length of the hash string
 	 * @return hash String
 	 */
-	public static String random_hash( int length )
+	public static String randomHash( int length )
 	{
 		return hash( System.currentTimeMillis() * Math.random() + "" ).substring( 0, length );
 	}
@@ -119,16 +119,16 @@ public class Application extends SmartController
 	 * @param id
 	 *            ,Project ID
 	 */
-	public static void view_components( long id )
+	public static void viewComponents( long id )
 	{
-		Project current_project = Project.findById( id );
-		if( current_project.deleted )
+		Project currentProject = Project.findById( id );
+		if( currentProject.deleted )
 			notFound();
-		boolean in_sprint = (current_project.inSprint( new Date() ));
-		String project_name = current_project.name;
+		boolean inSprint = (currentProject.inSprint( new Date() ));
+		String projectName = currentProject.name;
 		List<Component> components = Component.find( "byProject.idAndDeleted", id, false ).fetch();
 
-		render( components, id, project_name, in_sprint, current_project );
+		render( components, id, projectName, inSprint, currentProject );
 	}
 
 	/**
@@ -138,14 +138,16 @@ public class Application extends SmartController
 	 * @param componentID
 	 *            , Component ID
 	 */
-	public static void delete_component( long id )
+	public static void deleteComponent( long id )
 	{
-		Component component = Component.findById( id );
-		if( component.deleted )
+		Component c = Component.findById( id );
+		if( c.deleted )
 			notFound();
-		Security.check( Security.getConnected().in( component.project ).can( "deleteComponent" ) );
-		component.delete_component();
-		Log.addUserLog( "Deleted " + component.get_full_name(), component, component.project );
+		Security.check( Security.getConnected().in( c.project ).can( "deleteComponent" ) );
+		c.deleteComponent();
+		Log.addUserLog( "Deleted " + c.getFullName(), c, c.project );
+		// Logs.addLog( Security.getConnected(), "Delete", "Component", c.id,
+		// c.project, new Date( System.currentTimeMillis() ) );
 	}
 
 	/**
@@ -162,7 +164,7 @@ public class Application extends SmartController
 	/**
 	 * Renders the adminIndexPage page
 	 */
-	public static void admin_index_page()
+	public static void adminIndexPage()
 	{
 		Security.check( Security.getConnected().isAdmin );
 		redirect( "/projects/manageProjectRequests" );
@@ -171,7 +173,7 @@ public class Application extends SmartController
 	/**
 	 * Renders the adminIndex page
 	 */
-	public static void admin_index()
+	public static void adminIndex()
 	{
 		Security.check( Security.getConnected().isAdmin );
 		render();
@@ -230,7 +232,7 @@ public class Application extends SmartController
 		user.save();
 		if( !user.email.equals( oldEmail ) )
 		{
-			user.activationHash = Application.random_hash( 32 );
+			user.activationHash = Application.randomHash( 32 );
 			user.isActivated = false;
 			user.save();
 			session.put( "username", email );
@@ -252,13 +254,13 @@ public class Application extends SmartController
 	 * 
 	 * @param js
 	 *            , The script that runs in the parent frame
-	 * @param native_js
+	 * @param nativeJS
 	 *            , The script that runs in the current frame
 	 * @author Hadeer younis
 	 */
-	public static void overlay_killer( String js, String native_js )
+	public static void overlayKiller( String js, String nativeJS )
 	{
-		render( js, native_js );
+		render( js, nativeJS );
 	}
 
 	/**
@@ -271,29 +273,29 @@ public class Application extends SmartController
 	 *            , project id
 	 * @param url
 	 *            , url to be loaded
-	 * @param is_overlay
+	 * @param isOverlay
 	 *            , whether or not the url will open in an overlay
 	 */
-	public static void external_open( long id, String url, boolean is_overlay )
+	public static void externalOpen( long id, String url, boolean isOverlay )
 	{
-		render( id, url, is_overlay );
+		render( id, url, isOverlay );
 	}
 
 	/**
 	 * Renders all the notifications for the currently connected user
 	 */
-	public static void show_notifications( int page )
+	public static void showNotifications( int page )
 	{
 		User user = Security.getConnected();
 		boolean first = false;
 		boolean last = false;
-		List<Notification> all_notifications = Notification.find( "byReceiver", user ).fetch();
-		int total_pages = (int) all_notifications.size() / 10;
-		if( all_notifications.size() % 10 != 0 )
+		List<Notification> allNotifications = Notification.find( "byReceiver", user ).fetch();
+		int totalPages = (int) allNotifications.size() / 10;
+		if( allNotifications.size() % 10 != 0 )
 		{
-			total_pages++;
+			totalPages++;
 		}
-		if( page == total_pages )
+		if( page == totalPages )
 		{
 			last = true;
 		}
@@ -305,19 +307,19 @@ public class Application extends SmartController
 			}
 		}
 
-		List<Notification> notifications_page;
+		List<Notification> pageOfNotifications;
 		if( first )
 		{
-			notifications_page = Notification.find( "byReceiver", user ).from( 1 ).fetch( 10 );
+			pageOfNotifications = Notification.find( "byReceiver", user ).from( 1 ).fetch( 10 );
 		}
 		else
 		{
 			int temp = (page - 1) * 10;
 			if(temp<0)
 				temp = 0;
-			notifications_page = Notification.find( "byReceiver", user ).from( temp ).fetch( 10 );
+			pageOfNotifications = Notification.find( "byReceiver", user ).from( temp ).fetch( 10 );
 		}
-		for( Notification noti : notifications_page )
+		for( Notification noti : pageOfNotifications )
 		{
 			if( noti.unread )
 			{
@@ -329,34 +331,29 @@ public class Application extends SmartController
 		}
 		boolean emailing = user.enableEmails;
 
-		render( page, notifications_page, emailing, last, first );
+		render( page, pageOfNotifications, emailing, last, first );
 
 	}
-	/**
-	 * renders a list of notifications in a certain page
-	 * 
-	 * @param page
-	 * @param per_page
-	 */
-	public static void notifications_list( int page, int per_page )
+
+	public static void listNotifications( int page, int perPage )
 	{
-		if( per_page == 0 )
+		if( perPage == 0 )
 		{
-			per_page = 10;
+			perPage = 10;
 		}
 		NotificationSearchResult result = new NotificationSearchResult();
-		List<Notification> all_notifications = Notification.find( "byReceiver", Security.getConnected().id ).fetch();
-		List<Notification> notifications_page = all_notifications.subList( page * per_page, page * per_page + per_page <= all_notifications.size() ? page * per_page + per_page : all_notifications.size() );
-		for( Notification notification : all_notifications )
+		List<Notification> allNotifications = Notification.find( "byReceiver", Security.getConnected().id ).fetch();
+		List<Notification> pageOfNotifications = allNotifications.subList( page * perPage, page * perPage + perPage <= allNotifications.size() ? page * perPage + perPage : allNotifications.size() );
+		for( Notification notification : allNotifications )
 		{
 			if( notification.unread )
 			{
 				result.newNotifications++;
 			}
 		}
-		result.notifications = notifications_page;
+		result.notifications = pageOfNotifications;
 		result.currentPage = page + 1;
-		result.totalPages = (int) all_notifications.size() / per_page;
+		result.totalPages = (int) allNotifications.size() / perPage;
 		renderJSON( result );
 	}
 
@@ -367,7 +364,7 @@ public class Application extends SmartController
 	 * @param enable
 	 *            : 0 if to stop 1 for enabling
 	 */
-	public static void optional_notifiations( int enable )
+	public static void modifyEmailing( int enable )
 	{
 		User user = Security.getConnected();
 		if( enable == 1 )
@@ -381,10 +378,10 @@ public class Application extends SmartController
 	 * A method that renders the calendar page with the day's events in the side
 	 * bar.
 	 */
-	public static void show_events_calender()
+	public static void showEvents()
 	{
-		Date date = new Date();
-		int year = date.getYear() + 1900;
+		Date x = new Date();
+		int year = x.getYear() + 1900;
 		List<Integer> years = new ArrayList<Integer>();
 		for( int i = -5; i < 5; i++ )
 		{
@@ -398,11 +395,11 @@ public class Application extends SmartController
 		{
 			for( Sprint sprint : project.sprints )
 			{
-				if( !sprint.deleted && sprint.startDate == today)
+				if( !sprint.deleted && sprint.startDate.getDate() == today.getDate() && sprint.startDate.getMonth() == today.getMonth() && sprint.startDate.getYear() == today.getYear() )
 				{
 					sprints.add( sprint );
 				}
-				if( !sprint.deleted && sprint.endDate == today)
+				if( !sprint.deleted && sprint.endDate.getDate() == today.getDate() && sprint.endDate.getMonth() == today.getMonth() && sprint.endDate.getYear() == today.getYear() )
 				{
 					sprints2.add( sprint );
 				}
@@ -415,7 +412,7 @@ public class Application extends SmartController
 			if( !meeting.meeting.deleted )
 			{
 				Date start = new Date( meeting.meeting.startTime );
-				if( start == today)
+				if( start.getDate() == today.getDate() && start.getMonth() == today.getMonth() && start.getYear() == today.getYear() )
 					meetings.add( meeting.meeting );
 			}
 		}
@@ -423,7 +420,7 @@ public class Application extends SmartController
 	}
 
 	/**
-	 * renders the sprints of the connected user's projects.
+	 * A method that returns the sprints of the connected user's projects.
 	 */
 	public static void sprints()
 	{
@@ -435,7 +432,7 @@ public class Application extends SmartController
 			{
 				if( !sprint.deleted )
 				{
-					sprints.add( new Sprint.Object( sprint.id, sprint.number, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id ) );
+					sprints.add( new Sprint.Object( sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id ) );
 				}
 			}
 		}
@@ -443,13 +440,13 @@ public class Application extends SmartController
 	}
 
 	/**
-	 * renders the meetings of the connected user's projects.
+	 * A method that returns the meetings of the connected user's projects.
 	 */
 	public static void meetings()
 	{
-		List<MeetingAttendance> meeting_attendance = MeetingAttendance.find( "byUserAndDeleted", Security.getConnected(), false ).fetch();
+		List<MeetingAttendance> meetings1 = MeetingAttendance.find( "byUserAndDeleted", Security.getConnected(), false ).fetch();
 		List<Meeting.Object> meetings = new ArrayList<Meeting.Object>();
-		for( MeetingAttendance meeting : meeting_attendance )
+		for( MeetingAttendance meeting : meetings1 )
 		{
 			if( !meeting.meeting.deleted )
 			{
@@ -460,7 +457,7 @@ public class Application extends SmartController
 	}
 
 	/**
-	 * renders a list of events that occur in a certian date (day, month, year)
+	 * A method that returns a selected day Events (Sprints and meetings)
 	 * 
 	 * @param day
 	 *            : the day of the month from 1-31.
@@ -469,7 +466,7 @@ public class Application extends SmartController
 	 * @param year
 	 *            : the year.
 	 */
-	public static void events_in_date( int day, int month, int year )
+	public static void dayEvents( int day, int month, int year )
 	{
 		List<Project> projects = Security.getConnected().projects;
 		Event events = new Event();
@@ -482,16 +479,16 @@ public class Application extends SmartController
 				{
 					if( !sprint.deleted && sprint.startDate.getDate() == day && sprint.startDate.getMonth() + 1 == month && sprint.startDate.getYear() + 1900 == year )
 					{
-						events.sprints.add( new Sprint.Object( sprint.id, sprint.number, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id ) );
+						events.sprints.add( new Sprint.Object( sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id ) );
 					}
 					if( !sprint.deleted && sprint.endDate.getDate() == day && sprint.endDate.getMonth() + 1 == month && sprint.endDate.getYear() + 1900 == year )
 					{
-						events.sprints.add( new Sprint.Object( sprint.id, sprint.number, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id ) );
+						events.sprints.add( new Sprint.Object( sprint.id, sprint.sprintNumber, sprint.startDate, sprint.endDate, sprint.project.name, sprint.project.id ) );
 					}
 				}
 			}
-			List<MeetingAttendance> meeting_attendance = MeetingAttendance.find( "byUserAndDeleted", Security.getConnected(), false ).fetch();
-			for( MeetingAttendance meeting : meeting_attendance )
+			List<MeetingAttendance> meetings1 = MeetingAttendance.find( "byUserAndDeleted", Security.getConnected(), false ).fetch();
+			for( MeetingAttendance meeting : meetings1 )
 			{
 				if( !meeting.meeting.deleted )
 				{
