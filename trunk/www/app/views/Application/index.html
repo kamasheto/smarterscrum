@@ -4,7 +4,7 @@
 var itemsPerPage = ${settings.defaultEntriesPerBox};
 </script>
 #{set 'onLoad'}
-$('#noti').load('@{Application.show_notifications(1)}');
+$('#noti').load('@{Application.showNotifications(1)}');
 $('#events').load('@{Application.showEvents()}');
 $('#in').load('@{Invites.showInvitations}');
 #{/set}
