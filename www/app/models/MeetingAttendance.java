@@ -69,7 +69,7 @@ public class MeetingAttendance extends SmartModel
 		this.invitedBy = Security.getConnected();
 		this.meeting = meeting;
 		this.status = "waiting";
-		this.meetingHash = Application.random_hash();
+		this.meetingHash = Application.randomHash();
 
 	}
 
@@ -87,7 +87,7 @@ public class MeetingAttendance extends SmartModel
 		this.invitedBy = by;
 		this.meeting = meeting;
 		this.status = "waiting";
-		this.meetingHash = Application.random_hash();
+		this.meetingHash = Application.randomHash();
 	}
 
 	/**

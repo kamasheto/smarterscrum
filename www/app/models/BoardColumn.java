@@ -16,7 +16,7 @@ public class BoardColumn extends SmartModel {
 	/***
 	 * flag that determines whether this column should be displayed n the board or not
 	 */
-	public boolean on_board;
+	public boolean onBoard;
 	
 	/***
 	 * column name
@@ -33,7 +33,7 @@ public class BoardColumn extends SmartModel {
 	 * can be represented in many columns (project board & component board columns)
 	 */
 	@ManyToOne
-	public TaskStatus task_status;
+	public TaskStatus taskStatus;
 
 	/***
 	 * a flag that determines whether the column is deleted or not
@@ -51,13 +51,30 @@ public class BoardColumn extends SmartModel {
 	 * @param taskstatus 
 	 * 			status that the column represents
 	 */
-	public BoardColumn (String name, Board board, TaskStatus task_status) {
+	public BoardColumn (String name, Board board, TaskStatus taskstatus) {
 		this.name = name;
 		this.board = board;
 		if(board!=null)
 		this.sequence = board.columns.size();
-		this.on_board=true;
-		this.task_status=task_status;
+		this.onBoard=true;
+		this.taskStatus=taskstatus;
+		/*if(this.name.equalsIgnoreCase( "new" )||this.name.equalsIgnoreCase( "verified" )||this.name.equalsIgnoreCase( "closed" ))
+		{
+			
+			this.onBoard=true;
+			int count=0;
+			for(int i=0;i<board.columns.size();i++)
+			{
+				if(board.columns.get(i).onBoard==true)
+					count++;
+			}
+			this.sequence=count;
+		}
+		else
+		{
+			this.onBoard=false;
+			this.sequence=-1;
+		}	*/
 		this.save();
 		if(board!=null)
 		board.columns.add(this);
