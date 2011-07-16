@@ -47,20 +47,20 @@ public class Snapshots extends SmartController {
 			b = p.board;
 		else {
 			Component c = Component.findById(componentID);
-			b = c.board;
+			b = c.componentBoard;
 		}
 		List<BoardColumn> CS = new ArrayList<BoardColumn>();
 		columns = b.columns;
 		ArrayList<ComponentRowh> data = new ArrayList<ComponentRowh>();
 		ArrayList<String> Columnsofsnapshot = new ArrayList<String>();
 		for (int i = 0; i < columns.size(); i++) {
-			if (columns.get(i).on_board == true) {
+			if (columns.get(i).onBoard == true) {
 				CS.add(null);
 				CS.set(i, columns.get(i));
 			}
 		}
 		for (int i = 0; i < columns.size(); i++) {
-			if (columns.get(i).on_board == true) {
+			if (columns.get(i).onBoard == true) {
 				CS.set(columns.get(i).sequence, columns.get(i));
 			}
 		}
@@ -79,19 +79,20 @@ public class Snapshots extends SmartController {
 					data.add(null);
 					data.set(i, new ComponentRowh(components.get(i).id,
 							components.get(i).name));
-					List<Task> tasks = components.get(i).comp_sprint_not_parent_tasks(s);
+					List<Task> tasks = components.get(i)
+							.returnComponentTasks(s);
 					for (int j = 0; j < CS.size(); j++) {
 						data.get(i).add(null);
 						data.get(i).set(j, new ArrayList<String>());
 					}
 					for (Task task : tasks) {
 						BoardColumn pcol = new BoardColumn();
-						for (int k = 0; k < task.status.columns.size(); k++) {
-							pcol = task.status.columns.get(k);
+						for (int k = 0; k < task.taskStatus.columns.size(); k++) {
+							pcol = task.taskStatus.columns.get(k);
 							if (pcol.board.id == b.id)
 								break;
 						}
-						if (pcol.on_board == true && !pcol.deleted)
+						if (pcol.onBoard == true && !pcol.deleted)
 							data.get(i).get(pcol.sequence).add(
 									"(" + "T" + task.id + "-"
 											+ task.description + "-"
@@ -126,7 +127,7 @@ public class Snapshots extends SmartController {
 			} else {
 				type = c.name;
 			}
-			List<User> users = c.get_users();
+			List<User> users = c.getUsers();
 			for (int i = 0; i < users.size(); i++) {
 				data.add(null);
 				data.set(i, new ComponentRowh(users.get(i).id,
@@ -138,8 +139,8 @@ public class Snapshots extends SmartController {
 				}
 				for (Task task : tasks) {
 					BoardColumn pcol = new BoardColumn();
-					for (int k = 0; k < task.status.columns.size(); k++) {
-						pcol = task.status.columns.get(k);
+					for (int k = 0; k < task.taskStatus.columns.size(); k++) {
+						pcol = task.taskStatus.columns.get(k);
 						if (pcol.board.id == b.id)
 							break;
 					}
@@ -214,10 +215,10 @@ public class Snapshots extends SmartController {
 			Component c = Component.findById(cid);
 				if(c.number!=0){
 			snapshots = Snapshot.find("byBoardAndSprintAndType",
-					c.board, s, c.name).fetch();}
+					c.componentBoard, s, c.name).fetch();}
 				else{
 					snapshots = Snapshot.find("byBoardAndSprintAndType",
-							c.board, s, c.project.name).fetch();
+							c.componentBoard, s, c.project.name).fetch();
 					}
 			
 			render(snapshots, c, pid, cid);
@@ -254,10 +255,10 @@ public class Snapshots extends SmartController {
 			Component c = Component.findById(cid);
 			if(c.number!=0){
 				snapshots = Snapshot.find("byBoardAndSprintAndType",
-						c.board, s, c.name).fetch();}
+						c.componentBoard, s, c.name).fetch();}
 					else{
 						snapshots = Snapshot.find("byBoardAndSprintAndType",
-								c.board, s, c.project.name).fetch();
+								c.componentBoard, s, c.project.name).fetch();
 						}
 			render(snapshots, c, pid, cid);
 		}

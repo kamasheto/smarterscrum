@@ -158,7 +158,7 @@ public class Roles extends SmartCRUD
 		if( params.get( "_save" ) != null )
 		{
 			CollaborateUpdate.update(role.project, "reload('roles')");
-			Application.overlay_killer( "", "" );
+			Application.overlayKiller( "", "" );
 		}
 		redirect( "/admin/roles/" + role.id );
 	}
@@ -244,7 +244,7 @@ public class Roles extends SmartCRUD
 		if( params.get( "_save" ) != null )
 		{
 			CollaborateUpdate.update(role.project, "reload('roles')");
-			Application.overlay_killer( "", "" );
+			Application.overlayKiller( "", "" );
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
 		{

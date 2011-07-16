@@ -77,7 +77,7 @@ public class SmartController extends Controller
 				ArrayList<String> Columnsofsnapshot = new ArrayList<String>();
 				for( int i = 0; i < columns.size(); i++ )
 				{
-					if( columns.get( i ).on_board == true )
+					if( columns.get( i ).onBoard == true )
 					{
 						CS.add( null );
 						CS.set( i, columns.get( i ) );
@@ -85,7 +85,7 @@ public class SmartController extends Controller
 				}
 				for( int i = 0; i < columns.size(); i++ )
 				{
-					if( columns.get( i ).on_board == true )
+					if( columns.get( i ).onBoard == true )
 					{
 						CS.set( columns.get( i ).sequence, columns.get( i ) );
 					}
@@ -105,7 +105,7 @@ public class SmartController extends Controller
 					{
 						data.add( null );
 						data.set( i, new ComponentRowh( components.get( i ).id, components.get( i ).name ) );
-						List<Task> tasks = components.get( i ).comp_sprint_not_parent_tasks( s );
+						List<Task> tasks = components.get( i ).returnComponentTasks( s );
 
 						for( int j = 0; j < CS.size(); j++ )
 						{
@@ -116,16 +116,16 @@ public class SmartController extends Controller
 						for( Task task : tasks )
 						{
 							BoardColumn pcol = new BoardColumn();
-							for( int k = 0; k < task.status.columns.size(); k++ )
+							for( int k = 0; k < task.taskStatus.columns.size(); k++ )
 							{
-								pcol = task.status.columns.get( k );
+								pcol = task.taskStatus.columns.get( k );
 								if( pcol.board.id == b.id )
 								{
 									break;
 								}
 							}
 
-							if( pcol.on_board && !pcol.deleted && task.assignee!=null)
+							if( pcol.onBoard && !pcol.deleted && task.assignee!=null)
 							{
 								data.get( i ).get( CS.indexOf( pcol ) ).add( "T" + task.id + "-" + task.description + "-" + task.assignee.name );
 							}
@@ -147,16 +147,16 @@ public class SmartController extends Controller
 				for( int index = 0; index < Cs.size(); index++ )
 				{
 
-					Board b1 = Cs.get( index ).board;
+					Board b1 = Cs.get( index ).componentBoard;
 
-					List<User> users = Cs.get( index ).get_users();
+					List<User> users = Cs.get( index ).getUsers();
 					ArrayList<ComponentRowh> data1 = new ArrayList<ComponentRowh>();
 					List<BoardColumn> columns1 = b.columns;
 					ArrayList<String> Columnsofsnapshot1 = new ArrayList<String>();
 					List<BoardColumn> CS1 = new ArrayList<BoardColumn>();
 					for( int i = 0; i < columns1.size(); i++ )
 					{
-						if( columns1.get( i ).on_board == true )
+						if( columns1.get( i ).onBoard == true )
 						{
 							CS1.add( null );
 							CS1.set( i, columns1.get( i ) );
@@ -164,7 +164,7 @@ public class SmartController extends Controller
 					}
 					for( int i = 0; i < columns1.size(); i++ )
 					{
-						if( columns1.get( i ).on_board == true )
+						if( columns1.get( i ).onBoard == true )
 						{
 							CS1.set( columns1.get( i ).sequence, columns1.get( i ) );
 						}
@@ -191,15 +191,15 @@ public class SmartController extends Controller
 						for( Task task : tasks1 )
 						{
 							BoardColumn pcol = new BoardColumn();
-							for( int k = 0; k < task.status.columns.size(); k++ )
+							for( int k = 0; k < task.taskStatus.columns.size(); k++ )
 							{
-								pcol = task.status.columns.get( k );
+								pcol = task.taskStatus.columns.get( k );
 								if( pcol.board.id == b.id )
 								{
 									break;
 								}
 							}
-							if( pcol.on_board == true && !pcol.deleted )
+							if( pcol.onBoard == true && !pcol.deleted )
 							{
 								data1.get( i ).get( CS.indexOf( pcol ) ).add( "T" + task.id + "-" + task.description + "-" + task.assignee.name );
 							}
@@ -209,7 +209,7 @@ public class SmartController extends Controller
 
 					Snapshot snap1 = new Snapshot();
 					snap1.user = user;
-					snap1.type = "sprint " + s.number + " " + Cs.get( index ).name;
+					snap1.type = "sprint " + s.sprintNumber + " " + Cs.get( index ).name;
 					snap1.board = b1;
 					snap1.component = Cs.get( index );
 					snap1.sprint = s;

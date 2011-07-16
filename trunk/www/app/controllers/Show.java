@@ -138,28 +138,28 @@ public class Show extends SmartController
 		List<Task> tasks = new ArrayList<Task>();
 		for( Task task1 : proj.projectTasks )
 		{
-			if( task1.assignee != null && task1.assignee.equals( user ) && task1.checkUnderImpl() && task1.status != null && !task1.status.closed )
+			if( task1.assignee != null && task1.assignee.equals( user ) && task1.checkUnderImpl() && task1.taskStatus != null && !task1.taskStatus.closed )
 			{
 				tasks.add( task1 );
 			}
 		}
 		for( Task task1 : proj.projectTasks )
 		{
-			if( task1.reviewer != null && task1.reviewer.equals( user ) && task1.checkUnderImpl() && task1.status != null && task1.status.pending )
+			if( task1.reviewer != null && task1.reviewer.equals( user ) && task1.checkUnderImpl() && task1.taskStatus != null && task1.taskStatus.pending )
 			{
 				tasks.add( task1 );
 			}
 		}
 		for( Task task1 : proj.projectTasks )
 		{
-			if( task1.assignee != null && task1.assignee.equals( user ) && task1.status != null && !task1.status.closed && !tasks.contains( task1 ) )
+			if( task1.assignee != null && task1.assignee.equals( user ) && task1.taskStatus != null && !task1.taskStatus.closed && !tasks.contains( task1 ) )
 			{
 				tasks.add( task1 );
 			}
 		}
 		for( Task task1 : proj.projectTasks )
 		{
-			if( task1.reviewer != null && task1.reviewer.equals( user ) && task1.status != null && task1.status.pending && !tasks.contains( task1 ) && (!task1.deleted) )
+			if( task1.reviewer != null && task1.reviewer.equals( user ) && task1.taskStatus != null && task1.taskStatus.pending && !tasks.contains( task1 ) && (!task1.deleted) )
 			{
 				tasks.add( task1 );
 			}
