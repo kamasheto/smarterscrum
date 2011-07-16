@@ -76,13 +76,13 @@ public class Components extends SmartCRUD {
 		}
 		object.save();
 		temp.init();
-		Log.addUserLog("Created " + temp.get_full_name(), temp, currentProject);
+		Log.addUserLog("Created " + temp.getFullName(), temp, currentProject);
 		// Logs.addLog(Security.getConnected(), "Create", "Component", temp.id, currentProject, new Date(System.currentTimeMillis()));
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+temp.project.id+"&isOverlay=false&url=/components/viewthecomponent?componentId="+temp.id;		
-		Notifications.notifyProjectUsers(temp.project, "onCreateComponent", url, "Component", temp.get_full_name(), (byte) 0);
+		Notifications.notifyProjectUsers(temp.project, "onCreateComponent", url, "Component", temp.getFullName(), (byte) 0);
 		flash.success(Messages.get("crud.created", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			Application.overlay_killer("reload('components')", "");
+			Application.overlayKiller("reload('components')", "");
 		}
 		if (params.get("_saveAndAddAnother") != null) {
 			redirect("/admin/projects/" + currentProject.id + "/components/new");
@@ -117,12 +117,12 @@ public class Components extends SmartCRUD {
 		object.save();
 
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+temp.project.id+"&isOverlay=false&url=/components/viewthecomponent?componentId="+temp.id;
-		Notifications.notifyProjectUsers(temp.project, "onEditComponent", url, "Component", temp.get_full_name(), (byte) 0);
-		Log.addUserLog("Edited " + temp.get_full_name(), temp, temp.project);
+		Notifications.notifyProjectUsers(temp.project, "onEditComponent", url, "Component", temp.getFullName(), (byte) 0);
+		Log.addUserLog("Edited " + temp.getFullName(), temp, temp.project);
 		// Logs.addLog(Security.getConnected(), "Edit", "Component", temp.id, temp.project, new Date(System.currentTimeMillis()));
 		flash.success(Messages.get("crud.saved", type.modelName, object.getEntityId()));
 		if (params.get("_save") != null) {
-			Application.overlay_killer("reload('component-" + id + "')", "");
+			Application.overlayKiller("reload('component-" + id + "')", "");
 		}
 		redirect(request.controller + ".show", object.getEntityId());
 	}
@@ -147,11 +147,11 @@ public class Components extends SmartCRUD {
 			notFound();
 		Security.check(Security.getConnected().in(component.project).can("deleteComponent"));
 		try {
-			component.delete_component();
-			Log.addUserLog("Delete " + component.get_full_name(), component, component.project);
+			component.deleteComponent();
+			Log.addUserLog("Delete " + component.getFullName(), component, component.project);
 			// Logs.addLog(Security.getConnected(), "Delete", "Component", component.id, component.project, new Date(System.currentTimeMillis()));
 			String url = Router.getFullUrl("Application.externalOpen")+"?id="+component.project.id+"&isOverlay=false&url=/components/listcomponentsinproject?projectId="+component.project.id;			
-			Notifications.notifyProjectUsers(component.project, "onDeleteComponent", url, "Component", component.get_full_name(), (byte) -1);
+			Notifications.notifyProjectUsers(component.project, "onDeleteComponent", url, "Component", component.getFullName(), (byte) -1);
 		} catch (Exception e) {
 			// flash.error(Messages.get("crud.delete.error", type.modelName,
 			// object.getEntityId()));

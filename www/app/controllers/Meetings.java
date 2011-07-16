@@ -245,7 +245,7 @@ public class Meetings extends SmartCRUD
 			// redirect( request.controller + ".list" );
 			// Meetings.viewMeetings( currentProject.id );
 			CollaborateUpdate.update( temp.project, "reload('meetings-" + temp.project.id + "')" );
-			Application.overlay_killer( "", "" );
+			Application.overlayKiller( "", "" );
 
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
@@ -382,7 +382,7 @@ public class Meetings extends SmartCRUD
 			// redirect( request.controller + ".list" );
 			// Meetings.viewMeetings( currentProject.id );
 			CollaborateUpdate.update( temp.project, "reload('meeting-" + temp.id + "','meetings-" + temp.project.id + "');" );
-			Application.overlay_killer( "", "" );
+			Application.overlayKiller( "", "" );
 
 		}
 	}
@@ -615,13 +615,13 @@ public class Meetings extends SmartCRUD
 		{
 			if( !component.deleted )
 			{
-				if( component.meeting_status( meetingID ).equals( "allInvited" ) || component.meeting_status( meetingID ).equals( "confirmed" ) || component.meeting_status( meetingID ).equals( "declined" ) || component.meeting_status( meetingID ).equals( "waiting" ) )
+				if( component.meetingStatus( meetingID ).equals( "allInvited" ) || component.meetingStatus( meetingID ).equals( "confirmed" ) || component.meetingStatus( meetingID ).equals( "declined" ) || component.meetingStatus( meetingID ).equals( "waiting" ) )
 				{
 					renderText( "All the component users are already invited" );
 				}
 				else
 				{
-					for( User user : component.users )
+					for( User user : component.componentUsers )
 					{
 						if( !user.deleted )
 						{

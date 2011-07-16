@@ -142,12 +142,12 @@ public class Projects extends SmartCRUD
 			{
 
 				flash.success( projectObject.name + " has been successfully created." );
-				Application.overlay_killer( "", "" );
+				Application.overlayKiller( "", "" );
 			}
 			else
 			{
 				flash.success( "Your Project Request Has Been Sent.You Will Be Notified Upon Approval" );
-				Application.overlay_killer( "", "" );
+				Application.overlayKiller( "", "" );
 			}
 		}
 	}
@@ -388,9 +388,9 @@ public class Projects extends SmartCRUD
 			}
 			for(Task task : taskStatus.project.projectTasks)
 			{
-				if(task.status == taskStatus )
+				if(task.taskStatus == taskStatus )
 				{
-					task.status = null;
+					task.taskStatus = null;
 					task.save();
 					CollaborateUpdate.update(task.project, "reload('task-"+task.id+"')");
 				}
@@ -561,9 +561,9 @@ public class Projects extends SmartCRUD
 		taskType.save();
 		for(Task task : taskType.project.projectTasks)
 		{
-			if(task.type == taskType )
+			if(task.taskType == taskType )
 			{
-				task.type = null;
+				task.taskType = null;
 				task.save();
 				CollaborateUpdate.update(task.project, "reload('task-"+task.id+"')");
 			}
@@ -876,7 +876,7 @@ public class Projects extends SmartCRUD
 		}
 		object.save();
 		flash.success( "The Project Notificaton Profile modifications have been saved" );
-		Application.overlay_killer( "", "" );
+		Application.overlayKiller( "", "" );
 	}
 
 	/**
@@ -1212,17 +1212,17 @@ public class Projects extends SmartCRUD
 
 		for( Component temp : project.components )
 		{
-			if( temp.board != null )
+			if( temp.componentBoard != null )
 			{
-				temp.board.deleted = true;
-				temp.board.save();
+				temp.componentBoard.deleted = true;
+				temp.componentBoard.save();
 
-				for( BoardColumn c : temp.board.columns )
+				for( BoardColumn c : temp.componentBoard.columns )
 				{
 					c.deleted = true;
 					c.save();
 				}
-				for( Snapshot s : temp.board.snapshot )
+				for( Snapshot s : temp.componentBoard.snapshot )
 				{
 					s.deleted = true;
 					s.save();
