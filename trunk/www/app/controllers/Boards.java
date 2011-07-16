@@ -53,8 +53,8 @@ public class Boards extends SmartCRUD
 			Component comp = Component.findById( componentID );
 			if( comp.deleted )
 				notFound();
-			if( comp.board != null )
-				columns = comp.board.columns; // columns of component
+			if( comp.componentBoard != null )
+				columns = comp.componentBoard.columns; // columns of component
 			// board
 		}
 
@@ -73,7 +73,7 @@ public class Boards extends SmartCRUD
 		// onBoard=false
 		for( int i = 0; i < columns.size(); i++ )
 		{
-			if( columns.get( i ).on_board && !columns.get( i ).deleted )
+			if( columns.get( i ).onBoard && !columns.get( i ).deleted )
 			{
 				columnsOfBoard.add( columns.get( i ) );
 			}
@@ -81,7 +81,7 @@ public class Boards extends SmartCRUD
 		columnsOfBoard = orderColumns( columnsOfBoard );
 		for( int i = 0; i < columns.size(); i++ )
 		{
-			if( !columns.get( i ).on_board && !columns.get( i ).deleted )
+			if( !columns.get( i ).onBoard && !columns.get( i ).deleted )
 			{
 				hidencolumnsOfBoard.add( columns.get( i ) );
 			}
@@ -101,7 +101,7 @@ public class Boards extends SmartCRUD
 				{
 
 					data.set( i, new ComponentRow( components.get( i ).id, components.get( i ).name ) );
-					List<Task> tasks = components.get( i ).comp_sprint_not_parent_tasks( sprint );
+					List<Task> tasks = components.get( i ).returnComponentTasks( sprint );
 
 					for( int j = 0; j < columnsOfBoard.size(); j++ )
 					{
@@ -113,18 +113,18 @@ public class Boards extends SmartCRUD
 						if( !task.deleted)
 						{
 						BoardColumn pcol = new BoardColumn();
-						if(task.status != null)
+						if(task.taskStatus != null)
 						{
-						for( int k = 0; k < task.status.columns.size(); k++ )
+						for( int k = 0; k < task.taskStatus.columns.size(); k++ )
 						{
-							pcol = task.status.columns.get( k );
+							pcol = task.taskStatus.columns.get( k );
 							if( pcol.board.id == board.id )
 							{
 								break;
 							}
 						}
 						}
-						if( pcol.on_board && !pcol.deleted )
+						if( pcol.onBoard && !pcol.deleted )
 						{
 							data.get( i ).get( columnsOfBoard.indexOf( pcol ) ).add( task );
 						}
@@ -167,7 +167,7 @@ public class Boards extends SmartCRUD
 				notFound();
 			List<User> users = null;
 			if(comp.number!=0)
-			users = comp.get_users();
+			users = comp.getUsers();
 			else
 			users = comp.project.getUsers();
 			for( int i = 0; i < users.size(); i++ )
@@ -187,18 +187,18 @@ public class Boards extends SmartCRUD
 					if( !task.deleted)
 					{
 					BoardColumn pcmp = new BoardColumn();
-					if(task.status != null)
+					if(task.taskStatus != null)
 					{
-					for( int k = 0; k < task.status.columns.size(); k++ )
+					for( int k = 0; k < task.taskStatus.columns.size(); k++ )
 					{
-						pcmp = task.status.columns.get( k );
-						if( pcmp.board.id == comp.board.id )
+						pcmp = task.taskStatus.columns.get( k );
+						if( pcmp.board.id == comp.componentBoard.id )
 						{
 							break;
 						}
 					}
 					}
-					if( pcmp.on_board && !pcmp.deleted )
+					if( pcmp.onBoard && !pcmp.deleted )
 					{
 						data.get( i ).get( columnsOfBoard.indexOf( pcmp ) ).add( task );
 					}
@@ -369,7 +369,7 @@ public class Boards extends SmartCRUD
 			Component c = Component.findById( cid );
 			if( c.deleted )
 				notFound();
-			for( Meeting m : c.meetings )
+			for( Meeting m : c.componentMeetings )
 			{
 				long now = new Date().getTime();
 				if( m.startTime <= now && m.endTime > now )
@@ -451,7 +451,7 @@ public class Boards extends SmartCRUD
 			Component c = Component.findById( cid );
 			if( c.deleted )
 				notFound();
-			for( Meeting m : c.meetings )
+			for( Meeting m : c.componentMeetings )
 			{
 				flag = false;
 				long now = new Date().getTime();
@@ -513,11 +513,11 @@ public class Boards extends SmartCRUD
 		int count = 0;
 		for( int i = 0; i < c.board.columns.size(); i++ )
 		{
-			if( c.board.columns.get( i ).on_board == true )
+			if( c.board.columns.get( i ).onBoard == true )
 				count++;
 		}
 		c.sequence = count;
-		c.on_board = true;
+		c.onBoard = true;
 		c.save();
 		User u = User.findById( uid );
 		if( u.deleted )
@@ -533,7 +533,7 @@ public class Boards extends SmartCRUD
 		{
 			url = Router.getFullUrl("Application.externalOpen")+"?id="+sprint.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"%26componentID="+compid;
 			Component component = Component.findById(compid); 
-			Notifications.notifyUsers(component.users, "addColumn", url, "column", c.name, (byte)0, c.board.project);			
+			Notifications.notifyUsers(component.componentUsers, "addColumn", url, "column", c.name, (byte)0, c.board.project);			
 		}
 		
 		// "Coulumn", c.name, (byte)0);
@@ -559,13 +559,13 @@ public class Boards extends SmartCRUD
 		Sprint sprint = Sprint.findById(sid);
 		if( c.deleted )
 			notFound();
-		c.on_board = false;
+		c.onBoard = false;
 		c.sequence = -1;
 		c.save();
 		int count = 0;
 		for( int i = 0; i < c.board.columns.size(); i++ )
 		{
-			if( c.board.columns.get( i ).on_board == true )
+			if( c.board.columns.get( i ).onBoard == true )
 			{
 				c.board.columns.get( i ).sequence = count;
 				c.board.columns.get( i ).save();
@@ -585,7 +585,7 @@ public class Boards extends SmartCRUD
 		{
 			url = Router.getFullUrl("Application.externalOpen")+"?id="+sprint.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"%26componentID="+compid;
 			Component component = Component.findById(compid); 
-			Notifications.notifyUsers(component.users, "deleteColumn", url, "column", c.name, (byte)-1, c.board.project);			
+			Notifications.notifyUsers(component.componentUsers, "deleteColumn", url, "column", c.name, (byte)-1, c.board.project);			
 		}		
 		Log.addLog("Hided column: " + c.name, c, c.board, sprint.project);
 		
@@ -607,8 +607,8 @@ public class Boards extends SmartCRUD
 		List<Board> boards = new ArrayList<Board>();
 		for( int i = 0; i < p.components.size(); i++ )
 		{
-			if( p.components.get( i ).board != null && !p.components.get(i).deleted )
-				boards.add( p.components.get( i ).board );
+			if( p.components.get( i ).componentBoard != null && !p.components.get(i).deleted )
+				boards.add( p.components.get( i ).componentBoard );
 		}
 		List<Component> components = p.components;
 
