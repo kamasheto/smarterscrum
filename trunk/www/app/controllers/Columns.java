@@ -38,7 +38,7 @@ public class Columns extends SmartController
 		else
 		{
 			Component c = Component.findById( cid );
-			b = c.board;
+			b = c.componentBoard;
 		}
 		if( userId == 0 )
 			userId = Security.getConnected().id;
@@ -104,7 +104,7 @@ public class Columns extends SmartController
 		else
 		{
 			Component c = Component.findById( cid );
-			b = c.board;
+			b = c.componentBoard;
 		}
 		BoardColumn c1 = BoardColumn.find( "bySequenceAndBoardAndDeleted", pos1, b, false ).first();
 		BoardColumn c2 = BoardColumn.find( "bySequenceAndBoardAndDeleted", pos2, b, false ).first();
