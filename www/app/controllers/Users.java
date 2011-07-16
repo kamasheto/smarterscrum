@@ -63,15 +63,15 @@ public class Users extends SmartCRUD {
 		for(Component component : myComponent.project.components){
 						if(component.number==0 && myUser.components.contains(component)){
 							myUser.components.remove(component);
-						component.users.remove(myUser);
+						component.componentUsers.remove(myUser);
 						}
 						}
-		myComponent.users.add(myUser);
+		myComponent.componentUsers.add(myUser);
 		// Logs.addLog(user, "assignUser", "User", user_id, myComponent.project,
 		 // d);
 		Log.addUserLog("Assign user to component", myComponent, myComponent.project, myUser);
 		String url = Router.getFullUrl("Application.externalOpen")+"?id="+myComponent.project.id+"&isOverlay=false&url=/components/viewthecomponent?component_id="+myComponent.id;
-		for(User u :myComponent.users)
+		for(User u :myComponent.componentUsers)
 		{
 			if(!u.equals(myUser))
 				Notifications.notifyUser(u, "assigned", url, myUser.name+" to the component", myComponent.name, (byte) 0, myComponent.project);
@@ -163,7 +163,7 @@ public class Users extends SmartCRUD {
 		}
 		object.save();
 		flash.success("Your Notificaton Profile modifications have been saved");
-		Application.overlay_killer( "", "" );
+		Application.overlayKiller( "", "" );
 	}
 	
 	/**
@@ -352,7 +352,7 @@ public class Users extends SmartCRUD {
 				{
 					Component component = Component.findById(component_id);
 					currentProject = component.project;
-					for(User user: component.users){
+					for(User user: component.componentUsers){
 						if(!user.deleted){
 							users.add(user);
 						}
@@ -481,7 +481,7 @@ public class Users extends SmartCRUD {
 					userProfile.save();
 				}
 				if (!userProfile.email.equals(oldEmail)) {
-					userProfile.activationHash = Application.random_hash(32);
+					userProfile.activationHash = Application.randomHash(32);
 					userProfile.isActivated = false;
 					userProfile.save();
 					Notifications.activate(userProfile.email, userProfile.name, Router.getFullUrl("Accounts.doActivation")+"?hash=" + userProfile.activationHash, true);
@@ -496,7 +496,7 @@ public class Users extends SmartCRUD {
 				}
 				
 				flash.success(message);
-				Application.overlay_killer("", "");
+				Application.overlayKiller("", "");
 			} 
 			catch (PersistenceException e) 
 			{
@@ -516,7 +516,7 @@ public class Users extends SmartCRUD {
 			}
 		} 	else {	
 			flash.error("You are not allowed to edit these personal information.");
-			Application.overlay_killer("","");
+			Application.overlayKiller("","");
 		}	
 	}
 }

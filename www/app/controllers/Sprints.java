@@ -282,7 +282,7 @@ public class Sprints extends SmartCRUD
 			// Logs.addLog( Security.getConnected(), "Create", "Sprint",
 			// object.id, proj, Calendar.getInstance().getTime() );
 			// redirect( "/show/project?id=" + projectId );
-			Application.overlay_killer( "reload('sprints')", "window.parent.$.bar({message:'Sprint created successfully'})" );
+			Application.overlayKiller( "reload('sprints')", "window.parent.$.bar({message:'Sprint created successfully'})" );
 		}
 		if( params.get( "_saveAndAddAnother" ) != null )
 		{
@@ -293,7 +293,7 @@ public class Sprints extends SmartCRUD
 
 		Log.addUserLog( "Created sprint", object, proj );
 		String resourceURL = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + proj.id + "&isOverlay=false&url=/sprints/showsprint?id=" + object.id;
-		Notifications.notifyProjectUsers( proj, "setSprint", resourceURL, "Sprint", object.number, (byte) 0 );
+		Notifications.notifyProjectUsers( proj, "setSprint", resourceURL, "Sprint", object.sprintNumber, (byte) 0 );
 		redirect( request.controller + ".show", object.getEntityId() );
 	}
 
@@ -459,7 +459,7 @@ public class Sprints extends SmartCRUD
 			// object.id, proj, Calendar.getInstance().getTime() );
 			Log.addUserLog( "Edited sprint", object, proj );
 			// redirect( "/show/project?id=" + projId );
-			Application.overlay_killer( "reload('sprints', 'sprint-" + object.id + "')", "" );
+			Application.overlayKiller( "reload('sprints', 'sprint-" + object.id + "')", "" );
 		}
 		redirect( request.controller + ".show", object.getEntityId() );
 	}
@@ -578,13 +578,13 @@ public class Sprints extends SmartCRUD
 		else if( sprint.project.isScrum && sprint.startDate.getTime() <= new Date().getTime() )
 			renderText( "Sorry you can't add a task to a running sprint" );
 		sprint.tasks.add( task );
-		task.sprint = sprint;
+		task.taskSprint = sprint;
 		task.save();
 		if( task.subTasks.size() > 0 )
 		{
 			for( int i = 0; i < task.subTasks.size(); i++ )
 			{
-				task.subTasks.get( i ).sprint = sprint;
+				task.subTasks.get( i ).taskSprint = sprint;
 				sprint.tasks.add( task.subTasks.get( i ) );
 				task.subTasks.get( i ).save();
 			}

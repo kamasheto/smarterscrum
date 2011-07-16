@@ -52,14 +52,14 @@ public class SprintBacklog extends SmartController
 		List<Task> tasks = new ArrayList();
 		if( component_id != 0 && sprint_id != 0 )
 		{
-			tasks = component.component_sprint_tasks( sprint );
+			tasks = component.returnComponentSprintTasks( sprint );
 
 		}
 		else if( component_id == 0 && sprint_id != 0 )
 		{
 			tasks = sprint.tasks;
 		}
-		String sprint_number = sprint.number;
+		String sprint_number = sprint.sprintNumber;
 		List<TaskType> types = sprint.project.taskTypes;
 		List<TaskStatus> statuses = sprint.project.taskStatuses;
 		render( tasks, sprint_id, day_headers, sprint_number, component_id, project, cs, types, statuses,sprint );
@@ -86,14 +86,14 @@ public class SprintBacklog extends SmartController
 		if(component_id !=0 )
 		{
 			Component component = Component.findById( component_id );
-			name = component.get_full_name();
+			name = component.getFullName();
 		}
 		else
 			name = sprint.project.name;
 		
 		if( data.contains( "NONE" ) )
 			data = null;
-		String sprint_number = sprint.number;
+		String sprint_number = sprint.sprintNumber;
 		render( data, sprint_number, name );
 	}
 }
