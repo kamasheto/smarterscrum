@@ -27,7 +27,7 @@ public class Comments extends SmartController
 		else
 		{
 			Task task = comment.task;
-			comment.delete_comment();
+			comment.deleteComment();
 			CollaborateUpdate.update( task.project , "refresh('comments_"+task.id+"')" );
 			renderText( "Comment deleted successfully." );
 		}
