@@ -1,5 +1,5 @@
 #{extends 'magicBox.html' /}
-#{set 'title'}Sprint ${sprint.number}#{drop 'sprint-' + sprint.id /}
+#{set 'title'}Sprint ${sprint.sprintNumber}#{drop 'sprint-' + sprint.id /}
 #{if connected.in(sprint.project).can("editSprint")}
 #{if sprint.ended}
 <img class="dim"src="/pubilc/images/famfam/pencil.png" />
@@ -14,7 +14,7 @@
 	<span id="sppt_${sprint.id}" class="meeting_countdown"></span>
 		<script type="text/javascript">
 		$(function() {
-			showDate(${sprint.id},'sppt_'+${sprint.id},${sprint.startDate.getTime()},"sprint ${sprint.number}","sprint");
+			showDate(${sprint.id},'sppt_'+${sprint.id},${sprint.startDate.getTime()},"sprint ${sprint.sprintNumber}","sprint");
 		})
 		</script>	
 	#{/if}
@@ -41,7 +41,7 @@ function isBefore(date){
 
 #{/if}
 
-<strong>Sprint Number:</strong> ${sprint.number}
+<strong>Sprint Number:</strong> ${sprint.sprintNumber}
 <br />
 <strong>Project:</strong> ${proj.name}
 <br />

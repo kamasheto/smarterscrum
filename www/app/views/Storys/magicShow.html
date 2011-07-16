@@ -1,6 +1,6 @@
 #{extends 'magicBox.html' /}
 #{set 'title'}${title} #{if stories!=null}<a href="javascript:overlayOpen('/storys/choose?projectId=${stories.get(0).componentID.project.id}')"><img title = "Add" src="@{'/public/images/famfam/add.png'}"></a>#{/if}
-#{if task1 !=null}<div class="item_imgs">#{if connected.in(project).can('modifyTask')}#{if !task1.checkUnderImpl()}<a onclick="javascript:overlayOpen('/admin/tasks/${task1.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${task1.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div><div class="right" title="Type: ${task1.type.name}" style="background:${task1.type.hexColor}; width: 15px; height: 15px; border-color:white; position:relative;" ></div>#{/if}
+#{if task1 !=null}<div class="item_imgs">#{if connected.in(project).can('modifyTask')}#{if !task1.checkUnderImpl()}<a onclick="javascript:overlayOpen('/admin/tasks/${task1.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${task1.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div><div class="right" title="Type: ${task1.taskType.name}" style="background:${task1.taskType.hexColor}; width: 15px; height: 15px; border-color:white; position:relative;" ></div>#{/if}
 #{/set}
 
 
@@ -9,7 +9,7 @@
 		<label> No Tasks</label>
 		#{/if}
 		#{list items:task ,as :'Task'}
-			<div name="/storys/magicShow?taskId=${Task.id}">S${Task.taskStory.number} Task${Task.number}<div class="item_imgs">#{if connected.in(project).can('modifyTask')}#{if !Task.checkUnderImpl()}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div><div  class="right" title="Type: ${Task.type.name}" style="background:${Task.type.hexColor}; ; width: 15px; height: 15px; border-color:white; position:relative;" ></div></div>
+			<div name="/storys/magicShow?taskId=${Task.id}">S${Task.taskStory.number} Task${Task.number}<div class="item_imgs">#{if connected.in(project).can('modifyTask')}#{if !Task.checkUnderImpl()}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div><div  class="right" title="Type: ${Task.taskType.name}" style="background:${Task.taskType.hexColor}; ; width: 15px; height: 15px; border-color:white; position:relative;" ></div></div>
 		#{/list}
 	#{/if}
 		
@@ -29,17 +29,17 @@
 		${task1.estimationPoints}
 		<br>
 		<b>Task Status</b>
-		${task1.status.name}
+		${task1.taskStatus.name}
 		<br>
 		<b>Task Type</b>
-		${task1.type.name}
+		${task1.taskType.name}
 		#{/if}
 		
 		#{if stories !=null}
 		#{list items:stories ,as :'Story'}
 			#{if Story.uncategorized}
 				#{list items:Story.storiesTask ,as :'Task'}
-				<div name="/storys/magicShow?taskId=${Task.id}">S${Task.taskStory.number} ${Task.description}<div class="item_imgs">#{if connected.in(project).can('modifyTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div><div  class="right" title="Type: ${Task.type.name}" style="background:maroon; color:${Task.type.hexColor}; width: 15px; height: 15px; border-color:white; position:relative;" ></div></div>
+				<div name="/storys/magicShow?taskId=${Task.id}">S${Task.taskStory.number} ${Task.description}<div class="item_imgs">#{if connected.in(project).can('modifyTask')}<a onclick="javascript:overlayOpen('/admin/tasks/${Task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${Task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}</div><div  class="right" title="Type: ${Task.taskType.name}" style="background:maroon; color:${Task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; position:relative;" ></div></div>
 				#{/list}
 			#{/if}
 			#{else}

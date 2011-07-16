@@ -9,7 +9,7 @@
 	#{list items:sprints, as:'sprint'}
 #{if sprint.project.hasComponents()}
 		#{if (sprint.id==runningSprint) }
-			<div class="greenBg" name="@{Sprints.charts(sprint.id)}">Sprint ${sprint.number}#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.show_graph(sprint.id,0)}')" title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+			<div class="greenBg" name="@{Sprints.charts(sprint.id)}">Sprint ${sprint.sprintNumber}#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.show_graph(sprint.id,0)}')" title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 			#{if connected.in(sprint.project).can("editSprint")}
 <a href="#" onclick="overlayOpen('@{Sprints.projectshow(sprint.id)}')"><img src="/public/images/famfam/pencil.png" /></a>
 
@@ -18,7 +18,7 @@
 		#{/if}
 		#{else}
 		#{if (sprint.ended) }
-			<div class="redBg" name="@{Sprints.charts(sprint.id)}">Sprint ${sprint.number} <a href="#" onclick="overlayOpen('@{SprintBacklog.show_graph(sprint.id,0)}')" title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+			<div class="redBg" name="@{Sprints.charts(sprint.id)}">Sprint ${sprint.sprintNumber} <a href="#" onclick="overlayOpen('@{SprintBacklog.show_graph(sprint.id,0)}')" title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 			#{if connected.in(sprint.project).can("editSprint")}
 
 <img class="dim"src="/public/images/famfam/pencil.png" />
@@ -27,7 +27,7 @@
 			</div>
 		#{/if}
 		#{else}
-		<div class="yellowBg" name="@{Sprints.charts(sprint.id)}">Sprint ${sprint.number}#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.show_graph(sprint.id,0)}')"title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+		<div class="yellowBg" name="@{Sprints.charts(sprint.id)}">Sprint ${sprint.sprintNumber}#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.show_graph(sprint.id,0)}')"title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 			#{if connected.in(sprint.project).can("editSprint")}
 
 <a href="#" onclick="overlayOpen('@{Sprints.projectshow(sprint.id)}')"><img src="/public/images/famfam/pencil.png" /></a>
@@ -42,7 +42,7 @@
 #{/if}
 #{else}
 		#{if (sprint.id==runningSprint) }
-			<div class="greenBg overlay" name="@{SprintBacklog.show_graph(sprint.id,0)}">Sprint ${sprint.number}#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.show_graph(sprint.id,0)}')" title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+			<div class="greenBg overlay" name="@{SprintBacklog.show_graph(sprint.id,0)}">Sprint ${sprint.sprintNumber}#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.show_graph(sprint.id,0)}')" title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 			#{if connected.in(sprint.project).can("editSprint")}
 <a href="#" onclick="overlayOpen('@{Sprints.projectshow(sprint.id)}')"><img src="/public/images/famfam/pencil.png" /></a>
 
@@ -51,7 +51,7 @@
 		#{/if}
 		#{else}
 		#{if (sprint.ended) }
-			<div class="redBg overlay" name="@{SprintBacklog.show_graph(sprint.id,0)}">Sprint ${sprint.number} <a href="#" onclick="overlayOpen('@{SprintBacklog.show_graph(sprint.id,0)}')" title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+			<div class="redBg overlay" name="@{SprintBacklog.show_graph(sprint.id,0)}">Sprint ${sprint.sprintNumber} <a href="#" onclick="overlayOpen('@{SprintBacklog.show_graph(sprint.id,0)}')" title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 			#{if connected.in(sprint.project).can("editSprint")}
 
 <img class="dim"src="/public/images/famfam/pencil.png" />
@@ -60,7 +60,7 @@
 			</div>
 		#{/if}
 		#{else}
-		<div class="yellowBg overlay" name="@{SprintBacklog.show_graph(sprint.id,0)}">Sprint ${sprint.number}#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.show_graph(sprint.id,0)}')"title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
+		<div class="yellowBg overlay" name="@{SprintBacklog.show_graph(sprint.id,0)}">Sprint ${sprint.sprintNumber}#{drop 'sprint-' + sprint.id /}<a href="#" onclick="overlayOpen('@{SprintBacklog.show_graph(sprint.id,0)}')"title="View the whole company burndown chart?"><img src="@{'public/images/famfam/chart.png'}" alt=[chart]""/></a>
 			#{if connected.in(sprint.project).can("editSprint")}
 
 <a href="#" onclick="overlayOpen('@{Sprints.projectshow(sprint.id)}')"><img src="/public/images/famfam/pencil.png" /></a>

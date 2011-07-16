@@ -11,12 +11,12 @@ Estimation games
 Project game
 #{/if}
 #{else}
-${component.get_full_name()}
+${component.getFullName()}
 #{/else}
 #{if connected.in(component.project).can("startGame")}
 <a onClick="overlayOpen('/games/chooseStories?cId=${component.id}');"><img src="@{'/public/images/famfam/add.png'}" title="create a game"/></a>
 #{/if}
-#{if component.has_running_games()}
+#{if component.hasRunningGames()}
 <a onClick="overlayOpen('/games/chooseGame?cId=${component.id}');"><img src="@{'/public/images/famfam/joystick.png'}" title="join a running game"/></a>
 #{/if}
 #{else}
