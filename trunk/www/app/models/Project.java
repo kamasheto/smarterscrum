@@ -274,7 +274,7 @@ public class Project extends SmartModel
 		for( int i = 0; i < Components.size(); i++ )
 		{
 			Component X = Components.get( i );
-			List<Task> componentsTasks = X.tasks;
+			List<Task> componentsTasks = X.componentTasks;
 			projectTasks.addAll( componentsTasks );
 		}
 		return ProjectTasks;
@@ -326,14 +326,14 @@ public class Project extends SmartModel
 				if( i == 2 )
 				{
 					FULL = FULL + sprints.get( i ).getCoordinatesOfData( cid );
-					names = names + "{label:'Sprint: " + sprints.get( i ).number + "'}";
+					names = names + "{label:'Sprint: " + sprints.get( i ).sprintNumber + "'}";
 				}
 				else
 				{
 					FULL = FULL + sprints.get( i ).getCoordinatesOfData( cid ) + ",";
-					names = names + "{label:'Sprint: " + Long.parseLong( sprints.get( i ).number ) + "'},";
+					names = names + "{label:'Sprint: " + Long.parseLong( sprints.get( i ).sprintNumber ) + "'},";
 				}
-				data = data + ("GenerateGraph(" + sprints.get( i ).fetchData( cid ) + ",'c_" + sprints.get( i ).number + "');" + '\n');
+				data = data + ("GenerateGraph(" + sprints.get( i ).fetchData( cid ) + ",'c_" + sprints.get( i ).sprintNumber + "');" + '\n');
 
 			}
 		}

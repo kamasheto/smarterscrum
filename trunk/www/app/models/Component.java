@@ -51,7 +51,7 @@ public class Component extends SmartModel
 	 * a user can be in many components & a component can have many users
 	 */
 	@ManyToMany( mappedBy = "components", cascade = CascadeType.ALL )
-	public List<User> users;
+	public List<User> componentUsers;
 
 	/***
 	 * a list of component snapshots
@@ -64,13 +64,13 @@ public class Component extends SmartModel
 	 * components
 	 */
 	@ManyToMany( mappedBy = "components", cascade = CascadeType.ALL )
-	public List<Meeting> meetings;
+	public List<Meeting> componentMeetings;
 
 	/***
 	 * a component has only one board
 	 */
 	@OneToOne( mappedBy = "component" )
-	public Board board;
+	public Board componentBoard;
 
 	/***
 	 * component number
@@ -81,7 +81,7 @@ public class Component extends SmartModel
 	 * a component can have many tasks & a task can belong to only one component
 	 */
 	@OneToMany( mappedBy = "component", cascade = CascadeType.ALL )
-	public List<Task> tasks;
+	public List<Task> componentTasks;
 
 	/***
 	 * Component constructor that initializes a list of users, meetings & tasks
@@ -89,9 +89,9 @@ public class Component extends SmartModel
 	 */
 	public Component()
 	{
-		users = new ArrayList<User>();
-		meetings = new ArrayList<Meeting>();
-		tasks = new ArrayList<Task>();
+		componentUsers = new ArrayList<User>();
+		componentMeetings = new ArrayList<Meeting>();
+		componentTasks = new ArrayList<Task>();
 	}
 
 	/***
@@ -108,9 +108,9 @@ public class Component extends SmartModel
 	 * 
 	 * @return List of component's users
 	 */
-	public List<User> get_users()
+	public List<User> getUsers()
 	{
-		return users;
+		return componentUsers;
 	}
 
 	/**
@@ -123,18 +123,20 @@ public class Component extends SmartModel
 	 * @return List of tasks in this sprint of this component
 	 */
 	@SuppressWarnings( "null" )
-	public List<Task> component_sprint_tasks( Sprint s )
+	public List<Task> returnComponentSprintTasks( Sprint s )
 	{
 
-		List<Task> tasks = this.tasks;
+		List<Task> tasks = componentTasks;
+
+		int tasksNo = tasks.size();
 
 		int j = 0;
 
-		for( int i = 0; i < tasks.size(); i++ )
+		for( int i = 0; i < tasksNo; i++ )
 		{
 
 			Task task = tasks.get( i - j );
-			if( task.sprint != s || task.deleted )
+			if( task.taskSprint != s || task.deleted )
 			{
 				tasks.remove( task );
 				j++;
@@ -150,20 +152,46 @@ public class Component extends SmartModel
 	 * @param s
 	 *            sprint
 	 */
-	public List<Task> comp_sprint_not_parent_tasks( Sprint s )
+	public List<Task> componentSprintTasks( Sprint s )
 	{
-		List<Task> task = new ArrayList<Task>();
-		for( int i = 0; i < tasks.size(); i++ )
+		List<Task> t = new ArrayList<Task>();
+		for( int i = 0; i < componentTasks.size(); i++ )
 		{
-			if( tasks.get( i ).sprint != null )
+			if( componentTasks.get( i ).taskSprint != null )
 			{
-				if( tasks.get( i ).sprint.id == s.id && (tasks.get(i).subTasks==null || tasks.get(i).parent!=null) )
+				if( componentTasks.get( i ).taskSprint.id == s.id && (componentTasks.get(i).subTasks==null || componentTasks.get(i).parent!=null) )
 				{
-					task.add( tasks.get( i ) );
+					t.add( componentTasks.get( i ) );
 				}
 			}
 		}
-		return task;
+		return t;
+	}
+
+	/**
+	 * Returns a list of tasks associated to a certain sprint for a certain
+	 * component
+	 * 
+	 * @author Hadeer Diwan
+	 * @param s
+	 *            given a sprint
+	 * @return List of tasks in this sprint of this component
+	 */
+	public List<Task> returnComponentTasks( Sprint s )
+	{
+
+		List<Task> t = new ArrayList<Task>();
+		for( int i = 0; i < componentTasks.size(); i++ )
+		{
+			if( componentTasks.get( i ).taskSprint != null )
+			{
+				if( componentTasks.get( i ).taskSprint.id == s.id )
+				{
+					t.add( componentTasks.get( i ) );
+				}
+			}
+		}
+		return t;
 	}
 
 	/**
@@ -173,13 +201,13 @@ public class Component extends SmartModel
 	 * @return boolean varaiable the shows if the component is deleted
 	 *         successfully or not
 	 */
-	public boolean delete_component()
+	public boolean deleteComponent()
 	{
 		if( this.deleted == false )
 		{
 			this.deleted = true;
 			this.save();
-			for(Task task: this.tasks)
+			for(Task task: this.componentTasks)
 			{
 				task.deleted = true;
 				task.save();
@@ -196,17 +224,17 @@ public class Component extends SmartModel
 	 * 'declined' or 'not invited'
 	 * 
 	 * @author Amr Hany
-	 * @param meeting_id
+	 * @param meetingID
 	 *            meeting ID
 	 * @return the status of the meeting
 	 */
-	public String meeting_status( long meeting_id )
+	public String meetingStatus( long meetingID )
 	{
 		boolean confirmed = true;
-		for( User user : this.users )
+		for( User user : this.componentUsers )
 		{
 			if( !user.deleted )
-				if( !user.meetingStatus( meeting_id ).equals( "confirmed" ) )
+				if( !user.meetingStatus( meetingID ).equals( "confirmed" ) )
 				{
 					confirmed = false;
 					break;
@@ -216,10 +244,10 @@ public class Component extends SmartModel
 			return "confirmed";
 
 		boolean waiting = true;
-		for( User user : this.users )
+		for( User user : this.componentUsers )
 		{
 			if( !user.deleted )
-				if( !user.meetingStatus( meeting_id ).equals( "waiting" ) )
+				if( !user.meetingStatus( meetingID ).equals( "waiting" ) )
 				{
 					waiting = false;
 					break;
@@ -229,10 +257,10 @@ public class Component extends SmartModel
 			return "waiting";
 
 		boolean declined = true;
-		for( User user : this.users )
+		for( User user : this.componentUsers )
 		{
 			if( !user.deleted )
-				if( !user.meetingStatus( meeting_id ).equals( "declined" ) )
+				if( !user.meetingStatus( meetingID ).equals( "declined" ) )
 				{
 					declined = false;
 					break;
@@ -241,10 +269,10 @@ public class Component extends SmartModel
 		if( declined )
 			return "declined";
 
-		for( User user : this.users )
+		for( User user : this.componentUsers )
 		{
 			if( !user.deleted )
-				if( user.meetingStatus( meeting_id ).equals( "notInvited" ) )
+				if( user.meetingStatus( meetingID ).equals( "notInvited" ) )
 					return "notInvited";
 		}
 		return "allInivited";
@@ -256,10 +284,10 @@ public class Component extends SmartModel
 	 */
 	public void init()
 	{
-		board = new Board( this ).save();
+		componentBoard = new Board( this ).save();
 		for( int i = 0; i < project.board.columns.size(); i++ )
 		{
-			BoardColumn c = new BoardColumn( project.board.columns.get( i ).name, board, project.board.columns.get( i ).task_status );
+			BoardColumn c = new BoardColumn( project.board.columns.get( i ).name, componentBoard, project.board.columns.get( i ).taskStatus );
 			c.save();
 		}
 		this.number = this.project.components.size() - 1;
@@ -310,27 +338,27 @@ public class Component extends SmartModel
 	/**
 	 * Returns the name of this component in the format: C1: User and Roles
 	 */
-	public String get_full_name()
+	public String getFullName()
 	{
 		return "C" + number + ": " + name;
 	}
 
-	public boolean has_running_games()
+	public boolean hasRunningGames()
 	{
 		List<Game> games = Game.find( "byComponent", this ).fetch();
-		for( Game game : games )
+		for( Game g : games )
 		{
-			if( !game.getRound().isDone() )
+			if( !g.getRound().isDone() )
 			{
 				return true;
 			}
 		}
 		return false;
 	}
-	public int has_users()
+	public int hasUsers()
 	{
 		int count = 0;
-		for(User user:this.users)
+		for(User user:this.componentUsers)
 		{
 			if(!user.deleted)
 				count++;

@@ -23,7 +23,7 @@ public class Sprint extends SmartModel
 	 * The sprint number in this project.
 	 */
 
-	public String number;
+	public String sprintNumber;
 	/**
 	 * The sprint's start date.
 	 */
@@ -60,10 +60,14 @@ public class Sprint extends SmartModel
 	@OneToMany( mappedBy = "taskSprint", cascade = CascadeType.ALL )
 	public List<Task> tasks;
 
+	// @OneToMany (mappedBy = "daySprint", cascade = CascadeType.ALL)
+	// public List<Day> days;
+
 	public static class Object
 	{
+
 		long id;
-		String number;
+		String sprintNumber;
 		int startDay;
 		int startMonth;
 		long startYear;
@@ -76,7 +80,7 @@ public class Sprint extends SmartModel
 		public Object( long id, String sprintNumber, Date startDate, Date endDate, String project, long projectId )
 		{
 			this.id = id;
-			this.number = sprintNumber;
+			this.sprintNumber = sprintNumber;
 			this.startDay = startDate.getDate();
 			this.startMonth = startDate.getMonth() + 1;
 			this.startYear = startDate.getYear() + 1900;
@@ -110,7 +114,7 @@ public class Sprint extends SmartModel
 		int defaultDays = p.sprintDuration;
 		endDate.setTime( startDate.getTime() + (86400000 * defaultDays) );
 		project = p;
-		this.number = p.sprints.size() + 1 + "";
+		this.sprintNumber = p.sprints.size() + 1 + "";
 		p.sprints.add( this );
 		deleted = false;
 	}
@@ -141,7 +145,7 @@ public class Sprint extends SmartModel
 		endDate = new GregorianCalendar( endyear, endmonth - 1, endday ).getTime();
 		project = p;
 
-		this.number = p.sprints.size() + 1 + "";
+		this.sprintNumber = p.sprints.size() + 1 + "";
 		p.sprints.add( this );
 		deleted = false;
 	}
@@ -163,8 +167,8 @@ public class Sprint extends SmartModel
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.project = p;
-		// this.number = p.getSprintCounter();
-		this.number = p.sprints.size() + 1 + "";
+		// this.sprintNumber = p.getSprintCounter();
+		this.sprintNumber = p.sprints.size() + 1 + "";
 		p.sprints.add( this );
 		deleted = false;
 	}
@@ -323,7 +327,7 @@ public class Sprint extends SmartModel
 		for( int i = 0; i < STasks.size(); i++ )
 		{
 			Task Current = STasks.get( i );
-			if( Current.type != null && Current.type.name == "Impediment" )
+			if( Current.taskType != null && Current.taskType.name == "Impediment" )
 			{
 				Impediment.add( j, Current );
 				j++;
@@ -381,7 +385,7 @@ public class Sprint extends SmartModel
 		int xMax = numberOfDays;
 		String xLabel = "'Days'";
 		String yLabel = "'Points'";
-		String title = "'Sprint " + number + ": BurnDown Chart'";
+		String title = "'Sprint " + sprintNumber + ": BurnDown Chart'";
 		String m = "[";
 		String xTicks = "[";
 		String yTicks = "[]";

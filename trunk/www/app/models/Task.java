@@ -78,17 +78,17 @@ public class Task extends SmartModel
 	 * The task status
 	 */
 	@ManyToOne
-	public TaskStatus status;
+	public TaskStatus taskStatus;
 	/**
 	 * The task type
 	 */
 	@ManyToOne
-	public TaskType type;
+	public TaskType taskType;
 	/**
 	 * The sprint that have this task associated to it.
 	 */
 	@ManyToOne
-	public Sprint sprint;
+	public Sprint taskSprint;
 
 	/**
 	 * The task number relative to this project.
@@ -315,20 +315,20 @@ public class Task extends SmartModel
 		this.description = des;
 		this.deleted = false;
 
-		this.type = new TaskType();
-		this.type.name = "Impediment";
-		this.type.save();
-		this.type.project = project;
+		this.taskType = new TaskType();
+		this.taskType.name = "Impediment";
+		this.taskType.save();
+		this.taskType.project = project;
 
 		this.dependentTasks = new ArrayList<Task>();
-		this.status = new TaskStatus();
+		this.taskStatus = new TaskStatus();
 
 		this.estimationPointsPerDay = new ArrayList<Double>( 1 );
-		this.status = new TaskStatus().save();
+		this.taskStatus = new TaskStatus().save();
 
-		this.status.name = "New";
-		this.status.save();
-		this.status.project = project;
+		this.taskStatus.name = "New";
+		this.taskStatus.save();
+		this.taskStatus.project = project;
 
 		this.estimationPoints = 0.0;
 
@@ -343,7 +343,7 @@ public class Task extends SmartModel
 	 */
 	public boolean checkUnderImpl()
 	{
-		Sprint taskSprint = this.sprint;
+		Sprint taskSprint = this.taskSprint;
 		if( taskSprint != null )
 		{
 			Date Start = taskSprint.startDate;
@@ -407,7 +407,7 @@ public class Task extends SmartModel
 
 		for( Component component : components )
 		{
-			for( Task task : component.tasks )
+			for( Task task : component.componentTasks )
 			{
 				if( task.dependentTasks.contains( this ) )
 				{
@@ -486,15 +486,15 @@ public class Task extends SmartModel
 	public List<User> getAssigneeOrReviewer( boolean ar )
 	{
 
-		List<User> u = this.component.users;
+		List<User> u = this.component.componentUsers;
 		if( ar )
 		{
 			u.remove( this.reviewer );
 		}
 		else
 		{
-			if(type!=null)
-				u = Reviewer.find("byProjectAndAcceptedAndtaskType", project, true, type).fetch();
+			if(taskType!=null)
+				u = Reviewer.find("byProjectAndAcceptedAndtaskType", project, true, taskType).fetch();
 			u.remove( this.assignee );
 		}
 		return u;

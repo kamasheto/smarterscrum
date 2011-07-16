@@ -58,9 +58,9 @@ public class Board extends SmartModel {
 	 * @param component2 
 	 * 			component board
 	 */
-	public Board (Component component) {
+	public Board (Component component2) {
 		this();
-		this.component = component;
+		component = component2;
 	}
 
 	/***

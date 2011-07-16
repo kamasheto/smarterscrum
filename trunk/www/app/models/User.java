@@ -157,7 +157,7 @@ public class User extends SmartModel
 		notifications = new ArrayList<Notification>();
 		requests = new ArrayList<Request>();
 		this.enableEmails = true;
-		this.activationHash = Application.random_hash( 32 );
+		this.activationHash = Application.randomHash( 32 );
 	}
 
 	/**
@@ -398,7 +398,7 @@ public class User extends SmartModel
 	public List<Task> returnUserTasks( Sprint s, long componentID )
 	{
 		Component c = Component.findById( componentID );
-		List<Task> tasks = c.component_sprint_tasks( s );
+		List<Task> tasks = c.returnComponentSprintTasks( s );
 		List<Task> userTasks = new ArrayList<Task>();
 
 		for( int i = 0; i < tasks.size(); i++ )
@@ -473,7 +473,7 @@ public class User extends SmartModel
 				}
 				if( role.project.components.size() != 0 )
 				{
-					role.project.components.get( 0 ).users.add( this );
+					role.project.components.get( 0 ).componentUsers.add( this );
 					components.add( role.project.components.get( 0 ) );
 					role.project.components.get( 0 ).save();
 				}
@@ -503,9 +503,9 @@ public class User extends SmartModel
 			role.project.users.remove( this );
 			for(Component component : role.project.components)
 			{
-				if(component.users.contains(this))
+				if(component.componentUsers.contains(this))
 				{
-					component.users.remove(this);
+					component.componentUsers.remove(this);
 					component.save();
 					this.components.remove(component);
 					this.save();
