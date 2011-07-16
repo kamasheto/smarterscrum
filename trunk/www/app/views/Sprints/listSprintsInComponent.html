@@ -10,7 +10,7 @@
 	#{if sprint.ended != true}
 	
 		<div class="overlay" name="/boards/loadboard1?sprintID=${sprint.id}&componentID=${component.id}">
-		Sprint ${sprint.number} Task Board
+		Sprint ${sprint.sprintNumber} Task Board
 		<a href="javascript:loadBox('/Snapshots/index?sid=${sprint.id}&cid=${component.id}','workspace-${component.project.id}')"><img src="@{'/public/images/famfam/photos.png'}">
 		</a></a></div>
 	#{/if}
@@ -19,7 +19,7 @@
 	#{if snapshot.sprint.id == sprint.id}
 	
 	<div class="overlay" name="/Snapshots/loadsnapShot?id=${snapshot.id}">
-Sprint ${sprint.number} Final Snapshot<a  onClick="loadBox('/Snapshots/index?sid=${sprint.id}&cid=${component.id}','workspace-${component.project.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+Sprint ${sprint.sprintNumber} Final Snapshot<a  onClick="loadBox('/Snapshots/index?sid=${sprint.id}&cid=${component.id}','workspace-${component.project.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
 </div>
 	
 	#{/if}
@@ -27,9 +27,9 @@ Sprint ${sprint.number} Final Snapshot<a  onClick="loadBox('/Snapshots/index?sid
 	#{/else}
 	#{/if}
 	#{elseif type == 2}
-		<div class="overlay"name="@{SprintBacklog.show_graph(sprint.id,component.id)}" title="view the burndown chart?">Sprint ${sprint.number} Chart</div>
+		<div class="overlay"name="@{SprintBacklog.show_graph(sprint.id,component.id)}" title="view the burndown chart?">Sprint ${sprint.sprintNumber} Chart</div>
 	#{/elseif}
 	#{else}
-		<div class="overlay"name="@{SprintBacklog.index(component.id,sprint.id)}" title="view the backlog">Sprint ${sprint.number} Backlog</div>
+		<div class="overlay"name="@{SprintBacklog.index(component.id,sprint.id)}" title="view the backlog">Sprint ${sprint.sprintNumber} Backlog</div>
 	#{/else}
 	#{/list}

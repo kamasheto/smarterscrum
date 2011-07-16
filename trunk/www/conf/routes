@@ -2,7 +2,7 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 # This module route should stay the FIRST route
-GET		/admin/?			Application.admin_index_page
+GET		/admin/?			Application.adminIndexPage
 *      	/admin              module:crud
 # Add BELOW
 
@@ -38,7 +38,7 @@ GET     /                                       	Application.index
 GET     /register								   	Accounts.register
 
 # DeletionRequest
-GET		/render_deletion_request							Accounts.render_deletion_request
+GET		/requestDeletion							Accounts.requestDeletion
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                	staticDir:public

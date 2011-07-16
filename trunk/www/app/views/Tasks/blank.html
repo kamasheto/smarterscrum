@@ -73,7 +73,7 @@
 	#{if project.taskStatuses.size()>0}
 		<div class="crudField" name="view-more" style="display:none">
 			<label for="object_taskStatus">Status</label>
-			<select style="min-width:130px" id="object_taskStatus" name="object.status@id">
+			<select style="min-width:130px" id="object_taskStatus" name="object.taskStatus@id">
 			#{list items:project.taskStatuses ,as :'taskStatus'}
 				#{ifnot taskStatus.deleted}<option value="${taskStatus.id}">${taskStatus.name}</option>#{/ifnot}
 			#{/list}
@@ -84,7 +84,7 @@
 	#{if project.hasTypes()>0}
 		<div class="crudField" name="view-more" style="display:none">
 		<label for="object_taskType">Type</label>
-		<select style="min-width:130px" id="object_taskType" name="object.type@id" onchange="getType();">
+		<select style="min-width:130px" id="object_taskType" name="object.taskType@id" onchange="getType();">
 		#{list items:project.taskTypes ,as :'taskType'}
 			#{ifnot taskType.deleted}<option value="${taskType.id}">${taskType.name}</option>#{/ifnot}
 		#{/list}
@@ -103,31 +103,31 @@
 		#{/list}
 		</select>
 	#{/if}
-	#{elseif component!=null && component.has_users()>0}
+	#{elseif component!=null && component.hasUsers()>0}
 		<div class="crudField" name="view-more" style="display:none">
 		<label for="object_assignee">Assignee</label>
 		<span style="display:none" id="assig_msg"><font color="red">There are no users in the selected component</font></span>
 		<select style="min-width:130px" class="assign" id="object_assignee" name="object.assignee@id" onChange = "getType();">
 		<option value="">None</option>
-		#{list items:component.uers ,as :'user'}
+		#{list items:component.componentUsers ,as :'user'}
 			#{ifnot user.deleted}<option value="${user.id}">${user.name}</option>#{/ifnot}	
 		#{/list}
 		</select>
 	#{/elseif}
-	#{elseif task!=null && task.component.has_users()>0}
+	#{elseif task!=null && task.component.hasUsers()>0}
 		<div class="crudField" name="view-more" style="display:none">
 		<label for="object_assignee">Assignee</label>
 		<span style="display:none" id="assig_msg"><font color="red">There are no users in the selected component</font></span>
 		<select style="min-width:130px" class="assign" id="object_assignee" name="object.assignee@id" onChange = "getType();">
 		<option value="">None</option>
-		#{list items:task.component.users ,as :'user'}
+		#{list items:task.component.componentUsers ,as :'user'}
 			#{ifnot user.deleted}<option value="${user.id}">${user.name}</option>#{/ifnot}
 		#{/list}	
 		</select>
 	#{/elseif}
 	</div>
 	
-	#{if ((p!=null || (component!=null && component.number==0)) && project.hasUsers()>0) || (component!=null && component.has_users()>0) || (task!=null && task.component.has_users()>0)}
+	#{if ((p!=null || (component!=null && component.number==0)) && project.hasUsers()>0) || (component!=null && component.hasUsers()>0) || (task!=null && task.component.hasUsers()>0)}
 	<div class="crudField" name="view-more" style="display:none">
 	<label for="object_reviewer">Reviewer</label>
 	<span id="rev_msg" ><font color="red">There are no reviewers available for the selected task type</font></span>
@@ -139,10 +139,10 @@
 	#{if sprints.size()>0}
 	<div class="crudField" name="view-more" style="display:none">	
 	<label for="object_taskSprint">Sprint</label>
-	<select style="min-width:130px" id="object_taskSprint" name="object.sprint@id">
+	<select style="min-width:130px" id="object_taskSprint" name="object.taskSprint@id">
 	<option value="">None</option>
 	#{list items:sprints ,as :'sprint'}
-	<option value="${sprint.id}">Sprint ${sprint.number}</option>
+	<option value="${sprint.id}">Sprint ${sprint.sprintNumber}</option>
 	#{/list}
 	</select>
 	#{/if}

@@ -237,7 +237,7 @@ $('#accordion').accordion({autoHeight: false});
 	#{/if}
 	#{else}
 	<div class="crudField">
-	<label>Component</label>${task.component.get_full_name()}
+	<label>Component</label>${task.component.getFullName()}
 	</div>
 	#{/else}
 	#{/if}
@@ -266,24 +266,24 @@ $('#accordion').accordion({autoHeight: false});
 	    #{/else}
 	</div>
   	<div class="crudField">
-	    #{if task.sprint}
-	    <label>Sprint</label>${task.sprint.number}
+	    #{if task.taskSprint}
+	    <label>Sprint</label>${task.taskSprint.sprintNumber}
 	    #{/if}
 	    #{else}
 	     <div class="red"><label>Sprint</label>This task isn't assigned to a sprint!</div>
 	    #{/else}
 	</div>
 	<div class="crudField">
-	    #{if task.type}
-	    <label>Type</label>${task.type.name}
+	    #{if task.taskType}
+	    <label>Type</label>${task.taskType.name}
 	    #{/if}
 	    #{else}
 	     <div class="red"><label>Type</label>This task doesn't have a type!</div>
 	    #{/else}
 	</div>
 	<div class="crudField">
-	    #{if task.status}
-	    <label>Status</label>${task.status.name}
+	    #{if task.taskStatus}
+	    <label>Status</label>${task.taskStatus.name}
 	    #{/if}
 	    #{else}
 	     <div class="red"><label>Status</label>This task doesn't have a type!</div>
@@ -372,7 +372,7 @@ var r=confirm("Are you sure you would like to delete this comment?");
   	{
 	  	$('#c_'+el).hide();
 	  	$('#L_'+el).show();
-		$.post('@{Comments.delete_comment()}',{id:el})
+		$.post('@{Comments.deleteComment()}',{id:el})
 	}
 }
 

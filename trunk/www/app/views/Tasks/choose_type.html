@@ -4,7 +4,7 @@
 <div id="${taskId}">
 <h2>Task Types</h2>
 #{list items:types, as:'type'}
-<a href="#" onclick="set_type( ${type.id},${task.id},${userId},'${type.name}',${task.sprint.id})"> ${type.name} </a><br/>
+<a href="#" onclick="set_type( ${type.id},${task.id},${userId},'${type.name}',${task.taskSprint.id})"> ${type.name} </a><br/>
 #{/list}
 </div>
 

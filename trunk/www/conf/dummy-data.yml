@@ -287,7 +287,7 @@ Component(c1):
          name:      Users and Roles
          description: Manage different roles and permission in the project
          project:   project1
-         meetings: 
+         componentMeetings: 
                               - meeting1
          board: board3
          

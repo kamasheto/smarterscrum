@@ -59,7 +59,7 @@ ${project.description?.nl2br()}
 <div id="boards" style="display:none;margin-left:-50px;margin-right:-50px;position:relative;width:210px;z-index:999;"><div class="notchTop" style="margin:0px auto"></div>
 <div  class="allCornersRounded proj" style="width:200px;float:left;padding:10px">
 	#{list items:project.sprints, as:'sprint'}
-		<a href="javascript:;" onclick="$('#s_${sprint.id}').toggle()"  style="float:left;width:200px;">Sprint ${sprint.number}</a><br/>
+		<a href="javascript:;" onclick="$('#s_${sprint.id}').toggle()"  style="float:left;width:200px;">Sprint ${sprint.sprintNumber}</a><br/>
 		<div id="s_${sprint.id}" style="display:none; margin-left:10px">
 		
 #{if sprint.ended==true}

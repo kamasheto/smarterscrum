@@ -64,6 +64,6 @@
 	#{/list}
 	#{/if}<br>
 	#{list items:story.storiesTask, as:'task'}
-		<div name="/storys/magicShow?taskId=${task.id}">S${story.number} ${task.description}<div class="item_imgs">#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if connected.in(project).can('modifyTask') &&  !task.checkUnderImpl()}<a onclick="javascript:overlayOpen('/admin/tasks/${task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}</div><div  class="right" title="Type: ${task.type.name}" style="background:${task.type.hexColor}; width: 15px; height: 15px; border-color:white; position:relative;" ></div></div>
+		<div name="/storys/magicShow?taskId=${task.id}">S${story.number} ${task.description}<div class="item_imgs">#{if connected.in(project).can('deleteTask')}<a onclick="javascript:deleteTheTask(${task.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if connected.in(project).can('modifyTask') &&  !task.checkUnderImpl()}<a onclick="javascript:overlayOpen('/admin/tasks/${task.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if}</div><div  class="right" title="Type: ${task.taskType.name}" style="background:${task.taskType.hexColor}; width: 15px; height: 15px; border-color:white; position:relative;" ></div></div>
 	#{/list}
 #{/if}

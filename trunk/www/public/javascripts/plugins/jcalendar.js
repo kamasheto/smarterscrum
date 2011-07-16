@@ -135,12 +135,12 @@ jQuery.jcalendar = function() {
       			_selectedDate.addClass('selected');
             day.val(new Date(_selectedDate.attr('rel')).getDate());
             str='';
-            $.post('/Application/events_in_date',{day : day.val(), month : month.val(), year : year.val()}, function(data){
+            $.post('/Application/dayEvents',{day : day.val(), month : month.val(), year : year.val()}, function(data){
             	$.each(data.meetings, function(id, item){
     				str +=' <div><img src="/public/images/famfam/meeting.png"/>&nbsp;<a onClick="showProjectWorkspace('+item.projectId+');loadBox(\'/meetings/viewMeeting?id='+item.id+'\',\'workspace-'+item.projectId+'\',\'\');">'+item.project+' Meeting : '+item.name+'</a></div>';
     			});
             	$.each(data.sprints, function(id, item){
-    				str +='<div><img src="/public/images/famfam/date.png"/>&nbsp;<a onClick="showProjectWorkspace('+item.projectId+');loadBox(\'/sprints/showsprint?id='+item.id+'\',\'workspace-'+item.projectId+'\',\'\');">The Start of Sprint'+item.number+' in Project '+item.project+'</a></div>';
+    				str +='<div><img src="/public/images/famfam/date.png"/>&nbsp;<a onClick="showProjectWorkspace('+item.projectId+');loadBox(\'/sprints/showsprint?id='+item.id+'\',\'workspace-'+item.projectId+'\',\'\');">The Start of Sprint'+item.sprintNumber+' in Project '+item.project+'</a></div>';
     			});
             	if(str!=''){
             		thisday=day.val()+'-'+month.val()+'-'+year.val();
@@ -336,7 +336,7 @@ function loadEvents(){
 	$.post('/Application/sprints', function(sprints){
 		$.post('/Application/meetings', function(meetings) {
 	        $.each(sprints, function(id, item){
-	        	events+= item.project+	': Start of Sprint'+item.number+'.'+item.startDay+'-'+item.startMonth+'-'+item.startYear+'|'+item.project+': End of Sprint'+item.number+'.'+item.endDay+'-'+item.endMonth+'-'+item.endYear+'|';
+	        	events+= item.project+	': Start of Sprint'+item.sprintNumber+'.'+item.startDay+'-'+item.startMonth+'-'+item.startYear+'|'+item.project+': End of Sprint'+item.sprintNumber+'.'+item.endDay+'-'+item.endMonth+'-'+item.endYear+'|';
 			});
 			
 	        $.each(meetings, function(id, item){

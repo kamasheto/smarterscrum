@@ -819,8 +819,8 @@ function show(id) {
 		$('#workspaces').hide()
 		$('#normal').load('/ #normal',function(){
 	$(this).replaceWith($(this).html());$('#sideEvent').html('')
-	$('#noti').load('/Application/show_notifications');
-		$('#events').load('/Application/show_events_calender');
+	$('#noti').load('/Application/showNotifications');
+		$('#events').load('/Application/showEvents');
 		$('#in').load('/Invites/showInvitations}');
 		;
 		});
