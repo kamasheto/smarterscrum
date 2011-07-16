@@ -26,12 +26,12 @@ public class Accounts extends SmartController
 	 *            , email of that new user.
 	 * @param password
 	 *            , password of that new user.
-	 * @param confirm_password
+	 * @param confirmPass
 	 *            , password confirmation of that new user.
 	 * @exception PersistenceException
 	 *                , fired on database constraints violations.
 	 */
-	public static void add_user( @Required String name, @Required @Email String email, @Required String password, @Required String confirm_password )
+	public static void addUser( @Required String name, @Required @Email String email, @Required String password, @Required String confirmPass )
 	{
 		if( validation.hasErrors() )
 		{
@@ -39,7 +39,7 @@ public class Accounts extends SmartController
 			validation.keep();
 			register();
 		}
-		else if( !password.equals( confirm_password ) )
+		else if( !password.equals( confirmPass ) )
 		{
 			flash.error( "Your passwords do not match" );
 			validation.keep();
@@ -49,8 +49,8 @@ public class Accounts extends SmartController
 		{
 			try
 			{
-				User existing_user = User.find( "name like '" + name + "' or " + "email like '" + email + "'" ).first();
-				if( existing_user != null )
+				User existingUser = User.find( "name like '" + name + "' or " + "email like '" + email + "'" ).first();
+				if( existingUser != null )
 				{
 					flash.error( "Oops, that user already exists!" + "\t" + "Please choose another user name and/or email." );
 					register();
@@ -80,7 +80,7 @@ public class Accounts extends SmartController
 	/**
 	 * Renders the deletion request view
 	 */
-	public static void render_deletion_request()
+	public static void requestDeletion()
 	{
 		if( !Security.isConnected() )
 		{
@@ -102,28 +102,28 @@ public class Accounts extends SmartController
 	 *            , confirmation password
 	 */
 
-	public static void deletion_request( @Required String pwd )
+	public static void deletionRequest( @Required String pwd )
 	{
 		Security.check( Security.isConnected() );
 		if( validation.hasErrors() )
 		{
 			params.flash();
 			validation.keep();
-			render_deletion_request();
+			requestDeletion();
 		}
 		else
 		{
-			User user_found = Security.getConnected();
-			String pwd_hash = Application.hash( pwd );
-			if( !user_found.pwdHash.equals( pwd_hash ) )
+			User userFound = Security.getConnected();
+			String pwdHash = Application.hash( pwd );
+			if( !userFound.pwdHash.equals( pwdHash ) )
 			{
 				flash.error( "You have entered a wrong password!" );
-				render_deletion_request();
+				requestDeletion();
 			}
 			else
 			{
-				user_found.pendingDeletion = true;
-				user_found.save();
+				userFound.pendingDeletion = true;
+				userFound.save();
 				flash.success( "your deletion request has been successfully sent!" );
 				redirect( "/" );
 			}
@@ -141,14 +141,14 @@ public class Accounts extends SmartController
 	 *             thrown here as well.
 	 * @since Sprint2.
 	 */
-	public static void do_activation( String hash, boolean first_time ) throws Throwable
+	public static void doActivation( String hash, boolean firstTime ) throws Throwable
 	{
-		User current_user = User.find( "activationHash", hash ).first();
-		if( current_user != null && !current_user.isActivated )
+		User currentUser = User.find( "activationHash", hash ).first();
+		if( currentUser != null && !currentUser.isActivated )
 		{
-			current_user.isActivated = true;
-			current_user.save();
-			Notifications.welcome(current_user, first_time);
+			currentUser.isActivated = true;
+			currentUser.save();
+			Notifications.welcome(currentUser, firstTime);
 			flash.success( "Thank you , your Account has been Activated! . Login Below" );
 		}
 		else
@@ -161,7 +161,7 @@ public class Accounts extends SmartController
 	 * 
 	 * @since Sprint3
 	 */
-	public static void undo_request()
+	public static void undoRequest()
 	{
 		Security.check( Security.isConnected() );
 		User user = Security.getConnected();
