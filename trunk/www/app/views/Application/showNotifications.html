@@ -2,23 +2,23 @@
 <div id="all">
 #{if emailing}<div class="frontTitle" id = "modify_emailing"><img src="/public/images/famfam/cross.png" /> <a onclick="modify_emailing(0);">Stop receiving Emails?</a></div>#{/if}
 #{else}<div class="frontTitle" id = "modify_emailing"><img src="/public/images/famfam/accept.png" /> <a onclick="modify_emailing(1);">Enable receiving Emails?</a></div>#{/else}
-#{if notifications_page.size()==0}
+#{if pageOfNotifications.size()==0}
 <div id="notifications">#{note}Sorry you currently have no notifications#{/note}</div>
 #{/if}#{else}
-#{list items:notifications_page, as:'noti'}
+#{list items:pageOfNotifications, as:'noti'}
 <div><p><font color="white"><a href = "#">${noti.actionPerformer.name}</a> has ${noti.actionType} ${noti.resourceType}: <a href = "${noti.resourceURL}">${noti.resourceName}</a> 
 #{ifnot noti.project == null}
-in project <a href="/application/external_open?id=${noti.project.id}$is_overlay=false&url=#">${noti.project.name}</a>
+in project <a href="/application/externalOpen?id=${noti.project.id}$isOverlay=false&url=#">${noti.project.name}</a>
 #{/ifnot}</p></font></div>
 #{/list}
 #{if !first}
-<a onclick="$('#all').load('@{Application.show_notifications(page-1)}');" href"#" >Previous</a>
+<a onclick="$('#all').load('@{Application.showNotifications(page-1)}');" href"#" >Previous</a>
 #{/if}
 #{else}
 <font color="grey">Previous</font>
 #{/else}
 #{if !last}
-<a onclick="$('#all').load('@{Application.show_notifications(page+1)}');" href"#" >Next</a>
+<a onclick="$('#all').load('@{Application.showNotifications(page+1)}');" href"#" >Next</a>
 #{/if}
 #{else}	
 <font color="grey">Next</font>
@@ -38,7 +38,7 @@ function modify_emailing(i)
 	else
 		var res = confirm('Are you sure you want to enable receiving emails?');
 	if(res==true)
-		$.post("@{Application.optional_notifiations}", {enable:i}, function(){
+		$.post("@{Application.modifyEmailing}", {enable:i}, function(){
 			if(i==0)				
 				$('#modify_emailing').html('<img src="/public/images/famfam/accept.png" /> <a onclick="modify_emailing(1);">Enable receiving Emails?</a>');
 			else
@@ -48,7 +48,7 @@ function modify_emailing(i)
 	//search_notifications(0);
 	function search_notifications(page) {
 		$('#loading_img').show()
-		$.post('/application/notifications_list', {page: page}, function(response){
+		$.post('/application/listNotifications', {page: page}, function(response){
 			body = $('#notifications')
 			body.empty()
 			$('#loading_img').hide()
