@@ -14,7 +14,7 @@
 	<a  href="javascript:;" onclick="$('#boards').slideToggle()">Task Board</a>
 	<div id="boards" style="display:none; margin-left:10px">
 	#{list items:component.project.sprints, as:'sprint'}
-	<a href="/boards/loadComponentBoard?sprintID=${sprint.id}&componentID=${component.id}" style="float:left;width:200px;">Sprint ${sprint.number}</a><br/>
+	<a href="/boards/loadComponentBoard?sprintID=${sprint.id}&componentID=${component.id}" style="float:left;width:200px;">Sprint ${sprint.sprintNumber}</a><br/>
 	#{/list}
 	</div>
 	#{secure.check 'canStartGame' }
@@ -45,8 +45,8 @@
 <h3>Component's Users :</h3>
 
 <ul >
-#{if component.users.size()>0 }
-#{list items:component.users, as:'user'}
+#{if component.componentUsers.size()>0 }
+#{list items:component.componentUsers, as:'user'}
 	#{if !user.deleted }
 	<li>
 		<a href="@{Show.user(user.id)}">${user.name}</a>
@@ -60,12 +60,12 @@
 
 
 <br/><br/>
-#{if connected.in(component.project).can('delete_component')}
-#{if !in_sprint}
+#{if connected.in(component.project).can('deleteComponent')}
+#{if !inSprint}
 <a href="#" onclick=" delete_component(${component.id});"  >Delete this Component</a>
 #{/if}
 
-#{if in_sprint}
+#{if inSprint}
 Unfortunatily , you can not delete this component during a sprint.
 #{/if}
 #{/if}
@@ -79,7 +79,7 @@ function delete_component(cid)
 {
 	var confirmation= confirm("Delete Component ?")
 	if (confirmation) {
-		$.post('@{delete_component()}', {
+		$.post('@{deleteComponent()}', {
 			id: cid
 		}, function(){
 			window.location = "/projects/${component.project.id}/components"
