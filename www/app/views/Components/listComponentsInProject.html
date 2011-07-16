@@ -3,7 +3,7 @@
 	#{list items:components, as:'component'}
 		#{if (component.number!=0)}
 		#{set listComponent: true /}
-		<div name="/components/viewTheComponent?componentId=${component.id}" class="reload-component-${component.id}">${component.get_full_name()}  #{drop 'component-' + component.id /}#{if connected.in(projectId).can('deleteComponent')}<a onclick="javascript:deleteTheComponent(${component.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if connected.in(projectId).can('editComponent')}<a href="javascript:overlayOpen('/admin/components/${component.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if} #{drag 'component-' + component.id /}</div>
+		<div name="/components/viewTheComponent?componentId=${component.id}" class="reload-component-${component.id}">${component.getFullName()}  #{drop 'component-' + component.id /}#{if connected.in(projectId).can('deleteComponent')}<a onclick="javascript:deleteTheComponent(${component.id},this);"><img title="Delete" src="@{'/public/images/famfam/delete.png'}"></a>#{/if}#{if connected.in(projectId).can('editComponent')}<a href="javascript:overlayOpen('/admin/components/${component.id}')"><img title="Edit" src="@{'/public/images/famfam/pencil.png'}"></a>#{/if} #{drag 'component-' + component.id /}</div>
 		#{/if}
 	#{/list}
 	#{ifnot listComponent}
