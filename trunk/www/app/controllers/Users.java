@@ -78,6 +78,7 @@ public class Users extends SmartCRUD {
 		}
 		Notifications.notifyUser(myUser, "assigned", url, "you to the component", myComponent.name, (byte) 1, myComponent.project);
 		myUser.save();
+		myComponent.save();
 		renderText("User assigned to component successfully|reload('component-" + id + "')");
 	}
 
@@ -353,7 +354,9 @@ public class Users extends SmartCRUD {
 					Component component = Component.findById(component_id);
 					currentProject = component.project;
 					for(User user: component.componentUsers){
+						System.out.println(user.name);
 						if(!user.deleted){
+							
 							users.add(user);
 						}
 					}
