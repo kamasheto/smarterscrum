@@ -77,9 +77,9 @@ public class Projects extends SmartCRUD
 				render( "CRUD/blank.html", type );
 			}
 		}
-		else if( Project.userRequstedProjectBefore( user.id, java.net.URLEncoder.encode( projectObject.name, "UTF-8" ) ) )
+		else if( Project.userRequstedProjectBefore( user.id, projectObject.name ) )
 		{
-			flash.error( Messages.get( "You Have Already Created a Project with the Same Name :'" + projectObject.name + "'. You Will Be notified Upon Approval." ) );
+			flash.error( Messages.get( "You Have Already Created a Project with the Same Name : " + projectObject.name + " . You Will Be notified Upon Approval." ) );
 			try
 			{
 				render( request.controller.replace( ".", "/" ) + "/blank.html", type );
@@ -89,7 +89,7 @@ public class Projects extends SmartCRUD
 				render( "CRUD/blank.html", type );
 			}
 		}
-		else if( !Project.isUnique( (java.net.URLEncoder.encode( projectObject.name, "UTF-8" )) ) )
+		else if( !Project.isUnique( projectObject.name) )
 		{
 			flash.error( "Project Name is Already Taken." );
 			try
