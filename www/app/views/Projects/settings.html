@@ -16,7 +16,7 @@
 	<div name="/projects/requestrespond?id=${project.id}" class="reload-project-requests ">Requests</div>
 #{/if}
 #{if connected.projects.contains(project)}
-	<div name="/users/managenotificationprofile?id=${project.id}" class="overlay ">Manage my notifications</div>
+	<div name="/users/manage_notification_profile?id=${project.id}" class="overlay ">Manage my notifications</div>
 #{/if}
 #{if connected.in(project).can('editProjectNotificationprofile')}
 	<div name="/projects/managenotificationprofile?projectId=${project.id}" class="overlay">Manage notification profile for ${project.name}</div>
