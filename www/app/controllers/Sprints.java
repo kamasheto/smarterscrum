@@ -204,7 +204,7 @@ public class Sprints extends SmartCRUD
 		if( validation.hasErrors() )
 		{
 
-			renderArgs.put( "error", "Please Correct Date Format Error" );
+			renderArgs.put( "error", "Please Enter Missing Dates" );
 			try
 			{
 				render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
