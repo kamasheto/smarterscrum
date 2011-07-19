@@ -19,7 +19,7 @@
 	#{if proj && proj.sprints.size()!=0}
 	<a href="#" onclick="loadBox('/Projects/Artifacts?projectId=${proj.id}','workspace-${proj.id}','do_not_paginate')">Artifacts</a>
 	#{/if}
-	<a href="#" onclick="loadBox('@{Users.find_users(proj.id,0,1,0)}','workspace-${proj.id}', 'reload-users')">Users <small>(${proj.users.size()})</small></a>
+	<a href="#" onclick="loadBox('@{Users.find_users(proj.id,0,0,0)}','workspace-${proj.id}', 'reload-users')">Users <small>(${proj.users.size()})</small></a>
 	<a  href="#"onclick="loadBox('@{Projects.events(proj.id)}','workspace-${proj.id}','do_not_paginate')">Events <small>(${proj.sprints.size()+proj.meetings.size()})</small></a>
 	<a  href="#"onclick="$('#chatContainer_${proj.id}').slideToggle(400); #{ifnot connected.openChats.contains(proj.chatroom)} signIn(${proj.chatroom.id}); getMessages(${proj.id},${proj.chatroom.id}); #{/ifnot}">Chatroom <small>(${chatters} Online)</small></a>
 	#{set activity: proj.activity() /}
