@@ -57,20 +57,39 @@ public class Projects extends SmartCRUD
 	 *              created and saved.
 	 * @throws Exception
 	 */
-	public static void create() throws Exception
+	public static void create()
 	{
 		ObjectType type = ObjectType.get( getControllerClass() );
 		notFoundIfNull( type );
-		JPASupport object = type.entityClass.newInstance();
+		JPASupport object = null;
+		try {
+			object = type.entityClass.newInstance();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} 
+		
 		Project projectObject = (Project) object;
 		User user = Security.getConnected();
-		validation.valid( object.edit( "object", params ) );
+		validation.valid( object.edit( "object", params ) ); 
+		projectObject.name = removeSpace(projectObject.name);
 		if( validation.hasErrors() )
 		{
 			flash.error( Messages.get( "Please Fill in All The Required Fields." ) );
 			try
 			{
-				render( request.controller.replace( ".", "/" ) + "/blank.html", type );
+				render( "Projects/blank.html", type );
+			}
+			catch( TemplateNotFoundException e )
+			{
+				render( "CRUD/blank.html", type );
+			}
+		}
+		else if(hasSymbol(projectObject.name))
+		{	
+			flash.error( Messages.get( "Please Do Not add any Symbol in The Project Name." ) );
+			try
+			{
+				render( "Projects/blank.html", type );
 			}
 			catch( TemplateNotFoundException e )
 			{
@@ -82,7 +101,7 @@ public class Projects extends SmartCRUD
 			flash.error( Messages.get( "You Have Already Created a Project with the Same Name : " + projectObject.name + " . You Will Be notified Upon Approval." ) );
 			try
 			{
-				render( request.controller.replace( ".", "/" ) + "/blank.html", type );
+				render( "Projects/blank.html", type );
 			}
 			catch( TemplateNotFoundException e )
 			{
@@ -94,7 +113,7 @@ public class Projects extends SmartCRUD
 			flash.error( "Project Name is Already Taken." );
 			try
 			{
-				render( request.controller.replace( ".", "/" ) + "/blank.html", type );
+				render( "Projects/blank.html", type );
 			}
 			catch( TemplateNotFoundException e )
 			{
@@ -151,7 +170,43 @@ public class Projects extends SmartCRUD
 			}
 		}
 	}
-
+	/**
+	 * A method get string and remove all extra spaces from it and return it.
+	 * 
+	 * @param name  the String that u want to remove spaces from it.
+	 * @return String without any extra space
+	 * 
+	 * @author Abdullah abdalhady
+	 */
+	public static String removeSpace(String name){
+		name = name.trim();
+		String newS = "";
+		boolean flag = false;
+		for(int i =0 ;i< name.length(); i++)
+			if(name.charAt(i)!=' '){
+				newS += name.charAt(i); flag=false;
+			}else{
+				if(!flag)
+					{newS += name.charAt(i); flag=true;}
+			}
+		return newS;
+	}
+	
+	/**
+	 * the methods checks if the input string have symbols or not.
+	 * 
+	 * @param name the string which 
+	 * @return the method return true if it contains of of these symbols (~,!,@,#,$,%,^,&,*,?,\,/) and false otherwise
+	 * 
+	 * @author Abdullah abdalhady
+	 */
+	public static boolean hasSymbol(String name){
+		
+		return (name.contains("~") || name.contains("!") ||name.contains("@") || name.contains("$") 
+				||name.contains("%") || name.contains("^") || name.contains("&") || name.contains("*") 
+				|| name.contains("?") || name.contains("\\") || name.contains("/") );
+	}
+	
 	/**
 	 * Overriding the CRUD method list.
 	 * 
@@ -196,6 +251,10 @@ public class Projects extends SmartCRUD
 	 */
 	public static void checkAvailability( String name ) throws UnsupportedEncodingException
 	{
+		name = removeSpace(name);
+		if(hasSymbol(name)){
+			renderJSON( true );
+		}
 		List<Project> p = Project.findAll();
 		boolean flag = false;
 		for( int i = 0; i < p.size(); i++ )
