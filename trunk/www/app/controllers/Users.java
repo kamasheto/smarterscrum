@@ -327,19 +327,19 @@ public class Users extends SmartCRUD {
 	 * @author Monayri, Heba Elsherif
 	 * @return void
 	 */
-	public static void find_users(long projectId, long componentId, int all, long userId)
+	public static void find_users(long project_id, long component_id, int all, long user_id)
 	{
 		String title;
-		if(userId!=0)
+		if(user_id!=0)
 		{
-			Project currentProject = Project.findById(projectId);
-			User user = User.findById(userId);
+			Project currentProject = Project.findById(project_id);
+			User user = User.findById(user_id);
 			title= user.name;
 			render(user, title, currentProject);
 		}
 		else
 		{
-			Project currentProject = Project.findById(projectId);
+			Project currentProject = Project.findById(project_id);
 			List<User> users = new ArrayList<User>();
 			if(all == 1)
 			{
@@ -349,12 +349,14 @@ public class Users extends SmartCRUD {
 			}
 			else
 			{
-				if(componentId !=0)
+				if(component_id !=0)
 				{
-					Component component = Component.findById(componentId);
+					Component component = Component.findById(component_id);
 					currentProject = component.project;
 					for(User user: component.componentUsers){
+						System.out.println(user.name);
 						if(!user.deleted){
+							
 							users.add(user);
 						}
 					}
@@ -374,6 +376,7 @@ public class Users extends SmartCRUD {
 			}
 		}
 	}
+	
 
 	/**
 	 * Renders to the html page user(s) and the user id and title of the list and the box id and the current project,
