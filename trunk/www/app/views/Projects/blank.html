@@ -30,7 +30,13 @@ div.style.display="none";
 
 }
 
+function changetext(obj){
 
+	 if(obj.innerHTML=="Toggle more options")
+	 obj.innerHTML="Toggle less options";
+	 else
+	 obj.innerHTML="Toggle more options"
+}
 
 </script>
 
@@ -51,7 +57,7 @@ To Create a Project , You Must make sure the name you enter is available.
 			<b><label id="isAvailable"></label></b>
 			
 		</div> 
- 		<a onclick="$('.moreOptions').toggle()">Toggle more options</a>
+ 		<a onclick="changetext(this);$('.moreOptions').toggle()">Toggle more options</a>
 		<div class="crudField moreOptions hidden">
 			<label for="object_description"> 
 				Description
