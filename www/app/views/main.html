@@ -141,7 +141,13 @@
 	#{/list}</div>
 	<h3 id="search_results_h3">Search results</h3>
 	<div id="projects_search_results"></div>
-	<div id="add-new-project-link"><a href="#" onclick="overlayOpen('/admin/projects/new'); $('#top_header_projects_pane').slideUp()" style=""><img src="/public/images/famfam/add.png" alt="[+]"/> Request New</a></div>
+	#{if connected?.isAdmin}
+			<div id="add-new-project-link"><a href="#" onclick="overlayOpen('/admin/projects/new'); $('#top_header_projects_pane').slideUp()" style=""><img src="/public/images/famfam/add.png" alt="[+]"/> Create New Project</a></div>
+	#{/if}
+	#{else}
+			<div id="add-new-project-link"><a href="#" onclick="overlayOpen('/admin/projects/new'); $('#top_header_projects_pane').slideUp()" style=""><img src="/public/images/famfam/add.png" alt="[+]"/> Request New</a></div>
+	#{/else}
+	
 	#{if connected?.isAdmin}
 		<h3>ACP Link</h3>
 		<div id="acp_link"><a onclick="showProjectWorkspace(-1);">Admin CP</a></div>
