@@ -17,7 +17,7 @@
 		#{note 'error'}No users#{/note}
 		#{/if}
 		#{list items:users ,as :'User'}
-			<div class="reload-user-${User.id}" name="/users/findUsers?projectId=${currentProject.id}&userId=${User.id}">
+			<div class="reload-user-${User.id}" name="/users/find_users?projectId=${currentProject.id}&userId=${User.id}">
 			${User.name}
 			<div class="bar_more_info">#{list items:currentProject.roles ,as :'Role'}
 	#{if Role.name!="Project Member" && Role.users.contains(User)}${Role.name}#{/if}
