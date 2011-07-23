@@ -330,6 +330,10 @@ public class Application extends SmartController
 			}
 		}
 		boolean emailing = user.enableEmails;
+		if(totalPages == 1){
+			first = true;
+			last = true;
+		}
 
 		render( page, pageOfNotifications, emailing, last, first );
 
