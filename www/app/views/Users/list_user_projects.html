@@ -5,7 +5,7 @@
 #{if boxId==1}
    #{if user!=null}
 	   #{list items:user.projects ,as :'project'}
-		    <div class="reload-project-${project.id}-in-user-${user.id}" name="/users/listUserProjects?userId=${user.id}&boxId=2&projectId=${project.id}&currentProjectId=${currentProject.id}">${project.name}
+		    <div class="reload-project-${project.id}-in-user-${user.id}" name="/users/list_user_projects?userId=${user.id}&boxId=2&projectId=${project.id}&currentProjectId=${currentProject.id}">${project.name}
 		    		<div class="bar_more_info">#{list items:project.roles ,as :'Role'}
 	#{if Role.name!="Project Member" && Role.users.contains(user)}${Role.name} #{/if}
 		#{/list}</div>
