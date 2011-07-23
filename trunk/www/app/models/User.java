@@ -139,6 +139,10 @@ public class User extends SmartModel
 	public boolean haveInvites;
 	public long InviteNumber;
 
+	public long mobileNumber;
+
+	
+	
 	/**
 	 * Class constructor just initializing the lists a user should have.
 	 */
@@ -200,6 +204,14 @@ public class User extends SmartModel
 		this.name = name;
 		this.email = email.toLowerCase();
 		this.pwdHash = Application.hash( password );
+	}
+	public User( String name, String email, String password,long mobileNumber )
+	{
+		this();
+		this.name = name;
+		this.email = email.toLowerCase();
+		this.pwdHash = Application.hash( password );
+		this.mobileNumber= mobileNumber;
 	}
 
 	/**
