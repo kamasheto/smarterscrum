@@ -27,6 +27,10 @@
 			<label>Confirm Password</label>
 			<input type="password" name="confirmPass" id="confirmPass"  /> <span class="red">*</span>
 		</p>
+		<p class="form-field">
+			<label>Mobile Number</label>
+			<input type="text" name="mobile" id="mobile" value="${flash.mobile}" onblur = "User.mobileNumber = mobile.value"/> 
+		</p>
 		<p id="signin-field">
 			<input type = "submit" value = "Register" /> or <a href="/secure/login">Login</a>
 		</p>
