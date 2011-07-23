@@ -15,8 +15,7 @@ import play.mvc.Router;
  * 
  * @author Amr Tj.Wallas
  */
-public class Accounts extends SmartController
-{
+public class Accounts extends SmartController {
 	/**
 	 * Creates a new user
 	 * 
@@ -31,39 +30,52 @@ public class Accounts extends SmartController
 	 * @exception PersistenceException
 	 *                , fired on database constraints violations.
 	 */
-	public static void addUser( @Required String name, @Required @Email String email, @Required String password, @Required String confirmPass )
-	{
-		if( validation.hasErrors() )
-		{
+	public static void addUser(@Required String name,
+			@Required @Email String email, @Required String password,
+			@Required String confirmPass, String mobile) {
+		boolean there = false;
+		long mob = 0;
+		System.out.println("at first " + mobile);
+		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
 			register();
-		}
-		else if( !password.equals( confirmPass ) )
-		{
-			flash.error( "Your passwords do not match" );
+		} else if (!password.equals(confirmPass)) {
+			flash.error("Your passwords do not match");
 			validation.keep();
 			register();
-		}
-		else
-		{
-			try
-			{
-				User existingUser = User.find( "name like '" + name + "' or " + "email like '" + email + "'" ).first();
-				if( existingUser != null )
-				{
-					flash.error( "Oops, that user already exists!" + "\t" + "Please choose another user name and/or email." );
+		} else {
+			try {
+				User existingUser = User.find(
+						"name like '" + name + "' or " + "email like '" + email
+								+ "'").first();
+				if (existingUser != null) {
+					flash.error("Oops, that user already exists!" + "\t"
+							+ "Please choose another user name and/or email.");
 					register();
 				}
-				User user = new User( name, email, password );
+				if (mobile.length()!= 0) {
+					there = true;
+					try {
+						mob = Integer.parseInt(mobile);
+
+					} catch (Exception e) {
+						flash.error("Please enter a valid mobile number");
+						register();
+					}
+				}
+				User user = new User(name, email, password);
+				if (there) {
+					user.mobileNumber = mob;
+				}
 				user.save();
-				String url = Router.getFullUrl("Accounts.doActivation")+"?hash=" + user.activationHash+"&firstTime=true";				
+				System.out.println("mob num " + user.mobileNumber);
+				String url = Router.getFullUrl("Accounts.doActivation")
+						+ "?hash=" + user.activationHash + "&firstTime=true";
 				Notifications.activate(user.email, user.name, url, false);
-				flash.success( "You have been registered. An Activation link has been sent to your Email Address" );
+				flash.success("You have been registered. An Activation link has been sent to your Email Address");
 				Secure.login();
-			}
-			catch( Throwable e )
-			{
+			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 		}
@@ -72,25 +84,20 @@ public class Accounts extends SmartController
 	/**
 	 * Renders the register page
 	 */
-	public static void register()
-	{
+	public static void register() {
 		render();
 	}
 
 	/**
 	 * Renders the deletion request view
 	 */
-	public static void requestDeletion()
-	{
-		if( !Security.isConnected() )
-		{
-			Security.error( "You are not registered, Please login if you haven't done so" );
+	public static void requestDeletion() {
+		if (!Security.isConnected()) {
+			Security.error("You are not registered, Please login if you haven't done so");
 
-		}
-		else if( Security.getConnected().pendingDeletion )
-		{
+		} else if (Security.getConnected().pendingDeletion) {
 			User user = Security.getConnected();
-			render( user );
+			render(user);
 		}
 		render();
 	}
@@ -102,30 +109,23 @@ public class Accounts extends SmartController
 	 *            , confirmation password
 	 */
 
-	public static void deletionRequest( @Required String pwd )
-	{
-		Security.check( Security.isConnected() );
-		if( validation.hasErrors() )
-		{
+	public static void deletionRequest(@Required String pwd) {
+		Security.check(Security.isConnected());
+		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
 			requestDeletion();
-		}
-		else
-		{
+		} else {
 			User userFound = Security.getConnected();
-			String pwdHash = Application.hash( pwd );
-			if( !userFound.pwdHash.equals( pwdHash ) )
-			{
-				flash.error( "You have entered a wrong password!" );
+			String pwdHash = Application.hash(pwd);
+			if (!userFound.pwdHash.equals(pwdHash)) {
+				flash.error("You have entered a wrong password!");
 				requestDeletion();
-			}
-			else
-			{
+			} else {
 				userFound.pendingDeletion = true;
 				userFound.save();
-				flash.success( "your deletion request has been successfully sent!" );
-				redirect( "/" );
+				flash.success("your deletion request has been successfully sent!");
+				redirect("/");
 			}
 		}
 
@@ -141,18 +141,16 @@ public class Accounts extends SmartController
 	 *             thrown here as well.
 	 * @since Sprint2.
 	 */
-	public static void doActivation( String hash, boolean firstTime ) throws Throwable
-	{
-		User currentUser = User.find( "activationHash", hash ).first();
-		if( currentUser != null && !currentUser.isActivated )
-		{
+	public static void doActivation(String hash, boolean firstTime)
+			throws Throwable {
+		User currentUser = User.find("activationHash", hash).first();
+		if (currentUser != null && !currentUser.isActivated) {
 			currentUser.isActivated = true;
 			currentUser.save();
 			Notifications.welcome(currentUser, firstTime);
-			flash.success( "Thank you , your Account has been Activated! . Login Below" );
-		}
-		else
-			flash.error( "This activation link is not valid or has expired. Activation Failed!" );
+			flash.success("Thank you , your Account has been Activated! . Login Below");
+		} else
+			flash.error("This activation link is not valid or has expired. Activation Failed!");
 		Secure.login();
 	}
 
@@ -161,14 +159,13 @@ public class Accounts extends SmartController
 	 * 
 	 * @since Sprint3
 	 */
-	public static void undoRequest()
-	{
-		Security.check( Security.isConnected() );
+	public static void undoRequest() {
+		Security.check(Security.isConnected());
 		User user = Security.getConnected();
 		user.pendingDeletion = false;
 		user.save();
-		flash.success( "Your deletion request has been successfully undone !" );
-		redirect( "/" );
+		flash.success("Your deletion request has been successfully undone !");
+		redirect("/");
 	}
 
 }
