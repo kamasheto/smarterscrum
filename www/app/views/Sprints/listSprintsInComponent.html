@@ -3,7 +3,7 @@
 #{extends 'magicBox.html' /}
 #{set 'title'}C${component.number}: #{if type == 1}Boards#{/if}#{elseif type == 2}Charts#{/elseif}#{else}Backlogs#{/else}#{/set}
 	#{if type == 2}
-		<div class="overlay"name="@{ProductBacklogs.show_graph(component.project.id,component.id)}" title="view the overall chart?">Overall Chart</div>
+		<div class="overlay"name="@{ProductBacklogs.showgraph(component.project.id,component.id)}" title="view the overall chart?">Overall Chart</div>
 	#{/if}
 	#{list items:sprints, as:'sprint'}
 	#{if type == 1}
