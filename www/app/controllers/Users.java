@@ -328,7 +328,7 @@ public class Users extends SmartCRUD {
 	 * @return void
 	 */
 	public static void find_users(long project_id, long component_id, int all, long user_id)
-	{
+	{	
 		String title;
 		if(user_id!=0)
 		{
@@ -362,6 +362,7 @@ public class Users extends SmartCRUD {
 					}
 					title = "C"+ component.number+ ": Users";
 					render(users, title, currentProject);
+					return;
 				}
 				else
 				{
@@ -376,7 +377,7 @@ public class Users extends SmartCRUD {
 			}
 		}
 	}
-	
+
 
 	/**
 	 * Renders to the html page user(s) and the user id and title of the list and the box id and the current project,
