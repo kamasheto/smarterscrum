@@ -454,10 +454,12 @@ public class Users extends SmartCRUD {
 	 * @return void
 	 */
 	public static void mini_profile_action ( @Required(message = "You must enter a name") String name,
-			@Required(message = "You must enter an email") @Email(message = "You must enter a valid email") String email,
+			@Required(message = "You must enter an email") @Email(message = "You must enter a valid email") String email,String mobile,
 			long userProfileId, File file) throws IOException, Throwable {
 		User userProfile = User.findById(userProfileId);
 		User connectedUser = Security.getConnected();
+		boolean isNumber = false;
+		long mob=0;
 		if (connectedUser.deleted)
 			notFound();
 		if (userProfile.deleted)
@@ -469,10 +471,21 @@ public class Users extends SmartCRUD {
 		        }
 				edit_mini_profile(userProfileId);
 			}
+			try{
+				mob= Integer.parseInt(mobile);
+				isNumber= true;
+			}catch(Exception e){
+				flash.error("You must enter a valid mobile number");
+				edit_mini_profile(userProfileId);
+
+			}
 			String oldEmail = userProfile.email;
 			String oldName = userProfile.name;
+			//long oldMobile = userProfile.mobileNumber;
 			userProfile.name = name;
 			userProfile.email = email;
+			if(isNumber)
+			userProfile.mobileNumber= mob;
 			userProfile.save();
 			String message = "";
 			try {
@@ -494,7 +507,7 @@ public class Users extends SmartCRUD {
 				if (!oldName.equals(name)) {
 					CollaborateUpdate.update(userProfile, "$('#username-in-topbar').html('"+name+"')");
 				}
-
+			
 				for (Project project : userProfile.projects) {
 					CollaborateUpdate.update(project, "reload('users', 'user-"+userProfileId+"')");
 				}
