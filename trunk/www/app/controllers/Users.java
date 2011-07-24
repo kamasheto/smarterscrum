@@ -471,14 +471,27 @@ public class Users extends SmartCRUD {
 		        }
 				edit_mini_profile(userProfileId);
 			}
+			if (name.length() < 5) {
+				flash.error("Your username is too short");
+				validation.keep();
+				edit_mini_profile(userProfileId);
+			} 
 			try{
 				mob= Integer.parseInt(mobile);
+				String temp0 =""+ mobile.charAt(0);
+				String temp1 =""+ mobile.charAt(1);
+				if (Integer.parseInt(temp0) != 0 || Integer.parseInt(temp1) != 1 || mobile.length()<10 || mobile.length()>11) {
+					flash.error("Please enter a valid mobile number ");
+					validation.keep();
+					edit_mini_profile(userProfileId);
+				}
 				isNumber= true;
 			}catch(Exception e){
 				flash.error("You must enter a valid mobile number");
 				edit_mini_profile(userProfileId);
 
 			}
+			
 			String oldEmail = userProfile.email;
 			String oldName = userProfile.name;
 			//long oldMobile = userProfile.mobileNumber;
