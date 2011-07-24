@@ -236,6 +236,8 @@ public class Sprints extends SmartCRUD
 				Date nn = ed.getTime();
 				endDate = nn;
 				endDate.setTime( startDate.getTime() + (86400000 * defaultDays) );
+				object.endDate = endDate;
+				
 			}
 			else
 			{
@@ -246,7 +248,7 @@ public class Sprints extends SmartCRUD
 				int endday = Integer.parseInt( enddate[2] );
 				endDate = new GregorianCalendar( endyear, endmonth - 1, endday ).getTime();
 			}
-			if( object.startDate == null || object.endDate == null)
+			if( object.startDate == null)
 			{
 				renderArgs.put( "error", "Please Enter Missing Dates" );
 				render( request.controller.replace( ".", "/" ) + "/projectblank.html", type, projectId );
