@@ -45,38 +45,66 @@ public class Accounts extends SmartController {
 			validation.keep();
 			register();
 		} else {
-			try {
-				User existingUser = User.find(
-						"name like '" + name + "' or " + "email like '" + email
-								+ "'").first();
-				if (existingUser != null) {
-					flash.error("Oops, that user already exists!" + "\t"
-							+ "Please choose another user name and/or email.");
+			if (name.length() < 5) {
+				flash.error("Your username is too short");
+				validation.keep();
+				register();
+			} else {
+				if (password.length() < 5) {
+					flash.error("Your password is too short");
+					validation.keep();
 					register();
-				}
-				if (mobile.length()!= 0) {
-					there = true;
-					try {
-						mob = Integer.parseInt(mobile);
+				} else {
 
-					} catch (Exception e) {
-						flash.error("Please enter a valid mobile number");
-						register();
-					}
+					
+						try {
+							User existingUser = User.find(
+									"name like '" + name + "' or "
+											+ "email like '" + email + "'")
+									.first();
+							if (existingUser != null) {
+								flash.error("Oops, that user already exists!"
+										+ "\t"
+										+ "Please choose another user name and/or email.");
+								register();
+							}
+							if (mobile.length() != 0) {
+								there = true;
+								try {
+									mob = Integer.parseInt(mobile);
+									String temp0 =""+ mobile.charAt(0);
+									String temp1 =""+ mobile.charAt(1);
+									if (Integer.parseInt(temp0) != 0 || Integer.parseInt(temp1) != 1 || mobile.length()<10 || mobile.length()>11) {
+										flash.error("Please enter a valid mobile number ");
+										validation.keep();
+										register();
+									}
+								} catch (Exception e) {
+									flash.error("Please enter a valid mobile number");
+									validation.keep();
+									register();
+								}
+							}
+							User user = new User(name, email, password);
+							if (there) {
+								user.mobileNumber = mob;
+							}
+							user.save();
+							System.out.println("mob num " + user.mobileNumber);
+							String url = Router
+									.getFullUrl("Accounts.doActivation")
+									+ "?hash="
+									+ user.activationHash
+									+ "&firstTime=true";
+							Notifications.activate(user.email, user.name, url,
+									false);
+							flash.success("You have been registered. An Activation link has been sent to your Email Address");
+							Secure.login();
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+					
 				}
-				User user = new User(name, email, password);
-				if (there) {
-					user.mobileNumber = mob;
-				}
-				user.save();
-				System.out.println("mob num " + user.mobileNumber);
-				String url = Router.getFullUrl("Accounts.doActivation")
-						+ "?hash=" + user.activationHash + "&firstTime=true";
-				Notifications.activate(user.email, user.name, url, false);
-				flash.success("You have been registered. An Activation link has been sent to your Email Address");
-				Secure.login();
-			} catch (Throwable e) {
-				e.printStackTrace();
 			}
 		}
 	}
