@@ -24,7 +24,7 @@
 #{else}
 #{list items:meetings, as:'meet'}
 	<div id = "meet_${meet.meeting.id}" style="display:block">
-		<img src="/public/images/famfam/meeting.png"/><font color="white">You have been invited to attend meeting: <a href = "@{Application.externalOpen(meet.meeting.project.id, '/Meetings/viewMeeting?id=meet.meeting.id', false)}">${meet.meeting.name}</a> in project <a href = "@{Application.externalOpen(meet.meeting.project.id, '#', false)}">${meet.meeting.project.name}</a> by <a href="/show/user?id=${meet.invitedBy.id}">${meet.invitedBy.name}</a></font>
+		<img src="/public/images/famfam/meeting.png"/><font color="white">You have been invited to attend meeting: <a onclick = "showProjectWorkspace(${meet.meeting.project.id});loadBox('/meetings/viewmeetings?id=${meet.meeting.project.id}','workspace-${meet.meeting.project.id}','reload-meetings-${meet.meeting.project.id}')">${meet.meeting.name}</a> in project <a onclick="showProjectWorkspace(${meet.meeting.project.id})">${meet.meeting.project.name}</a> by <b>${meet.invitedBy.name}</b></font>
 		<br><a onclick="confirm_me('${meet.meeting.id}');"><img src="/public/images/famfam/tick.png" title="Accept"/></a> &nbsp; 
 		<a onclick="decline_me('${meet.meeting.id}');"><img src="/public/images/famfam/cross.png" title="Decline"/></a>
 	</div>
