@@ -6,9 +6,9 @@
 <div id="notifications">#{note}Sorry you currently have no notifications#{/note}</div>
 #{/if}#{else}
 #{list items:pageOfNotifications, as:'noti'}
-<div><p><font color="white"><a href = "#">${noti.actionPerformer.name}</a> has ${noti.actionType} ${noti.resourceType}: <a href = "${noti.resourceURL}">${noti.resourceName}</a> 
+<div><p><font color="white"><b>${noti.actionPerformer.name}</b> has ${noti.actionType} ${noti.resourceType}: <a href = "${noti.resourceURL}">${noti.resourceName}</a> 
 #{ifnot noti.project == null}
-in project <a href="/application/externalOpen?id=${noti.project.id}$isOverlay=false&url=#">${noti.project.name}</a>
+in project <a onclick="showProjectWorkspace(${noti.project.id})">${noti.project.name}</a>
 #{/ifnot}</p></font></div>
 #{/list}
 #{if !first}
