@@ -1,4 +1,5 @@
 #{extends 'sidebar.html' /}
+<script src="@{'/public/javascripts/functions.js'}" type="text/javascript" charset="utf-8"></script>
 <div class="frontTitle">Project Invitations:</div>
 <div class="frontInv">
 #{if invitations.isEmpty()}
@@ -8,7 +9,7 @@
 
 #{list items:invitations, as:'inv'}
 	<div id = "pinv_${inv.id}">
-		<img src="/public/images/famfam/user_go.png"/><font color="white">You have been invited to be ${inv.role} in project <a href = "@{Application.externalOpen(inv.role.project.id, '#', false)}">${inv.role.project.name}</a> by <a href="/show/user?id=${inv.invitedBy.id}">${inv.invitedBy.name}</a></font>
+		<img src="/public/images/famfam/user_go.png"/><font color="white">You have been invited to be ${inv.role} in project <a onclick="showProjectWorkspace(${inv.role.project.id})">${inv.role.project.name}</a> by <b>${inv.invitedBy.name}</b></font>
 		<br><a onclick="javascript: inv_respond('${inv.id}', '${inv.hash}', 1);"><img src="/public/images/famfam/tick.png" title="Confirm"/></a> &nbsp; 
 		<a onclick="javascript: inv_respond('${inv.id}', '${inv.hash}', 0);"><img src="/public/images/famfam/cross.png" title="Decline"/></a>
 	</div>
