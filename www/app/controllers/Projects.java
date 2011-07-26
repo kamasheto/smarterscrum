@@ -134,6 +134,8 @@ public class Projects extends SmartCRUD
 				projectObject.isScrum = true;
 			}
 			object.save();
+			// sent notification for the admin
+
 			if( user.isAdmin )
 			{
 				// add it to the top bar immediately
@@ -204,7 +206,7 @@ public class Projects extends SmartCRUD
 		
 		return (name.contains("~") || name.contains("!") ||name.contains("@") || name.contains("$") 
 				||name.contains("%") || name.contains("^") || name.contains("&") || name.contains("*") 
-				|| name.contains("?") || name.contains("\\") || name.contains("/") );
+				|| name.contains("?") || name.contains("\\") || name.contains("/") ) || name.contains("'");
 	}
 	
 	/**
