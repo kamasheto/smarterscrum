@@ -623,7 +623,7 @@ $.bar({message:"Could not Commit Action! Please Try again."});
 }
 
 function is_int(value){
-  if((parseFloat(value) == parseInt(value)) && !isNaN(parseInt(value))){
+  if( !isNaN(value)){
       return true;
  } else {
       return false;

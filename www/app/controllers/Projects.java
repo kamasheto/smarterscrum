@@ -713,7 +713,7 @@ public class Projects extends SmartCRUD {
 		Project p = Project.findById(id);
 		Security.getConnected().in(p).can("editProject");
 		// if (Security.getConnected().in(p).can("editProject")) {
-		if (duration.length() <= 2) {
+		if (duration.length() <= 10) {
 			p.sprintDuration = Integer.parseInt(duration);
 			p.save();
 			Log.addUserLog("Edit default sprint duration", p);
