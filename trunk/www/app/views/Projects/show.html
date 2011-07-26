@@ -664,13 +664,12 @@ default:
 
 }
 hideLoader('addSP','loaderSP');
-document.getElementById("sprintDuration").innerHTML = dn;
 }
 
 $.post('@{setDefaultSprintDuartion()}',{id:n,duration:dn},function (flag){
 
 if(flag){
-document.getElementById('durationLabel').innerHTML=dn;
+document.getElementById('sprintDuration').innerHTML=dn;
 
 }
 else{
