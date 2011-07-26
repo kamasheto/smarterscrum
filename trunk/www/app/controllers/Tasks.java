@@ -1950,4 +1950,273 @@ public class Tasks extends SmartCRUD
 		renderText( "Task deleted successfully." );
 	}
 
+	/**
+	 * FilterS for task id and new status and user_id.
+	 * 
+	 * @author josephhajj
+	 * @param id
+	 *            The Sprint id.
+	 * @param columnSequence
+	 *            The position of the column indicating this task status on the
+	 *            board.
+	 * @param taskString
+	 *            The task status sticky note id = "task-" + task.id
+	 * @param user_id
+	 *            Tthe user id.
+	 * @return void
+	 */
+	public static void changeTaskStatusHelper( long id, int columnSequence, String taskString, long user_id, long cid )
+	{
+		if( user_id == 0 )
+		{
+			user_id = Security.getConnected().id;
+		}
+
+		// setting the variable needed for the method
+		// defining the appropriate sprint
+		Sprint s = Sprint.findById( id );
+		// defining the project of the sprint
+		Project p = s.project;
+		// defining the board of the project
+		Board b = p.board;
+		Component component = null;
+		if( cid != 0 )
+			component = Component.findById( cid );
+		// defining the status
+		TaskStatus status = new TaskStatus();
+		// defining the cols of the board only
+		// List<Column> cols = b.columns;
+		// defining the final task id and its helper string
+		String task_id_helper[];
+		String task_id_helper2[];
+		long task_id;
+		// defining a flag for the second loop
+		// boolean flag = true;
+
+		// getting the actual status
+		BoardColumn col;
+		if( cid == 0 )
+			col = BoardColumn.find( "bySequenceAndBoard", columnSequence, b ).first();
+		else
+			col = BoardColumn.find( "bySequenceAndBoard", columnSequence, component.componentBoard ).first();
+		status = col.taskStatus;
+
+		// get the actual task_id in an int
+		task_id_helper = taskString.split( "_" );
+		task_id_helper2 = task_id_helper[0].split( "-" );
+		task_id = Integer.parseInt( task_id_helper2[1] );
+		editTaskStatus( task_id, user_id, status );
+	}
+
+	/**
+	 * Filters for taskid and user_id and the new assignee.
+	 * 
+	 * @author josephhajj
+	 * @param id
+	 *            The component id.
+	 * @param taskString
+	 *            The task status sticky note id = "task-" + task.id
+	 * @param user_id
+	 *            The user id.
+	 * @param row
+	 *            The row id.
+	 * @return void
+	 */
+	public static void changeTaskAssigneeHelper( long id, String taskString, long user_id, int row )
+	{
+		// if user is not selected take the one in the session
+		if( user_id == 0 )
+		{
+			user_id = Security.getConnected().id;
+		}
+
+		// getting the whole list of users
+		// User user = User.findById(user_id);
+		Component component = Component.findById( id );
+		List<User> users = component.componentUsers;
+
+		String task_id_helper[];
+		String task_id_helper2[];
+		long task_id;
+
+		// filtering the task id
+		task_id_helper = taskString.split( "_" );
+		task_id_helper2 = task_id_helper[0].split( "-" );
+		task_id = Integer.parseInt( task_id_helper2[1] );
+
+		// calling the method
+		editTaskAssignee2( task_id, user_id, users.get( row ).id );
+
+	}
+	/**
+	 * This method changes the given task assignee.
+	 * 
+	 * @author Moumen Mohamed
+	 * @param id
+	 *            The id of the given task.
+	 * @param userId
+	 *            The id of the user who will do the change.
+	 * @param assigneId
+	 *            The id of the user who will be the assignee of the task.
+	 * @return boolean
+	 */
+	public static boolean editTaskAssignee2( long id, long userId, long assigneeId )
+	{
+		Task task1 = Task.findById( id );
+		if( task1 == null )
+			return false;
+		if( userId == 0 )
+		{
+			userId = Security.getConnected().id;
+		}
+		User user1 = User.findById( userId );
+		if( user1 == null )
+			return false;
+		Security.check( user1.in( task1.project ).can( "modifyTask" ) || task1.assignee == user1 );
+
+		User oldAssignee = task1.assignee;
+		User assignee = User.findById( assigneeId );
+		if( assignee == null )
+			return false;
+		if( task1.reviewer!=null && task1.reviewer.getId() == assigneeId )
+			return false;
+
+		Project currentProject = task1.project;
+		boolean permession = user1.in( currentProject ).can( "changeAssignee" );
+
+		if( !permession )
+			return false;
+		// String oldAssignee = task1.assignee.name;
+
+		User oldassi = task1.assignee;
+
+		task1.assignee = assignee;
+		if(oldAssignee!=null && !oldAssignee.equals( assignee ) )
+		{
+			task1.deadline = 0;
+		}
+		task1.save();
+
+		long newassi = task1.assignee.id;
+
+		long compId = 0;
+		if( task1.component != null )
+			compId = task1.component.id;
+		assignee.tasks.add( task1 );
+		assignee.save();
+		if( task1.taskSprint != null )
+		{
+			if( compId != 0 )
+
+			{
+				if(oldassi!=null)
+					CollaborateUpdate.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + oldassi.id + "," + newassi + "," + task1.taskStatus.id + "," + compId + "," + task1.id + ")" );
+				else
+					CollaborateUpdate.update( task1.project, "drag_note_assignee(" + task1.taskSprint.id + "," + 0 + "," + newassi + "," + task1.taskStatus.id + "," + compId + "," + task1.id + ")" );	
+				CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + userId + ")" );
+				CollaborateUpdate.update( task1.project.users, Security.getConnected(), "note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
+			}
+			else
+
+			{
+				CollaborateUpdate.update( Security.getConnected(), "reload_note_open(" + task1.taskSprint.id + "," + task1.id + "," + compId + "," + userId + ")" );
+				CollaborateUpdate.update( task1.project.users, Security.getConnected(), "reload_note_close(" + task1.taskSprint.id + "," + task1.id + "," + compId + ")" );
+			}
+		}
+		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task1.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + task1.id;
+		ArrayList<User> nusers = new ArrayList<User>();
+		if( task1.assignee != null )
+			nusers.add( task1.assignee );
+		if( task1.reviewer != null )
+			nusers.add( task1.reviewer );
+		if( task1.reporter != null )
+			nusers.add( task1.reporter );
+		if( oldassi != null )
+			nusers.add( oldassi );
+		Notifications.notifyUsers( nusers, "changed", url, "the assignee of the", "task " + task1.number, (byte) 0, task1.project );
+		if( userId == Security.getConnected().id )
+		{
+			Log.addUserLog( "Edited task assignee", task1, task1.project );
+			// Logs.addLog( user1, "Edit", "Task Assignee", id, task1.project,
+			// new Date( System.currentTimeMillis() ) );
+		}
+		else
+		{
+			Log.addUserLog( user1.name + " has edited task assignee", user1, task1, task1.project );
+			// Logs.addLog( user1 +
+			// " has performed action (Edit) using resource (Task Assignee) in project "
+			// + task1.project.name + " from the account of " +
+			// Security.getConnected().name );
+		}
+		CollaborateUpdate.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
+		return true;
+	}
+	/**
+	 * Changes the given task status.
+	 * 
+	 * @author Moumen Mohamed
+	 * @param id
+	 *            The id of the given task.
+	 * @param newStatus
+	 *            The new task status.
+	 * @param userId
+	 *            The id of the user who will change the task status.
+	 * @return boolean
+	 */
+	public static boolean editTaskStatus( long id, long userId, TaskStatus newStatus )
+	{
+		Task task1 = Task.findById( id );
+		if( task1 == null )
+			return false;
+		if( userId == 0 )
+		{
+			userId = Security.getConnected().id;
+		}
+		User user1 = User.findById( userId );
+		if( user1 == null )
+			return false;
+		Security.check( user1.in( task1.project ).can( "modifyTask" ) || task1.assignee == user1 );
+		Project currentProject = task1.project;
+		boolean permession = user1.in( currentProject ).can( "changeTaskStatus" );
+
+		if( task1.reviewer!=null && task1.reviewer.id != userId && task1.assignee!=null && task1.assignee.id != userId )
+		{
+			if( !permession )
+				return false;
+		}
+		long oldstatus = 0;
+		if(task1.taskStatus != null)
+			oldstatus = task1.taskStatus.id;
+		task1.taskStatus = newStatus;
+		task1.save();
+		long newstatus = task1.taskStatus.id;
+		long compId = 0;
+		if( task1.component != null )
+			compId = task1.component.id;
+		if(task1.assignee != null)
+			CollaborateUpdate.update( task1.project, "drag_note_status(" + task1.taskSprint.id + "," + task1.assignee.id + "," + oldstatus + "," + newstatus + "," + compId + "," + task1.id + ")" );
+		else
+			CollaborateUpdate.update( task1.project, "drag_note_status(" + task1.taskSprint.id + "," + 0 + "," + oldstatus + "," + newstatus + "," + compId + "," + task1.id + ")" );
+		if( userId == Security.getConnected().id )
+		{
+			Log.addUserLog( "Edited task status", task1, task1.project );
+
+		}
+		else
+		{
+			Log.addUserLog( user1.name + " edited task status", user1, task1, task1.project );
+		}
+		CollaborateUpdate.update( task1.project, "reload('tasks','task-" + task1.id + "')" );
+		String url = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + task1.project.id + "&isOverlay=false&url=/tasks/magicShow?taskId=" + task1.id;
+		ArrayList<User> nusers = new ArrayList<User>();
+		if( task1.assignee != null )
+			nusers.add( task1.assignee );
+		if( task1.reviewer != null )
+			nusers.add( task1.reviewer );
+		if( task1.reporter != null )
+			nusers.add( task1.reporter );
+		Notifications.notifyUsers( nusers, "changed", url, "the status of the", "task " + task1.number, (byte) 0, task1.project );
+		return true;
+	}
+
 }
