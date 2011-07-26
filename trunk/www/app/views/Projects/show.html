@@ -636,6 +636,8 @@ var i=document.getElementById('sprintDropDown').selectedIndex;
 
 var param=document.getElementById('sprintDropDown').options[i].text;
 
+
+
 var n=&{object.id};
 var m=document.getElementById('durationText').value;
 var d=parseInt(m);
@@ -661,6 +663,8 @@ default:
 
 
 }
+hideLoader('addSP','loaderSP');
+document.getElementById("sprintDuration").innerHTML = dn;
 }
 
 $.post('@{setDefaultSprintDuartion()}',{id:n,duration:dn},function (flag){
@@ -714,7 +718,7 @@ hideLoader('addES','loaderES');
 	<div id="sd" class="sprintsDuration">
 	
 		#{note}	Setting default sprint duration will be used when an end date for the sprint date is not specified upon creation.#{/note}
-		<div class="crudField"> Current Default Sprint Duration : <span style="color:red">&{object.sprintDuration}</span> Days.</div> 
+		<div class="crudField"> Current Default Sprint Duration : <a id = "sprintDuration" style="color:red">&{object.sprintDuration}</a> Days.</div> 
 		<div class="crudField">
 		<input id="durationText" type="text"  value="" "size="10" /> in
 	<select id="sprintDropDown" name="sprintDropDown">
