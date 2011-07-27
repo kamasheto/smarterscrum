@@ -821,7 +821,7 @@ function show(id) {
 	$(this).replaceWith($(this).html());$('#sideEvent').html('')
 	$('#noti').load('/Application/showNotifications');
 		$('#events').load('/Application/showEvents');
-		$('#in').load('/Invites/showInvitations}');
+		$('#in').load('/Invites/showInvitations');
 		;
 		});
 		$('#normal').show()
