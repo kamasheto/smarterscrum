@@ -530,7 +530,7 @@ public class Meetings extends SmartCRUD
 				String confirmURL = Router.getFullUrl( "MeetingAttendances.confirm" ) + "?meetingHash=" + meetingHash;
 				String declineURL = Router.getFullUrl( "MeetingAttendances.decline" ) + "?meetingHash=" + meetingHash;
 				String meetingURL = Router.getFullUrl( "Application.externalOpen" ) + "?id=" + attendance.meeting.project.id + "&isOverlay=false&url=/meetings/viewMeeting?id=" + attendance.meeting.id;
-				Notifications.invite( invitedUser, meetingURL, attendance.meeting.name, confirmURL, declineURL, attendance.meeting.project, true );
+				Notifications.invite( invitedUser, ""+attendance.meeting.id, attendance.meeting.name, confirmURL, declineURL, attendance.meeting.project, true );
 				if( !invitedUser.equals( Security.getConnected() ) )
 				{
 					Log.addUserLog( "invited user to meeting", attendance.user, attendance.meeting, attendance.meeting.project );
