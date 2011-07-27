@@ -596,12 +596,12 @@ public class Tasks extends SmartCRUD
 			User oldrev = User.findById( oldAssignee );
 			if( oldAssign != null )
 			{
-				if( !oldAssign.equals( tmp.assignee ) )
+				if( !oldAssign.equals( tmp.assignee ) && !nusers.contains(oldAssign))
 					nusers.add( oldAssign );
 			}
 			if( oldrev != null )
 			{
-				if( !oldrev.equals( tmp.reviewer ) )
+				if( !oldrev.equals( tmp.reviewer ) && !nusers.contains(oldrev))
 					nusers.add( oldrev );
 			}
 			Notifications.notifyUsers( nusers, "edited", url, "task", "task " + tmp.number, (byte) 0, tmp.project );
@@ -1702,7 +1702,7 @@ public class Tasks extends SmartCRUD
 			nusers.add( task.reviewer );
 		if( task.reporter != null )
 			nusers.add( task.reporter );
-		Notifications.notifyUsers( nusers, "assigned", url, user.name + " to the", "task " + task.number, (byte) 0, task.project );
+		Notifications.notifyUsers( nusers, "assigned", ""+task.id, user.name + " to the", "task " + task.number, (byte) 0, task.project );
 		Log.addUserLog( "Assigned task assignee", task, user, task.project );
 		CollaborateUpdate.update( task.project, "reload('task-" + task_id + "');" );
 		if( task.subTasks.size() > 0 )
