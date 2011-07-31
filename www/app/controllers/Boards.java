@@ -508,6 +508,7 @@ public class Boards extends SmartCRUD
 	{
 		BoardColumn c = BoardColumn.findById( cid );
 		Sprint sprint = Sprint.findById(sid);
+		long boardID = c.board.id;
 		if( c.deleted )
 			notFound();
 		int count = 0;
@@ -527,13 +528,13 @@ public class Boards extends SmartCRUD
 		if(compid==0)
 		{
 			url = Router.getFullUrl("Application.externalOpen")+"?id="+sprint.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid;
-			Notifications.notifyProjectUsers(c.board.project, "addColumn", url, "column", c.name, (byte)0);
+			Notifications.notifyProjectUsers(c.board.project, "addColumn", ""+boardID, "column", c.name, (byte)0);
 		}
 		else
 		{
 			url = Router.getFullUrl("Application.externalOpen")+"?id="+sprint.project.id+"&isOverlay=true&url=/Boards/loadboard1?sprintID="+sid+"%26componentID="+compid;
 			Component component = Component.findById(compid); 
-			Notifications.notifyUsers(component.componentUsers, "addColumn", url, "column", c.name, (byte)0, c.board.project);			
+			Notifications.notifyUsers(component.componentUsers, "addColumn", ""+boardID, "column", c.name, (byte)0, c.board.project);			
 		}
 		
 		// "Coulumn", c.name, (byte)0);
