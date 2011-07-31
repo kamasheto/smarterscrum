@@ -334,6 +334,7 @@ public class Application extends SmartController
 			first = true;
 			last = true;
 		}
+		boolean flag = false;
 
 		render( page, pageOfNotifications, emailing, last, first );
 
