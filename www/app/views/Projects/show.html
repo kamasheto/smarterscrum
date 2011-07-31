@@ -49,6 +49,11 @@ $.bar({message:'You Must Enter a Meeting Type.'});
 hideLoader('addMB','loaderMB');
 return;
 }
+if(m.length >50){
+	$.bar({message:'You Must Enter a Smaller Name.'});
+	hideLoader('addMB','loaderMB');
+	return;
+	}
 $.post('@{meetingTypesCheck()}',{id:n,type:m},function(exist){
 	if (!exist) 
 	{
@@ -623,7 +628,7 @@ $.bar({message:"Could not Commit Action! Please Try again."});
 }
 
 function is_int(value){
-  if( !isNaN(value)){
+  if( !isNaN(value) & (parseInt(value)==parseFloat(value)) ){
       return true;
  } else {
       return false;
