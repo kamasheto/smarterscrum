@@ -44,9 +44,7 @@
 	#{if connected.in(object.project).can('deleteComponent')}
 	#{if ! object.project.inSprint(new Date()) }
 
-		<p class="crudDelete">
-			<input type="submit" onclick="delete_component(${object.id})"value="&{'crud.delete', type.modelName}" />
-		</p>
+		
 	
 	#{/if}
 	#{/if}
