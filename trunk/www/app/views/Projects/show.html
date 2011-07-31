@@ -207,7 +207,7 @@ function addTaskStatus()
 	var textFeildValue = $('#taskTSText').val();
 	var rad_val = $("input[name='taskStatusGroup']:checked").val();
 	var statusId;
-	if(textFeildValue == "")
+	if(textFeildValue == "" || textFeildValue.length > 50 )
 	{
 		$.bar({message:'You Must Enter a Valid Task Status Name.'});
 	}
@@ -276,7 +276,7 @@ function editTaskStatus()
 		hideLoader('editTaskStatusButton','loaderTST');
 		return;
 	}
-	if(x=="")
+	if(x==""  || x.length >50)
 	{
 		$.bar({message:'You Must Enter a Valid Task Status Name.'});
 	}
@@ -836,7 +836,7 @@ Add new <input id="meetingText" class="" type="text" name="object.name"  />
 	  </div>
 	  <div class="crudField">
 	    <input id="addTaskStatusButton"" type="button" title="Add a new Task Status" name="add" value="Add" onclick="addTaskStatus()" />
-	    <input id="editTaskStatusButton" type="button" title="Save after editing" name="edit" value="Save" onclick="editTaskStatus()" disabled/>
+	    <input id="editTaskStatusButton" type="button" title="Save after editing" name="edit" value="Edit" onclick="editTaskStatus()" disabled/>
 	    <input id="removeTaskStatusButton" type="button" title="Remove from project" name="remove" value="Remove" onclick="removeTaskStatus()" disabled/>
 	    <img id="loaderTST"  style="visibility:hidden" src="/public/images/loading16.gif"/>
 	  </div>
