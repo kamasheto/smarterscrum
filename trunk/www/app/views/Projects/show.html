@@ -7,6 +7,7 @@ $(function(){
 	
 	});
 	
+	
 function showLoader(id,select){
 	var element=document.getElementById(id);
 	var loader=document.getElementById(select);
@@ -548,7 +549,7 @@ showLoader('addST','loaderST');
 var n=&{object.id};
 var m=document.getElementById('storyText').value;
 var x=document.getElementById('priorityText').value;
-if(m=="" || !is_int(x)){
+if(m=="" || !is_int(x) || m.length >50 || x.length >50 || x=="0" ){
 
 $.bar({message:"You Must Enter a Valid Priority Title and an Integer Priority Value."});
 hideLoader('addST','loaderST');
