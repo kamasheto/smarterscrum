@@ -6,10 +6,18 @@
 <div id="notifications">#{note}Sorry you currently have no notifications#{/note}</div>
 #{/if}#{else}
 #{list items:pageOfNotifications, as:'noti'}
-<div><p><font color="white"><b>${noti.actionPerformer.name}</b> has ${noti.actionType} ${noti.resourceType}: <a href = "${noti.resourceURL}">${noti.resourceName}</a> 
-#{ifnot noti.project == null}
+<div><p><font color="white"><b>${noti.actionPerformer.name}</b> has ${noti.actionType} ${noti.resourceType} #{if noti.actionType == 'Invited'}<a onclick="showProjectWorkspace(${noti.project.id})">${noti.resourceName}</a>#{/if}
+#{elseif noti.actionType == 'assigned' }task <a onclick="showProjectWorkspace(${noti.project.id})">${noti.resourceName}</a> in the project <a onclick="showProjectWorkspace(${noti.project.id})">${noti.project.name}</a>#{/elseif}
+#{elseif noti.actionType == 'invited'} <a onclick="showProjectWorkspace(${noti.project.id});loadBox('/meetings/viewmeetings?id=${noti.resourceURL}','workspace-${noti.project.id}','reload-meetings-${noti.project.id}')">${noti.resourceName}</a>#{/elseif}
+#{elseif noti.actionType == 'edited' } <a onclick="showProjectWorkspace(${noti.project.id})">${noti.resourceName}</a> in the project <a onclick="showProjectWorkspace(${noti.project.id})">${noti.project.name}</a>#{/elseif}
+#{elseif noti.actionType == 'deleteColumn'} ${noti.resourceName}#{/elseif}
+#{elseif noti.project == null} ${noti.resourceName}#{/elseif}
+#{else}
+<a onclick="showProjectWorkspace(${noti.project.id})">${noti.resourceName}</a>
+ #{/else} 
+<!--  #{ifnot noti.project == null}
 in project <a onclick="showProjectWorkspace(${noti.project.id})">${noti.project.name}</a>
-#{/ifnot}</p></font></div>
+#{/ifnot}--></p></font></div>
 #{/list}
 #{if !first}
 <a onclick="$('#all').load('@{Application.showNotifications(page-1)}');" href"#" >Previous</a>

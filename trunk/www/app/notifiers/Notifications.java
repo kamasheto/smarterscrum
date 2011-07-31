@@ -46,10 +46,19 @@ public class Notifications extends Mailer{
 			{
 				Notification n = new Notification(user, actionPerformer, "invited", objectURL, "you to the meeting", objectName, (byte)0).save();
 				n.project=project;
+				project.notifications.add(n);
 				n.save();
+				project.save();
 			}
 		else
-			new Notification(user, actionPerformer, "Invited", objectURL, "you to the project", project.name, (byte)0).save();
+		{
+			Notification n = new Notification(user, actionPerformer, "Invited", objectURL, "you to the project", project.name, (byte)0).save();
+			n.project=project;
+			project.notifications.add(n);
+			n.save();
+			project.save();
+		}
+			
 		
 		if (user.enableEmails) {
 			addRecipient(user.email);
@@ -114,7 +123,7 @@ public class Notifications extends Mailer{
 	public static void notifyProjectUsers(Project project , String actionType, String resourceURL, String resourceType, String resourceName, byte importance)
 	{
 		User user = Security.getConnected();
-		String actionType2="";
+		String actionType2="none";
 		if (actionType.equalsIgnoreCase("setSprint"))
 			actionType2= "created";
 		else if (actionType.equalsIgnoreCase("addRole"))
@@ -128,13 +137,13 @@ public class Notifications extends Mailer{
 		else if (actionType.equalsIgnoreCase("onDeleteComponent"))
 			actionType2= "deleted";
 		else if (actionType.equalsIgnoreCase("addColumn"))
-			actionType2= "added";
+			actionType2= "added a column";
 		else if (actionType.equalsIgnoreCase("deleteColumn"))
 			actionType2= "deleted";
 		else if (actionType.equalsIgnoreCase("assignStoryToSprint"))
 			actionType2= "assigned";
 		else if (actionType.equalsIgnoreCase("addTaskStatus"))
-			actionType2= "added";	
+			actionType2= "added the task status";	
 		else if (actionType.equalsIgnoreCase("editTaskStatus"))
 			actionType2= "edited";	
 		else if (actionType.equalsIgnoreCase("deleteTaskStatus"))
@@ -150,7 +159,7 @@ public class Notifications extends Mailer{
 		else if (actionType.equalsIgnoreCase("deleteReviewer"))
 			actionType2= "been removed";
 		else if (actionType.equalsIgnoreCase("addProductRole"))
-			actionType2 = "added";
+			actionType2 = "added the product role";
 		
 		if(project.notificationProfile.checkAction(actionType))
 		{
@@ -161,6 +170,8 @@ public class Notifications extends Mailer{
 				{
 					Notification n = new Notification(unps.get(i).user, user, actionType2, resourceURL, resourceType, resourceName, importance).save();
 					n.project=project;
+					project.notifications.add(n);
+					project.save();
 					n.save();
 					if(unps.get(i).user.enableEmails)
 						addRecipient(unps.get(i).user.email);
@@ -198,6 +209,8 @@ public class Notifications extends Mailer{
 				if (project != null) {
 					nn.project = project;
 					projectURL = Router.getFullUrl("Application.externalOpen")+"?id="+project.id+"&isOverlay=false&url=#";
+					project.notifications.add(nn);
+					project.save();
 					nn.save();
 				}
 				if (receivers.get(i).enableEmails)
@@ -230,6 +243,8 @@ public class Notifications extends Mailer{
 				{
 					notif.project = project;
 					projectURL = Router.getFullUrl("Application.externalOpen")+"?id="+project.id+"&isOverlay=false&url=#";
+					project.notifications.add(notif);
+					project.save();
 					notif.save();
 				}				
 			if(receiver.enableEmails)
