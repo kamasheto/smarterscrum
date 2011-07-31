@@ -94,6 +94,13 @@ function get_theDate(date)
 	return ""+d+"/"+m+"/"+y+" "+h+" : "+min;
 }
 
+function changetext(obj){
+
+	 if(obj.innerHTML=="Toggle more options")
+	 obj.innerHTML="Toggle less options";
+	 else
+	 obj.innerHTML="Toggle more options"
+}
 
 
 	</script>
@@ -160,7 +167,7 @@ function get_theDate(date)
 			<label for="user_attending"> I'm attending this meeting:</label>
 			<input type=checkbox name="attending" class="" id="attending"> 
 		</div>
-					<a href="#" onclick="$('.more_options').toggle()">Toggle more options</a>
+					<a href="#" onclick="changetext(this);$('.more_options').toggle()">Toggle more options</a>
 			
 			<input type="hidden" id="object_project" name="object.project@id" value="${currentProject.id}" >
 		    <input type="hidden" id="object_status" name="object.status" value="true" >

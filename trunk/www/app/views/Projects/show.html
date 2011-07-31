@@ -896,32 +896,32 @@ Add new <input id="meetingText" class="" type="text" name="object.name"  />
 		 <INPUT id="checkBoxAutoRS"TYPE=CHECKBOX NAME="autoReschedule"  onclick="changeAutoRS()"  ${object.autoReschedule ? 'checked': ''} >Auto Meeting Reschedule</p>
 		</div>
 		#{/if}
-		#{if connected.in(object).can('editProject') }
-	<h6><a href="#">Effort Estimation Points Unit</a></h6>
-				<div class="mee">
-				#{note}
-		You can Set the Effort Estimation Unit either in Hours or Points.
-		#{/note}
-	<p>Current Effort  Estimation Unit : <label id="estimationLabel" style="color:red">
+<!-- 		#{if connected.in(object).can('editProject') } -->
+<!-- 	<h6><a href="#">Effort Estimation Points Unit</a></h6> -->
+<!-- 				<div class="mee"> -->
+<!-- 				#{note} -->
+<!-- 		You can Set the Effort Estimation Unit either in Hours or Points. -->
+<!-- 		#{/note} -->
+<!-- 	<p>Current Effort  Estimation Unit : <label id="estimationLabel" style="color:red"> -->
 	
-		#{if object.effortEstimationUnit==0}
-				Hours
-		#{/if}
-		#{if object.effortEstimationUnit!=0}
-				Points
-		#{/if}
+<!-- 		#{if object.effortEstimationUnit==0} -->
+<!-- 				Hours -->
+<!-- 		#{/if} -->
+<!-- 		#{if object.effortEstimationUnit!=0} -->
+<!-- 				Points -->
+<!-- 		#{/if} -->
 	
 	
-	 </label><br/>
-	<select id="estimationDown" name="estimationDropDown">
-		<option value="Hours">Hours</option>
-		<option value="Points">Points</option>
-		</select>
+<!-- 	 </label><br/> -->
+<!-- 	<select id="estimationDown" name="estimationDropDown"> -->
+<!-- 		<option value="Hours">Hours</option> -->
+<!-- 		<option value="Points">Points</option> -->
+<!-- 		</select> -->
 		
-	<input id="addES"type="button" name="add" value="Set" onclick="setEffortUnit()" />
-	<img id="loaderES"  style="visibility:hidden" src="/public/images/loading16.gif"/>
+<!-- 	<input id="addES"type="button" name="add" value="Set" onclick="setEffortUnit()" /> -->
+<!-- 	<img id="loaderES"  style="visibility:hidden" src="/public/images/loading16.gif"/> -->
 
-		</div>
-	#{/if}
+<!-- 		</div> -->
+<!-- 	#{/if} -->
 	
 </div>
