@@ -396,6 +396,12 @@ function addTaskType()
 		hideLoader('addTaskTypeButton','taskTypesLoader');
 		return;
 	}
+	if(m.length > 50)
+	{
+		$.bar({message:'You Must Enter a Smaller Type.'});
+		hideLoader('addTaskTypeButton','taskTypesLoader');
+		return;
+	}
 	$.post('@{taskTypesCheck()}',{id:n , type:m},
 			function(exist)
 			{
@@ -452,7 +458,8 @@ function editTaskType()
 		hideLoader('editTaskTypeButton','taskTypesLoader');
 		return;
 	}
-	if(x=="")
+	
+	if(x=="" || x.length >50 )
     {
 	    $.bar({message:'You Must Enter a Valid Task Type Name.'});
     }
@@ -792,7 +799,7 @@ Add new <input id="meetingText" class="" type="text" name="object.name"  />
       </div>
       <div class="crudField">
         <input id="addTaskTypeButton" type="button" title="Add a new Task Type"  name="add" value="Add" onclick="addTaskType()" />
-        <input id="editTaskTypeButton" type="button" title="Save after editing" name="edit" value="Save" onclick="editTaskType()" />
+        <input id="editTaskTypeButton" type="button" title="Save after editing" name="edit" value="Edit" onclick="editTaskType()" />
         <input id="removeTaskTypeButton" type="button" title="Remove from project"  name="remove" value="Remove" onclick="removeTaskType()"/>
         <img id="taskTypesLoader"  style="visibility:hidden" src="/public/images/loading16.gif"/>
       </div>
