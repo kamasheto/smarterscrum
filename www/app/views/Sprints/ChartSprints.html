@@ -1,7 +1,7 @@
 #{extends 'magicBox.html' /}
 
 #{set 'title'}${project.name}'s Charts #{/set}
-<div class="overlay" name="@{ProductBacklogs.show_graph(project.id,0)}">Project overall Chart</div>
+<div class="overlay" name="@{ProductBacklogs.showGraph(project.id,0)}">Project overall Chart</div>
 #{if (sprints.size()==0)}
 #{note}There are No Sprints.#{/note}
 #{/if}
