@@ -76,6 +76,14 @@ public class Projects extends SmartCRUD {
 			} catch (TemplateNotFoundException e) {
 				render("CRUD/blank.html", type);
 			}
+		} else if (projectObject.name.length() > 50 || projectObject.description.length() > 200) {
+			flash.error(Messages
+					.get("Please Enter Smaller Project Name or Less Description."));
+			try {
+				render("Projects/blank.html", type);
+			} catch (TemplateNotFoundException e) {
+				render("CRUD/blank.html", type);
+			}
 		} else if (hasSymbol(projectObject.name)) {
 			flash.error(Messages
 					.get("Please Do Not add any Symbol in The Project Name."));

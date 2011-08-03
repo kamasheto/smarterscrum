@@ -196,7 +196,21 @@ public class Meetings extends SmartCRUD
 				render( "CRUD/blank.html", type );
 			}
 		}
-		else if( !(temp.startTime > longCurrentDate && temp.startTime < temp.endTime) )
+		else if( temp.name.length() > 50 || temp.location.length() >50 || temp.description.length() > 150 ){
+			
+			flash.error(Messages.get("Please Enter Smaller Name."));
+			try
+			{
+
+				render( "Meetings/blank.html", type, currentProject, creator, sprints, types );
+			}
+			catch( TemplateNotFoundException e )
+			{
+				render( "CRUD/blank.html", type );
+			}
+		}else 
+			if( !(temp.startTime > longCurrentDate && temp.startTime < temp.endTime) )
+			
 		{
 
 			renderArgs.put( "error", "Please fix Meeting date" );
