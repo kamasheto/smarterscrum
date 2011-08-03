@@ -1,3 +1,6 @@
+textarea {
+    resize: none;
+}
 
 .shadowed {
 	margin: 2px;
