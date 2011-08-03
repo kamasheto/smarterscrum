@@ -10,12 +10,13 @@ Meetings
 #{list items:u, as:'users'}
 <div style="float:left;width:4.5cm;">
 <h6>${users.meeting.name}</h6>
-#{if comp==null}
+<!-- #{if comp==null}
 <a class="tiptitize" title="take meeting snapshot?" href="javascript:take_meetingsnapshot(${users.meeting.id});"><img src="@{'/public/images/famfam/camera_add.png'}"></a>
 #{/if}
 #{else}
 <a class="tiptitize" title="take meeting snapshot?" href="javascript:take_componentmeetingsnapshot(${users.meeting.id},${comp.id});"><img src="@{'/public/images/famfam/camera_add.png'}"></a>
 #{/else}
+ -->
 <a title="end meeting?" href="javascript: end(${users.meeting.id});"><img src="@{'/public/images/famfam/cancel.png'}"></a><br/>
 <div class="formatTime">${users.meeting.startTime}</div>
 <div id="amr" class="formatTime">${users.meeting.endTime}</div>
@@ -117,10 +118,10 @@ No Attendees
 	$.post('/Meetings/end', {meetingid:id},function(){
 		window.location.reload()
 	});
-	var answer=confirm('The system will now automaticaly update the associated snapshot to the current view of the board!')
-	if (answer) {
-	take_meetingsnapshot(id);
-	}
+	//var answer=confirm('The system will now automaticaly update the associated snapshot to the current view of the board!')
+	//if (answer) {
+	//take_meetingsnapshot(id);
+	//}
 	
 	}
 	}
