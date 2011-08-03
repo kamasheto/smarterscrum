@@ -213,7 +213,7 @@ public class Tasks extends SmartCRUD
 		tmp.getProductRole( tmp.description );
 		tmp.reporter = Security.getConnected();
 		Double t = tmp.estimationPoints;
-		if( t.isNaN() )
+		if( t.isNaN() || t <= 0)
 		{
 			tmp.estimationPoints = 0.0;
 		}
