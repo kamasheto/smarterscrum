@@ -11,7 +11,7 @@
 	
 		<div class="overlay" name="/boards/loadboard1?sprintID=${sprint.id}&componentID=${component.id}">
 		Sprint ${sprint.sprintNumber} Task Board
-		<a href="javascript:loadBox('/Snapshots/index?sid=${sprint.id}&cid=${component.id}','workspace-${component.project.id}')"><img src="@{'/public/images/famfam/photos.png'}">
+		<!-- <a href="javascript:loadBox('/Snapshots/index?sid=${sprint.id}&cid=${component.id}','workspace-${component.project.id}')"><img src="@{'/public/images/famfam/photos.png'}"> -->
 		</a></a></div>
 	#{/if}
 	#{else}
@@ -19,7 +19,7 @@
 	#{if snapshot.sprint.id == sprint.id}
 	
 	<div class="overlay" name="/Snapshots/loadsnapShot?id=${snapshot.id}">
-Sprint ${sprint.sprintNumber} Final Snapshot<a  onClick="loadBox('/Snapshots/index?sid=${sprint.id}&cid=${component.id}','workspace-${component.project.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a>
+Sprint ${sprint.sprintNumber} Final Snapshot<!-- <a  onClick="loadBox('/Snapshots/index?sid=${sprint.id}&cid=${component.id}','workspace-${component.project.id}')"><img src="@{'/public/images/famfam/photos.png'}"></a> -->
 </div>
 	
 	#{/if}
