@@ -18,7 +18,9 @@ function sendFeedback(){
 	var codeInput = $("#smartCaptcha").val();
 	var summary = $("#title").val();
 	var desc = $("#description").val();
-	$.post("/feedbacks/sendFeedback", {code:codeInput, title:summary, description:desc}, function(msg){ alert(msg); location.reload(); });
+	$.post("/feedbacks/sendFeedback", {code:codeInput, title:summary, description:desc}, function(msg){  location.reload(); });
+	window.parent.$('#theLoadedContent').hide();
+	window.parent.$('#getOverlay').hide();
 }
 
 </script>
