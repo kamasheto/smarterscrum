@@ -113,7 +113,13 @@ public class Accounts extends SmartController {
 	 * Renders the register page
 	 */
 	public static void register() {
-		render();
+		boolean flag;
+		if(Security.connected()==null){
+			flag = true;
+		}else{
+			flag = false;
+		}
+		render(flag);
 	}
 
 	/**
