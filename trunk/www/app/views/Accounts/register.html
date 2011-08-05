@@ -6,7 +6,7 @@
 <div class="loginHolder"><div class="loginHelper">
 <img src="/public/images/ss.png" alt="smartsoft"/>
 <div id="login">
-	
+	#{if flag}
 	<!--The Registration form element-->
 	<form name = "register" action = "@{addUser()}" method="post">
 	<h1>Register</h1>
@@ -38,5 +38,10 @@
 			<span class="red">*</span> Required fields
 		</p>
 	</form> 
-</div></div>
+</div>
+#{/if}
+#{else}
+<h2 style="text-align: center;">You Cannot Register While Logged In!</h2>
+#{/else}
+</div>
 </div>
