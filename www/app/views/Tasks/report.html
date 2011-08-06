@@ -357,6 +357,7 @@ ${t.comment.raw()}#{if connected.in(task.project).can("modifyTask") || connected
 <div class="crudField">
 <h1>Add a comment?</h1>
 <label>Comment</label>
+<p id ="reply" style="color:red"></p>
 </div>
 <div class="crudField">
 <textarea id="theComment"style="width:100%;"></textarea>
@@ -379,15 +380,27 @@ var r=confirm("Are you sure you would like to delete this comment?");
 
 
 function send(){
+	document.getElementById("reply").innerHTML="";
+	var comment = $("#theComment").val();
+	if(comment.length > 250){
+		document.getElementById("reply").innerHTML+="Comment too long!";
+		$('#theComment').val('');
+	}else{
+		if(comment.length == 0){
+			document.getElementById("reply").innerHTML+="Please enter text!";
+			$('#theComment').val('');
+		}else{
 	$('#theComment').hide();
 	$('#loader').show();
-	$('#theComment').val('');
+	
 	$.post("@{Comments.addComment()}",{taskId:${task.id},comment:$("#theComment").val()},function(){
 		$('#theComment').show();
 		$('#loader').hide();
 		});
-	
-}</script>
+	$('#theComment').val('');
+	}
+}
+	} </script>
 </div>
 	#{/if}
 
