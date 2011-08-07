@@ -1,7 +1,7 @@
 #{extends 'magicBox.html' /}
 #{set 'title'}Settings#{/set}
 <div name="/components/listComponentsInProject?projectId=${project.id}" class="reload-components">Components
-#{if connected.in(projectId).can('addComponent')}<a href="javascript:overlayOpen('/admin/components/new?id=${project.id}')"><img title="Add new component" src="@{'/public/images/famfam/add.png'}"></a>#{/if}
+#{if connected.in(project).can('addComponent')}<a href="javascript:overlayOpen('/admin/components/new?id=${project.id}')"><img title="Add new component" src="@{'/public/images/famfam/add.png'}"></a>#{/if}
 </div>
 <div name="/show/roles?id=${project.id}" class="reload-roles project-${project.id}-in-user-${connected.id} ">Roles
 #{if connected.in(project).can('addRole')}
