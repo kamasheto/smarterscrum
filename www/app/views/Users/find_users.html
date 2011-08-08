@@ -44,7 +44,7 @@
 		<div class="left" style="padding:15px 10px">
 			<p><b>Name: </b>${user.name}</p>
 			<p><b>Email: </b>${user.email}</p>
-			<p><b>Mobile Number: </b>${user.mobileNumber}</p>
+			<p><b>Mobile Number: </b>#{if user.mobileNumber == null} Not Available!#{/if}#{else}${user.mobileNumber}#{/else}</p>
 		</div>
 		<br style="clear:both"/>
 		<div class="reload-projects-in-user-${user.id}" name="/users/list_user_projects?userId=${user.id}&boxId=1&currentProjectId=${currentProject.id}">Projects <small>(${user.projects.size()})</small></div>
