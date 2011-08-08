@@ -139,7 +139,7 @@ public class User extends SmartModel
 	public boolean haveInvites;
 	public long InviteNumber;
 
-	public long mobileNumber;
+	public String mobileNumber;
 
 	
 	
@@ -205,7 +205,7 @@ public class User extends SmartModel
 		this.email = email.toLowerCase();
 		this.pwdHash = Application.hash( password );
 	}
-	public User( String name, String email, String password,long mobileNumber )
+	public User( String name, String email, String password,String mobileNumber )
 	{
 		this();
 		this.name = name;

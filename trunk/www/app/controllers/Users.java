@@ -477,10 +477,11 @@ public class Users extends SmartCRUD {
 				edit_mini_profile(userProfileId);
 			} 
 			try{
-				mob= Integer.parseInt(mobile);
+				int temp = Integer.parseInt(mobile); // triggers the exception if "mobile" is not a number
 				String temp0 =""+ mobile.charAt(0);
 				String temp1 =""+ mobile.charAt(1);
-				if (Integer.parseInt(temp0) != 0 || Integer.parseInt(temp1) != 1 || mobile.length()<10 || mobile.length()>11) {
+				validation.match(temp0, "[0-9]+");
+				if (Integer.parseInt(temp0) != 0 || Integer.parseInt(temp1) != 1 || mobile.length()<10 || mobile.length()>11 || validation.hasErrors()) {
 					flash.error("Please enter a valid mobile number ");
 					validation.keep();
 					edit_mini_profile(userProfileId);
@@ -498,7 +499,7 @@ public class Users extends SmartCRUD {
 			userProfile.name = name;
 			userProfile.email = email;
 			if(isNumber)
-			userProfile.mobileNumber= mob;
+			userProfile.mobileNumber= mobile;
 			userProfile.save();
 			String message = "";
 			try {
