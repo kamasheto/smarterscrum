@@ -71,6 +71,7 @@ public class Accounts extends SmartController {
 							if (mobile.length() != 0) {
 								there = true;
 								try {
+									mob = Integer.parseInt(mobile);
 									String temp0 =""+ mobile.charAt(0);
 									String temp1 =""+ mobile.charAt(1);
 									if (Integer.parseInt(temp0) != 0 || Integer.parseInt(temp1) != 1 || mobile.length()<10 || mobile.length()>11) {
