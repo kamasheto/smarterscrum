@@ -164,8 +164,13 @@ public class Show extends SmartController
 				tasks.add( task1 );
 			}
 		}
+		int tasknumber = 0;
+		for(int i=0;i<tasks.size();i++){
+			if(!(tasks.get(i).deleted)){
+				tasknumber++;
+			}
+		}
 		
-		int tasknumber = tasks.size();
 		render( tasknumber, proj, chatters );
 	}
 }
