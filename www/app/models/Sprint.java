@@ -42,7 +42,7 @@ public class Sprint extends SmartModel
 	 * If true this sprint has ended.
 	 */
 	public boolean ended;
-	public Snapshot finalsnapshot;
+	//public Snapshot finalsnapshot;
 	/**
 	 * The project of this sprint.
 	 */

@@ -50,8 +50,8 @@ public class Meeting extends SmartModel
 	/**
 	 * Snapshot of this meeting
 	 */
-	@OneToOne
-	public Snapshot snapshot;
+//	@OneToOne
+//	public Snapshot snapshot;
 
 	/**
 	 * whether or not this meeting is a review log?
