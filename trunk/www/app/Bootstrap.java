@@ -66,8 +66,10 @@ public class Bootstrap extends Job {
 			admin.isActivated = true;
 			admin.isAdmin = true;
 			admin.name="admin";
+			admin.password = "admin";
 			admin.pwdHash = Application.hash( "admin" );
 			admin.save();
+			
 			
 		}
 	}
