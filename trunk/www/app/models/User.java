@@ -140,7 +140,7 @@ public class User extends SmartModel
 	public long InviteNumber;
 
 	public String mobileNumber;
-	public String password;
+
 	
 	
 	/**
@@ -203,7 +203,6 @@ public class User extends SmartModel
 		this();
 		this.name = name;
 		this.email = email.toLowerCase();
-		this.password = password;
 		this.pwdHash = Application.hash( password );
 	}
 	public User( String name, String email, String password,String mobileNumber )
@@ -211,7 +210,6 @@ public class User extends SmartModel
 		this();
 		this.name = name;
 		this.email = email.toLowerCase();
-		this.password = password;
 		this.pwdHash = Application.hash( password );
 		this.mobileNumber= mobileNumber;
 	}
