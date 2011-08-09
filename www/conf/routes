@@ -2,8 +2,8 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 # This module route should stay the FIRST route
-GET		/admin/?			Application.Index
-*      	/admin              Application.Index
+GET		/admin/?			Application.adminIndexPage
+*      	/admin              module:crud
 # Add BELOW
 
 GET		/admin/projects/{id}/components/new				Components.blank
