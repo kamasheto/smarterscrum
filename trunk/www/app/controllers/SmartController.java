@@ -133,16 +133,16 @@ public class SmartController extends Controller
 					}
 				}
 				String type = "sprint " + s.id;
-				Snapshot snap = new Snapshot();
-				snap.user = user;
-				snap.type = type;
-				snap.board = b;
-				snap.sprint = s;
-				snap.data = data;
-				snap.Columnsofsnapshot = Columnsofsnapshot;
-				snap.save();
-				s.finalsnapshot = snap;
-				s.save();
+//				Snapshot snap = new Snapshot();
+//				snap.user = user;
+//				snap.type = type;
+//				snap.board = b;
+//				snap.sprint = s;
+//				snap.data = data;
+//				snap.Columnsofsnapshot = Columnsofsnapshot;
+//				snap.save();
+				//s.finalsnapshot = snap;
+				//s.save();
 				List<Component> Cs = p.components;
 				for( int index = 0; index < Cs.size(); index++ )
 				{
@@ -207,15 +207,15 @@ public class SmartController extends Controller
 					}
 					user = Security.getConnected();
 
-					Snapshot snap1 = new Snapshot();
-					snap1.user = user;
-					snap1.type = "sprint " + s.sprintNumber + " " + Cs.get( index ).name;
-					snap1.board = b1;
-					snap1.component = Cs.get( index );
-					snap1.sprint = s;
-					snap1.data = data1;
-					snap1.Columnsofsnapshot = Columnsofsnapshot1;
-					snap1.save();
+//					Snapshot snap1 = new Snapshot();
+//					snap1.user = user;
+//					snap1.type = "sprint " + s.sprintNumber + " " + Cs.get( index ).name;
+//					snap1.board = b1;
+//					snap1.component = Cs.get( index );
+//					snap1.sprint = s;
+//					snap1.data = data1;
+//					snap1.Columnsofsnapshot = Columnsofsnapshot1;
+//					snap1.save();
 
 				}
 
