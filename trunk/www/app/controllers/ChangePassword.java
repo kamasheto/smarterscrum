@@ -12,7 +12,6 @@ import play.mvc.With;
 public class ChangePassword extends SmartCRUD {
 
 	public static void ChangePassword(long userProfileId) {
-		System.out.println("da7'al fel page ely betrender");
 		User userProfile = User.findById(userProfileId);
 		User connectedUser = Security.getConnected();
 		if (connectedUser.deleted)
@@ -31,9 +30,9 @@ public class ChangePassword extends SmartCRUD {
 			@Required(message = "You must enter your new password") String newPassword,
 			@Required(message = "You must confirm your new password") String confirmPassword,
 			long userProfileId) {
-		System.out.println("da7'al fel page ely bet3'ayar");
 		User userProfile = User.findById(userProfileId);
 		User connectedUser = Security.getConnected();
+		String hashOldpass = Application.hash( oldPassword );
 		if (connectedUser.deleted)
 			notFound();
 		if (userProfile.deleted)
@@ -44,7 +43,7 @@ public class ChangePassword extends SmartCRUD {
 				validation.keep();
 				ChangePassword(userProfileId);
 			} else {
-				if((userProfile.password.compareTo(oldPassword)) != 0){
+				if((userProfile.pwdHash.compareTo(hashOldpass)) != 0){
 					flash.error("You entered an incorrect password");
 					validation.keep();
 					ChangePassword(userProfileId);
@@ -61,15 +60,13 @@ public class ChangePassword extends SmartCRUD {
 					}
 				}
 			}
-			String	oldPasswordCheck = userProfile.password;
-			userProfile.password = newPassword;
+			String	oldPasswordCheck = userProfile.pwdHash;
 			userProfile.pwdHash = Application.hash( newPassword );
 			userProfile.save();
-			System.out.println("elpassword el gededa " + userProfile.password);
 			String message="";
 			try{
 				message = "You have successfully changed your password.";
-				if(!oldPasswordCheck.equals(userProfile.password)){
+				if(!oldPasswordCheck.equals(userProfile.pwdHash)){
 					userProfile.save();
 				}
 
