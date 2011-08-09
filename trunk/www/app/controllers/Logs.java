@@ -72,8 +72,8 @@ public class Logs extends SmartController {
 									new LogInfo("Task", Task.class),
 									new LogInfo("Meeting", Meeting.class),
 									new LogInfo("Board", Board.class),
-									new LogInfo("Column", BoardColumn.class),
-									new LogInfo("Snapshot", Snapshot.class)} : 
+									new LogInfo("Column", BoardColumn.class)
+									/*,new LogInfo("Snapshot", Snapshot.class)*/} : 
 								new LogInfo[] 
 									{new LogInfo("User", User.class),
 									new LogInfo("Project", Project.class),
@@ -81,8 +81,8 @@ public class Logs extends SmartController {
 									new LogInfo("Task", Task.class),
 									new LogInfo("Meeting", Meeting.class),
 									new LogInfo("Board", Board.class),
-									new LogInfo("Column", BoardColumn.class),
-									new LogInfo("Snapshot", Snapshot.class)};
+									new LogInfo("Column", BoardColumn.class)
+									/*,new LogInfo("Snapshot", Snapshot.class)*/};
 								
 			render(log, logInfo);	
 		}

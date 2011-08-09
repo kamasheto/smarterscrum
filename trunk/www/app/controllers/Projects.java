@@ -16,7 +16,7 @@ import models.Project;
 import models.ProjectNotificationProfile;
 import models.Request;
 import models.Role;
-import models.Snapshot;
+//import models.Snapshot;
 import models.Sprint;
 import models.Task;
 import models.TaskStatus;
@@ -1166,10 +1166,10 @@ public class Projects extends SmartCRUD {
 			c.deleted = true;
 			c.save();
 		}
-		for (Snapshot s : project.board.snapshot) {
-			s.deleted = true;
-			s.save();
-		}
+//		for (Snapshot s : project.board.snapshot) {
+//			s.deleted = true;
+//			s.save();
+//		}
 		project.board.save();
 
 		// ChatRoom room = project.chatroom;
@@ -1230,10 +1230,10 @@ public class Projects extends SmartCRUD {
 					c.deleted = true;
 					c.save();
 				}
-				for (Snapshot s : temp.componentBoard.snapshot) {
-					s.deleted = true;
-					s.save();
-				}
+//				for (Snapshot s : temp.componentBoard.snapshot) {
+//					s.deleted = true;
+//					s.save();
+//				}
 			}
 			temp.deleted = true;
 			temp.save();
