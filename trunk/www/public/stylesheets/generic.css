@@ -353,6 +353,7 @@ button {
 	margin: 1%;
 	height: 96%;
 	border: 1px solid #eeeeee;
+	resize: none;
 }
 
 .thread {
@@ -1038,11 +1039,13 @@ a {
 .chatboxtextarea:focus {
 	border: 2px solid #407DA3 !important;
 	width: 95%;
+	resize: none;
 }
 
 .chatContainerHeader {
 	border-right: 1px solid #407DA3;
 	border-left: 1px solid #407DA3;
+	resize: none;
 }
 
 #boards a:hover {
