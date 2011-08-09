@@ -56,8 +56,8 @@ public class Component extends SmartModel
 	/***
 	 * a list of component snapshots
 	 */
-	@OneToMany( mappedBy = "component", cascade = CascadeType.ALL )
-	public List<Snapshot> snapshots;
+//	@OneToMany( mappedBy = "component", cascade = CascadeType.ALL )
+//	public List<Snapshot> snapshots;
 
 	/***
 	 * a component can have many meetings & a meeting can include many

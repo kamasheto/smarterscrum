@@ -13,8 +13,8 @@ public class Board extends SmartModel {
 	/***
 	 * a board can have many snapshots whereas a snapshot belongs to exactly one board
 	 */
-	@OneToMany (mappedBy = "board")
-	public List<Snapshot> snapshot;
+//	@OneToMany (mappedBy = "board")
+//	public List<Snapshot> snapshot;
 	
 	/***
 	 * a board has many columns whereas a column belongs to one board
@@ -68,7 +68,7 @@ public class Board extends SmartModel {
 	 * list of snapshots & a list of columns to a board
 	 * */
 	public Board () {
-		snapshot = new ArrayList<Snapshot>();
+		//snapshot = new ArrayList<Snapshot>();
 		columns = new ArrayList<BoardColumn>();
 	}
 
