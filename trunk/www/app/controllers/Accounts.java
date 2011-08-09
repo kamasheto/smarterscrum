@@ -89,16 +89,16 @@ public class Accounts extends SmartController {
 							if (there) {
 								user.mobileNumber = mobile;
 							}
+							user.isActivated=true;
 							user.save();
-							System.out.println("mob num " + user.mobileNumber);
-							String url = Router
-									.getFullUrl("Accounts.doActivation")
-									+ "?hash="
-									+ user.activationHash
-									+ "&firstTime=true";
-							Notifications.activate(user.email, user.name, url,
-									false);
-							flash.success("You have been registered. An Activation link has been sent to your Email Address");
+//							String url = Router
+//									.getFullUrl("Accounts.doActivation")
+//									+ "?hash="
+//									+ user.activationHash
+//									+ "&firstTime=true";
+//							Notifications.activate(user.email, user.name, url,
+//									false);
+							flash.success("You have been registered successfully!");
 							Secure.login();
 						} catch (Throwable e) {
 							e.printStackTrace();
