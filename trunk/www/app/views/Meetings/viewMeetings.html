@@ -35,10 +35,6 @@
 		#{/if}
 		
 		
-		#{if (current.snapshot!=null)}
-		<a href="javascript:overlayOpen('/Snapshots/loadsnapShot?id=${current.snapshot.id}');" >
-		<img title="View Associated Snapshot" src="@{'/public/images/famfam/camera_go.png'}"></a>
-		#{/if}
 		
 		
 		#{if (connected.meetingStatus(current.id).equals("confirmed"))}

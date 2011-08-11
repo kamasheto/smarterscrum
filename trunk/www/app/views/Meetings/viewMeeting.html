@@ -21,10 +21,7 @@
 	#{if (meeting.startTime < new Date().getTime()) && ((connected.in(project).can('editMeeting') ||connected.equals(meeting.creator))) }
 	<img class="dim" title="edit" src="@{'/public/images/famfam/pencil.png'}">
 	#{/if}
-	#{if (meeting.snapshot!=null)}
-	<a href="javascript:overlayOpen('/Snapshots/loadsnapShot?id=${meeting.snapshot.id}');" >
-	<img title="View Associated Snapshot" src="@{'/public/images/famfam/camera_go.png'}"></a>
-	#{/if}
+	
 	
 	#{if (invited&&attending)}
 	<img src="@{'/public/images/famfam/accept.png'}" title="you ${past ? 'attended':'are attending'} this meeting"></img>
