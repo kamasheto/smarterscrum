@@ -58,7 +58,10 @@ public class Security extends Secure.Security
 	public static void onAuthenticated() {
 		String usr = (isConnected() ? connected() : "");
 		User user =  User.find( "select u from User u where u.email=? or u.name=?", usr.toLowerCase(), usr ).first();
-		session.put("user_id", user.id);
+		if(user != null){
+			session.put("user_id", user.id);
+		}
+
 		String url = flash.get("url");
         if(url == null) {
             url = "/";
