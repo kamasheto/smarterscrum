@@ -83,7 +83,7 @@ public class Games extends SmartController
 		session.game = game;
 		session.lastClick = new Date().getTime();
 		session.save();
-		playGame( game.id );
+		playgame( game.id );
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class Games extends SmartController
 	 * @param gameId
 	 *            game id
 	 */
-	public static void playGame( long gameId )
+	public static void playgame( long gameId )
 	{
 		Game game = Game.findById( gameId );
 		Security.check( game.component.componentUsers.contains( Security.getConnected() ) );
@@ -265,7 +265,7 @@ public class Games extends SmartController
 		round.game = game;
 		round.task = game.currentTask;
 		round.save();
-		playGame( gameId );
+		playgame( gameId );
 	}
 
 	/**
