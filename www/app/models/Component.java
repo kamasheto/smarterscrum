@@ -348,7 +348,7 @@ public class Component extends SmartModel
 		List<Game> games = Game.find( "byComponent", this ).fetch();
 		for( Game g : games )
 		{
-			if(g !=null ){
+			if( g.getRound() != null ){
 			if( !g.getRound().isDone() )
 			{
 				return true;
