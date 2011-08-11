@@ -63,28 +63,11 @@ ${project.description?.nl2br()}
 		<div id="s_${sprint.id}" style="display:none; margin-left:10px">
 		
 #{if sprint.ended==true}
-#{if sprint.finalsnapshot==null }
 
-
-<script type="text/javascript">
-	
-	$.getJSON('/snapshots/TakeSprintSnapshot', {sprintID:${sprint.id}},function( ID ){
-	$('#sprint${sprint.id}').attr("href","/snapshots/loadsnapshot?id="+ID);
-
-});
-</script>
 
 
 #{/if}
 
-#{if sprint.finalsnapshot!=null }
-<a title="Take a look @ the full task board?" href="@{Snapshots.loadsnapShot(sprint.finalsnapshot.id)} ">View Sprint ${sprint.id} Task Board</a>
-
-#{/if}
-#{/if}
-#{if sprint.finalsnapshot==null }
-<a id="sprint${sprint.id}" title="Take a look @ the full task board?" href="/boards/loadboard1?sprintID=${sprint.id}">View Sprint ${sprint.id} Task Board</a>
-	#{/if}
 #{if sprint.ended!=true }
 <a href="javascript:" onclick="$('#c_${sprint.id}').toggle()" title="view components' boards?" style="margin-left:20px;float:left;width:200px;">View Components' Boards</a>
 	#{/if}
