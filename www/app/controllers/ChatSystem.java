@@ -122,6 +122,7 @@ public class ChatSystem extends SmartController
 		if( project == null )
 		{
 			Game game = Game.find( "byChatroom", room ).first();
+			if(game!=null)
 			project = game.component.project;
 
 		}
