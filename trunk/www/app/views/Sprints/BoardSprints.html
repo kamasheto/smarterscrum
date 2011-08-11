@@ -24,12 +24,7 @@
 		#{else}
 			#{if (sprint.ended || sprint.ended()) }
 				<div class="redBg" name="@{Boards.sprintBoards(sprint.id)}">Sprint ${sprint.sprintNumber}
-					#{list sprint.project.components[0].snapshots, as:'snapshot'}
-						#{if snapshot.sprint.id==sprint.id}
-							<a href="#" onclick="overlayOpen('@{Snapshots.loadsnapShot(snapshot.id)}')" title="View sprint board snapshot?">
-							<img src="@{'public/images/famfam/application_view_tile.png'}"/></a>
-						#{/if}
-					#{/list}	
+					
 				#{if connected.in(sprint.project).can("editSprint")}
 					<img class="dim"src="/public/images/famfam/pencil.png" />
 				#{/if}
