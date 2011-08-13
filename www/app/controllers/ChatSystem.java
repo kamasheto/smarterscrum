@@ -2,12 +2,14 @@ package controllers;
 
 import java.util.List;
 
+import play.mvc.With;
+
 import models.ChatRoom;
 import models.Game;
 import models.Message;
 import models.Project;
 import models.User;
-
+@With( Secure.class )
 public class ChatSystem extends SmartController
 {
 
